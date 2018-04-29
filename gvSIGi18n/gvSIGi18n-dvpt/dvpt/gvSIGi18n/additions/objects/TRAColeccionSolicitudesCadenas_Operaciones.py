@@ -159,7 +159,7 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
 
 
     security.declarePrivate( 'pForAllElementsDo_recursive')    
-    def pForAllElementsDo_recursive( self, theLambda):
+    def pForAllElementsDo_recursive( self, theLambda=None, thePloneLambda=None,):
         if not theLambda:
             return self
         
@@ -168,7 +168,10 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
         unosElementos = self.fObtenerTodasSolicitudesCadenas()
         if unosElementos:
             for unElemento in unosElementos:
-                unElemento.pForAllElementsDo_recursive( theLambda)
+                unElemento.pForAllElementsDo_recursive( theLambda, thePloneLambda)
+                
+        if thePloneLambda:
+            self.pForAllElementsPloneDo( thePloneLambda)
         
         return self
         

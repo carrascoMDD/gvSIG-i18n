@@ -728,7 +728,7 @@ class TRAImportacion_Operaciones( \
 
 
     security.declarePrivate( 'pForAllElementsDo_recursive')    
-    def pForAllElementsDo_recursive( self, theLambda):
+    def pForAllElementsDo_recursive( self, theLambda=None, thePloneLambda=None,):
         if not theLambda:
             return self
         
@@ -737,12 +737,15 @@ class TRAImportacion_Operaciones( \
         unosElementos = self.fObtenerTodosContenidosIntercambio()
         if unosElementos:
             for unElemento in unosElementos:
-                unElemento.pForAllElementsDo_recursive( theLambda)
+                unElemento.pForAllElementsDo_recursive( theLambda, thePloneLambda)
         
         unosElementos = self.fObtenerTodosInformes()
         if unosElementos:
             for unElemento in unosElementos:
-                unElemento.pForAllElementsDo_recursive( theLambda)
+                unElemento.pForAllElementsDo_recursive( theLambda, thePloneLambda)
+                
+        if thePloneLambda:
+            self.pForAllElementsPloneDo( thePloneLambda)
         
         return self
            

@@ -224,7 +224,7 @@ class TRACatalogo_Operaciones( TRACatalogo_Mutators, TRACatalogo_Retrieval, TRAC
     
     
     security.declarePrivate( 'pForAllElementsDo_recursive')        
-    def pForAllElementsDo_recursive( self, theLambda):
+    def pForAllElementsDo_recursive( self, theLambda=None, thePloneLambda=None,):
         if not theLambda:
             return self
         
@@ -234,51 +234,54 @@ class TRACatalogo_Operaciones( TRACatalogo_Mutators, TRACatalogo_Retrieval, TRAC
         unosElementos = self.fObtenerTodasColeccionesIdiomas()
         if unosElementos:
             for unElemento in unosElementos:
-                unElemento.pForAllElementsDo_recursive( theLambda)
+                unElemento.pForAllElementsDo_recursive( theLambda, thePloneLambda)
                 
         unosElementos = self.fObtenerTodasColeccionesModulos()
         if unosElementos:
             for unElemento in unosElementos:
-                unElemento.pForAllElementsDo_recursive( theLambda)
+                unElemento.pForAllElementsDo_recursive( theLambda, thePloneLambda)
                 
         unosElementos = self.fObtenerTodasColeccionesCadenas()
         if unosElementos:
             for unElemento in unosElementos:
-                unElemento.pForAllElementsDo_recursive( theLambda)
+                unElemento.pForAllElementsDo_recursive( theLambda, thePloneLambda)
                 
         unosElementos = self.fObtenerTodasColeccionesSolicitudesCadenas()
         if unosElementos:
             for unElemento in unosElementos:
-                unElemento.pForAllElementsDo_recursive( theLambda)
+                unElemento.pForAllElementsDo_recursive( theLambda, thePloneLambda)
                 
         unosElementos = self.fObtenerTodasColeccionesImportaciones()
         if unosElementos:
             for unElemento in unosElementos:
-                unElemento.pForAllElementsDo_recursive( theLambda)
+                unElemento.pForAllElementsDo_recursive( theLambda, thePloneLambda)
                 
         unosElementos = self.fObtenerTodasColeccionesInformes()
         if unosElementos:
             for unElemento in unosElementos:
-                unElemento.pForAllElementsDo_recursive( theLambda)
+                unElemento.pForAllElementsDo_recursive( theLambda, thePloneLambda)
                 
         unosElementos = self.fObtenerTodasColeccionesProgresos()
         if unosElementos:
             for unElemento in unosElementos:
-                unElemento.pForAllElementsDo_recursive( theLambda)
+                unElemento.pForAllElementsDo_recursive( theLambda, thePloneLambda)
                 
         unosElementos = self.fObtenerTodosParametrosControlProgeso()
         if unosElementos:
             for unElemento in unosElementos:
-                unElemento.pForAllElementsDo_recursive( theLambda)
+                unElemento.pForAllElementsDo_recursive( theLambda, thePloneLambda)
                 
         unosElementos = self.fObtenerTodasConfiguraciones()
         if unosElementos:
             for unElemento in unosElementos:
-                unElemento.pForAllElementsDo_recursive( theLambda)
+                unElemento.pForAllElementsDo_recursive( theLambda, thePloneLambda)
                 
         unElemento = self.fObtenerElementoSimbolosOrdenados()
         if not ( unElemento == None):
-            unElemento.pForAllElementsDo_recursive( theLambda)
+            unElemento.pForAllElementsDo_recursive( theLambda, thePloneLambda)
+                
+        if thePloneLambda:
+            self.pForAllElementsPloneDo( thePloneLambda)
                 
         return self    
       

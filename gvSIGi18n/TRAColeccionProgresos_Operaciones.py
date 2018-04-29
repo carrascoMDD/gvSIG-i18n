@@ -118,7 +118,7 @@ class TRAColeccionProgresos_Operaciones:
 
 
     security.declarePrivate( 'pForAllElementsDo_recursive')    
-    def pForAllElementsDo_recursive( self, theLambda):
+    def pForAllElementsDo_recursive( self, theLambda=None, thePloneLambda=None,):
         if not theLambda:
             return self
         
@@ -127,7 +127,10 @@ class TRAColeccionProgresos_Operaciones:
         unosElementos = self.fObtenerTodosProgresos()
         if unosElementos:
             for unElemento in unosElementos:
-                unElemento.pForAllElementsDo_recursive( theLambda)
+                unElemento.pForAllElementsDo_recursive( theLambda, thePloneLambda)
+                
+        if thePloneLambda:
+            self.pForAllElementsPloneDo( thePloneLambda)
         
         return self
             
@@ -188,6 +191,7 @@ class TRAColeccionProgresos_Operaciones:
             theInitializeLambda     =None,
             theLoopLambda           =None,
             theElementLambda        =None,
+            theElementPloneLambda   =None,
             theFinalizeLambda       =None,
             theLockCatalog          =False,
             thePermissionsCache     =thePermissionsCache, 
@@ -210,6 +214,7 @@ class TRAColeccionProgresos_Operaciones:
         theInitializeLambda     =None,
         theLoopLambda           =None,
         theElementLambda        =None,
+        theElementPloneLambda   =None,
         theFinalizeLambda       =None,
         theLockCatalog          =False,
         thePermissionsCache     =None, 
@@ -227,6 +232,7 @@ class TRAColeccionProgresos_Operaciones:
             theInitializeLambda     =theInitializeLambda,
             theLoopLambda           =theLoopLambda,
             theElementLambda        =theElementLambda,
+            theElementPloneLambda   =theElementPloneLambda,
             theFinalizeLambda       =theFinalizeLambda,
             theLockCatalog          =theLockCatalog,
             thePermissionsCache     =thePermissionsCache, 
@@ -251,6 +257,7 @@ class TRAColeccionProgresos_Operaciones:
         theInitializeLambda     =None,
         theLoopLambda           =None,
         theElementLambda        =None,
+        theElementPloneLambda   =None,
         theFinalizeLambda       =None,
         theLockCatalog          =False,
         thePermissionsCache     =None, 
@@ -423,6 +430,7 @@ class TRAColeccionProgresos_Operaciones:
                 theInitializeLambda,
                 theLoopLambda,
                 theElementLambda,
+                theElementPloneLambda,
                 theFinalizeLambda,
                 theLockCatalog,
                 theTimestamp,

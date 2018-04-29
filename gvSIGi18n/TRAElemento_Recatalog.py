@@ -238,6 +238,38 @@ class TRAElemento_Recatalog:
 
         
         
+            
+        def fRecatalogElementPlone_lambda( theElement, theProcessControlManager, theAdditionalParmsHere):  
+            
+            if theElement == None:
+                return None
+            
+            if not theProcessControlManager:
+                return None
+            
+
+            aMetaType = 'UnknownType'
+            try:
+                aMetaType = theElement.meta_type
+            except:
+                aMetaType = theElement.__class__.__name
+            if not aMetaType:
+                aMetaType = 'UnknownType'
+                
+            if not( aMetaType in cTRAPloneTypeNames):
+                return None
+            
+            theElement.reindexObject()
+            
+            anElementsByType = { aMetaType: 1,}
+            
+            theProcessControlManager.pProcessStep( theElement, anElementsByType, anElementsByType)
+                
+            return None        
+
+        
+        
+        
         
         unExecutionRecord = self.fStartExecution( 'method',  'fCreateProgressHandlerFor_Recatalog', theParentExecutionRecord,  True, { 'log_what': 'details', 'log_when': True, }, ) 
         
@@ -327,6 +359,7 @@ class TRAElemento_Recatalog:
                     theTimestamp            =aStartDateTimeNowTextual,
                     theResult               =aRecatalogResult, 
                     theElementLambda        =fRecatalogElement_lambda,
+                    theElementPloneLambda   =fRecatalogElementPlone_lambda,
                     theInitializeLambda     =fRecatalogInitialize_lambda,
                     theFinalizeLambda       =fRecatalogFinalize_lambda,
                     theLockCatalog          =True,

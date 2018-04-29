@@ -333,6 +333,7 @@ class TRAImportacion_Operaciones_Progress:
                     theInitializeLambda     =fImportInitialize_lambda,
                     theLoopLambda           =fImportLoop_lambda,
                     theElementLambda        =None,
+                    theElementPLoneLambda   =None,
                     theFinalizeLambda       =None,
                     theLockCatalog          =True,
                     thePermissionsCache     =unPermissionsCache, 

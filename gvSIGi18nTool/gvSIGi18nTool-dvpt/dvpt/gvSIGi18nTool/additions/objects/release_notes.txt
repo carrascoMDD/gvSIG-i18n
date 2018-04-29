@@ -1,6 +1,17 @@
 ﻿gvSIG-i18n RELEASE NOTES
 ========================
 
+version 2.0.4
+------------------------------------------------
+Added handling of plone elements while traversing the elements tree, i.e. when performing inventory, reset permissions, recatalog.
+
+
+version 2.0.3
+------------------------------------------------
+Added use case to export for gvSIG the translations into all languages, with a single long-lived process execution.
+
+
+
 versions 2.x
 ------------------------------------------------
 

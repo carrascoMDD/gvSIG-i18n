@@ -96,6 +96,7 @@ class TRAProgressHandler:
         theInitializeLambda,
         theLoopLambda,
         theElementLambda,
+        theElementPloneLambda,
         theFinalizeLambda,
         theLockCatalog,
         theTimestamp):
@@ -149,6 +150,7 @@ class TRAProgressHandler:
         self.vInitializeLambda          = theInitializeLambda
         self.vLoopLambda                = theLoopLambda
         self.vElementLambda             = theElementLambda
+        self.vElementPloneLambda        = theElementPloneLambda
         self.vFinalizeLambda            = theFinalizeLambda
 
         self.vLockCatalog               = theLockCatalog == True
@@ -667,8 +669,13 @@ class TRAProgressHandler:
                                 """
                                 if not self.vLoopLambda:
                                     if self.vElementLambda:
-                                    
-                                        self.vInitialElement.pForAllElementsDo( lambda theElement: self.vElementLambda( theElement, self, theAdditionalParams))
+                                        if self.vElementPloneLambda:
+                                            
+                                            self.vInitialElement.pForAllElementsDo( lambda theElement: self.vElementLambda( theElement, self, theAdditionalParams), lambda theElement: self.vElementPloneLambda( theElement, self, theAdditionalParams))
+
+                                        else:
+                                            self.vInitialElement.pForAllElementsDo( lambda theElement: self.vElementLambda( theElement, self, theAdditionalParams))
+                                            
                                 
                                 else:
                                     

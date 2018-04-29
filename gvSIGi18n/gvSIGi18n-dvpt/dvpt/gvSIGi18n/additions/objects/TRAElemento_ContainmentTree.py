@@ -111,20 +111,72 @@ class TRAElemento_ContainmentTree:
     
     
     security.declarePrivate( 'pForAllElementsDo')    
-    def pForAllElementsDo( self, theLambda=None):
-        if not theLambda:
+    def pForAllElementsDo( self, theLambda=None, thePloneLambda=None):
+        if not ( theLambda or thePloneLambda):
             return self
-        someSubElements = [ ]
-        self.pForAllElementsDo_recursive( theLambda)
-        return someSubElements
+        self.pForAllElementsDo_recursive( theLambda, thePloneLambda)
+        
+        return self
         
     
 
    
     
+    security.declarePrivate( 'pForAllElementsPloneDo')    
+    def pForAllElementsPloneDo( self, thePloneLambda=None,):
+        if not thePloneLambda:
+            return self
+        
+        unosElementosPlone = self.objectValues( cTRAPloneTypeNames)
+        if not unosElementosPlone:
+            return self
+        
+        for unElementoPlone in unosElementosPlone:
+            self.pForAllElementsPloneDo_recursive( unElementoPlone, thePloneLambda)
+            
+        return self
+        
+        
     
+
     
-    
+    security.declarePrivate( 'pForAllElementsPloneDo_recursive')    
+    def pForAllElementsPloneDo_recursive( self, thePloneElement=None, thePloneLambda=None,):
+        
+        if thePloneElement == None:
+            return self
+        
+        if not thePloneLambda:
+            return self
+        
+        thePloneLambda( thePloneElement)
+        
+        unMetaType = ''
+        try:
+            unMetaType = thePloneElement.meta_type
+        except:
+            None
+        if not unMetaType:
+            return self
+        
+        if not ( unMetaType == cTRAPloneTypeName_ATFolder):
+            return self
+        
+        
+        unosElementosPlone = None
+        try:
+            unosElementosPlone = thePloneElement.objectValues( cTRAPloneTypeNames)
+        except:
+            None
+            
+        if not unosElementosPlone:
+            return self
+        
+        for unElementoPlone in unosElementosPlone:
+            self.pForAllElementsPloneDo_recursive( unElementoPlone, thePloneLambda)
+        
+        return self
+            
       
         
     security.declarePublic('fPortalRoot')

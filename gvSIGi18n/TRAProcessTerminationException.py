@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# File: TRAProgressHandler.py
+# File: TRAProcessTerminationException.py
 #
 # Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
 #

@@ -70,6 +70,11 @@ _cTRATodosNombresTiposDesCatalogables_DePortalCatalog = [
     "TRAColeccionImportaciones",         
     "TRAColeccionSolicitudesCadenas",    
     "TRAColeccionProgresos",
+    "ATImage",
+    "ATNewsItem",
+    "ATDocument",
+    "ATLink",
+    "ATFolder",
 ]
 
 
@@ -83,12 +88,24 @@ _cTRATodosNombresTiposNODesCatalogables_DeUIDCatalog = [ 'ZCatalog',]
 
 
 
+def _fNewVoidTypesToUncatalogReport():
+    aReport = {
+        'types_to_uncatalog_from_portal_catalog':  [],
+        'types_to_uncatalog_children_excluded':    [],
+        'types_not_to_uncatalog_from_uid_catalog': [],
+     }
+    return aReport
+    
+
+
 def _fNewVoidUncatalogReport():
     aReport = {
         'success':     False,
         'status':      '',
         'condition':   '',
         'initial_id':  '',
+        
+        'types_to_uncatalog': {},
         
         'total_num_elements':      0,
         'types_and_num_elements':  [],
@@ -113,16 +130,39 @@ def _fNewVoidUncatalogReport():
 
 
 
+    
+    
+    
+
 def TRAUncatalog( 
     theContextualElement     =None, 
-    theInitialId             ='',):
+    theInitialId             ='',
+    theJustReportTypes       =False):
     """Exposed as an ExternalMethod.
     
     """
     
     aUncatalogReport = _fNewVoidUncatalogReport()
     
-
+    aTypesToUncatalogReport = _fNewVoidTypesToUncatalogReport()
+    aTypesToUncatalogReport.update( {
+        'types_to_uncatalog_from_portal_catalog':  ( _cTRATodosNombresTiposDesCatalogables_DePortalCatalog               and _cTRATodosNombresTiposDesCatalogables_DePortalCatalog[:])               or [],
+        'types_to_uncatalog_children_excluded':    ( _cTRATodosNombresTiposCatalogables_ChildrenExcluidosDePortalCatalog and _cTRATodosNombresTiposCatalogables_ChildrenExcluidosDePortalCatalog[:]) or [],
+        'types_not_to_uncatalog_from_uid_catalog': ( _cTRATodosNombresTiposNODesCatalogables_DeUIDCatalog                and _cTRATodosNombresTiposNODesCatalogables_DeUIDCatalog[:])                or [],     
+    })
+    aUncatalogReport[ 'types_to_uncatalog'] = aTypesToUncatalogReport
+    
+    if theJustReportTypes:
+        aUncatalogReport.update( {
+            'success':     True,
+            'status':      'JustReportTypes',
+            'condition':   '',
+        })
+        return aUncatalogReport
+        
+    
+    
+    
     if theContextualElement == None:
         aUncatalogReport.update( {
             'success':     False,
@@ -132,6 +172,7 @@ def TRAUncatalog(
         return aUncatalogReport
 
     
+   
     
     if not theInitialId:
         aUncatalogReport.update( {
@@ -153,6 +194,8 @@ def TRAUncatalog(
         return aUncatalogReport
 
 
+    
+    
     aInitialElementToUncatalog = None
     
     someContentElements = theContextualElement.objectValues()

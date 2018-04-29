@@ -115,6 +115,21 @@ class TRAElemento_Inventory:
 
     
         
+        def fInventoryElementPlone_lambda( theElement, theProcessControlManager, theAdditionalParmsHere):        
+                    
+            unMetaType = ''
+            try:
+                unMetaType = theElement.meta_type
+            except:
+                None
+            if not unMetaType:
+                return None
+            
+            theProcessControlManager.pProcessStep( theElement, { unMetaType: 1,}, None)
+            
+            return None        
+
+    
         
         
         
@@ -206,6 +221,7 @@ class TRAElemento_Inventory:
                     theTimestamp            =aStartDateTimeNowTextual,
                     theResult               =aInventoryResult, 
                     theElementLambda        =fInventoryElement_lambda,
+                    theElementPloneLambda   =fInventoryElementPlone_lambda,
                     thePermissionsCache     =unPermissionsCache, 
                     theRolesCache           =unRolesCache, 
                     theParentExecutionRecord=unExecutionRecord,)

@@ -133,11 +133,14 @@ class TRAConfiguracionAlmacenPaginas_Operaciones:
 
 
     security.declarePrivate( 'pForAllElementsDo_recursive')    
-    def pForAllElementsDo_recursive( self, theLambda):
+    def pForAllElementsDo_recursive( self, theLambda=None, thePloneLambda=None,):
         if not theLambda:
             return self
         
         theLambda( self)
+                
+        if thePloneLambda:
+            self.pForAllElementsPloneDo( thePloneLambda)
         
         return self
             

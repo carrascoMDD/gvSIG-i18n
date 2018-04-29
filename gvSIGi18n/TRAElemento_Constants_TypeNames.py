@@ -298,3 +298,10 @@ cTRATypesToReuseIdsOnRestoreBackup = [
     cNombreTipoTRAConfiguracionVarios,
     cNombreTipoTRAConfiguracionPermisos,
 ]
+
+
+
+
+cTRAPloneTypeNames = [ 'ATDocument', 'ATNewsItem', 'ATLink', 'ATImage', 'ATFile', ]
+cTRAPloneTypeName_ATFolder = 'ATFolder'
+

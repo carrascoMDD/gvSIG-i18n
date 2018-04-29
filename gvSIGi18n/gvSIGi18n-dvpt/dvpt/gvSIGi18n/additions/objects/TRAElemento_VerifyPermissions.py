@@ -173,6 +173,47 @@ class TRAElemento_VerifyPermissions:
 
         
         
+       
+            
+        def fVerifyPermissionsElementPlone_lambda( theElement, theProcessControlManager, theAdditionalParmsHere):  
+            
+            #if theElement == None:
+                #return None
+            
+            #if not theProcessControlManager:
+                #return None
+            
+            #if not theProcessControlManager.vInitializedObjects:
+                #return None
+
+            
+            #somePermissionsByElementType = theProcessControlManager.vInitializedObjects.get( 'permissions_by_element_type', None)
+            #if not somePermissionsByElementType:
+                #return None
+   
+            #unElementMetaType = theElement.meta_type
+            
+            #unElementPermissionSpec = somePermissionsByElementType.get( unElementMetaType, None)
+            #if not unElementPermissionSpec:
+                #return None
+
+            #anElementsByTypeRead    = { unElementMetaType: 1,}
+            #anElementsByTypeWrongPermissions = None
+            
+            #aComplyWithPermissions = theElement.fCheckPermissionSpecificationCompliance( 
+                #theElement                =theElement, 
+                #theElementPermissionsSpec =unElementPermissionSpec, 
+            #)
+            #if not aComplyWithPermissions:
+                #anElementsByTypeWrongPermissions = { unElementMetaType: 1,}
+               
+            
+            #theProcessControlManager.pProcessStep( theElement, anElementsByTypeRead, anElementsByTypeWrongPermissions)
+            
+            return None        
+
+        
+        
         
         unExecutionRecord = self.fStartExecution( 'method',  'fCreateProgressHandlerFor_VerifyPermissions', theParentExecutionRecord,  True, { 'log_what': 'details', 'log_when': True, }, ) 
         
@@ -260,6 +301,7 @@ class TRAElemento_VerifyPermissions:
                     theTimestamp            =aStartDateTimeNowTextual,
                     theResult               =aVerifyPermissionsResult, 
                     theElementLambda        =fVerifyPermissionsElement_lambda,
+                    theElementPloneLambda   =fVerifyPermissionsElementPlone_lambda,
                     theInitializeLambda     =fVerifyPermissionsInitialize_lambda,
                     theLockCatalog          =True,
                     thePermissionsCache     =unPermissionsCache, 

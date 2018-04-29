@@ -179,6 +179,50 @@ class TRAElemento_ResetPermissions:
 
         
         
+            
+        def fResetPermissionsElementPlone_lambda( theElement, theProcessControlManager, theAdditionalParmsHere):  
+            
+            #if theElement == None:
+                #return None
+            
+            #if not theProcessControlManager:
+                #return None
+            
+            #if not theProcessControlManager.vInitializedObjects:
+                #return None
+
+            
+            #somePermissionsByElementType = theProcessControlManager.vInitializedObjects.get( 'permissions_by_element_type', None)
+            #if not somePermissionsByElementType:
+                #return None
+   
+            #unElementMetaType = theElement.meta_type
+            
+            #unElementPermissionSpec = somePermissionsByElementType.get( unElementMetaType, None)
+            #if not unElementPermissionSpec:
+                #return None
+           
+            #anElementsByTypeRead    = { theElement.meta_type: 1,}
+            #anElementsByTypeChanged = None
+            
+            
+            #aComplyWithPermissions = theElement.fCheckPermissionSpecificationCompliance( 
+                #theElement                =theElement, 
+                #theElementPermissionsSpec =unElementPermissionSpec, 
+            #)
+            #if not aComplyWithPermissions:
+            
+                #if theElement.fSetPermissions( 
+                    #theAdditionalParams      =theAdditionalParmsHere, 
+                    #thePermissionsForElement =unElementPermissionSpec,
+                    #):
+                    #anElementsByTypeChanged = { theElement.meta_type: 1,}
+               
+            #theProcessControlManager.pProcessStep( theElement, anElementsByTypeRead, anElementsByTypeChanged)
+            
+            return None        
+
+        
         
         unExecutionRecord = self.fStartExecution( 'method',  'fCreateProgressHandlerFor_ResetPermissions', theParentExecutionRecord,  True, { 'log_what': 'details', 'log_when': True, }, ) 
         
@@ -266,6 +310,7 @@ class TRAElemento_ResetPermissions:
                     theTimestamp            =aStartDateTimeNowTextual,
                     theResult               =aResetPermissionsResult, 
                     theElementLambda        =fResetPermissionsElement_lambda,
+                    theElementPloneLambda   =fResetPermissionsElementPlone_lambda,
                     theInitializeLambda     =fResetPermissionsInitialize_lambda,
                     theLockCatalog          =True,
                     thePermissionsCache     =unPermissionsCache, 
