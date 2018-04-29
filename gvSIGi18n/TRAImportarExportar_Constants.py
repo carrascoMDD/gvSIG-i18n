@@ -107,8 +107,16 @@ cExportStatus_CanNotCreateZipFile           = 'gvSIGi18n_ExportStatus_CanNotCrea
 cPropertiesLine_CommentPrefix     = '#'
 
 
-cUnicodeEscapeEncoding            = 'raw_unicode_escape'
-cUnicodeEscapeEncodingFor255Chars = 'ISO-8859-1'
+
+# ###########################
+# ACV 20100518 removed, too confusing with the export name for unicode encoding 
+#cUnicodeEscapeEncoding            = 'raw_unicode_escape'
+#cUnicodeEscapeEncodingFor255Chars = 'ISO-8859-1'
+"""Used to decode strings from gvSIG .properties during IMPORT.
+   Python calls 'raw_unicode_escape' to the encoding of this kind, to identify it among other encoders - even if it is not a true encoding.
+
+"""
+cRawUnicodeEscapeEncoding            = 'raw_unicode_escape'
 
 
 cModuloNoEspecificado_ValorNombre = 'mod-ModuloNoEspecificado'

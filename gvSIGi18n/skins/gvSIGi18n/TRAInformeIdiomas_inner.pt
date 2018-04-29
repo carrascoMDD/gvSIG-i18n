@@ -152,15 +152,15 @@
                 </p>
                 
                 <table id="id_TRAInformeIdiomas_Table" class="listing" summary="#"  tal:attributes="summary string: Translations Report By Languages">
-                    <COL width="40" class="sortable"/>
-                    <COL tal:condition="pHayCodigosIdiomasInternacionalesDistintosCodigoEnGvSIG" width="40" class="sortable"/>
-                    <COL width="70" class="sortable"/>
-                    <COL width="70" class="sortable"/>
+                    <col width="40" class="sortable"/>
+                    <col tal:condition="pHayCodigosIdiomasInternacionalesDistintosCodigoEnGvSIG" width="40" class="sortable"/>
+                    <col width="70" class="sortable"/>
+                    <col width="70" class="sortable"/>
                     <tal:block tal:condition="pDisplayCountryFlags">
-                        <COL width="20"/>
+                        <col width="20"/>
                     </tal:block>
-                    <COL width="70" class="sortable"  tal:repeat="unEstado pEstados"/>
-                    <COL />                    
+                    <col width="70" class="sortable"  tal:repeat="unEstado pEstados"/>
+                    <col />                    
                     <thead>
                         <tr>
                             <th class="sortable" align="center" tal:content="aTranslationsCache/gvSIGi18n_TRAIdioma_attr_codigoIdiomaEnGvSIG_label_abbreviated" />

@@ -71,12 +71,8 @@ from Products.gvSIGi18n.TRATraduccion_Operaciones import cMarcaDeComentarioSinCa
 
 from Products.Archetypes.utils import getRelURL
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneTool          import ModelDDvlPloneTool
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators  import ModelDDvlPloneTool_Mutators, cModificationKind_CreateSubElement, cModificationKind_Create, cModificationKind_ChangeValues
-from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Retrieval import ModelDDvlPloneTool_Retrieval
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow, fDateTimeNow
 
 
 
@@ -430,7 +426,7 @@ class TRAImportacion_Operaciones:
     
     security.declarePrivate( 'fCrearContenidoIntercambio')    
     def fCrearContenidoIntercambio( self,
-        theTimeProfilingResults =None, # invoked from ModelDDvlPloneTool still using previous style of time profiling, thus the parameter is not theParentExecutionRecord =None, 
+        theTimeProfilingResults =None,
         theModelDDvlPloneTool_Mutators   =None, 
         theNewTypeName          ='', 
         theNewOneTitle          ='', 
@@ -441,7 +437,9 @@ class TRAImportacion_Operaciones:
         theParentExecutionRecord=None):
     
     
-        unExecutionRecord = self.fStartExecution( 'method',  'fCrearContenidoIntercambio', None, True, { 'log_what': 'details', 'log_when': True, }) # invoked from ModelDDvlPloneTool still using previous style of time profiling, thus the parameter is not theParentExecutionRecord =None, 
+        unExecutionRecord = self.fStartExecution( 'method',  'fCrearContenidoIntercambio', None, True, { 'log_what': 'details', 'log_when': True, }) 
+
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators  import ModelDDvlPloneTool_Mutators, cModificationKind_CreateSubElement, cModificationKind_Create, cModificationKind_ChangeValues
 
         try:
             unasDescripcionesContenidosCreados = []
@@ -650,7 +648,8 @@ class TRAImportacion_Operaciones:
                 
                 unInformeExcepcion = 'Exception during fCrearContenidoIntercambio\n' 
                 unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                if hasattr( unaExceptionInfo[1], 'args'):
+                    unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
                 unInformeExcepcion += unaExceptionFormattedTraceback   
                                          
                 unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
@@ -737,6 +736,86 @@ class TRAImportacion_Operaciones:
                                   
          
         unExecutionRecord = self.fStartExecution( 'method',  'fContenidosDeUploadedFile', theParentExecutionRecord, False) 
+
+        try:
+            todosContenidos = [ ]
+
+            if not theUploadedFile:
+                return unosContenidos
+                        
+            # Determine if theUploadedFile is a zip or jar archive content
+            unIsZip = False
+            unZipFile = None
+            try:
+                unZipFile = ZipFile( theUploadedFile)  
+            except:
+                None
+            if unZipFile:
+                # Error if True
+                if not( unZipFile.testzip()):
+                    unIsZip = True
+            
+            if not unIsZip:
+                return self.fContenidosDeUploadedFile_NoNestedZips( 
+                    theParentExecutionRecord=unExecutionRecord, 
+                    theUploadedFile         =theUploadedFile, 
+                    theDefaultLanguage      =theDefaultLanguage,
+                    theAdditionalParams     =theAdditionalParams)
+            
+            aMustProcessWholeZipAsSingleFile = False
+            
+            someFileNames = unZipFile.namelist()
+            for aFullFileName in someFileNames:
+                
+                aBaseName = os.path.basename( aFullFileName)
+                if aBaseName:
+                    aBaseNameLower = aBaseName.lower()
+                    aBaseNamePostfix = os.path.splitext(  aBaseNameLower)[ 1]
+                    if not( aBaseNamePostfix == cZipFilePostfix.lower()):
+                        aMustProcessWholeZipAsSingleFile = True
+                    else:
+                        unContentData = unZipFile.read( aFullFileName)                            
+                        if unContentData:
+                            unZipBuffer      = StringIO( unContentData)
+                            someContenidos = self.fContenidosDeUploadedFile_NoNestedZips( 
+                                theParentExecutionRecord=unExecutionRecord, 
+                                theUploadedFile         =unZipBuffer, 
+                                theDefaultLanguage      =theDefaultLanguage,
+                                theAdditionalParams     =theAdditionalParams)
+                            if someContenidos:
+                                todosContenidos.extend( someContenidos)
+                
+            if aMustProcessWholeZipAsSingleFile:
+                someContenidos = self.fContenidosDeUploadedFile_NoNestedZips( 
+                    theParentExecutionRecord=unExecutionRecord, 
+                    theUploadedFile         =theUploadedFile, 
+                    theDefaultLanguage      =theDefaultLanguage,
+                    theAdditionalParams     =theAdditionalParams)
+                if someContenidos:
+                    todosContenidos.extend( someContenidos)
+                            
+            return todosContenidos
+             
+        finally:
+            unExecutionRecord and unExecutionRecord.pEndExecution()
+
+
+                
+                
+
+
+                         
+
+    
+    security.declarePrivate( 'fContenidosDeUploadedFile_NoNestedZips')    
+    def fContenidosDeUploadedFile_NoNestedZips( self,
+        theParentExecutionRecord =None, 
+        theUploadedFile         =None, 
+        theDefaultLanguage      ='',
+        theAdditionalParams     =None):
+                                  
+         
+        unExecutionRecord = self.fStartExecution( 'method',  'fContenidosDeUploadedFile_NoNestedZips', theParentExecutionRecord, False) 
 
         try:
             unosContenidos = [ ]
@@ -839,8 +918,6 @@ class TRAImportacion_Operaciones:
 
                 
                 
-
-
                 
             
                 
@@ -1911,7 +1988,7 @@ class TRAImportacion_Operaciones:
                     
                     unSimboloCadenaUnicode = u''
                     try:
-                        unSimboloCadenaUnicode = unSimboloCadena.decode( 'raw_unicode_escape')
+                        unSimboloCadenaUnicode = unSimboloCadena.decode( cRawUnicodeEscapeEncoding )
                     except UnicodeDecodeError:
                         unRecord[ 'symbol_error'] = 'gvSIGi18n ERROR: UnicodeDecodeError raw_unicode_escape on symbol in .properties'  
                         
@@ -1937,7 +2014,7 @@ class TRAImportacion_Operaciones:
                                 
                                 unaTraduccionUnicode = u''
                                 try:
-                                    unaTraduccionUnicode = unaCadenaTraducida.decode('raw_unicode_escape')
+                                    unaTraduccionUnicode = unaCadenaTraducida.decode( cRawUnicodeEscapeEncoding)
                                 except UnicodeDecodeError:
                                     unRecord[ 'translation_error'] = 'gvSIGi18n ERROR: UnicodeDecodeError raw_unicode_escape on translation in .properties'   
                                     
@@ -2223,7 +2300,7 @@ class TRAImportacion_Operaciones:
                     unImportedCharSet = theCursor[ 'charset']
                     if not unImportedCharSet:
                         unImportedCharSet = 'utf-8'
-                    unMsgidCharset = unImportedCharSet # 'raw_unicode_escape'
+                    unMsgidCharset = unImportedCharSet 
                     
                     unMsgidStringUnicode = u''
                     try:
@@ -2498,6 +2575,9 @@ class TRAImportacion_Operaciones:
         
   
         unExecutionRecord = self.fStartExecution( 'method',  'fImportarContenidosIntercambio', theParentExecutionRecord, False) 
+
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators  import ModelDDvlPloneTool_Mutators, cModificationKind_CreateSubElement, cModificationKind_Create, cModificationKind_ChangeValues
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fDateTimeNow
         
         try:
 
@@ -2968,7 +3048,10 @@ class TRAImportacion_Operaciones:
         
         """
         unExecutionRecord = self.fStartExecution( 'method',  'pImportarContenidosIntercambio', theParentExecutionRecord,  True, { 'log_what': 'details', 'log_when': True, }) 
-        
+
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow        
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fDateTimeNow
+
         try:
             unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
             unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
@@ -4452,6 +4535,8 @@ class TRAImportacion_Operaciones:
         theRolesCache               =None, 
         theParentExecutionRecord    =None):
         
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow, fDateTimeNow
+        
         unosMillisNow = fMillisecondsNow()
         if not ( theForceCommit or ( theCurrentChangesHolder[ 0] >= theIntervaloRefrescoEnNumeroEscrituras) or ( int(( unosMillisNow - theFechaUltimoInformeProgresoHolder[ 0].millis()) / 60000) >= theIntervaloRefrescoEnMinutos)):
             return self
@@ -5252,6 +5337,8 @@ class TRAImportacion_Operaciones:
     def fReutilizarImportacion( self , thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
         
         unExecutionRecord = self.fStartExecution( 'method',  'fReutilizarImportacion', theParentExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
+
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators  import ModelDDvlPloneTool_Mutators, cModificationKind_CreateSubElement, cModificationKind_Create, cModificationKind_ChangeValues
 
         try:
             

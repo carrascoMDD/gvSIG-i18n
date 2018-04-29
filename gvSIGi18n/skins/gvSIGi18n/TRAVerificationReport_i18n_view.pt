@@ -1,0 +1,846 @@
+<tal:block replace="nothing">
+# File: TRAVerificationReport_i18n_view.pt
+#
+# Copyright (c) 2008, 2009 by Conselleria de Infraestructuras y Transporte de la
+# Generalidad Valenciana
+#
+# GNU General Public License (GPL)
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+#
+# Authors: 
+# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana 
+# Model Driven Development sl  Valencia (Spain) www.ModelDD.org 
+# Antonio Carrasco Valero                       carrasco@ModelDD.org
+#
+#
+</tal:block>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en">
+<body>                     
+
+                             
+    <div metal:define-macro="tTRAVerificationReport_i18n" >
+        <tal:block tal:define="
+            pVerifyOrInitResult pVerificationResult | nothing;
+            pVerifyOrInitAction string:Verify">
+            <metal:block metal:use-macro="here/TRAVerificationReport_i18n_view/macros/tTRAVerificationOrInitializationReport_i18n" />   
+        </tal:block>
+    </div>   
+      
+    
+    
+    <div metal:define-macro="tTRAInicializationReport_i18n" >
+        <tal:block tal:define="
+            pVerifyOrInitResult pInicializationResult | nothing;
+            pVerifyOrInitAction string:Initialize">
+            <metal:block metal:use-macro="here/TRAVerificationReport_i18n_view/macros/tTRAVerificationOrInitializationReport_i18n" />   
+        </tal:block>
+    </div>   
+      
+    
+    
+       
+    
+    
+    
+    
+                             
+    <div metal:define-macro="tTRAVerificationOrInitializationReport_i18n" >
+        
+        <tal:block tal:define="
+            pVerifyOrInitResult      pVerifyOrInitResult | nothing;
+            pVerifyOrInitAction      pVerifyOrInitAction | string:Verify;
+            pVerifyOrInitActionTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_VerifyOrInitializeActionTitle_%s' % pVerifyOrInitAction,   pVerifyOrInitAction,)" >
+       
+            <h1>
+                <tal:block tal:condition="not: pVerifyOrInitResult" >
+                    <span tal:content="pVerifyOrInitActionTitle" />
+                    :
+                    <font color="red">
+                        <strong  tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Error_NoResult_msgid',   'No result obtained -' )" />
+                    </font>
+                </tal:block>
+                <tal:block tal:condition="pVerifyOrInitResult" >
+                    <tal:block tal:define="
+                        pVerifyOrInitActionTitle python: '%s %s' % ( pVerifyOrInitActionTitle, pVerifyOrInitResult.get( 'element_path', ''));
+                        pOverallSuccess python: pVerifyOrInitResult.get( 'success', False)">
+                        <span tal:content="pVerifyOrInitActionTitle" />
+                        :
+                        <font tal:condition="pOverallSuccess"  color="green">
+                           <strong tal:content="python: '%s %s' % ( here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Overall_msgid',   'Overall-' ), here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Success_msgid',   'Success-' ),)" />
+                        </font>
+                        <font tal:condition="not: pOverallSuccess"  color="red">
+                           <strong tal:content="python: '%s %s' % ( here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Overall_msgid',   'Overall-' ), here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Failure_msgid',   'Failure-' ), )" />
+                       </font>
+                    </tal:block>
+                </tal:block>    
+            </h1>
+            
+            <br/>
+
+            <tal:block tal:condition="pVerifyOrInitResult" >
+
+                <tal:block tal:define="pOverallSuccess python: pVerifyOrInitResult.get( 'success', False)">
+                
+                    <p>
+                        <strong tal:content="python:  here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_VerifyOrInitialize_Element_MetaType_Label',   'Element Meta Type-' )" />
+                        <span tal:content="python: pVerifyOrInitResult.get( 'element_meta_type', '')" />
+                    </p>
+                    <p>
+                        <strong tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_VerifyOrInitialize_Element_Title_Label',   'Element Title-' )" />
+                        <span tal:content="python: pVerifyOrInitResult.get( 'element_title', '')" />
+                    </p>
+                    <p>
+                        <strong tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_VerifyOrInitialize_Element_Path_Label',   'Element Path-' )" />
+                        <span tal:content="python: pVerifyOrInitResult.get( 'element_path', '')" />
+                    </p>
+                    
+
+                    
+                    <p tal:define="pCondition python: pVerifyOrInitResult.get( 'condition', '')" 
+                        tal:condition="pCondition">
+                        <strong tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_VerifyOrInitialize_Condition_Label',   'Condition-' )" />
+                        &ensp;
+                        <font color="red" tal:content="python: pCondition" />
+                    </p>
+                    <tal:block tal:define="pException python: pVerifyOrInitResult.get( 'exception', '')" 
+                        tal:condition="pException">
+                        <p>
+                            <strong tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_VerifyOrInitialize_Exception_Label',   'Exception-' )" />
+                        </p>
+                        <textarea style="font-size: 8pt"  cols="80"  rows="#"
+                            tal:define="pExceptionLines python: pException.splitlines()" 
+                            tal:attributes="rows python: max( 2, min( len( pExceptionLines), 20))">
+<tal:block tal:repeat="pExceptionLine pExceptionLines" tal:content="pExceptionLine"/>
+</textarea>
+ 
+                    </tal:block>
+                    
+                    
+
+                    <br/>
+                        
+                    <tal:block tal:define="
+                        pVerifyOrInitResult python: pVerifyOrInitResult.get( 'framework_ModelDDvlPlone', None)" >
+                        <metal:block metal:use-macro="here/MDDVerificationReport_i18n_view/macros/tMDDVerificationOrInitializationReport_i18n" />
+                    </tal:block>
+                                        
+                    <br/>
+                        
+                    <tal:block tal:define="
+                        pVerifyOrInitResult python: pVerifyOrInitResult.get( 'application_gvSIGi18n_externalMethods', None)" >
+                        <metal:block metal:use-macro="here/MDDVerificationReport_i18n_view/macros/tMDDVerificationOrInitializationReport_i18n" />
+                    </tal:block>     
+                      
+                        
+                    <tal:block tal:define="pVerifyOrInitResult_application_gvSIGi18n python: pVerifyOrInitResult.get( 'application_gvSIGi18n', None)" >
+                    
+                        <tal:block tal:define="pVerifyOrInitResult_Collections python: pVerifyOrInitResult_application_gvSIGi18n.get( 'colecciones', None)" >
+                            <metal:block metal:use-macro="here/TRAVerificationReport_i18n_view/macros/tTRAVerificationOrInitializationReport_Collections_i18n" />
+                        </tal:block>     
+
+                        <tal:block tal:define="pVerifyOrInitResult_Catalogs python: pVerifyOrInitResult_application_gvSIGi18n.get( 'catalogs_cadenas', None)" >
+                            <metal:block metal:use-macro="here/TRAVerificationReport_i18n_view/macros/tTRAVerificationOrInitializationReport_CatalogsCadenas_i18n" />
+                        </tal:block>     
+
+                        <tal:block tal:define="pVerifyOrInitResults_CatalogsTodosIdiomas python: pVerifyOrInitResult_application_gvSIGi18n.get( 'catalogs_idiomas', None)" >
+                            <metal:block metal:use-macro="here/TRAVerificationReport_i18n_view/macros/tTRAVerificationOrInitializationReport_CatalogsTodosIdiomas_i18n" />
+                        </tal:block> 
+                        
+
+                        <tal:block tal:define="pVerifyOrInitResults_UserGroupsCatalogo python: pVerifyOrInitResult_application_gvSIGi18n.get( 'user_groups_catalogo', None)" >
+                            <metal:block metal:use-macro="here/TRAVerificationReport_i18n_view/macros/tTRAVerificationOrInitializationReport_UserGroupsCatalogo_i18n" />
+                        </tal:block> 
+                        
+                    </tal:block>     
+                      
+                </tal:block>
+            </tal:block>
+        </tal:block>
+        <br/>
+                      
+    </div>
+
+    
+    
+    
+    
+    
+   
+    <div metal:define-macro="tTRAVerificationOrInitializationReport_Collections_i18n" >
+        
+        <tal:block tal:define="
+            pVerifyOrInitResult_Collections         pVerifyOrInitResult_Collections | nothing;
+            pVerifyOrInitAction                     pVerifyOrInitAction | string:Verify;
+            pIsInitialization                       python: pVerifyOrInitAction == 'Initialize';
+            pVerifyOrInitActionTitle                python: '%s %s' % ( here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_VerifyOrInitializeActionTitle_%s' % pVerifyOrInitAction,   pVerifyOrInitAction,), here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_VerifyOrInitializeSectionTitle_Collections_msgid', 'Collections',),)" >
+       
+            <h3>
+                <span tal:content="pVerifyOrInitActionTitle" />
+                &nbsp;
+                <span tal:condition="not: pVerifyOrInitResult_Collections" >
+                    <font  color="red">
+                        <strong  tal:content="python: '%s %s' % ( pVerifyOrInitActionTitle, here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_Error_NoResult_msgid',   'No result obtained -' ),)" />
+                    </font>
+                </span>
+                <tal:block tal:condition="pVerifyOrInitResult_Collections" >
+                    <span tal:define="pOverallSuccess python: pVerifyOrInitResult_Collections.get( 'success', False)" >                        
+                        <font tal:condition="pOverallSuccess"  color="green">
+                           <strong tal:content="python: here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_Success_msgid',   'Success-' )" />
+                        </font>
+                        <font tal:condition="not: pOverallSuccess"  color="red">
+                           <strong tal:content="python:  here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_Failure_msgid',   'Failure-' )" />
+                       </font>
+                    </span>
+                </tal:block>    
+            </h3>
+
+            <tal:block tal:condition="pVerifyOrInitResult_Collections" >
+                <font size="1">
+                    <strong tal:content="python:  here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_VerifyOrInitialize_CollectionContainer_Type_Label',   'Container Type-' )" />
+                    &nbsp;
+                    <span tal:content="python: pVerifyOrInitResult_Collections.get( 'container_type', '')" />
+                </font>
+                &emsp;
+                <font size="1">
+                    <strong tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_VerifyOrInitialize_CollectionContainer_Title_Label',   'Container Title-' )" />
+                    &nbsp;
+                    <span tal:content="python: pVerifyOrInitResult_Collections.get( 'container_title', '')" />
+                </font>
+                <br/>
+                <font size="1">
+                    <strong tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_VerifyOrInitialize_CollectionContainer_Path_Label',   'Container Path-' )" />
+                    &nbsp;
+                    <span tal:content="python: pVerifyOrInitResult_Collections.get( 'container_path', '')" />
+                </font>
+                <br/>
+                    
+                        
+                <tal:block tal:define="pCollections python:  pVerifyOrInitResult_Collections.get( 'collections', [])" >
+                    <tal:block tal:condition="not: pCollections">
+                        <p>
+                            <strong tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Verification_NoCollections_msgid',   'No Collections-' )" />
+                        </p>
+                    </tal:block>
+                    <tal:block tal:condition="pCollections">
+                        <p>
+                            <strong tal:content="python: '%d %s' % ( len( pCollections), here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Verification_CollectionsNumber_msgid',   'Collections-' ))" />
+                        </p>
+                        <table id="id_VerificationOrInitializationReport_Collections_Table" class="listing" summary="#"  tal:attributes="summary string:Verification or Initialization Report Collections">
+                            <thead>
+                                <tr>
+                                    <th class="sortable" tal:content="python:here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_Success_msgid',   'Success-' )" />
+                                    <th class="sortable" tal:content="python:here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_Status_msgid',   'Status-' )" />
+                                    <th tal:condition="pIsInitialization" class="sortable" tal:content="python:here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_Committed_msgid',   'Committed-' )" />
+                                    <th class="sortable" tal:content="python:here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Verification_Collection_Type_msgid',   'Type-' )" />
+                                    <th class="sortable" tal:content="python:here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Verification_Collection_Id_msgid',     'Id-' )" />
+                                    <th class="sortable" tal:content="python:here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Verification_Collection_Title_msgid',  'Title-' )" />
+                                    <th class="sortable" tal:content="python:here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Verification_Collection_AcquireRoleAssignments_msgid',  'Acquire Roles-' )" />
+                                    <th class="sortable" tal:content="python:here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Verification_Collection_AcquireRoleAssignmentsSuccess_msgid',  'Acquire Roles Success-' )" />
+                                    <th class="sortable" tal:content="python:here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Verification_Collection_AcquireRoleAssignmentsStatus_msgid',  'Acquire Roles Status-' )" />
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr tal:repeat="pCollection pCollections" >
+                                    <td tal:define="pCollectionSuccess python: pCollection.get( 'success', False)">
+                                        <font tal:condition="pCollectionSuccess" color="green">
+                                            <strong tal:content="python: here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_True',   'True-' )" />
+                                        </font>
+                                        <font tal:condition="not: pCollectionSuccess" color="red">
+                                            <strong tal:content="python: here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_False',  'False-' )" />
+                                        </font>
+                                    </td>
+                                    <td tal:content="python: pCollection.get( 'status', '')" />
+                                    <td tal:condition="pIsInitialization"  tal:content="python: pCollection.get( 'committed', '')" />
+                                    <td tal:content="python: pCollection.get( 'tipo_coleccion', '')" />
+                                    <td tal:content="python: pCollection.get( 'id_coleccion', '')" />
+                                    <td tal:content="python: pCollection.get( 'titulo_coleccion', '')" />
+                                    <td tal:content="python: pCollection.get( 'acquire_role_assignments', True)" />
+                                    <td tal:content="python: pCollection.get( 'acquire_role_assignments_success', False)" />
+                                    <td tal:content="python: pCollection.get( 'acquire_role_assignments_status', '')" />                                    
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br/>
+                        <br/>
+                    </tal:block>
+                </tal:block>                            
+            </tal:block>
+        </tal:block>
+        <br/>
+    </div>
+    
+    
+        
+    
+    
+
+   
+    <div metal:define-macro="tTRAVerificationOrInitializationReport_CatalogsCadenas_i18n" >
+        
+        <tal:block tal:define="
+            pVerifyOrInitResult_Catalogs            pVerifyOrInitResult_Catalogs | nothing;
+            pVerifyOrInitAction                     pVerifyOrInitAction | string:Verify;
+            pIsInitialization                       python: pVerifyOrInitAction == 'Initialize';
+            pVerifyOrInitActionTitle                python: '%s %s' % ( here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_VerifyOrInitializeActionTitle_%s' % pVerifyOrInitAction,   pVerifyOrInitAction,), here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_VerifyOrInitializeSectionTitle_CatalogsCadenas_msgid', 'Catalogs for Strings-',),)" >
+       
+            <h3>
+                <span tal:content="pVerifyOrInitActionTitle" />
+                &nbsp;
+                <span tal:condition="not: pVerifyOrInitResult_Catalogs" >
+                    <font  color="red">
+                        <strong  tal:content="python: '%s %s' % ( pVerifyOrInitActionTitle, here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_Error_NoResult_msgid',   'No result obtained -' ),)" />
+                    </font>
+                </span>
+                <tal:block tal:condition="pVerifyOrInitResult_Catalogs" >
+                    <tal:block tal:define="
+                        pOverallSuccess python: pVerifyOrInitResult_Catalogs.get( 'success', False)" >  
+                        <font tal:condition="pOverallSuccess"  color="green">
+                           <strong tal:content="python: here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_Success_msgid',   'Success-' )" />
+                        </font>
+                        <font tal:condition="not: pOverallSuccess" color="red">
+                           <strong tal:content="python:  here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_Failure_msgid',   'Failure-' )" />
+                       </font>
+                    </tal:block>
+                </tal:block>    
+            </h3>
+
+            <tal:block tal:condition="pVerifyOrInitResult_Catalogs" >
+                <span tal:condition="pIsInitialization">
+                    <font size="1">
+                        <strong tal:content="python: here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_Committed_msgid',   'Committed-' )" />
+                        <span tal:content="python: pVerifyOrInitResult_Catalogs.get( 'committed', False)" />
+                    </font>
+                    <br/>
+                </span>
+                <font size="1">
+                    <strong tal:content="python:  here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_VerifyOrInitialize_CollectionContainer_Type_Label',   'Container Type-' )" />
+                    &nbsp;
+                    <span tal:content="python: pVerifyOrInitResult_Catalogs.get( 'container_type', '')" />
+                </font>
+                &emsp;
+                <font size="1">
+                    <strong tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_VerifyOrInitialize_CollectionContainer_Title_Label',   'Container Title-' )" />
+                    &nbsp;
+                    <span tal:content="python: pVerifyOrInitResult_Catalogs.get( 'container_title', '')" />
+                </font>
+                <br/>
+                <font size="1">
+                    <strong tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_VerifyOrInitialize_CollectionContainer_Path_Label',   'Container Path-' )" />
+                    &nbsp;
+                    <span tal:content="python: pVerifyOrInitResult_Catalogs.get( 'container_path', '')" />
+                </font>
+                <br/>
+                
+                <tal:block tal:define="pCatalogs python:  pVerifyOrInitResult_Catalogs.get( 'catalogs', [])" >
+                    <tal:block tal:condition="not: pCatalogs">
+                        <p>
+                            <strong tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Verification_NoCatalogs_msgid',   'No Catalogs-' )" />
+                        </p>
+                    </tal:block>
+                    <tal:block tal:condition="pCatalogs">
+                        <p>
+                            <strong tal:content="python: '%d %s' % ( len( pCatalogs), here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Verification_CatalogsNumber_msgid',   'Catalogs-' ))" />
+                        </p>
+                        <tal:block tal:repeat="pCatalogReport pCatalogs" >
+                        
+                            <metal:block metal:use-macro="here/TRAVerificationReport_i18n_view/macros/tTRAVerificationOrInitializationReport_Catalog_i18n" />
+                        </tal:block>
+                            
+                    </tal:block>
+                </tal:block>                            
+            </tal:block>
+        </tal:block>
+        <br/>
+        <br/>
+    </div>
+    
+        
+    
+    
+    
+
+   
+    <div metal:define-macro="tTRAVerificationOrInitializationReport_CatalogsTodosIdiomas_i18n" >
+        
+        <tal:block tal:define="
+            pVerifyOrInitResults_CatalogsTodosIdiomas            pVerifyOrInitResults_CatalogsTodosIdiomas | nothing;
+            pVerifyOrInitAction                     pVerifyOrInitAction | string:Verify;
+            pIsInitialization                       python: pVerifyOrInitAction == 'Initialize';
+            pVerifyOrInitActionTitle                python: '%s %s' % ( here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_VerifyOrInitializeActionTitle_%s' % pVerifyOrInitAction,   pVerifyOrInitAction,), here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_VerifyOrInitializeSectionTitle_CatalogsIdiomas_msgid', 'Catalogs for Languages',),)" >
+            
+            <br/>
+            <h3>
+                <span tal:content="pVerifyOrInitActionTitle" />
+                &nbsp;
+                <span tal:condition="not: pVerifyOrInitResults_CatalogsTodosIdiomas" >
+                    <font color="red">
+                        <strong tal:content="python: here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_Verification_NoCatalogsForLanguages_msgid',   'No Catalogs for Languages-' )" />
+                    </font>
+                </span>
+                <span tal:condition="pVerifyOrInitResults_CatalogsTodosIdiomas" >
+                    :
+                    <strong tal:content="python: '%d %s' % ( len( pVerifyOrInitResults_CatalogsTodosIdiomas), here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Verification_LanguagesNumber_msgid',   'Languages-' ))" />
+                    &nbsp;
+                    <tal:block tal:define="pCatalogsTodosIdiomasSuccess python: len( pVerifyOrInitResults_CatalogsTodosIdiomas) == len( [ unCatalogResultIdioma for unCatalogResultIdioma in pVerifyOrInitResults_CatalogsTodosIdiomas if unCatalogResultIdioma.get( 'success', False)] )" >
+                         <font tal:condition="pCatalogsTodosIdiomasSuccess"  color="green">
+                           <strong tal:content="python: here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_Success_msgid',   'Success-' )" />
+                        </font>
+                        <font tal:condition="not: pCatalogsTodosIdiomasSuccess" color="red">
+                           <strong tal:content="python:  here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_Failure_msgid',   'Failure-' )" />
+                       </font>
+                    </tal:block>
+                </span>    
+            </h3>
+
+            <tal:block tal:repeat="pVerifyOrInitResult_Catalogs pVerifyOrInitResults_CatalogsTodosIdiomas" >
+                <metal:block metal:use-macro="here/TRAVerificationReport_i18n_view/macros/tTRAVerificationOrInitializationReport_CatalogsIdioma_i18n" />
+            </tal:block>
+        </tal:block>
+        <br/>
+    </div>
+    
+    
+    
+    
+    
+    
+ 
+   
+    <div metal:define-macro="tTRAVerificationOrInitializationReport_CatalogsIdioma_i18n" >
+        
+        <tal:block tal:define="
+            pVerifyOrInitResult_Catalogs            pVerifyOrInitResult_Catalogs | nothing;
+            pVerifyOrInitAction                     pVerifyOrInitAction | string:Verify;
+            pIsInitialization                       python: pVerifyOrInitAction == 'Initialize';
+            pVerifyOrInitActionTitle                python: '%s %s' % ( here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_VerifyOrInitializeActionTitle_%s' % pVerifyOrInitAction,   pVerifyOrInitAction,), here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_VerifyOrInitializeSectionTitle_CatalogsIdiomas_msgid', 'Catalogs for Language',),)" >
+       
+            <br/>
+            <h4>
+                <strong tal:content="pVerifyOrInitActionTitle" />
+                &nbsp;
+                <strong tal:condition="not: pVerifyOrInitResult_Catalogs" >
+                    <font color="red">
+                        <strong  tal:content="python: '%s %s' % ( pVerifyOrInitActionTitle, here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_Error_NoResult_msgid',   'No result obtained -' ),)" />
+                    </font>
+                </strong>
+                &nbsp;
+                <tal:block tal:condition="pVerifyOrInitResult_Catalogs" >
+                    <tal:block tal:define="
+                        pCatalogsTitle python: pVerifyOrInitResult_Catalogs.get( 'title', '');
+                        pOverallSuccess python: pVerifyOrInitResult_Catalogs.get( 'success', False)" >  
+                        <strong tal:condition="pCatalogsTitle" tal:content="pCatalogsTitle" />
+                        &nbsp;
+                        <font tal:condition="pOverallSuccess"  color="green">
+                           <strong tal:content="python: here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_Success_msgid',   'Success-' )" />
+                        </font>
+                        <font tal:condition="not: pOverallSuccess" color="red">
+                           <strong tal:content="python:  here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_Failure_msgid',   'Failure-' )" />
+                       </font>
+                    </tal:block>
+                </tal:block>    
+            </h4>
+
+            <tal:block tal:condition="pVerifyOrInitResult_Catalogs" >
+                <span tal:condition="pIsInitialization">
+                    <font size="1">
+                        <strong tal:content="python: here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_Committed_msgid',   'Committed-' )" />
+                        <span tal:content="python: pVerifyOrInitResult_Catalogs.get( 'committed', False)" />
+                    </font>
+                    <br/>
+                </span>
+                <font size="1">
+                    <strong tal:content="python:  here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_VerifyOrInitialize_CollectionContainer_Type_Label',   'Container Type-' )" />
+                    &nbsp;
+                    <span tal:content="python: pVerifyOrInitResult_Catalogs.get( 'container_type', '')" />
+                </font>
+                &emsp;
+                <font size="1">
+                    <strong tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_VerifyOrInitialize_CollectionContainer_Title_Label',   'Container Title-' )" />
+                    &nbsp;
+                    <span tal:content="python: pVerifyOrInitResult_Catalogs.get( 'container_title', '')" />
+                </font>
+                <br/>
+                <font size="1">
+                    <strong tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_VerifyOrInitialize_CollectionContainer_Path_Label',   'Container Path-' )" />
+                    &nbsp;
+                    <span tal:content="python: pVerifyOrInitResult_Catalogs.get( 'container_path', '')" />
+                </font>
+                <br/>
+                
+                <tal:block tal:define="pCatalogs python:  pVerifyOrInitResult_Catalogs.get( 'catalogs', [])" >
+                    <tal:block tal:condition="not: pCatalogs">
+                        <p>
+                            <strong tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Verification_NoCatalogs_msgid',   'No Catalogs-' )" />
+                        </p>
+                    </tal:block>
+                    <tal:block tal:condition="pCatalogs">
+                        <p>
+                            <strong tal:content="python: '%d %s' % ( len( pCatalogs), here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Verification_CatalogsNumber_msgid',   'Catalogs-' ))" />
+                        </p>
+                        <tal:block tal:repeat="pCatalogReport pCatalogs" >
+                        
+                            <metal:block metal:use-macro="here/TRAVerificationReport_i18n_view/macros/tTRAVerificationOrInitializationReport_Catalog_i18n" />
+                        </tal:block>
+                            
+                    </tal:block>
+                </tal:block>                            
+            </tal:block>
+        </tal:block>
+        <br/>
+    </div>
+       
+
+   
+    <div metal:define-macro="tTRAVerificationOrInitializationReport_Catalog_i18n" >
+        
+        <tal:block tal:define="pCatalogReport            pCatalogReport | nothing" 
+            tal:condition="pCatalogReport">
+            <tal:block tal:define="
+                pCatalogName python: pCatalogReport.get( 'catalog_name', '') or 'unknown name';
+                pCatalogSuccess python: pCatalogReport.get( 'success', False)" >
+                <dl class="collapsible inline collapsedInlineCollapsible expandedInlineCollapsible" id="#" tal:attributes="id python: 'cid_CatalogCollapsibleSectionTitle_Catalog_%s' % pCatalogName">            
+                    <dt class="collapsibleHeader">
+                        <span tal:content="pCatalogName" />
+                        &nbsp;
+                        <font color="green"  tal:condition="pCatalogSuccess" tal:content="python:  here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_Success_msgid',   'Success-',)" />
+                        <font color="red"    tal:condition="not: pCatalogSuccess" tal:content="python: here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_Failure_msgid',   'Failure-' )" />
+                    </dt>
+                    <dd class="collapsibleContent">
+                        <p tal:define="pStatus python: pCatalogReport.get( 'status', '')" 
+                            tal:condition="pStatus">
+                            <strong tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_VerifyOrInitialize_Status_Label',   'Status-' )" />
+                            &ensp;
+                            <span tal:content="python: pStatus" />
+                        </p>
+                        <p tal:define="pCatalogRefreshed python: pCatalogReport.get( 'catalog_refreshed', '')" >
+                            <strong tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_VerifyOrInitialize_CatalogRefreshed_Label',   'Catalog Refreshed-' )" />
+                            &ensp;
+                            <font tal:condition="pCatalogRefreshed" color="red" tal:content="python: pCatalogRefreshed" />
+                            <font tal:condition="not: pCatalogRefreshed" tal:content="python: pCatalogRefreshed" />
+                        </p>
+                        <tal:block tal:define="pException python: pCatalogReport.get( 'exception', '')" 
+                            tal:condition="pException">
+                            <p>
+                                <strong tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_VerifyOrInitialize_Exception_Label',   'Exception-' )" />
+                            </p>
+                            <textarea style="font-size: 8pt"  cols="80"  rows="#"
+                                tal:define="pExceptionLines python: pException.splitlines()" 
+                                tal:attributes="rows python: max( 2, min( len( pExceptionLines), 20))">
+<tal:block tal:repeat="pExceptionLine pExceptionLines" tal:content="pExceptionLine"/>
+</textarea>
+                            <br/>  
+                        </tal:block>
+                        
+                        
+                        
+                        
+                        
+                        <tal:block tal:define="pIndexes python: pCatalogReport.get( 'indexes', '')">
+                            <span>
+                                <strong tal:content="python: '%d %s' % ( len( pIndexes), here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_VerifyOrInitialize_Indexes_Label',   'Indexes-' ))" />
+                            </span>
+                            <br/>
+                            <table id="#" class="listing" summary="#"  
+                                tal:attributes="id python: 'id_VerificationOrInitializationReport_Catalog_%s_Indexes_Table' % pCatalogName;
+                                                summary python: 'Verification or Initialization Report for %s ZCatalog indexes' % pCatalogName">
+                                <thead>
+                                    <tr>
+                                        <th class="sortable" tal:content="python:here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_Success_msgid',   'Success-' )" />
+                                        <th class="sortable" tal:content="python:here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_Status_msgid',   'Status-' )" />
+                                        <th class="sortable" tal:content="python:here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Verification_Index_CurrentType_msgid',   'Current Type-' )" />
+                                        <th class="sortable" tal:content="python:here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Verification_Index_Name_msgid',     'Name-' )" />
+                                        <th class="sortable" tal:content="python:here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Verification_Index_Type_msgid',     'Type-' )" />
+                                        <th class="sortable" tal:content="python:here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Verification_Index_Extras_msgid',   'Extras-' )" />
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr tal:repeat="pIndex pIndexes" >
+                                        <td tal:define="pIndexSuccess python: pIndex.get( 'success', False)">
+                                            <font tal:condition="pIndexSuccess" color="green">
+                                                <strong tal:content="python: here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_True',   'True-' )" />
+                                            </font>
+                                            <font tal:condition="not: pIndexSuccess" color="red">
+                                                <strong tal:content="python: here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_False',  'False-' )" />
+                                            </font>
+                                        </td>
+                                        <td tal:content="python: pIndex.get( 'status', '')" />
+                                        <td tal:content="python: pIndex.get( 'current_index_type', '')" />
+                                        <td tal:content="python: pIndex.get( 'index_name', '')" />
+                                        <td tal:content="python: pIndex.get( 'index_type', '')" />
+                                        <td tal:content="python: pIndex.get( 'index_extras', '')" />
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br/>
+                            <br/>
+                        </tal:block>
+                            
+                        
+                        
+                        <tal:block tal:define="pSchemas python: pCatalogReport.get( 'schemas', '')">
+                            <span>
+                                <strong tal:content="python: '%d %s' % ( len( pSchemas), here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_VerifyOrInitialize_Schemas_Label',   'Schemas-' ))" />
+                            </span>
+                            <br/>
+                            <table id="#" class="listing" summary="#"  
+                                tal:attributes="id python: 'id_VerificationOrInitializationReport_Catalog_%s_SchemaFields_Table' % pCatalogName;
+                                                summary python: 'Verification or Initialization Report for %s ZCatalog schema fields' % pCatalogName">
+                                <thead>
+                                    <tr>
+                                        <th class="sortable" tal:content="python:here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_Success_msgid',   'Success-' )" />
+                                        <th class="sortable" tal:content="python:here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_Status_msgid',   'Status-' )" />
+                                        <th class="sortable" tal:content="python:here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Verification_Schema_FieldName_msgid',   'Field Name-' )" />
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr tal:repeat="pSchema pSchemas" >
+                                        <td tal:define="pSchemaSuccess python: pSchema.get( 'success', False)">
+                                            <font tal:condition="pSchemaSuccess" color="green">
+                                                <strong tal:content="python: here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_True',   'True-' )" />
+                                            </font>
+                                            <font tal:condition="not: pSchemaSuccess" color="red">
+                                                <strong tal:content="python: here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_False',  'False-' )" />
+                                            </font>
+                                        </td>
+                                        <td tal:content="python: pSchema.get( 'status', '')" />
+                                        <td tal:content="python: pSchema.get( 'schema_field_name', '')" />                                        
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br/>
+                            <br/>
+                        </tal:block>
+                        
+                            
+                        
+                        
+                        <tal:block tal:define="pLexicons python: pCatalogReport.get( 'lexicons', '')">
+                            <span>
+                                <strong tal:content="python: '%d %s' % ( len( pLexicons), here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_VerifyOrInitialize_Lexicons_Label',   'Lexicons-' ))" />
+                            </span>
+                            <br/>
+                            <table id="#" class="listing" summary="#"  
+                                tal:attributes="id python: 'id_VerificationOrInitializationReport_Catalog_%s_LexiconFields_Table' % pCatalogName;
+                                                summary python: 'Verification or Initialization Report for %s ZCatalog schema fields' % pCatalogName">
+                                <thead>
+                                    <tr>
+                                        <th class="sortable" tal:content="python:here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_Success_msgid',   'Success-' )" />
+                                        <th class="sortable" tal:content="python:here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_Status_msgid',   'Status-' )" />
+                                        <th class="sortable" tal:content="python:here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Verification_Lexicon_Name_msgid',   'Name-' )" />
+                                        <th class="sortable" tal:content="python:here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Verification_Lexicon_Pipeline_msgid',   'Pipeline-' )" />
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr tal:repeat="pLexicon pLexicons" >
+                                        <td tal:define="pLexiconSuccess python: pLexicon.get( 'success', False)">
+                                            <font tal:condition="pLexiconSuccess" color="green">
+                                                <strong tal:content="python: here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_True',   'True-' )" />
+                                            </font>
+                                            <font tal:condition="not: pLexiconSuccess" color="red">
+                                                <strong tal:content="python: here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_False',  'False-' )" />
+                                            </font>
+                                        </td>
+                                        <td tal:content="python: pLexicon.get( 'status', '')" />
+                                        <td tal:content="python: pLexicon.get( 'lexicon_name', '')" />                                        
+                                        <td tal:content="python: pLexicon.get( 'pipeline', '')" />                                        
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br/>
+                            <br/>
+                        </tal:block>
+                        
+                                                
+                     </dd>
+                </dl>
+                &nbsp;
+            </tal:block>    
+        </tal:block>    
+       
+    </div>
+    
+        
+
+    
+   
+    <div metal:define-macro="tTRAVerificationOrInitializationReport_UserGroupsCatalogo_i18n" >
+        
+        <tal:block tal:define="
+            pVerifyOrInitResults_UserGroupsCatalogo         pVerifyOrInitResults_UserGroupsCatalogo | nothing;
+            pVerifyOrInitAction                     pVerifyOrInitAction | string:Verify;
+            pIsInitialization                       python: pVerifyOrInitAction == 'Initialize';
+            pVerifyOrInitActionTitle                python: '%s %s' % ( here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_VerifyOrInitializeActionTitle_%s' % pVerifyOrInitAction,   pVerifyOrInitAction,), here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_VerifyOrInitializeSectionTitle_UserGroups_msgid', 'User Groups',),)" >
+       
+            <br/>
+            <h3>
+                <span tal:content="pVerifyOrInitActionTitle" />
+                &nbsp;
+                <span tal:condition="not: pVerifyOrInitResults_UserGroupsCatalogo" >
+                    <font  color="red">
+                        <strong  tal:content="python: '%s %s' % ( pVerifyOrInitActionTitle, here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_Error_NoResult_msgid',   'No result obtained -' ),)" />
+                    </font>
+                </span>
+                <tal:block tal:condition="pVerifyOrInitResults_UserGroupsCatalogo" >
+                    <span tal:define="pOverallSuccess python: pVerifyOrInitResults_UserGroupsCatalogo.get( 'success', False)" >                        
+                        <font tal:condition="pOverallSuccess"  color="green">
+                           <strong tal:content="python: here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_Success_msgid',   'Success-' )" />
+                        </font>
+                        <font tal:condition="not: pOverallSuccess"  color="red">
+                           <strong tal:content="python:  here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_Failure_msgid',   'Failure-' )" />
+                       </font>
+                    </span>
+                </tal:block>    
+            </h3>
+            
+
+            <tal:block tal:condition="pVerifyOrInitResults_UserGroupsCatalogo" >
+            
+                <p tal:define="pStatus python: pVerifyOrInitResults_UserGroupsCatalogo.get( 'status', '')" 
+                    tal:condition="pStatus">
+                    <strong tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_VerifyOrInitialize_Status_Label',   'Status-' )" />
+                    &ensp;
+                    <span tal:content="python: pStatus" />
+                </p>
+                <p tal:define="pStatus python: pVerifyOrInitResults_UserGroupsCatalogo.get( 'condition', '')" 
+                    tal:condition="pStatus">
+                    <strong tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_VerifyOrInitialize_Condition_Label',   'Condition-' )" />
+                    &ensp;
+                    <span tal:content="python: pStatus" />
+                </p>
+                <tal:block tal:define="pException python: pVerifyOrInitResults_UserGroupsCatalogo.get( 'exception', '')" 
+                    tal:condition="pException">
+                    <p>
+                        <strong tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_VerifyOrInitialize_Exception_Label',   'Exception-' )" />
+                    </p>
+                    <textarea style="font-size: 8pt"  cols="80"  rows="#"
+                        tal:define="pExceptionLines python: pException.splitlines()" 
+                        tal:attributes="rows python: max( 2, min( len( pExceptionLines), 20))">
+<tal:block tal:repeat="pExceptionLine pExceptionLines" tal:content="pExceptionLine"/>
+</textarea>
+                    <br/>  
+                </tal:block>
+                
+            
+                <span tal:condition="pIsInitialization">
+                    <font size="1">
+                        <strong tal:content="python: here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_Committed_msgid',   'Committed-' )" />
+                        <span tal:content="python: pVerifyOrInitResults_UserGroupsCatalogo.get( 'committed', False)" />
+                    </font>
+                    <br/>
+                </span>
+                <br/>
+                    
+                        
+                <tal:block tal:define="pUserGroups python:  pVerifyOrInitResults_UserGroupsCatalogo.get( 'groups', [])" >
+                    <tal:block tal:condition="not: pUserGroups">
+                        <p>
+                            <strong tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Verification_NoUserGroups_msgid',   'No User Groups-' )" />
+                        </p>
+                    </tal:block>
+                    <tal:block tal:condition="pUserGroups">
+                        <p>
+                            <strong tal:content="python: '%d %s' % ( len( pUserGroups), here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Verification_UserGroupsNumber_msgid',   'User Groups-' ))" />
+                        </p>
+                        
+                        <tal:block tal:repeat="pUserGroupReport pUserGroups" >
+                        
+                            <tal:block tal:define="
+                                pUserGroupName python: pUserGroupReport.get( 'name', '') or 'unknown name';
+                                pUserGroupSuccess python: pUserGroupReport.get( 'success', False)" >
+                                <dl class="collapsible inline collapsedInlineCollapsible expandedInlineCollapsible" id="#" tal:attributes="id python: 'cid_CatalogCollapsibleSectionTitle_UserGroup_%s' % pUserGroupName">            
+                                    <dt class="collapsibleHeader">
+                                        <span tal:content="pUserGroupName" />
+                                        &nbsp;
+                                        <font color="green"  tal:condition="pUserGroupSuccess" tal:content="python:  here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_Success_msgid',   'Success-',)" />
+                                        <font color="red"    tal:condition="not: pUserGroupSuccess" tal:content="python: here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_Failure_msgid',   'Failure-' )" />
+                                    </dt>
+                                    <dd class="collapsibleContent">
+                                        <p tal:define="pStatus python: pUserGroupReport.get( 'status', '')" 
+                                            tal:condition="pStatus">
+                                            <strong tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_VerifyOrInitialize_Status_Label',   'Status-' )" />
+                                            &ensp;
+                                            <span tal:content="python: pStatus" />
+                                        </p>
+                                        <p tal:define="pCondition python: pUserGroupReport.get( 'condition', '')" 
+                                            tal:condition="pCondition">
+                                            <strong tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_VerifyOrInitialize_Condition_Label',   'Condition-' )" />
+                                            &ensp;
+                                            <span tal:content="python: pCondition" />
+                                        </p>
+                        
+                                        <table id="#" class="listing" summary="#"  
+                                            tal:define="pUserGroupRoles python: pUserGroupReport.get( 'roles', [])" 
+                                            tal:attributes="
+                                                id python: 'id_VerificationOrInitializationReport_UserGroup_Roles_%s_Table' % pUserGroupName;
+                                                summary python: 'Verification or Initialization Report UserGroup Roles %s' % pUserGroupName">
+                                            <thead>
+                                                <tr>
+                                                    <th class="sortable" tal:content="python:here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_Success_msgid',   'Success-' )" />
+                                                    <th class="sortable" tal:content="python:here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_Status_msgid',   'Status-' )" />
+                                                    <th class="sortable" tal:content="python:here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_Condition_msgid',   'Condition-' )" />
+                                                    <th class="sortable" tal:content="python:here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_Committed_msgid',   'Committed-'  )" />
+                                                    <th class="sortable" tal:content="python:here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Verification_UserGroup_ElementType_msgid',   'Element Type-' )" />
+                                                    <th class="sortable" tal:content="python:here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Verification_UserGroup_ElementTitle_msgid',   'Element Title-' )" />
+                                                    <th class="sortable" tal:content="python:here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Verification_UserGroup_ElementPath_msgid',   'Element Path-' )" />
+                                                    <th class="sortable" tal:content="python:here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Verification_UserGroup_PreviousRoles_msgid', 'Previous Roles-' )" />
+                                                    <th class="sortable" tal:content="python:here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Verification_UserGroup_NewRoles_msgid',      'New Roles-' )" />
+                                                    <th class="sortable" tal:content="python:here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Verification_UserGroup_FailedRoles_msgid', 'Failed Roles-' )" />
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr tal:repeat="pUserGroupRol  pUserGroupRoles" >
+                                                    <td tal:define="pUserGroupRolSuccess python: pUserGroupRol.get( 'success', False)">
+                                                        <font tal:condition="pUserGroupRolSuccess" color="green">
+                                                            <strong tal:content="python: here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_True',   'True-' )" />
+                                                        </font>
+                                                        <font tal:condition="not: pUserGroupRolSuccess" color="red">
+                                                            <strong tal:content="python: here.fTranslateI18N( 'ModelDDvlPlone', 'ModelDDvlPlone_False',  'False-' )" />
+                                                        </font>
+                                                    </td>
+                                                    <td tal:content="python: pUserGroupRol.get( 'status', '')" />
+                                                    <td  tal:content="python: pUserGroupRol.get( 'condition', '')" />
+                                                    <td  tal:content="python: pUserGroupRol.get( 'committed', '')" />
+                                                    <td tal:content="python: pUserGroupRol.get( 'element_type', '')" />
+                                                    <td tal:content="python: pUserGroupRol.get( 'element_title', '')" />
+                                                    <td tal:content="python: pUserGroupRol.get( 'element_path', '')" />
+                                                    <td tal:content="python: repr( pUserGroupRol.get( 'previous_roles', ''))" />
+                                                    <td tal:content="python: repr( pUserGroupRol.get( 'new_roles', ''))" />
+                                                    <td tal:content="python: repr( pUserGroupRol.get( 'failed_roles', ''))" />
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <br/>
+                                        <br/>
+                                    </dd>
+                                </dl>
+                                <br/>
+                            </tal:block>                            
+                        </tal:block>
+                    </tal:block>
+                </tal:block>                            
+            </tal:block>
+        </tal:block>
+        <br/>
+    </div>
+    
+    
+        
+            
+    
+</body>
+</html>

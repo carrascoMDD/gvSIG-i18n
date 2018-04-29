@@ -80,21 +80,10 @@ from TRAElemento_Constants import *
 
 
 
-# #######################################
-"""To deliver a build compatible with MDD version 1.0.2,
-and locate key pieces of code changed for MDD versions 1.0.3 and after
-"""
-if cMDDVersionBackwardsCompatible_102:
-    from Products.ModelDDvlPloneTool.ModelDDvlPloneTool import cModelDDvlPloneToolId, ModelDDvlPloneTool
-else:
-    from Products.ModelDDvlPloneTool.ModelDDvlPloneTool                          import ModelDDvlPloneTool
-    from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Inicializacion_Constants import cModelDDvlPloneToolId
-    
-from Products.ModelDDvlPloneConfiguration.ModelDDvlPloneConfiguration        import cModelDDvlPloneConfigurationId, ModelDDvlPloneConfiguration
 
 
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow
+
 
 from TRACatalogo_Inicializacion_Constants import *
 
@@ -123,17 +112,7 @@ from TRAElemento_Permission_Definitions import cTRAUserGroups_Catalogo_Authorize
 
 
 
-cLogInformeLazyCrear     = True
-
-
-# #######################################
-"""To deliver a build compatible with MDD version 1.0.2,
-and locate key pieces of code changed for MDD versions 1.0.3 and after
-"""
-if cMDDVersionBackwardsCompatible_102:
-    from Products.ModelDDvlPloneTool.ModelDDvlPloneTool  import cInstall_Tools_On_PortalSkinsCustom, cInstallPath_PortalSkinsCustom    
-else:
-    from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Inicializacion_Constants import cInstall_Tools_On_PortalSkinsCustom, cInstallPath_PortalSkinsCustom
+cLogInformeVerifyOrInit     = True
 
 
 
@@ -156,165 +135,109 @@ class TRACatalogo_Inicializacion:
 
 
     
-
-    security.declarePrivate('fInstallContainer_Tools')
-    def fInstallContainer_Tools( self):
-        
-        unPortalRoot = self.fPortalRoot()
-        
-        if unPortalRoot == None:
-            return None
-        
-        if not cInstall_Tools_On_PortalSkinsCustom:
-            return unPortalRoot
-        
-        if not cInstallPath_PortalSkinsCustom:
-            return unPortalRoot
-            
-        
-        aTraversedObject = unPortalRoot
-        for aTraversal in cInstallPath_PortalSkinsCustom:
-            aNextObject = None
-            try:
-                aNextObject = aTraversedObject[ aTraversal]
-            except ValueError, AttributeError:
-                None
-            if aNextObject == None:
-                return None
-            
-            aTraversedObject = aNextObject
-            
-        if aTraversedObject == None:
-            return None
-        
-        return aTraversedObject
-                
-
-        
             
     
-    security.declarePrivate('fNewVoidInformeLazyCrear')
-    def fNewVoidInformeLazyCrear( self):
-        unInforme = { 
-            'allow_creation':   False,
+    security.declarePrivate('fNewVoidInformeVerifyOrInit')
+    def fNewVoidInformeVerifyOrInit( self):
+        unInforme =  { 
+            'allow_initialization': False,
+            'check_permissions':    False,
             'success':           False,
             'condition':         '',
             'exception':         '',
-            'title':             '',
-            'path':              '',
-            'ModelDDvlPloneTool':{},
-            'colecciones':       {},
-            'catalogs_cadenas':  {}, 
-            'catalogs_idiomas':  [],
-            'user_groups_catalogo':  {},
-            'user_groups_idiomas':   {},
-            'user_groups_modulos':   {},
+            'element_meta_type':    '',
+            'element_title':        '',
+            'element_path':         '',
+            'framework_ModelDDvlPlone':    {},
+            'application_gvSIGi18n_externalMethods': {},
+            'application_gvSIGi18n':       {},
         }
         return unInforme
     
     
-
+    
+    security.declarePrivate('fNewVoidInformeVerifyOrInit_application_gvSIGi18n')
+    def fNewVoidInformeVerifyOrInit_application_gvSIGi18n( self):
+        unInforme = { 
+            'allow_initialization': False,
+            'check_permissions':    False,
+            'element_meta_type':    '',
+            'element_title':        '',
+            'element_path':         '',
+            'colecciones':          {},
+            'catalogs_cadenas':     {}, 
+            'catalogs_idiomas':     [],
+            'user_groups_catalogo': {},
+            # ACV 20090914 Simpler security schema: no user groups for languages or modules, shall assign local roles to users directly on the language or module element
+            #'user_groups_all_idiomas':   {},
+            #'user_groups_all_modulos':   {},
+            #'user_groups_idiomas':   {},
+            #'user_groups_modulos':   {},
+        }
+        return unInforme
+    
+    
    
-    security.declarePrivate('fNewVoidInformeLazyCrearTodosExternalMethods')
-    def fNewVoidInformeLazyCrearTodosExternalMethods( self):
-        unInforme = {
-            'type':         'external_methods',
-            'methods':      [],
-            'success':      False,
-        }
-        return unInforme    
     
-    
-    
-    
-    
-    security.declarePrivate('fNewVoidInformeLazyCrearCollection')
-    def fNewVoidInformeLazyCrearExternalMethod( self):
-        unInforme = { 
-            'type':                      'external_method',   
-            'success':                   False,
-            'status':                    '',           
-            'committed':    False,
-           ' ext_method_id':             '',
-            'ext_method_title':          '',
-            'ext_method_module':         '',
-            'ext_method_function':       '',
-         }
-        return unInforme
 
-    
-        
-    
-    security.declarePrivate('fNewVoidInformeLazyCrearTool')
-    def fNewVoidInformeLazyCrearTool( self):
-        unInforme = { 
-            'type':                      'tool',   
-            'success':                   False,
-            'status':                    '',           
-            'committed':                 False,
-            'tool_id':                   '',
-            'tool_class_name':           '',
-        }
-        return unInforme
 
         
     
-    security.declarePrivate('fNewVoidInformeLazyCrearTodasCollections')
-    def fNewVoidInformeLazyCrearTodasCollections( self):
+    security.declarePrivate('fNewVoidInformeVerifyOrInitTodasCollections')
+    def fNewVoidInformeVerifyOrInitTodasCollections( self):
         unInforme = {
             'type':         'collections',
-            'collections':  [],
             'success':      False,
-        }
-        return unInforme    
-    
-    
-    
-    
-    security.declarePrivate('fNewVoidInformeLazyCrearCollection')
-    def fNewVoidInformeLazyCrearCollection( self):
-        unInforme = { 
-            'type':                      'collection',   
             'container_type':            '',
             'container_title':           '',
             'container_path':            '',
+            'collections':  [],
+        }
+        return unInforme    
+    
+    
+    
+    
+    security.declarePrivate('fNewVoidInformeVerifyOrInitCollection')
+    def fNewVoidInformeVerifyOrInitCollection( self):
+        unInforme = { 
+            'type':                      'collection',   
             'success':                   False,
             'status':                    '',           
             'committed':                 False,
             'tipo_coleccion':            '',
             'id_coleccion':              '',
             'titulo_coleccion':          '',
+            'acquire_role_assignments':  None,
             'acquire_role_assignments_success': False,
             'acquire_role_assignments_status':  '',
-            'acquire_role_assignments':  None,
         }
         return unInforme
 
     
     
     
-    security.declarePrivate('fNewVoidInformeLazyCrearTodosCatalogs')
-    def fNewVoidInformeLazyCrearTodosCatalogs( self):
+    security.declarePrivate('fNewVoidInformeVerifyOrInitTodosCatalogs')
+    def fNewVoidInformeVerifyOrInitTodosCatalogs( self):
         unInforme = { 
-            'committed':                 False,
-            'catalogs':                  [],
+            'type':                      'catalogs',
+            'title':                     '',
             'success':                   False,
+            'committed':                 False,
             'container_type':            '',
             'container_title':           '',
             'container_path':            '',
+            'catalogs':                  [],
         }
         return unInforme
      
     
     
     
-    security.declarePrivate('fNewVoidInformeLazyCrearCatalog')
-    def fNewVoidInformeLazyCrearCatalog( self):
+    security.declarePrivate('fNewVoidInformeVerifyOrInitCatalog')
+    def fNewVoidInformeVerifyOrInitCatalog( self):
         unInforme = { 
             'type':                    'catalog',
-            'container_type':          '',
-            'container_title':         '',
-            'container_path':          '',
             'catalog_name':            '',
             'success':                 False,
             'status':                  '',
@@ -330,24 +253,25 @@ class TRACatalogo_Inicializacion:
     
     
     
-    security.declarePrivate('fNewVoidInformeLazyCrearIndex')
-    def fNewVoidInformeLazyCrearIndex( self, theCatalogInforme):
+    security.declarePrivate('fNewVoidInformeVerifyOrInitIndex')
+    def fNewVoidInformeVerifyOrInitIndex( self, theCatalogInforme):
         unInforme = theCatalogInforme.copy()
         unInforme.update( { 
             'type':                     'index',
             'success':                  False,
             'status':                   '',
+            'current_index_type':       '',
             'index_name':               '',
             'index_type':               '',
-            'current_index_type':       '',
+            'index_extras':             '',
         })
         
         return unInforme
     
     
     
-    security.declarePrivate('fNewVoidInformeLazyCrearLexicon')
-    def fNewVoidInformeLazyCrearLexicon( self, theCatalogInforme):
+    security.declarePrivate('fNewVoidInformeVerifyOrInitLexicon')
+    def fNewVoidInformeVerifyOrInitLexicon( self, theCatalogInforme):
         unInforme = theCatalogInforme.copy()
         unInforme.update( { 
             'type':                    'lexicon',
@@ -361,8 +285,8 @@ class TRACatalogo_Inicializacion:
 
     
     
-    security.declarePrivate('fNewVoidInformeLazyCrearSchema')
-    def fNewVoidInformeLazyCrearSchema( self, theCatalogInforme):
+    security.declarePrivate('fNewVoidInformeVerifyOrInitSchema')
+    def fNewVoidInformeVerifyOrInitSchema( self, theCatalogInforme):
         unInforme = theCatalogInforme.copy()
         unInforme.update( { 
             'type':                     'schema',
@@ -378,13 +302,15 @@ class TRACatalogo_Inicializacion:
 
     
     
-    security.declarePrivate('fNewVoidInformeLazyCrearTodosUserGroups')
-    def fNewVoidInformeLazyCrearTodosUserGroups( self):
+    security.declarePrivate('fNewVoidInformeVerifyOrInitTodosUserGroups')
+    def fNewVoidInformeVerifyOrInitTodosUserGroups( self):
         unInforme = { 
             'type':                     'user_groups',
             'committed':                 False,
             'groups':                    [],
             'success':                   False,
+            'condition':                 '',
+            'exception':                 '',
          }
         return unInforme
      
@@ -392,11 +318,11 @@ class TRACatalogo_Inicializacion:
     
 
         
-    security.declarePrivate('fNewVoidInformeLazyCrearUserGroup')
-    def fNewVoidInformeLazyCrearUserGroup( self):
+    security.declarePrivate('fNewVoidInformeVerifyOrInitUserGroup')
+    def fNewVoidInformeVerifyOrInitUserGroup( self):
         unInforme = { 
             'type':                     'user_group',
-            'name':                     [],
+            'name':                     '',
             'success':                   False,
             'status':                   '',
             'condition':                '',
@@ -411,15 +337,16 @@ class TRACatalogo_Inicializacion:
     def fNewVoidInformeLazySetLocalRoles( self):
         unInforme = { 
             'type':                    'local_roles',
+            'success':                 False,
+            'status':                  '',
+            'condition':               '',
+            'committed':               False,
             'element_type':            '',
             'element_title':           '',
             'element_path':            '',
-            'success':                 False,
-            'status':                  '',
             'previous_roles':          [],
             'new_roles':               [],
             'failed_roles':            [],
-            'committed':               False,
          }
         return unInforme
      
@@ -441,45 +368,43 @@ class TRACatalogo_Inicializacion:
       
     
     
-# #########################################################3
-# Lazy initialization of collections and catalogs
-#
-# #########################################################3
+    # #########################################################3
+    # Lazy initialization of collections and catalogs
+    #
+    # #########################################################3
     
     
-    security.declareProtected( permissions.AddPortalFolders, 'fLazyCrearHTML')
-    def fLazyCrearHTML( self, theAllowCreation=False, theCheckPermissions=True, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
-
-        unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearHTML', theParentExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
-        try:
-            unInforme = self.fLazyCrear( theAllowCreation, theCheckPermissions, thePermissionsCache, theRolesCache, unExecutionRecord)
-            
-            unHTMLString = self.fPrettyPrintLazyCreationResultHTML( unInforme, unExecutionRecord)
-    
-            return unHTMLString
+    security.declareProtected( permissions.AddPortalFolders, 'fVerifyOrInitialize')
+    def fVerifyOrInitialize( self , theAllowInitialization=False, theCheckPermissions=True,  thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
+        """Verification and initialization of the gvSIG-i18n application and the ModelDDvlPlone framework.
         
-        finally:
-            unExecutionRecord and unExecutionRecord.pEndExecution()
-            unExecutionRecord and unExecutionRecord.pClearLoggedAll()
-    
-  
-    
-    
-    security.declareProtected( permissions.AddPortalFolders, 'fLazyCrear')
-    def fLazyCrear( self , theAllowCreation=False, theCheckPermissions=True,  thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
+        """
         
-        unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrear', theParentExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
+        unExecutionRecord = self.fStartExecution( 'method',  'fVerifyOrInitialize', theParentExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
 
         try:
 
-            unInforme = self.fNewVoidInformeLazyCrear()
+            unInforme = self.fNewVoidInformeVerifyOrInit()
+            unInforme_application_gvSIGi18n     = self.fNewVoidInformeVerifyOrInit_application_gvSIGi18n()
+            unInforme[ 'application_gvSIGi18n'] = unInforme_application_gvSIGi18n
             
             try:
+                unInforme.update( {
+                    'allow_initialization':        ( theAllowInitialization and True) or False,
+                    'check_permissions':           ( theCheckPermissions and True) or False,
+                    'element_meta_type':           self.meta_type,
+                    'element_title':               self.Title(),
+                    'element_path':                '/'.join( self.getPhysicalPath()),
+                })
                 
-                unInforme[ 'allow_creation'] =  ( theAllowCreation and True) or False
-                unInforme[ 'type'] =  'TRACatalogo (root)'
-                unInforme[ 'title'] =  self.Title()
-                unInforme[ 'path']  =  '/'.join( self.getPhysicalPath())
+                unInforme_application_gvSIGi18n.update( {
+                    'allow_initialization':        ( theAllowInitialization and True) or False,
+                    'check_permissions':           ( theCheckPermissions and True) or False,
+                    'element_meta_type':           self.meta_type,
+                    'element_title':               self.Title(),
+                    'element_path':                '/'.join( self.getPhysicalPath()),
+                })
+
 
                 if not self.Title(): # 'portal_factory' in self.getPhysicalPath(): 
                     unInforme[ 'success']   =  False
@@ -491,7 +416,7 @@ class TRACatalogo_Inicializacion:
             
                 if theCheckPermissions:
                     
-                    if theAllowCreation:
+                    if theAllowInitialization:
                     
                         unUseCaseQueryResult = self.fUseCaseAssessment(  
                             theUseCaseName          = cUseCase_InitializeTRACatalogo, 
@@ -524,41 +449,115 @@ class TRACatalogo_Inicializacion:
                             unInforme[ 'condition'] = 'user_can_NOT_verify_TRACatalogo'
                             return unInforme
                                                          
-                                
-                unInforme[ 'ModelDDvlPloneTool']               = self.fLazyCrearModelDDvlPloneTool(            theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
-                unInforme[ 'ModelDDvlPloneConfiguration']      = self.fLazyCrearModelDDvlPloneConfiguration(   theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
-                unInforme[ 'external_methods']                 = self.fLazyCrearTodosExternalMethods(          theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
-                unInforme[ 'colecciones']                      = self.fLazyCrearCollections(                   theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
-                unInforme[ 'catalogs_cadenas']                 = self.fLazyCrearCatalogsEIndicesEnCatalogo(    theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
-                unInforme[ 'catalogs_idiomas']                 = self.fLazyCrearCatalogsEIndicesTodosIdiomas(  theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord) 
-                unInforme[ 'user_groups_catalogo']             = self.fLazyCrearUserGroupsCatalogo(            theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
-                # ACV 20090914 Simpler security schema: no user groups for languages or modules, shall assign local roles to users directly on the language or module element
-                # unInforme[ 'user_groups_all_idiomas']          = self.fLazyCrearUserGroupsAllIdiomas(          theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
-                # unInforme[ 'user_groups_all_modulos']          = self.fLazyCrearUserGroupsAllModulos(          theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
-                # unInforme[ 'user_groups_idiomas']              = self.fLazyCrearUserGroupsIdiomas(             theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
-                # unInforme[ 'user_groups_modulos']              = self.fLazyCrearUserGroupsModulos(             theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
                 
-                unInforme[ 'success'] = \
-                    unInforme[ 'ModelDDvlPloneTool']            and unInforme[ 'ModelDDvlPloneTool'][ 'success'] and  \
-                    unInforme[ 'ModelDDvlPloneConfiguration']   and unInforme[ 'ModelDDvlPloneConfiguration'][ 'success'] and  \
-                    unInforme[ 'external_methods']              and unInforme[ 'external_methods'][ 'success'] and  \
-                    unInforme[ 'colecciones']                   and unInforme[ 'colecciones'][ 'success']  and  \
-                    unInforme[ 'catalogs_cadenas']              and unInforme[ 'catalogs_cadenas'][ 'success'] and \
-                    (( not unInforme[ 'catalogs_idiomas'])      or len( [ unInformeCatalogs for unInformeCatalogs in unInforme[ 'catalogs_idiomas'] if unInformeCatalogs[ 'success']]) == len( unInforme[ 'catalogs_idiomas'])) and \
-                    unInforme[ 'user_groups_catalogo']          and unInforme[ 'user_groups_catalogo'][ 'success'] # and \
-                    # ACV 20090914 Simpler security schema: no user groups for languages or modules, shall assign local roles to users directly on the language or module element
-                    #unInforme[ 'user_groups_all_idiomas']       and unInforme[ 'user_groups_all_idiomas'][ 'success'] and \
-                    #(( not unInforme[ 'user_groups_idiomas'])   or len( [ unInformeGroups for unInformeGroups in unInforme[ 'user_groups_idiomas'] if unInformeGroups[ 'success']]) == len( unInforme[ 'user_groups_idiomas'])) # and
-                    # unInforme[ 'user_groups_all_modulos']       and unInforme[ 'user_groups_all_modulos'][ 'success'] and  \
-                    # (( not unInforme[ 'user_groups_modulos'])  or len( [ unInformeGroups for unInformeGroups in unInforme[ 'user_groups_modulos'] if unInformeGroups[ 'success']]) == len( unInforme[ 'user_groups_modulos'])) # and
-            
-                return unInforme
+
+                # #########################################################
+                """Verify or initialize ExternalMethods and Tool Singletons of ModelDDvlPlone framework.
+                
+                """
+                unInforme[ 'framework_ModelDDvlPlone'] = self.fVerifyOrInitialize_ModelDDvlPlone( 
+                    theAllowInitialization   =theAllowInitialization, 
+                    theCheckPermissions=theCheckPermissions,  
+                    thePermissionsCache=unPermissionsCache, 
+                    theRolesCache      =unRolesCache,
+                    theParentExecutionRecord= unExecutionRecord
+                )
+
+                
+                
+                # #########################################################
+                """Verify or initialize ExternalMethods and Tool Singletons of gvSIG-i18n application.
+                
+                """
+                unInforme[ 'application_gvSIGi18n_externalMethods'] = self.fVerifyOrInitialize_gvSIGi18nApplication_ExternalMethods( 
+                    theAllowInitialization   =theAllowInitialization, 
+                    theCheckPermissions      =theCheckPermissions,  
+                    thePermissionsCache      =unPermissionsCache, 
+                    theRolesCache            =unRolesCache,
+                    theParentExecutionRecord= unExecutionRecord
+                )
+                
+                
+                
+                unInforme_application_gvSIGi18n[ 'success'] = True
+                
+                # #########################################################
+                """Verify or initialize collection elements that must be contained by this TRACatalog object.
+                
+                """
+                unInforme_application_gvSIGi18n[ 'colecciones'] = self.fVerifyOrInitializeCollections( 
+                    theEspecificacionesColecciones =cTRAEspecificacionesColecciones, 
+                    theAllowInitialization         =theAllowInitialization, 
+                    theCheckPermissions            =False, 
+                    thePermissionsCache            =unPermissionsCache, 
+                    theRolesCache                  =unRolesCache, 
+                    theParentExecutionRecord       =unExecutionRecord,
+                )
+                unInforme_application_gvSIGi18n[ 'success'] = ( unInforme_application_gvSIGi18n[ 'success'] and unInforme_application_gvSIGi18n[ 'colecciones'] and unInforme_application_gvSIGi18n[ 'colecciones'].get( 'success', False)) or False
+
+                
+                
+                # #########################################################
+                """Verify or initialize catalogs and indexes, owned by the TRACatalog, to index instances of TRACadena (string to be translated).
+                
+                """
+                unInforme_application_gvSIGi18n[ 'catalogs_cadenas'] = self.fVerifyOrInitializeCatalogsEIndicesEnCatalogo(
+                    theEspecificacionesCatalogs    =cTRACatalogsDetailsParaCadenas, 
+                    theAllowInitialization         =theAllowInitialization, 
+                    theCheckPermissions            =False, 
+                    thePermissionsCache            =unPermissionsCache, 
+                    theRolesCache                  =unRolesCache, 
+                    theParentExecutionRecord       =unExecutionRecord,
+                )
+                unInforme_application_gvSIGi18n[ 'success'] = ( unInforme_application_gvSIGi18n[ 'success'] and unInforme_application_gvSIGi18n[ 'catalogs_cadenas'] and unInforme_application_gvSIGi18n[ 'catalogs_cadenas'].get( 'success', False)) or False
+
+                
+                
+                # #########################################################
+                """Verify or initialize catalogs and indexes, owned by each of the languages the TRACatalog, to index instances of TRATraduccion (translation).
+                
+                """
+                unInforme_application_gvSIGi18n[ 'catalogs_idiomas']  = self.fVerifyOrInitializeCatalogsEIndicesTodosIdiomas( 
+                    theEspecificacionesCatalogs    =cTRACatalogsDetailsParaIdioma, 
+                    theAllowInitialization         =theAllowInitialization, 
+                    theCheckPermissions            =False, 
+                    thePermissionsCache            =unPermissionsCache, 
+                    theRolesCache                  =unRolesCache, 
+                    theParentExecutionRecord       =unExecutionRecord,
+                ) 
+                unInforme_application_gvSIGi18n[ 'success'] = ( unInforme_application_gvSIGi18n[ 'success'] and ( len( unInforme_application_gvSIGi18n[ 'catalogs_idiomas']) == len( [ unInformeCatalogIdioma for unInformeCatalogIdioma in unInforme_application_gvSIGi18n[ 'catalogs_idiomas'] if unInformeCatalogIdioma.get( 'success', False)]))) or False
+                
+                
+                # #########################################################
+                """Verify or initialize user groups, specific to this TRACatalog, for each of the roles that users may play when interacting with this TRACatalogo.
+                
+                """
+                unInforme_application_gvSIGi18n[ 'user_groups_catalogo']  = self.fVerifyOrInitializeUserGroupsCatalogo(   
+                    theAllowInitialization         =theAllowInitialization, 
+                    theCheckPermissions            =False, 
+                    thePermissionsCache            =unPermissionsCache, 
+                    theRolesCache                  =unRolesCache, 
+                    theParentExecutionRecord       =unExecutionRecord,
+                )
+                unInforme_application_gvSIGi18n[ 'success'] = ( unInforme_application_gvSIGi18n[ 'success'] and unInforme_application_gvSIGi18n[ 'user_groups_catalogo'] and unInforme_application_gvSIGi18n[ 'user_groups_catalogo'].get( 'success', False)) or False
+                
+                
+                # ACV 20090914 Simpler security schema: no user groups for languages or modules, shall assign local roles to users directly on the language or module element
+                # unInforme[ 'user_groups_all_idiomas']          = self.fVerifyOrInitializeUserGroupsAllIdiomas(          theAllowInitialization, False, unPermissionsCache, unRolesCache, unExecutionRecord)
+                # unInforme[ 'user_groups_all_modulos']          = self.fVerifyOrInitializeUserGroupsAllModulos(          theAllowInitialization, False, unPermissionsCache, unRolesCache, unExecutionRecord)
+                # unInforme[ 'user_groups_idiomas']              = self.fVerifyOrInitializeUserGroupsIdiomas(             theAllowInitialization, False, unPermissionsCache, unRolesCache, unExecutionRecord)
+                # unInforme[ 'user_groups_modulos']              = self.fVerifyOrInitializeUserGroupsModulos(             theAllowInitialization, False, unPermissionsCache, unRolesCache, unExecutionRecord)
+                
+                unInforme[ 'success'] = ( \
+                    unInforme[ 'framework_ModelDDvlPlone']                and unInforme[ 'framework_ModelDDvlPlone'][ 'success']  and  \
+                    unInforme[ 'application_gvSIGi18n_externalMethods']   and unInforme[ 'application_gvSIGi18n_externalMethods'][ 'success'] and \
+                    unInforme[ 'application_gvSIGi18n']                   and unInforme[ 'application_gvSIGi18n'][ 'success']) or False
             
             except:
                 unaExceptionInfo = sys.exc_info()
                 unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
                 
-                unInformeExcepcion = 'Exception during Lazy Initialization operation fLazyCrear\n' 
+                unInformeExcepcion = 'Exception during TRACatalogo Lazy Initialization operation fVerifyOrInitialize\n' 
                 unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
                 unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
                 unInformeExcepcion += unaExceptionFormattedTraceback   
@@ -572,7 +571,7 @@ class TRACatalogo_Inicializacion:
                 if cLogExceptions:
                     logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
                 
-                return unInforme
+            return unInforme
         
              
         finally:
@@ -588,490 +587,116 @@ class TRACatalogo_Inicializacion:
     
         
         
-# #############################################################
-# TRAChangeAndBrowseTranslations ExternalMethod creation
-#
-# #############################################################
+
     
-    
-    
-    security.declarePrivate( 'fLazyCrearTodosExternalMethods')
-    def fLazyCrearTodosExternalMethods( self,  theAllowCreation=False, theCheckPermissions=True, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
+    security.declarePrivate( 'fVerifyOrInitialize_ModelDDvlPlone')
+    def fVerifyOrInitialize_ModelDDvlPlone( self, theAllowInitialization=False, theCheckPermissions=True,  thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
+        """Delegate on framework verification or initializacion.
        
-        unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearTodosExternalMethods', theParentExecutionRecord, False) 
+        """
+        unExecutionRecord = self.fStartExecution( 'method',  'fVerifyOrInitialize_ModelDDvlPlone', theParentExecutionRecord, False) 
 
+        unInforme = None
         try:
+            from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Inicializacion import ModelDDvlPloneTool_Inicializacion
 
-            unInforme = self.fNewVoidInformeLazyCrearTodosExternalMethods()
-            
-            try:
-                if not self.Title():
-                    unInforme[ 'success']   =  False
-                    unInforme[ 'condition'] = 'Premature_initialization'
-                    return unInforme
-
-                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
-                    
-                if theCheckPermissions:
-                    
-                    unUseCaseQueryResult = self.fUseCaseAssessment(  
-                        theUseCaseName          = cUseCase_InitializeTRACatalogo, 
-                        theElementsBindings     = { cBoundObject: self,},
-                        theRulesToCollect       = [ ], 
-                        thePermissionsCache     = unPermissionsCache, 
-                        theRolesCache           = unRolesCache, 
-                        theParentExecutionRecord= unExecutionRecord
-                    )
-                    if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
-                        unInforme[ 'success']   =  False
-                        unInforme[ 'condition'] = 'user_can_NOT_initialize_TRACatalogo'
-                        return unInforme
-
-                someExternalMethodDefinitions = cExternalMetodDefinitions
-                    
-                for anExtMethodDefinition in someExternalMethodDefinitions:
-                    aModuleName = anExtMethodDefinition[ 0]
-                    someFunctionDefinitions = anExtMethodDefinition[ 1:]
-                    for aFunctionDefinition in someFunctionDefinitions:
-                        unInformeExtMethod = self.fLazyCrearExternalMethod( theAllowCreation, aFunctionDefinition[1], aFunctionDefinition[2], aModuleName, aFunctionDefinition[0], False, thePermissionsCache=unPermissionsCache, theRolesCache=unRolesCache, theParentExecutionRecord=unExecutionRecord)
-                        if unInformeExtMethod:    
-                            unInforme[ 'methods'].append( unInformeExtMethod)
-                       
-                unInforme[ 'success'] = len( [ unInf for unInf in unInforme[ 'methods'] if unInf[ 'success']]) == len( unInforme[ 'methods'])
-                
-                return unInforme
-            
-            except:
-                unaExceptionInfo = sys.exc_info()
-                unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
-                
-                unInformeExcepcion = 'Exception during Lazy Initialization operation fLazyCrearTodosExternalMethods\n' 
-                unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
-                unInformeExcepcion += unaExceptionFormattedTraceback   
-                         
-                unInforme[ 'success'] = False
-                unInforme[ 'condition'] = 'exception'
-                unInforme[ 'exception'] = unInformeExcepcion
-                
-                unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
-
-                if cLogExceptions:
-                    logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
-
-                return unInforme
+            unInforme = ModelDDvlPloneTool_Inicializacion().fVerifyOrInitialize_ModelDDvlPloneFramework( 
+                theContextualElement     =self, 
+                theAllowInitialization   =theAllowInitialization,
+            )
              
         finally:
             unExecutionRecord and unExecutionRecord.pEndExecution()
 
-                
-            
-                
+        return unInforme  
                 
                 
-                
-                
-         
-    security.declarePrivate( 'fLazyCrearExternalMethod')
-    def fLazyCrearExternalMethod( self, theAllowCreation=False, theExtMethodId='', theExtMethodTitle='', theModuleName='', theFunctionName='',  theCheckPermissions=True, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
+    
+
+    
+    security.declarePrivate( 'fVerifyOrInitialize_gvSIGi18nApplication_ExternalMethods')
+    def fVerifyOrInitialize_gvSIGi18nApplication_ExternalMethods( self, theAllowInitialization=False, theCheckPermissions=True,  thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
+        """Delegate on framework verification or initializacion.
        
-        unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearExternalMethod', theParentExecutionRecord, False, None, 'id= %s, title=%s, module=%s, function=%s' % ( theExtMethodId or '', theExtMethodTitle or '', theModuleName or '', theFunctionName or '')) 
+        """
+        unExecutionRecord = self.fStartExecution( 'method',  'fVerifyOrInitialize_gvSIGi18nApplication_ExternalMethods', theParentExecutionRecord, False) 
 
+        unInforme = None
         try:
-                 
-            unInforme = self.fNewVoidInformeLazyCrearTodosExternalMethods( )
-            
-            try:
-                unInforme.update( {
-                    'ext_method_module':         theModuleName,
-                    'ext_method_function':       theFunctionName,
-                    'ext_method_id':             theExtMethodId,
-                    'ext_method_title':          theExtMethodTitle,
-                })
-                
-                if not self.Title():
-                    unInforme[ 'success']   =  False
-                    unInforme[ 'condition'] = 'Premature_initialization'
-                    return unInforme
+            from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Inicializacion import ModelDDvlPloneTool_Inicializacion
 
-                if not theExtMethodId or not theExtMethodTitle or not theModuleName or not theFunctionName:
-                    unInforme[ 'success']   =  False
-                    unInforme[ 'condition'] = 'MISSING_parameters'
-                    return unInforme
-                
-                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
-
-                if theCheckPermissions:
-                    
-                    unUseCaseQueryResult = self.fUseCaseAssessment(  
-                        theUseCaseName          = cUseCase_InitializeTRACatalogo, 
-                        theElementsBindings     = { cBoundObject: self,},
-                        theRulesToCollect       = [ ], 
-                        thePermissionsCache     = unPermissionsCache, 
-                        theRolesCache           = unRolesCache, 
-                        theParentExecutionRecord= unExecutionRecord
-                    )
-                    if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
-                        unInforme[ 'success']   =  False
-                        unInforme[ 'condition'] = 'user_can_NOT_initialize_TRACatalogo'
-                        return unInforme
-                    
-                unInforme.update( {
-                    'install_on_portalskinscustom': cInstall_Tools_On_PortalSkinsCustom,
-                    'installpath':                  ( cInstall_Tools_On_PortalSkinsCustom and cInstallPath_PortalSkinsCustom) or '',
-                })
-
-                unInstallContainer = self.fInstallContainer_Tools()
-                if not unInstallContainer:
-                    unInforme.update({
-                        'success':   False,
-                        'condition': 'No_InstallContainer',
-                    })
-                    return unInforme
-                
-                unExternalMethod = None
-                try:
-                    unExternalMethod = aq_get( unInstallContainer, theExtMethodId, None, 1)
-                except:
-                    None  
-                if unExternalMethod:
-                    unInforme[ 'success'] = True
-                    unInforme[ 'status']  = 'exists'
-                    return unInforme
-                
-                if not ( theAllowCreation and cLazyCreateExternalMethod):
-                    unInforme[ 'success'] = False
-                    unInforme[ 'status'] = 'missing'         
-                    return unInforme
-                
-                unNewExternalMethod = None
-                try:
-                    unNewExternalMethod = ExternalMethod(
-                        theExtMethodId,
-                        theExtMethodTitle,
-                        theModuleName,
-                        theFunctionName,
-                    )
-                except:
-                    unaExceptionInfo = sys.exc_info()
-                    unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
-                    
-                    unInformeExcepcion = 'Exception during Lazy Initialization operation fLazyCrearExternalMethod\n' 
-                    unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-                    unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
-                    unInformeExcepcion += unaExceptionFormattedTraceback   
-                             
-                    unInforme[ 'success'] = False
-                    unInforme[ 'condition'] = 'exception'
-                    unInforme[ 'exception'] = unInformeExcepcion
-                    
-                    unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
-    
-                    if cLogExceptions:
-                        logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
-                    
-                    return unInforme
-                
-                if not unNewExternalMethod:
-                    unInforme[ 'success'] = False
-                    unInforme[ 'status']  = 'creation_failed'
-                    return unInforme
-                    
-                unInstallContainer._setObject( theExtMethodId,  unNewExternalMethod)
-                unExternalMethod = None
-                try:
-                    unExternalMethod = aq_get( unInstallContainer, theExtMethodId, None, 1)
-                except:
-                    None  
-                if not unExternalMethod:
-                    unInforme[ 'success'] = False
-                    unInforme[ 'status']  = 'creation_failed'
-                    return unInforme
-                               
-                unInforme[ 'success'] = True
-                unInforme[ 'status']  = 'created'
-
-                transaction.commit()
-                unInforme[ 'committed'] = True
-                
-                return unInforme
-
-            except:
-                unaExceptionInfo = sys.exc_info()
-                unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
-                
-                unInformeExcepcion = 'Exception during Lazy Initialization operation fLazyCrearExternalMethod\n' 
-                unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
-                unInformeExcepcion += unaExceptionFormattedTraceback   
-                         
-                unInforme[ 'success'] = False
-                unInforme[ 'condition'] = 'exception'
-                unInforme[ 'exception'] = unInformeExcepcion
-                
-                unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
-
-                if cLogExceptions:
-                    logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
-
-                return unInforme
-              
-        finally:
-            unExecutionRecord and unExecutionRecord.pEndExecution()
-
-            
-        
-
-
-
-    
-# #############################################################
-# ModelDDvlPloneTool creation
-#
-# #############################################################
-    
-
-   
-    security.declarePrivate( 'fLazyCrearModelDDvlPloneTool')
-    def fLazyCrearModelDDvlPloneTool( self, theAllowCreation=False, theCheckPermissions=True, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
-       
-        unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearModelDDvlPloneTool', theParentExecutionRecord, False) 
-
-        try:
-            unInforme = self.fNewVoidInformeLazyCrearTool()
-                
-            try:
-        
-                if not self.Title():
-                    unInforme[ 'success']   =  False
-                    unInforme[ 'condition'] = 'Premature_initialization'
-                    return unInforme
-                    
-                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
-
-                if theCheckPermissions:
-            
-                    unUseCaseQueryResult = self.fUseCaseAssessment(  
-                        theUseCaseName          = cUseCase_InitializeTRACatalogo, 
-                        theElementsBindings     = { cBoundObject: self,},
-                        theRulesToCollect       = [ ], 
-                        thePermissionsCache     = unPermissionsCache, 
-                        theRolesCache           = unRolesCache, 
-                        theParentExecutionRecord= unExecutionRecord
-                    )
-                    if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
-                        unInforme[ 'success']   =  False
-                        unInforme[ 'condition'] = 'user_can_NOT_initialize_TRACatalogo'
-                        return unInforme    
-                    
-                unInforme.update({
-                    'install_on_portalskinscustom': cInstall_Tools_On_PortalSkinsCustom,
-                    'installpath':                  ( cInstall_Tools_On_PortalSkinsCustom and cInstallPath_PortalSkinsCustom) or '',
-                    'tool_id':                      cModelDDvlPloneToolId,
-                    'tool_class_name':              'ModelDDvlPloneTool',
-                })
-                    
-                unInstallContainer = self.fInstallContainer_Tools()
-                if not unInstallContainer:
-                    unInforme.update({
-                        'success':   False,
-                        'condition': 'No_InstallContainer',
-                    })
-                    return unInforme
-                
-                
-                aModelDDvlPloneTool = None
-                try:
-                    aModelDDvlPloneTool = aq_get( unInstallContainer, cModelDDvlPloneToolId, None, 1)
-                except:
-                    None  
-                if aModelDDvlPloneTool:
-                    unInforme[ 'success'] = True
-                    unInforme[ 'status']  = 'exists'
-                    return unInforme
-                
-                if not ( theAllowCreation and cLazyCreateModelDDvlPloneTool):
-                    unInforme[ 'success'] = False
-                    unInforme[ 'status'] = 'missing'         
-                    return unInforme
-         
-                
-                unaNuevaTool = ModelDDvlPloneTool( ) 
-                unInstallContainer._setObject( cModelDDvlPloneToolId,  unaNuevaTool)
-                aModelDDvlPloneTool = None
-                try:
-                    aModelDDvlPloneTool = aq_get( unInstallContainer, cModelDDvlPloneToolId, None, 1)
-                except:
-                    None  
-                if not aModelDDvlPloneTool:
-                    unInforme[ 'success'] = False
-                    unInforme[ 'status']  = 'creation_failed'
-                    return unInforme
-                
-                unInforme[ 'success'] = True
-                unInforme[ 'status']  = 'created'
-                
-                return unInforme
-            
-            except:
-                unaExceptionInfo = sys.exc_info()
-                unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
-                
-                unInformeExcepcion = 'Exception during Lazy Initialization operation fLazyCrearModelDDvlPloneTool\n' 
-                unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
-                unInformeExcepcion += unaExceptionFormattedTraceback   
-                         
-                unInforme[ 'success'] = False
-                unInforme[ 'condition'] = 'exception'
-                unInforme[ 'exception'] = unInformeExcepcion
-                
-                unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
-
-                if cLogExceptions:
-                    logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
-
-                return unInforme
+            unInforme = ModelDDvlPloneTool_Inicializacion().fVerifyOrInitialize( 
+                theInitializationSpecification =cTRAInitializationDefinitions_ExternalMethods, 
+                theContextualElement           =self, 
+                theAllowInitialization         =theAllowInitialization,
+            )
              
         finally:
             unExecutionRecord and unExecutionRecord.pEndExecution()
 
-         
-
-        
-        
-
- 
-
-   
-    security.declarePrivate( 'fLazyCrearModelDDvlPloneConfiguration')
-    def fLazyCrearModelDDvlPloneConfiguration( self, theAllowCreation=False, theCheckPermissions=True, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
+        return unInforme  
+                
+                
+    
+    
+    
+    
+    security.declarePrivate( 'fVerifyOrInitializeTodosExternalMethods')
+    def fVerifyOrInitializeTodosExternalMethods( self, theAllowInitialization=False, theCheckPermissions=True,  thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
+        """Verify or Initialize application's ExternalMethods delegating on  framework functionality for verification or initializacion.
        
-        unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearModelDDvlPloneConfiguration', theParentExecutionRecord, False) 
+        """
+        unExecutionRecord = self.fStartExecution( 'method',  'fVerifyOrInitializeTodosExternalMethods', theParentExecutionRecord, False) 
 
+        unInforme = None
         try:
-            unInforme = self.fNewVoidInformeLazyCrearTool()
-                
-            try:
-        
-                if not self.Title():
-                    unInforme[ 'success']   =  False
-                    unInforme[ 'condition'] = 'Premature_initialization'
-                    return unInforme
-                    
-                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
-
-                if theCheckPermissions:
+            from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Inicializacion import ModelDDvlPloneTool_Inicializacion
             
-                    unUseCaseQueryResult = self.fUseCaseAssessment(  
-                        theUseCaseName          = cUseCase_InitializeTRACatalogo, 
-                        theElementsBindings     = { cBoundObject: self,},
-                        theRulesToCollect       = [ ], 
-                        thePermissionsCache     = unPermissionsCache, 
-                        theRolesCache           = unRolesCache, 
-                        theParentExecutionRecord= unExecutionRecord
-                    )
-                    if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
-                        unInforme[ 'success']   =  False
-                        unInforme[ 'condition'] = 'user_can_NOT_initialize_TRACatalogo'
-                        return unInforme    
+            unInforme = ModelDDvlPloneTool_Inicializacion().fVerifyOrInitializeTodosExternalMethods( 
+                theExternalMethodDefinitions = cTRAExternalMetodDefinitions,
+                theContextualElement=self, 
+                theAllowInitialization   =theAllowInitialization, 
+                theCheckPermissions=theCheckPermissions,  
+                thePermissionsCache=thePermissionsCache, 
+                theRolesCache      =theRolesCache)
                     
-                unInforme.update({
-                    'install_on_portalskinscustom': cInstall_Tools_On_PortalSkinsCustom,
-                    'installpath':                  ( cInstall_Tools_On_PortalSkinsCustom and cInstallPath_PortalSkinsCustom) or '',
-                    'tool_id':                      cModelDDvlPloneConfigurationId,
-                    'tool_class_name':              'ModelDDvlPloneConfiguration',
-                })
-                    
-                unInstallContainer = self.fInstallContainer_Tools()
-                if not unInstallContainer:
-                    unInforme.update({
-                        'success':   False,
-                        'condition': 'No_InstallContainer',
-                    })
-                    return unInforme                    
-                
-
-                
-                aModelDDvlPloneConfiguration = None
-                try:
-                    aModelDDvlPloneConfiguration = aq_get( unInstallContainer, cModelDDvlPloneConfigurationId, None, 1)
-                except:
-                    None  
-                if aModelDDvlPloneConfiguration:
-                    unInforme[ 'success'] = True
-                    unInforme[ 'status']  = 'exists'
-                    return unInforme
-                
-                if not ( theAllowCreation and cLazyCreateModelDDvlPloneConfiguration):
-                    unInforme[ 'success'] = False
-                    unInforme[ 'status'] = 'missing'         
-                    return unInforme
-         
-                
-                unaNuevaTool = ModelDDvlPloneConfiguration( ) 
-                unInstallContainer._setObject( cModelDDvlPloneConfigurationId,  unaNuevaTool)
-                aModelDDvlPloneConfiguration = None
-                try:
-                    aModelDDvlPloneConfiguration = aq_get( unInstallContainer, cModelDDvlPloneConfigurationId, None, 1)
-                except:
-                    None  
-                if not aModelDDvlPloneConfiguration:
-                    unInforme[ 'success'] = False
-                    unInforme[ 'status']  = 'creation_failed'
-                    return unInforme
-                
-                unInforme[ 'success'] = True
-                unInforme[ 'status']  = 'created'
-                
-                return unInforme
-            
-            except:
-                unaExceptionInfo = sys.exc_info()
-                unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
-                
-                unInformeExcepcion = 'Exception during Lazy Initialization operation fLazyCrearModelDDvlPloneConfiguration\n' 
-                unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
-                unInformeExcepcion += unaExceptionFormattedTraceback   
-                         
-                unInforme[ 'success'] = False
-                unInforme[ 'condition'] = 'exception'
-                unInforme[ 'exception'] = unInformeExcepcion
-                
-                unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
-
-                if cLogExceptions:
-                    logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
-
-                return unInforme
              
         finally:
             unExecutionRecord and unExecutionRecord.pEndExecution()
 
-         
+        return unInforme  
+                
+                              
 
-        
+
             
     
     # #############################################################
-    # Collections creation
+    # 
     #
     # #############################################################
     
 
-    security.declarePrivate( 'fLazyCrearCollections')
-    def fLazyCrearCollections( self, theAllowCreation=False, theCheckPermissions=True, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
-       
-        unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearCollections', theParentExecutionRecord, False) 
+    security.declarePrivate( 'fVerifyOrInitializeCollections')
+    def fVerifyOrInitializeCollections( self, 
+        theEspecificacionesColecciones =None, 
+        theAllowInitialization         =False, 
+        theCheckPermissions            =True, 
+        thePermissionsCache            =None, 
+        theRolesCache                  =None, 
+        theParentExecutionRecord       =None):
+        """Verify and create Collections.
+        
+        """
+        unExecutionRecord = self.fStartExecution( 'method',  'fVerifyOrInitializeCollections', theParentExecutionRecord, False) 
 
         try:
                 
-            unInforme = self.fNewVoidInformeLazyCrearTodasCollections()
+            unInforme = self.fNewVoidInformeVerifyOrInitTodasCollections()
+            
+            if not theEspecificacionesColecciones:
+                return unInforme
+            
             
             try:
                 someCollectionEntries =  unInforme[ 'collections']
@@ -1085,37 +710,63 @@ class TRACatalogo_Inicializacion:
                 unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
                 unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
 
+
+                    
+
                 if theCheckPermissions:
-            
-                    unUseCaseQueryResult = self.fUseCaseAssessment(  
-                        theUseCaseName          = cUseCase_InitializeTRACatalogo, 
-                        theElementsBindings     = { cBoundObject: self,},
-                        theRulesToCollect       = [ ], 
-                        thePermissionsCache     = unPermissionsCache, 
-                        theRolesCache           = unRolesCache, 
-                        theParentExecutionRecord= unExecutionRecord
-                    )
-                    if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
-                        unInforme[ 'success']   =  False
-                        unInforme[ 'condition'] = 'user_can_NOT_initialize_TRACatalogo'
-                        return unInforme
+                    
+                    if theAllowInitialization:
+                    
+                        unUseCaseQueryResult = self.fUseCaseAssessment(  
+                            theUseCaseName          = cUseCase_InitializeTRACatalogo, 
+                            theElementsBindings     = { cBoundObject: self,},
+                            theRulesToCollect       = [ ], 
+                            thePermissionsCache     = unPermissionsCache, 
+                            theRolesCache           = unRolesCache, 
+                            theParentExecutionRecord= unExecutionRecord
+                        )
+                        if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
+                            unInforme[ 'success']   =  False
+                            unInforme[ 'condition'] = 'user_can_NOT_initialize_TRACatalogo'
+                            return unInforme
+                        
+                    else:
+                        unUseCaseQueryResult = self.fUseCaseAssessment(  
+                            theUseCaseName          = cUseCase_VerifyTRACatalogo, 
+                            theElementsBindings     = { cBoundObject: self,},
+                            theRulesToCollect       = [ ], 
+                            thePermissionsCache     = unPermissionsCache, 
+                            theRolesCache           = unRolesCache, 
+                            theParentExecutionRecord= unExecutionRecord
+                        )
+                        if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
+                            unInforme[ 'success']   =  False
+                            unInforme[ 'condition'] = 'user_can_NOT_verify_TRACatalogo'
+                            return unInforme
+                                                                
+                    
+                    
+                    
                 
                 unContainerType = self.__class__.__name__
                 unContainerTitle = self.Title()
                 unContainerPath = '/'.join( self.getPhysicalPath())
+                
+                unInforme.update( {
+                    'container_type':            unContainerType,
+                    'container_title':           unContainerTitle,
+                    'container_path':            unContainerPath,
+                })
                                 
-                for unaEspecificacionColeccion in cEspecificacionesColecciones:
+                for unaEspecificacionColeccion in theEspecificacionesColecciones:
                     unHayCambio = False
                     
                     unTipoColeccion    = unaEspecificacionColeccion[ 0]
                     unaIdColeccion     = unaEspecificacionColeccion[ 1]
                     unTituloColeccion  = unaEspecificacionColeccion[ 2]
                     
-                    unCollectionReportEntry = self.fNewVoidInformeLazyCrearCollection()
+                    unCollectionReportEntry = self.fNewVoidInformeVerifyOrInitCollection()
                     unCollectionReportEntry.update( {            
-                        'container_type':            unContainerType,
-                        'container_title':           unContainerTitle,
-                        'container_path':            unContainerPath,
                         'tipo_coleccion':            unTipoColeccion,
                         'id_coleccion':              unaIdColeccion,
                         'titulo_coleccion':          unTituloColeccion,
@@ -1132,7 +783,7 @@ class TRACatalogo_Inicializacion:
                         unCollectionReportEntry[ 'success'] = True
         
                     else:
-                        if not ( theAllowCreation and cLazyCreateCollections):
+                        if not ( theAllowInitialization and cLazyCreateCollections):
                             unCollectionReportEntry[ 'status'] = 'missing'         
                         else:                
                             aIdNuevaColeccion = self.invokeFactory( unTipoColeccion, unaIdColeccion, title=unTituloColeccion ) 
@@ -1154,7 +805,7 @@ class TRACatalogo_Inicializacion:
                     if not ( unaCollection == None):
                         
                         if self.fLazySetAcquireRoleAssignments( 
-                            theAllowCreation,
+                            theAllowInitialization,
                             unaCollection,
                             unCollectionReportEntry,
                             thePermissionsCache     = unPermissionsCache, 
@@ -1176,7 +827,7 @@ class TRACatalogo_Inicializacion:
                 unaExceptionInfo = sys.exc_info()
                 unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
                 
-                unInformeExcepcion = 'Exception during Lazy Initialization operation fLazyCrearCollections\n' 
+                unInformeExcepcion = 'Exception during Lazy Initialization operation fVerifyOrInitializeCollections\n' 
                 unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
                 unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
                 unInformeExcepcion += unaExceptionFormattedTraceback   
@@ -1200,7 +851,7 @@ class TRACatalogo_Inicializacion:
             
 
     security.declarePrivate( 'fLazySetAcquireRoleAssignments')
-    def fLazySetAcquireRoleAssignments( self, theAllowCreation=False, theElement=None, theReport= {}, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
+    def fLazySetAcquireRoleAssignments( self, theAllowInitialization=False, theElement=None, theReport= {}, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
        
         unExecutionRecord = self.fStartExecution( 'method',  'fLazySetAcquireRoleAssignments', theParentExecutionRecord, False, None, 'element: %s' % ( (theElement and '/'.join( theElement.getPhysicalPath())) or '')) 
 
@@ -1218,7 +869,7 @@ class TRACatalogo_Inicializacion:
                     theReport[ 'acquire_role_assignments_status']  = 'was_set'
                     return False
                 else:
-                    if ( theAllowCreation and cLazyCreateSetAcquireRoleAssignments):
+                    if ( theAllowInitialization and cLazyCreateSetAcquireRoleAssignments):
                         self.fSetAcquiringRoleAssignments( theElement, True)
                         
                         if self.fIsAcquiringRoleAssignments( theElement):                                
@@ -1244,7 +895,7 @@ class TRACatalogo_Inicializacion:
                         
             else:
                 if aIsAcquiringRoleAssignments:
-                    if ( theAllowCreation and cLazyCreateSetAcquireRoleAssignments):
+                    if ( theAllowInitialization and cLazyCreateSetAcquireRoleAssignments):
                         self.fSetAcquiringRoleAssignments( theElement, False)
                         
                         if self.fIsAcquiringRoleAssignments( theElement):                                
@@ -1283,28 +934,35 @@ class TRACatalogo_Inicializacion:
 
     
     
-    # #############################################################
-    # Catalogs and indexes creation
-    #
-    # #############################################################
-    
+ 
                 
  
-    security.declarePrivate( 'fLazyCrearCatalogsEIndicesTodosIdiomas')
-    def fLazyCrearCatalogsEIndicesTodosIdiomas( self, theAllowCreation=False, theCheckPermissions=True, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
-        unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearCatalogsEIndicesTodosIdiomas', theParentExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
+    security.declarePrivate( 'fVerifyOrInitializeCatalogsEIndicesTodosIdiomas')
+    def fVerifyOrInitializeCatalogsEIndicesTodosIdiomas( self, 
+        theEspecificacionesCatalogs =None, 
+        theAllowInitialization      =False, 
+        theCheckPermissions         =True, 
+        thePermissionsCache         =None, 
+        theRolesCache               =None, 
+        theParentExecutionRecord    =None):
+        """Verify or initialize catalogs and indexes, owned by each of the languages the TRACatalog, to index instances of TRATraduccion (translation).
+        
+        """
+        
+        unExecutionRecord = self.fStartExecution( 'method',  'fVerifyOrInitializeCatalogsEIndicesTodosIdiomas', theParentExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
 
         try:
             unosIdiomas = self.fObtenerTodosIdiomas()
             unosInformesIdiomas = []
             for unIdioma in unosIdiomas:
-                unInforme = self.fLazyCrearCatalogsEIndicesParaIdioma(  
-                    theAllowCreation, 
-                    unIdioma,
-                    theCheckPermissions, 
-                    thePermissionsCache, 
-                    theRolesCache, 
-                    unExecutionRecord
+                unInforme = self.fVerifyOrInitializeCatalogsEIndicesParaIdioma( 
+                    theEspecificacionesCatalogs =theEspecificacionesCatalogs,
+                    theAllowInitialization      =theAllowInitialization, 
+                    theIdioma                   =unIdioma,  
+                    theCheckPermissions         =theCheckPermissions, 
+                    thePermissionsCache         =thePermissionsCache, 
+                    theRolesCache               =theRolesCache, 
+                    theParentExecutionRecord    =unExecutionRecord,
                 )
                 if unInforme:
                     unosInformesIdiomas.append( unInforme)
@@ -1321,28 +979,32 @@ class TRACatalogo_Inicializacion:
     
         
  
-    security.declarePrivate( 'fLazyCrearCatalogsEIndicesParaIdioma')
-    def fLazyCrearCatalogsEIndicesParaIdioma( self, 
-        theAllowCreation=False, 
-        theIdioma=None,  
-        theCheckPermissions=True, 
-        thePermissionsCache=None, 
-        theRolesCache=None, 
-        theParentExecutionRecord=None):
+    security.declarePrivate( 'fVerifyOrInitializeCatalogsEIndicesParaIdioma')
+    def fVerifyOrInitializeCatalogsEIndicesParaIdioma( self, 
+        theEspecificacionesCatalogs =None,
+        theAllowInitialization      =False, 
+        theIdioma                   =None,  
+        theCheckPermissions         =True, 
+        thePermissionsCache         =None, 
+        theRolesCache               =None, 
+        theParentExecutionRecord    =None):
+        """Verify and create Catalogs and indexes for one language.
+        
+        """
        
-        unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearCatalogsEIndicesParaIdioma', theParentExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
+        unExecutionRecord = self.fStartExecution( 'method',  'fVerifyOrInitializeCatalogsEIndicesParaIdioma', theParentExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
 
         try:
             try:
 
                 if not self.Title():
-                    unInforme = self.fNewVoidInformeLazyCrearTodosCatalogs()
+                    unInforme = self.fNewVoidInformeVerifyOrInitTodosCatalogs()
                     unInforme[ 'success']   =  False
                     unInforme[ 'condition'] = 'Premature_initialization'
                     return unInforme
 
                 if not theIdioma:
-                    return self.fNewVoidInformeLazyCrearTodosCatalogs()
+                    return self.fNewVoidInformeVerifyOrInitTodosCatalogs()
                 
                 unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
                 unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
@@ -1358,7 +1020,7 @@ class TRACatalogo_Inicializacion:
                         theParentExecutionRecord= unExecutionRecord
                     )
                     if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
-                        unInforme = self.fNewVoidInformeLazyCrearTodosCatalogs()
+                        unInforme = self.fNewVoidInformeVerifyOrInitTodosCatalogs()
                         unInforme[ 'success']   =  False
                         unInforme[ 'condition'] = 'user_can_NOT_initialize_TRACatalogo'
                         return unInforme
@@ -1366,25 +1028,28 @@ class TRACatalogo_Inicializacion:
                 unSpecialPipelineSpec = None
                 unCodigoIdioma = theIdioma.getCodigoIdiomaEnGvSIG()
                 if not unCodigoIdioma:
-                    return self.fNewVoidInformeLazyCrearTodosCatalogs()
+                    return self.fNewVoidInformeVerifyOrInitTodosCatalogs()
                 
                 unLanguage, unCountry, unaVariation = self.fLanguageAndCountryAndVariationIdioma( unCodigoIdioma)
                 if not unLanguage:
-                    return self.fNewVoidInformeLazyCrearTodosCatalogs()
+                    return self.fNewVoidInformeVerifyOrInitTodosCatalogs()
          
-         
+                unDisplayTitleIdioma = theIdioma.fDisplayTitleAsUnicode()
+
                 if ( cLanguagesWithSpecialLexiconPipelines.has_key( unLanguage)):
                     unSpecialPipelineSpec = cLanguagesWithSpecialLexiconPipelines.get( unLanguage, None)
          
-                return  self.fLazyCrearCatalogsEIndicesEnContenedor( 
-                    theAllowCreation, 
-                    theIdioma, 
-                    cCatalogsDetailsParaIdioma, 
-                    theSpecialPipelineSpec=unSpecialPipelineSpec, 
-                    theCheckPermissions=False, 
-                    thePermissionsCache=unPermissionsCache, 
-                    theRolesCache=unRolesCache, 
-                    theParentExecutionRecord=unExecutionRecord
+                return  self.fVerifyOrInitializeCatalogsEIndicesEnContenedor( 
+                    theCatalogsTitle                    =unDisplayTitleIdioma,
+                    theAllowInitialization              =theAllowInitialization, 
+                    theContenedor                       =theIdioma, 
+                    theEspecificacionCatalogoEIndice    =theEspecificacionesCatalogs, 
+                    theSpecialPipelineSpec              =unSpecialPipelineSpec, 
+                    theCheckPermissions                 =theCheckPermissions, 
+                    thePermissionsCache                 =unPermissionsCache, 
+                    theRolesCache                       =unRolesCache, 
+                    theParentExecutionRecord            =unExecutionRecord,
+                    
                 )
     
     
@@ -1392,12 +1057,12 @@ class TRACatalogo_Inicializacion:
                 unaExceptionInfo = sys.exc_info()
                 unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
                 
-                unInformeExcepcion = 'Exception during Lazy Initialization operation fLazyCrearCatalogsEIndicesParaIdioma\n' 
+                unInformeExcepcion = 'Exception during Lazy Initialization operation fVerifyOrInitializeCatalogsEIndicesParaIdioma\n' 
                 unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
                 unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
                 unInformeExcepcion += unaExceptionFormattedTraceback   
                          
-                unInforme = self.fNewVoidInformeLazyCrearTodosCatalogs()
+                unInforme = self.fNewVoidInformeVerifyOrInitTodosCatalogs()
                 unInforme.update( {
                     'container_type':            theContenedor.__class__.__name__,
                     'container_title':           theContenedor.Title(),
@@ -1422,43 +1087,58 @@ class TRACatalogo_Inicializacion:
                 
                 
                 
-    security.declarePrivate( 'fLazyCrearCatalogsEIndicesEnCatalogo')
-    def fLazyCrearCatalogsEIndicesEnCatalogo( self, theAllowCreation=False, theCheckPermissions=True, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
-        unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearCatalogsEIndicesEnCatalogo', theParentExecutionRecord, False) 
+    security.declarePrivate( 'fVerifyOrInitializeCatalogsEIndicesEnCatalogo')
+    def fVerifyOrInitializeCatalogsEIndicesEnCatalogo( self, 
+        theEspecificacionesCatalogs    =None, 
+        theAllowInitialization         =False, 
+        theCheckPermissions            =True, 
+        thePermissionsCache            =None, 
+        theRolesCache                  =None, 
+        theParentExecutionRecord       =None):
+        """Verify or initialize catalogs and indexes, owned by the TRACatalog, to index instances of TRACadena (string to be translated).
+        
+        """
+        
+        unExecutionRecord = self.fStartExecution( 'method',  'fVerifyOrInitializeCatalogsEIndicesEnCatalogo', theParentExecutionRecord, False) 
 
         try:
-            return self.fLazyCrearCatalogsEIndicesEnContenedor( 
-                theAllowCreation,
-                self, 
-                cCatalogsDetailsParaCadenas, 
-                None, 
-                theCheckPermissions, 
-                thePermissionsCache, 
-                theRolesCache, 
-                unExecutionRecord
-            )   
+            return self.fVerifyOrInitializeCatalogsEIndicesEnContenedor( 
+                theCatalogsTitle                    ='Catalogs for Strings to be Translated to all languages',
+                theAllowInitialization              =theAllowInitialization, 
+                theContenedor                       =self, 
+                theEspecificacionCatalogoEIndice    =theEspecificacionesCatalogs, 
+                theSpecialPipelineSpec              =None, 
+                theCheckPermissions                 =theCheckPermissions, 
+                thePermissionsCache                 =thePermissionsCache, 
+                theRolesCache                       =theRolesCache, 
+                theParentExecutionRecord            =unExecutionRecord,
+            )
         finally:
             unExecutionRecord and unExecutionRecord.pEndExecution()
                 
                 
                 
 
-    security.declarePrivate( 'fLazyCrearCatalogsEIndicesEnContenedor')
-    def fLazyCrearCatalogsEIndicesEnContenedor( self, 
-        theAllowCreation                    =False, 
-        theContenedor                       = None, 
-        theEspecificacionCatalogoEIndice    = None, 
+    security.declarePrivate( 'fVerifyOrInitializeCatalogsEIndicesEnContenedor')
+    def fVerifyOrInitializeCatalogsEIndicesEnContenedor( self, 
+        theCatalogsTitle                    ='',
+        theAllowInitialization              =False, 
+        theContenedor                       =None, 
+        theEspecificacionCatalogoEIndice    =None, 
         theSpecialPipelineSpec              =None, 
         theCheckPermissions                 =True, 
         thePermissionsCache                 =None, 
         theRolesCache                       =None, 
         theParentExecutionRecord            =None):
+        """Verify and create Catalogs and indexes on a container (used for global and language specific catalogs).
+        
+        """
        
-        unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearCatalogsEIndicesEnContenedor', theParentExecutionRecord, False, None, 'container: %s  spec: %s' % ( theContenedor and '/'.join( theContenedor.getPhysicalPath()), str( theEspecificacionCatalogoEIndice))) 
+        unExecutionRecord = self.fStartExecution( 'method',  'fVerifyOrInitializeCatalogsEIndicesEnContenedor', theParentExecutionRecord, False, None, 'container: %s  spec: %s' % ( theContenedor and '/'.join( theContenedor.getPhysicalPath()), str( theEspecificacionCatalogoEIndice))) 
 
         try:
             
-            unInformeCrearCatalogs = self.fNewVoidInformeLazyCrearTodosCatalogs()
+            unInformeCrearCatalogs = self.fNewVoidInformeVerifyOrInitTodosCatalogs()
 
             try:
                 if not self.Title():
@@ -1466,32 +1146,57 @@ class TRACatalogo_Inicializacion:
                     unInformeCrearCatalogs[ 'condition'] = 'Premature_initialization'
                     return unInformeCrearCatalogs
                 
-                if not theContenedor or not theEspecificacionCatalogoEIndice:
+                if ( theContenedor == None) or not theEspecificacionCatalogoEIndice:
                     unInformeCrearCatalogs[ 'success']   =  False
-                    unInformeCrearCatalogs[ 'condition'] = 'MISSIG_parameters'
+                    unInformeCrearCatalogs[ 'condition'] = 'MISSING_parameters'
                     return unInformeCrearCatalogs
         
                 unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
                 unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
             
-                if theCheckPermissions:
-                    unUseCaseQueryResult = self.fUseCaseAssessment(  
-                        theUseCaseName          = cUseCase_InitializeTRACatalogo, 
-                        theElementsBindings     = { cBoundObject: self,},
-                        theRulesToCollect       = [ ], 
-                        thePermissionsCache     = unPermissionsCache, 
-                        theRolesCache           = unRolesCache, 
-                        theParentExecutionRecord= unExecutionRecord
-                    )
-                    if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
-                        return unInformeCrearCatalogs
+ 
                 
+                if theCheckPermissions:
+                    
+                    if theAllowInitialization:
+                    
+                        unUseCaseQueryResult = self.fUseCaseAssessment(  
+                            theUseCaseName          = cUseCase_InitializeTRACatalogo, 
+                            theElementsBindings     = { cBoundObject: self,},
+                            theRulesToCollect       = [ ], 
+                            thePermissionsCache     = unPermissionsCache, 
+                            theRolesCache           = unRolesCache, 
+                            theParentExecutionRecord= unExecutionRecord
+                        )
+                        if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
+                            unInformeCrearCatalogs[ 'success']   =  False
+                            unInformeCrearCatalogs[ 'condition'] = 'user_can_NOT_initialize_TRACatalogo'
+                            return unInformeCrearCatalogs
+                        
+                    else:
+                        unUseCaseQueryResult = self.fUseCaseAssessment(  
+                            theUseCaseName          = cUseCase_VerifyTRACatalogo, 
+                            theElementsBindings     = { cBoundObject: self,},
+                            theRulesToCollect       = [ ], 
+                            thePermissionsCache     = unPermissionsCache, 
+                            theRolesCache           = unRolesCache, 
+                            theParentExecutionRecord= unExecutionRecord
+                        )
+                        if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
+                            unInformeCrearCatalogs[ 'success']   =  False
+                            unInformeCrearCatalogs[ 'condition'] = 'user_can_NOT_verify_TRACatalogo'
+                            return unInformeCrearCatalogs
+                                                                
+                    
+                                  
+                    
                 someReportEntries = unInformeCrearCatalogs[ 'catalogs']
                 
                 unContainerType  = theContenedor.__class__.__name__
                 unContainerTitle = theContenedor.Title()
                 unContainerPath  = '/'.join( theContenedor.getPhysicalPath())
                 unInformeCrearCatalogs.update( {
+                    'title':                     theCatalogsTitle,
                     'container_type':            unContainerType,
                     'container_title':           unContainerTitle,
                     'container_path':            unContainerPath,
@@ -1515,11 +1220,8 @@ class TRACatalogo_Inicializacion:
                     unIndexesOrSchemasOrLexiconsAdded    = False
                     unCatalogReportEntry       = None
         
-                    unCatalogReportEntry = self.fNewVoidInformeLazyCrearCatalog()
+                    unCatalogReportEntry = self.fNewVoidInformeVerifyOrInitCatalog()
                     unCatalogReportEntry.update( {            
-                        'container_type':            unContainerType,
-                        'container_title':           unContainerTitle,
-                        'container_path':            unContainerPath,
                         'catalog_name':              unCatalogName,
                         'type':                     '',
                         'success':                  False,
@@ -1533,7 +1235,7 @@ class TRACatalogo_Inicializacion:
                         if not ( unCatalog == None):
                             unCatalogReportEntry[ 'status'] = 'exists'         
                         else:
-                            if not ( theAllowCreation and cLazyCreateCatalogs):
+                            if not ( theAllowInitialization and cLazyCreateCatalogs):
                                 unCatalogReportEntry[ 'status'] = 'missing'         
                             else:
                                 unNewCatalog = ZCatalog( unCatalogName, unCatalogName) 
@@ -1559,7 +1261,7 @@ class TRACatalogo_Inicializacion:
                                 if theSpecialPipelineSpec:
                                     unosPipelineElementNames = theSpecialPipelineSpec
                                             
-                                unLexiconReportEntry = self.fNewVoidInformeLazyCrearLexicon( unCatalogReportEntry)
+                                unLexiconReportEntry = self.fNewVoidInformeVerifyOrInitLexicon( unCatalogReportEntry)
                                 unLexiconReportEntry.update( {            
                                     'type':                     'lexicon',
                                     'lexicon_name':             unNombreLexicon,
@@ -1581,7 +1283,7 @@ class TRACatalogo_Inicializacion:
                                         'success':                              True,
                                     }) 
                                 else:    
-                                    if not ( theAllowCreation and cLazyCreateLexicons):
+                                    if not ( theAllowInitialization and cLazyCreateLexicons):
                                         unLexiconReportEntry[ 'status'] = 'missing',
                                     else:
                                      
@@ -1654,10 +1356,13 @@ class TRACatalogo_Inicializacion:
                                 unIndexExtras   = None
                                 if len( unIndexSpec) > 2:
                                     unIndexExtras= unIndexSpec[ 2]
+                                    unIndexReportEntry.update( {            
+                                        'index_extras': repr( unIndexExtras),
+                                    })
                                 
                                 unLastIndexName = unIndexName
                                 
-                                unIndexReportEntry = self.fNewVoidInformeLazyCrearIndex( unCatalogReportEntry)
+                                unIndexReportEntry = self.fNewVoidInformeVerifyOrInitIndex( unCatalogReportEntry)
                                 unIndexReportEntry.update( {            
                                     'type':                     'index',
                                     'index_name':               unIndexName,
@@ -1677,7 +1382,7 @@ class TRACatalogo_Inicializacion:
                                             'success':                              True,
                                         }) 
                                     else:
-                                        if not ( theAllowCreation and cLazyCreateIndexes):
+                                        if not ( theAllowInitialization and cLazyCreateIndexes):
                                             unIndexReportEntry.update( {
                                                 'status':                           'wrong_type',           
                                                 'current_index_type':               unExistingIndexClassName,
@@ -1711,7 +1416,7 @@ class TRACatalogo_Inicializacion:
                                                     }) 
                                                     
                                 else:       
-                                    if not ( theAllowCreation and cLazyCreateIndexes):
+                                    if not ( theAllowInitialization and cLazyCreateIndexes):
                                         unIndexReportEntry[ 'status'] = 'missing',
                                     else:
                                         if unIndexExtras:
@@ -1741,7 +1446,7 @@ class TRACatalogo_Inicializacion:
                             
                                 unLastSchemaFieldName = unSchemaFieldName
         
-                                unSchemaReportEntry = self.fNewVoidInformeLazyCrearSchema( unCatalogReportEntry)
+                                unSchemaReportEntry = self.fNewVoidInformeVerifyOrInitSchema( unCatalogReportEntry)
                                 unSchemaReportEntry[ 'schema_field_name'] = unSchemaFieldName
                                 unosSchemaEntries.append( unSchemaReportEntry)
                                 
@@ -1750,7 +1455,7 @@ class TRACatalogo_Inicializacion:
                                     unSchemaReportEntry[ 'success'] = True                                    
                                     
                                 else:
-                                    if not ( theAllowCreation and cLazyCreateSchemaFields):    
+                                    if not ( theAllowInitialization and cLazyCreateSchemaFields):    
                                         unSchemaReportEntry[ 'status'] = 'missing',
                                     else:
                                         unCatalog.addColumn( unSchemaFieldName) 
@@ -1762,16 +1467,22 @@ class TRACatalogo_Inicializacion:
                                         else:
                                             unSchemaReportEntry[ 'status'] = 'creation_failed'           
             
-                            if unIndexesOrSchemasOrLexiconsAdded and not unCatalogJustCreated:
+                                            
+                            if unIndexesOrSchemasOrLexiconsAdded:
+                                
                                 unCatalogsChanged = True
                                 
-                                unStartTime = fMillisecondsNow()
+                                if not unCatalogJustCreated:
                                 
-                                unCatalog.refreshCatalog()
-            
-                                unEndTime = fMillisecondsNow()
-                                unCatalogReportEntry[ 'catalog_refreshed'] = True
-                                unCatalogReportEntry[ 'catalog_refresh_duration'] = unEndTime - unStartTime
+                                    from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow
+                                    
+                                    unStartTime = fMillisecondsNow()
+                                    
+                                    unCatalog.refreshCatalog()
+                
+                                    unEndTime = fMillisecondsNow()
+                                    unCatalogReportEntry[ 'catalog_refreshed'] = True
+                                    unCatalogReportEntry[ 'catalog_refresh_duration'] = unEndTime - unStartTime
                                 
                                                  
   
@@ -1804,7 +1515,7 @@ class TRACatalogo_Inicializacion:
                 unaExceptionInfo = sys.exc_info()
                 unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
                 
-                unInformeExcepcion = 'Exception during Lazy Initialization operation fLazyCrearCatalogsEIndicesEnContenedor\n' 
+                unInformeExcepcion = 'Exception during Lazy Initialization operation fVerifyOrInitializeCatalogsEIndicesEnContenedor\n' 
                 unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
                 unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
                 unInformeExcepcion += unaExceptionFormattedTraceback   
@@ -1828,13 +1539,21 @@ class TRACatalogo_Inicializacion:
     
   
    
-    security.declarePrivate( 'fLazyCrearUserGroupsCatalogo')
-    def fLazyCrearUserGroupsCatalogo(self, theAllowCreation=False, theCheckPermissions=True, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
-        unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearUserGroupsCatalogo', theParentExecutionRecord, False) 
+    security.declarePrivate( 'fVerifyOrInitializeUserGroupsCatalogo')
+    def fVerifyOrInitializeUserGroupsCatalogo(self, 
+        theAllowInitialization         =False, 
+        theCheckPermissions            =True, 
+        thePermissionsCache            =None, 
+        theRolesCache                  =None, 
+        theParentExecutionRecord       =None):
+        """Verify or initialize user groups, specific to this TRACatalog, for each of the roles that users may play when interacting with this TRACatalogo.
+        
+        """
+        unExecutionRecord = self.fStartExecution( 'method',  'fVerifyOrInitializeUserGroupsCatalogo', theParentExecutionRecord, False) 
 
         try:
-            return self.fLazyCrearUserGroups(  
-                theAllowCreation,
+            return self.fVerifyOrInitializeUserGroups(  
+                theAllowInitialization,
                 cTRAUserGroups_Catalogo, 
                 lambda theGroupName: self.fUserGroupIdEnCatalogoFor( theGroupName), 
                 [ 
@@ -1858,13 +1577,13 @@ class TRACatalogo_Inicializacion:
 
  
     # ACV 20090914 Simpler security schema: no user groups for languages or modules, shall assign local roles to users directly on the language or module element
-    #security.declarePrivate( 'fLazyCrearUserGroupsAllIdiomas')
-    #def fLazyCrearUserGroupsAllIdiomas(self, theAllowCreation=False, theCheckPermissions=True, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
-        #unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearUserGroupsAllIdiomas', theParentExecutionRecord, False) 
+    #security.declarePrivate( 'fVerifyOrInitializeUserGroupsAllIdiomas')
+    #def fVerifyOrInitializeUserGroupsAllIdiomas(self, theAllowInitialization=False, theCheckPermissions=True, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
+        #unExecutionRecord = self.fStartExecution( 'method',  'fVerifyOrInitializeUserGroupsAllIdiomas', theParentExecutionRecord, False) 
 
         #try:
-            #return self.fLazyCrearUserGroups(
-                #theAllowCreation,
+            #return self.fVerifyOrInitializeUserGroups(
+                #theAllowInitialization,
                 #cTRAUserGroups_AllIdiomas, 
                 #lambda theGroupName: self.fUserGroupIdAllIdiomasFor( theGroupName), 
                 #[ 
@@ -1883,13 +1602,13 @@ class TRACatalogo_Inicializacion:
    
     
    
-    #security.declarePrivate( 'fLazyCrearUserGroupsAllModulos')
-    #def fLazyCrearUserGroupsAllModulos(self, theAllowCreation=False, theCheckPermissions=True, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
-        #unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearUserGroupsAllModulos', theParentExecutionRecord, False) 
+    #security.declarePrivate( 'fVerifyOrInitializeUserGroupsAllModulos')
+    #def fVerifyOrInitializeUserGroupsAllModulos(self, theAllowInitialization=False, theCheckPermissions=True, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
+        #unExecutionRecord = self.fStartExecution( 'method',  'fVerifyOrInitializeUserGroupsAllModulos', theParentExecutionRecord, False) 
 
         #try:
-            #return self.fLazyCrearUserGroups(
-                #theAllowCreation,
+            #return self.fVerifyOrInitializeUserGroups(
+                #theAllowInitialization,
                 #cTRAUserGroups_AllModulos, 
                 #lambda theGroupName: self.fUserGroupIdAllModulosFor( theGroupName), 
                 #[ 
@@ -1911,22 +1630,22 @@ class TRACatalogo_Inicializacion:
     
     
    
-    #security.declarePrivate( 'fLazyCrearUserGroupsIdiomas')
-    #def fLazyCrearUserGroupsIdiomas(self, 
-        #theAllowCreation=False, 
+    #security.declarePrivate( 'fVerifyOrInitializeUserGroupsIdiomas')
+    #def fVerifyOrInitializeUserGroupsIdiomas(self, 
+        #theAllowInitialization=False, 
         #theCheckPermissions=True, 
         #thePermissionsCache=None, 
         #theRolesCache=None, 
         #theParentExecutionRecord=None):
         
-        #unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearUserGroupsIdiomas', theParentExecutionRecord, False) 
+        #unExecutionRecord = self.fStartExecution( 'method',  'fVerifyOrInitializeUserGroupsIdiomas', theParentExecutionRecord, False) 
 
         #try:
             #unosIdiomas = self.fObtenerTodosIdiomas()
             #unosInformesIdiomas = []
             #for unIdioma in unosIdiomas:
-                #unInforme = self.fLazyCrearUserGroupsParaIdioma(  
-                    #theAllowCreation, 
+                #unInforme = self.fVerifyOrInitializeUserGroupsParaIdioma(  
+                    #theAllowInitialization, 
                     #unIdioma, 
                     #theCheckPermissions, 
                     #thePermissionsCache, 
@@ -1943,23 +1662,23 @@ class TRACatalogo_Inicializacion:
   
     
     
-    #security.declarePrivate( 'fLazyCrearUserGroupsParaIdioma')
-    #def fLazyCrearUserGroupsParaIdioma(self, 
-        #theAllowCreation=False, 
+    #security.declarePrivate( 'fVerifyOrInitializeUserGroupsParaIdioma')
+    #def fVerifyOrInitializeUserGroupsParaIdioma(self, 
+        #theAllowInitialization=False, 
         #theIdioma=None, 
         #theCheckPermissions=True, 
         #thePermissionsCache=None, 
         #theRolesCache=None, 
         #theParentExecutionRecord=None):
         
-        #unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearUserGroupsParaIdioma', theParentExecutionRecord, False, None, 'language: %s' %  theIdioma or 'unknown') 
+        #unExecutionRecord = self.fStartExecution( 'method',  'fVerifyOrInitializeUserGroupsParaIdioma', theParentExecutionRecord, False, None, 'language: %s' %  theIdioma or 'unknown') 
 
         #try:
             #if not theIdioma:
                 #return []
             
-            #return self.fLazyCrearUserGroups(  
-                #theAllowCreation, 
+            #return self.fVerifyOrInitializeUserGroups(  
+                #theAllowInitialization, 
                 #cTRAUserGroups_Idioma, 
                 #lambda theGroupName: self.fUserGroupIdIdiomaFor( theGroupName, theIdioma), 
                 #[ 
@@ -1982,16 +1701,16 @@ class TRACatalogo_Inicializacion:
   
     
    
-    #security.declarePrivate( 'fLazyCrearUserGroupsModulos')
-    #def fLazyCrearUserGroupsModulos(self, theAllowCreation=False, theCheckPermissions=True, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
-        #unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearUserGroupsModulos', theParentExecutionRecord, False) 
+    #security.declarePrivate( 'fVerifyOrInitializeUserGroupsModulos')
+    #def fVerifyOrInitializeUserGroupsModulos(self, theAllowInitialization=False, theCheckPermissions=True, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
+        #unExecutionRecord = self.fStartExecution( 'method',  'fVerifyOrInitializeUserGroupsModulos', theParentExecutionRecord, False) 
 
         #try:
             #unosModulos = self.fObtenerTodosModulos()
             #unosInformesModulos = []
             #for unModulo in unosModulos:
-                #unInforme = self.fLazyCrearUserGroupsParaModulo(  
-                    #theAllowCreation, 
+                #unInforme = self.fVerifyOrInitializeUserGroupsParaModulo(  
+                    #theAllowInitialization, 
                     #unModulo, 
                     #theCheckPermissions, 
                     #thePermissionsCache, 
@@ -2009,23 +1728,23 @@ class TRACatalogo_Inicializacion:
     
         
         
-    #security.declarePrivate( 'fLazyCrearUserGroupsParaModulo')
-    #def fLazyCrearUserGroupsParaModulo(self, 
-        #theAllowCreation=False, 
+    #security.declarePrivate( 'fVerifyOrInitializeUserGroupsParaModulo')
+    #def fVerifyOrInitializeUserGroupsParaModulo(self, 
+        #theAllowInitialization=False, 
         #theModulo=None, 
         #theCheckPermissions=True, 
         #thePermissionsCache=None, 
         #theRolesCache=None, 
         #theParentExecutionRecord=None):
         
-        #unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearUserGroupsParaModulo', theParentExecutionRecord, False) 
+        #unExecutionRecord = self.fStartExecution( 'method',  'fVerifyOrInitializeUserGroupsParaModulo', theParentExecutionRecord, False) 
 
         #try:
             #if not theModulo:
                 #return []
             
-            #return self.fLazyCrearUserGroups( 
-                #theAllowCreation, 
+            #return self.fVerifyOrInitializeUserGroups( 
+                #theAllowInitialization, 
                 #cTRAUserGroups_Modulo, 
                 #lambda theGroupName: self.fUserGroupIdModuloFor( theGroupName, theModulo), 
                 #[  
@@ -2047,9 +1766,9 @@ class TRACatalogo_Inicializacion:
     
     
 
-    security.declarePrivate( 'fLazyCrearUserGroups')
-    def fLazyCrearUserGroups(self, 
-        theAllowCreation=False, 
+    security.declarePrivate( 'fVerifyOrInitializeUserGroups')
+    def fVerifyOrInitializeUserGroups(self, 
+        theAllowInitialization=False, 
         theGroupsSpec=None, 
         theGroupIdResolver_lambda=None, 
         theGroupsNamesAndElementsToSetRoles=None, 
@@ -2059,11 +1778,11 @@ class TRACatalogo_Inicializacion:
         theRolesCache=None, 
         theParentExecutionRecord=None):
         
-        unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearUserGroups', theParentExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }, 'spec: %s' % str( theGroupsSpec or '')) 
+        unExecutionRecord = self.fStartExecution( 'method',  'fVerifyOrInitializeUserGroups', theParentExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }, 'spec: %s' % str( theGroupsSpec or '')) 
 
         try:
             try:
-                unInforme = self.fNewVoidInformeLazyCrearTodosUserGroups()
+                unInforme = self.fNewVoidInformeVerifyOrInitTodosUserGroups()
                 
                 if not self.Title():
                     unInforme[ 'success']   =  False
@@ -2072,42 +1791,66 @@ class TRACatalogo_Inicializacion:
                 
                 if not theGroupsSpec or not theGroupIdResolver_lambda:
                     unInforme[ 'success']   =  False
-                    unInforme[ 'condition'] = 'MISSIG_parameters'
+                    unInforme[ 'condition'] = 'MISSING_parameters'
                     return unInforme
                 
                 unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
                 unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
             
                 
+                 
+
                 if theCheckPermissions:
-                    unUseCaseQueryResult = self.fUseCaseAssessment(  
-                        theUseCaseName          = cUseCase_InitializeTRACatalogo, 
-                        theElementsBindings     = { cBoundObject: self,},
-                        theRulesToCollect       = [ ], 
-                        thePermissionsCache     = unPermissionsCache, 
-                        theRolesCache           = unRolesCache, 
-                        theParentExecutionRecord= unExecutionRecord
-                    )
-                    if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
-                        return unInforme
+                    
+                    if theAllowInitialization:
+                    
+                        unUseCaseQueryResult = self.fUseCaseAssessment(  
+                            theUseCaseName          = cUseCase_InitializeTRACatalogo, 
+                            theElementsBindings     = { cBoundObject: self,},
+                            theRulesToCollect       = [ ], 
+                            thePermissionsCache     = unPermissionsCache, 
+                            theRolesCache           = unRolesCache, 
+                            theParentExecutionRecord= unExecutionRecord
+                        )
+                        if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
+                            unInforme[ 'success']   =  False
+                            unInforme[ 'condition'] = 'user_can_NOT_initialize_TRACatalogo'
+                            return unInforme
+                        
+                    else:
+                        unUseCaseQueryResult = self.fUseCaseAssessment(  
+                            theUseCaseName          = cUseCase_VerifyTRACatalogo, 
+                            theElementsBindings     = { cBoundObject: self,},
+                            theRulesToCollect       = [ ], 
+                            thePermissionsCache     = unPermissionsCache, 
+                            theRolesCache           = unRolesCache, 
+                            theParentExecutionRecord= unExecutionRecord
+                        )
+                        if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
+                            unInforme[ 'success']   =  False
+                            unInforme[ 'condition'] = 'user_can_NOT_verify_TRACatalogo'
+                            return unInforme
+                                                                
+                    
         
                 unaGroupsTool = self.getGroupsTool()
                 if not unaGroupsTool:
                     return unInforme
                                 
-                unHaHabidoCambio = False
         
                 unosInformesGroup = unInforme[ 'groups']
                 
                 
                 for unGroupSpec in theGroupsSpec:
                     
+                    unHaHabidoCambio = False
+                    
                     unGroupName     = unGroupSpec[ 0]
                     unGroupRoles    = unGroupSpec[ 1]
                     
                     unGroupExists   = False   
                     
-                    unInformeUserGroup = self.fNewVoidInformeLazyCrearUserGroup()
+                    unInformeUserGroup = self.fNewVoidInformeVerifyOrInitUserGroup()
                     unGroupId = theGroupIdResolver_lambda( unGroupName)
                     unInformeUserGroup.update({
                         'name':     unGroupId,
@@ -2123,7 +1866,7 @@ class TRACatalogo_Inicializacion:
                         })
                         unGroupExists = True
                     else:   
-                        if not ( theAllowCreation and cLazyCreateUserGroups):
+                        if not ( theAllowInitialization and cLazyCreateUserGroups):
                             unInformeUserGroup[ 'success'] = False
                             unInformeUserGroup[ 'status'] = 'missing'         
                         else:
@@ -2149,6 +1892,10 @@ class TRACatalogo_Inicializacion:
                                     'status':      'creation_failure',
                                  })
                             
+                    if unHaHabidoCambio:
+                        transaction.commit()
+                        unInforme[ 'committed'] = True
+                    
                     if unGroupExists:
                         unosInformesRoles = unInformeUserGroup[ 'roles']
                         if theGroupsNamesAndElementsToSetRoles:
@@ -2163,7 +1910,7 @@ class TRACatalogo_Inicializacion:
                                         for unElementToSetRole in unosElementsToSetRoles:
 
                                             unInformeRoles = self.fLazySetLocalRolesForElement( 
-                                                theAllowCreation, 
+                                                theAllowInitialization, 
                                                 unElementToSetRole, 
                                                 unGroupId, 
                                                 unGroupRoles, 
@@ -2181,7 +1928,7 @@ class TRACatalogo_Inicializacion:
                             unGroupIdToAddGroupTo = theGroupIdToAddGroupToResolver_lambda( unGroupName)
                             if unGroupIdToAddGroupTo:
                                 unInformeAddGroupToGroup = self.fLazyAddGroupToGroup( 
-                                    theAllowCreation,
+                                    theAllowInitialization,
                                     unGroupId, 
                                     unGroupIdToAddGroupTo, 
                                     unExecutionRecord
@@ -2192,10 +1939,6 @@ class TRACatalogo_Inicializacion:
                                         unInformeUserGroup[ 'success'] = False
                                         
                     
-                if unHaHabidoCambio:
-                    transaction.commit()
-                    unInforme[ 'committed'] = True
-                    
                 if len( [ unInformeUserGroup for unInformeUserGroup in unosInformesGroup if unInformeUserGroup[ 'success'] ]) == len( unosInformesGroup):
                     unInforme[ 'success'] = True
         
@@ -2205,7 +1948,7 @@ class TRACatalogo_Inicializacion:
                 unaExceptionInfo = sys.exc_info()
                 unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
                 
-                unInformeExcepcion = 'Exception during Lazy Initialization operation fLazyCrearUserGroups\n' 
+                unInformeExcepcion = 'Exception during Lazy Initialization operation fVerifyOrInitializeUserGroups\n' 
                 unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
                 unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
                 unInformeExcepcion += unaExceptionFormattedTraceback   
@@ -2233,7 +1976,7 @@ class TRACatalogo_Inicializacion:
     
     security.declarePrivate( 'fLazySetLocalRolesForElement')
     def fLazySetLocalRolesForElement(self, 
-        theAllowCreation        =False, 
+        theAllowInitialization        =False, 
         theElement              =None, 
         theUserGroupId          ='', 
         theLocalRolesToSet      =[], 
@@ -2288,7 +2031,7 @@ class TRACatalogo_Inicializacion:
                         'status':           'all existing',
                     })
                 else:
-                    if not ( theAllowCreation and cLazyCreateSetLocalRoles):
+                    if not ( theAllowInitialization and cLazyCreateSetLocalRoles):
                         unInforme.update({
                             'success':       False,
                             'status':        'missing',
@@ -2356,7 +2099,7 @@ class TRACatalogo_Inicializacion:
     
     security.declarePrivate( 'fLazyAddGroupToGroup')
     def fLazyAddGroupToGroup(self, 
-        theAllowCreation        =False,
+        theAllowInitialization        =False,
         theGroupIdToAdd         ='', 
         theContainerGroupId     ='', 
         theParentExecutionRecord=None):
@@ -2383,7 +2126,7 @@ class TRACatalogo_Inicializacion:
                     unInforme[ 'success'] = True
                     unInforme[ 'status'] = 'was_member'
                 else:
-                    if not ( theAllowCreation and cLazyAddGroupToGroup):
+                    if not ( theAllowInitialization and cLazyAddGroupToGroup):
                         unInforme[ 'success'] = False
                         unInforme[ 'status'] = 'missing'         
                     else:
@@ -2521,7 +2264,7 @@ class TRACatalogo_Inicializacion:
                 self.pWriteLine( anOutput,  'external_methods initialization:', 1)
           
                 for aExtMethodResult in unResultadoExtMethods.get( 'methods', []):
-                    self.pWriteLine( anOutput,  'id: %s     title: %s     module: %s      function: %s' % (   aExtMethodResult.get( 'ext_method_id', ''), aExtMethodResult.get( 'ext_method_title', ''), aExtMethodResult.get( 'ext_method_module', ''), aExtMethodResult.get( 'ext_method_function', ''), ), 2)    
+                    self.pWriteLine( anOutput,  'success: %s    id: %s     title: %s     module: %s      function: %s' % (  aExtMethodResult.get( 'success', False),  aExtMethodResult.get( 'ext_method_id', ''), aExtMethodResult.get( 'ext_method_title', ''), aExtMethodResult.get( 'ext_method_module', ''), aExtMethodResult.get( 'ext_method_function', ''), ), 2)    
                     self.pWriteLine( anOutput,  'committed: %s status %s ' % (  aExtMethodResult.get( 'committed', False), aExtMethodResult.get( 'status', ''), ), 3)    
                     if aExtMethodResult.get( 'exception', ''):
                         self.pWriteLine( anOutput,  'exception:\n%s\n\n' % aExtMethodResult.get( 'exception', ''), 2)
@@ -2803,23 +2546,23 @@ class TRACatalogo_Inicializacion:
     
     
 
-    security.declarePrivate( 'fPrettyPrintLazyCreationResultHTML')
-    def fPrettyPrintLazyCreationResultHTML(self, theLazyCreationResult, theParentExecutionRecord):
+    #security.declarePrivate( 'fPrettyPrintLazyCreationResultHTML')
+    #def fPrettyPrintLazyCreationResultHTML(self, theLazyCreationResult, theParentExecutionRecord):
        
-        unExecutionRecord = self.fStartExecution( 'method',  'fPrettyPrintLazyCreationResultHTML', theParentExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
-        try:
-            if not theLazyCreationResult:
-                return ''
+        #unExecutionRecord = self.fStartExecution( 'method',  'fPrettyPrintLazyCreationResultHTML', theParentExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
+        #try:
+            #if not theLazyCreationResult:
+                #return ''
         
-            aResult = self.fPrettyPrintLazyCreationResult( theLazyCreationResult)
-            if not aResult:
-                return ''
+            #aResult = self.fPrettyPrintLazyCreationResult( theLazyCreationResult)
+            #if not aResult:
+                #return ''
             
-            anHTMLResult = '<p>%s</p>' % aResult.replace('\n', '\n<br/>\n').replace( cIndent, '&nbsp; ' * len( cIndent)).replace( ' ', '&nbsp;')
-            return anHTMLResult
+            #anHTMLResult = '<p>%s</p>' % aResult.replace('\n', '\n<br/>\n').replace( cIndent, '&nbsp; ' * len( cIndent)).replace( ' ', '&nbsp;')
+            #return anHTMLResult
         
-        finally:
-            unExecutionRecord and unExecutionRecord.pEndExecution()
+        #finally:
+            #unExecutionRecord and unExecutionRecord.pEndExecution()
         
          
     

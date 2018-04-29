@@ -65,7 +65,6 @@ from Products.CMFCore.utils                 import getToolByName
 
 from Products.Archetypes.atapi              import OrderedBaseFolder
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow
 
 
 
@@ -1489,6 +1488,8 @@ class TRAElemento_Permissions:
 
         """
         unExecutionRecord = self.fStartExecution( 'method',  'fUseCaseAssessment', theParentExecutionRecord, False, None, 'usecase %s' % (theUseCaseName or 'unknown')) 
+
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow
 
         unStartTime = fMillisecondsNow() 
         unUseCaseAssesment = None

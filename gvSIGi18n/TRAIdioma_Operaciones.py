@@ -45,9 +45,6 @@ from Products.Archetypes.public import DisplayList
 
 from Products.CMFCore           import permissions
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneTool          import ModelDDvlPloneTool
-from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import ModelDDvlPloneTool_Mutators, cModificationKind_ChangeValues
-from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import cModificationKind_CreateSubElement, cModificationKind_Create
 
 
 
@@ -362,7 +359,9 @@ class TRAIdioma_Operaciones:
         
         """
     
-        unExecutionRecord = self.fStartExecution( 'method',  'fCopiarTraducciones', None, True, { 'log_what': 'details', 'log_when': True, }) # invoked from ModelDDvlPloneTool still using previous style of time profiling, thus the parameter is not theParentExecutionRecord =None, 
+        unExecutionRecord = self.fStartExecution( 'method',  'fCopiarTraducciones', None, True, { 'log_what': 'details', 'log_when': True, }) 
+
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import ModelDDvlPloneTool_Mutators, cModificationKind_ChangeValues, cModificationKind_CreateSubElement, cModificationKind_Create
 
         try:
             unasDescripcionesContenidosCreados = []
@@ -451,7 +450,7 @@ class TRAIdioma_Operaciones:
 
                         
                 
-                aModelDDvlPlone_tool = ModelDDvlPloneTool()
+                aModelDDvlPlone_tool = self.fModelDDvlPloneTool()
                              
                              
                 unaColeccionImportaciones = unCatalogo.fObtenerColeccionImportaciones()
@@ -627,6 +626,8 @@ class TRAIdioma_Operaciones:
         
         unExecutionRecord = self.fStartExecution( 'method',  'fBloquearIdioma', theParentExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
 
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import ModelDDvlPloneTool_Mutators, cModificationKind_ChangeValues, cModificationKind_CreateSubElement, cModificationKind_Create
+        
         try:
             
             try:
@@ -733,6 +734,8 @@ class TRAIdioma_Operaciones:
     def fDesbloquearIdioma( self , thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
         
         unExecutionRecord = self.fStartExecution( 'method',  'fDesbloquearIdioma', theParentExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
+
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import ModelDDvlPloneTool_Mutators, cModificationKind_ChangeValues, cModificationKind_CreateSubElement, cModificationKind_Create
 
         try:
             

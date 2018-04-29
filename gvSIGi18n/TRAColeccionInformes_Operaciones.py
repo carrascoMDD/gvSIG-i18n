@@ -43,8 +43,6 @@ import transaction
 from Products.CMFCore       import permissions
 from Products.CMFCore.utils  import getToolByName
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneTool          import ModelDDvlPloneTool
-from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import ModelDDvlPloneTool_Mutators,cModificationKind_CreateSubElement, cModificationKind_Create
 
 
 from TRAElemento_Constants import *
@@ -143,6 +141,8 @@ class TRAColeccionInformes_Operaciones:
         
         """
         unExecutionRecord = self.fStartExecution( 'method',  'fCrearInforme', theParentExecutionRecord,  True, { 'log_what': 'details', 'log_when': True, }, ) 
+        
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import ModelDDvlPloneTool_Mutators,cModificationKind_CreateSubElement, cModificationKind_Create
         
         try:
         

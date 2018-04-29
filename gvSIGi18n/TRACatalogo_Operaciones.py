@@ -56,10 +56,10 @@ from Products.Archetypes.public     import DisplayList
 from Products.CMFCore.utils         import getToolByName
 
 
+from TRAArquetipo import TRAArquetipo
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import ModelDDvlPloneTool_Mutators,cModificationKind_CreateSubElement, cModificationKind_Create, cModificationKind_ChangeValues
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow
+
 
 
 from TRAElemento_Constants import *
@@ -79,8 +79,7 @@ from TRAElemento_Permission_Definitions import cTRAUserGroups_Catalogo_Authorize
 
 
 
-
-from TRAArquetipo import TRAArquetipo
+from TRACatalogo_Inicializacion_Constants import cTRACatalogsDetailsParaIdioma
 
 
 
@@ -238,6 +237,8 @@ class TRACatalogo_Operaciones:
         
         unExecutionRecord = self.fStartExecution( 'method',  'fBloquearCatalogo', theParentExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
 
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import ModelDDvlPloneTool_Mutators,cModificationKind_CreateSubElement, cModificationKind_Create, cModificationKind_ChangeValues
+        
         try:
             
             try:
@@ -313,6 +314,8 @@ class TRACatalogo_Operaciones:
     def fDesbloquearCatalogo( self , thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
         
         unExecutionRecord = self.fStartExecution( 'method',  'fDesbloquearCatalogo', theParentExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
+
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import ModelDDvlPloneTool_Mutators,cModificationKind_CreateSubElement, cModificationKind_Create, cModificationKind_ChangeValues
 
         try:
             
@@ -746,8 +749,8 @@ class TRACatalogo_Operaciones:
         
         TRAElemento.manage_afterAdd(  self, theItem, theContainer)
         
-        unInforme = self.fLazyCrear( 
-            theAllowCreation        =True, 
+        unInforme = self.fVerifyOrInitialize( 
+            theAllowInitialization  =True, 
             theCheckPermissions     =True,  
             thePermissionsCache     =None, 
             theRolesCache           =None, 
@@ -1579,7 +1582,9 @@ class TRACatalogo_Operaciones:
         
         """
         unExecutionRecord = self.fStartExecution( 'method',  'fCrearIdioma', theParentExecutionRecord,  True, { 'log_what': 'details', 'log_when': True, }, 'codigo_idioma: %s' % ( theCodigoIdiomaEnGvSIG or 'unknown')) 
-        
+
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import ModelDDvlPloneTool_Mutators,cModificationKind_CreateSubElement, cModificationKind_Create, cModificationKind_ChangeValues
+
         try:
         
             if not theUseCaseQueryResult or not theUseCaseQueryResult.get( 'success', False):
@@ -1645,14 +1650,16 @@ class TRACatalogo_Operaciones:
            
             unNuevoIdioma.pSetPermissions()
             
-            self.fLazyCrearCatalogsEIndicesParaIdioma( 
-                theAllowCreation        = True, 
+            self.fVerifyOrInitializeCatalogsEIndicesParaIdioma( 
+                theEspecificacionesCatalogs =cTRACatalogsDetailsParaIdioma,
+                theAllowInitialization  = True, 
                 theIdioma               = unNuevoIdioma,  
                 theCheckPermissions     = False, 
                 thePermissionsCache     = unPermissionsCache, 
                 theRolesCache           = unRolesCache, 
                 theParentExecutionRecord= unExecutionRecord
             )
+           
     
             # ACV 20090914 Simpler security schema: no user groups for languages or modules, shall assign local roles to users directly on the language or module element
             #self.fLazyCrearUserGroupsParaIdioma(
@@ -1761,6 +1768,8 @@ class TRACatalogo_Operaciones:
         """
         unExecutionRecord = self.fStartExecution( 'method',  'fCrearModulo', theParentExecutionRecord,  True, { 'log_what': 'details', 'log_when': True, }, 'nombre_modulo: %s' % ( theNombreModulo or 'unknown')) 
         
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import ModelDDvlPloneTool_Mutators,cModificationKind_CreateSubElement, cModificationKind_Create, cModificationKind_ChangeValues
+
         try:
         
 
@@ -2545,6 +2554,7 @@ class TRACatalogo_Operaciones:
         unExecutionRecord = self.fStartExecution( 'method',  'fListaSimbolosCadenasInactivasOrdenados', theParentExecutionRecord, False) 
 
         if cLogInicializarSimbolosCadenasOrdenados:
+            from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow
             unStartTime = fMillisecondsNow()
         
         try:
@@ -2771,6 +2781,7 @@ class TRACatalogo_Operaciones:
         unExecutionRecord = self.fStartExecution( 'method',  'pInicializarModulosYSimbolosCadenasOrdenados', theParentExecutionRecord, False) 
 
         if cLogInicializarSimbolosCadenasOrdenados:
+            from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow
             unStartTime = fMillisecondsNow()
         
         try:

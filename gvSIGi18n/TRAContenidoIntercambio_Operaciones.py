@@ -55,8 +55,6 @@ from Products.CMFCore.utils import getToolByName
 
 from Products.CMFCore       import permissions
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow, fDateTimeNow, fReprAsString, fEvalString
-
 
 from TRAElemento_Constants import *
 
@@ -151,6 +149,8 @@ class TRAContenidoIntercambio_Operaciones:
     security.declarePrivate( 'pSetContenido')    
     def pSetContenido( self, theContenido):
 
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fDateTimeNow        
+        
         unAhora = fDateTimeNow()
         
         if not theContenido:
@@ -171,7 +171,9 @@ class TRAContenidoIntercambio_Operaciones:
             
     security.declarePrivate( 'fStringFromContenidoDeUploadedFile')    
     def fStringFromContenidoDeUploadedFile( self, theContenidoUploadedFile):
-        
+
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fReprAsString        
+
         aTranslationService = getToolByName( self, 'translation_service', None)
 
         aContenidoStructureToConvert = self.fNewVoidUploadedContent()
@@ -412,6 +414,8 @@ class TRAContenidoIntercambio_Operaciones:
 
     security.declarePrivate( 'fContenidoFromString')    
     def fContenidoFromString( self, theContenidoString, theParentExecutionRecord=None):
+        
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fEvalString
         
         if not theContenidoString:
             return None

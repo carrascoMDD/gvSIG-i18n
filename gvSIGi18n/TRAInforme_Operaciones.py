@@ -62,10 +62,6 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore       import permissions
 
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import  fReprAsString, fDateTimeNow
-
-
-
 from TRAElemento_Constants              import *
 
 from TRATraduccion_Operaciones          import cMarcaDeComentarioSinCambios
@@ -123,6 +119,8 @@ class TRAInforme_Operaciones:
        
         unExecutionRecord = self.fStartExecution( 'method',  'fElaborarInforme', theParentExecutionRecord, False) 
         
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import  fReprAsString, fDateTimeNow
+
         try:
             if ( not theForceEllaboration) and self.getHaComenzado():
                 return False

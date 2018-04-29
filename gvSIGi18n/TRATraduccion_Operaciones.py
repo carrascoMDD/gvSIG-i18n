@@ -607,8 +607,13 @@ class TRATraduccion_Operaciones:
 
         return unString
         
-       
- 
+    
+    
+    
+
+    
+    
+    
     security.declarePrivate( 'fIntentarTraducir')
     def fIntentarTraducir( self, 
         theCadenaTraducida, 
@@ -769,8 +774,20 @@ class TRATraduccion_Operaciones:
     
             aResult[ 'memberid'] = unMemberId
             
-            unHayCambio = False
+            
+            
+            unAhoraStoreString = self.fDateTimeNowTextual()
+            
+            unTranslationActivity = self.fNewVoidTranslationActivity()
+            unTranslationActivity.update( { 
+                cRecentActivity_Date:        unAhoraStoreString,
+                cRecentActivity_User:        unMemberId,
+                cRecentActivity_Language:    self.getCodigoIdiomaEnGvSIG(),
+                cRecentActivity_Symbol:      self.getSimbolo(),
+            })
 
+
+            unHayCambio = False
             try:
                 if not ( unNuevoComentario == unComentarioTraduccion):
                     unComentarioParaHistoria = unNuevoComentario
@@ -782,8 +799,9 @@ class TRATraduccion_Operaciones:
                         'comentario_newValue':      unNuevoComentario,
                     })
                     
+                    unTranslationActivity[ cRecentActivity_Action]    = cTranslationHistoryAction_Comentar
+                    unTranslationActivity[ cRecentActivity_Commented] = True
          
-                unAhoraStoreString = self.fDateTimeNowTextual()
 
                 if  ( unEstadoTraduccion and not  ( unEstadoTraduccion in [ cEstadoTraduccionPendiente, cEstadoTraduccionTraducida])):
                     aResult.update({
@@ -800,18 +818,23 @@ class TRATraduccion_Operaciones:
                         aResult.update({
                             'estadoTraduccion_newValue':      cEstadoTraduccionTraducida,
                         })
-                                                      
-                    if  not ( unaEncodedNuevaCadenaTraducida == unaCadenaTraducida):
-                        self.setCadenaTraducida(   unaEncodedNuevaCadenaTraducida) 
-                        aResult.update({
-                            'cadenaTraducida_newValue':      unaEncodedNuevaCadenaTraducida,
-                        })
+                                 
+                        unTranslationActivity[ cRecentActivity_Action]    = cTranslationHistoryAction_Traducir
                         
-                        if  not ( unUsuarioTraductor == unMemberId):
-                            self.setUsuarioTraductor(  unMemberId)   
-                            
-                        if  not ( unaFechaTraduccionTextual == unAhoraStoreString):
-                            self.setFechaTraduccionTextual(   unAhoraStoreString)
+                    self.setCadenaTraducida(   unaEncodedNuevaCadenaTraducida) 
+                    aResult.update({
+                        'cadenaTraducida_newValue':      unaEncodedNuevaCadenaTraducida,
+                    })
+                    
+                    unTranslationActivity[ cRecentActivity_Action]    = cTranslationHistoryAction_Traducir
+                    
+                    
+                    
+                    if  not ( unUsuarioTraductor == unMemberId):
+                        self.setUsuarioTraductor(  unMemberId)   
+                        
+                    if  not ( unaFechaTraduccionTextual == unAhoraStoreString):
+                        self.setFechaTraduccionTextual(   unAhoraStoreString)
                        
                     if  unUsuarioRevisor:
                         self.setUsuarioRevisor(  None)   
@@ -832,6 +855,10 @@ class TRATraduccion_Operaciones:
                     unNuevoContadorCambios = unContadorCambiosActual + 1
                     self.setContadorCambios( unNuevoContadorCambios)
                         
+                    unTranslationActivity[ cRecentActivity_Counter] = unNuevoContadorCambios
+                    
+                    
+                    
                     if theRegistrarHistoria:
                         self.pRegistrarHistoria( 
                             theAccion                   = cTranslationHistoryAction_Traducir, 
@@ -887,8 +914,7 @@ class TRATraduccion_Operaciones:
                     
                     unCatalogo = self.getCatalogo()
                     if not ( unCatalogo == None):
-                        unTranslationChange = { }
-                        unCatalogo.pTranslationHasChanged( unTranslationChange)
+                        unCatalogo.pTranslationActivityOccurred( unTranslationActivity)
                     
                     if cLogTranslationChanges:
                         logging.getLogger( 'gvSIGi18n::fIntentarTraducir').info( "CHANGED")               
@@ -1110,6 +1136,15 @@ class TRATraduccion_Operaciones:
      
             unAhoraStoreString = self.fDateTimeNowTextual()
         
+           
+            unTranslationActivity = self.fNewVoidTranslationActivity()
+            unTranslationActivity.update( { 
+                cRecentActivity_Date:        unAhoraStoreString,
+                cRecentActivity_User:        unMemberId,
+                cRecentActivity_Language:    self.getCodigoIdiomaEnGvSIG(),
+                cRecentActivity_Symbol:      self.getSimbolo(),
+            })
+            
             unHayCambio = False
             try:
                 self.setComentario(  unNuevoComentario)  
@@ -1138,6 +1173,10 @@ class TRATraduccion_Operaciones:
                     'changed_comment':          True,
                 })
                 
+                unTranslationActivity[ cRecentActivity_Action]    = cTranslationHistoryAction_Comentar
+                unTranslationActivity[ cRecentActivity_Commented] = True
+                
+                
                 return aResult
     
             finally:
@@ -1147,8 +1186,7 @@ class TRATraduccion_Operaciones:
                     # self.pRecatalogTraduccion( unExecutionRecord)
                     unCatalogo = self.getCatalogo()
                     if not ( unCatalogo == None):
-                        unTranslationChange = { }
-                        unCatalogo.pTranslationHasChanged( unTranslationChange)
+                        unCatalogo.pTranslationActivityOccurred( unTranslationActivity)
                         
                     if cLogTranslationChanges:
                         logging.getLogger( 'gvSIGi18n::fComentar').info( "CHANGED")               
@@ -1258,7 +1296,16 @@ class TRATraduccion_Operaciones:
          
             
             unAhoraStoreString = self.fDateTimeNowTextual()
-        
+
+            unTranslationActivity = self.fNewVoidTranslationActivity()
+            unTranslationActivity.update( { 
+                cRecentActivity_Action:      cTranslationHistoryAction_Invalidar,
+                cRecentActivity_Date:        unAhoraStoreString,
+                cRecentActivity_User:        unMemberId,
+                cRecentActivity_Language:    self.getCodigoIdiomaEnGvSIG(),
+                cRecentActivity_Symbol:      self.getSimbolo(),
+            })
+            
             unHayCambio = False
             try:
                 self.setCadenaTraducida(   "") 
@@ -1295,6 +1342,7 @@ class TRATraduccion_Operaciones:
                     unComentarioParaHistoria = unNuevoComentario
                     self.setComentario(  unNuevoComentario)       
         
+                    unTranslationActivity[ cRecentActivity_Commented] = True
         
                         
                 unContadorCambiosActual = self.getContadorCambios()
@@ -1304,6 +1352,8 @@ class TRATraduccion_Operaciones:
                 unNuevoContadorCambios = unContadorCambiosActual + 1
                 self.setContadorCambios( unNuevoContadorCambios)
 
+                unTranslationActivity[ cRecentActivity_Counter] = unNuevoContadorCambios
+                
                 if theRegistrarHistoria:
                     self.pRegistrarHistoria( 
                         theAccion                   = cTranslationHistoryAction_Invalidar, 
@@ -1334,8 +1384,7 @@ class TRATraduccion_Operaciones:
                         
                     unCatalogo = self.getCatalogo()
                     if not ( unCatalogo == None):
-                        unTranslationChange = { }
-                        unCatalogo.pTranslationHasChanged( unTranslationChange)
+                        unCatalogo.pTranslationActivityOccurred( unTranslationActivity)
 
                     if cLogTranslationChanges:
                         logging.getLogger( 'gvSIGi18n::fHacerPendiente').info( "CHANGED")               
@@ -1470,6 +1519,16 @@ class TRATraduccion_Operaciones:
             
             unAhoraStoreString = self.fDateTimeNowTextual()
         
+            
+            unTranslationActivity = self.fNewVoidTranslationActivity()
+            unTranslationActivity.update( { 
+                cRecentActivity_Action:      cTranslationHistoryAction_HacerPendiente,
+                cRecentActivity_Date:        unAhoraStoreString,
+                cRecentActivity_User:        unMemberId,
+                cRecentActivity_Language:    self.getCodigoIdiomaEnGvSIG(),
+                cRecentActivity_Symbol:      self.getSimbolo(),
+            })
+            
             unHayCambio = False
             try:
                 self.setCadenaTraducida(   "") 
@@ -1505,6 +1564,8 @@ class TRATraduccion_Operaciones:
                 if not ( unNuevoComentario == unComentarioTraduccion):
                     unComentarioParaHistoria = unNuevoComentario
                     self.setComentario(  unNuevoComentario)       
+                    
+                    unTranslationActivity[ cRecentActivity_Commented] = True
         
                         
                 unContadorCambiosActual = self.getContadorCambios()
@@ -1514,6 +1575,7 @@ class TRATraduccion_Operaciones:
                 unNuevoContadorCambios = unContadorCambiosActual + 1
                 self.setContadorCambios( unNuevoContadorCambios)
 
+                unTranslationActivity[ cRecentActivity_Counter] = unNuevoContadorCambios
         
                 if theRegistrarHistoria:
                     self.pRegistrarHistoria( 
@@ -1546,8 +1608,7 @@ class TRATraduccion_Operaciones:
                         
                     unCatalogo = self.getCatalogo()
                     if not ( unCatalogo == None):
-                        unTranslationChange = { }
-                        unCatalogo.pTranslationHasChanged( unTranslationChange)
+                        unCatalogo.pTranslationActivityOccurred( unTranslationActivity)
 
                     if cLogTranslationChanges:
                         logging.getLogger( 'gvSIGi18n::fHacerPendiente').info( "CHANGED")               
@@ -1689,6 +1750,16 @@ class TRATraduccion_Operaciones:
          
             
             unAhoraStoreString = self.fDateTimeNowTextual()
+            
+            unTranslationActivity = self.fNewVoidTranslationActivity()
+            unTranslationActivity.update( { 
+                cRecentActivity_Action:      cTranslationHistoryAction_HacerTraducida,
+                cRecentActivity_Date:        unAhoraStoreString,
+                cRecentActivity_User:        unMemberId,
+                cRecentActivity_Language:    self.getCodigoIdiomaEnGvSIG(),
+                cRecentActivity_Symbol:      self.getSimbolo(),
+            })
+            
         
             unHayCambio = False
             try:
@@ -1717,6 +1788,8 @@ class TRATraduccion_Operaciones:
                 if not ( unNuevoComentario == unComentarioTraduccion):
                     unComentarioParaHistoria = unNuevoComentario
                     self.setComentario(  unNuevoComentario)       
+                    
+                    unTranslationActivity[ cRecentActivity_Commented] = True
         
         
                         
@@ -1727,6 +1800,9 @@ class TRATraduccion_Operaciones:
                 unNuevoContadorCambios = unContadorCambiosActual + 1
                 self.setContadorCambios( unNuevoContadorCambios)
 
+                
+                unTranslationActivity[ cRecentActivity_Counter] = unNuevoContadorCambios
+                
                 if theRegistrarHistoria:
                     self.pRegistrarHistoria( 
                         theAccion                   = cTranslationHistoryAction_HacerTraducida,      
@@ -1758,8 +1834,7 @@ class TRATraduccion_Operaciones:
                         
                     unCatalogo = self.getCatalogo()
                     if not ( unCatalogo == None):
-                        unTranslationChange = { }
-                        unCatalogo.pTranslationHasChanged( unTranslationChange)
+                        unCatalogo.pTranslationActivityOccurred( unTranslationActivity)
 
                     if cLogTranslationChanges:
                         logging.getLogger( 'gvSIGi18n::fHacerTraducida').info( "CHANGED")    
@@ -1900,6 +1975,17 @@ class TRATraduccion_Operaciones:
             
             unAhoraStoreString = self.fDateTimeNowTextual()
             
+            unTranslationActivity = self.fNewVoidTranslationActivity()
+            unTranslationActivity.update( { 
+                cRecentActivity_Action:      cTranslationHistoryAction_HacerRevisada,
+                cRecentActivity_Date:        unAhoraStoreString,
+                cRecentActivity_User:        unMemberId,
+                cRecentActivity_Language:    self.getCodigoIdiomaEnGvSIG(),
+                cRecentActivity_Symbol:      self.getSimbolo(),
+            })
+            
+        
+            
             unHayCambio = False
             try:
                                                                                     
@@ -1924,6 +2010,7 @@ class TRATraduccion_Operaciones:
                     unComentarioParaHistoria = unNuevoComentario
                     self.setComentario(  unNuevoComentario)       
         
+                    unTranslationActivity[ cRecentActivity_Commented] = True
         
                         
                 unContadorCambiosActual = self.getContadorCambios()
@@ -1932,6 +2019,9 @@ class TRATraduccion_Operaciones:
 
                 unNuevoContadorCambios = unContadorCambiosActual + 1
                 self.setContadorCambios( unNuevoContadorCambios)
+                
+                unTranslationActivity[ cRecentActivity_Counter] = unNuevoContadorCambios
+                
 
                 if theRegistrarHistoria:
                     self.pRegistrarHistoria( 
@@ -1964,8 +2054,7 @@ class TRATraduccion_Operaciones:
                         
                     unCatalogo = self.getCatalogo()
                     if not ( unCatalogo == None):
-                        unTranslationChange = { }
-                        unCatalogo.pTranslationHasChanged( unTranslationChange)
+                        unCatalogo.pTranslationActivityOccurred( unTranslationActivity)
 
                     if cLogTranslationChanges:
                         logging.getLogger( 'gvSIGi18n::fHacerRevisada').info( "CHANGED")               
@@ -2106,6 +2195,16 @@ class TRATraduccion_Operaciones:
     
             unAhoraStoreString = self.fDateTimeNowTextual()
     
+
+            unTranslationActivity = self.fNewVoidTranslationActivity()
+            unTranslationActivity.update( { 
+                cRecentActivity_Action:      cTranslationHistoryAction_HacerDefinitiva,
+                cRecentActivity_Date:        unAhoraStoreString,
+                cRecentActivity_User:        unMemberId,
+                cRecentActivity_Language:    self.getCodigoIdiomaEnGvSIG(),
+                cRecentActivity_Symbol:      self.getSimbolo(),
+            })
+
             unHayCambio = False
             try:
                 self.setEstadoTraduccion(         cEstadoTraduccionDefinitiva)    
@@ -2123,6 +2222,9 @@ class TRATraduccion_Operaciones:
                     unComentarioParaHistoria = unNuevoComentario        
                     self.setComentario(  unNuevoComentario)       
         
+                    unTranslationActivity[ cRecentActivity_Commented] = True
+        
+        
                         
                 unContadorCambiosActual = self.getContadorCambios()
                 if not unContadorCambiosActual:
@@ -2130,6 +2232,8 @@ class TRATraduccion_Operaciones:
 
                 unNuevoContadorCambios = unContadorCambiosActual + 1
                 self.setContadorCambios( unNuevoContadorCambios)
+                
+                unTranslationActivity[ cRecentActivity_Counter] = unNuevoContadorCambios
 
                 if theRegistrarHistoria:
                     self.pRegistrarHistoria( 
@@ -2162,8 +2266,7 @@ class TRATraduccion_Operaciones:
                         
                     unCatalogo = self.getCatalogo()
                     if not ( unCatalogo == None):
-                        unTranslationChange = { }
-                        unCatalogo.pTranslationHasChanged( unTranslationChange)
+                        unCatalogo.pTranslationActivityOccurred( unTranslationActivity)
 
                     if cLogTranslationChanges:
                         logging.getLogger( 'gvSIGi18n::fHacerDefinitiva').info( "CHANGED")               

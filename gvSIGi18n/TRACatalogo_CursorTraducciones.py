@@ -61,8 +61,6 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore       import permissions
 
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow, fDateTimeNow
-
 
 from TRAElemento_Constants import *
 
@@ -312,6 +310,7 @@ class TRACatalogo_CursorTraducciones:
             unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
             
             
+            from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow
             
             try: 
         
@@ -647,6 +646,7 @@ class TRACatalogo_CursorTraducciones:
                 unResult[ 'condition'] = 'Missing_parameters'
                 return unResult
             
+            from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow
                 
             try:
                 unChangeStart       = fMillisecondsNow()
@@ -848,7 +848,8 @@ class TRACatalogo_CursorTraducciones:
             unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
             unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
             
-            
+            from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow
+           
             try:
                 unBrowseStart       = fMillisecondsNow()
                 
@@ -3503,6 +3504,8 @@ class TRACatalogo_CursorTraducciones:
             if not theCodigoIdioma or not theUseCaseQueryResult or not theUseCaseQueryResult.get( 'success', False):
                 return {}
             
+            from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fDateTimeNow
+          
             unAhora = fDateTimeNow()
 
             aUsuarioCreador                   = theSearchParameters.get( 'usuarioCreador', '').strip()

@@ -45,8 +45,6 @@ from TRAElemento_Constants import *
 from TRARoles       import *
 
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Inicializacion_Constants import cExternalMetodDefinitions as cExternalMetodDefinitions_ModelDDvlPlone
-
 
 ##/code-section module-header
 
@@ -56,6 +54,9 @@ from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Inicializacion_Constants imp
 
 ##code-section after-schema #fill in your manual code here
 
+
+
+cTRAInstallPath_PortalSkinsCustom = [ 'portal_skins', 'custom',]
 
 
 
@@ -72,7 +73,7 @@ cLazyCreateUserGroups           = True
 cLazyCreateSetLocalRoles        = True
 cLazyCreateSetAcquireRoleAssignments = True
 cLazyAddGroupToGroup            = True
-cLazyAddSchemaFields    = True
+cLazyAddSchemaFields            = True
 
 
 
@@ -96,13 +97,13 @@ cColeccionSolicitudesCadenas_Id    = "solicitudescadenas"
 cColeccionSolicitudesCadenas_Title = "String Requests"
 
 
-cEspecificacionesColecciones = [ 
-    [ cNombreTipoTRAColeccionIdiomas,        cColeccionIdiomas_Id,       cColeccionIdiomas_Title, ],
-    [ cNombreTipoTRAColeccionModulos,        cColeccionModulos_Id,       cColeccionModulos_Title, ],
-    [ cNombreTipoTRAColeccionCadenas,        cColeccionCadenas_Id,       cColeccionCadenas_Title, ],
-    [ cNombreTipoTRAColeccionImportaciones,  cColeccionImportaciones_Id, cColeccionImportaciones_Title, ],
-    [ cNombreTipoTRAColeccionInformes,       cColeccionInformes_Id,      cColeccionInformes_Title, ],
-    [ cNombreTipoTRAColeccionSolicitudesCadenas,       cColeccionSolicitudesCadenas_Id,      cColeccionSolicitudesCadenas_Title, ],
+cTRAEspecificacionesColecciones = [ 
+    [ cNombreTipoTRAColeccionIdiomas,              cColeccionIdiomas_Id,       cColeccionIdiomas_Title, ],
+    [ cNombreTipoTRAColeccionModulos,              cColeccionModulos_Id,       cColeccionModulos_Title, ],
+    [ cNombreTipoTRAColeccionCadenas,              cColeccionCadenas_Id,       cColeccionCadenas_Title, ],
+    [ cNombreTipoTRAColeccionImportaciones,        cColeccionImportaciones_Id, cColeccionImportaciones_Title, ],
+    [ cNombreTipoTRAColeccionInformes,             cColeccionInformes_Id,      cColeccionInformes_Title, ],
+    [ cNombreTipoTRAColeccionSolicitudesCadenas,   cColeccionSolicitudesCadenas_Id,      cColeccionSolicitudesCadenas_Title, ],
 ]
 
 
@@ -121,20 +122,6 @@ cNombreCatalogoTextoTraducciones    = 'TRATraduccionTexto'
 
 
 
-
-#cLanguagesWithChineseJapaneseKoreanLexicon  = [ 'zh', 'ja', 'ko', ]
-
-#cLexiconPipelineChineseJapaneseKorean  = [ 'CJKSplitter', ]
-
-
-        
-#cLexiconPipelines_ModulesAndClasses = [
-    #[ 'Splitter',            'Products.ZCTextIndex.Lexicon',     'Splitter',],
-    #[ 'CaseNormalizer',      'Products.ZCTextIndex.Lexicon',     'CaseNormalizer',],
-    #[ 'StopWordRemover',     'Products.ZCTextIndex.Lexicon',     'StopWordRemover',],
-    #[ 'CJKSplitter',         'Products.CJKSplitter.CJKSplitter', 'CJKSplitter',],
-    #[ 'TRASplitter',         'Products.gvSIGi18n.TRASplitter',   'TRASplitter',],
-#]
 
 cLanguagesWithSpecialLexiconPipelines = {
     'zh':  [ 'CJKSplitter', ],
@@ -195,7 +182,7 @@ cLexiconsCatalogoTextoCadenas  = [
 
 
 
-cCatalogsDetailsParaCadenas = [
+cTRACatalogsDetailsParaCadenas = [
     {   'name':             cNombreCatalogoBusquedaCadenas,
         'indexes':          cIndexesCatalogoBusquedaCadenas,
         'schema_fields':    cSchemaFieldsCatalogoBusquedaCadenas,
@@ -275,7 +262,7 @@ cLexiconsCatalogoTextoTraducciones  = [
 
 
 
-cCatalogsDetailsParaIdioma = [
+cTRACatalogsDetailsParaIdioma = [
     {   'name':             cNombreCatalogoBusquedaTraducciones,
         'indexes':          cIndexesCatalogoBusquedaTraducciones,
         'schema_fields':    cSchemaFieldsCatalogoBusquedaTraducciones,
@@ -303,33 +290,84 @@ cCatalogsDetailsParaIdioma = [
 # External methods to create
 #
 
-cExtMethod_ChangeAndBrowseTranslations           = "TRAChangeAndBrowseTranslations"
-cExtMethod_SizesIdioma                           = "TRASizesIdioma"
-cExtMethod_RenderPermissionDefinitions           = "TRARenderPermissionDefinitions"
-cExtMethod_RenderLoggedUsedAndRolesHere          = "TRARenderLoggedUsedHere"
-cExtMethod_RenderGroupsRolesHere                 = "TRARenderGroupsRolesHere"
-cExtMethod_RenderExecutionDetails                = "TRARenderExecutionDetails"
+cTRAExtMethod_ChangeAndBrowseTranslations           = "TRAChangeAndBrowseTranslations"
+cTRAExtMethod_SizesIdioma                           = "TRASizesIdioma"
+cTRAExtModule_TRARenderSecurity                     = "TRARenderSecurity"
+cTRAExtMethod_RenderPermissionDefinitions           = "TRARenderPermissionDefinitions"
+cTRAExtMethod_RenderLoggedUsedAndRolesHere          = "TRARenderLoggedUsedHere"
+cTRAExtMethod_RenderGroupsRolesHere                 = "TRARenderGroupsRolesHere"
+cTRAExtModule_TRARenderProfiling                    = "TRARenderProfiling"
+cTRAExtMethod_RenderExecutionDetails                = "TRARenderExecutionDetails"
+cTRAExtMethod_ParametersCandidateValues             = "TRAExport_ParametersCandidateValues"
+cTRAExtModule_TRAExport_ctrl                        = "TRAExport_ctrl"
 
 
 
-cExternalMetodDefinitions = [
-    [ cExtMethod_ChangeAndBrowseTranslations,                 # module  
-        [ cExtMethod_ChangeAndBrowseTranslations,    ]   * 3, # function id title name
-        [ cExtMethod_SizesIdioma,                    ]   * 3, # function id title name
-    ],
-    [ 'TRARenderSecurity',                                   # module  
-       [ cExtMethod_RenderPermissionDefinitions,     ]   * 3, # function id title name
-       [ cExtMethod_RenderLoggedUsedAndRolesHere,    ]   * 3, # function id title name
-       [ cExtMethod_RenderGroupsRolesHere,           ]   * 3, # function id title name
-    ],    
-    [ 'TRARenderProfiling',                                  # module  
-        [ cExtMethod_RenderExecutionDetails,            ]   * 3, # function id title name
+cTRAExternalMetodDefinitions = [
+    {
+        'ext_method_module':         cTRAExtMethod_ChangeAndBrowseTranslations,
+        'ext_method_function':       cTRAExtMethod_ChangeAndBrowseTranslations,
+        'ext_method_id':             cTRAExtMethod_ChangeAndBrowseTranslations,
+        'ext_method_title':          cTRAExtMethod_ChangeAndBrowseTranslations,
+        'install_path':              cTRAInstallPath_PortalSkinsCustom,
+        'required':                  True,
+    },
+    {
+        'ext_method_module':         cTRAExtMethod_ChangeAndBrowseTranslations,
+        'ext_method_function':       cTRAExtMethod_SizesIdioma,
+        'ext_method_id':             cTRAExtMethod_SizesIdioma,
+        'ext_method_title':          cTRAExtMethod_SizesIdioma,
+        'install_path':              cTRAInstallPath_PortalSkinsCustom,
+        'required':                  True,
+    },
+    {
+        'ext_method_module':         cTRAExtModule_TRARenderSecurity,
+        'ext_method_function':       cTRAExtMethod_RenderPermissionDefinitions,
+        'ext_method_id':             cTRAExtMethod_RenderPermissionDefinitions,
+        'ext_method_title':          cTRAExtMethod_RenderPermissionDefinitions,
+        'install_path':              cTRAInstallPath_PortalSkinsCustom,
+        'required':                  True,
+    },
+    {
+        'ext_method_module':         cTRAExtModule_TRARenderSecurity,
+        'ext_method_function':       cTRAExtMethod_RenderLoggedUsedAndRolesHere,
+        'ext_method_id':             cTRAExtMethod_RenderLoggedUsedAndRolesHere,
+        'ext_method_title':          cTRAExtMethod_RenderLoggedUsedAndRolesHere,
+        'install_path':              cTRAInstallPath_PortalSkinsCustom,
+        'required':                  True,
+    },
+    {
+        'ext_method_module':         cTRAExtModule_TRARenderSecurity,
+        'ext_method_function':       cTRAExtMethod_RenderGroupsRolesHere,
+        'ext_method_id':             cTRAExtMethod_RenderGroupsRolesHere,
+        'ext_method_title':          cTRAExtMethod_RenderGroupsRolesHere,
+        'install_path':              cTRAInstallPath_PortalSkinsCustom,
+        'required':                  True,
+    },
+    {
+        'ext_method_module':         cTRAExtModule_TRARenderProfiling,
+        'ext_method_function':       cTRAExtMethod_RenderExecutionDetails,
+        'ext_method_id':             cTRAExtMethod_RenderExecutionDetails,
+        'ext_method_title':          cTRAExtMethod_RenderExecutionDetails,
+        'install_path':              cTRAInstallPath_PortalSkinsCustom,
+        'required':                  True,
+    },    
+    {
+        'ext_method_module':         cTRAExtModule_TRAExport_ctrl,
+        'ext_method_function':       cTRAExtMethod_ParametersCandidateValues,
+        'ext_method_id':             cTRAExtMethod_ParametersCandidateValues,
+        'ext_method_title':          cTRAExtMethod_ParametersCandidateValues,
+        'install_path':              cTRAInstallPath_PortalSkinsCustom,
+        'required':                  True,
+    },    
+]
 
-    ],
-    [ 'TRAExport_ctrl',                                  # module  
-        [ 'TRAExport_ParametersCandidateValues',    ]   * 3, # function id title name
-    ],
-] + [ aExtMethodDef for aExtMethodDef in cExternalMetodDefinitions_ModelDDvlPlone if not( aExtMethodDef[0] in [ 'MDDLoadModules', 'MDDZipFileExpansionUtils', ])]
+    
+cTRAInitializationDefinitions_ExternalMethods = {
+    'title':             'application gvSIG-i18n',
+    'external_methods':  cTRAExternalMetodDefinitions,
+    'tool_singletons':   [],
+}
 
 
 ##/code-section module-footer

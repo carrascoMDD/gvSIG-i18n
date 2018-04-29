@@ -82,7 +82,7 @@
                         <span tal:content="python: '%d' % pInventoryResult.get( 'total_elements_traversed', 0)" />                 
                         <br/>
                     </p>
-                    <table id="cid_TRAResetPermissionsResult_ElementsByType" class="listing"
+                    <table id="cid_TRAInventoryResult_ElementsByType" class="listing"
                         tal:define="pElementsResetByType python: pInventoryResult.get( 'elements_by_type', []);
                             pClasesFilas python: [ 'even', 'odd',]"
                         tal:condition="pElementsResetByType" >

@@ -53,14 +53,12 @@ from Products.CMFCore       import permissions
 
 from Products.Archetypes.utils import shasattr
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import ModelDDvlPloneTool_Mutators, cModificationKind_ChangeValues
 
 from TRAElemento_Constants         import *
 
 from TRAElemento_Permission_Definitions import cUseCase_InvalidateStringTranslations, cUseCase_DeactivateTRACadena, cUseCase_ActivateTRACadena
 from TRAElemento_Permission_Definitions import cBoundObject
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fDateTimeNow
 
 
 from TRAElemento import TRAElemento
@@ -991,6 +989,8 @@ class TRACadena_Operaciones:
         
         unExecutionRecord = self.fStartExecution( 'method',  'fDesactivar', theParentExecutionRecord, False) 
  
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fDateTimeNow
+        
         try:
             
             try:
@@ -1029,6 +1029,7 @@ class TRACadena_Operaciones:
                     
                     self.setEstadoCadena( cEstadoCadenaInactiva)
                     
+                    
                     unAhora = fDateTimeNow()
                     
                     self.pSetFechaCancelacion( unAhora)
@@ -1048,6 +1049,7 @@ class TRACadena_Operaciones:
                             unaTraduccion.pRecatalogTraduccion( unExecutionRecord)
                             
                     
+                    from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import ModelDDvlPloneTool_Mutators, cModificationKind_ChangeValues
                                                 
                     
                     aModelDDvlPloneTool_Mutators = ModelDDvlPloneTool_Mutators()
@@ -1175,6 +1177,7 @@ class TRACadena_Operaciones:
                             unaTraduccion.pRecatalogTraduccion( unExecutionRecord)
                             
                             
+                    from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import ModelDDvlPloneTool_Mutators, cModificationKind_ChangeValues
                     
                     aModelDDvlPloneTool_Mutators = ModelDDvlPloneTool_Mutators()
                    

@@ -34,10 +34,10 @@ __docformat__ = 'plaintext'
 
 
 # #######################################
-"""To deliver a build compatible with MDD version 1.0.2,
+"""Obsolete: now done with try:except: To deliver a build compatible with MDD version 1.0.2,
 and locate key pieces of code changed for MDD versions 1.0.3 and after
 """
-cMDDVersionBackwardsCompatible_102 = True
+#cMDDVersionBackwardsCompatible_102 = True
 
 
 
@@ -506,5 +506,46 @@ cTranslationHistoryActions = [
     cTranslationHistoryAction_HacerRevisada,  
     cTranslationHistoryAction_HacerDefinitiva,
     cTranslationHistoryAction_Invalidar,      
+]
+
+
+
+
+
+# ##############################################
+"""Actions recorded in the global list of recent changes 
+
+"""
+cRecentActivity_Date      = 'Date'
+cRecentActivity_User      = 'User'
+cRecentActivity_Language  = 'Lang'
+cRecentActivity_Symbol    = 'Symb'
+cRecentActivity_Action    = 'Actn'
+cRecentActivity_Commented = 'Cmnt'
+cRecentActivity_Counter   = 'Cntr'
+
+cTranslationRecentChanges = [
+    cRecentActivity_Date,       
+    cRecentActivity_User ,       
+    cRecentActivity_Language,       
+    cRecentActivity_Symbol,       
+    cRecentActivity_Action, 
+    cRecentActivity_Commented, 
+    cRecentActivity_Counter,
+]
+
+
+cActivityReport_Period_Today             = 'Today'
+cActivityReport_Period_Yesterday         = 'Yesterday'
+cActivityReport_Period_Last7Days         = 'Last7Days'
+cActivityReport_Period_Last30Days        = 'Last30Days'
+cActivityReport_Period_Before30Days      = 'Before30Days'
+
+cActivityReport_Periods = [
+    cActivityReport_Period_Today,
+    cActivityReport_Period_Yesterday,
+    cActivityReport_Period_Last7Days,
+    cActivityReport_Period_Last30Days,
+    cActivityReport_Period_Before30Days,
 ]
 

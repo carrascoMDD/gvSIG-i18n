@@ -43,9 +43,7 @@ from Products.CMFCore        import permissions
 from Products.CMFCore.utils  import getToolByName
 
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneTool          import ModelDDvlPloneTool
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import ModelDDvlPloneTool_Mutators,cModificationKind_CreateSubElement, cModificationKind_Create
 
 
 from TRAElemento_Constants import *
@@ -176,7 +174,7 @@ class TRAColeccionIdiomas_Operaciones:
     
     security.declarePrivate( 'fCrearIdioma')    
     def fCrearIdioma( self,
-        theTimeProfilingResults =None, # invoked from ModelDDvlPloneTool still using previous style of time profiling, thus the parameter is not theParentExecutionRecord =None, 
+        theTimeProfilingResults =None, # 
         theModelDDvlPloneTool_Mutators   =None, 
         theNewTypeName          ='', 
         theNewOneTitle          ='', 
@@ -189,7 +187,9 @@ class TRAColeccionIdiomas_Operaciones:
         
         """
     
-        unExecutionRecord = self.fStartExecution( 'method',  'fCrearIdioma', None, True, { 'log_what': 'details', 'log_when': True, }) # invoked from ModelDDvlPloneTool still using previous style of time profiling, thus the parameter is not theParentExecutionRecord =None, 
+        unExecutionRecord = self.fStartExecution( 'method',  'fCrearIdioma', None, True, { 'log_what': 'details', 'log_when': True, })
+
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import ModelDDvlPloneTool_Mutators,cModificationKind_CreateSubElement, cModificationKind_Create
 
         try:
             unasDescripcionesContenidosCreados = []
@@ -489,7 +489,7 @@ class TRAColeccionIdiomas_Operaciones:
         
         """
     
-        unExecutionRecord = self.fStartExecution( 'method',  'fCopiarTraduccionesEnNuevoIdioma', None, True, { 'log_what': 'details', 'log_when': True, }) # invoked from ModelDDvlPloneTool still using previous style of time profiling, thus the parameter is not theParentExecutionRecord =None, 
+        unExecutionRecord = self.fStartExecution( 'method',  'fCopiarTraduccionesEnNuevoIdioma', None, True, { 'log_what': 'details', 'log_when': True, }) 
 
         try:
             unasDescripcionesContenidosCreados = []

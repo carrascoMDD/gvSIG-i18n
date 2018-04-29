@@ -77,7 +77,7 @@
                 
             <table width="100%%" cellspacing="0" cellpadding="0" frame="void" >
                 <tr>
-                    <td width="25%"  align="left" valign="baseline" >
+                    <td width="20%"  align="left" valign="baseline" >
                         <font size="2">
                             <em><span tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TRACatalogo_attr_nombreProducto_label',   'Product Name-' )" /></em>
                          </font>        
@@ -85,7 +85,7 @@
                             <strong><span tal:content="python: here.fAsUnicode( here.getNombreProducto())" /></strong>
                          </font>
                     </td>         
-                    <td  width="25%" align="center" valign="baseline">
+                    <td width="20%" align="center" valign="baseline">
                         <tal:block tal:define="
                             pUseCaseAssessmentResult python: here.fUseCaseAssessment( 
                                 theUseCaseName          = 'Advanced_View_on_any_TRA_element', 
@@ -106,7 +106,7 @@
                             </strong>
                         </tal:block>
                     </td>
-                    <td width="25%"  align="right" valign="baseline">                    
+                    <td width="20%"  align="right" valign="baseline">                    
                         <strong>
                             <a href="#" title="#"  
                                 tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_volveracatalogo_msgid',   'Back to catalog-' )"
@@ -117,13 +117,30 @@
                             </a>
                         </strong>
                     </td>                
-                    <td  width="25%" align="right" valign="baseline">                    
+                    <td width="20%" align="right" valign="baseline">                    
+                        <strong>
+                            <a href="#" title="#" 
+                                tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_mostrarinformeactividad_msgid',   'Show Activity Report-' )"                                    
+                                tal:attributes="
+                                    title aLinkTitle;
+                                    href python: '%s/TRACatalogoActividad/' % here.getCatalogo().absolute_url()">
+                                <img src="#" alt="#" title="#" 
+                                     tal:attributes="src python: '%s/trainformeactividad.gif' % here.portal_url(); alt aLinkTitle; title aLinkTitle" 
+                                     id="icon-informeactividad" />
+                                <span tal:content="aLinkTitle" />
+                            </a>
+                        </strong>
+                    </td>
+                    <td width="20%" align="right" valign="baseline">                    
                         <strong>
                             <a href="#" title="#" 
                                 tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_mostrarinformedeestado_msgid',   'Show Status Report-' )"                                    
                                 tal:attributes="
                                     title aLinkTitle;
                                     href python: '%s/TRACatalogoInforme/' % here.getCatalogo().absolute_url()">
+                                <img src="#" alt="#" title="#" 
+                                     tal:attributes="src python: '%s/trainforme.gif' % here.portal_url(); alt aLinkTitle; title aLinkTitle" 
+                                     id="icon-informe" />
                                 <span tal:content="aLinkTitle" />
                             </a>
                         </strong>
@@ -179,13 +196,15 @@
                     theRolesCache           = pRolesCache, 
                     theParentExecutionRecord= pExecutionRecord)" >
                 <tal:block tal:condition="python: pVerificarUseCaseAssessmentResult and pVerificarUseCaseAssessmentResult.get( 'success', False)">    
-                    <tal:block tal:replace="structure python: here.fLazyCrearHTML(
-                        theAllowCreation            =False,
+                    
+                    <tal:block tal:define="pVerificationResult python: here.fVerifyOrInitialize(
+                        theAllowInitialization      =False,
                         theCheckPermissions         =True,
                         thePermissionsCache         =pPermissionsCache, 
                         theRolesCache               =pRolesCache, 
-                        theParentExecutionRecord    =pExecutionRecord)" />
-                    <br/>        
+                        theParentExecutionRecord    =pExecutionRecord)" >
+                        <metal:block metal:use-macro="here/TRAVerificationReport_i18n_view/macros/tTRAVerificationReport_i18n" />
+                    </tal:block>
                 </tal:block>
                 <tal:block tal:condition="python: not( pVerificarUseCaseAssessmentResult and pVerificarUseCaseAssessmentResult.get( 'success', False))">    
                     <font size="3" color="red">
@@ -201,9 +220,11 @@
     
             <tal:block tal:define="dummy python: pExecutionRecord and here.pEndExecution( pExecutionRecord)" />
     
-            <metal:block metal:use-macro="here/TRAFooter_i18n_view/macros/tFooter_i18n" />
     
-            <tal:block tal:replace="structure python: pExecutionRecord and here.TRARenderExecutionDetails( pExecutionRecord)" />
+            <tal:block tal:replace="nothing">
+                <metal:block metal:use-macro="here/TRAFooter_i18n_view/macros/tFooter_i18n" />
+                <tal:block tal:replace="structure python: pExecutionRecord and here.TRARenderExecutionDetails( pExecutionRecord)" />
+            </tal:block>
 
         </tal:block>
      </tal:main-macro>

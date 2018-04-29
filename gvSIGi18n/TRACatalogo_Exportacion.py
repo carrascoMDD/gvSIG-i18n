@@ -50,7 +50,6 @@ from StringIO import StringIO
 
 from zipfile import ZipFile, ZIP_STORED, ZIP_DEFLATED
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow, fDateTimeNow
 
 
 from TRAElemento_Constants         import *
@@ -255,7 +254,7 @@ class TRACatalogo_Exportacion:
                 someExportParameters = {
                     'theLanguagesToExport':         unosCodigosIdiomas,
                     'theCodigosIdiomaReferencia':   unosCodigosIdiomasReferencia,
-                    'theCodificacionesCaracteres':  dict( [ ( unCodigo, cUnicodeEscapeEncoding,) for unCodigo in unosCodigosIdiomas]), 
+                    'theCodificacionesCaracteres':  dict( [ ( unCodigo, cEncodingUnicodeEscape,) for unCodigo in unosCodigosIdiomas]), 
                     'theModulesToExport':           [ unModulo.Title() for unModulo in self.fObtenerTodosModulos()] + [ cModuloNoEspecificado_ValorNombre,],
                     'theExportFormat':              cExportFormatOption_JavaProperties,
                     'theIncludeManifest':           'No',
@@ -1132,7 +1131,7 @@ class TRACatalogo_Exportacion:
                 if theSpecificFilename:
                     unNombreArchivoDescarga = theSpecificFilename
                 elif theFilenameForGvSIG:
-                    unNombreArchivoDescarga = self.fNombreArchivoExportacion_ForGvSIG( unosCodigosEIdiomasOrdenados[ 0][ 0], theProductName, theProductVersion, theL10NVersion, theTipoArchivo)
+                    unNombreArchivoDescarga = self.fNombreArchivoExportacion_ForGvSIG( sorted( theCodigosIdiomas)[ 0], theProductName, theProductVersion, theL10NVersion, theTipoArchivo)
                 else:
                     unNombreArchivoDescarga = self.fNombreArchivoExportacion( [ unCodigoEIdioma[ 0] for unCodigoEIdioma in unosCodigosEIdiomasOrdenados], unosNombresModulosOrdenados, theIncluirModuloNoEspecificado, theTipoArchivo)
                 
@@ -1273,6 +1272,7 @@ class TRACatalogo_Exportacion:
         if not ( unArchivePostfix in cOutputFilePostfixes):
             unArchivePostfix = cZipFilePostfix    
   
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fDateTimeNow
         unNow = fDateTimeNow()
         unTimestamp = '%4.4d%02d%02d%02d%02d%02d' % ( unNow.year(), unNow.month(), unNow.day(), unNow.hour(), unNow.minute(), unNow.second())    
         
@@ -1651,6 +1651,8 @@ class TRACatalogo_Exportacion:
             return False
 
         unCodigoIdioma = theIdioma.getCodigoIdiomaEnGvSIG()
+        
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fDateTimeNow
 
         unaStringToWrite  = '%s%s]\n%s%s\n' % ( 
             cPrefixLineaLenguaje,  
@@ -2114,6 +2116,8 @@ class TRACatalogo_Exportacion:
         
         unCodigoIdioma = theIdioma.getCodigoIdiomaEnGvSIG()
         
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fDateTimeNow
+        
         unAhora = fDateTimeNow()
         unOffset = int( unAhora.tzoffset() / 3600)
         unOffsetSign = '+'
@@ -2490,6 +2494,8 @@ class TRACatalogo_Exportacion:
         unErrorEnHeader = False
         
         unCodigoIdioma = theIdioma.getCodigoIdiomaEnGvSIG()
+        
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fDateTimeNow
         
         unAhora = fDateTimeNow()
         unOffset = int( unAhora.tzoffset() / 3600)

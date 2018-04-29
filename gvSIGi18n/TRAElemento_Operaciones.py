@@ -73,17 +73,10 @@ from Products.PloneLanguageTool import availablelanguages as PloneLanguageToolAv
 from TRAElemento_Constants              import *
 
 
-# #######################################
-"""To deliver a build compatible with MDD version 1.0.2,
-and locate key pieces of code changed for MDD versions 1.0.3 and after
-"""
-if cMDDVersionBackwardsCompatible_102:
-    from Products.ModelDDvlPloneTool.ModelDDvlPloneTool import cModelDDvlPloneToolId, ModelDDvlPloneTool
-else:
-    from Products.ModelDDvlPloneTool.ModelDDvlPloneTool import ModelDDvlPloneTool
-    from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Inicializacion_Constants import cModelDDvlPloneToolId
+    
+    
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fReprAsString, fMillisecondsNow, fDateTimeNow
+
 
 
 from TRAElemento_Permission_Definitions import cTRAUsersGroup_AllLanguages_postfix
@@ -1033,6 +1026,8 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
     
     security.declarePublic( 'pLog')    
     def pLog( self, theMessage):
+        
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fReprAsString
         
         logging.getLogger( 'gvSIGi18n').info( fReprAsString( theMessage))
         
@@ -2201,14 +2196,24 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
 
 
 
-# ####################################################################
-# Time accessors to minimize instantiation of DateTime while profiling
-#
+    # ####################################################################
+    # Time accessors to minimize instantiation of DateTime while profiling
+    #
+    
+    
+    security.declarePublic( 'fMillisecondsNow')
+    def fMillisecondsNow(self, ):   
+    
+        return int( time() * 1000)
+    
     
     
     
     security.declareProtected( permissions.View, 'fIsAcceptableMagicMilliseconds')
     def fIsAcceptableMagicMilliseconds(self, theString, theAllowedSeconds):   
+        
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow
+        
         if not theString or not theAllowedSeconds:
             return False
         
@@ -2233,6 +2238,9 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
         
     security.declareProtected( permissions.View, 'fMagicMillisecondsNowString')
     def fMagicMillisecondsNowString(self):   
+
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow       
+        
         someMilliseconds = fMillisecondsNow()
         unMillisecondsString = str( someMilliseconds)
         unMagicMillisecondsString = self.fMagicizeString( unMillisecondsString)
@@ -2261,21 +2269,15 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
         return aDeMagicizedString 
              
 
-    
-    #security.declareProtected( permissions.View, 'fMillisecondsNow')
-    #def fMillisecondsNow(self):   
-        #return int( time() * 1000)
-    
-    
-    
-    #security.declareProtected( permissions.View, 'fDateTimeNow')
-    #def fDateTimeNow(self):   
-        #return DateTime()
+
+  
     
     
     
     security.declareProtected( permissions.View, 'fDateTimeNowString')
     def fDateTimeNowString(self):   
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fDateTimeNow
+        
         return self.fDateTimeToString( fDateTimeNow())
     
     
@@ -2289,8 +2291,9 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
     
     security.declareProtected( permissions.View, 'fDateTimeNowTextual')
     def fDateTimeNowTextual(self):   
-        unYMDHMS = localtime()[:6]
-        unDateStoreString = '%04d-%02d-%02d %02d:%02d:%02d' % unYMDHMS
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fDateTimeNow
+        #unYMDHMS = localtime()[:6]
+        #unDateStoreString = '%04d-%02d-%02d %02d:%02d:%02d' % unYMDHMS
         return self.fDateToStoreString( fDateTimeNow())
 
 
@@ -3517,6 +3520,9 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
         """Retrieve or create an instance of ModelDDvlPloneTool.
         
         """
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Inicializacion_Constants import cModelDDvlPloneToolId   
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneTool import ModelDDvlPloneTool
+        
         try:
     
             # ACV 2009092 Seems easier to use the getToolByName, otherwise the commented code works ok
@@ -3765,4 +3771,22 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
             logging.getLogger( 'ModelDDvlPlone').error( 'fEvalString( "%s", { %s })' % ( str( theString), unGlobalsString))
             
         return unValue
+     
+    
+    
+    
+
+    
+    security.declarePrivate( 'fNewVoidTranslationActivity')
+    def fNewVoidTranslationActivity( self,):
+        unTranslationActivity = { 
+            cRecentActivity_Date:        None,
+            cRecentActivity_Language:    None,
+            cRecentActivity_User:        None,
+            cRecentActivity_Commented:   None,
+            cRecentActivity_Action:      None,
+            cRecentActivity_Symbol:      None,
+            cRecentActivity_Counter:     None,
+        }
+        return unTranslationActivity
      

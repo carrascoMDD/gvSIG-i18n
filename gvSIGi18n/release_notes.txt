@@ -1,6 +1,23 @@
 ﻿gvSIG-i18n RELEASE NOTES
 ========================
 
+
+
+
+|
+|
+
+version 1.2.4 in progress
+------------------------------------------------
+
+Task Id  	Task Summary  	Start Date  	End Date  	Percent Complete
+733	SUC51 Recent activity report by languages including active translator and reviewer user names	2010-04-10 02:00	  2010-04-17 02:00	100%
+748	BUG EXPO Export for gvSIG download filename shows language en for all languages with code alphabetically after ena	2010-04-27 15:00	  2010-05-04 15:00	100%
+750	BUG: Status report by languages do not exclude translations for inactive strings	2010-05-11 00:00	  2010-05-18 00:00	100%
+757	IMPO14 Import a .zip file with multiple .zip files according to the gvSIG-i18n extension standard	2010-05-13 03:00	  2010-05-20 03:00	100%
+758	BUG EXPO for gvSIG-i18n extension fails to unicode_escape non ascii chars (i.e. latin chars, althoughit does for non-ascii and non-latin)	2010-05-18 16:00	  2010-05-25 16:00	100%
+766	ADMI16 Delegate initialization of gvSIG-i18n ExternalMethods to the initialization factility in the ModelDDvlPlone framework	2010-06-11 05:00	  2010-06-18 05:00	100%
+767	ADMI17 Render as formatted HTML the results of Verification and Initialization	2010-06-11 05:00	  2010-06-18 05:00	100%
 |
 |
 

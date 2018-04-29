@@ -41,10 +41,7 @@ import logging
 from Products.CMFCore       import permissions
 from Products.CMFCore.utils  import getToolByName
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneTool          import ModelDDvlPloneTool
-from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import ModelDDvlPloneTool_Mutators,cModificationKind_CreateSubElement, cModificationKind_Create
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow, fDateTimeNow
 
 from TRAElemento_Constants import *
 
@@ -55,7 +52,6 @@ from TRAElemento_Permission_Definitions import cBoundObject
 
 
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fDateTimeNow
 
 
 
@@ -201,7 +197,7 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
     
     security.declarePrivate( 'fCrearSolicitudCadena')    
     def fCrearSolicitudCadena( self,
-        theTimeProfilingResults =None, # invoked from ModelDDvlPloneTool still using previous style of time profiling, thus the parameter is not theParentExecutionRecord =None, 
+        theTimeProfilingResults =None, 
         theModelDDvlPloneTool_Mutators   =None, 
         theNewTypeName          ='', 
         theNewOneTitle          ='', 
@@ -214,8 +210,11 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
         
         """
     
-        unExecutionRecord = self.fStartExecution( 'method',  'fCrearSolicitudCadena', None, True, { 'log_what': 'details', 'log_when': True, }) # invoked from ModelDDvlPloneTool still using previous style of time profiling, thus the parameter is not theParentExecutionRecord =None, 
+        unExecutionRecord = self.fStartExecution( 'method',  'fCrearSolicitudCadena', None, True, { 'log_what': 'details', 'log_when': True, }) 
 
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fDateTimeNow
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import ModelDDvlPloneTool_Mutators,cModificationKind_CreateSubElement, cModificationKind_Create
+       
         try:
             unasDescripcionesContenidosCreados = []
             try:
@@ -447,7 +446,7 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
         
         """
     
-        unExecutionRecord = self.fStartExecution( 'method',  'fCrearImportarYLimpiarCadenas', None, True, { 'log_what': 'details', 'log_when': True, }) # invoked from ModelDDvlPloneTool still using previous style of time profiling, thus the parameter is not theParentExecutionRecord =None, 
+        unExecutionRecord = self.fStartExecution( 'method',  'fCrearImportarYLimpiarCadenas', None, True, { 'log_what': 'details', 'log_when': True, }) 
 
         try:
              
@@ -558,6 +557,8 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
     
         unExecutionRecord = self.fStartExecution( 'method',  'fCrearCadenas', None, False, { 'log_what': 'details', 'log_when': True, }) 
 
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import ModelDDvlPloneTool_Mutators,cModificationKind_CreateSubElement, cModificationKind_Create
+
         try:
             unasDescripcionesContenidosCreados = []
             try:
@@ -577,7 +578,7 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                     anActionReport = { 'effect': 'error', 'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_no_permission_ToCreateStrings_msgid', "User does not have permission to create new strings (as an import process built from new string requests).-"), }
                     return anActionReport  
                             
-                aModelDDvlPlone_tool = ModelDDvlPloneTool()
+                aModelDDvlPlone_tool = self.fModelDDvlPloneTool()
                              
                 
                 someSolicitudesCadenasPendientes = self.fObtenerSolicitudesCadenasPendientes()
@@ -822,7 +823,7 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
         
         """
     
-        unExecutionRecord = self.fStartExecution( 'method',  'fLimpiarCadenas', None, True, { 'log_what': 'details', 'log_when': True, }) # invoked from ModelDDvlPloneTool still using previous style of time profiling, thus the parameter is not theParentExecutionRecord =None, 
+        unExecutionRecord = self.fStartExecution( 'method',  'fLimpiarCadenas', None, True, { 'log_what': 'details', 'log_when': True, }) 
 
         try:
             unasDescripcionesContenidosCreados = []

@@ -55,15 +55,17 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore       import permissions
 
 
+
+from TRACatalogo_Globales import TRACatalogo_Globales
+
 from TRAElemento_Constants import *
 
 from TRAElemento_Permission_Definitions import cBoundObject
 from TRAElemento_Permission_Definitions import cUseCase_EllaborateInformeLanguages, cUseCase_EllaborateInformeModulesAndLanguages
 from TRAElemento_Permission_Definitions import cUseCase_CreateTRAInforme, cUseCase_CreateAndDeleteTRAInformeInTRAImportacion
-
+from TRAElemento_Permission_Definitions import cUseCase_EllaborateInformeActividad
 
 from Products.Archetypes.public import DisplayList
-
 
 
 
@@ -253,6 +255,49 @@ class TRACatalogo_Informes:
 
 
 
+    security.declarePrivate( 'fNewVoidInformeActividad')
+    def fNewVoidInformeActividad(self):
+        """Instantiate Result for an Activity report.
+
+        """
+        unNuevoInforme = {
+            'success':                         False,
+            'report_date':                     None,
+            'totals':                          self.fNewVoidInformeActividad_TodosPeriodos( 'total'),
+            'activity_reports_by_language':    { },
+            'period_keys':                     [ ],
+        }
+        return  unNuevoInforme
+
+
+    
+    
+    security.declarePrivate( 'fNewVoidInformeActividad_TodosPeriodos')
+    def fNewVoidInformeActividad_TodosPeriodos(self, theLanguage=''):
+        """Instantiate Result for an Activity report for all periods, used for each language, and for total of all languages.
+
+        """
+        unNuevoInforme = { } 
+        unNuevoInforme[ 'periods'] = dict( [ [ aPeriodKey, self.fNewVoidInformeActividad_Periodo( aPeriodKey) ] for  aPeriodKey in cActivityReport_Periods])
+        unNuevoInforme[ 'language'] = theLanguage
+        unNuevoInforme[ 'num_activities'] = 0
+            
+        return  unNuevoInforme
+
+
+    
+    
+    security.declarePrivate( 'fNewVoidInformeActividad_Periodo')
+    def fNewVoidInformeActividad_Periodo(self, thePeriod=''):
+        """Instantiate Result for an Activity report for a single period, used for each period, for each language, and for total of all languages.
+
+        """
+        unNuevoInforme = {
+            'period':                    thePeriod,
+            'num_activities':            0,
+            'users_and_num_activities':  { }, # dict with kwy userid and value number of activities, to be later post-processed as a list with elements [ userid, number of activities], sorted descending by number of activities (most active users first)
+        }
+        return  unNuevoInforme
 
 
 
@@ -526,8 +571,15 @@ class TRACatalogo_Informes:
                     for unIndexEstado in range( len( unosInformesEstados)):
                         unInformeEstado = unosInformesEstados[ unIndexEstado]
                         unEstado        = unInformeEstado[ 'nombre_estado']
-
-                        unaBusqueda = {   'getEstadoTraduccion' :     unEstado, }
+                        
+                        # ###############################
+                        """ACV 20100511 added query condition getEstadoCadena, to avoid including translations of inactive strings.
+                        
+                        """
+                        unaBusqueda = {   
+                            'getEstadoCadena': cEstadoCadenaActiva,
+                            'getEstadoTraduccion' :     unEstado, 
+                        }
 
                         unosResultadosBusqueda      = unCatalogBusquedaTraducciones.searchResults(**unaBusqueda)
 
@@ -733,7 +785,13 @@ class TRACatalogo_Informes:
 
                                     for unIndexEstado in range( len( cTodosEstados)):
                                         unEstado = cTodosEstados[ unIndexEstado]
+                        
+                                        # ###############################
+                                        """ACV 20100511 added query condition getEstadoCadena, to avoid including translations of inactive strings.
+                                        
+                                        """
                                         unaBusqueda = { 
+                                            'getEstadoCadena':          cEstadoCadenaActiva,
                                             'getEstadoTraduccion' :     unEstado, 
                                             'getSimbolo':               unosSimbolosCadenasEnModulo,
                                         }
@@ -790,8 +848,891 @@ class TRACatalogo_Informes:
 
 
 
+
+
+    # #############################################################
+    """Ellaboration of activity report
+
+    """  
+
+
+
+    security.declareProtected( permissions.View, 'fElaborarInformeActividad')
+    def fElaborarInformeActividad(self, 
+        theUseCaseQueryResult       =None,
+        theCheckPermissions         =True, 
+        thePermissionsCache         =None, 
+        theRolesCache               =None, 
+        theParentExecutionRecord    =None):
+        """Generate Activity Report
+
+        """        
+
+        unExecutionRecord = self.fStartExecution( 'method',  'fElaborarInformeActividad', theParentExecutionRecord, False) 
+
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fDateTimeNow
+        
+        try:
+            try:   
+                unInforme = self.fNewVoidInformeActividad()
+                unInforme[ 'report_date'] = self.fDateTimeNowString()
+
+
+                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
+                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+
+
+                unUseCaseQueryResult = theUseCaseQueryResult
+                if theCheckPermissions or not unUseCaseQueryResult or not ( unUseCaseQueryResult.get( 'use_case_name', '') in [ cUseCase_EllaborateInformeLanguages, cUseCase_EllaborateInformeModulesAndLanguages, cUseCase_CreateTRAInforme, cUseCase_CreateAndDeleteTRAInformeInTRAImportacion,], ):
+                    unUseCaseQueryResult = self.fUseCaseAssessment(  
+                        theUseCaseName                  = cUseCase_EllaborateInformeActividad, 
+                        theElementsBindings             = { cBoundObject: self,}, 
+                        theRulesToCollect               = [ 'languages', ],
+                        thePermissionsCache             = unPermissionsCache, 
+                        theRolesCache                   = unRolesCache, 
+                        theParentExecutionRecord        = unExecutionRecord,
+                    )
+                if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
+                    return unInforme
+
+                unosLanguagesNamesAndFlagsPorCodigo = self.fLanguagesNamesAndFlagsPorCodigo()
+
+
+                unosIdiomasAccesibles = unUseCaseQueryResult.get( 'collected_rule_assessments_by_name', {}).get( 'languages', {}).get( 'accepted_final_objects', [])
+                if not unosIdiomasAccesibles:
+                    return unInforme
+
+                unosIdiomasAccesiblesParaOrdenar = [ [ unIdioma.getCodigoIdiomaEnGvSIG(), unIdioma,] for unIdioma in unosIdiomasAccesibles]
+                unosIdiomasAccesiblesOrdenados   = sorted( unosIdiomasAccesiblesParaOrdenar, lambda unCodigoEIdioma, otroCodigoEIdioma: cmp( unCodigoEIdioma[ 0], otroCodigoEIdioma[ 0]))
+                unosIdiomasAccesibles            = [ unCodigoEIdioma[ 1] for unCodigoEIdioma in unosIdiomasAccesiblesOrdenados]
+                unosCodigosIdiomasAccesibles     = [ unCodigoEIdioma[ 0] for unCodigoEIdioma in unosIdiomasAccesiblesOrdenados]
+                unosIdiomasPorCodigo = dict( [ [ unIdioma.getCodigoIdiomaEnGvSIG(), unIdioma] for unIdioma in unosIdiomasAccesibles])
+                
+                
+                
+                # #############################################################
+                """Retrieve recent activities for this Translations Catalog
+            
+                """  
+                someActivities = self.fRecentActivitiesForRoot()
+                
+                
+                
+                
+                unDateTimeNow         = fDateTimeNow()
+                unDateTimeNowString   = self.fDateToStoreString( unDateTimeNow)
+                unDateTimeTodayString = unDateTimeNowString[:10]
+                
+                unDateTimeYesterday   = unDateTimeNow - 1
+                unDateTimeYesterdayString = self.fDateToStoreString( unDateTimeYesterday)
+                unDateTimeYesterdayString = unDateTimeYesterdayString[:10]
+                
+                unDateTimeLast7Days   = unDateTimeNow - 7
+                unDateTimeLast7DaysString = self.fDateToStoreString( unDateTimeLast7Days)
+                unDateTimeLast7DaysString = unDateTimeLast7DaysString[:10]
+                
+                unDateTimeLast30Days   = unDateTimeNow - 30
+                unDateTimeLast30DaysString = self.fDateToStoreString( unDateTimeLast30Days)
+                unDateTimeLast30DaysString = unDateTimeLast30DaysString[:10]
+        
+                #cRecentActivity_Date:        None,
+                #cRecentActivity_Language:    None,
+                #cRecentActivity_User:        None,
+                #cRecentActivity_Commented:   None,
+                #cRecentActivity_Action:      None,
+                #cRecentActivity_Symbol:      None,
+                #cRecentActivity_Counter:     None,
+                
+                #cActivityReport_Period_Last7Days,
+                #cActivityReport_Period_Last30Days,
+                #cActivityReport_Period_Before30Days,
+               
+                unInforme_Totals = unInforme.get( 'totals', None)
+                unosInformesByLanguage = unInforme.get( 'activity_reports_by_language', None)
+                unInforme[ 'period_keys'] = cActivityReport_Periods[:]
+                
+                if someActivities:
+                    # #############################################################
+                    """Accumulate all valid activities.
+                
+                    """  
+                    for anActivity in someActivities:
+                    
+                        if anActivity:
+                            anActivityDate     = anActivity.get( cRecentActivity_Date, None)
+                            anActivityLanguage = anActivity.get( cRecentActivity_Language, None)
+                            anActivityUser     = anActivity.get( cRecentActivity_User, None)
+                            
+                            if anActivityDate and anActivityLanguage and anActivityUser:
+                                if anActivityLanguage in unosCodigosIdiomasAccesibles:
+                                    
+                                    # #############################################################
+                                    """Accumulate Total number of activities, overall and for each language.
+                                
+                                    """  
+                                    
+                                    unInforme_Totals[ 'num_activities'] += 1
+                                    
+                                    
+                                    unInforme_Language_TodosPeriodos = unosInformesByLanguage.get( anActivityLanguage, None)
+                                    if unInforme_Language_TodosPeriodos == None:
+                                        unInforme_Language_TodosPeriodos = self.fNewVoidInformeActividad_TodosPeriodos( anActivityLanguage)
+                                        unosInformesByLanguage[ anActivityLanguage] = unInforme_Language_TodosPeriodos
+                                    
+                                    unInforme_Language_TodosPeriodos[ 'num_activities'] += 1
+                                    
+                                    
+                                    
+                                     
+                                    # #############################################################
+                                    """Accumulate number of activities by periods.
+                                
+                                    """  
+                                    unPeriodKey_TodayOrYesterday = None
+                                    if anActivityDate >= unDateTimeTodayString:
+                                        unPeriodKey_TodayOrYesterday = cActivityReport_Period_Today
+                                    elif anActivityDate >= unDateTimeYesterdayString:
+                                        unPeriodKey_TodayOrYesterday = cActivityReport_Period_Yesterday
+                                    if unPeriodKey_TodayOrYesterday:   
+                                        self.pAcumularActividadEnPeriodoInforme( anActivity, unPeriodKey_TodayOrYesterday, unInforme)
+                                    
+                                        
+                                        
+                                    unPeriodKey_Last7Days = None
+                                    if anActivityDate >= unDateTimeLast7DaysString:
+                                        unPeriodKey_Last7Days = cActivityReport_Period_Last7Days
+                                        self.pAcumularActividadEnPeriodoInforme( anActivity, unPeriodKey_Last7Days, unInforme)
+                                        
+                                        
+                                        
+                                    unPeriodKey_Last30DaysOrBefore = None
+                                    if anActivityDate >= unDateTimeLast30DaysString:
+                                        unPeriodKey_Last30DaysOrBefore =cActivityReport_Period_Last30Days
+                                    else:
+                                        unPeriodKey_Last30DaysOrBefore = cActivityReport_Period_Before30Days
+                                    if unPeriodKey_Last30DaysOrBefore:
+                                        self.pAcumularActividadEnPeriodoInforme( anActivity, unPeriodKey_Last30DaysOrBefore, unInforme)
+                        
+                                    
+                                    
+                # #############################################################
+                """Sort user names by number of activities, for overall activity.
+            
+                """  
+                for unPeriodKey in cActivityReport_Periods:
+                    
+                    unInforme_Totals_Periodos = unInforme_Totals.get( 'periods', None)
+                    if not ( unInforme_Totals_Periodos == None):
+                        unInforme_Totals_Periodo = unInforme_Totals_Periodos[ unPeriodKey]
+                        if unInforme_Totals_Periodo:
+                            unInforme_Totals_Periodo_ByUsers = unInforme_Totals_Periodo[ 'users_and_num_activities']
+                            unInforme_Totals_Periodo_ByUsers_ToSort = [ ]
+                            for unUserId in unInforme_Totals_Periodo_ByUsers.keys():
+                                unNumActivities = unInforme_Totals_Periodo_ByUsers.get( unUserId, 0)
+                                unInforme_Totals_Periodo_ByUsers_ToSort.append( [ unUserId, unNumActivities,])
+                            
+                            unInforme_Totals_Periodo_ByUsers_Sorted = sorted( unInforme_Totals_Periodo_ByUsers_ToSort, lambda aOne, anOther: cmp( aOne[ 1], anOther[ 1]), reverse=True)
+                            unInforme_Totals_Periodo[ 'users_and_num_activities'] = unInforme_Totals_Periodo_ByUsers_Sorted
+                        else:
+                            unInforme_Totals_Periodo[ 'users_and_num_activities'] = []
+                     
+                    
+                # #############################################################
+                """Sort user names by number of activities, for each language.
+            
+                """  
+                for unCodigoIdioma in unosInformesByLanguage.keys():
+                    unInforme_Language = unosInformesByLanguage.get( unCodigoIdioma, None)
+                    if unInforme_Language:
+                        
+                        unIdioma = unosIdiomasPorCodigo.get( unCodigoIdioma, None)
+                        if not( unIdioma == None):
+                            unInforme_Language.update( {
+                                'nombre_idioma':               unIdioma.Title(),
+                                'nombre_nativo_idioma':        unIdioma.getNombreNativoDeIdioma(),
+                                'codigo_idioma_en_gvsig':      unIdioma.getCodigoIdiomaEnGvSIG(),
+                                'codigo_internacional_idioma': unIdioma.getCodigoInternacionalDeIdioma(),
+                                'flag':                        unosLanguagesNamesAndFlagsPorCodigo.get( unCodigoIdioma, {}).get( 'flag', cTRAFlagIdiomaDesconocida),
+                                'flag_url':                    self.fAsUnicode( unosLanguagesNamesAndFlagsPorCodigo.get( unCodigoIdioma, {}).get( 'flag_url', '%s/%s' % ( self.fPortalURL(), cTRAFlagIdiomaDesconocida,))),
+                                'url_idioma':                  unIdioma.absolute_url(), 
+                                'modifiable':                  ( unIdioma.fAllowWrite() and True) or False,
+                                
+                            })
+                                                  
+    
+                                
+        
+                                
+                        unInforme_Language_Periods = unInforme_Language.get( 'periods', None)
+                        if not ( unInforme_Language_Periods == None):
+                            
+                            for unPeriodKey in cActivityReport_Periods:
+                                unInforme_Language_Periodo = unInforme_Language_Periods.get( unPeriodKey, None)
+                                if not( unInforme_Language_Periodo == None):
+                                    unInforme_Language_Periodo_ByUsers = unInforme_Language_Periodo[ 'users_and_num_activities']
+                                    unInforme_Language_Periodo_ByUsers_ToSort = [ ]
+                                    for unUserId in unInforme_Language_Periodo_ByUsers.keys():
+                                        unNumActivities = unInforme_Language_Periodo_ByUsers.get( unUserId, 0)
+                                        unInforme_Language_Periodo_ByUsers_ToSort.append( [ unUserId, unNumActivities,])
+                                
+                                        unInforme_Language_Periodo_ByUsers_Sorted = sorted( unInforme_Language_Periodo_ByUsers_ToSort, lambda aOne, anOther: cmp( aOne[ 1], anOther[ 1]), reverse=True)
+                                        unInforme_Language_Periodo[ 'users_and_num_activities'] = unInforme_Language_Periodo_ByUsers_Sorted
+
+                        
+                        
+                                    
+                unInforme[ 'report_date'] = self.fDateTimeNowString()   
+                unInforme[ 'success'] = True
+                                
+                return unInforme
+
+            except:
+                unaExceptionInfo = sys.exc_info()
+                unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
+
+                unInformeExcepcion = 'Exception during fElaborarInformeActividad\n' 
+                unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
+                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                unInformeExcepcion += unaExceptionFormattedTraceback   
+
+                unInforme[ 'success'] = False
+                unInforme[ 'condition'] = 'exception'
+                unInforme[ 'exception'] = unInformeExcepcion
+
+                unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
+
+                if cLogExceptions:
+                    logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
+
+                return unInforme
+
+        finally:
+            unExecutionRecord and unExecutionRecord.pEndExecution()
+
+
+
+
+
+
+    security.declarePrivate( 'pAcumularActividadEnPeriodoInforme')
+    def pAcumularActividadEnPeriodoInforme(self, theActivity=None, thePeriodKey=None, theInforme=None):
+        if not theActivity:
+            return self
+        if not thePeriodKey:
+            return self
+        if not theInforme:
+            return self
+    
+        unInforme_Totals       = theInforme.get( 'totals', None)
+        if unInforme_Totals == None:
+            return self
+        
+        unosInformesByLanguage = theInforme.get( 'activity_reports_by_language', None)
+        if unosInformesByLanguage == None:
+            return self
+       
+        anActivityDate     = theActivity.get( cRecentActivity_Date, None)
+        anActivityLanguage = theActivity.get( cRecentActivity_Language, None)
+        anActivityUser     = theActivity.get( cRecentActivity_User, None)
+        
+        if not( anActivityDate and anActivityLanguage and anActivityUser):
+            return self
+        
+                
+        unInforme_Totals_Periodos = unInforme_Totals.get( 'periods', None)
+        if not ( unInforme_Totals_Periodos == None):
+            unInforme_Totals_Periodo = unInforme_Totals_Periodos.get( thePeriodKey, None)
+            if not ( unInforme_Totals_Periodos == None):
+                unInforme_Totals_Periodo[ 'num_activities'] += 1
+            
+            unInforme_Totals_Periodo_ByUsers = unInforme_Totals_Periodo[ 'users_and_num_activities']
+            unNumActivities_User = unInforme_Totals_Periodo_ByUsers.get( anActivityUser, 0)
+            unInforme_Totals_Periodo_ByUsers[ anActivityUser] = unNumActivities_User + 1
+        
+        
+        unInforme_Language_TodosPeriodos = unosInformesByLanguage.get( anActivityLanguage, None)
+        if unInforme_Language_TodosPeriodos == None:
+            unInforme_Language_TodosPeriodos = self.fNewVoidInformeActividad_TodosPeriodos( anActivityLanguage)
+            unosInformesByLanguage[ anActivityLanguage] = unInforme_Language_TodosPeriodos
+            
+        unInforme_Language_Periodos = unInforme_Language_TodosPeriodos.get( 'periods', {})
+        unInforme_Language_Periodo = unInforme_Language_Periodos.get( thePeriodKey, None)
+        if unInforme_Language_Periodo == None:
+            return self
+        
+        unInforme_Language_Periodo[ 'num_activities'] += 1
+        
+        unInforme_Language_Periodo_ByUsers = unInforme_Language_Periodo[ 'users_and_num_activities']
+        unNumActivities_User = unInforme_Language_Periodo_ByUsers.get( anActivityUser, 0)
+        unInforme_Language_Periodo_ByUsers[ anActivityUser] = unNumActivities_User + 1
+                                        
+            
+        return self
+   
+    
+    
+    
+    
+    
+    
+
+    
+    
+    # ############################################
+    """Invalidation of reports, depending on generation dates and changes since, held in globals of TRACAtalogo_Globales.
+            
+    """
+    
+
+    
+        
+
+      
+    security.declareProtected( permissions.View, 'fNewVoidReportInvalidateObsoleteStatusReports')
+    def fNewVoidReportInvalidateObsoleteStatusReports( self,):
+        aReport = {
+            'invalidated':        False,
+            'path_del_raiz':      '',
+            'changes_recorded':   0,
+            'changes_threshold': -1,
+            'seconds_lapsed':     0,
+            'seconds_threshold': -1,
+        }
+        return aReport
+        
+            
+       
+    
+    security.declarePrivate( 'fInvalidateObsoleteStatusReportByLanguages')
+    def fInvalidateObsoleteStatusReportByLanguages(self, ):
+        """If the Status Report by Languages is too old, or enough changes have been applied to translations in the catalog, invalidate the status report by languages for the catalog.
+        
+        """
+        
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow
+        
+        aReport = self.fNewVoidReportInvalidateObsoleteStatusReports()
+        
+        unPathDelRaiz = self.fPathDelRaiz()
+        if not unPathDelRaiz:
+            return aReport        
+        aReport[ 'path_del_raiz'] = unPathDelRaiz
+        
+        
+        unMustInvalidate              = False
+        unVoteMustInvalidateByNumbers = False
+        unVoteMustInvalidateByTime    = False
+            
+        try:
+            # #################
+            """MUTEX LOCK. 
+            
+            """
+            # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            self.pAcquireGlobalsLock( )
+            # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            
+                
+                       
+            # ####################################################################
+            """Check if the counter of changes since the last time the status report by languages was generated, is bigger than the maximum configured for the catalog. 
+            
+            """
+            unNumeroDeCambiosAnularInformeIdiomas = self.getNumeroDeCambiosAnularInformeIdiomas()
+            if not unNumeroDeCambiosAnularInformeIdiomas:
+                unNumeroDeCambiosAnularInformeIdiomas = 0
+                
+            aReport[ 'changes_threshold'] = unNumeroDeCambiosAnularInformeIdiomas
+
+            if TRACatalogo_Globales.gNumTranslationsStatusChangesSinceReportByLanguages == None:
+                TRACatalogo_Globales.gNumTranslationsStatusChangesSinceReportByLanguages = { }
+                
+            unNumTranslationsStatusChangesForRoot = TRACatalogo_Globales.gNumTranslationsStatusChangesSinceReportByLanguages.get( unPathDelRaiz, None)
+            if unNumTranslationsStatusChangesForRoot == None:
+                unNumTranslationsStatusChangesForRoot = 0
+                
+            aReport[ 'changes_recorded'] = unNumTranslationsStatusChangesForRoot
+                
+            if unNumTranslationsStatusChangesForRoot >= unNumeroDeCambiosAnularInformeIdiomas:
+                unVoteMustInvalidateByNumbers = True
+            
+                        
+            # ####################################################################
+            """If not already decided to invalidate, and there was any change, Check if enough time has lapsed since the last time the status report by languages was generated. 
+            
+            """
+            unSegundosMinimosRetencionInformeIdiomas = self.getSegundosMinimosRetencionInformeIdiomas()
+
+            if not unSegundosMinimosRetencionInformeIdiomas:
+                unSegundosMinimosRetencionInformeIdiomas = 0
+                
+            aReport[ 'seconds_threshold'] = unSegundosMinimosRetencionInformeIdiomas
+                
+
+            if TRACatalogo_Globales.gStatusReportByLanguagesTimeMillis == None:
+                TRACatalogo_Globales.gStatusReportByLanguagesTimeMillis = { }
+                
+            unStatusReportByLanguagesTimeMillis = TRACatalogo_Globales.gStatusReportByLanguagesTimeMillis.get( unPathDelRaiz, None)
+            if unStatusReportByLanguagesTimeMillis == None:
+                unStatusReportByLanguagesTimeMillis = 0
+                
+            unosMillisecondsNow = fMillisecondsNow()
+            
+            unosSecondsLapsed =  int(( unosMillisecondsNow - unStatusReportByLanguagesTimeMillis) / 1000)
+            aReport[ 'seconds_lapsed'] = unosSecondsLapsed
+
+            if unosSecondsLapsed >= unSegundosMinimosRetencionInformeIdiomas:
+                unVoteMustInvalidateByTime = True
+                
+            
+            if unVoteMustInvalidateByNumbers:
+                unMustInvalidate = True
+            else:
+                if unVoteMustInvalidateByTime and unNumTranslationsStatusChangesForRoot:
+                    unMustInvalidate = True
+                    
+                
+                
+                
+        finally:
+            # #################
+            """MUTEX UNLOCK. 
+            
+            """
+            # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            self.pReleaseGlobalsLock( )
+            # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
             
             
+        if unMustInvalidate:
+            self.pFlushCachedTemplates( [ 'TRACatalogoInforme', 'TRACatalogoInforme_NoHeaderNoFooter',])
+            aReport[ 'invalidated'] = True
+            
+        return aReport
+            
+    
+
+    
+    
+    
+    security.declarePrivate( 'pStatusReportByLanguagesJustGenerated')
+    def pStatusReportByLanguagesJustGenerated(self, ):
+        """Record the time now, and Reset the counter of changes since the report was generated.
+        
+        """
+        
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow
+        
+        unPathDelRaiz = self.fPathDelRaiz()
+        if not unPathDelRaiz:
+            return self
+        
+        unMustInvalidate = False
+            
+        try:
+            # #################
+            """MUTEX LOCK. 
+            
+            """
+            # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            self.pAcquireGlobalsLock( )
+            # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             
             
+                        
+            # ####################################################################
+            """Record the current time as the status report generation time. 
             
+            """
+            if TRACatalogo_Globales.gStatusReportByLanguagesTimeMillis == None:
+                TRACatalogo_Globales.gStatusReportByLanguagesTimeMillis = { }
+                
+            unosMillisecondsNow = fMillisecondsNow()
+
+            TRACatalogo_Globales.gStatusReportByLanguagesTimeMillis[ unPathDelRaiz] = unosMillisecondsNow
+                 
+                
+                
+                       
+            # ####################################################################
+            """Reset the counter of changes since the status report was generated.
+            
+            """
+              
+            if TRACatalogo_Globales.gNumTranslationsStatusChangesSinceReportByLanguages == None:
+                TRACatalogo_Globales.gNumTranslationsStatusChangesSinceReportByLanguages = { }
+                
+            TRACatalogo_Globales.gNumTranslationsStatusChangesSinceReportByLanguages[ unPathDelRaiz] = 0
+                
+        finally:
+            # #################
+            """MUTEX UNLOCK. 
+            
+            """
+            # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            self.pReleaseGlobalsLock( )
+            # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+        return self
+            
+    
+    
+    
+    
+    
+    
+    
+
+    
+    security.declarePrivate( 'fInvalidateObsoleteStatusReportByModulesAndLanguages')
+    def fInvalidateObsoleteStatusReportByModulesAndLanguages(self, ):
+        """If the Status Report by Modules and Languages is too old, or enough changes have been applied to translations in the catalog, invalidate the status report by modules and languages for the catalog.
+        
+        """
+        
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow
+        
+        aReport = self.fNewVoidReportInvalidateObsoleteStatusReports()
+        
+        
+        unPathDelRaiz = self.fPathDelRaiz()
+        if not unPathDelRaiz:
+            return aReport
+        
+        unMustInvalidate              = False
+        unVoteMustInvalidateByNumbers = False
+        unVoteMustInvalidateByTime    = False
+            
+        try:
+            # #################
+            """MUTEX LOCK. 
+            
+            """
+            # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            self.pAcquireGlobalsLock( )
+            # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            
+                
+                       
+            # ####################################################################
+            """Check if the counter of changes since the last time the status report by languages was generated, is bigger than the maximum configured for the catalog. 
+            
+            """
+            unNumeroDeCambiosAnularInformeModulosEIdiomas = self.getNumeroDeCambiosAnularInformeModulosEIdiomas()
+            if not unNumeroDeCambiosAnularInformeModulosEIdiomas:
+                unNumeroDeCambiosAnularInformeModulosEIdiomas = 0
+
+            aReport[ 'changes_threshold'] = unNumeroDeCambiosAnularInformeModulosEIdiomas
+                
+            if TRACatalogo_Globales.gNumTranslationsStatusChangesSinceReportByModulesAndLanguages == None:
+                TRACatalogo_Globales.gNumTranslationsStatusChangesSinceReportByModulesAndLanguages = { }
+                
+            unNumTranslationsStatusChangesForRoot = TRACatalogo_Globales.gNumTranslationsStatusChangesSinceReportByModulesAndLanguages.get( unPathDelRaiz, None)
+            if unNumTranslationsStatusChangesForRoot == None:
+                unNumTranslationsStatusChangesForRoot = 0
+                
+            aReport[ 'changes_recorded'] = unNumTranslationsStatusChangesForRoot
+                
+            if unNumTranslationsStatusChangesForRoot >= unNumeroDeCambiosAnularInformeModulosEIdiomas:
+                unVoteMustInvalidateByNumbers = True
+            
+                        
+            # ####################################################################
+            """If not already decided to invalidate, and there was any change, Check if enough time has lapsed since the last time the status report by languages was generated. 
+            
+            """
+            unSegundosMinimosRetencionInformeIdiomas = self.getSegundosMinimosRetencionInformeModulosEIdiomas()
+            if not unSegundosMinimosRetencionInformeIdiomas:
+                unSegundosMinimosRetencionInformeIdiomas = 0
+                
+            aReport[ 'seconds_threshold'] = unSegundosMinimosRetencionInformeIdiomas
+
+            if TRACatalogo_Globales.gStatusReportByModulesAndLanguagesTimeMillis == None:
+                TRACatalogo_Globales.gStatusReportByModulesAndLanguagesTimeMillis = { }
+                
+            unStatusReportByModulesAndLanguagesTimeMillis = TRACatalogo_Globales.gStatusReportByModulesAndLanguagesTimeMillis.get( unPathDelRaiz, None)
+            if unStatusReportByModulesAndLanguagesTimeMillis == None:
+                unStatusReportByModulesAndLanguagesTimeMillis = 0
+                
+            unosMillisecondsNow = fMillisecondsNow()
+            
+            unosSecondsLapsed =  int(( unosMillisecondsNow - unStatusReportByModulesAndLanguagesTimeMillis) / 1000)
+            aReport[ 'seconds_lapsed'] = unosSecondsLapsed
+
+            if unosSecondsLapsed >= unSegundosMinimosRetencionInformeIdiomas:
+                unVoteMustInvalidateByTime = True
+                
+            
+            if unVoteMustInvalidateByNumbers:
+                unMustInvalidate = True
+            else:
+                if unVoteMustInvalidateByTime and unNumTranslationsStatusChangesForRoot:
+                    unMustInvalidate = True
+                    
+                
+                
+                
+        finally:
+            # #################
+            """MUTEX UNLOCK. 
+            
+            """
+            # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            self.pReleaseGlobalsLock( )
+            # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+            
+            
+        if unMustInvalidate:
+            self.pFlushCachedTemplates( [ 'TRACatalogoDetalle', 'TRACatalogoDetalle_NoHeaderNoFooter',])
+            aReport[ 'invalidated'] = True
+            
+        return aReport
+            
+    
+
+    
+    
+    
+    security.declarePrivate( 'pStatusReportByModulesAndLanguagesJustGenerated')
+    def pStatusReportByModulesAndLanguagesJustGenerated(self, ):
+        """Record the time now, and Reset the counter of changes since the report was generated.
+        
+        """
+        
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow
+        
+        unPathDelRaiz = self.fPathDelRaiz()
+        if not unPathDelRaiz:
+            return self
+        
+        unMustInvalidate = False
+            
+        try:
+            # #################
+            """MUTEX LOCK. 
+            
+            """
+            # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            self.pAcquireGlobalsLock( )
+            # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            
+            
+                        
+            # ####################################################################
+            """Record the current time as the status report generation time. 
+            
+            """
+            if TRACatalogo_Globales.gStatusReportByModulesAndLanguagesTimeMillis == None:
+                TRACatalogo_Globales.gStatusReportByModulesAndLanguagesTimeMillis = { }
+                
+            unosMillisecondsNow = fMillisecondsNow()
+
+            TRACatalogo_Globales.gStatusReportByModulesAndLanguagesTimeMillis[ unPathDelRaiz] = unosMillisecondsNow
+                 
+                
+                
+                       
+            # ####################################################################
+            """Reset the counter of changes since the status report was generated.
+            
+            """
+              
+            if TRACatalogo_Globales.gNumTranslationsStatusChangesSinceReportByModulesAndLanguages == None:
+                TRACatalogo_Globales.gNumTranslationsStatusChangesSinceReportByModulesAndLanguages = { }
+                
+            TRACatalogo_Globales.gNumTranslationsStatusChangesSinceReportByModulesAndLanguages[ unPathDelRaiz] = 0
+                
+        finally:
+            # #################
+            """MUTEX UNLOCK. 
+            
+            """
+            # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            self.pReleaseGlobalsLock( )
+            # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+        return self
+            
+    
+                        
+    
+
+    
+    security.declarePrivate( 'fInvalidateObsoleteActivityReport')
+    def fInvalidateObsoleteActivityReport(self, ):
+        """If the Activity Report is too old, or enough activity has taken place in the catalog, invalidate the activity report for the catalog.
+        
+        """
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow
+        
+        aReport = self.fNewVoidReportInvalidateObsoleteStatusReports()
+        
+        unPathDelRaiz = self.fPathDelRaiz()
+        if not unPathDelRaiz:
+            return aReport        
+        aReport[ 'path_del_raiz'] = unPathDelRaiz
+        
+        
+        unMustInvalidate              = False
+        unVoteMustInvalidateByNumbers = False
+        unVoteMustInvalidateByTime    = False
+            
+        try:
+            # #################
+            """MUTEX LOCK. 
+            
+            """
+            # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            self.pAcquireGlobalsLock( )
+            # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            
+                
+                       
+            # ####################################################################
+            """Check if the counter of changes since the last time the activity report was generated, is bigger than the maximum configured for the catalog. 
+            
+            """
+            unNumeroDeActividadesAnularInformeActividad = self.getNumeroDeActividadesAnularInformeActividad()
+            if not unNumeroDeActividadesAnularInformeActividad:
+                unNumeroDeActividadesAnularInformeActividad = 0
+                
+            aReport[ 'changes_threshold'] = unNumeroDeActividadesAnularInformeActividad
+
+            if TRACatalogo_Globales.gNumActivitiesSinceActivityReport == None:
+                TRACatalogo_Globales.gNumActivitiesSinceActivityReport = { }
+                
+            unNumActivitiesForRoot = TRACatalogo_Globales.gNumActivitiesSinceActivityReport.get( unPathDelRaiz, None)
+            if unNumActivitiesForRoot == None:
+                unNumActivitiesForRoot = 0
+                
+            aReport[ 'changes_recorded'] = unNumActivitiesForRoot
+                
+            if unNumActivitiesForRoot >= unNumeroDeActividadesAnularInformeActividad:
+                unVoteMustInvalidateByNumbers = True
+            
+                        
+            # ####################################################################
+            """If not already decided to invalidate, and there was any change, Check if enough time has lapsed since the last time the status report by languages was generated. 
+            
+            """
+            unSegundosMinimosRetencionInformeActividad = self.getSegundosMinimosRetencionInformeActividad()
+
+            if not unSegundosMinimosRetencionInformeActividad:
+                unSegundosMinimosRetencionInformeActividad = 0
+                
+            aReport[ 'seconds_threshold'] = unSegundosMinimosRetencionInformeActividad
+                
+
+            if TRACatalogo_Globales.gActivityReportTimeMillis == None:
+                TRACatalogo_Globales.gActivityReportTimeMillis = { }
+                
+            unActivityReportTimeMillis = TRACatalogo_Globales.gActivityReportTimeMillis.get( unPathDelRaiz, None)
+            if unActivityReportTimeMillis == None:
+                unActivityReportTimeMillis = 0
+                
+            unosMillisecondsNow = fMillisecondsNow()
+            
+            unosSecondsLapsed =  int(( unosMillisecondsNow - unActivityReportTimeMillis) / 1000)
+            aReport[ 'seconds_lapsed'] = unosSecondsLapsed
+
+            if unosSecondsLapsed >= unSegundosMinimosRetencionInformeActividad:
+                unVoteMustInvalidateByTime = True
+                
+            
+            if unVoteMustInvalidateByNumbers:
+                unMustInvalidate = True
+            else:
+                if unVoteMustInvalidateByTime and unNumActivitiesForRoot:
+                    unMustInvalidate = True
+                    
+                
+                
+                
+        finally:
+            # #################
+            """MUTEX UNLOCK. 
+            
+            """
+            # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            self.pReleaseGlobalsLock( )
+            # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+            
+            
+        if unMustInvalidate:
+            self.pFlushCachedTemplates( [ 'TRACatalogoActividad', 'TRACatalogoActividad_NoHeaderNoFooter',])
+            aReport[ 'invalidated'] = True
+            
+        return aReport
+            
+    
+
+    
+    
+    
+    security.declarePrivate( 'pActivityReportJustGenerated')
+    def pActivityReportJustGenerated(self, ):
+        """Record the time now, and Reset the counter of changes since the report was generated.
+        
+        """
+        
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow
+       
+        unPathDelRaiz = self.fPathDelRaiz()
+        if not unPathDelRaiz:
+            return self
+        
+        unMustInvalidate = False
+            
+        try:
+            # #################
+            """MUTEX LOCK. 
+            
+            """
+            # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            self.pAcquireGlobalsLock( )
+            # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            
+            
+                        
+            # ####################################################################
+            """Record the current time as the status report generation time. 
+            
+            """
+            if TRACatalogo_Globales.gActivityReportTimeMillis == None:
+                TRACatalogo_Globales.gActivityReportTimeMillis = { }
+                
+            unosMillisecondsNow = fMillisecondsNow()
+
+            TRACatalogo_Globales.gActivityReportTimeMillis[ unPathDelRaiz] = unosMillisecondsNow
+                 
+                
+                
+                       
+            # ####################################################################
+            """Reset the counter of changes since the status report was generated.
+            
+            """
+              
+            if TRACatalogo_Globales.gNumActivitiesSinceActivityReport == None:
+                TRACatalogo_Globales.gNumActivitiesSinceActivityReport = { }
+                
+            TRACatalogo_Globales.gNumActivitiesSinceActivityReport[ unPathDelRaiz] = 0
+                
+        finally:
+            # #################
+            """MUTEX UNLOCK. 
+            
+            """
+            # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            self.pReleaseGlobalsLock( )
+            # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+        return self
+            
+        

@@ -76,7 +76,7 @@
                 
             <table width="100%%" cellspacing="0" cellpadding="0" frame="void" >
                 <tr>
-                    <td width="25%"  align="left" valign="baseline" >
+                    <td width="20%"  align="left" valign="baseline" >
                         <font size="2">
                             <em><span tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TRACatalogo_attr_nombreProducto_label',   'Product Name-' )" /></em>
                          </font>        
@@ -105,7 +105,7 @@
                             </strong>
                         </tal:block>
                     </td>
-                    <td width="25%"  align="right" valign="baseline">                    
+                    <td width="20%"  align="right" valign="baseline">                    
                         <strong>
                             <a href="#" title="#"  
                                 tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_volveracatalogo_msgid',   'Back to catalog-' )"
@@ -116,6 +116,20 @@
                             </a>
                         </strong>
                     </td>                
+                    <td width="20%" align="right" valign="baseline">                    
+                        <strong>
+                            <a href="#" title="#" 
+                                tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_mostrarinformeactividad_msgid',   'Show Activity Report-' )"                                    
+                                tal:attributes="
+                                    title aLinkTitle;
+                                    href python: '%s/TRACatalogoActividad/' % here.getCatalogo().absolute_url()">
+                                <img src="#" alt="#" title="#" 
+                                     tal:attributes="src python: '%s/trainformeactividad.gif' % here.portal_url(); alt aLinkTitle; title aLinkTitle" 
+                                     id="icon-informeactividad" />
+                                <span tal:content="aLinkTitle" />
+                            </a>
+                        </strong>
+                    </td>
                     <td  width="25%" align="right" valign="baseline">                    
                         <strong>
                             <a href="#" title="#" 

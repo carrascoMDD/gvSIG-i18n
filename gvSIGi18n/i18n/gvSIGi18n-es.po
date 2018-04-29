@@ -414,6 +414,16 @@ msgstr "Producto"
 msgid "gvSIGi18n_TRACatalogo_attr_nombreProducto_help"
 msgstr "Nombre del Producto cuyas traducciones se manejan con este Catalogo."
 
+#. Default: "Cambios para Anular Informe Actividad"
+#: TRACatalogo numeroDeActividadesAnularInformeActividad
+msgid "gvSIGi18n_TRACatalogo_attr_numeroDeActividadesAnularInformeActividad_label"
+msgstr "Cambios para Anular Informe Actividad"
+
+#. Default: "Numero de Actividades que causan la anulacion del Informe de Actividad, incluso aunque no haya expirado el plazo de retencion del informe."
+#: TRACatalogo numeroDeActividadesAnularInformeActividad
+msgid "gvSIGi18n_TRACatalogo_attr_numeroDeActividadesAnularInformeActividad_help"
+msgstr "Numero de Actividades que causan la anulacion del Informe de Actividad, incluso aunque no haya expirado el plazo de retencion del informe."
+
 #. Default: "Cambios para Anular Informe Idiomas"
 #: TRACatalogo numeroDeCambiosAnularInformeIdiomas
 msgid "gvSIGi18n_TRACatalogo_attr_numeroDeCambiosAnularInformeIdiomas_label"
@@ -443,6 +453,16 @@ msgstr "Permite Modificar"
 #: TRACatalogo permiteModificar
 msgid "gvSIGi18n_TRACatalogo_attr_permiteModificar_help"
 msgstr "Si Verdadero, entonces los usuarios puede realizar los cambios a los que permite sus roles en la aplicacion. Si Falso, entonces no puede realizar cambios,  Puede ocurrir durante  procesos de importacion largos."
+
+#. Default: "Minimo Tiempo en segundos que se retiene el Informe de Actividad"
+#: TRACatalogo segundosMinimosRetencionInformeActividad
+msgid "gvSIGi18n_TRACatalogo_attr_segundosMinimosRetencionInformeActividad_label"
+msgstr "Minimo Tiempo en segundos que se retiene el Informe de Actividad"
+
+#. Default: "Tiempo en segundos que se retendra el Informe deActividad, aunque sus resultados sean inexactos por alguna modificacion del estado de traducciones, para evitar recalculo excesivo por cambios poco relevantes."
+#: TRACatalogo segundosMinimosRetencionInformeActividad
+msgid "gvSIGi18n_TRACatalogo_attr_segundosMinimosRetencionInformeActividad_help"
+msgstr "Tiempo en segundos que se retendra el Informe deActividad, aunque sus resultados sean inexactos por alguna modificacion del estado de traducciones, para evitar recalculo excesivo por cambios poco relevantes."
 
 #. Default: "Minimo Tiempo en segundos que se retiene el Informe de Estado por Idiomas"
 #: TRACatalogo segundosMinimosRetencionInformeIdiomas
@@ -1383,6 +1403,16 @@ msgstr "Exito?"
 #: TRAImportacion haCompletadoConExito
 msgid "gvSIGi18n_TRAImportacion_attr_haCompletadoConExito_help"
 msgstr "Si el proceso de importacion ha completado exitosamente su ejecucion."
+
+#. Default: "Informe de Cambios"
+#: TRAImportacion informeCambios
+msgid "gvSIGi18n_TRAImportacion_attr_informeCambios_label"
+msgstr "Informe de Cambios"
+
+#. Default: "Informa de los cambios realizados durante la importacion: idiomas, modulos y cadenas creados, y traducciones cambiadas."
+#: TRAImportacion informeCambios
+msgid "gvSIGi18n_TRAImportacion_attr_informeCambios_help"
+msgstr "Informa de los cambios realizados durante la importacion: idiomas, modulos y cadenas creados, y traducciones cambiadas."
 
 #. Default: "Contenidos Importacion"
 #: TRAImportacion informeContenidosImportacion
@@ -4503,6 +4533,11 @@ msgstr "Crear Informe de Estado por Modulos e Idiomas"
 msgid "gvSIGi18n_summary_label"
 msgstr "Sumario"
 
+#. Default: "Activity Report slightly obsolete after recent activity:"
+#: TRACatalogoInforme_inner.pt
+msgid "gvSIGi18n_ActivityReport_SlightlyObsoleteAfterChanges"
+msgstr "Informe de actividad ligeramente desactualizado por actividad reciente:"
+
 
 
 #. Default: "Detailed Report by Modules and Languages"
@@ -4548,6 +4583,11 @@ msgstr "Ligeramente desactualizado por cambios a traduciones:"
 msgid "gvSIGi18n_StatusReport_ShallBeRegeneratedAfterChanges"
 msgstr "Sera regenerado tras cambios adicionales a traducciones:"
 
+
+#. Default: "Shall be refreshed after additional activity:"
+#: TRACatalogoInforme_inner.pt
+msgid "gvSIGi18n_ActivityReport_ShallBeRegeneratedAfterActivity"
+msgstr "Sera regenerado tras actividad adicional:"
 
 #. Default: "o tras"
 #: TRACatalogoInforme_inner.pt
@@ -4744,3 +4784,87 @@ msgid "gvSIGi18n_TranslationsFilterLink_help"
 msgstr "el usuario puede marcar o grabar este enlace en Favoritos en el navegador de internet,\no arrastrar el enlace como un atajo en el escritorio\no simplemente copiar la URL, para reproducir el filtro mas tarde."
 
 
+
+
+
+
+
+
+
+
+#. Default: "Hide Activity Report"
+#: TRACatalogoActividad_inner.pt
+msgid "gvSIGi18n_ocultarinformedeactividad_msgid"
+msgstr "Ocultar Informe de Actividad"
+
+
+
+#. Default: "Show Activity Report"
+#: TRACatalogoActividad_inner.pt
+msgid "gvSIGi18n_mostrarinformeactividad_msgid"
+msgstr "Mostrar Informe de Actividad"
+
+
+#. Default: "No Activity Report available"
+#: TRACatalogoActividad_inner.pt
+msgid "gvSIGi18n_noHayInfomeActividad_msgid"
+msgstr "No hay Informe de Actividad disponible"
+
+#. Default: "Recent Activity"
+#: TRACatalogoActividad_inner.pt
+msgid "gvSIGi18n_ActivityReport_label"
+msgstr "Actividad Reciente"
+
+#. Default: "Activity Report date"
+#: TRACatalogoActividad_inner.pt
+msgid "gvSIGi18n_fechaInformeActividad_label"
+msgstr "Fecha de Informe de Actividad"
+
+
+
+#. Default: "Strings"
+#: TRACatalogoActividad_inner.pt
+msgid "gvSIGi18n_cadenas_msgid"
+msgstr "Cadenas"
+
+
+
+
+#. Default: "Today"
+#: TRACatalogoActividad_inner.pt
+msgid "gvSIGi18n_ActivityReport_Period_Today"
+msgstr "Hoy"
+
+#. Default: "Yesterday"
+#: TRACatalogoActividad_inner.pt
+msgid "gvSIGi18n_ActivityReport_Period_Yesterday"
+msgstr "Ayer"
+
+#. Default: "Last 7 Days"
+#: TRACatalogoActividad_inner.pt
+msgid "gvSIGi18n_ActivityReport_Period_Last7Days"
+msgstr "Ultimos 7 dias"
+
+#. Default: "Last 30 Days"
+#: TRACatalogoActividad_inner.pt
+msgid "gvSIGi18n_ActivityReport_Period_Last30Days"
+msgstr "Ultimos 30 dias"
+
+
+#. Default: "Before 30 Days"
+#: TRACatalogoActividad_inner.pt
+msgid "gvSIGi18n_ActivityReport_Period_Before30Days"
+msgstr "Antes de 30 dias"
+
+#. Default: "Activity Totals"
+#: TRACatalogoActividad_inner.pt
+msgid "gvSIGi18n_ActivityTotals_label"
+msgstr "Actividad Total"
+
+
+#. Default: "Activity by Languages"
+#: TRACatalogoActividad_inner.pt
+msgid "gvSIGi18n_ActivityByLanguages_label"
+msgstr "Actividad por Idiomas"
+
+     

@@ -38,7 +38,7 @@
 <metal:main fill-slot="main">
     <tal:main-macro metal:define-macro="main"
         tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas.;
-        global pStartTime       pStartTime | python: here.ModelDDvlPlone_tool.fMillisecondsNow()" 
+        global pStartTime       pStartTime | python: here.fMillisecondsNow()" 
         i18n:domain="gvSIGi18n">
 
         <metal:block metal:use-macro="here/TRAProfileExecution/macros/tSetupProfileExecution" />   
@@ -64,7 +64,7 @@
             
             <tal:block tal:condition="python: not here.fAllowWrite()" >
                 <div class="portalMessage" >
-                    <span tal:content="python: here.ModelDDvlPlone_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TranslationsCatalogIsLockedAgainstModifications', 'The Translations Catalog Is Locked Against Modifications')" />
+                    <span tal:content="python: here.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TranslationsCatalogIsLockedAgainstModifications', 'The Translations Catalog Is Locked Against Modifications')" />
                 </div>
             </tal:block>
                 
@@ -76,7 +76,7 @@
                 
             <table width="100%%" cellspacing="0" cellpadding="0" frame="void" >
                 <tr>
-                    <td width="25%"  align="left" valign="baseline" >
+                    <td width="20%"  align="left" valign="baseline" >
                         <font size="2">
                             <em><span tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TRACatalogo_attr_nombreProducto_label',   'Product Name-' )" /></em>
                          </font>        
@@ -105,7 +105,7 @@
                             </strong>
                         </tal:block>
                     </td>
-                    <td width="25%"  align="right" valign="baseline">                    
+                    <td width="20%"  align="right" valign="baseline">                    
                         <strong>
                             <a href="#" title="#"  
                                 tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_volveracatalogo_msgid',   'Back to catalog-' )"
@@ -116,7 +116,21 @@
                             </a>
                         </strong>
                     </td>                
-                    <td  width="25%" align="right" valign="baseline">                    
+                    <td width="20%" align="right" valign="baseline">                    
+                        <strong>
+                            <a href="#" title="#" 
+                                tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_mostrarinformeactividad_msgid',   'Show Activity Report-' )"                                    
+                                tal:attributes="
+                                    title aLinkTitle;
+                                    href python: '%s/TRACatalogoActividad/' % here.getCatalogo().absolute_url()">
+                                <img src="#" alt="#" title="#" 
+                                     tal:attributes="src python: '%s/trainformeactividad.gif' % here.portal_url(); alt aLinkTitle; title aLinkTitle" 
+                                     id="icon-informeactividad" />
+                                <span tal:content="aLinkTitle" />
+                            </a>
+                        </strong>
+                    </td>
+                    <td width="20%" align="right" valign="baseline">                    
                         <strong>
                             <a href="#" title="#" 
                                 tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_mostrarinformedeestado_msgid',   'Show Status Report-' )"                                    
@@ -143,14 +157,14 @@
                     theRolesCache           = pRolesCache, 
                     theParentExecutionRecord= pExecutionRecord)" >
                 <tal:block tal:condition="python: pInicializarUseCaseAssessmentResult and pInicializarUseCaseAssessmentResult.get( 'success', False)">  
-                    <br/>
-                     <tal:block tal:replace="structure python: here.fLazyCrearHTML(
-                        theAllowCreation            =True,
+                    <tal:block tal:define="pInicializationResult python: here.fVerifyOrInitialize(
+                        theAllowInitialization      =True,
                         theCheckPermissions         =True,
                         thePermissionsCache         =pPermissionsCache, 
                         theRolesCache               =pRolesCache, 
-                        theParentExecutionRecord    =pExecutionRecord)" />
-                    <br/>
+                        theParentExecutionRecord    =pExecutionRecord)" >
+                        <metal:block metal:use-macro="here/TRAVerificationReport_i18n_view/macros/tTRAInicializationReport_i18n" />
+                    </tal:block>
                 </tal:block>
                 <tal:block tal:condition="python: not( pInicializarUseCaseAssessmentResult and pInicializarUseCaseAssessmentResult.get( 'success', False))">    
                     <br/>
@@ -169,9 +183,11 @@
     
             <tal:block tal:define="dummy python: pExecutionRecord and here.pEndExecution( pExecutionRecord)" />
     
-            <metal:block metal:use-macro="here/TRAFooter_i18n_view/macros/tFooter_i18n" />
-    
-            <tal:block tal:replace="structure python: pExecutionRecord and here.TRARenderExecutionDetails( pExecutionRecord)" />
+        
+            <tal:block tal:replace="nothing">
+                <metal:block metal:use-macro="here/TRAFooter_i18n_view/macros/tFooter_i18n" />
+                <tal:block tal:replace="structure python: pExecutionRecord and here.TRARenderExecutionDetails( pExecutionRecord)" />
+            </tal:block>
 
         </tal:block>
      </tal:main-macro>
