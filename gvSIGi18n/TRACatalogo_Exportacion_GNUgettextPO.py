@@ -139,7 +139,7 @@ class TRACatalogo_Exportacion_GNUgettextPO:
         theBuffer, 
         theResult,
         theIdioma, 
-        theNombreModulo, 
+        theDomainName, 
         theEncodingName, 
         theEncodingErrorHandleMode, 
         theSystemToUnicodeErrorsMode,
@@ -151,7 +151,7 @@ class TRACatalogo_Exportacion_GNUgettextPO:
                 theBuffer, 
                 theResult,
                 theIdioma, 
-                theNombreModulo, 
+                theDomainName, 
                 theEncodingName, 
                 theEncodingErrorHandleMode, 
                 theSystemToUnicodeErrorsMode,
@@ -163,7 +163,7 @@ class TRACatalogo_Exportacion_GNUgettextPO:
             theBuffer, 
             theResult,
             theIdioma, 
-            theNombreModulo, 
+            theDomainName, 
             theEncodingName, 
             theEncodingErrorHandleMode, 
             theSystemToUnicodeErrorsMode,
@@ -180,7 +180,7 @@ class TRACatalogo_Exportacion_GNUgettextPO:
         theBuffer, 
         theResult,
         theIdioma, 
-        theNombreModulo, 
+        theDomainName, 
         theEncodingName, 
         theEncodingErrorHandleMode, 
         theSystemToUnicodeErrorsMode,
@@ -378,7 +378,7 @@ class TRACatalogo_Exportacion_GNUgettextPO:
              
         unDominioUTF8 = '' 
         unEncodedString, unEncodingErrorCondition = self.fFromSystemEncodingToUnicodeToUTF8( 
-            self.fQuoteForGNUgettextPO( theNombreModulo or self.getDominioPorDefecto()), 
+            self.fQuoteForGNUgettextPO( theDomainName), 
             theTranslationService, 
             theSystemToUnicodeErrorsMode, 
             theUnicodeToUTF8ErrorsMode, 
@@ -558,7 +558,7 @@ class TRACatalogo_Exportacion_GNUgettextPO:
         theBuffer, 
         theResult,
         theIdioma, 
-        theNombreModulo, 
+        theDomainName, 
         theEncodingName, 
         theEncodingErrorHandleMode, 
         theSystemToUnicodeErrorsMode,
@@ -728,7 +728,7 @@ class TRACatalogo_Exportacion_GNUgettextPO:
              
         unDominioEncoded = '' 
         unEncodedString, unEncodingErrorCondition = self.fFromSystemEncodingToUnicodeEscape( 
-            self.fQuoteForGNUgettextPO( theNombreModulo or self.getDominioPorDefecto()), 
+            self.fQuoteForGNUgettextPO( theNombreModulo), 
             theTranslationService, 
             theSystemToUnicodeErrorsMode, 
         )
@@ -1464,7 +1464,7 @@ class TRACatalogo_Exportacion_GNUgettextPO:
     security.declarePrivate( 'fContenidoFicheroExportacionIdiomaModulo_GNUgettextPO')    
     def fContenidoFicheroExportacionIdiomaModulo_GNUgettextPO( self, 
         theIdioma, 
-        theNombreModulo, 
+        theDomainName, 
         theCodificacionCaracteres, 
         theResultadosTraducciones,
         theResultadosTraduccionesReferencia, 
@@ -1521,7 +1521,7 @@ class TRACatalogo_Exportacion_GNUgettextPO:
                     unEncodedFile, 
                     unResult,
                     theIdioma, 
-                    theNombreModulo, 
+                    theDomainName, 
                     theCodificacionCaracteres,
                     theEncodingErrorHandleMode, 
                     theSystemToUnicodeErrorsMode,
@@ -1607,7 +1607,7 @@ class TRACatalogo_Exportacion_GNUgettextPO:
     security.declarePrivate( 'fContenidoFicheroExportacionIdiomaModuloNoEspecificado_GNUgettextPO')    
     def fContenidoFicheroExportacionIdiomaModuloNoEspecificado_GNUgettextPO( self, 
         theIdioma, 
-        theNombreModulo, 
+        theDomainName, 
         theCodificacionCaracteres, 
         theResultadosTraducciones,
         theResultadosTraduccionesReferencia, 
@@ -1628,7 +1628,7 @@ class TRACatalogo_Exportacion_GNUgettextPO:
          
             unResult = self.fContenidoFicheroExportacionIdiomaModulo_GNUgettextPO(  
                 theIdioma, 
-                theNombreModulo, 
+                theDomainName, 
                 theCodificacionCaracteres, 
                 theResultadosTraducciones,
                 theResultadosTraduccionesReferencia, 
@@ -1658,7 +1658,7 @@ class TRACatalogo_Exportacion_GNUgettextPO:
     security.declarePrivate( 'fContenidoFicheroExportacionIdiomaTodosModulos_GNUgettextPO')    
     def fContenidoFicheroExportacionIdiomaTodosModulos_GNUgettextPO( self, 
         theIdioma, 
-        theNombreModulo, 
+        theDomainName, 
         theCodificacionCaracteres, 
         theResultadosTraducciones,
         theResultadosTraduccionesReferencia, 
@@ -1679,7 +1679,7 @@ class TRACatalogo_Exportacion_GNUgettextPO:
          
             unResult = self.fContenidoFicheroExportacionIdiomaModulo_GNUgettextPO(  
                 theIdioma, 
-                theNombreModulo, 
+                theDomainName, 
                 theCodificacionCaracteres, 
                 theResultadosTraducciones,
                 theResultadosTraduccionesReferencia, 

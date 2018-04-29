@@ -2,7 +2,7 @@
 #
 # File: TRAContenidoIntercambio.py
 #
-# Copyright (c) 2010 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+# Copyright (c) 2011 by 2008, 2009, 2010 Conselleria de Infraestructuras y
 # Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -203,13 +203,13 @@ schema = Schema((
         widget=ComputedField._properties['widget'](
             label="Contenido Intercambio de Traducciones",
             label2="Content in Translations Interchange",
-            description="Contenidos de los Archivos de intercambio de traducciones  incluyendo  cadenas (posiblemente asociadas a modulos)  y traducciones a un numero de idiomas,",
-            description2="Contents of translations interchange Archive files, including strings (possibly associated with modules) and translations to a number of languages.",
+            description="Infome acerca de ls contenidos de los Archivos de intercambio de traducciones  incluyendo  cadenas (posiblemente asociadas a modulos)  y traducciones a un numero de idiomas,",
+            description2="Report on the contents of translations interchange Archive files, including strings (possibly associated with modules) and translations to a number of languages.",
             label_msgid='gvSIGi18n_TRAContenidoIntercambio_attr_informeContenido_label',
             description_msgid='gvSIGi18n_TRAContenidoIntercambio_attr_informeContenido_help',
             i18n_domain='gvSIGi18n',
         ),
-        description="Contenidos de los Archivos de intercambio de traducciones  incluyendo  cadenas (posiblemente asociadas a modulos)  y traducciones a un numero de idiomas,",
+        description="Infome acerca de ls contenidos de los Archivos de intercambio de traducciones  incluyendo  cadenas (posiblemente asociadas a modulos)  y traducciones a un numero de idiomas,",
         duplicates="0",
         label2="Content in Translations Interchange",
         ea_localid="993",
@@ -217,7 +217,7 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        description2="Contents of translations interchange Archive files, including strings (possibly associated with modules) and translations to a number of languages.",
+        description2="Report on the contents of translations interchange Archive files, including strings (possibly associated with modules) and translations to a number of languages.",
         ea_guid="{6E839E35-1227-4081-9397-0F4CF172D96A}",
         exclude_from_values_form="True",
         scale="0",
@@ -228,7 +228,7 @@ schema = Schema((
         containment="Not Specified",
         position="9",
         owner_class_name="TRAContenidoIntercambio",
-        custom_presentation_view="TRAContenidoIntercambioTraducciones_i18n_view",
+        custom_presentation_view="TRAContenidoIntercambioDatos_NoHeaderNoFooter",
         computed_types="text"
     ),
 

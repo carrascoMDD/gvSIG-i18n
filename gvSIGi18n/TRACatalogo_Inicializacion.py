@@ -1147,8 +1147,9 @@ class TRACatalogo_Inicializacion:
             )
             unInforme[ 'catalogs_cadenas'] = unInformeCatalogosCadenas
             
-            if unInformeCatalogosCadenas.get( 'must_run_recatalog_elements', False):
-                unInforme[ 'must_run_recatalog_elements'] = True
+            if unInformeCatalogosCadenas:
+                if unInformeCatalogosCadenas.get( 'must_run_recatalog_elements', False):
+                    unInforme[ 'must_run_recatalog_elements'] = True
                 
 
             

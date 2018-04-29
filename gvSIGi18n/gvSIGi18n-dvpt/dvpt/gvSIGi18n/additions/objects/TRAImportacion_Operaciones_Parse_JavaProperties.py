@@ -849,10 +849,11 @@ class TRAImportacion_Operaciones_Parse_JavaProperties:
 
         """
         
-        self.pAssembleAllCursorRecordsProperties( theCursor)
-        
         if not theCursor.get( 'cursor_records_scanned', False):
-            return None
+            self.pAssembleAllCursorRecordsProperties( theCursor)
+        
+            if not theCursor.get( 'cursor_records_scanned', False):
+                return None
         
         
         allCursorRecords = theCursor.get( 'all_cursor_records', [])

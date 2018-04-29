@@ -261,6 +261,15 @@ def TRAExport_ParametersCandidateValues(
                     unDefaultModuleName = unDefaultModuleNameMetaAndValue[ 1]
             unInforme[ 'theDefaultModuleName'] = unDefaultModuleName
             
+            unDefaultDomain = theParametersInput.get( 'theDefaultDomain', None)
+            if not unDefaultDomain:
+                unDefaultDomain = ''
+                unDefaultDomainMetaAndValue = someConfiguracionMetaAndValuesDict.get( 'dominioPorDefecto', '')
+                if unDefaultDomainMetaAndValue:
+                    unDefaultDomain = unDefaultDomainMetaAndValue[ 1]
+            unInforme[ 'theDefaultDomain'] = unDefaultDomain
+            
+    
     
             unEncodingErrorHandleModeMetaAndValue = someConfiguracionMetaAndValuesDict.get( 'modoGestionErrorCodificacionExportacionPorDefecto', None)
             if unEncodingErrorHandleModeMetaAndValue:
@@ -381,32 +390,7 @@ def TRAExport_ParametersCandidateValues(
                 unInforme[ 'theExportarTRAInformes_vocabulary']         = unExportarTRAInformesPorDefectoVocabulary
                 unInforme[ 'theExportarTRAInformes_vocabulary_msgids']  = unExportarTRAInformesPorDefectoMetaAndValue[ 8]
                           
-
-            unExportarTRAImportacionesPorDefectoMetaAndValue = someConfiguracionMetaAndValuesDict.get( 'exportarTRAImportacionesPorDefecto', None)
-            if unExportarTRAImportacionesPorDefectoMetaAndValue:
-                unExportarTRAImportacionesPorDefectoVocabulary = unExportarTRAImportacionesPorDefectoMetaAndValue[ 7]
-                unExportarTRAImportacionesPorDefecto = theParametersInput.get( 'theExportarTRAImportaciones', None)
-                if not ( unExportarTRAImportacionesPorDefecto in unExportarTRAImportacionesPorDefectoVocabulary):
-                    unExportarTRAImportacionesPorDefecto = unExportarTRAImportacionesPorDefectoMetaAndValue[ 1]
-                if not ( unExportarTRAImportacionesPorDefecto in unExportarTRAImportacionesPorDefectoVocabulary):
-                    unExportarTRAImportacionesPorDefecto = unExportarTRAImportacionesPorDefectoVocabulary[ 0]
-                unInforme[ 'theExportarTRAImportaciones']                    = unExportarTRAImportacionesPorDefecto
-                unInforme[ 'theExportarTRAImportaciones_vocabulary']         = unExportarTRAImportacionesPorDefectoVocabulary
-                unInforme[ 'theExportarTRAImportaciones_vocabulary_msgids']  = unExportarTRAImportacionesPorDefectoMetaAndValue[ 8]
-              
- 
-            unExportarTRAProgresosPorDefectoMetaAndValue = someConfiguracionMetaAndValuesDict.get( 'exportarTRAProgresosPorDefecto', None)
-            if unExportarTRAProgresosPorDefectoMetaAndValue:
-                unExportarTRAProgresosPorDefectoVocabulary = unExportarTRAProgresosPorDefectoMetaAndValue[ 7]
-                unExportarTRAProgresosPorDefecto = theParametersInput.get( 'theExportarTRAProgresos', None)
-                if not ( unExportarTRAProgresosPorDefecto in unExportarTRAProgresosPorDefectoVocabulary):
-                    unExportarTRAProgresosPorDefecto = unExportarTRAProgresosPorDefectoMetaAndValue[ 1]
-                if not ( unExportarTRAProgresosPorDefecto in unExportarTRAProgresosPorDefectoVocabulary):
-                    unExportarTRAProgresosPorDefecto = unExportarTRAProgresosPorDefectoVocabulary[ 0]
-                unInforme[ 'theExportarTRAProgresos']                    = unExportarTRAProgresosPorDefecto
-                unInforme[ 'theExportarTRAProgresos_vocabulary']         = unExportarTRAProgresosPorDefectoVocabulary
-                unInforme[ 'theExportarTRAProgresos_vocabulary_msgids']  = unExportarTRAProgresosPorDefectoMetaAndValue[ 8]
-                                              
+                     
                 
                 
                 

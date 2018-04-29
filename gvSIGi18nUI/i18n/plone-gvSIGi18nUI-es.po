@@ -258,6 +258,12 @@ msgid "Delete Module"
 msgstr "Eliminar Modulo"
 
 
+#. Default: "Rename Module"
+#: TRAModulo
+msgid "Rename Module"
+msgstr "Renombrar Modulo"
+
+
 #. Default: "Results"
 #: TRAProgreso
 msgid "Progress Results"
@@ -323,5 +329,22 @@ msgstr "Activar Configuracion de Permisos"
 #: TRAProgreso
 msgid "Process Input Parameters"
 msgstr "Parametros"
+
+
+#. Default: "Restore Backup"
+#: TRAImportacion
+msgid "Restore Backup"
+msgstr "Recuperar Copia de Seguridad"
+
+
+#. Default: "XML Data"
+#: TRAContenidoXML
+msgid "XML Data"
+msgstr "Datos XML"
+
+#. Default: "Process specification"
+#: TRAProgreso
+msgid "Process specification"
+msgstr "Especificacion proceso"
 
 

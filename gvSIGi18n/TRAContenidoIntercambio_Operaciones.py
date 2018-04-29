@@ -33,6 +33,8 @@ Antonio Carrasco Valero <carrasco@ModelDD.org>"""
 __docformat__ = 'plaintext'
 
 
+from base64 import b64encode, b64decode
+
 from AccessControl import ClassSecurityInfo
 
 
@@ -90,7 +92,6 @@ class TRAContenidoIntercambio_Operaciones:
     """
     security = ClassSecurityInfo()
  
-    
     
 
     
@@ -393,10 +394,18 @@ class TRAContenidoIntercambio_Operaciones:
                     aScannedData.pop( 'symbols_dict')
                     
         unContenidoString = self.fStringFromContenidoDeUploadedFile( unContenido)
+        
+        aBase64XMLSource = ''
+        try:
+            aBase64XMLSource = b64encode( unContenidoString)
+        except:
+            None
+        
         unContenidoActual = self.getContenido()
-        if not ( unContenidoString ==  unContenidoActual):
-            self.setContenido( unContenidoString)
+        if not ( aBase64XMLSource ==  unContenidoActual):
+            self.setContenido( aBase64XMLSource)
             self.setFechaContenido( self.fDateTimeNow())
+        
         
         return self
     
@@ -426,11 +435,16 @@ class TRAContenidoIntercambio_Operaciones:
     security.declarePrivate( 'fContenido')    
     def fContenido( self, ):
 
-        unContenidoString = self.getContenido()
+        unContenidoBase64 = self.getContenido()
+        if not unContenidoBase64:
+            return self.fNewVoidScannedData()
+        
+        unContenidoString = self.fContenidoStringFromBase64( unContenidoBase64,)
         if not unContenidoString:
             return self.fNewVoidScannedData()
         
         unContenido = self.fContenidoFromString( unContenidoString,)
+        
         return unContenido
              
 
@@ -446,12 +460,25 @@ class TRAContenidoIntercambio_Operaciones:
         
         from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fEvalString
         
-        aContenido = fEvalString( theContenidoString)
+        aContenido = fEvalString( theContenidoString, theRaiseExceptions=False)
         
         return aContenido
     
             
 
+    security.declarePrivate( 'fContenidoStringFromBase64')    
+    def fContenidoStringFromBase64( self, theBase64String, ):
+        
+        if not theBase64String:
+            return ''
+        
+        unContenidoString = ''
+        try:
+            unContenidoString = b64decode( theBase64String)
+        except:
+            None
+                    
+        return unContenidoString
         
     
     
@@ -703,13 +730,26 @@ class TRAContenidoIntercambio_Operaciones:
             if not ( unElementoContenidoXML == None):
                 unExtraLink = self.fNewVoidExtraLink()
                 unExtraLink.update( {
-                    'label'   : self.fTranslateI18N( 'plone', 'XML Contents', 'XML Contents-',),
+                    'label'   : self.fTranslateI18N( 'plone', 'XML Data', 'XML Data-',),
                     'href'    : '%s/Tabular/' % unElementoContenidoXML.absolute_url(),
                     'icon'    : 'tracontenidoxml.gif',
                     'domain'  : 'plone',
-                    'msgid'   : 'XML Contents',
+                    'msgid'   : 'XML Data',
                 })
                 unosExtraLinks.append( unExtraLink)        
+                
+            unElementoProgreso = unaImportacion.fDeriveElementoProgreso()
+            if not ( unElementoProgreso == None):
+                unExtraLink = self.fNewVoidExtraLink()
+                unExtraLink.update( {
+                    'label'   : self.fTranslateI18N( 'plone', 'Progress', 'Progress-',),
+                    'href'    : '%s/TRAProgressResults/' % unElementoProgreso.absolute_url(),
+                    'icon'    : 'traprogreso.gif',
+                    'domain'  : 'plone',
+                    'msgid'   : 'Progress',
+                })
+                unosExtraLinks.append( unExtraLink)        
+                
             
         return unosExtraLinks
         

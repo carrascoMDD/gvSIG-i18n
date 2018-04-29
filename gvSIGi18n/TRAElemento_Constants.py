@@ -41,6 +41,7 @@ When true, some restrictions are not enforced, to facilitate the developpers or 
 """
 cUnderDevelopmentOrDebug = False
 
+cTRAIdContenidoXML   = 'contenidoxml'
 
 
 #cAllowLazyCreateModelDDvlPloneTool            = False
@@ -69,6 +70,7 @@ cIndent = " " * 4
 """
 cTRASimbolosOrdenados_Id         = "simbolosordenados"
 cTRASimbolosOrdenados_Title      = "Sorted Symbols"
+
 
 
 

@@ -1,4 +1,4 @@
-# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>, 2010.
+# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: gvSIGi18n\n"
@@ -103,16 +103,6 @@ msgstr "Symbol"
 #: TRACadena simbolo
 msgid "gvSIGi18n_TRACadena_attr_simbolo_help"
 msgstr "The original symbol identifying the string to be translated."
-
-#. Default: "Simbolo (fragmentos para busqueda textual)"
-#: TRACadena simboloEnPalabras
-msgid "gvSIGi18n_TRACadena_attr_simboloEnPalabras_label"
-msgstr "Symbol (fragments for textual search)"
-
-#. Default: "El simbolo original que identifica la Cadena a traducir, descompuesto en multiples palabras para facilitar las busquedas por texto."
-#: TRACadena simboloEnPalabras
-msgid "gvSIGi18n_TRACadena_attr_simboloEnPalabras_help"
-msgstr "The original symbol identifying the string to be translated, fragmented into multiple words to facilitate searches."
 
 #. Default: "Usuario Creador"
 #: TRACadena usuarioCreador
@@ -639,10 +629,10 @@ msgstr "When exporting in Java .properties format, exported files for this langu
 msgid "gvSIGi18n_TRAConfiguracionExportacion_attr_dominioPorDefecto_label"
 msgstr "Domain for strings not in a module"
 
-#. Default: "Dato que aparece en los ficheros de exportacion de tipo GNUgettext PO, cuando se exportan separadamente en su propio fichero cadenas que no pertenecen a un modulo, para identificar la aplicacion o modulo a que se aplican las traducciones."
+#. Default: "Dato que aparece en los ficheros de exportacion de tipo GNU gettext PO, cuando se exportan separadamente en su propio fichero cadenas que no pertenecen a un modulo, para identificar la aplicacion o modulo a que se aplican las traducciones."
 #: TRAConfiguracionExportacion dominioPorDefecto
 msgid "gvSIGi18n_TRAConfiguracionExportacion_attr_dominioPorDefecto_help"
-msgstr "Iinformation that appears in the exported files of GNUgettext PO format, when exporting separately in its own file strings that do not pertain to any module,  to indicate the application or module to which the translations apply."
+msgstr "Information that appears in the exported files with GNU gettext PO format, when exporting separately in its own file strings that do not pertain to any module,  to indicate the application or module to which the translations apply."
 
 #. Default: "Exportar estado traducciones"
 #: TRAConfiguracionExportacion exportarEstadoTraduccionesPorDefecto
@@ -784,26 +774,6 @@ msgstr "Yes"
 msgid "gvSIGi18n_TRAConfiguracionExportacion_attr_exportarTRAIdiomasPorDefecto_option_No"
 msgstr "No"
 
-#. Default: "Exportar las TRAImportacion en XML"
-#: TRAConfiguracionExportacion exportarTRAImportacionesPorDefecto
-msgid "gvSIGi18n_TRAConfiguracionExportacion_attr_exportarTRAImportacionesPorDefecto_label"
-msgstr "Export the TRAImportacion in XML"
-
-#. Default: "Exportar las importaciones en fichero XML."
-#: TRAConfiguracionExportacion exportarTRAImportacionesPorDefecto
-msgid "gvSIGi18n_TRAConfiguracionExportacion_attr_exportarTRAImportacionesPorDefecto_help"
-msgstr "Export the imports in an XML file."
-
-#. Default: "Si"
-#: TRAConfiguracionExportacion exportarTRAImportacionesPorDefecto
-msgid "gvSIGi18n_TRAConfiguracionExportacion_attr_exportarTRAImportacionesPorDefecto_option_Si"
-msgstr "Yes"
-
-#. Default: "No"
-#: TRAConfiguracionExportacion exportarTRAImportacionesPorDefecto
-msgid "gvSIGi18n_TRAConfiguracionExportacion_attr_exportarTRAImportacionesPorDefecto_option_No"
-msgstr "No"
-
 #. Default: "Exportar los TRAInforme en XML"
 #: TRAConfiguracionExportacion exportarTRAInformesPorDefecto
 msgid "gvSIGi18n_TRAConfiguracionExportacion_attr_exportarTRAInformesPorDefecto_label"
@@ -864,26 +834,6 @@ msgstr "Yes"
 msgid "gvSIGi18n_TRAConfiguracionExportacion_attr_exportarTRAParametrosControlProgresoPorDefecto_option_No"
 msgstr "No"
 
-#. Default: "Exportar los TRAProgreso en XML"
-#: TRAConfiguracionExportacion exportarTRAProgresosPorDefecto
-msgid "gvSIGi18n_TRAConfiguracionExportacion_attr_exportarTRAProgresosPorDefecto_label"
-msgstr "Export the TRAProgreso in XML"
-
-#. Default: "Exportar los progresos y resultados de procesos de larga duracion en fichero XML."
-#: TRAConfiguracionExportacion exportarTRAProgresosPorDefecto
-msgid "gvSIGi18n_TRAConfiguracionExportacion_attr_exportarTRAProgresosPorDefecto_help"
-msgstr "Export the progresses and results of long-lived processes in an XML file."
-
-#. Default: "Si"
-#: TRAConfiguracionExportacion exportarTRAProgresosPorDefecto
-msgid "gvSIGi18n_TRAConfiguracionExportacion_attr_exportarTRAProgresosPorDefecto_option_Si"
-msgstr "Yes"
-
-#. Default: "No"
-#: TRAConfiguracionExportacion exportarTRAProgresosPorDefecto
-msgid "gvSIGi18n_TRAConfiguracionExportacion_attr_exportarTRAProgresosPorDefecto_option_No"
-msgstr "No"
-
 #. Default: "Exportar los TRASolicitudCadena en XML"
 #: TRAConfiguracionExportacion exportarTRASolicitudesCadenasPorDefecto
 msgid "gvSIGi18n_TRAConfiguracionExportacion_attr_exportarTRASolicitudesCadenasPorDefecto_label"
@@ -907,7 +857,7 @@ msgstr "No"
 #. Default: "Formato de exportacion por defecto"
 #: TRAConfiguracionExportacion formatoExportacionPorDefecto
 msgid "gvSIGi18n_TRAConfiguracionExportacion_attr_formatoExportacionPorDefecto_label"
-msgstr "Default Export format"
+msgstr "Default Export Format"
 
 #. Default: "Formato de los ficheros de exportacion de traducciones como Java .properties, o GNUtettext PO."
 #: TRAConfiguracionExportacion formatoExportacionPorDefecto
@@ -1042,7 +992,7 @@ msgstr "Default downladable archive kind"
 #. Default: "Tipo de archivo en que se descargan el modulo o modulos exportados. Puede ser .jar o .zip."
 #: TRAConfiguracionExportacion tipoArchivoExportacionPorDefecto
 msgid "gvSIGi18n_TRAConfiguracionExportacion_attr_tipoArchivoExportacionPorDefecto_help"
-msgstr "Type of the archive used to pack the module or modules for download."
+msgstr "Type of the archive used to pack the module or modules for download. Options are .jar or .zip."
 
 #. Default: ".jar"
 #: TRAConfiguracionExportacion tipoArchivoExportacionPorDefecto
@@ -1154,16 +1104,6 @@ msgstr "Import the TRAIdioma from XML"
 msgid "gvSIGi18n_TRAConfiguracionImportacion_attr_importarXMLTRAIdiomasPorDefecto_help"
 msgstr "Import the languages, and when applicable the langusage names and flag, from an XML file."
 
-#. Default: "Importar las TRAImportacion desde XML"
-#: TRAConfiguracionImportacion importarXMLTRAImportacionesPorDefecto
-msgid "gvSIGi18n_TRAConfiguracionImportacion_attr_importarXMLTRAImportacionesPorDefecto_label"
-msgstr "Import the TRAImportacion from XML"
-
-#. Default: "Importar las importaciones desde fichero XML."
-#: TRAConfiguracionImportacion importarXMLTRAImportacionesPorDefecto
-msgid "gvSIGi18n_TRAConfiguracionImportacion_attr_importarXMLTRAImportacionesPorDefecto_help"
-msgstr "Import the imports from an XML file."
-
 #. Default: "Importar los TRAInforme desde XML"
 #: TRAConfiguracionImportacion importarXMLTRAInformesPorDefecto
 msgid "gvSIGi18n_TRAConfiguracionImportacion_attr_importarXMLTRAInformesPorDefecto_label"
@@ -1193,16 +1133,6 @@ msgstr "Import the TRAParametrosControlProgreso from XML"
 #: TRAConfiguracionImportacion importarXMLTRAParametrosControlProgresoPorDefecto
 msgid "gvSIGi18n_TRAConfiguracionImportacion_attr_importarXMLTRAParametrosControlProgresoPorDefecto_help"
 msgstr "Import the long-lived progress control parameters from an XML file."
-
-#. Default: "Importar los TRAProgreso desde XML"
-#: TRAConfiguracionImportacion importarXMLTRAProgresosPorDefecto
-msgid "gvSIGi18n_TRAConfiguracionImportacion_attr_importarXMLTRAProgresosPorDefecto_label"
-msgstr "Import the TRAProgreso from XML"
-
-#. Default: "Importar los progresos y resultados de procesos de larga duracion desde fichero XML."
-#: TRAConfiguracionImportacion importarXMLTRAProgresosPorDefecto
-msgid "gvSIGi18n_TRAConfiguracionImportacion_attr_importarXMLTRAProgresosPorDefecto_help"
-msgstr "Import the progresses and results of long-lived processes from an XML file."
 
 #. Default: "Importar los TRASolicitudCadena desde XML"
 #: TRAConfiguracionImportacion importarXMLTRASolicitudesCadenasPorDefecto
@@ -2279,10 +2209,10 @@ msgstr "Import the status of each translation, from its comments in the .propert
 msgid "gvSIGi18n_TRAContenidoIntercambio_attr_informeContenido_label"
 msgstr "Content in Translations Interchange"
 
-#. Default: "Contenidos de los Archivos de intercambio de traducciones  incluyendo  cadenas (posiblemente asociadas a modulos)  y traducciones a un numero de idiomas,"
+#. Default: "Infome acerca de ls contenidos de los Archivos de intercambio de traducciones  incluyendo  cadenas (posiblemente asociadas a modulos)  y traducciones a un numero de idiomas,"
 #: TRAContenidoIntercambio informeContenido
 msgid "gvSIGi18n_TRAContenidoIntercambio_attr_informeContenido_help"
-msgstr "Contents of translations interchange Archive files, including strings (possibly associated with modules) and translations to a number of languages."
+msgstr "Report on the contents of translations interchange Archive files, including strings (possibly associated with modules) and translations to a number of languages."
 
 #. Default: "Nombre de Modulo por defecto"
 #: TRAContenidoIntercambio nombreModuloPorDefecto
@@ -2844,16 +2774,6 @@ msgstr "Import the TRAIdioma from XML"
 msgid "gvSIGi18n_TRAImportacion_attr_importarXMLTRAIdiomas_help"
 msgstr "Import the languages, and when applicable the langusage names and flag, from an XML file."
 
-#. Default: "Importar las TRAImportacion desde XML"
-#: TRAImportacion importarXMLTRAImportaciones
-msgid "gvSIGi18n_TRAImportacion_attr_importarXMLTRAImportaciones_label"
-msgstr "Import the TRAImportacion from XML"
-
-#. Default: "Importar las importaciones desde fichero XML."
-#: TRAImportacion importarXMLTRAImportaciones
-msgid "gvSIGi18n_TRAImportacion_attr_importarXMLTRAImportaciones_help"
-msgstr "Import the imports from an XML file."
-
 #. Default: "Importar los TRAInforme desde XML"
 #: TRAImportacion importarXMLTRAInformes
 msgid "gvSIGi18n_TRAImportacion_attr_importarXMLTRAInformes_label"
@@ -2883,16 +2803,6 @@ msgstr "Import the TRAParametrosControlProgreso from XML"
 #: TRAImportacion importarXMLTRAParametrosControlProgreso
 msgid "gvSIGi18n_TRAImportacion_attr_importarXMLTRAParametrosControlProgreso_help"
 msgstr "Import the long-lived progress control parameters from an XML file."
-
-#. Default: "Importar los TRAProgreso desde XML"
-#: TRAImportacion importarXMLTRAProgresos
-msgid "gvSIGi18n_TRAImportacion_attr_importarXMLTRAProgresos_label"
-msgstr "Import the TRAProgreso from XML"
-
-#. Default: "Importar los progresos y resultados de procesos de larga duracion desde fichero XML."
-#: TRAImportacion importarXMLTRAProgresos
-msgid "gvSIGi18n_TRAImportacion_attr_importarXMLTRAProgresos_help"
-msgstr "Import the progresses and results of long-lived processes from an XML file."
 
 #. Default: "Importar los TRASolicitudCadena desde XML"
 #: TRAImportacion importarXMLTRASolicitudesCadenas

@@ -143,14 +143,6 @@ class TRAElemento_VoidResults:
             'theExportarTRAInformes_vocabulary':        [],
             'theExportarTRAInformes_vocabulary_msgids': [],
 
-            'theExportarTRAImportaciones':                   '',
-            'theExportarTRAImportaciones_vocabulary':        [],
-            'theExportarTRAImportaciones_vocabulary_msgids': [],
-
-            'theExportarTRAProgresos':                   '',
-            'theExportarTRAProgresos_vocabulary':        [],
-            'theExportarTRAProgresos_vocabulary_msgids': [],
-
             'theExportarTRASolicitudesCadenas':                   '',
             'theExportarTRASolicitudesCadenas_vocabulary':        [],
             'theExportarTRASolicitudesCadenas_vocabulary_msgids': [],
@@ -448,7 +440,27 @@ class TRAElemento_VoidResults:
 
     
     
+
     
+    security.declarePublic( 'fNewVoidContenidoXMLReport')    
+    def fNewVoidContenidoXMLReport( self):
+        """Used by TRAContenidoXML to report a summary of XML contents.
+        
+        """
+        
+        return {
+            'title':                            '',
+            'description':                      '',
+            'absolute_url':                     '',
+            'expected_num_nodes':               0,
+            'expected_num_nodes_by_type':       { },
+            'binary_file_names':                [ ],
+        }
+
+    
+    
+    
+        
     
     security.declarePublic( 'fNewVoidCreateProgressHandlerResult')
     def fNewVoidCreateProgressHandlerResult( self,):

@@ -74,7 +74,8 @@ cUseCase_EditTRAContenidoIntercambio    = 'Edit_TRAContenidoIntercambio'
 cUseCase_CreateMissingTRATraduccion     = 'Create_missing_TRATraduccion'   
 cUseCase_EstimateTRAImportacion         = 'Estimate_TRAImportacion'
 cUseCase_ImportTRAImportacion           = 'Import_TRAImportacion'
-cUseCase_ImportTRAImportacion_ToCreateCadenas = 'Import_TRAImportacionn_ToCreateCadenas'
+cUseCase_ImportTRAImportacion_ToCreateCadenas = 'Import_TRAImportacion_ToCreateCadenas'
+cUseCase_Restore_TRACatalogo            = 'Restore_TRACatalogo'
 cUseCase_Export                         = 'Export'
 cUseCase_ExportGvSIG_TRAIdioma          = 'ExportGvSIG_TRAIdioma'
 cUseCase_Backup_TRACatalogo             = 'Backup_TRACatalogo'
@@ -91,6 +92,7 @@ cUseCase_LockTRAIdioma                  = 'Lock_TRAIdioma'
 cUseCase_UnlockTRAIdioma                = 'Unlock_TRAIdioma'
 cUseCase_CreateTRAModulo                = 'Create_TRAModulo'
 cUseCase_DeleteTRAModulo                = 'Delete_TRAModulo'
+cUseCase_RenameTRAModulo                = 'Rename_TRAModulo'
 cUseCase_EditTRAModulo                  = 'Edit_TRAModulo'
 cUseCase_CreateTRACadena                = 'Create_TRACadena'
 cUseCase_CleanupTRAColeccionSolicitudesCadenas = 'Cleanup_TRAColeccionSolicitudesCadenas'
@@ -137,6 +139,7 @@ cTRAUseCaseNames = [
     cUseCase_EstimateTRAImportacion,
     cUseCase_ImportTRAImportacion,   
     cUseCase_ImportTRAImportacion_ToCreateCadenas,
+    cUseCase_Restore_TRACatalogo,
     cUseCase_Export, 
     cUseCase_ExportGvSIG_TRAIdioma,
     cUseCase_Backup_TRACatalogo,

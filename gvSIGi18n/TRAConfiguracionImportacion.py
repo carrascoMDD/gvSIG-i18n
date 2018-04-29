@@ -2,7 +2,7 @@
 #
 # File: TRAConfiguracionImportacion.py
 #
-# Copyright (c) 2010 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+# Copyright (c) 2011 by 2008, 2009, 2010 Conselleria de Infraestructuras y
 # Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -535,70 +535,6 @@ schema = Schema((
         length="0",
         containment="Not Specified",
         position="22",
-        owner_class_name="TRAConfiguracionImportacion"
-    ),
-
-    BooleanField(
-        name='importarXMLTRAImportacionesPorDefecto',
-        widget=BooleanField._properties['widget'](
-            label="Importar las TRAImportacion desde XML",
-            label2="Import the TRAImportacion from XML",
-            description="Importar las importaciones desde fichero XML.",
-            description2="Import the imports from an XML file.",
-            label_msgid='gvSIGi18n_TRAConfiguracionImportacion_attr_importarXMLTRAImportacionesPorDefecto_label',
-            description_msgid='gvSIGi18n_TRAConfiguracionImportacion_attr_importarXMLTRAImportacionesPorDefecto_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        description="Importar las importaciones desde fichero XML.",
-        vocabulary=['Si','No',],
-        duplicates="0",
-        label2="Import the TRAImportacion from XML",
-        ea_localid="2027",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        description2="Import the imports from an XML file.",
-        ea_guid="{900E6BA1-9583-4d19-B7B5-A4E905BFB400}",
-        vocabulary2=['Yes','No',],
-        scale="0",
-        default="False",
-        label="Importar las TRAImportacion desde XML",
-        length="0",
-        containment="Not Specified",
-        position="24",
-        owner_class_name="TRAConfiguracionImportacion"
-    ),
-
-    BooleanField(
-        name='importarXMLTRAProgresosPorDefecto',
-        widget=BooleanField._properties['widget'](
-            label="Importar los TRAProgreso desde XML",
-            label2="Import the TRAProgreso from XML",
-            description="Importar los progresos y resultados de procesos de larga duracion desde fichero XML.",
-            description2="Import the progresses and results of long-lived processes from an XML file.",
-            label_msgid='gvSIGi18n_TRAConfiguracionImportacion_attr_importarXMLTRAProgresosPorDefecto_label',
-            description_msgid='gvSIGi18n_TRAConfiguracionImportacion_attr_importarXMLTRAProgresosPorDefecto_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        description="Importar los progresos y resultados de procesos de larga duracion desde fichero XML.",
-        vocabulary=['Si','No',],
-        duplicates="0",
-        label2="Import the TRAProgreso from XML",
-        ea_localid="2028",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        description2="Import the progresses and results of long-lived processes from an XML file.",
-        ea_guid="{196FE0D3-DF1D-43ba-9B9A-2BD2F5F8039B}",
-        vocabulary2=['Yes','No',],
-        scale="0",
-        default="False",
-        label="Importar los TRAProgreso desde XML",
-        length="0",
-        containment="Not Specified",
-        position="25",
         owner_class_name="TRAConfiguracionImportacion"
     ),
 

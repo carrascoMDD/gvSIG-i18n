@@ -259,6 +259,14 @@ msgstr "Error"
 msgid "gvSIGi18n_Estado_label"
 msgstr "Estado"
 
+
+#. Default: "Download file from Export Result"
+#: TRACatalogo_Exportacion.py
+msgid "gvSIGi18n_ExportDownloadFileName_title"
+msgstr "Archivo Descargable resultado de Exportacion"
+
+
+
 #. Default: "Internal error while creating the downloadable .jar  or .zip file."
 #: TRACatalogo_Exportacion.py
 msgid "gvSIGi18n_ExportStatus_CanNotCreateZipFile"
@@ -324,10 +332,20 @@ msgstr "Para exportar traducciones, usted debe:\n1 - Configurar los parametros d
 msgid "gvSIGi18n_exportar_Parameter_ExportModuleNames_label"
 msgstr "Exportar nombres modulos"
 
+#. Default: "Export for each string, the names of its modules, as comments in the .properties or GNUgettextPO file."
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_ExportModuleNames_help"
+msgstr "Exportar para cada cadena los nombres de sus modulos, como comentarios en el fichero .properties o GNUgettextPO."
+
 #. Default: "Export string sources"
 #: TRAExportar.pt
 msgid "gvSIGi18n_exportar_Parameter_ExportStringSources_label"
 msgstr "Exportar fuentes de cadenas"
+
+#. Default: "Export for each string, the names  of the source files where the string is used, as comments in the .properties or GNUgettextPO file."
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_ExportStringSources_help"
+msgstr "Exportar para cada cadena los nombres de ficheros fuentes donde se usa la cadena, como comentarios en el fichero .properties o GNUgettextPO."
 
 
 #. Default: "Export strings with unspecified module"
@@ -341,6 +359,10 @@ msgstr "Exportar cadenas sin modulo"
 msgid "gvSIGi18n_exportar_Parameter_ExportTranslationsStatus_label"
 msgstr "Exportar estado traducciones"
 
+#. Default: "Export the translations status, as a comment in the .properties or GNUgettextPO file."
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_ExportTranslationsStatus_help"
+msgstr "Exportar el estado de cada traduccion, como un comentario en el fichero .properties o GNUgettextPO."
 
 #. Default: "Start date and time"
 #: TRAChangeAndBrowseTranslations.py
@@ -1337,10 +1359,31 @@ msgstr "Fichero a descargar"
 msgid "gvSIGi18n_exportar_Parameter_DefaultLanguageCode_label"
 msgstr "Codigo de idioma por defecto"
 
+#. Default: "When exporting in Java .properties format, exported files for this language shall not include the language code in the Java .properties file name."
+#: TRACatalogo_Exportacion.py
+msgid "gvSIGi18n_exportar_Parameter_DefaultLanguageCode_help"
+msgstr "Al exportar en formato Java .properties, los ficheros exportados para este idioma no incluiran el codigo de idioma en el nombre del fichero Java .properties."
+
 #. Default: "Default module name"
 #: TRACatalogo_Exportacion.py
 msgid "gvSIGi18n_exportar_Parameter_DefaultModuleName_label"
 msgstr "Nombre de modulo por defecto"
+
+#. Default: "When exporting a separate file for each module, it is the name to use in a GNUgettext .PO file name, or for the folder containing a Java .properties file."
+#: TRACatalogo_Exportacion.py
+msgid "gvSIGi18n_exportar_Parameter_DefaultModuleName_help"
+msgstr "Cuando se exporta un fichero para cada modulo, es el nombre a utilizar en los nombres de archivos GNUgettext PO, o para las carpetas contenedoras de ficheros Java .properties, para las cadenas para las que no se ha especificado modulo."
+
+#. Default: "Domain for strings not in a module"
+#: TRACatalogo_Exportacion.py
+msgid "gvSIGi18n_exportar_Parameter_DefaultDomain_label"
+msgstr "Dominio para cadenas sin modulo"
+
+#. Default: "Information that appears in the exported files with GNU gettext PO format, when exporting separately in its own file strings that do not pertain to any module,  to indicate the application or module to which the translations apply."
+#: TRACatalogo_Exportacion.py
+msgid "gvSIGi18n_exportar_Parameter_DefaultDomain_help"
+msgstr "Dato que aparece en los ficheros de exportacion de tipo GNU gettext PO, cuando se exportan separadamente en su propio fichero cadenas que no pertenecen a un modulo, para identificar la aplicacion o modulo a que se aplican las traducciones."
+
 
 #. Default: "GNU gettext .PO format"
 #: TRAExportar.pt
@@ -1357,25 +1400,59 @@ msgstr "Formato Java .properties"
 msgid "gvSIGi18n_exportar_Parameter_ExportFormat_label"
 msgstr "Formato de exportacion"
 
+
+#. Default: "Format for the translations export files, as Java .properties or GNUgettext .PO."
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_ExportFormat_help"
+msgstr "Formato de los ficheros de exportacion de traducciones como Java .properties, o GNUtettext PO."
+
 #. Default: "Include locales.csv file"
 #: TRAExportar.pt
 msgid "gvSIGi18n_exportar_Parameter_IncludeLocalesCSV_label"
 msgstr "Incluir fichero locales.csv"
+
+#. Default: "Include in the downloadable archive, a locales.csv file declaring the translations files contained in the archive (used by gvSIG)."
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_IncludeLocalesCSV_help"
+msgstr "Incluir en el archivo descargable un fichero locales.csv declarando los ficheros de traducciones contenidos en el archivo (usado por gvSIG)."
 
 #. Default: "Include MANIFEST.MF file"
 #: TRAExportar.pt
 msgid "gvSIGi18n_exportar_Parameter_IncludeManifest_label"
 msgstr "Incluir fichero MANIFEST.MF"
 
+
+
+#. Default: "Include in the downloadable archive, a MANIFEST.MF file declaring the translations files contained in the archive."
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_IncludeManifest_help"
+msgstr "Incluir en el archivo descargable un fichero MANIFEST.MF declarando los ficheros de traducciones contenidos en el archivo."
+
+
 #. Default: "Separate modules"
 #: TRAExportar.pt
 msgid "gvSIGi18n_exportar_Parameter_SeparatedModules_label"
 msgstr "Modulos por separado"
 
+#. Default: "Export each module in its own file, with all of them packed in the downloadable archive."
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_SeparatedModules_help"
+msgstr "Exportar cada modulo por separado en su propio fichero, todos ellos incluidos en el archivo descargable."
+
 #. Default: "Archive type (.jar or .zip)"
 #: TRAExportar.pt
 msgid "gvSIGi18n_exportar_Parameter_TipoArchivo_label"
 msgstr "Tipo archivo (.jar or .zip)"
+
+#. Default: "Type of the archive used to pack the module or modules for download. Options are .jar or .zip."
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_TipoArchivo_help"
+msgstr "Tipo de archivo en que se descargan el modulo o modulos exportados. Puede ser .jar o .zip."
+
+#. Default: "Export Filename for gvSIG"
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_ExportFilenameForGvSIG_label"
+msgstr "Nombre de Fichero de Exportacion para gvSIG"
 
 
 
@@ -2569,6 +2646,11 @@ msgstr "No hay solicitudes pendientes para crear nuevas cadenas. No se ha creado
 
 #. Default: "There are no requests to create new strings. No Import process created."
 #: TRACatalogoInforme_inner.pt
+msgid "gvSIGi18n_warningCreating_Strings_NoStringRequestsToCreate_msgid"
+msgstr "No hay solicitudes para crear nuevas cadenas. No se ha creado proceso de importacion."
+
+#. Default: "There are no requests to create new strings. No Import process created."
+#: TRACatalogoInforme_inner.pt
 msgid "gvSIGi18n_warningCreating_Strings_NoPendingNewStringRequests_msgid"
 msgstr "No hay solicitudes para crear nuevas cadenas. No se ha creado proceso de importacion."
 
@@ -2884,7 +2966,12 @@ msgstr "Confirmar Creacion de Nuevas Cadenas solicitadas"
 msgid "gvSIGi18n_cancelarCrearCadenas_msgid"
 msgstr "Cancelar Creacion de Nuevas Cadenas solicitadas"
 
-                                 
+                   
+#. Default: "You are not allowed to create requested new strings."
+#: TRAConfirmarCrearCadenas.pt
+msgid "gvSIGi18n_userCanNotCreateStrings_msgid"
+msgstr "Usted no puede crear nuevas cadenas solicitadas."
+              
 #. Default: "There are no pending new strings requests."
 #: TRAConfirmarCrearCadenas.pt
 msgid "gvSIGi18n_ThereAreNoPendingStringRequests_msgid"
@@ -3067,11 +3154,17 @@ msgstr "Verificar permisos para todos los elementos"
 msgid "gvSIGi18n_userCanNotResetPermissions_msgid"
 msgstr "No puede establecer los permisos para elementoss."
 
-#. Default: "Confirm to reset permissions for elements in the translations Catalog, possibly taking a long time and demanding significant server resources, depending on the number of elements found, with usually higher cost with higher number of strings and languages (as seen in the root or summary report pages)."
+
+#. Default: "Confirm request to reset permissions on elements in the Translations Catalog."
 #: TRARecatalog_action.pt
 msgid "gvSIGi18n_confirmarReestablecerPermisos_msgid"
-msgstr "Confirme para  re-establecer los permisos de elementos en el Catalogo de traducciones, posiblemente de larga duracion y consumiendo recursos considerables de servidor, dependiendo en el numero de elementos encontrados, usualmente con costes mas altos con numeros elevados de cadenas e idiomas (como se observa en la pagina raiz o informe sumario)."
+msgstr "Por favor, confirme su solicitud para reestablecer permisos de elementos en el Catalogo de traducciones."
 
+
+#. Default: "Confirm to reset permissions for elements in the translations Catalog, possibly taking a long time and demanding significant server resources, depending on the number of elements found, with usually higher cost with higher number of strings and languages (as seen in the root or summary report pages)."
+#: TRARecatalog_action.pt
+msgid "gvSIGi18n_confirmarReestablecerPermisos_help"
+msgstr "Confirme para  re-establecer los permisos de elementos en el Catalogo de traducciones, posiblemente de larga duracion y consumiendo recursos considerables de servidor, dependiendo en el numero de elementos encontrados, usualmente con costes mas altos con numeros elevados de cadenas e idiomas (como se observa en la pagina raiz o informe sumario)."
 
 
 #. Default: "Confirm request to verify permissions on  elements in the Translations Catalog."
@@ -3152,6 +3245,11 @@ msgstr "Es necesario que suministre tambien una traduccion del nuevo simbolo de 
 msgid "gvSIGi18n_crearSolicitudCadena_MainLanguage_IsRequired_error_message"
 msgstr "El idioma principal no existe, por favor solicite a su Coordinador que cree el idioma principal."
 
+#. Default: "There exist no Modules available in the translations catalog. You may ask your coordinator to create a module, to allow creation of strings as associated with the desired module."
+#: TRACrear_SolicitudCadena_i18n_view.pt
+msgid "gvSIGi18n_crearSolicitudCadena_ModulosCadena_NoModulesExist_warning"
+msgstr "No hay modulos disponibles en el catalogo de traducciones. Puede solicitar a su coordinador que cree un modulo, para permitir la creacion de cadenas asociadas al modulo."
+
 
 
 #. Default: "Delete Module"
@@ -3159,6 +3257,11 @@ msgstr "El idioma principal no existe, por favor solicite a su Coordinador que c
 msgid "gvSIGi18n_DeleteModule"
 msgstr "Eliminar Modulo"
 
+#. Default: "Rename Module"
+#: TRARenombrar_Modulo.pt
+msgid "gvSIGi18n_RenameModule"
+msgstr "Renombrar Modulo"
+ 
 
 #. Default: "from translations Catalog"
 #: TRAEliminar_Modulo.pt
@@ -4320,3 +4423,76 @@ msgstr "Fichero a Importar para Recuperar Copia de Seguridad"
 #: TRACrearImportacion_RecuperarCopiaSeguridad_i18n_view.pt
 msgid "gvSIGi18n_cancelarCreacionImportToRestoreBackupYVolverATabular_msgid"
 msgstr "Cancelar carga de copia de seguridad de catalogo de traducciones, y volver a la vista tabular."
+
+
+
+
+
+#. Default: "XML Contents"
+#: TRAContenidoXML_inner.pt
+msgid "gvSIGi18n_TRAContenidoXML_informeXML_label"
+msgstr "Contenido XML"
+
+
+#. Default: "Contents of an XML file read from a backup of a translations catalog."
+#: TRAContenidoXML_inner.pt
+msgid "gvSIGi18n_TRAContenidoXML_informeXML_help"
+msgstr "Contenido de un fichero XML de una copia de seguridad de catalogo de traducciones"
+
+
+#. Default: "There is no valid XML content"
+#: TRAContenidoXML_inner.pt
+msgid "gvSIGi18n_nohaycontenidoXML_warning_msgid"
+msgstr "No hay Contenido XML valido"
+
+
+
+
+
+
+
+
+
+
+#. Default: "XML content report"
+#: TRAContenidoXML_i18n_view.pt
+msgid "gvSIGi18n_InformeXMLContent_msgid"
+msgstr "Informe de Contenido XML"
+
+#. Default: "Error"
+#: TRAContenidoXML_i18n_view.pt
+msgid "gvSIGi18n_Error_msgid"
+msgstr "Error"
+
+#. Default: "Error details"
+#: TRAContenidoXML_i18n_view.pt
+msgid "gvSIGi18n_Error_Details_msgid"
+msgstr "Detalles del Error"
+
+
+#. Default: "Total"
+#: TRAContenidoXML_i18n_view.pt
+msgid "gvSIGi18n_Total_Row_label"
+msgstr "Total"
+
+
+#. Default: "No Nodes in XML"
+#: TRAContenidoXML_i18n_view.pt
+msgid "gvSIGi18n_InformeImportXML_NoNodesInXML_msgid"
+msgstr "No hay nodos XML"
+
+#. Default: "Node name"
+#: TRAContenidoXML_i18n_view.pt
+msgid "gvSIGi18n_XMLContentsReport_NodeName_Column_label"
+msgstr "Nombre de nodo"
+
+#. Default: "# nodes"
+#: TRAContenidoXML_i18n_view.pt
+msgid "gvSIGi18n_XMLContentsReport_NumberOfNodes_Column_label"
+msgstr "# nodos"
+
+
+
+
+
+

@@ -52,11 +52,14 @@ cNombreModuloNoEspecificadoLabel_MsgId  = 'gvSIGi18n_ModuloNoEspecificado_msgid'
 
 cNombreModuloNoEspecificadoInputValue   = '--unspecified--'
 
-cNombreModuloNoEspecificadoSentinel     = ' unspecified'
+cNombreModuloNoEspecificadoSentinel     = ' unspecified' # watch for the initial space character: to avoid matching a module created as 'unspecified' (a bad name for a module, mind you).
 
 
 
 
 cTRAModuleName_gvSIG  = 'gvSIG'
+
+cTRAADefaultModuleName = 'aDefaultModuleName'
+cTRAADefaultDomainName = 'aDefaultDomainName'
 
 

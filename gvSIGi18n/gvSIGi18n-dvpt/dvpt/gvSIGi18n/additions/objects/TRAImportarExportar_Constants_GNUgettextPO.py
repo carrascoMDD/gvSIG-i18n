@@ -53,7 +53,7 @@ cPOTFilePostfix  = '.pot'
 
 cPOFileCharBeforeLanguage = '-'
 
-cNoSeparateModulesFileNamePrefix = 'text'
+cPONoSeparateModulesFileNamePrefix = 'text'
 
 cPOHeaderPrefix                 = '"'
 cPOHeaderPrefix_ContentType     = '"Content-Type:'
@@ -63,7 +63,7 @@ cPOHeaderPrefix_LanguageName    = '"Language-Name:'
 cPOHeaderPrefix_Domain          = '"Domain:'
 cPOHeaderPrefix_IsFallbackFor   = '"X-Is-Fallback-For:'
 
-cPOTranslationEntryCommentPrefix  = "# "
+cPOTranslationEntryCommentPrefix  = "#"
 
 cPOTranslationEntryDefaultPrefix  = "#. Default:"
 cPOTranslationEntryModulesPrefix  = "#: --modules--"

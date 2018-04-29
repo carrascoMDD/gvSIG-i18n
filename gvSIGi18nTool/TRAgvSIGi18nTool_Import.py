@@ -263,6 +263,21 @@ class TRAgvSIGi18nTool_Import:
            
     
 
+        
+    security.declareProtected( permissions.View, 'fInformeXML')
+    def fInformeXML( self, 
+        theContextualElement    =None,
+        theParentExecutionRecord=None):
+        
+        if theContextualElement == None:
+            return {}
+    
+        if not ( theContextualElement.meta_type == 'TRAContenidoXML'):
+            return {}
+        
+        return theContextualElement.fInformeXML( theParentExecutionRecord)
+        
+           
     
     
     

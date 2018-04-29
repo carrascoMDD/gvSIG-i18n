@@ -423,12 +423,21 @@ class TRAColeccionImportaciones_Operaciones:
                 """Read interchange contents from archive, and create elements to contain the strings and translations read.
                 
                 """                                        
-                aDefaultLanguage = unaNuevaImportacion.getCodigoIdiomaPorDefecto()
        
                 aCrearContenidoIntercambioAdditionalParams = {
-                    'theDefaultLanguage': aDefaultLanguage,
-                    'theUploadedFile':    theUploadedFile,
+                    'theUploadedFile':                         theUploadedFile,
+                    'theDefaultLanguage':                      unaNuevaImportacion.getCodigoIdiomaPorDefecto(),
+                    'theDefaultModule':                        unaNuevaImportacion.getNombreModuloPorDefecto(),
+                    'theImportWithConfiguredModuleName':       unaNuevaImportacion.getImportarConNombreModuloConfigurado(),
+                    'theImportModuleNameFromDomainOrFilename': unaNuevaImportacion.getImportarNombreModuloDesdeDominioONombreFichero(),
+                    'theImportModuleNamesFromComment':         unaNuevaImportacion.getImportarNombresModulosDesdeComentarios(),
+                    'theImportSourcesFromComment':             unaNuevaImportacion.getImportarFuentesDesdeComentarios(),
+                    'theImportStatusFromComment':              unaNuevaImportacion.getImportarStatusDesdeComentarios(),
+                    'theMaxLinesToScan':                       unaNuevaImportacion.getNumeroMaximoLineasAExplorar(),
                 }
+            
+
+                    
                 aCrearContenidoIntercambioResult = unaNuevaImportacion.fCrearContenidoIntercambio(
                     theTimeProfilingResults =None,
                     theModelDDvlPloneTool_Mutators =aModelDDvlPloneTool_Mutators, 

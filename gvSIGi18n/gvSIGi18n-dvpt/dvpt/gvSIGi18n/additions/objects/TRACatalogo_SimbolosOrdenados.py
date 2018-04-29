@@ -84,28 +84,15 @@ from TRAUtils                              import *
 
 
 
-cBusquedaTodasCadenasOrdenadasPorSimbolo = { 
-        'getEstadoCadena':  cEstadoCadenaActiva, 
-        'sort_on':          'getSimbolo',  
-        'sort_order':       'ascending',
-}           
-
-cBusquedaCadenasInactivasOrdenadasPorSimbolo = { 
-        'getEstadoCadena':  cEstadoCadenaInactiva, 
-        'sort_on':          'getSimbolo',  
-        'sort_order':       'ascending',
-}           
-
-cModuleStartLine = '===---==='       
-
-
 
   
 
 
 
 class TRACatalogo_SimbolosOrdenados:
-    """
+    # #######################################################################
+    """Methods to access Cached sorted simbolos cadenas, and another cache grouped by module and also sorted by simbolo cadena
+    
     """
     security = ClassSecurityInfo()
 
@@ -126,79 +113,18 @@ class TRACatalogo_SimbolosOrdenados:
     
     
     
-    
-        
-    
-    
-        
-    # #######################################################################
-
-    security.declarePrivate( 'fListaSimbolosCadenasInactivasOrdenados')
-    def fListaSimbolosCadenasInactivasOrdenados( self,theParentExecutionRecord=None):
-        """Simbolos cadenas in Inactive state,  not cached.
-    
-        """
-        
-
-        unExecutionRecord = self.fStartExecution( 'method',  'fListaSimbolosCadenasInactivasOrdenados', theParentExecutionRecord, False) 
-
-        if cLogInicializarSimbolosCadenasOrdenados:
-            unStartTime = self.fMillisecondsNow()
-        
-        try:
-            unaBusqueda = cBusquedaCadenasInactivasOrdenadasPorSimbolo.copy()
-
-            unCatalogBusquedaCadenas = self.fCatalogBusquedaCadenas()
-            if ( unCatalogBusquedaCadenas == None):
-                return self
-            unosDatosCadenas = unCatalogBusquedaCadenas.searchResults( **unaBusqueda ) 
-            
-            if not unosDatosCadenas or len( unosDatosCadenas) < 1:
-                return [ ]
-            
-            unosSimbolos = [ ]
-            
-            for unosDatosCadena in unosDatosCadenas:
-                unSimbolo =  unosDatosCadena[ 'getSimbolo']
-                if unSimbolo:
-                    unosSimbolos.append( unSimbolo)
-                    
-            return unosSimbolos
-
-        
-        finally:
-            unExecutionRecord and unExecutionRecord.pEndExecution()
-
-
-    
-    
-            
-            
-            
-            
-            
-            
-        
-    # #######################################################################
-    """Cached sorted simbolos cadenas, and another cache grouped by module and also sorted by simbolo cadena
-    
-    """
-
-     
 
     security.declarePrivate( 'fListaSimbolosCadenasOrdenados')
     def fListaSimbolosCadenasOrdenados( self,theParentExecutionRecord=None):
         
         unElementoSimbolosOrdenados = self.fObtenerElementoSimbolosOrdenados()
-        if unElementoSimbolosOrdenados== None:
+        if unElementoSimbolosOrdenados == None:
             return []
         
-        unTextoSimbolos = unElementoSimbolosOrdenados.getSimbolosCadenasOrdenados().strip()
-        if not unTextoSimbolos:
-            self.pInicializarModulosYSimbolosCadenasOrdenados( theParentExecutionRecord, unElementoSimbolosOrdenados)
-            unTextoSimbolos = unElementoSimbolosOrdenados.getSimbolosCadenasOrdenados().strip()
-            
-        unosSimbolos = unTextoSimbolos.splitlines()
+        unosSimbolos = unElementoSimbolosOrdenados.fListaSimbolosCadenasOrdenados( 
+            theParentExecutionRecord=theParentExecutionRecord,
+        )
+        
         return unosSimbolos
         
     
@@ -209,51 +135,17 @@ class TRACatalogo_SimbolosOrdenados:
         
     security.declarePrivate( 'fListaSimbolosCadenasOrdenadosEnModulo')
     def fListaSimbolosCadenasOrdenadosEnModulo( self, theNombreModulo,  theParentExecutionRecord=None):
-        if not theNombreModulo:
-            return self.fListaSimbolosCadenasOrdenados( theParentExecutionRecord)
-         
+
         unElementoSimbolosOrdenados = self.fObtenerElementoSimbolosOrdenados()
-        if unElementoSimbolosOrdenados== None:
+        if unElementoSimbolosOrdenados == None:
             return []
         
-        unTextoModulosYSimbolos = unElementoSimbolosOrdenados.getModulosYSimbolosCadenasOrdenados()
-        if not unTextoModulosYSimbolos:
-            self.pInicializarModulosYSimbolosCadenasOrdenados(  theParentExecutionRecord, unElementoSimbolosOrdenados)
-            unTextoModulosYSimbolos = unElementoSimbolosOrdenados.getModulosYSimbolosCadenasOrdenados()
-            
-        unosModulosYSimbolos = unTextoModulosYSimbolos.splitlines()
-        unNumeroLineas = len( unosModulosYSimbolos)
-        if not unNumeroLineas:
-            return []        
-        
-        unIndexBusqueda = 0
-        while unIndexBusqueda < unNumeroLineas:
-            unIndexModuleStartLine = -1
-            try:
-                unIndexModuleStartLine = unosModulosYSimbolos.index( cModuleStartLine, unIndexBusqueda)
-            except:
-                return []
-            if unIndexModuleStartLine < 0:
-                return []
-            if unIndexModuleStartLine >= ( unNumeroLineas - 2):
-                return []
-            unNombreModulo = unosModulosYSimbolos[ unIndexModuleStartLine + 1]            
-            if unNombreModulo and ( unNombreModulo == theNombreModulo):
-                unSiguienteIndexModuleStartLine = -1
-                try:
-                    unSiguienteIndexModuleStartLine = unosModulosYSimbolos.index( cModuleStartLine, unIndexModuleStartLine + 2)
-                except:
-                    None
-                if unSiguienteIndexModuleStartLine < 0:
-                    unosSimbolos = unosModulosYSimbolos[ unIndexModuleStartLine + 2:]
-                    return unosSimbolos
-                else:                
-                    unosSimbolos = unosModulosYSimbolos[ unIndexModuleStartLine + 2:unSiguienteIndexModuleStartLine]
-                    return unosSimbolos
-            else:
-                unIndexBusqueda = unIndexModuleStartLine + 2    
+        unosSimbolos = unElementoSimbolosOrdenados.fListaSimbolosCadenasOrdenadosEnModulo( 
+            theNombreModulo=theNombreModulo, 
+            theParentExecutionRecord=theParentExecutionRecord,
+        )
 
-        return []
+        return unosSimbolos
     
     
     
@@ -263,24 +155,19 @@ class TRACatalogo_SimbolosOrdenados:
     
     security.declarePrivate( 'fListaSimbolosCadenasOrdenadosEnVariosModulos')
     def fListaSimbolosCadenasOrdenadosEnVariosModulos( self, theNombresModulos,  theIncludeModuloNoEspecificado, theParentExecutionRecord=None):
-        if ( not theNombresModulos) and ( not theIncludeModuloNoEspecificado):
-            return self.fListaSimbolosCadenasOrdenados( theParentExecutionRecord)
         
-        if ( len( theNombresModulos) == 1) and ( not theIncludeModuloNoEspecificado):
-            return self.fListaSimbolosCadenasOrdenadosEnModulo( theNombresModulos[ 0], theParentExecutionRecord)
+        unElementoSimbolosOrdenados = self.fObtenerElementoSimbolosOrdenados()
+        if unElementoSimbolosOrdenados == None:
+            return []
         
-        if not theNombresModulos:
-            return self.fListaSimbolosCadenasOrdenadosModuloNoEspecificado( theParentExecutionRecord)
-            
-        unosNombresModulos = theNombresModulos[:]
-        if theIncludeModuloNoEspecificado:
-            unosNombresModulos.append( cNombreModuloNoEspecificadoSentinel)
-            
-        unosSimbolos = self.fListaSimbolosCadenasEnVariosModulos( unosNombresModulos,  theParentExecutionRecord)        
+        unosSimbolos = unElementoSimbolosOrdenados.fListaSimbolosCadenasOrdenadosEnVariosModulos( 
+            theNombresModulos              =theNombresModulos, 
+            theIncludeModuloNoEspecificado = theIncludeModuloNoEspecificado,
+            theParentExecutionRecord       =theParentExecutionRecord,
+        )
 
-        unosSimbolosOrdenados = sorted( unosSimbolos)
-        
         return unosSimbolos
+
     
    
     
@@ -289,203 +176,52 @@ class TRACatalogo_SimbolosOrdenados:
     
     security.declarePrivate( 'fListaSimbolosCadenasEnVariosModulosStrictly')
     def fListaSimbolosCadenasEnVariosModulosStrictly( self, theNombresModulos,  theIncludeModuloNoEspecificado, theParentExecutionRecord=None):
-        if ( not theNombresModulos) and ( not theIncludeModuloNoEspecificado):
-            return []
         
-        if ( len( theNombresModulos) == 1) and ( not theIncludeModuloNoEspecificado):
-            return self.fListaSimbolosCadenasOrdenadosEnModulo( theNombresModulos[ 0], theParentExecutionRecord)
-        
-        if not theNombresModulos:
-            return self.fListaSimbolosCadenasOrdenadosModuloNoEspecificado( theParentExecutionRecord)
-        
-        unosNombresModulos = theNombresModulos[:]
-        if theIncludeModuloNoEspecificado:
-            unosNombresModulos.append( cNombreModuloNoEspecificadoSentinel)
-            
-        unosSimbolos = self.fListaSimbolosCadenasEnVariosModulos( unosNombresModulos,  theParentExecutionRecord)  
-        if not unosSimbolos:
-            return []
-        
-        return list( unosSimbolos)
-    
-   
-        
-    
-    
-    security.declarePrivate( 'fListaSimbolosCadenasEnVariosModulos')
-    def fListaSimbolosCadenasEnVariosModulos( self, theNombresModulos, theParentExecutionRecord=None):
-        if not theNombresModulos:
-            return self.fListaSimbolosCadenasOrdenados( theParentExecutionRecord)
-        
-        if len( theNombresModulos) == 1:
-            return self.fListaSimbolosCadenasOrdenadosEnModulo( theNombresModulos[ 0], theParentExecutionRecord)
-            
-         
         unElementoSimbolosOrdenados = self.fObtenerElementoSimbolosOrdenados()
-        if unElementoSimbolosOrdenados== None:
+        if unElementoSimbolosOrdenados == None:
             return []
         
-        unTextoModulosYSimbolos = unElementoSimbolosOrdenados.getModulosYSimbolosCadenasOrdenados()
-        if not unTextoModulosYSimbolos:
-            
-            self.pInicializarModulosYSimbolosCadenasOrdenados( theParentExecutionRecord, unElementoSimbolosOrdenados)
-
-            unTextoModulosYSimbolos = unElementoSimbolosOrdenados.getModulosYSimbolosCadenasOrdenados()
-            
-        unosModulosYSimbolos = unTextoModulosYSimbolos.splitlines()
-        unNumeroLineas = len( unosModulosYSimbolos)
-        if not unNumeroLineas:
-            return []
-        
-        todosSimbolos = set()
-        
-        for unNombreModulo in theNombresModulos:
-            
-            unIndexBusqueda = 0
-            while unIndexBusqueda < unNumeroLineas:
-                unIndexModuleStartLine = -1
-                try:
-                    unIndexModuleStartLine = unosModulosYSimbolos.index( cModuleStartLine, unIndexBusqueda)
-                except:
-                    break
-                if unIndexModuleStartLine < 0:
-                    break
-                if unIndexModuleStartLine >= ( unNumeroLineas - 2):
-                    break
-                unNombreModuloHere = unosModulosYSimbolos[ unIndexModuleStartLine + 1]            
-                if unNombreModuloHere and ( unNombreModuloHere == unNombreModulo):
-                    unSiguienteIndexModuleStartLine = -1
-                    try:
-                        unSiguienteIndexModuleStartLine = unosModulosYSimbolos.index( cModuleStartLine, unIndexModuleStartLine + 2)
-                    except:
-                        None
-                    if unSiguienteIndexModuleStartLine < 0:
-                        todosSimbolos.update( unosModulosYSimbolos[ unIndexModuleStartLine + 2:])
-                        break
-                    else:                
-                        todosSimbolos.update( unosModulosYSimbolos[ unIndexModuleStartLine + 2:unSiguienteIndexModuleStartLine])
-                        break
-                else:
-                    unIndexBusqueda = unIndexModuleStartLine + 2    
-        
-        return todosSimbolos
+        unosSimbolos = unElementoSimbolosOrdenados.fListaSimbolosCadenasEnVariosModulosStrictly( 
+            theNombresModulos              =theNombresModulos, 
+            theIncludeModuloNoEspecificado =theIncludeModuloNoEspecificado,
+            theParentExecutionRecord       =theParentExecutionRecord,
+        )
     
+        return unosSimbolos
+   
+
     
     
     
     security.declarePrivate( 'fListaSimbolosCadenasOrdenadosModuloNoEspecificado')
     def fListaSimbolosCadenasOrdenadosModuloNoEspecificado( self,  theParentExecutionRecord=None):
-        return self.fListaSimbolosCadenasOrdenadosEnModulo( cNombreModuloNoEspecificadoSentinel,  theParentExecutionRecord)
+        
+        unElementoSimbolosOrdenados = self.fObtenerElementoSimbolosOrdenados()
+        if unElementoSimbolosOrdenados== None:
+            return []
+        
+        unosSimbolos = unElementoSimbolosOrdenados.fListaSimbolosCadenasOrdenadosModuloNoEspecificado( 
+            theParentExecutionRecord       =theParentExecutionRecord,
+        )
     
-
-        
-    security.declarePrivate( 'pInicializarModulosYSimbolosCadenasOrdenados')
-    def pInicializarModulosYSimbolosCadenasOrdenados( self, theParentExecutionRecord=None, theElementoSimbolosOrdenados=None):
-
-        unExecutionRecord = self.fStartExecution( 'method',  'pInicializarModulosYSimbolosCadenasOrdenados', theParentExecutionRecord, False) 
-
-        if cLogInicializarSimbolosCadenasOrdenados:
-            unStartTime = self.fMillisecondsNow()
-        
-        try:
-            aElementoSimbolosOrdenados = theElementoSimbolosOrdenados
-            if aElementoSimbolosOrdenados == None:
-                aElementoSimbolosOrdenados = self.fObtenerElementoSimbolosOrdenados()
-                
-            unaBusqueda = cBusquedaTodasCadenasOrdenadasPorSimbolo.copy()
-            
-            unCatalogFiltroCadenas = self.fCatalogFiltroCadenas()
-            if ( unCatalogFiltroCadenas == None):
-                return self
-            unosDatosCadenas = unCatalogFiltroCadenas.searchResults( **unaBusqueda ) 
-            
-            if not unosDatosCadenas or len( unosDatosCadenas) < 1:
-                aElementoSimbolosOrdenados.setSimbolosCadenasOrdenados( '')
-                aElementoSimbolosOrdenados.setModulosYSimbolosCadenasOrdenados( '')
-                return self
-            
-            
-            unosSimbolosCadenasOrdenadosString  = '\n'.join( [ unosDatosCadena[ 'getSimbolo'] for unosDatosCadena in unosDatosCadenas ])
-            
-            unosModulosYSimbolosDict         = {}
-            unosSimbolosModuloNoEspecificado = []
-
-            for unosDatosCadena in unosDatosCadenas:
-                unSimbolo =  unosDatosCadena[ 'getSimbolo']
-                
-                unosNombresModulosString = unosDatosCadena[ 'getNombresModulos']
-                unosNombresModulosString = unosNombresModulosString.strip()
-                unosNombresModulosString = unosNombresModulosString.replace( '\n', cTRAModuleNameSeparator)
-                unosNombresModulosString = unosNombresModulosString.replace( '\r', cTRAModuleNameSeparator)
-                unosNombresModulosString = unosNombresModulosString.strip()
-                if unosNombresModulosString:
-                    unosNombresModulos = unosNombresModulosString.split( cTRAModuleNameSeparator)
-                    if unosNombresModulos:
-                        for unNombreModulo in unosNombresModulos:
-                            if unNombreModulo:
-                                unosSimbolosModulo = unosModulosYSimbolosDict.get( unNombreModulo, None)
-                                if not unosSimbolosModulo:
-                                    unosModulosYSimbolosDict[ unNombreModulo] = [ unSimbolo,]
-                                else:
-                                    unosSimbolosModulo.append( unSimbolo)
-                else:
-                    unosSimbolosModuloNoEspecificado.append( unSimbolo)
+        return unosSimbolos
     
-            todosNombresModulos = unosModulosYSimbolosDict.keys()
-            todosNombresModulosOrdenados = sorted( todosNombresModulos)
+             
             
-            anOutput = StringIO()
+        
 
-            if unosSimbolosModuloNoEspecificado:
-                anOutput.write( '%s\n%s\n%s\n' % ( cModuleStartLine, cNombreModuloNoEspecificadoSentinel, '\n'.join( unosSimbolosModuloNoEspecificado), ))
-            else:
-                anOutput.write( '%s\n%s\n' % ( cModuleStartLine, cNombreModuloNoEspecificadoSentinel, ))
-            
-            for unNombreModulo in todosNombresModulosOrdenados:
-                unosSimbolosModulo = unosModulosYSimbolosDict[ unNombreModulo]
-                if unosSimbolosModulo:
-                    anOutput.write( '%s\n%s\n%s\n' % ( cModuleStartLine, unNombreModulo, '\n'.join( unosSimbolosModulo), ))
-                else:
-                    anOutput.write( '%s\n%s\n' % ( cModuleStartLine, unNombreModulo,  ))
-                    
-                
-            unosModulosYSimbolosCadenasOrdenadosString  = anOutput.getvalue()
-            
-            
-            
-            aElementoSimbolosOrdenados.setSimbolosCadenasOrdenados( unosSimbolosCadenasOrdenadosString)            
-            aElementoSimbolosOrdenados.setModulosYSimbolosCadenasOrdenados( unosModulosYSimbolosCadenasOrdenadosString)
 
-        
-        finally:
-            unExecutionRecord and unExecutionRecord.pEndExecution()
-
-            if cLogInicializarSimbolosCadenasOrdenados:
-                unEndTime = self.fMillisecondsNow()
-                logging.getLogger( 'gvSIGi18n').info( 'pInicializarModulosYSimbolosCadenasOrdenados::TOTAL milliseconds=%d' % ( unEndTime - unStartTime))
-        
-        
-        return self
-            
-    
-        
-        
-        
+     
     
     
     security.declareProtected( permissions.ModifyPortalContent, 'pInvalidateSimbolosCadenasOrdenados')    
     def pInvalidateSimbolosCadenasOrdenados( self):
         unElementoSimbolosOrdenados = self.fObtenerElementoSimbolosOrdenados()
-        if unElementoSimbolosOrdenados== None:
+        if unElementoSimbolosOrdenados == None:
             return self
 
-        unTextoSimbolos = unElementoSimbolosOrdenados.getSimbolosCadenasOrdenados().strip()
-        if unTextoSimbolos:
-            unElementoSimbolosOrdenados.setSimbolosCadenasOrdenados( '')
-
-        unTextoModulosYSimbolos = unElementoSimbolosOrdenados.getModulosYSimbolosCadenasOrdenados().strip()
-        if unTextoSimbolos:
-            unElementoSimbolosOrdenados.setModulosYSimbolosCadenasOrdenados( '')
+        unElementoSimbolosOrdenados.pInvalidateSimbolosCadenasOrdenados()
+        
         return self
             
     

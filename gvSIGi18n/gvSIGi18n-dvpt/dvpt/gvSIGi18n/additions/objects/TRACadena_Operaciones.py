@@ -296,6 +296,40 @@ class TRACadena_Operaciones:
     
     
     
+  
+    
+    security.declarePrivate( 'fRenameModulo')    
+    def fRenameModulo( self, theCurrentNombreModulo, theNewNombreModulo):
+        if ( not theCurrentNombreModulo) or ( not theNewNombreModulo):
+            return False
+        
+        if theNewNombreModulo == theCurrentNombreModulo:
+            return False
+
+        unosNombresModulos = self.fListaNombresModulos()
+        if not unosNombresModulos:
+            return False
+
+        if not ( theCurrentNombreModulo in unosNombresModulos):
+            return False
+
+        unosNuevosNombresModulos = unosNombresModulos[:]
+        unosNuevosNombresModulos.remove( theCurrentNombreModulo)
+        
+        if not( theNewNombreModulo in unosNuevosNombresModulos):
+            unosNuevosNombresModulos.append( theNewNombreModulo)
+        
+        unosNuevosNombresModulos = sorted( unosNuevosNombresModulos) 
+        unosNuevosNombresModulosString = cTRAModuleNameSeparator.join( unosNuevosNombresModulos)
+        self.setNombresModulos( unosNuevosNombresModulosString)       
+        
+        self.pRecatalogCadena()
+        
+        return True
+    
+    
+    
+    
     
     security.declarePrivate( 'fSetNombresModulos')    
     def fSetNombresModulos( self, theNombresModulos, theCanAddModules=False, theCanRemoveModules=False):
@@ -365,20 +399,23 @@ class TRACadena_Operaciones:
     
 
   
-    security.declarePrivate( 'fGetSimboloEnPalabras')
-    def fGetSimboloEnPalabras(self):
-        """Accessor for simbolo in fragments for textual search.
+    #security.declarePrivate( 'fGetSimboloEnPalabras')
+    #def fGetSimboloEnPalabras(self):
+        #"""Accessor for simbolo in fragments for textual search.
         
-        """
-        unSimbolo = self.getSimbolo()
-        if not unSimbolo:
-            return ''
+        #"""
+        #unSimbolo = self.getSimbolo()
+        #if not unSimbolo:
+            #return ''
         
-        unSimboloConEspacios = unSimbolo
-        for unChar in [ '_', '-', ',', '.', ':', '\n', '\r', '\t',]:
-            unSimboloConEspacios = unSimboloConEspacios.replace( unChar, ' ')
-        unSimboloEnPalabras = ' '.join( unSimboloConEspacios.split())
-        return unSimboloEnPalabras
+        #unSimboloEnPalabras = self.fSplitSimboloEnPalabras( unSimbolo)
+        
+        ## ACV20110117 error reportado por Mario Carrera
+        ##unSimboloConEspacios = unSimbolo
+        ##for unChar in [ '_', '-', ',', '.', ':', '\n', '\r', '\t',]:
+            ##unSimboloConEspacios = unSimboloConEspacios.replace( unChar, ' ')
+        ##unSimboloEnPalabras = ' '.join( unSimboloConEspacios.split())
+        #return unSimboloEnPalabras
     
   
     

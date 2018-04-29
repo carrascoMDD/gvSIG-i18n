@@ -72,8 +72,6 @@
             ( 'theExportarTRAIdiomas',     here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theExportarTRAIdiomas',       None),),
             ( 'theExportarTRAModulos',     here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theExportarTRAModulos',       None),),
             ( 'theExportarTRAInformes',     here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theExportarTRAInformes',       None),),
-            ( 'theExportarTRAImportaciones',     here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theExportarTRAImportaciones',       None),),
-            ( 'theExportarTRAProgresos',     here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theExportarTRAProgresos',       None),),
             ( 'theExportarTRASolicitudesCadenas',     here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theExportarTRASolicitudesCadenas',       None),),
             
             

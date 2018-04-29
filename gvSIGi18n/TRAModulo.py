@@ -2,7 +2,7 @@
 #
 # File: TRAModulo.py
 #
-# Copyright (c) 2010 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+# Copyright (c) 2011 by 2008, 2009, 2010 Conselleria de Infraestructuras y
 # Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -235,6 +235,15 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRAMod
 
 
     actions =  (
+
+
+       {'action': "string:${object_url}/TRARenombrar_Modulo",
+        'category': "object_buttons",
+        'id': 'TRARenameModule',
+        'name': 'Rename Module',
+        'permissions': ("Modify portal content",),
+        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Rename_TRAModulo')"""
+       },
 
 
        {'action': "string:${object_url}/TRAEliminar_Modulo",

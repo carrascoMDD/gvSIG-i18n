@@ -2563,52 +2563,7 @@ class TRATraduccion_Operaciones:
 
            
     
-    
-     
-        
-    
-   
-    
-    
-    #security.declarePrivate( "fEmpaquetarRegistroHistoria")
-    #def fEmpaquetarRegistroHistoria( self, 
-        #theAccion, 
-        #theFechaAccionTextual, 
-        #theUsuarioActor, 
-        #theEstadoTraduccion, 
-        #theFechaTraduccionTextual, 
-        #theUsuarioTraductor, 
-        #theCadenaTraducida, 
-        #theFechaRevisionTextual, 
-        #theUsuarioRevisor, 
-        #theFechaDefinitivoTextual, 
-        #theUsuarioCoordinador, 
-        #theComentario):
-        #"""Pack fields into a translation change history record string.
-        
-        #"""
-       
-        #unRegistroHistoria = '\n'.join( [
-            #str( theAccion), 
-            #str( theFechaAccionTextual), 
-            #str( theUsuarioActor), 
-            #str( theEstadoTraduccion),
-            #( theFechaTraduccionTextual and str( theFechaTraduccionTextual)) or '', 
-            #theUsuarioTraductor or '', 
-            #theCadenaTraducida or '', 
-            #( theFechaRevisionTextual and str( theFechaRevisionTextual)) or '', 
-            #theUsuarioRevisor or '', 
-            #( theFechaDefinitivoTextual and str( theFechaDefinitivoTextual)) or '', 
-            #theUsuarioCoordinador or '', 
-            #theComentario  or '',
-        #])
-        
-        #unRegistroHistoria = "%s\n%s\n" % ( unRegistroHistoria, cMarcaDeFinDeRegistroDeHistoria)
-        
-        #return unRegistroHistoria   
- 
- 
-    
+  
 
     
         
@@ -2715,7 +2670,7 @@ class TRATraduccion_Operaciones:
         
         from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fEvalString
         
-        aHistoria = fEvalString( theHistoriaString)
+        aHistoria = fEvalString( theHistoriaString, theRaiseExceptions=False)
         
         return aHistoria
     
@@ -2733,81 +2688,6 @@ class TRATraduccion_Operaciones:
     
     
     
-        
-    #security.declarePrivate( 'getRegistrosHistoria')
-    #def getRegistrosHistoria( self):
-
-        #unosRegistrosHistoria = []
-
-        #unaHistoriaTraduccion = self.getHistoria()
-        #if not unaHistoriaTraduccion:
-            #return unosRegistrosHistoria
-        
-        #unasLineasHistoria = unaHistoriaTraduccion.splitlines()
-        #unNumeroLineas = len( unasLineasHistoria)
-        #if unNumeroLineas < 1:
-            #return unosRegistrosHistoria
-        
-        #unContadorLineas = 0
-        
-        #unRegistroHistoria = { }
-        
-        #while unContadorLineas < unNumeroLineas:
-            #unRegistroHistoria[ 'accion']                 = unasLineasHistoria[ unContadorLineas]
-            #unContadorLineas += 1
-            #if unContadorLineas < unNumeroLineas:
-                #unRegistroHistoria[ 'fechaAccion']        = unasLineasHistoria[ unContadorLineas]
-                #unContadorLineas += 1
-            #if unContadorLineas < unNumeroLineas:
-                #unRegistroHistoria[ 'usuarioActor']       = unasLineasHistoria[ unContadorLineas]
-                #unContadorLineas += 1
-            #if unContadorLineas < unNumeroLineas:
-                #unRegistroHistoria[ 'estadoTraduccion']   = unasLineasHistoria[ unContadorLineas]
-                #unContadorLineas += 1
-            #if unContadorLineas < unNumeroLineas:
-                #unRegistroHistoria[ 'fechaTraduccion']    = unasLineasHistoria[ unContadorLineas]
-                #unContadorLineas += 1
-            #if unContadorLineas < unNumeroLineas:
-                #unRegistroHistoria[ 'usuarioTraductor']   = unasLineasHistoria[ unContadorLineas]
-                #unContadorLineas += 1
-            #if unContadorLineas < unNumeroLineas:
-                #unRegistroHistoria[ 'cadenaTraducida']    = unasLineasHistoria[ unContadorLineas]
-                #unContadorLineas += 1
-            #if unContadorLineas < unNumeroLineas:
-                #unRegistroHistoria[ 'fechaRevision']      = unasLineasHistoria[ unContadorLineas]
-                #unContadorLineas += 1
-            #if unContadorLineas < unNumeroLineas:
-                #unRegistroHistoria[ 'usuarioRevisor']     = unasLineasHistoria[ unContadorLineas]
-                #unContadorLineas += 1
-            #if unContadorLineas < unNumeroLineas:
-                #unRegistroHistoria[ 'fechaDefinitivo']    = unasLineasHistoria[ unContadorLineas]
-                #unContadorLineas += 1
-            #if unContadorLineas < unNumeroLineas:
-                #unRegistroHistoria[ 'usuarioCoordinador'] = unasLineasHistoria[ unContadorLineas]
-                #unContadorLineas += 1
-                
-            #unComentario = ""
-            #unRegistroHistoria[ 'comentario'] = unComentario
-            #while unContadorLineas < unNumeroLineas:
-                #unaLinea  = unasLineasHistoria[ unContadorLineas]
-                #unContadorLineas += 1
-                #if unaLinea == cMarcaDeFinDeRegistroDeHistoria:
-                    #if len( unComentario) > 0 and not( ''.join( unComentario.splitlines()).strip() == cMarcaDeComentarioSinCambios):
-                        #unRegistroHistoria[ 'comentario'] = unComentario
-                        
-                    #unosRegistrosHistoria.append( unRegistroHistoria)
-                    #unRegistroHistoria = { }
-                    #break
-                #else:
-                    #unComentario = "%s\n%s" % ( unComentario, unaLinea)
-                                        
-        #return unosRegistrosHistoria
-        
-                 
-        
-
-
-
 
 
  

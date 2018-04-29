@@ -59,6 +59,8 @@ cTRAParametrosControlProgreso_ReestablecerPermisos_Id    = "parametros-control-p
 cTRAParametrosControlProgreso_ReestablecerPermisos_Title = "Reset Permissions Progress Control Parameters"
 cTRAParametrosControlProgreso_DeleteModule_Id            = "parametros-control-progreso-deletemodule"
 cTRAParametrosControlProgreso_DeleteModule_Title         = "Delete Module Progress Control Parameters"
+cTRAParametrosControlProgreso_RenameModule_Id            = "parametros-control-progreso-renamemodule"
+cTRAParametrosControlProgreso_RenameModule_Title         = "Rename Module Progress Control Parameters"
 cTRAParametrosControlProgreso_DeleteLanguage_Id          = "parametros-control-progreso-deletelanguage"
 cTRAParametrosControlProgreso_DeleteLanguage_Title       = "Delete Language Progress Control Parameters"
 cTRAParametrosControlProgreso_Backup_Id                  = "parametros-control-progreso-backup"
@@ -133,6 +135,7 @@ cTRAProgress_ProcessType_ReCatalog        = 'ReCatalogar'
 cTRAProgress_ProcessType_VerifyPermissions= 'Verificar_Permisos'
 cTRAProgress_ProcessType_ResetPermissions = 'ReEstablecer_Permisos'
 cTRAProgress_ProcessType_DeleteModule     = 'Eliminar_Modulo'
+cTRAProgress_ProcessType_RenameModule     = 'Renombrar_Modulo'
 cTRAProgress_ProcessType_DeleteLanguage   = 'Eliminar_Idioma'
 cTRAProgress_ProcessType_Backup           = 'Copia_Seguridad'
 cTRAProgress_ProcessType_ExportGvSIG      = 'Exportar_para_gvSIG'
@@ -147,6 +150,7 @@ cTRAProgress_ProcessTypes_NonVoid = [
     cTRAProgress_ProcessType_VerifyPermissions,  
     cTRAProgress_ProcessType_ResetPermissions,  
     cTRAProgress_ProcessType_DeleteModule,
+    cTRAProgress_ProcessType_RenameModule,
     cTRAProgress_ProcessType_DeleteLanguage,
     cTRAProgress_ProcessType_Backup,
     cTRAProgress_ProcessType_ExportGvSIG,
@@ -165,6 +169,7 @@ cTRAParametrosControlProgresoIDs_forProcessTypes = {
     cTRAProgress_ProcessType_VerifyPermissions:cTRAParametrosControlProgreso_VerificarPermisos_Id,
     cTRAProgress_ProcessType_ResetPermissions: cTRAParametrosControlProgreso_ReestablecerPermisos_Id,
     cTRAProgress_ProcessType_DeleteModule:     cTRAParametrosControlProgreso_DeleteModule_Id,
+    cTRAProgress_ProcessType_RenameModule:     cTRAParametrosControlProgreso_RenameModule_Id,
     cTRAProgress_ProcessType_DeleteLanguage:   cTRAParametrosControlProgreso_DeleteLanguage_Id,   
     cTRAProgress_ProcessType_Backup:           cTRAParametrosControlProgreso_Backup_Id,
     cTRAProgress_ProcessType_ExportGvSIG:      cTRAParametrosControlProgreso_ExportGvSIG_Id,
@@ -238,6 +243,9 @@ cTRAProgress_SupportKinds_ForProcessTypes = {
         { 'types': cTodosNombresTiposWithoutPotentiallyManyChildren, 'support_kinds': [ cTRAProgress_SupportKind_Persistent, cTRAProgress_SupportKind_StoreResults, cTRAProgress_SupportKind_Logging,                                                                                  ],},        
     ],
     cTRAProgress_ProcessType_DeleteModule: [                                                                                                                                                       
+        { 'types': cTodosNombresTipos,                               'support_kinds': [ cTRAProgress_SupportKind_Persistent, cTRAProgress_SupportKind_StoreResults, cTRAProgress_SupportKind_Logging, cTRAProgress_SupportKind_Transactional, cTRAProgress_SupportKind_YieldProcessor, ],},
+    ],
+    cTRAProgress_ProcessType_RenameModule: [                                                                                                                                                       
         { 'types': cTodosNombresTipos,                               'support_kinds': [ cTRAProgress_SupportKind_Persistent, cTRAProgress_SupportKind_StoreResults, cTRAProgress_SupportKind_Logging, cTRAProgress_SupportKind_Transactional, cTRAProgress_SupportKind_YieldProcessor, ],},
     ],
     cTRAProgress_ProcessType_DeleteLanguage: [                                                                                                                                                       

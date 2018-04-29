@@ -2,7 +2,7 @@
 #
 # File: TRACadena.py
 #
-# Copyright (c) 2010 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+# Copyright (c) 2011 by 2008, 2009, 2010 Conselleria de Infraestructuras y
 # Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -274,37 +274,6 @@ schema = Schema((
         computed_types=['TRATraduccion'],
         non_framework_elements=False,
         description='Traducciones de una de las Cadenas los varios Idiomas.'
-    ),
-
-    ComputedField(
-        name='simboloEnPalabras',
-        widget=ComputedField._properties['widget'](
-            label="Simbolo (fragmentos para busqueda textual)",
-            label2="Symbol (fragments for textual search)",
-            description="El simbolo original que identifica la Cadena a traducir, descompuesto en multiples palabras para facilitar las busquedas por texto.",
-            description2="The original symbol identifying the string to be translated, fragmented into multiple words to facilitate searches.",
-            label_msgid='gvSIGi18n_TRACadena_attr_simboloEnPalabras_label',
-            description_msgid='gvSIGi18n_TRACadena_attr_simboloEnPalabras_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        description="El simbolo original que identifica la Cadena a traducir, descompuesto en multiples palabras para facilitar las busquedas por texto.",
-        duplicates="0",
-        label2="Symbol (fragments for textual search)",
-        ea_localid="1301",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        description2="The original symbol identifying the string to be translated, fragmented into multiple words to facilitate searches.",
-        ea_guid="{C891BC5D-23A7-4478-9CCB-93F0B0048DF9}",
-        scale="0",
-        label="Simbolo (fragmentos para busqueda textual)",
-        length="0",
-        containment="Not Specified",
-        position="6",
-        owner_class_name="TRACadena",
-        expression="context.fGetSimboloEnPalabras()",
-        computed_types="string"
     ),
 
 ),

@@ -2,7 +2,7 @@
 #
 # File: TRAImportacion.py
 #
-# Copyright (c) 2010 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+# Copyright (c) 2011 by 2008, 2009, 2010 Conselleria de Infraestructuras y
 # Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -37,8 +37,8 @@ from Products.gvSIGi18n.TRAConRegistroActividad import TRAConRegistroActividad
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
-from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import ReferenceBrowserWidget
 from TRAElemento_Operaciones import TRAElemento_Operaciones
+from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import ReferenceBrowserWidget
 
 ##code-section module-header #fill in your manual code here
 ##/code-section module-header
@@ -761,66 +761,6 @@ schema = Schema((
         owner_class_name="TRAImportacion"
     ),
 
-    BooleanField(
-        name='importarXMLTRAImportaciones',
-        widget=BooleanField._properties['widget'](
-            label="Importar las TRAImportacion desde XML",
-            label2="Import the TRAImportacion from XML",
-            description="Importar las importaciones desde fichero XML.",
-            description2="Import the imports from an XML file.",
-            label_msgid='gvSIGi18n_TRAImportacion_attr_importarXMLTRAImportaciones_label',
-            description_msgid='gvSIGi18n_TRAImportacion_attr_importarXMLTRAImportaciones_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        containment="Not Specified",
-        description="Importar las importaciones desde fichero XML.",
-        duplicates="0",
-        label2="Import the TRAImportacion from XML",
-        ea_localid="2037",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        description2="Import the imports from an XML file.",
-        ea_guid="{B42953FE-4D41-4e77-AAC8-E175140F11AA}",
-        scale="0",
-        label="Importar las TRAImportacion desde XML",
-        length="0",
-        default_method="fInitial_ImportarXMLTRAImportaciones",
-        position="17",
-        owner_class_name="TRAImportacion"
-    ),
-
-    BooleanField(
-        name='importarXMLTRAProgresos',
-        widget=BooleanField._properties['widget'](
-            label="Importar los TRAProgreso desde XML",
-            label2="Import the TRAProgreso from XML",
-            description="Importar los progresos y resultados de procesos de larga duracion desde fichero XML.",
-            description2="Import the progresses and results of long-lived processes from an XML file.",
-            label_msgid='gvSIGi18n_TRAImportacion_attr_importarXMLTRAProgresos_label',
-            description_msgid='gvSIGi18n_TRAImportacion_attr_importarXMLTRAProgresos_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        containment="Not Specified",
-        description="Importar los progresos y resultados de procesos de larga duracion desde fichero XML.",
-        duplicates="0",
-        label2="Import the TRAProgreso from XML",
-        ea_localid="2038",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        description2="Import the progresses and results of long-lived processes from an XML file.",
-        ea_guid="{4AED49F4-A5D0-4381-88D9-DFD6029F0F80}",
-        scale="0",
-        label="Importar los TRAProgreso desde XML",
-        length="0",
-        default_method="fInitial_ImportarXMLTRAProgresos",
-        position="18",
-        owner_class_name="TRAImportacion"
-    ),
-
     ComputedField(
         name='informeContenidosImportacion',
         widget=ComputedField._properties['widget'](
@@ -918,6 +858,15 @@ class TRAImportacion(OrderedBaseFolder, TRAArquetipo, TRAImportacion_Operaciones
     actions =  (
 
 
+       {'action': "string:${object_url}/TRAImportacionContenidosSumario",
+        'category': "object",
+        'id': 'TRASumarioContenidosImportacion',
+        'name': 'Summary',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
        {'action': "string:${object_url}/TRAImportacionContenidosDetalle",
         'category': "object",
         'id': 'TRADetalleContenidosImportacion',
@@ -927,12 +876,12 @@ class TRAImportacion(OrderedBaseFolder, TRAArquetipo, TRAImportacion_Operaciones
        },
 
 
-       {'action': "string:$object_url/Editar",
+       {'action': "string:${object_url}/contenidoxml/TRAContenidoXML",
         'category': "object",
-        'id': 'edit',
-        'name': 'Edit',
-        'permissions': ("Modify portal content",),
-        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Edit_TRAImportacion')"""
+        'id': 'TRAContenidoXML',
+        'name': 'XML Contents',
+        'permissions': ("View",),
+        'condition': """python:object.fHasContenidoXML()"""
        },
 
 
@@ -945,15 +894,6 @@ class TRAImportacion(OrderedBaseFolder, TRAArquetipo, TRAImportacion_Operaciones
        },
 
 
-       {'action': "string:${object_url}/TRAImportar_action",
-        'category': "object_buttons",
-        'id': 'TRAImport',
-        'name': 'Import',
-        'permissions': ("Modify portal content",),
-        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Import_TRAImportacion')"""
-       },
-
-
        {'action': "string:${object_url}/TRAReutilizar_action",
         'category': "object_buttons",
         'id': 'TRAReuse',
@@ -963,12 +903,30 @@ class TRAImportacion(OrderedBaseFolder, TRAArquetipo, TRAImportacion_Operaciones
        },
 
 
-       {'action': "string:${object_url}/TRAImportacionContenidosSumario",
+       {'action': "string:${object_url}/TRAImportar_action",
+        'category': "object_buttons",
+        'id': 'TRAImport',
+        'name': 'Import',
+        'permissions': ("Modify portal content",),
+        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Import_TRAImportacion')"""
+       },
+
+
+       {'action': "string:${object_url}/TRARecuperar_action",
+        'category': "object_buttons",
+        'id': 'TRARestoreTRACatalogo',
+        'name': 'Restore Backup',
+        'permissions': ("Modify portal content",),
+        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Restore_TRACatalogo')"""
+       },
+
+
+       {'action': "string:$object_url/Editar",
         'category': "object",
-        'id': 'TRASumarioContenidosImportacion',
-        'name': 'Summary',
-        'permissions': ("View",),
-        'condition': """python:1"""
+        'id': 'edit',
+        'name': 'Edit',
+        'permissions': ("Modify portal content",),
+        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Edit_TRAImportacion')"""
        },
 
 

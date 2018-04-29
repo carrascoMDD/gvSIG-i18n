@@ -109,8 +109,177 @@ class TRACatalogo_Exportacion( TRACatalogo_Exportacion_GNUgettextPO, TRACatalogo
     ##code-section class-header #fill in your manual code here
     
 
+
+          
+
+
     
     
+
+
+    security.declarePrivate( 'fExportTypeConfigsChosen')
+    def fExportTypeConfigsChosen( self,
+        theAllExportTypeConfigs                 =None,
+        theExportarTRACatalogo                  =None,
+        theExportarTRAConfiguraciones           =None,           
+        theExportarTRAParametrosControlProgreso =None,
+        theExportarTRAIdiomas                   =None,                
+        theExportarTRAModulos                   =None,                  
+        theExportarTRAInformes                  =None,                  
+        theExportarTRASolicitudesCadenas        =None,):
+        
+        if not theAllExportTypeConfigs:
+            return {}
+        
+        
+    
+        someTypeConfigFilters = [ ]
+        
+        # ########################################################
+        """Attributes to export for all configs.
+        
+        """
+        aBaseTypeConfigFilter = cExportarXMLTypeConfigFilters.get( 'base', [])
+        if aBaseTypeConfigFilter:
+            someTypeConfigFilters.extend( aBaseTypeConfigFilter)
+        
+            
+        # ########################################################
+        """Element sets chosen to be exported: Root catalog, configurations, process control parameters, languages, modules, reports, imports, progresses, string requests.
+        
+        """    
+        if theExportarTRACatalogo:
+            aTypeConfigFilter =  cExportarXMLTypeConfigFilters.get( 'TRACatalogo', [])
+            if aTypeConfigFilter:
+                someTypeConfigFilters.extend( aTypeConfigFilter)
+        
+        
+        if theExportarTRAConfiguraciones:
+            aTypeConfigFilter =  cExportarXMLTypeConfigFilters.get( 'TRAConfiguraciones', [])
+            if aTypeConfigFilter:
+                someTypeConfigFilters.extend( aTypeConfigFilter)
+                
+        
+        if theExportarTRAParametrosControlProgreso:
+            aTypeConfigFilter =  cExportarXMLTypeConfigFilters.get( 'TRAParametrosControlProgreso', [])
+            if aTypeConfigFilter:
+                someTypeConfigFilters.extend( aTypeConfigFilter)
+                
+        
+        if theExportarTRAIdiomas:
+            aTypeConfigFilter =  cExportarXMLTypeConfigFilters.get( 'TRAIdiomas', [])
+            if aTypeConfigFilter:
+                someTypeConfigFilters.extend( aTypeConfigFilter)
+                
+        if theExportarTRAModulos:
+            aTypeConfigFilter =  cExportarXMLTypeConfigFilters.get( 'TRAModulos', [])
+            if aTypeConfigFilter:
+                someTypeConfigFilters.extend( aTypeConfigFilter)
+                
+                
+        if theExportarTRAInformes:
+            aTypeConfigFilter =  cExportarXMLTypeConfigFilters.get( 'TRAInformes', [])
+            if aTypeConfigFilter:
+                someTypeConfigFilters.extend( aTypeConfigFilter)
+                                                                                
+        if theExportarTRASolicitudesCadenas:
+            aTypeConfigFilter =  cExportarXMLTypeConfigFilters.get( 'TRASolicitudesCadenas', [])
+            if aTypeConfigFilter:
+                someTypeConfigFilters.extend( aTypeConfigFilter)
+         
+                
+                
+                
+                
+        # ########################################################
+        """Merge selection of element types, attributes and traversals to be exported.
+        
+        """    
+            
+        aMergedTypeConfigFilter = { }
+        
+        for aTypeConfigFilter in someTypeConfigFilters:
+            aPortalType = aTypeConfigFilter.get( 'portal_type', '')
+            if aPortalType:
+                
+                aMergedTypeConfigFilterForType = aMergedTypeConfigFilter.get( aPortalType, None)
+                if aMergedTypeConfigFilterForType == None:
+                    aMergedTypeConfigFilterForType = { 
+                        'portal_type': aPortalType, 
+                        'attrs':       set(), 
+                        'traversals':  set(),
+                    }
+                    aMergedTypeConfigFilter[ aPortalType] = aMergedTypeConfigFilterForType
+                    
+                someAttrs = aTypeConfigFilter.get( 'attrs', [])
+                if someAttrs:
+                    aMergedTypeConfigFilterForType[ 'attrs'].update( set( someAttrs))
+                                                                     
+                someTraversals = aTypeConfigFilter.get( 'traversals', [])
+                if someTraversals:
+                    aMergedTypeConfigFilterForType[ 'traversals'].update( set( someTraversals))
+                                                                     
+            
+        
+               
+        # ########################################################
+        """ Build a traversal config by filtering the overall traversal config for all the elements with the types, attributes and traversals chosen above.
+        
+        """    
+                    
+        aTypeConfigsChosen = { }
+        
+        for aPortalType in theAllExportTypeConfigs.keys():
+            
+            aTypeConfig           = theAllExportTypeConfigs.get( aPortalType, None)
+            if aTypeConfig:
+                
+                if ( aPortalType == cTRAImagePortalType) and theExportarTRAIdiomas:
+                    
+                    aTypeConfigsChosen [ aPortalType] = aTypeConfig.copy()
+                    
+                    
+                    
+                else:
+                    
+                
+                    someConfigAttrs       = aTypeConfig.get( 'attrs',        [])
+                    someConfigTraversals  = aTypeConfig.get( 'traversals',   [])
+                    
+                    aTypeConfigFilterForType = aMergedTypeConfigFilter.get( aPortalType, None)
+                    if aTypeConfigFilterForType:
+                        
+                        someFilteredAttrs      = aTypeConfigFilterForType.get( 'attrs',      set())
+                        someFilteredTraversals = aTypeConfigFilterForType.get( 'traversals', set())
+                        
+                        someChosenAttributeConfigs = cExportarXMLAnyTypeAttributeConfigs[:]
+                        someChosenTraversalConfigs = [ ]
+                        
+                        aTypeConfig = {
+                            'portal_types':    [ aPortalType,],
+                            'attrs':           someChosenAttributeConfigs,
+                            'traversals':      someChosenTraversalConfigs,
+                        }
+                
+                        aTypeConfigsChosen [ aPortalType] = aTypeConfig
+                        
+                        for aConfigAttr in someConfigAttrs:
+                            aConfigAttrName = aConfigAttr.get( 'name', '')
+                            if aConfigAttrName and ( aConfigAttrName in someFilteredAttrs):
+                                someChosenAttributeConfigs.append( aConfigAttr)
+                                
+                        for aConfigTraversal in someConfigTraversals:
+                            aConfigTraversalName = aConfigTraversal.get( 'aggregation_name', aConfigTraversal.get( 'relation_name', ''))
+                            if aConfigTraversalName and ( aConfigTraversalName in someFilteredTraversals):
+                                someChosenTraversalConfigs.append( aConfigTraversal)
+                                
+                                
+        return aTypeConfigsChosen
+                
+    
+    
+    
+
     
     security.declarePublic( 'fLabelModuloNoEspecificado')    
     def fLabelModuloNoEspecificado( self):
@@ -256,6 +425,7 @@ class TRACatalogo_Exportacion( TRACatalogo_Exportacion_GNUgettextPO, TRACatalogo
                 theTipoArchivo                  = theParametersInput.get( 'theTipoArchivo', '')
                 theDefaultLanguageCode          = theParametersInput.get( 'theDefaultLanguageCode', '')
                 theDefaultModuleName            = theParametersInput.get( 'theDefaultModuleName', '')
+                theDefaultDomain                = theParametersInput.get( 'theDefaultDomain', '')
                 theEncodingErrorHandleMode      = theParametersInput.get( 'theEncodingErrorHandleMode', '')
                 theFilenameForGvSIG             = theParametersInput.get( 'theFilenameForGvSIG', '')   == ( theParametersInput.get( 'theFilenameForGvSIG_vocabulary', ['xXxXxXx',])[ 0])
                 theProductName                  = theParametersInput.get( 'theProductName', '')
@@ -555,7 +725,7 @@ class TRACatalogo_Exportacion( TRACatalogo_Exportacion_GNUgettextPO, TRACatalogo
                                 """
                                 aCodigoIdiomaPorDefectoAUsar = ''
                                 if not( theParametersInput.get( 'process_type', '') == cTRAProgress_ProcessType_Backup):
-                                    aCodigoIdiomaPorDefectoAUsar = theDefaultLanguageCode or self.fCodigoIdiomaPorDefecto()
+                                    aCodigoIdiomaPorDefectoAUsar = theDefaultLanguageCode
                                     
                                 unFileNameProperties = "%s%s%s%s" % ( unDirName, cFilenamePropertiesBase, self.fPropertiesFilenameIdiomaPostfix( unCodigoIdioma, aCodigoIdiomaPorDefectoAUsar), cPropertiesFilePostfix,)
                                 unInformeExportarModulo[ 'filename_properties'] = unFileNameProperties
@@ -595,14 +765,15 @@ class TRACatalogo_Exportacion( TRACatalogo_Exportacion_GNUgettextPO, TRACatalogo
                                 """
                                 aCodigoIdiomaPorDefectoAUsar = ''
                                 if not( theParametersInput.get( 'process_type', '') == cTRAProgress_ProcessType_Backup):
-                                    aCodigoIdiomaPorDefectoAUsar = theDefaultLanguageCode or self.fCodigoIdiomaPorDefecto()
+                                    aCodigoIdiomaPorDefectoAUsar = theDefaultLanguageCode
                                     
-                                unFileNameProperties = "%s%s%s" % ( cFilenamePropertiesBase, self.fPropertiesFilenameIdiomaPostfix( unCodigoIdioma, aCodigoIdiomaPorDefectoAUsar), cPropertiesFilePostfix,)
+                                unDirName  = "%s%s" % ( theDefaultModuleName, cZipPathSeparator,)
+                                unFileNameProperties = "%s%s%s%s" % ( unDirName, cFilenamePropertiesBase, self.fPropertiesFilenameIdiomaPostfix( unCodigoIdioma, aCodigoIdiomaPorDefectoAUsar), cPropertiesFilePostfix,)
                                 unInformeExportarModulo[ 'filename_properties'] = unFileNameProperties
                                 unInformeExportarModulo[ 'filename']            = unFileNameProperties
                                  
                             if unExportAsGNUgettextPO:
-                                unFileNamePO = "%s%s%s%s" % ( theDefaultModuleName or self.fNombreModuloPorDefecto(),  cPOFileCharBeforeLanguage, unCodigoIdioma, cPOFilePostfix, )
+                                unFileNamePO = "%s%s%s%s" % ( theDefaultModuleName,  cPOFileCharBeforeLanguage, unCodigoIdioma, cPOFilePostfix, )
                                 unInformeExportarModulo[ 'filename_po'] = unFileNamePO
                                 unInformeExportarModulo[ 'filename']    = unFileNamePO
 
@@ -637,14 +808,14 @@ class TRACatalogo_Exportacion( TRACatalogo_Exportacion_GNUgettextPO, TRACatalogo
                             """
                             aCodigoIdiomaPorDefectoAUsar = ''
                             if not( theParametersInput.get( 'process_type', '') == cTRAProgress_ProcessType_Backup):
-                                aCodigoIdiomaPorDefectoAUsar = theDefaultLanguageCode or self.fCodigoIdiomaPorDefecto()
+                                aCodigoIdiomaPorDefectoAUsar = theDefaultLanguageCode
                             
                             unFileNameProperties = "%s%s%s" % ( cFilenamePropertiesBase, self.fPropertiesFilenameIdiomaPostfix( unCodigoIdioma, aCodigoIdiomaPorDefectoAUsar), cPropertiesFilePostfix,)
                             unInformeExportarIdioma[ 'filename_properties'] = unFileNameProperties
                             unInformeExportarIdioma[ 'filename']            = unFileNameProperties
                              
                         if unExportAsGNUgettextPO:
-                            unFileNamePO = "%s%s%s%s" % ( cNoSeparateModulesFileNamePrefix,  cPOFileCharBeforeLanguage, unCodigoIdioma, cPOFilePostfix, )
+                            unFileNamePO = "%s%s%s%s" % ( cPONoSeparateModulesFileNamePrefix,  cPOFileCharBeforeLanguage, unCodigoIdioma, cPOFilePostfix, )
                             unInformeExportarIdioma[ 'filename_po'] = unFileNamePO
                             unInformeExportarIdioma[ 'filename']    = unFileNamePO
         
@@ -1211,7 +1382,7 @@ class TRACatalogo_Exportacion( TRACatalogo_Exportacion_GNUgettextPO, TRACatalogo
         """Make sure that exported files store folder exists.
             
         """
-        aExportedFilesPath = cTRAExportedFilesDiskPath
+        aExportedFilesPath = self.fExportedFilesDiskPath()
                             
         aExportedFilesPathExist = False
         try:
@@ -1288,6 +1459,27 @@ class TRACatalogo_Exportacion( TRACatalogo_Exportacion_GNUgettextPO, TRACatalogo
     
     
     
+    security.declareProtected( permissions.View, 'fExportedFilesDiskPath')
+    def fExportedFilesDiskPath( self, ):
+        """Path to store and retrieve export contents in the file system.
+            
+        """
+        aConfiguration = getConfiguration()
+        if not aConfiguration:
+            return ''
+        
+        aClientHome = aConfiguration.clienthome
+        if not aClientHome:
+            return ''
+            
+        aExportedFilesDiskPath   = os.path.join( aClientHome, cTRAExportedFilesFolderName)
+        return aExportedFilesDiskPath
+    
+    
+    
+    
+    
+    
     security.declareProtected( permissions.View, 'fExportedFileContents')
     def fExportedFileContents( self, theFileName,):
         """Retrieve the export contents  Stored as a file system file at the pre-configured path.
@@ -1301,7 +1493,7 @@ class TRACatalogo_Exportacion( TRACatalogo_Exportacion_GNUgettextPO, TRACatalogo
         """Make sure that exported files store folder exists.
             
         """
-        aExportedFilesPath = cTRAExportedFilesDiskPath
+        aExportedFilesPath = self.fExportedFilesDiskPath()
                             
         aExportedFilesPathExist = False
         try:
@@ -1567,6 +1759,7 @@ class TRACatalogo_Exportacion( TRACatalogo_Exportacion_GNUgettextPO, TRACatalogo
                     'theFilenameForGvSIG_vocabulary_msgids'  : cTRABooleanVocabulary_msgids,
                     'theDefaultLanguageCode'          : unaConfigurationDict.get( 'codigoIdiomaPorDefecto', ''),
                     'theDefaultModuleName'            : '',
+                    'theDefaultDomain'                : unaConfigurationDict.get( 'dominioPorDefecto', ''),
                     'theProductName'                  : unCatalogoRaiz.getNombreProducto(),
                     'theProductVersion'               : '',
                     'theL10NVersion'                  : '',
@@ -1601,13 +1794,6 @@ class TRACatalogo_Exportacion( TRACatalogo_Exportacion_GNUgettextPO, TRACatalogo
                     'theExportarTRAInformes_vocabulary': cTRABooleanVocabulary,
                     'theExportarTRAInformes_vocabulary_msgids': cTRABooleanVocabulary_msgids,
                     
-                    'theExportarTRAImportaciones':         cTRABooleanSi,
-                    'theExportarTRAImportaciones_vocabulary': cTRABooleanVocabulary,
-                    'theExportarTRAImportaciones_vocabulary_msgids': cTRABooleanVocabulary_msgids,
-                    
-                    'theExportarTRAProgresos':         cTRABooleanSi,
-                    'theExportarTRAProgresos_vocabulary': cTRABooleanVocabulary,
-                    'theExportarTRAProgresos_vocabulary_msgids': cTRABooleanVocabulary_msgids,
                     
                 }
                 
@@ -1987,6 +2173,7 @@ class TRACatalogo_Exportacion( TRACatalogo_Exportacion_GNUgettextPO, TRACatalogo
                     'theFilenameForGvSIG_vocabulary_msgids'  : cTRABooleanVocabulary_msgids,
                     'theDefaultLanguageCode'          : unaConfigurationDict.get( 'codigoIdiomaPorDefecto', ''),
                     'theDefaultModuleName'            : '',
+                    'theDefaultDomain'                : unaConfigurationDict.get( 'dominioPorDefecto', ''),
                     'theProductName'                  : unProductName,
                     'theProductVersion'               : unProductVersion,
                     'theL10NVersion'                  : unL10NVersion,
@@ -2022,13 +2209,6 @@ class TRACatalogo_Exportacion( TRACatalogo_Exportacion_GNUgettextPO, TRACatalogo
                     'theExportarTRAInformes_vocabulary': cTRABooleanVocabulary,
                     'theExportarTRAInformes_vocabulary_msgids': cTRABooleanVocabulary_msgids,
                     
-                    'theExportarTRAImportaciones':         cTRABooleanNo,
-                    'theExportarTRAImportaciones_vocabulary': cTRABooleanVocabulary,
-                    'theExportarTRAImportaciones_vocabulary_msgids': cTRABooleanVocabulary_msgids,
-                    
-                    'theExportarTRAProgresos':         cTRABooleanNo,
-                    'theExportarTRAProgresos_vocabulary': cTRABooleanVocabulary,
-                    'theExportarTRAProgresos_vocabulary_msgids': cTRABooleanVocabulary_msgids,
                 }
                 
                 
@@ -2329,7 +2509,8 @@ class TRACatalogo_Exportacion( TRACatalogo_Exportacion_GNUgettextPO, TRACatalogo
                     'theTipoArchivo_vocabulary'         : theAdditionalParams.get( 'theTipoArchivo_vocabulary', [])[:],
                     'theTipoArchivo_vocabulary_msgids'  : theAdditionalParams.get( 'theTipoArchivo_vocabulary_msgids', [])[:],
                     'theDefaultLanguageCode'          : theAdditionalParams.get( 'theDefaultLanguageCode', cTRALanguageCode_English),
-                    'theDefaultModuleName'            : theAdditionalParams.get( 'theDefaultModuleName', cTRAModuleName_gvSIG),
+                    'theDefaultModuleName'            : theAdditionalParams.get( 'theDefaultModuleName', cTRAADefaultModuleName),
+                    'theDefaultDomain'                : theAdditionalParams.get( 'theDefaultDomain', cTRAADefaultDomainName),
                     'theEncodingErrorHandleMode'      : theAdditionalParams.get( 'theEncodingErrorHandleMode', cTRAEncodingErrorHandleMode_BackslashReplaceAndContinue),
                     'theEncodingErrorHandleMode_vocabulary'         : theAdditionalParams.get( 'theEncodingErrorHandleMode_vocabulary', [])[:],
                     'theEncodingErrorHandleMode_vocabulary_msgids'  : theAdditionalParams.get( 'theEncodingErrorHandleMode_vocabulary_msgids', [])[:],
@@ -2370,14 +2551,6 @@ class TRACatalogo_Exportacion( TRACatalogo_Exportacion_GNUgettextPO, TRACatalogo
                     'theExportarTRAInformes':         theAdditionalParams.get( 'theExportarTRAInformes', cTRABooleanNo),
                     'theExportarTRAInformes_vocabulary': theAdditionalParams.get( 'theExportarTRAInformes_vocabulary', [])[:],
                     'theExportarTRAInformes_vocabulary_msgids': theAdditionalParams.get( 'theExportarTRAInformes_vocabulary_msgids', [])[:],
-                    
-                    'theExportarTRAImportaciones':         theAdditionalParams.get( 'theExportarTRAImportaciones', cTRABooleanNo),
-                    'theExportarTRAImportaciones_vocabulary': theAdditionalParams.get( 'theExportarTRAImportaciones_vocabulary', [])[:],
-                    'theExportarTRAImportaciones_vocabulary_msgids': theAdditionalParams.get( 'theExportarTRAImportaciones_vocabulary_msgids', [])[:],
-                    
-                    'theExportarTRAProgresos':         theAdditionalParams.get( 'theExportarTRAProgresos', cTRABooleanNo),
-                    'theExportarTRAProgresos_vocabulary': theAdditionalParams.get( 'theExportarTRAProgresos_vocabulary', [])[:],
-                    'theExportarTRAProgresos_vocabulary_msgids': theAdditionalParams.get( 'theExportarTRAProgresos_vocabulary_msgids', [])[:],
                     
                 }
                 
@@ -2731,6 +2904,7 @@ def fExportLoop_lambda( theInitialElement, theProcessControlManager, theAddition
         theTipoArchivo                  = someExportParameters.get( 'theTipoArchivo', '')
         theDefaultLanguageCode          = someExportParameters.get( 'theDefaultLanguageCode', '')
         theDefaultModuleName            = someExportParameters.get( 'theDefaultModuleName', '')
+        theDefaultDomain                = someExportParameters.get( 'theDefaultDomain', '')
         theEncodingErrorHandleMode      = someExportParameters.get( 'theEncodingErrorHandleMode', '')
         theFilenameForGvSIG             = someExportParameters.get( 'theFilenameForGvSIG', '')           == ( someExportParameters.get( 'theFilenameForGvSIG_vocabulary', ['xXxXxXx',])[ 0])
         theProductName                  = someExportParameters.get( 'theProductName', '')
@@ -2746,8 +2920,6 @@ def fExportLoop_lambda( theInitialElement, theProcessControlManager, theAddition
         theExportarTRAIdiomas                   = someExportParameters.get( 'theExportarTRAIdiomas', '')                   == ( someExportParameters.get( 'theExportarTRAIdiomas_vocabulary',  ['xXxXxXx',])[ 0])
         theExportarTRAModulos                   = someExportParameters.get( 'theExportarTRAModulos', '')                   == ( someExportParameters.get( 'theExportarTRAModulos_vocabulary',  ['xXxXxXx',])[ 0])
         theExportarTRAInformes                  = someExportParameters.get( 'theExportarTRAInformes', '')                  == ( someExportParameters.get( 'theExportarTRAInformes_vocabulary',  ['xXxXxXx',])[ 0])
-        theExportarTRAImportaciones             = someExportParameters.get( 'theExportarTRAImportaciones', '')             == ( someExportParameters.get( 'theExportarTRAImportaciones_vocabulary',  ['xXxXxXx',])[ 0])
-        theExportarTRAProgresos                 = someExportParameters.get( 'theExportarTRAProgresos', '')                 == ( someExportParameters.get( 'theExportarTRAProgresos_vocabulary',  ['xXxXxXx',])[ 0])
         theExportarTRASolicitudesCadenas        = someExportParameters.get( 'theExportarTRASolicitudesCadenas', '')        == ( someExportParameters.get( 'theExportarTRASolicitudesCadenas_vocabulary',  ['xXxXxXx',])[ 0])
         
  
@@ -2757,8 +2929,6 @@ def fExportLoop_lambda( theInitialElement, theProcessControlManager, theAddition
             theExportarTRAIdiomas or \
             theExportarTRAModulos or \
             theExportarTRAInformes or \
-            theExportarTRAImportaciones or \
-            theExportarTRAProgresos or \
             theExportarTRASolicitudesCadenas
                
         
@@ -2788,7 +2958,7 @@ def fExportLoop_lambda( theInitialElement, theProcessControlManager, theAddition
                 })
                 return None                
 
-            someExportTypeConfigsChosen = fExportTypeConfigsChosen( 
+            someExportTypeConfigsChosen = theProcessControlManager.vCatalogoRaiz.fExportTypeConfigsChosen( 
                 theAllExportTypeConfigs                 =someAllExportTypeConfigs,
                 theExportarTRACatalogo                  =theExportarTRACatalogo,
                 theExportarTRAConfiguraciones           =theExportarTRAConfiguraciones,           
@@ -2796,8 +2966,6 @@ def fExportLoop_lambda( theInitialElement, theProcessControlManager, theAddition
                 theExportarTRAIdiomas                   =theExportarTRAIdiomas,                
                 theExportarTRAModulos                   =theExportarTRAModulos,                  
                 theExportarTRAInformes                  =theExportarTRAInformes,                  
-                theExportarTRAImportaciones             =theExportarTRAImportaciones,                  
-                theExportarTRAProgresos                 =theExportarTRAProgresos,               
                 theExportarTRASolicitudesCadenas        =theExportarTRASolicitudesCadenas,
             )
             if not someExportTypeConfigsChosen:
@@ -3187,7 +3355,7 @@ def fExportLoop_lambda( theInitialElement, theProcessControlManager, theAddition
                         """
                         aCodigoIdiomaPorDefectoAUsar = ''
                         if not( theProcessType == cTRAProgress_ProcessType_Backup):
-                            aCodigoIdiomaPorDefectoAUsar = theDefaultLanguageCode or theProcessControlManager.vCatalogoRaiz.fCodigoIdiomaPorDefecto()
+                            aCodigoIdiomaPorDefectoAUsar = theDefaultLanguageCode
                                                 
                         unDirName  = "%s%s" % ( unNombreModulo, cZipPathSeparator,)
                         unFileNameProperties = "%s%s%s%s" % ( unDirName, cFilenamePropertiesBase, theProcessControlManager.vCatalogoRaiz.fPropertiesFilenameIdiomaPostfix( unCodigoIdioma, aCodigoIdiomaPorDefectoAUsar), cPropertiesFilePostfix,)
@@ -3342,14 +3510,15 @@ def fExportLoop_lambda( theInitialElement, theProcessControlManager, theAddition
                         """
                         aCodigoIdiomaPorDefectoAUsar = ''
                         if not( theProcessType == cTRAProgress_ProcessType_Backup):
-                            aCodigoIdiomaPorDefectoAUsar = theDefaultLanguageCode or theProcessControlManager.vCatalogoRaiz.fCodigoIdiomaPorDefecto()
+                            aCodigoIdiomaPorDefectoAUsar = theDefaultLanguageCode
                         
-                        unFileNameProperties = "%s%s%s" % ( cFilenamePropertiesBase, theProcessControlManager.vCatalogoRaiz.fPropertiesFilenameIdiomaPostfix( unCodigoIdioma, aCodigoIdiomaPorDefectoAUsar), cPropertiesFilePostfix,)
+                        unDirName  = "%s%s" % ( theDefaultModuleName, cZipPathSeparator,)
+                        unFileNameProperties = "%s%s%s%s" % ( unDirName, cFilenamePropertiesBase, theProcessControlManager.vCatalogoRaiz.fPropertiesFilenameIdiomaPostfix( unCodigoIdioma, aCodigoIdiomaPorDefectoAUsar), cPropertiesFilePostfix,)
                         unInformeExportarModulo[ 'filename_properties'] = unFileNameProperties
                         unInformeExportarModulo[ 'filename']            = unFileNameProperties
                          
                     if unExportAsGNUgettextPO:
-                        unFileNamePO = "%s%s%s%s" % ( theDefaultModuleName or theProcessControlManager.vCatalogoRaiz.fNombreModuloPorDefecto(),  cPOFileCharBeforeLanguage, unCodigoIdioma, cPOFilePostfix, )
+                        unFileNamePO = "%s%s%s%s" % ( theDefaultModuleName,  cPOFileCharBeforeLanguage, unCodigoIdioma, cPOFilePostfix, )
                         unInformeExportarModulo[ 'filename_po'] = unFileNamePO
                         unInformeExportarModulo[ 'filename']    = unFileNamePO
     
@@ -3430,22 +3599,22 @@ def fExportLoop_lambda( theInitialElement, theProcessControlManager, theAddition
                                 
                         if unFileNamePO:
                             unResultFicheroExportacion = theProcessControlManager.vCatalogoRaiz.fContenidoFicheroExportacionIdiomaModuloNoEspecificado_GNUgettextPO(   
-                                unIdioma, 
-                                theDefaultModuleName,
-                                unaCodificacionCaracteres, 
-                                unosResultadosTraducciones, 
-                                unosResultadosTraduccionesReferencia,
-                                unosSourcesCadenasPorSimbolo,
-                                unExportModuleNames,
-                                unExportStringSources,
-                                unExportTranslationsStatus,
-                                unosModulosCadenasPorSimbolo,
-                                theEncodingErrorHandleMode,
-                                anEncodedFileErrorsMode,
-                                aSystemToUnicodeErrorsMode,
-                                aUnicodeToUTF8ErrorsMode,
-                                aTranslationService,
-                                unExecutionRecord,
+                                theIdioma                            =unIdioma, 
+                                theDomainName                        =theDefaultDomain,
+                                theCodificacionCaracteres            =unaCodificacionCaracteres, 
+                                theResultadosTraducciones            =unosResultadosTraducciones,
+                                theResultadosTraduccionesReferencia  =unosResultadosTraduccionesReferencia, 
+                                theSourcesCadenasPorSimbolo          =unosSourcesCadenasPorSimbolo,
+                                theExportModuleNames                 =unExportModuleNames,
+                                theExportStringSources               =unExportStringSources,
+                                theExportTranslationsStatus          =unExportTranslationsStatus,
+                                theModulosCadenasPorSimbolo          =unosModulosCadenasPorSimbolo,
+                                theEncodingErrorHandleMode           =theEncodingErrorHandleMode,
+                                theEncodedFileErrorsMode             =anEncodedFileErrorsMode,
+                                theSystemToUnicodeErrorsMode         =aSystemToUnicodeErrorsMode,
+                                theUnicodeToUTF8ErrorsMode           =aUnicodeToUTF8ErrorsMode,
+                                theTranslationService                =aTranslationService,
+                                theParentExecutionRecord             =unExecutionRecord,                                
                             )
                             unInformeExportarModulo[ 'export_result'] = unResultFicheroExportacion
                             if ( not unResultFicheroExportacion) or  ( not unResultFicheroExportacion.get( 'success', False)):
@@ -3498,14 +3667,14 @@ def fExportLoop_lambda( theInitialElement, theProcessControlManager, theAddition
                     """
                     aCodigoIdiomaPorDefectoAUsar = ''
                     if not( theProcessType == cTRAProgress_ProcessType_Backup):
-                        aCodigoIdiomaPorDefectoAUsar = theDefaultLanguageCode or theProcessControlManager.vCatalogoRaiz.fCodigoIdiomaPorDefecto()
+                        aCodigoIdiomaPorDefectoAUsar = theDefaultLanguageCode
                                                 
                     unFileNameProperties = "%s%s%s" % ( cFilenamePropertiesBase, theProcessControlManager.vCatalogoRaiz.fPropertiesFilenameIdiomaPostfix( unCodigoIdioma, aCodigoIdiomaPorDefectoAUsar), cPropertiesFilePostfix,)
                     unInformeExportarIdioma[ 'filename_properties'] = unFileNameProperties
                     unInformeExportarIdioma[ 'filename']            = unFileNameProperties
                      
                 if unExportAsGNUgettextPO:
-                    unFileNamePO = "%s%s%s%s" % ( cNoSeparateModulesFileNamePrefix,  cPOFileCharBeforeLanguage, unCodigoIdioma, cPOFilePostfix, )
+                    unFileNamePO = "%s%s%s%s" % ( cPONoSeparateModulesFileNamePrefix,  cPOFileCharBeforeLanguage, unCodigoIdioma, cPOFilePostfix, )
                     unInformeExportarIdioma[ 'filename_po'] = unFileNamePO
                     unInformeExportarIdioma[ 'filename']    = unFileNamePO
     
@@ -3587,7 +3756,7 @@ def fExportLoop_lambda( theInitialElement, theProcessControlManager, theAddition
                 if unFileNamePO:
                     unResultFicheroExportacion = theProcessControlManager.vCatalogoRaiz.fContenidoFicheroExportacionIdiomaTodosModulos_GNUgettextPO(   
                         unIdioma, 
-                        theDefaultModuleName,
+                        theDefaultDomain,
                         unaCodificacionCaracteres, 
                         unosResultadosTraducciones,
                         unosResultadosTraduccionesReferencia,
@@ -3665,9 +3834,9 @@ def fExportLoop_lambda( theInitialElement, theProcessControlManager, theAddition
                 'theExcludeUsers'       :True,
                 'theExcludeCounters'    :True,
                 'theExcludeDates'       :True,
-                'theExcludeUIDs'        :True,
+                'theExcludeUIDs'        :False,
                 'theExcludeFiles'       :False,
-                'theExcludeEmpty'       :True,
+                'theExcludeEmpty'       :False,
                 'theSortByIds'          :False,
                 'theForceRootId'        :False,
                 'theArchiveFormat'      :'none',
@@ -3748,176 +3917,6 @@ def fExportLoop_lambda( theInitialElement, theProcessControlManager, theAddition
                     
         
 
-def fExportTypeConfigsChosen( 
-    theAllExportTypeConfigs                 =None,
-    theExportarTRACatalogo                  =None,
-    theExportarTRAConfiguraciones           =None,           
-    theExportarTRAParametrosControlProgreso =None,
-    theExportarTRAIdiomas                   =None,                
-    theExportarTRAModulos                   =None,                  
-    theExportarTRAInformes                  =None,                  
-    theExportarTRAImportaciones             =None,                  
-    theExportarTRAProgresos                 =None,               
-    theExportarTRASolicitudesCadenas        =None,):
-    
-    if not theAllExportTypeConfigs:
-        return []
-    
-    
-
-    someTypeConfigFilters = [ ]
-    
-    # ########################################################
-    """Attributes to export for all configs.
-    
-    """
-    aBaseTypeConfigFilter = cExportarXMLTypeConfigFilters.get( 'base', [])
-    if aBaseTypeConfigFilter:
-        someTypeConfigFilters.extend( aBaseTypeConfigFilter)
-    
-        
-    # ########################################################
-    """Element sets chosen to be exported: Root catalog, configurations, process control parameters, languages, modules, reports, imports, progresses, string requests.
-    
-    """    
-    if theExportarTRACatalogo:
-        aTypeConfigFilter =  cExportarXMLTypeConfigFilters.get( 'TRACatalogo', [])
-        if aTypeConfigFilter:
-            someTypeConfigFilters.extend( aTypeConfigFilter)
-    
-    
-    if theExportarTRAConfiguraciones:
-        aTypeConfigFilter =  cExportarXMLTypeConfigFilters.get( 'TRAConfiguraciones', [])
-        if aTypeConfigFilter:
-            someTypeConfigFilters.extend( aTypeConfigFilter)
-            
-    
-    if theExportarTRAParametrosControlProgreso:
-        aTypeConfigFilter =  cExportarXMLTypeConfigFilters.get( 'TRAParametrosControlProgreso', [])
-        if aTypeConfigFilter:
-            someTypeConfigFilters.extend( aTypeConfigFilter)
-            
-    
-    if theExportarTRAIdiomas:
-        aTypeConfigFilter =  cExportarXMLTypeConfigFilters.get( 'TRAIdiomas', [])
-        if aTypeConfigFilter:
-            someTypeConfigFilters.extend( aTypeConfigFilter)
-            
-    if theExportarTRAModulos:
-        aTypeConfigFilter =  cExportarXMLTypeConfigFilters.get( 'TRAModulos', [])
-        if aTypeConfigFilter:
-            someTypeConfigFilters.extend( aTypeConfigFilter)
-            
-            
-    if theExportarTRAInformes:
-        aTypeConfigFilter =  cExportarXMLTypeConfigFilters.get( 'TRAInformes', [])
-        if aTypeConfigFilter:
-            someTypeConfigFilters.extend( aTypeConfigFilter)
-            
-    if theExportarTRAImportaciones:
-        aTypeConfigFilter =  cExportarXMLTypeConfigFilters.get( 'TRAImportaciones', [])
-        if aTypeConfigFilter:
-            someTypeConfigFilters.extend( aTypeConfigFilter)
-            
-    if theExportarTRAProgresos:
-        aTypeConfigFilter =  cExportarXMLTypeConfigFilters.get( 'TRAProgresos', [])
-        if aTypeConfigFilter:
-            someTypeConfigFilters.extend( aTypeConfigFilter)
-                                                            
-    if theExportarTRASolicitudesCadenas:
-        aTypeConfigFilter =  cExportarXMLTypeConfigFilters.get( 'TRASolicitudesCadenas', [])
-        if aTypeConfigFilter:
-            someTypeConfigFilters.extend( aTypeConfigFilter)
-     
-            
-            
-            
-            
-    # ########################################################
-    """Merge selection of element types, attributes and traversals to be exported.
-    
-    """    
-        
-    aMergedTypeConfigFilter = { }
-    
-    for aTypeConfigFilter in someTypeConfigFilters:
-        aPortalType = aTypeConfigFilter.get( 'portal_type', '')
-        if aPortalType:
-            
-            aMergedTypeConfigFilterForType = aMergedTypeConfigFilter.get( aPortalType, None)
-            if aMergedTypeConfigFilterForType == None:
-                aMergedTypeConfigFilterForType = { 
-                    'portal_type': aPortalType, 
-                    'attrs':       set(), 
-                    'traversals':  set(),
-                }
-                aMergedTypeConfigFilter[ aPortalType] = aMergedTypeConfigFilterForType
-                
-            someAttrs = aTypeConfigFilter.get( 'attrs', [])
-            if someAttrs:
-                aMergedTypeConfigFilterForType[ 'attrs'].update( set( someAttrs))
-                                                                 
-            someTraversals = aTypeConfigFilter.get( 'traversals', [])
-            if someTraversals:
-                aMergedTypeConfigFilterForType[ 'traversals'].update( set( someTraversals))
-                                                                 
-        
-    
-           
-    # ########################################################
-    """ Build a traversal config by filtering the overall traversal config for all the elements with the types, attributes and traversals chosen above.
-    
-    """    
-                
-    aTypeConfigsChosen = { }
-    
-    for aPortalType in theAllExportTypeConfigs.keys():
-        
-        aTypeConfig           = theAllExportTypeConfigs.get( aPortalType, None)
-        if aTypeConfig:
-            
-            if ( aPortalType == cTRAImagePortalType) and theExportarTRAIdiomas:
-                
-                aTypeConfigsChosen [ aPortalType] = aTypeConfig.copy()
-                
-                
-                
-            else:
-                
-            
-                someConfigAttrs       = aTypeConfig.get( 'attrs',        [])
-                someConfigTraversals  = aTypeConfig.get( 'traversals',   [])
-                
-                aTypeConfigFilterForType = aMergedTypeConfigFilter.get( aPortalType, None)
-                if aTypeConfigFilterForType:
-                    
-                    someFilteredAttrs      = aTypeConfigFilterForType.get( 'attrs',      set())
-                    someFilteredTraversals = aTypeConfigFilterForType.get( 'traversals', set())
-                    
-                    someChosenAttributeConfigs = cExportarXMLAnyTypeAttributeConfigs[:]
-                    someChosenTraversalConfigs = [ ]
-                    
-                    aTypeConfig = {
-                        'portal_types':    [ aPortalType,],
-                        'attrs':           someChosenAttributeConfigs,
-                        'traversals':      someChosenTraversalConfigs,
-                    }
-            
-                    aTypeConfigsChosen [ aPortalType] = aTypeConfig
-                    
-                    for aConfigAttr in someConfigAttrs:
-                        aConfigAttrName = aConfigAttr.get( 'name', '')
-                        if aConfigAttrName and ( aConfigAttrName in someFilteredAttrs):
-                            someChosenAttributeConfigs.append( aConfigAttr)
-                            
-                    for aConfigTraversal in someConfigTraversals:
-                        aConfigTraversalName = aConfigTraversal.get( 'aggregation_name', aConfigTraversal.get( 'relation_name', ''))
-                        if aConfigTraversalName and ( aConfigTraversalName in someFilteredTraversals):
-                            someChosenTraversalConfigs.append( aConfigTraversal)
-                            
-                            
-    return aTypeConfigsChosen
-            
     
 
 

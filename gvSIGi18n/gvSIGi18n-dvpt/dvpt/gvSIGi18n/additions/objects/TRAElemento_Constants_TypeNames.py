@@ -91,7 +91,6 @@ cPreferredTypesOrder = [
     cNombreTipoTRAColeccionProgresos,
     cNombreTipoTRAProgreso,
     cNombreTipoTRAParametrosControlProgreso,
-    cNombreTipoTRAParametrosControlProgreso,
     cNombreTipoTRAConfiguracionImportacion,
     cNombreTipoTRAConfiguracionExportacion,
     cNombreTipoTRAConfiguracionSolicitudesCadenas,
@@ -227,14 +226,24 @@ from Products.ModelDDvlPloneTool.PloneElement_TraversalConfig import cPloneTypes
 cTodosNombresTiposPlone = [  aPloneTypeSpec.get( 'meta_type', '') for aPloneTypeSpec in cPloneTypes.values()]
 
 
-cTodosNombresTiposCatalogables = cTodosNombresTipos + cTodosNombresTiposPlone
 
 cTodosNombresTiposCatalogables_ExcluidosDePortalCatalog = [ 
     cNombreTipoTRACadena,
     cNombreTipoTRATraduccion,
 ]
 
-cTodosNombresTiposCatalogables_Pass_PortalCatalog = [ unTipo for unTipo in cTodosNombresTiposCatalogables if not unTipo in cTodosNombresTiposCatalogables_ExcluidosDePortalCatalog]
+cTodosNombresTiposCatalogables_InPortalCatalog = [ unTipo for unTipo in ( cTodosNombresTipos + cTodosNombresTiposPlone) if not unTipo in cTodosNombresTiposCatalogables_ExcluidosDePortalCatalog]
+
+
+cTodosNombresTiposDesCatalogables_DePortalCatalog = cTodosNombresTiposCatalogables_InPortalCatalog + [ 'ZCatalog',]
+
+
+cTodosNombresTiposCatalogables_ChildrenExcluidosDePortalCatalog = [ 
+    cNombreTipoTRAColeccionCadenas,
+]
+
+
+cTodosNombresTiposNODesCatalogables_DeUIDCatalog = [ 'ZCatalog',]
 
 
 
@@ -255,3 +264,37 @@ cNombreTraversal_Importacion_ContenidosIntercambio = 'contenido'
 
 
 
+
+
+
+
+
+
+
+cTRATypesToReuseIdsOnRestoreBackup = [ 
+    cNombreTipoTRACatalogo,               
+    cNombreTipoTRAColeccionIdiomas,       
+    cNombreTipoTRAIdioma,                 
+    cNombreTipoTRAColeccionModulos,       
+    cNombreTipoTRAModulo,                 
+    cNombreTipoTRAColeccionCadenas,       
+    cNombreTipoTRAColeccionImportaciones, 
+    cNombreTipoTRAImportacion, 
+    cNombreTipoTRAContenidoIntercambio, 
+    cNombreTipoTRAContenidoXML,
+    cNombreTipoTRAColeccionInformes,      
+    cNombreTipoTRAInforme,      
+    cNombreTipoTRAColeccionSolicitudesCadenas,
+    cNombreTipoTRASolicitudCadena,
+    cNombreTipoTRAColeccionProgresos,
+    cNombreTipoTRAProgreso,
+    cNombreTipoTRAParametrosControlProgreso,
+    cNombreTipoTRAConfiguracionImportacion,
+    cNombreTipoTRAConfiguracionExportacion,
+    cNombreTipoTRAConfiguracionSolicitudesCadenas,
+    cNombreTipoTRAConfiguracionAlmacenPaginas,
+    cNombreTipoTRAConfiguracionPaginaTraducciones,
+    cNombreTipoTRAConfiguracionPerfilEjecucion,
+    cNombreTipoTRAConfiguracionVarios,
+    cNombreTipoTRAConfiguracionPermisos,
+]

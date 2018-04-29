@@ -5468,22 +5468,22 @@ def pRenderHistory(
                 </td>
                 \n""" % { 
             'pClassFila':       cClasesFilas [ pIndex %2], 
-            'accion':           pRegistroHistoria[ 'accion'], 
-            'fechaAccion':      pRegistroHistoria[ 'fechaAccion'], 
-            'usuarioActor':     pRegistroHistoria[ 'usuarioActor'], 
+            'accion':           pRegistroHistoria.get( cTRAHistory_ActionKind, ''), 
+            'fechaAccion':      pRegistroHistoria.get( cTRAHistory_ActionDate, ''),  
+            'usuarioActor':     pRegistroHistoria.get( cTRAHistory_User, ''),  
         })
                                                 
                                                 
-        if not (pRegistroHistoria[ 'accion'] == 'Comentar'):
+        if not (  pRegistroHistoria.get( cTRAHistory_ActionKind, '') == 'Comentar'):
                             
             anOutput.write( u"""                                             
                 <td  align="center" valign="baseline" bgcolor="%(pBGColor)s">   
                     <font color="%(pFGColor)s" size="1"><strong>%(estadoTraduccion)s</strong></font>
                 </td>
                 \n""" % { 
-                'pBGColor':             cBGColorsDict.get( pRegistroHistoria[ 'estadoTraduccion'] , cFGColorsDict[ cEstadoTraduccionPendiente]), 
-                'pFGColor':             cFGColorsDict.get( pRegistroHistoria[ 'estadoTraduccion'] , cFGColorsDict[ cEstadoTraduccionPendiente]),
-                'estadoTraduccion':     aTranslationsCache[ 'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_%s' % pRegistroHistoria[ 'estadoTraduccion']] , 
+                'pBGColor':             cBGColorsDict.get( pRegistroHistoria.get( cTRAHistory_Status,'') , cFGColorsDict[ cEstadoTraduccionPendiente]), 
+                'pFGColor':             cFGColorsDict.get( pRegistroHistoria.get( cTRAHistory_Status,'') , cFGColorsDict[ cEstadoTraduccionPendiente]),
+                'estadoTraduccion':     aTranslationsCache.get( 'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_%s' % pRegistroHistoria.get( cTRAHistory_Status, ''), pRegistroHistoria.get( cTRAHistory_Status, '')), 
             })
         else:
             anOutput.write( u"""                                                                                                                        
@@ -5506,20 +5506,21 @@ def pRenderHistory(
                 <td  align="left" valign="baseline" >   
                     <font size="1">%(fechaDefinitivo)s</font>
                 </td>
+                <td  align="left" valign="baseline" >   
+                    <font size="1">%(usuarioCoordinador)s</font>
+                </td>
             </tr>           
             \n""" % { 
-            'fechaTraduccion':      pRegistroHistoria[ 'fechaCreacion'], 
-            'usuarioTraductor':     pRegistroHistoria[ 'usuarioCreador'], 
-            'fechaTraduccion':      pRegistroHistoria[ 'fechaTraduccion'], 
-            'usuarioTraductor':     pRegistroHistoria[ 'usuarioTraductor'], 
-            'fechaRevision':        pRegistroHistoria[ 'fechaRevision'], 
-            'usuarioRevisor':       pRegistroHistoria[ 'usuarioRevisor'], 
-            'fechaDefinitivo':      pRegistroHistoria[ 'fechaDefinitivo'], 
-            'usuarioCoordinador':   pRegistroHistoria[ 'usuarioCoordinador'], 
+            'fechaTraduccion':      pRegistroHistoria.get(  cTRAHistory_TranslationDate, ''), 
+            'usuarioTraductor':     pRegistroHistoria.get(  cTRAHistory_Translator, ''), 
+            'fechaRevision':        pRegistroHistoria.get(  cTRAHistory_RevisionDate, ''), 
+            'usuarioRevisor':       pRegistroHistoria.get(  cTRAHistory_Reviewer, ''), 
+            'fechaDefinitivo':      pRegistroHistoria.get(  cTRAHistory_DefinitiveDate, ''), 
+            'usuarioCoordinador':   pRegistroHistoria.get(  cTRAHistory_Coordinator, ''), 
         } )
 
                                             
-        if not (pRegistroHistoria[ 'accion'] == 'Comentar') and len( pRegistroHistoria[ 'cadenaTraducida'].strip()) > 0:
+        if not (pRegistroHistoria.get(  cTRAHistory_ActionKind, '') == 'Comentar') and len( pRegistroHistoria.get(  cTRAHistory_Translation, '').strip()) > 0:
             anOutput.write( u"""                                                                                                                                                      
                 <tr class="%(pClassFila)s" >
                     <td  align="right" valign="baseline" >   
@@ -5532,7 +5533,7 @@ def pRenderHistory(
                 \n""" % { 
                 'pClassFila':                                      cClasesFilas [ pIndex %2], 
                 'font-size':                                       TRASizesIdioma( pCodigoIdiomaCursor)[ 'display_font_size'],
-                'cadenaTraducida':                                 mfAsUnicode( pRegistroHistoria[ 'cadenaTraducida'].strip()), 
+                'cadenaTraducida':                                 mfAsUnicode( pRegistroHistoria.get(  cTRAHistory_Translation, '').strip()), 
                 'gvSIGi18n_TRATraduccion_attr_historiaCadenaTraducida_label':  aTranslationsCache[ 'gvSIGi18n_TRATraduccion_attr_cadenaTraducida_label'], 
             })
         else:                                        
@@ -5547,7 +5548,7 @@ def pRenderHistory(
                 </tr>
                 \n""" % { 
                 'pClassFila':                                  cClasesFilas [ pIndex %2], 
-                'comentario':                                  ''.join( pRegistroHistoria[ 'comentario'].splitlines()), 
+                'comentario':                                  ''.join( pRegistroHistoria.get(  cTRAHistory_Comment, '').splitlines()), 
                 'gvSIGi18n_historiacomentario_label':  aTranslationsCache[ 'gvSIGi18n_TRATraduccion_attr_comentario_label'], 
             }) 
                                         

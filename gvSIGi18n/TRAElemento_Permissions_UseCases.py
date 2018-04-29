@@ -934,10 +934,9 @@ class TRAElemento_Permissions_UseCases:
                             
                             unPredicateResult = None
                             
-                            if thePredicateOverrides and thePredicateOverrides.has_key( unaObjectToCheckUID):
-                                unPredicateValues = thePredicateOverrides.get( unaObjectToCheckUID, False)
-                                if unPredicateValues:
-                                    unPredicateResult = unPredicateValues.get( aPredicate, False)
+                            if thePredicateOverrides and thePredicateOverrides.has_key( unaObjectToCheckUID) and thePredicateOverrides.get( unaObjectToCheckUID, {}).has_key( aPredicate):
+
+                                unPredicateResult = thePredicateOverrides.get( unaObjectToCheckUID, {}).get( aPredicate, False)
                                     
                             else:
                                 unMethod = None

@@ -2,7 +2,7 @@
 #
 # File: TRAContenidoXML.py
 #
-# Copyright (c) 2010 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+# Copyright (c) 2011 by 2008, 2009, 2010 Conselleria de Infraestructuras y
 # Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -308,6 +308,15 @@ class TRAContenidoXML(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, 
         'name': 'View',
         'permissions': ("View",),
         'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'View_any_TRA_element')"""
+       },
+
+
+       {'action': "string:${object_url}/TRAContenidoXML",
+        'category': "object",
+        'id': 'TRAContenidoXML',
+        'name': 'XML Data',
+        'permissions': ("View",),
+        'condition': """python:1"""
        },
 
 

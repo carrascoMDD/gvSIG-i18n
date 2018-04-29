@@ -40,176 +40,377 @@
         
         <tal:block tal:define="
             global unIndexClassFila python: 0; 
-            global unasClasesFilas  python: ('odd','even')" />
-                
-        <tal:block tal:define="pInforme pInforme | nothing" tal:condition="pInforme" >
+            global unasClasesFilas  python: ('odd','even');
+			pInforme pInforme | nothing" tal:condition="pInforme" >
+
+			<tal:block tal:define="pInformeImportContenidos python: pInforme.get( 'import_contents_report', None)" tal:condition="pInforme" >
+		
+                <br/>
+                <p>
+                    <font size="2">
+                        <strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_InformeImportTranslationsExchangeContents_msgid', 'Translations exchange content report-' )" />
+                    </font>
+                </p>
+			
+				<br/>
+				<tal:block tal:condition="python: pInformeImportContenidos.get( 'fecha_informe', '')">
+					<font size="2">
+						<strong>
+							<span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_FechaInforme_label', 'Report date and time-' )"/>
+							<span tal:content="python: str( pInformeImportContenidos.get( 'fecha_informe', ''))" />
+						</strong>
+					</font>
+					<br/>
+				</tal:block>
+				
+				<tal:block tal:condition="python: pInformeImportContenidos.get( 'start_date', '')">
+					<font size="1">
+						<strong>
+							<span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_FechaComienzo_label', 'Start date and time-' )"/>
+							<span tal:content="python: str( pInformeImportContenidos.get( 'start_date', ''))" />
+						</strong>
+					</font>
+					<br/>
+				</tal:block>
+	
+				<tal:block tal:condition="python: pInformeImportContenidos.get( 'end_date', '')">
+					<font size="1">
+						<strong>
+							<span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_FechaFin_label', 'End date and time-' )"/>
+							<span tal:content="python: str( pInformeImportContenidos.get(  'end_date', ''))" />
+						</strong>
+					</font>
+					<br/>
+				</tal:block>
+	
+				<tal:block tal:condition="python: pInformeImportContenidos.get( 'error', '')" >
+					<p>
+						<font size="1" color="red" >
+							<strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_InformeImportXML_Invalid_Error_msgid', 'Error-' )" />
+							<span tal:content="python: pInformeImportContenidos.get( 'error', '')" />
+						</font>
+					</p>
+					<br/>
+					<br/>
+				</tal:block>
+				
+				
+				<tal:block tal:condition="python: pInformeImportContenidos.get( 'error_detail', '')" >
+					<font size="1" color="red" >
+						<strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_InformeImportXML_Error_Details_msgid', 'Error Details-' )" />
+					</font>
+					<br/>
+					<textarea readonly style="font-size: 8pt"  cols="80"  rows="#"
+						tal:define="pLines python: pInformeImportContenidos.get( 'error_detail', '').splitlines()" 
+						tal:attributes="rows python: max( 2, min( len( pLines), 10))">
+<tal:block tal:repeat="pLine pLines" tal:content="pLine"/>
+</textarea>							
+					<br/>
+					<br/>
+				</tal:block>
+							
+			  
+				<table class="listing" summary="ImportContentsReport" id="Import contents Report">
+					<thead>
+						<tr>
+							<th class="nosort" align="left">
+								<strong><span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_MetricaInformeProgreso_Nombre_label', 'Metric name-' )"/></strong>
+							</th>
+							<th class="nosort" align="right">
+								 <strong><span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_MetricaInformeProgreso_Esperado_label', 'Expected-' )"/></strong>
+							</th>
+						</tr>
+					</thead>
+					<tbody>                       
+	
+						<tr  id="importMetric_expected_operations" 
+							class="#" tal:attributes="class python: unasClasesFilas[unIndexClassFila % 2]">
+							<td  align="left"  valign="baseline" 
+								tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_NombreMetricaInformeProgreso_expected_operations_label', 'Expected operations-' )"/>
+							<td align="right" valign="baseline" 
+								tal:content="python: pInformeImportContenidos.get( 'expected_operations', 0)" />
+							<tal:block tal:define="global unIndexClassFila python: unIndexClassFila  + 1" />                            
+						</tr>
+	
+						<tr  id="importMetric_languages_to_create" 
+							class="#" tal:attributes="class python: unasClasesFilas[unIndexClassFila % 2]">
+							<td  align="left"  valign="baseline" 
+								tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_NombreMetricaInformeProgreso_languages_to_create_label', 'Languages to create-' )"/>
+							<td align="right" valign="baseline" 
+								tal:content="pInformeImportContenidos/languages_to_create | python: 0" />
+							<tal:block tal:define="global unIndexClassFila python: unIndexClassFila  + 1" />                            
+						</tr>
+	
+						<tr  id="importMetric_modules_to_create" 
+							class="#" tal:attributes="class python: unasClasesFilas[unIndexClassFila % 2]">
+							<td  align="left"  valign="baseline" 
+								tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_NombreMetricaInformeProgreso_modules_to_create_label', 'Modules to create-' )"/>
+							<td align="right" valign="baseline" 
+								tal:content="pInformeImportContenidos/modules_to_create | python: 0" />
+							<tal:block tal:define="global unIndexClassFila python: unIndexClassFila  + 1" />                            
+						</tr>
+						
+						<tr  id="importMetric_strings_to_create" 
+							class="#" tal:attributes="class python: unasClasesFilas[unIndexClassFila % 2]">
+							<td  align="left"  valign="baseline" 
+								tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_NombreMetricaInformeProgreso_strings_to_create_label', 'Strings to create-' )"/>
+							<td align="right" valign="baseline" 
+								tal:content="pInformeImportContenidos/strings_to_create | python: 0" />
+							<tal:block tal:define="global unIndexClassFila python: unIndexClassFila  + 1" />                            
+						</tr>
+						
+						<tr  id="importMetric_strings_to_process" 
+							class="#" tal:attributes="class python: unasClasesFilas[unIndexClassFila % 2]">
+							<td  align="left"  valign="baseline" 
+								tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_NombreMetricaInformeProgreso_strings_to_process_label', 'Strings to process-' )"/>
+							<td align="right" valign="baseline" 
+								tal:content="pInformeImportContenidos/strings_to_process | python: 0" />
+							<tal:block tal:define="global unIndexClassFila python: unIndexClassFila  + 1" />                            
+						</tr>
+	
+						
+						<tr  id="importMetric_translations_to_process" 
+							class="#" tal:attributes="class python: unasClasesFilas[unIndexClassFila % 2]">
+							<td  align="left"  valign="baseline" 
+								tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_NombreMetricaInformeProgreso_translations_to_process_label', 'Translations to process-' )"/>
+							<td align="right" valign="baseline" 
+								tal:content="pInformeImportContenidos/translations_to_process | python: 0" />
+							<tal:block tal:define="global unIndexClassFila python: unIndexClassFila  + 1" />                            
+						</tr>
+	
+						<tr  id="translations_to_create_in_new_languages_for_preexisting_strings" 
+							class="#" tal:attributes="class python: unasClasesFilas[unIndexClassFila % 2]">
+							<td  align="left"  valign="baseline" 
+								tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_NombreMetricaInformeProgreso_translations_to_create_in_new_languages_for_preexisting_strings_label', 'Translations to create as pending in new languages for pre-existing strings-' )"/>
+							<td align="right" valign="baseline" 
+								tal:content="pInformeImportContenidos/translations_to_create_in_new_languages_for_preexisting_strings | python: 0" />
+							<tal:block tal:define="global unIndexClassFila python: unIndexClassFila  + 1" />                            
+						</tr>
+						
+						   
+							
+					 </tbody>
+				</table>
+				
+				<tal:block tal:define="pInformeCrearTraduccionesQueFaltan python: pInformeImportContenidos.get( 'missing_translations_creation', None)"
+					tal:condition="pInformeCrearTraduccionesQueFaltan" >
+					<br/>
+					<br/>
+					<p>
+						<font size="2">
+							<strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_CreateMissingTranslationsReport_msgid', 'Create missing Translations report -' )" />
+						</font>
+					</p>
+					
+					<table class="listing" summary="CreateMissingTranslationsProgressReport" id="Create missing translations Report">
+						<thead>
+							<tr>
+								<th class="nosort" align="left">
+									<strong><span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_MetricaInformeProgreso_Nombre_label', 'Metric name-' )"/></strong>
+								</th>
+								<th class="nosort" align="right">
+									 <strong><span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_MetricaInformeProgreso_Esperado_label', 'Expected-' )"/></strong>
+								</th>
+							</tr>
+						</thead>
+						<tbody>                       
+	
+							<tr  id="importMetric_expected_operations" 
+								class="#" tal:attributes="class python: unasClasesFilas[unIndexClassFila % 2]">
+								<td  align="left"  valign="baseline" 
+									tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_NombreMetricaInformeProgreso_expected_operations_label', 'Expected operations-' )"/>
+								<td align="right" valign="baseline" 
+									tal:content="python: pInformeCrearTraduccionesQueFaltan.get( 'expected_operations', 0)" />
+								 <tal:block tal:define="global unIndexClassFila python: unIndexClassFila  + 1" />                            
+							</tr>
+							<tr  id="importMetric_strings_to_complete" 
+								class="#" tal:attributes="class python: unasClasesFilas[unIndexClassFila % 2]">
+								<td  align="left"  valign="baseline" 
+									tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_NombreMetricaInformeProgreso_strings_to_complete_label', 'Strings to complete-' )"/>
+								<td align="right" valign="baseline" 
+									tal:content="python: pInformeImportContenidos.get( 'strings_to_complete', 0)" />
+								<tal:block tal:define="global unIndexClassFila python: unIndexClassFila  + 1" />                            
+							</tr>
+						</tbody>
+				   </table>
+				</tal:block>
+			</tal:block>
+
+			
+			
+			
             
-            <br/>
-            <tal:block tal:condition="python: pInforme.get( 'fecha_informe', '')">
-                <font size="2">
-                    <strong>
-                        <span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_FechaInforme_label', 'Report date and time-' )"/>
-                        <span tal:content="python: str( pInforme.get( 'fecha_informe', ''))" />
-                    </strong>
-                </font>
-                <br/>
-            </tal:block>
             
-            <tal:block tal:condition="python: pInforme.get( 'start_date', '')">
-                <font size="1">
-                    <strong>
-                        <span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_FechaComienzo_label', 'Start date and time-' )"/>
-                        <span tal:content="python: str( pInforme.get( 'start_date', ''))" />
-                    </strong>
-                </font>
-                <br/>
-            </tal:block>
-
-            <tal:block tal:condition="python: pInforme.get( 'end_date', '')">
-                <font size="1">
-                    <strong>
-                        <span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_FechaFin_label', 'End date and time-' )"/>
-                        <span tal:content="python: str( pInforme.get(  'end_date', ''))" />
-                    </strong>
-                </font>
-                <br/>
-            </tal:block>
-
-            <tal:block tal:condition="pInforme/error | nothing" >
-                <font color="Red" size="3"><strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_Error_label', 'Error-' )"/></font>
-                <font color="Red" size="2"><strong tal:content="pInforme/error" /></font>
-                <tal:block tal:condition="pInforme/error_details | nothing" >
-                    <font color="Red" size="2"><strong tal:content="pInforme/error_details" /></font>
-                </tal:block>
-                <br/>
-            </tal:block>
-                        
-          
-            <table class="listing" summary="ImportProgressReport" id="Import process Report">
-                <thead>
-                    <tr>
-                        <th class="nosort" align="left">
-                            <strong><span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_MetricaInformeProgreso_Nombre_label', 'Metric name-' )"/></strong>
-                        </th>
-                        <th class="nosort" align="right">
-                             <strong><span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_MetricaInformeProgreso_Esperado_label', 'Expected-' )"/></strong>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>                       
-
-                    <tr  id="importMetric_expected_operations" 
-                        class="#" tal:attributes="class python: unasClasesFilas[unIndexClassFila % 2]">
-                        <td  align="left"  valign="baseline" 
-                            tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_NombreMetricaInformeProgreso_expected_operations_label', 'Expected operations-' )"/>
-                        <td align="right" valign="baseline" 
-                            tal:content="python: pInforme.get( 'expected_operations', 0)" />
-                        <tal:block tal:define="global unIndexClassFila python: unIndexClassFila  + 1" />                            
-                    </tr>
-
-                    <tr  id="importMetric_languages_to_create" 
-                        class="#" tal:attributes="class python: unasClasesFilas[unIndexClassFila % 2]">
-                        <td  align="left"  valign="baseline" 
-                            tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_NombreMetricaInformeProgreso_languages_to_create_label', 'Languages to create-' )"/>
-                        <td align="right" valign="baseline" 
-                            tal:content="pInforme/languages_to_create | python: 0" />
-                        <tal:block tal:define="global unIndexClassFila python: unIndexClassFila  + 1" />                            
-                    </tr>
-
-                    <tr  id="importMetric_modules_to_create" 
-                        class="#" tal:attributes="class python: unasClasesFilas[unIndexClassFila % 2]">
-                        <td  align="left"  valign="baseline" 
-                            tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_NombreMetricaInformeProgreso_modules_to_create_label', 'Modules to create-' )"/>
-                        <td align="right" valign="baseline" 
-                            tal:content="pInforme/modules_to_create | python: 0" />
-                        <tal:block tal:define="global unIndexClassFila python: unIndexClassFila  + 1" />                            
-                    </tr>
-                    
-                    <tr  id="importMetric_strings_to_create" 
-                        class="#" tal:attributes="class python: unasClasesFilas[unIndexClassFila % 2]">
-                        <td  align="left"  valign="baseline" 
-                            tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_NombreMetricaInformeProgreso_strings_to_create_label', 'Strings to create-' )"/>
-                        <td align="right" valign="baseline" 
-                            tal:content="pInforme/strings_to_create | python: 0" />
-                        <tal:block tal:define="global unIndexClassFila python: unIndexClassFila  + 1" />                            
-                    </tr>
-                    
-                    <tr  id="importMetric_strings_to_process" 
-                        class="#" tal:attributes="class python: unasClasesFilas[unIndexClassFila % 2]">
-                        <td  align="left"  valign="baseline" 
-                            tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_NombreMetricaInformeProgreso_strings_to_process_label', 'Strings to process-' )"/>
-                        <td align="right" valign="baseline" 
-                            tal:content="pInforme/strings_to_process | python: 0" />
-                        <tal:block tal:define="global unIndexClassFila python: unIndexClassFila  + 1" />                            
-                    </tr>
-
-                    
-                    <tr  id="importMetric_translations_to_process" 
-                        class="#" tal:attributes="class python: unasClasesFilas[unIndexClassFila % 2]">
-                        <td  align="left"  valign="baseline" 
-                            tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_NombreMetricaInformeProgreso_translations_to_process_label', 'Translations to process-' )"/>
-                        <td align="right" valign="baseline" 
-                            tal:content="pInforme/translations_to_process | python: 0" />
-                        <tal:block tal:define="global unIndexClassFila python: unIndexClassFila  + 1" />                            
-                    </tr>
-
-                    <tr  id="translations_to_create_in_new_languages_for_preexisting_strings" 
-                        class="#" tal:attributes="class python: unasClasesFilas[unIndexClassFila % 2]">
-                        <td  align="left"  valign="baseline" 
-                            tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_NombreMetricaInformeProgreso_translations_to_create_in_new_languages_for_preexisting_strings_label', 'Translations to create as pending in new languages for pre-existing strings-' )"/>
-                        <td align="right" valign="baseline" 
-                            tal:content="pInforme/translations_to_create_in_new_languages_for_preexisting_strings | python: 0" />
-                        <tal:block tal:define="global unIndexClassFila python: unIndexClassFila  + 1" />                            
-                    </tr>
-                    
-                       
-                        
-                 </tbody>
-            </table>
-            
-            <tal:block tal:define="pInformeCrearTraduccionesQueFaltan python: pInforme.get( 'missing_translations_creation', None)"
-                tal:condition="pInformeCrearTraduccionesQueFaltan" >
+            <tal:block tal:define="pInformeImportXML python: pInforme.get( 'import_XML_report', None)"
+                tal:condition="pInformeImportXML" >
                 <br/>
                 <br/>
                 <p>
                     <font size="2">
-                        <strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_CreateMissingTranslationsReport_msgid', 'Create missing Translations report -' )" />
+                        <strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_InformeXMLContent_msgid', 'XML content report-' )" />
                     </font>
                 </p>
                 
-                <table class="listing" summary="CreateMissingTranslationsProgressReport" id="Create missing translations progress Report">
-                    <thead>
-                        <tr>
-                            <th class="nosort" align="left">
-                                <strong><span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_MetricaInformeProgreso_Nombre_label', 'Metric name-' )"/></strong>
-                            </th>
-                            <th class="nosort" align="right">
-                                 <strong><span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_MetricaInformeProgreso_Esperado_label', 'Expected-' )"/></strong>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>                       
+				
+				<br/>
+				<tal:block tal:condition="python: pInformeImportXML.get( 'fecha_informe', '')">
+					<font size="2">
+						<strong>
+							<span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_FechaInforme_label', 'Report date and time-' )"/>
+							<span tal:content="python: str( pInformeImportXML.get( 'fecha_informe', ''))" />
+						</strong>
+					</font>
+					<br/>
+				</tal:block>
+				
+				<tal:block tal:condition="python: pInformeImportXML.get( 'start_date', '')">
+					<font size="1">
+						<strong>
+							<span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_FechaComienzo_label', 'Start date and time-' )"/>
+							<span tal:content="python: str( pInformeImportXML.get( 'start_date', ''))" />
+						</strong>
+					</font>
+					<br/>
+				</tal:block>
+	
+				<tal:block tal:condition="python: pInformeImportXML.get( 'end_date', '')">
+					<font size="1">
+						<strong>
+							<span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_FechaFin_label', 'End date and time-' )"/>
+							<span tal:content="python: str( pInformeImportXML.get(  'end_date', ''))" />
+						</strong>
+					</font>
+					<br/>
+				</tal:block>
+				
+				
+				
+                <tal:block tal:condition="python: not pInformeImportXML.get( 'valid', False)" >
+                    <p>
+                        <font size="2" color="red" >
+                            <strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_InformeXMLContent_Invalid_Error_msgid', 'Invalid XML content report-' )" />
+                        </font>
+                    </p>
+					
+                    <tal:block tal:condition="python: pInformeImportXML.get( 'error', '')" >
+                        <p>
+							<font size="1" color="red" >
+								<strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_InformeImportXML_Invalid_Error_msgid', 'Error-' )" />
+								<span tal:content="python: pInformeImportXML.get( 'error', '')" />
+							</font>
+						</p>
+						<br/>
+						<br/>
+                    </tal:block>
+					
+                    
+					<tal:block tal:condition="python: pInformeImportXML.get( 'error_detail', '')" >
+						<font size="1" color="red" >
+							<strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_InformeImportXML_Error_Details_msgid', 'Error Details-' )" />
+						</font>
+						<br/>
+						<textarea readonly style="font-size: 8pt"  cols="80"  rows="#"
+							tal:define="pLines python: pInformeImportXML.get( 'error_detail', '').splitlines()" 
+							tal:attributes="rows python: max( 2, min( len( pLines), 10))">
+<tal:block tal:repeat="pLine pLines" tal:content="pLine"/>
+</textarea>							
+						<br/>
+						<br/>
+					</tal:block>
+                    
+                </tal:block>
+                
+                
+                <tal:block tal:condition="python: pInformeImportXML.get( 'valid', False)" >
+				
+					<tal:block tal:define="
+						pTotalNumNodes python: pInformeImportXML.get( 'expected_num_nodes', {});
+						pNumNodesByType python: pInformeImportXML.get( 'expected_num_nodes_by_type', {})" >
+					
+						<tal:block tal:condition="not: pNumNodesByType" >
+							<p>
+								<font size="2" color="red" >
+									<strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_InformeImportXML_NoNodesInXML_msgid', 'No Nodes in XML-' )" />
+								</font>
+							</p>
+							<br/>
+							<br/>
+						</tal:block>
 
-                        <tr  id="importMetric_expected_operations" 
-                            class="#" tal:attributes="class python: unasClasesFilas[unIndexClassFila % 2]">
-                            <td  align="left"  valign="baseline" 
-                                tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_NombreMetricaInformeProgreso_expected_operations_label', 'Expected operations-' )"/>
-                            <td align="right" valign="baseline" 
-                                tal:content="python: pInformeCrearTraduccionesQueFaltan.get( 'expected_operations', 0)" />
-                             <tal:block tal:define="global unIndexClassFila python: unIndexClassFila  + 1" />                            
-                        </tr>
-                        <tr  id="importMetric_strings_to_complete" 
-                            class="#" tal:attributes="class python: unasClasesFilas[unIndexClassFila % 2]">
-                            <td  align="left"  valign="baseline" 
-                                tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_NombreMetricaInformeProgreso_strings_to_complete_label', 'Strings to complete-' )"/>
-                            <td align="right" valign="baseline" 
-                                tal:content="python: pInforme.get( 'strings_to_complete', 0)" />
-                            <tal:block tal:define="global unIndexClassFila python: unIndexClassFila  + 1" />                            
-                        </tr>
-                    </tbody>
-               </table>
+						<tal:block tal:condition="pNumNodesByType" >
+						
+							<table tal:define="pNodeTypeNames python: pNumNodesByType.keys()" 
+								class="listing" summary="XMLContentsReport_NodesByType" id="XML Contents Report: Number of Nodes By Type">
+								<thead>
+									<tr>
+										<th class="sortable" align="left">
+											<strong><span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_XMLContentsReport_NodeName_Column_label', 'Node name-' )"/></strong>
+										</th>
+										<th class="sortable" align="right">
+											 <strong><span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_XMLContentsReport_NumberOfNodes_Column_label', '# nodes-' )"/></strong>
+										</th>
+									</tr>
+								</thead>
+								<tbody>  
+									<tr class="#" tal:attributes="class python: unasClasesFilas[unIndexClassFila % 2]" >
+										<td  align="left"  valign="baseline" 
+											tal:content="python: '_%s' % here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_Total_Row_label', 'Total-' )"/>
+										<td align="right" valign="baseline" 
+											tal:content="python: '%d' % pTotalNumNodes" />
+										<tal:block tal:define="global unIndexClassFila python: unIndexClassFila  + 1" />                            
+									</tr>
+									
+									<tr tal:repeat="pNodeTypeName pNodeTypeNames"
+										class="#" tal:attributes="class python: unasClasesFilas[unIndexClassFila % 2]">
+										<td  align="left"  valign="baseline" 
+											tal:content="pNodeTypeName"/>
+										<td align="right" valign="baseline" 
+											tal:content="python: '%d' % pNumNodesByType.get( pNodeTypeName, 0)" />
+										<tal:block tal:define="global unIndexClassFila python: unIndexClassFila  + 1" />                            
+									</tr>
+								</tbody>
+						   </table>
+						   <br/>
+		                </tal:block>											
+	                </tal:block>
+					
+					
+					<tal:block tal:define="pBinaryFileNames python: pInformeImportXML.get( 'binary_file_names', [])" >
+					
+						<tal:block tal:condition="not: pBinaryFileNames" >
+							<p>
+								<font size="1" >
+									<strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_InformeImportXML_NoBinaryFileNames_msgid', 'No Binary File Names-' )" />
+								</font>
+							</p>
+							<br/>
+							<br/>
+						</tal:block>
+
+						<tal:block tal:condition="pBinaryFileNames" >
+						
+							<table class="listing" summary="XMLContentsReport_NodesByType" id="XMLContents Report: Number of Nodes By Type">
+								<thead>
+									<tr>
+										<th class="sortable" align="left">
+											<strong><span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_XMLContentsReport_BinaryFileNames_Column_label', 'Binary File names-' )"/></strong>
+										</th>
+								</thead>
+								<tbody>                       
+									<tr tal:repeat="pBinaryFileName pBinaryFileNames"
+										class="#" tal:attributes="class python: unasClasesFilas[unIndexClassFila % 2]">
+										<td  align="left"  valign="baseline" 
+											tal:content="pBinaryFileName"/>
+										<tal:block tal:define="global unIndexClassFila python: unIndexClassFila  + 1" />                            
+									</tr>
+								</tbody>
+						   </table>
+						   <br/>
+						</tal:block>
+					</tal:block>
+                </tal:block>
             </tal:block>
-              
+            
         </tal:block>
         <br/>
         

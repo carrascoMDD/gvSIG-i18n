@@ -95,6 +95,140 @@ class TRAContenidoXML_Operaciones:
  
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+    
+    
+    security.declarePrivate( 'fInformeXML')    
+    def fInformeXML( self, theParentExecutionRecord=None):
+        
+        unExecutionRecord = self.fStartExecution( 'method',  'fInformeContenidoXML', theParentExecutionRecord,  False, ) 
+        
+        try:
+
+            
+            unInforme = self.fNewVoidContenidoXMLReport()
+
+            
+            unInforme.update( {
+                'title':                            self.Title(),
+                'description':                      self.Description(),
+                'absolute_url':                     self.absolute_url(),
+            })
+           
+            
+            
+            
+            
+            # ############################################
+            """Report XML nodes to import.
+            
+            """
+            aXMLSource = self.fContenidoXML()
+
+            if aXMLSource:
+      
+                aModelDDvlPlone_tool = self.fModelDDvlPloneTool()
+                if not ( aModelDDvlPlone_tool == None):
+                    
+                    aCatalogo = self.getCatalogo()
+                    if not ( aCatalogo == None):
+                    
+                        aImportacion = self.getContenedor()
+                        if not ( aImportacion == None):          
+                            
+                            aModelDDvlPloneTool_Retrieval = aModelDDvlPlone_tool.fModelDDvlPloneTool_Retrieval( self)
+                            if not( aModelDDvlPloneTool_Retrieval == None):
+                                            
+                                aModelDDvlPloneTool_Import = aModelDDvlPlone_tool.fModelDDvlPloneTool_Import( self)
+                                if not( aModelDDvlPloneTool_Import == None):
+                                        
+                                    someAllExportTypeConfigs =  aModelDDvlPloneTool_Retrieval.getAllTypeExportConfigs( self)        
+                                    if someAllExportTypeConfigs:
+                                         
+                                        someExportTypeConfigsChosen = aImportacion.fImportTypeConfigsChosen( 
+                                            theCatalogo                             =aCatalogo,
+                                            theAllExportTypeConfigs                 =someAllExportTypeConfigs,
+                                            theImportarTRACatalogo                  =aImportacion.getImportarXMLTRACatalogo(),
+                                            theImportarTRAConfiguraciones           =aImportacion.getImportarXMLTRAConfiguraciones(),           
+                                            theImportarTRAParametrosControlProgreso =aImportacion.getImportarXMLTRAParametrosControlProgreso(),
+                                            theImportarTRAIdiomas                   =aImportacion.getImportarXMLTRAIdiomas(),                
+                                            theImportarTRASolicitudesCadenas        =aImportacion.getImportarXMLTRASolicitudesCadenas(),
+                                            theImportarTRAModulos                   =aImportacion.getImportarXMLTRAModulos(),                  
+                                            theImportarTRAInformes                  =aImportacion.getImportarXMLTRAInformes(),                  
+                                        )
+                                        if someExportTypeConfigsChosen:
+                                                                        
+                                            someNombresTiposToCount = someExportTypeConfigsChosen.keys()[:]
+                                                 
+                                            # ############################################
+                                            """Delegate on tool to parse and scan XML contents.
+                                            
+                                            """
+                                            aXMLContentsSummary = aModelDDvlPloneTool_Import.fXMLContentSummary(
+                                                theTimeProfilingResults        =None,
+                                                theContextualElement           =aCatalogo, 
+                                                theXMLSource                   =aXMLSource,
+                                                theAcceptedXMLRootNodeName     =cNombreTipoTRACatalogo,
+                                                theXMLNodeNamesToCount         =someNombresTiposToCount,
+                                                theAdditionalParams            =None,
+                                            )           
+                                            if aXMLContentsSummary and aXMLContentsSummary.get( 'success', False):
+                                                unInforme.update( {
+                                                    'expected_num_nodes':         aXMLContentsSummary.get( 'num_nodes',         0),
+                                                    'expected_num_nodes_by_type': aXMLContentsSummary.get( 'num_nodes_by_type', {}).copy(),
+                                                })
+                            
+                    
+                            
+                                    
+                                    
+                                    
+            
+            # ############################################
+            """Report binary file names.
+            
+            """
+                
+            someContenidosBinarios = self.fContenidoBinario()
+            if someContenidosBinarios:
+                someBinaryFileNames = [ ]
+                
+                for aContenidoBinario in someContenidosBinarios:
+                    if aContenidoBinario:
+                        aFileFullName  = aContenidoBinario.get( 'file_full_name',  '')
+                        if aFileFullName:
+                            someBinaryFileNames.append( aFileFullName)
+                            
+                unInforme[ 'binary_file_names'] =  someBinaryFileNames       
+                
+                     
+            return unInforme
+    
+        finally:
+            unExecutionRecord and unExecutionRecord.pEndExecution()
+ 
+
+              
+
+    
+        
+    
+    
+    
+    
+    
+    
+    
 
     
     security.declarePrivate('pHandle_manage_afterAdd')
@@ -198,7 +332,7 @@ class TRAContenidoXML_Operaciones:
                     
                     
                     
-        unContenidoBinarioString = self.fStringFromContenidoBinario( someContenidosBinarios)
+        unContenidoBinarioString = self.fStringFromContenidoBinario( someNewContenidosBinarios)
         
         
         unContenidoBinarioActual = self.getContenidoBinario()
@@ -289,7 +423,7 @@ class TRAContenidoXML_Operaciones:
         
         from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fEvalString
         
-        aContenidoBinario = fEvalString( theContenidoBinarioString)
+        aContenidoBinario = fEvalString( theContenidoBinarioString, theRaiseExceptions=False)
         
         return aContenidoBinario
     
@@ -346,39 +480,34 @@ class TRAContenidoXML_Operaciones:
     security.declarePrivate( 'fContenidoXML')    
     def fContenidoXML( self, ):
 
-        unContenidoXMLString = self.getContenidoXML()
-        if not unContenidoXMLString:
-            return ''
-        
-        
-        aBase64XMLSource = self.fContenidoXMLFromString( unContenidoXMLString,)
+        aBase64XMLSource = self.getContenidoXML()
         if not aBase64XMLSource:
             return ''
         
-        aXMLSource = ''
-        try:
-            aXMLSource = b64decode( aBase64XMLSource)
-        except:
-            None
-    
-        return aXMLSource
+        aContenidoXMLString = self.fContenidoXMLStringFromBase64( aBase64XMLSource,)
+        if not aContenidoXMLString:
+            return ''
+        
+        return aContenidoXMLString
              
 
             
             
                                            
 
-    security.declarePrivate( 'fContenidoXMLFromString')    
-    def fContenidoXMLFromString( self, theXMLSourceString, ):
+    security.declarePrivate( 'fContenidoXMLStringFromBase64')    
+    def fContenidoXMLStringFromBase64( self, theBase64XMLSource, ):
         
-        if not theXMLSourceString:
-            return None
+        if not theBase64XMLSource:
+            return ''
         
-        from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fEvalString
-        
-        aContenidoXML = fEvalString( theXMLSourceString)
-        
-        return aContenidoXML
+        unContenidoXMLString = ''
+        try:
+            unContenidoXMLString = b64decode( theBase64XMLSource)
+        except:
+            None
+                    
+        return unContenidoXMLString
     
             
 
@@ -403,6 +532,19 @@ class TRAContenidoXML_Operaciones:
         if not unaURL:
             return unosExtraLinks
         
+        
+        unExtraLink = self.fNewVoidExtraLink()
+        unExtraLink.update( {
+            'label'   : self.fTranslateI18N( 'plone', 'XML Data', 'XML Data-',),
+            'href'    : '%s/TRAContenidoXML/' % unaURL,
+            'icon'    : '',
+            'domain'  : 'plone',
+            'msgid'   : 'XML Data',
+        })
+        unosExtraLinks.append( unExtraLink)      
+        
+        
+        
         unImportacionURL = self.getContenedor().absolute_url()
         if not unImportacionURL:
             return unosExtraLinks
@@ -426,6 +568,24 @@ class TRAContenidoXML_Operaciones:
             'msgid'   : 'Details',
         })
         unosExtraLinks.append( unExtraLink)
+        
+        
+        
+        unaImportacion = self.getContenedor()
+        if not ( unaImportacion == None):
+        
+            unElementoProgreso = unaImportacion.fDeriveElementoProgreso()
+            if not ( unElementoProgreso == None):
+                unExtraLink = self.fNewVoidExtraLink()
+                unExtraLink.update( {
+                    'label'   : self.fTranslateI18N( 'plone', 'Progress', 'Progress-',),
+                    'href'    : '%s/TRAProgressResults/' % unElementoProgreso.absolute_url(),
+                    'icon'    : 'traprogreso.gif',
+                    'domain'  : 'plone',
+                    'msgid'   : 'Progress',
+                })
+                unosExtraLinks.append( unExtraLink)        
+        
                                     
 
         return unosExtraLinks

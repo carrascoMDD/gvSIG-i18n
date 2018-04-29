@@ -117,8 +117,42 @@ class TRAgvSIGi18nTool_Modules:
         
     
     
-        
 
+    security.declareProtected( permissions.View, 'fCreateProgressHandlerFor_RenameModule')
+    def fCreateProgressHandlerFor_RenameModule( self, 
+        theContextualElement        =None,
+        theAdditionalParams         =None,
+        thePermissionsCache         =None, 
+        theRolesCache               =None, 
+        theParentExecutionRecord    =None): 
+        """Request creation of a RenameModule long-lived process control handler, to be executed later.
+        
+        """
+    
+        if theContextualElement == None:
+            return {
+                'success':   False,
+                'condition': cTRAToolCondition_NoContextualElement,
+            }
+        
+        
+        if not ( theContextualElement.meta_type == 'TRAModulo'):
+            return {
+                'success':   False,
+                'condition': cTRAToolCondition_ContextualElementOfWrongType,
+            }
+        
+        return theContextualElement.fCreateProgressHandlerFor_RenameModule( 
+            theAdditionalParams         =theAdditionalParams,
+            thePermissionsCache         =thePermissionsCache, 
+            theRolesCache               =theRolesCache, 
+            theParentExecutionRecord    =theParentExecutionRecord,
+        )
+                
+
+    
+    
+    
     security.declareProtected( permissions.View, 'fCrearModulo')
     def fCrearModulo( self, 
         theContextualElement             =None,

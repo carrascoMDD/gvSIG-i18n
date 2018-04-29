@@ -172,7 +172,7 @@ class TRAProgreso_Operaciones:
                 'href'    : '%s/Tabular/' % unElementoEspecificacionProgreso.absolute_url(),
                 'icon'    : 'traimportacion.gif',
                 'domain'  : 'plone',
-                'msgid'   : 'ProcessSpecification',
+                'msgid'   : 'Process specification',
             })
             unosExtraLinks.append( unExtraLink)
 

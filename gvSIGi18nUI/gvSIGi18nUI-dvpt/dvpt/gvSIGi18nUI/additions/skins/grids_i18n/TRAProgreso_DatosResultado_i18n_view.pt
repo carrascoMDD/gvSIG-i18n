@@ -64,6 +64,10 @@
                     <metal:block metal:use-macro="here/TRAProgreso_DatosResultado_DeleteModule_i18n_view/macros/tProgreso_DatosResultado_DeleteModule_i18n" />   
                 </tal:block>
                  
+                <tal:block tal:condition="python: pProcessType == 'Renombrar_Modulo'" >
+                    <metal:block metal:use-macro="here/TRAProgreso_DatosResultado_RenameModule_i18n_view/macros/tProgreso_DatosResultado_RenameModule_i18n" />   
+                </tal:block>
+                 
                 <tal:block tal:condition="python: pProcessType == 'Eliminar_Idioma'" >
                     <metal:block metal:use-macro="here/TRAProgreso_DatosResultado_DeleteLanguage_i18n_view/macros/tProgreso_DatosResultado_DeleteLanguage_i18n" />   
                 </tal:block>
@@ -90,7 +94,7 @@
                  
 				
 				
-                <tal:block tal:condition="python: not( pProcessType in [ 'Verificar', 'Inicializar', 'Inventario', 'ReCatalogar', 'Verificar_Permisos', 'ReEstablecer_Permisos', 'Eliminar_Modulo', 'Eliminar_Idioma', 'Copia_Seguridad', 'Exportar_para_gvSIG', 'Exportar', 'Importar',])" >
+                <tal:block tal:condition="python: not( pProcessType in [ 'Verificar', 'Inicializar', 'Inventario', 'ReCatalogar', 'Verificar_Permisos', 'ReEstablecer_Permisos', 'Eliminar_Modulo', 'Renombrar_Modulo', 'Eliminar_Idioma', 'Copia_Seguridad', 'Exportar_para_gvSIG', 'Exportar', 'Importar',])" >
                     <p>
                         <font size="3" color="red" >
                             <strong i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_unknownProcessKind_warning_msgid">Process of unknown kind - can not show results.-</strong>

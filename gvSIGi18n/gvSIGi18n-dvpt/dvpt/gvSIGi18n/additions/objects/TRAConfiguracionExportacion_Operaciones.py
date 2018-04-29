@@ -98,8 +98,8 @@ class TRAConfiguracionExportacion_Operaciones:
     security.declarePrivate( 'fConfigurationAttributeNames')    
     def fConfigurationAttributeNames( self,):
         someAttributeNames = [
-            'nombreModuloPorDefecto',                                 
             'codigoIdiomaPorDefecto',                                 
+            'dominioPorDefecto',                                 
             'exportarEstadoTraduccionesPorDefecto',                   
             'exportarNombreFicheroParaGvSIGPorDefecto',               
             'exportarNombresModulosPorDefecto',                       
@@ -109,6 +109,7 @@ class TRAConfiguracionExportacion_Operaciones:
             'incluirManifestPorDefecto',                              
             'modoGestionErrorCodificacionExportacionPorDefecto',      
             'modulosPorSeparadoPorDefecto',                           
+            'nombreModuloPorDefecto',                                 
             'tipoArchivoExportacionPorDefecto',                       
             'exportarTRACatalogoPorDefecto',                   
             'exportarTRAConfiguracionesPorDefecto',            
@@ -116,8 +117,6 @@ class TRAConfiguracionExportacion_Operaciones:
             'exportarTRAIdiomasPorDefecto',                    
             'exportarTRAModulosPorDefecto',                    
             'exportarTRAInformesPorDefecto',                   
-            'exportarTRAImportacionesPorDefecto',              
-            'exportarTRAProgresosPorDefecto',                  
             'exportarTRASolicitudesCadenasPorDefecto',         
         ]
         return someAttributeNames

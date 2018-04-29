@@ -98,13 +98,6 @@ from TRAImportarExportar_Constants                import *
 from TRAImportarExportar_Constants_GNUgettextPO   import *
 from TRAImportarExportar_Constants_JavaProperties import *
 
-from TRAElemento_Permission_Definitions_UseCaseNames import cUseCase_CreateTRAContenidoIntercambio, cUseCase_DeleteTRAContenidoIntercambio
-from TRAElemento_Permission_Definitions_UseCaseNames import cUseCase_ImportTRAImportacion, cUseCase_CreateMissingTRATraduccion, cUseCase_ReuseTRAImportacion
-from TRAElemento_Permission_Definitions_UseCaseNames import cUseCase_ImportTRAImportacion_ToCreateCadenas, cUseCase_EstimateTRAImportacion
-
-from TRAElemento_Permission_Definitions import cBoundObject, cPermissionsToDenyEverywhereToEverybody
-
-from TRAArquetipo import TRAArquetipo
 
 
 from TRAColeccionSolicitudesCadenas_Operaciones import cEstadoSolicitudCadena_Pending

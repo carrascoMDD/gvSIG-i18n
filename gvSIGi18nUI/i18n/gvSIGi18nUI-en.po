@@ -253,6 +253,15 @@ msgstr "Error"
 msgid "gvSIGi18n_Estado_label"
 msgstr "Status"
 
+
+
+#. Default: "Archivo Descargable resultado de Exportacion"
+#: TRACatalogo_Exportacion.py
+msgid "gvSIGi18n_ExportDownloadFileName_title"
+msgstr "Download file from Export Result"
+
+
+
 #. Default: "Internal error while creating the downloadable .jar  or .zip file."
 #: TRACatalogo_Exportacion.py
 msgid "gvSIGi18n_ExportStatus_CanNotCreateZipFile"
@@ -318,10 +327,20 @@ msgstr "To Export translations, you must:\n1 - Configure the parameters for the 
 msgid "gvSIGi18n_exportar_Parameter_ExportModuleNames_label"
 msgstr "Export module names"
 
+#. Default: "Exportar para cada cadena los nombres de sus modulos, como comentarios en el fichero .properties o GNUgettextPO."
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_ExportModuleNames_help"
+msgstr "Export for each string, the names of its modules, as comments in the .properties or GNUgettextPO file."
+
 #. Default: "Export string sources"
 #: TRAExportar.pt
 msgid "gvSIGi18n_exportar_Parameter_ExportStringSources_label"
 msgstr "Export string sources"
+
+#. Default: "Exportar para cada cadena los nombres de ficheros fuentes donde se usa la cadena, como comentarios en el fichero .properties o GNUgettextPO."
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_ExportStringSources_help"
+msgstr "Export for each string, the names  of the source files where the string is used, as comments in the .properties or GNUgettextPO file."
 
 #. Default: "Export strings with unspecified module"
 #: TRAExportar.pt
@@ -332,6 +351,11 @@ msgstr "Export strings with unspecified module"
 #: TRAExportar.pt
 msgid "gvSIGi18n_exportar_Parameter_ExportTranslationsStatus_label"
 msgstr "Export translations status"
+
+#. Default: "Exportar el estado de cada traduccion, como un comentario en el fichero .properties o GNUgettextPO."
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_ExportTranslationsStatus_help"
+msgstr "Export the translations status, as a comment in the .properties or GNUgettextPO file."
 
 
 #. Default: "Start date and time"
@@ -1331,10 +1355,31 @@ msgstr "File to download"
 msgid "gvSIGi18n_exportar_Parameter_DefaultLanguageCode_label"
 msgstr "Default language code"
 
+#. Default: "Al exportar en formato Java .properties, los ficheros exportados para este idioma no incluiran el codigo de idioma en el nombre del fichero Java .properties."
+#: TRACatalogo_Exportacion.py
+msgid "gvSIGi18n_exportar_Parameter_DefaultLanguageCode_help"
+msgstr "When exporting in Java .properties format, exported files for this language shall not include the language code in the Java .properties file name."
+
 #. Default: "Default module name"
 #: TRACatalogo_Exportacion.py
 msgid "gvSIGi18n_exportar_Parameter_DefaultModuleName_label"
 msgstr "Default module name"
+
+#. Default: "Cuando se exporta un fichero para cada modulo, es el nombre a utilizar en los nombres de archivos GNUgettext PO, o para las carpetas contenedoras de ficheros Java .properties, para las cadenas para las que no se ha especificado modulo."
+#: TRACatalogo_Exportacion.py
+msgid "gvSIGi18n_exportar_Parameter_DefaultModuleName_help"
+msgstr "When exporting a separate file for each module, it is the name to use in a GNUgettext .PO file name, or for the folder containing a Java .properties file."
+
+#. Default: "Dominio para cadenas sin modulo"
+#: TRACatalogo_Exportacion.py
+msgid "gvSIGi18n_exportar_Parameter_DefaultDomain_label"
+msgstr "Domain for strings not in a module"
+
+#. Default: "Dato que aparece en los ficheros de exportacion de tipo GNU gettext PO, cuando se exportan separadamente en su propio fichero cadenas que no pertenecen a un modulo, para identificar la aplicacion o modulo a que se aplican las traducciones."
+#: TRACatalogo_Exportacion.py
+msgid "gvSIGi18n_exportar_Parameter_DefaultDomain_help"
+msgstr "Information that appears in the exported files with GNU gettext PO format, when exporting separately in its own file strings that do not pertain to any module,  to indicate the application or module to which the translations apply."
+
 
 #. Default: "GNU gettext .PO format"
 #: TRAExportar.pt
@@ -1351,26 +1396,62 @@ msgstr "Java .properties format"
 msgid "gvSIGi18n_exportar_Parameter_ExportFormat_label"
 msgstr "Export format"
 
+
+#. Default: "Formato de los ficheros de exportacion de traducciones como Java .properties, o GNUtettext PO."
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_ExportFormat_help"
+msgstr "Format for the translations export files, as Java .properties or GNUgettext .PO."
+
 #. Default: "Include locales.csv file"
 #: TRAExportar.pt
 msgid "gvSIGi18n_exportar_Parameter_IncludeLocalesCSV_label"
 msgstr "Include locales.csv file"
+
+#. Default: "Incluir en el archivo descargable un fichero locales.csv declarando los ficheros de traducciones contenidos en el archivo (usado por gvSIG)."
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_IncludeLocalesCSV_help"
+msgstr "Include in the downloadable archive, a locales.csv file declaring the translations files contained in the archive (used by gvSIG)."
 
 #. Default: "Include MANIFEST.MF file"
 #: TRAExportar.pt
 msgid "gvSIGi18n_exportar_Parameter_IncludeManifest_label"
 msgstr "Include MANIFEST.MF file"
 
+
+#. Default: "Incluir en el archivo descargable un fichero MANIFEST.MF declarando los ficheros de traducciones contenidos en el archivo."
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_IncludeManifest_help"
+msgstr "Include in the downloadable archive, a MANIFEST.MF file declaring the translations files contained in the archive."
+
 #. Default: "Separate modules"
 #: TRAExportar.pt
 msgid "gvSIGi18n_exportar_Parameter_SeparatedModules_label"
 msgstr "Separate modules"
+
+
+
+#. Default: "Exportar cada modulo por separado en su propio fichero, todos ellos incluidos en el archivo descargable."
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_SeparatedModules_help"
+msgstr "Export each module in its own file, with all of them packed in the downloadable archive."
+
 
 #. Default: "Archive type (.jar or .zip)"
 #: TRAExportar.pt
 msgid "gvSIGi18n_exportar_Parameter_TipoArchivo_label"
 msgstr "Archive type (.jar or .zip)"
 
+
+#. Default: "Tipo de archivo en que se descargan el modulo o modulos exportados. Puede ser .jar o .zip."
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_TipoArchivo_help"
+msgstr "Type of the archive used to pack the module or modules for download. Options are .jar or .zip."
+
+
+#. Default: "Nombre de Fichero de Exportacion para gvSIG"
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_ExportFilenameForGvSIG_label"
+msgstr "Export Filename for gvSIG"
 
 
 
@@ -2860,7 +2941,11 @@ msgstr "There are no pending new strings requests."
 
 
 
-
+#. Default: "Ha tardado demasiado en confirmar la limpieza de solicitudes de nuevas nuevas cadenas ya procesadas. Por favor, vuelva a solicitar la operacion si asi lo desea."
+#: TRAConfirmarCrearCadenas.pt
+msgid "gvSIGi18n_demasiadaEsperaVuelvaASolicitarLimpiezaCadenas_help"
+msgstr "You have waited too long to confirm the Clean-up of the requested new strings. Please, request the operation again if you wish to do so."
+     
 
 
 
@@ -3131,7 +3216,11 @@ msgstr "There exist no Modules available in the translations catalog. You may as
 msgid "gvSIGi18n_DeleteModule"
 msgstr "Delete Module"
 
-
+#. Default: "Renombrar Modulo"
+#: TRARenombrar_Modulo.pt
+msgid "gvSIGi18n_RenameModule"
+msgstr "Rename Module"
+ 
 
 #. Default: "en Catalogo de Traducciones"
 #: TRAEliminar_Modulo.pt
@@ -3284,6 +3373,13 @@ msgstr "Run After Previous"
 #: TRAProgressResults.pt
 msgid "gvSIGi18n_vistaTabular_msgid"
 msgstr "Tabular View"
+
+
+
+#. Default: "Fechas y Horas de Progreso"
+#: TRAProgreso_DatosResultado_i18n_view.pt
+msgid "gvSIGi18n_DatesAndTimes"
+msgstr "Progress Dates and Times"
 
 
 #. Default: "Fechas y Horas de Progreso"
@@ -4237,3 +4333,63 @@ msgstr "File to Import to Restore Backup"
 #: TRACrearImportacion_RecuperarCopiaSeguridad_i18n_view.pt
 msgid "gvSIGi18n_cancelarCreacionImportToRestoreBackupYVolverATabular_msgid"
 msgstr "Cancel upload of translations catalog Backup, and navigate back to tabular view"
+
+#. Default: "Contenido XML"
+#: TRAContenidoXML_inner.pt
+msgid "gvSIGi18n_TRAContenidoXML_informeXML_label"
+msgstr "XML Contents"
+
+
+#. Default: "Contenido de un fichero XML de una copia de seguridad de catalogo de traducciones"
+#: TRAContenidoXML_inner.pt
+msgid "gvSIGi18n_TRAContenidoXML_informeXML_help"
+msgstr "Contents of an XML file read from a backup of a translations catalog."
+
+
+#. Default: "No hay Contenido XML valido"
+#: TRAContenidoXML_inner.pt
+msgid "gvSIGi18n_nohaycontenidoXML_warning_msgid"
+msgstr "There is no valid XML content"
+
+
+
+
+
+#. Default: "Informe de Contenido XML"
+#: TRAContenidoXML_i18n_view.pt
+msgid "gvSIGi18n_InformeXMLContent_msgid"
+msgstr "XML content report"
+
+#. Default: "Error"
+#: TRAContenidoXML_i18n_view.pt
+msgid "gvSIGi18n_Error_msgid"
+msgstr "Error"
+
+#. Default: "Detalles del Error"
+#: TRAContenidoXML_i18n_view.pt
+msgid "gvSIGi18n_Error_Details_msgid"
+msgstr "Error details"
+
+
+#. Default: "Total"
+#: TRAContenidoXML_i18n_view.pt
+msgid "gvSIGi18n_Total_Row_label"
+msgstr "Total"
+
+
+#. Default: "No hay nodos XML"
+#: TRAContenidoXML_i18n_view.pt
+msgid "gvSIGi18n_InformeImportXML_NoNodesInXML_msgid"
+msgstr "No Nodes in XML"
+
+#. Default: "Nombre de nodo"
+#: TRAContenidoXML_i18n_view.pt
+msgid "gvSIGi18n_XMLContentsReport_NodeName_Column_label"
+msgstr "Node name"
+
+#. Default: "# nodos"
+#: TRAContenidoXML_i18n_view.pt
+msgid "gvSIGi18n_XMLContentsReport_NumberOfNodes_Column_label"
+msgstr "# nodes"
+
+

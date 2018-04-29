@@ -32,7 +32,7 @@ Model Driven Development sl <gvSIGi18n@ModelDD.org>,
 Antonio Carrasco Valero <carrasco@ModelDD.org>"""
 __docformat__ = 'plaintext'
 
-
+from StringIO import StringIO
 
 from AccessControl              import ClassSecurityInfo
 
@@ -118,6 +118,48 @@ class TRAElemento_Operaciones:
         unosNombresModulos = unosNombresModulosString.split( cTRAModuleNameSeparator)
            
         return unosNombresModulos
+    
+    
+    
+    security.declarePrivate( 'fSplitSimboloEnPalabras')
+    def fSplitSimboloEnPalabras(self, theSimbolo):
+        """Accessor for simbolo in fragments for textual search.
+        
+        """
+        # ACV20110117 en soporte a correccion de error reportado por Mario Carrera
+        if not theSimbolo:
+            return ''
+        
+        aStream = StringIO()
+        
+        for aChar in theSimbolo:
+            if aChar.isalnum():
+                aStream.write( aChar)
+            else:
+                aStream.write( ' ')
+                
+        unSimboloConEspacios = aStream.getvalue()
+        
+        unSimboloEnPalabras = ' '.join( unSimboloConEspacios.split())
+        return unSimboloEnPalabras
+    
+      
+    
+    #security.declarePrivate( 'fSplitSimboloEnPalabras')
+    #def fSplitSimboloEnPalabras(self, theSimbolo):
+        #"""Accessor for simbolo in fragments for textual search.
+        
+        #"""
+        ## ACV20110117 en soporte a correccion de error reportado por Mario Carrera
+        #if not theSimbolo:
+            #return ''
+        
+        #unSimboloConEspacios = theSimbolo
+        #for unChar in [ '_', '-', ',', '.', ':', '\n', '\r', '\t', ]:
+            #unSimboloConEspacios = unSimboloConEspacios.replace( unChar, ' ')
+        #unSimboloEnPalabras = ' '.join( unSimboloConEspacios.split())
+        #return unSimboloEnPalabras
+     
     
 
 

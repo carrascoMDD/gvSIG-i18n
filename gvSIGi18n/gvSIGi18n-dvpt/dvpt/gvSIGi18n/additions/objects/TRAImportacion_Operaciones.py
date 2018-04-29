@@ -213,11 +213,11 @@ class TRAImportacion_Operaciones( \
         unValue = unaConfiguracion.getImportarXMLTRAInformesPorDefecto()        
         self.setImportarXMLTRAInformes( unValue)
                             
-        unValue = unaConfiguracion.getImportarXMLTRAImportacionesPorDefecto()        
-        self.setImportarXMLTRAImportaciones( unValue)
+        #unValue = unaConfiguracion.getImportarXMLTRAImportacionesPorDefecto()        
+        #self.setImportarXMLTRAImportaciones( unValue)
                             
-        unValue = unaConfiguracion.getImportarXMLTRAProgresosPorDefecto()        
-        self.setImportarXMLTRAProgresos( unValue)
+        #unValue = unaConfiguracion.getImportarXMLTRAProgresosPorDefecto()        
+        #self.setImportarXMLTRAProgresos( unValue)
                             
         return self
         
@@ -630,23 +630,23 @@ class TRAImportacion_Operaciones( \
     
     
 
-    security.declarePrivate('fInitial_ImportarXMLTRAImportaciones')
-    def fInitial_ImportarXMLTRAImportaciones(self, ):   
+    #security.declarePrivate('fInitial_ImportarXMLTRAImportaciones')
+    #def fInitial_ImportarXMLTRAImportaciones(self, ):   
 
-        unCatalog = None
-        try:
-            unCatalog = self.getCatalogo()
-        except:
-            None
-        if unCatalog == None:
-            return False
+        #unCatalog = None
+        #try:
+            #unCatalog = self.getCatalogo()
+        #except:
+            #None
+        #if unCatalog == None:
+            #return False
         
-        unaConfiguracion = unCatalog.fObtenerConfiguracion( self.fAspectoConfiguracion())
-        if unaConfiguracion == None:
-            return False
+        #unaConfiguracion = unCatalog.fObtenerConfiguracion( self.fAspectoConfiguracion())
+        #if unaConfiguracion == None:
+            #return False
         
-        unValue = unaConfiguracion.getImportarXMLTRAImportacionesPorDefecto()        
-        return unValue
+        #unValue = unaConfiguracion.getImportarXMLTRAImportacionesPorDefecto()        
+        #return unValue
     
                         
         
@@ -655,23 +655,23 @@ class TRAImportacion_Operaciones( \
 
     
 
-    security.declarePrivate('fInitial_ImportarXMLTRAProgresos')
-    def fInitial_ImportarXMLTRAProgresos(self, ):   
+    #security.declarePrivate('fInitial_ImportarXMLTRAProgresos')
+    #def fInitial_ImportarXMLTRAProgresos(self, ):   
 
-        unCatalog = None
-        try:
-            unCatalog = self.getCatalogo()
-        except:
-            None
-        if unCatalog == None:
-            return False
+        #unCatalog = None
+        #try:
+            #unCatalog = self.getCatalogo()
+        #except:
+            #None
+        #if unCatalog == None:
+            #return False
         
-        unaConfiguracion = unCatalog.fObtenerConfiguracion( self.fAspectoConfiguracion())
-        if unaConfiguracion == None:
-            return False
+        #unaConfiguracion = unCatalog.fObtenerConfiguracion( self.fAspectoConfiguracion())
+        #if unaConfiguracion == None:
+            #return False
         
-        unValue = unaConfiguracion.getImportarXMLTRAProgresosPorDefecto()        
-        return unValue
+        #unValue = unaConfiguracion.getImportarXMLTRAProgresosPorDefecto()        
+        #return unValue
     
                         
         
@@ -771,16 +771,30 @@ class TRAImportacion_Operaciones( \
     security.declareProtected( permissions.View, 'fObtenerContenidoXML')
     def fObtenerContenidoXML( self, ):
    
-        unosElementos = self.fObjectValues( cNombreTipoTRAContenidoXML) 
-        if not unosElementos:
-            return None
-        unContenidoXML = unosElementos[ 0]
-        return unContenidoXML
+        unContenidoXMLEncontrado = self.getElementoPorID( cTRAIdContenidoXML)
+        return unContenidoXMLEncontrado
          
     
+                
+    security.declareProtected( permissions.View, 'fHasContenidoXML')
+    def fHasContenidoXML( self, ):
+        
+        unElementoContenidoXML = self.fObtenerContenidoXML()
+        if unElementoContenidoXML == None:
+            return False
+        
+        return True
     
     
     
+                
+    security.declareProtected( permissions.View, 'fHasNoContenidoXML')
+    def fHasNoContenidoXML( self, ):
+   
+        return not self.fHasContenidoXML()
+    
+             
+        
       
                 
     security.declareProtected( permissions.View, 'fObtenerTodosContenidosIntercambio')
@@ -886,7 +900,7 @@ class TRAImportacion_Operaciones( \
                     unElementoContenidoXML.setContenidoXML(      None)
                     
                 else:
-                    unBaseTitle    = '%s XML' % self.Title()
+                    unBaseTitle    = 'XML %s' % self.Title()
                     unaDescripcion = '%s XML with properties of backed-up translations catalog' % self.Description()
                     unTexto        = '%s XML with properties of backed-up translations catalog' % self.getText()
                                
@@ -899,25 +913,19 @@ class TRAImportacion_Operaciones( \
                     someObjectValues = self.fObjectValues()
                     
                     someTitles = [ unObjectValue.Title() for unObjectValue in someObjectValues]
-                    someIds    = [ unObjectValue.getId() for unObjectValue in someObjectValues]
                                             
-                    aNewId = unTitle.lower().replace( ' ', '-')
+                    aNewId = cTRAIdContenidoXML
+                    
                     if aPloneUtilsTool:
                         aNewId = aPloneUtilsTool.normalizeString( aNewId)
                         
                     unCounter = 0 
                     
-                    while ( unTitle in someTitles) or ( aNewId in someIds):
+                    while unTitle in someTitles:
                         unCounter += 1
                         unTitle = '%s-%d' % ( unBaseTitle, unCounter, )
-                        aNewId = unTitle.lower().replace( ' ', '-')
-                        if aPloneUtilsTool:
-                            aNewId = aPloneUtilsTool.normalizeString( aNewId)
-    
-                        
-                            
-                            
-                            
+     
+                             
                     unMemberId = self.fGetMemberId()
     
                     anAttrsDict = { 
@@ -2071,11 +2079,11 @@ class TRAImportacion_Operaciones( \
         if not ( unElementoContenidoXML == None):
             unExtraLink = self.fNewVoidExtraLink()
             unExtraLink.update( {
-                'label'   : self.fTranslateI18N( 'plone', 'XML Contents', 'XML Contents-',),
-                'href'    : '%s/Tabular/' % unElementoContenidoXML.absolute_url(),
+                'label'   : self.fTranslateI18N( 'plone', 'XML Data', 'XML Data-',),
+                'href'    : '%s/TRAContenidoXML/' % unElementoContenidoXML.absolute_url(),
                 'icon'    : 'tracontenidoxml.gif',
                 'domain'  : 'plone',
-                'msgid'   : 'XML Contents',
+                'msgid'   : 'XML Data',
             })
             unosExtraLinks.append( unExtraLink)        
             

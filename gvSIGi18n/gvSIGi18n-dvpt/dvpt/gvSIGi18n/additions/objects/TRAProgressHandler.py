@@ -1061,6 +1061,28 @@ class TRAProgressHandler:
                 elif anAction == cTRAProcessControl_Action_Resume:
                     self.vPaused = False
                     
+                    aMillisecondsNow = self.vInitialElement.fMillisecondsNow()
+                   
+                    aStoreResults_Counters   = self.vProgressControlCounters.get( cTRAProgress_SupportKind_StoreResults, {})
+                    aStoreResults_Counters[ 'milliseconds_when_last'] = aMillisecondsNow
+                    aStoreResults_Counters[ 'elements_traversed_since_last'] = 0
+                    aStoreResults_Counters[ 'elements_changed_since_last'] = 0
+                         
+                    aTransactional_Counters   = self.vProgressControlCounters.get( cTRAProgress_SupportKind_Transactional, {})
+                    aTransactional_Counters[ 'elements_traversed_since_last'] = 0
+                    aTransactional_Counters[ 'elements_changed_since_last'] = 0
+                    aTransactional_Counters[ 'milliseconds_when_last'] = aMillisecondsNow
+                            
+                    aYieldProcessor_Counters   = self.vProgressControlCounters.get( cTRAProgress_SupportKind_YieldProcessor, {})
+                    aYieldProcessor_Counters[ 'milliseconds_when_last'] = aMillisecondsNow
+                    aYieldProcessor_Counters[ 'elements_traversed_since_last'] = 0
+                    aYieldProcessor_Counters[ 'elements_changed_since_last'] = 0
+                            
+                    aStoreResults_Logging   = self.vProgressControlCounters.get( cTRAProgress_SupportKind_Logging, {})
+                    aStoreResults_Logging[ 'milliseconds_when_last'] = aMillisecondsNow
+                    aStoreResults_Logging[ 'elements_traversed_since_last'] = 0
+                    aStoreResults_Logging[ 'elements_changed_since_last'] = 0
+                   
                     unControlRequestToHandle[ 'changes_applied'].append( cTRAProcessControl_Action_Resume)
                     
                     if cTRAProgress_LogLongLivedProcess:

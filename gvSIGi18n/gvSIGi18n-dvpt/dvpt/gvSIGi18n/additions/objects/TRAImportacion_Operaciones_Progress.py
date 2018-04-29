@@ -72,7 +72,7 @@ from TRAUtils                              import *
 from TRAImportarExportar_Constants import *
 
 from TRAElemento_Permission_Definitions import cBoundObject
-from TRAElemento_Permission_Definitions_UseCaseNames import cUseCase_ImportTRAImportacion, cUseCase_ImportTRAImportacion_ToCreateCadenas
+from TRAElemento_Permission_Definitions_UseCaseNames import cUseCase_ImportTRAImportacion, cUseCase_ImportTRAImportacion_ToCreateCadenas, cUseCase_Restore_TRACatalogo
 
 
 from TRAProcessErrorException import TRAProcessErrorException
@@ -96,6 +96,7 @@ class TRAImportacion_Operaciones_Progress:
         unResult = self.fNewVoidProgressResult()
         unResult.update( {
             'import_contents_report':    {},
+            'import_XML_report':         {},
         })
         return unResult
                 
@@ -116,7 +117,7 @@ class TRAImportacion_Operaciones_Progress:
 
    
         
-        def fRecatalogInitialize_lambda( theContextualElement, theProcessControlManager, theAdditionalParmsHere):  
+        def fImportInitialize_lambda( theContextualElement, theProcessControlManager, theAdditionalParmsHere):  
         
             if theContextualElement == None:
                 return None
@@ -178,17 +179,22 @@ class TRAImportacion_Operaciones_Progress:
                     someSolicitudesCadenasUIDsPorSimbolo = theProcessControlManager.vInputParameters.get( 'string_creation_request_UIDs_by_string_symbol', {})
                     
                     
+            unPermissionsCache = fDictOrNew( thePermissionsCache)
+            unRolesCache       = fDictOrNew( theRolesCache)
                     
                     
                     
-            anImportElement.fImportarContenidosIntercambio(
+            anImportElement.fImportarContenidoXMLeIntercambio(
                 theProcessControlManager =theProcessControlManager,
                 theIsToCreateCadenas     =aIsToCreateCadenas,
                 theSolicitudesCadenasUIDsPorSimbolo =someSolicitudesCadenasUIDsPorSimbolo,
-                thePermissionsCache      =None, 
-                theRolesCache            =None, 
+                thePermissionsCache      =unPermissionsCache, 
+                theRolesCache            =unRolesCache, 
                 theParentExecutionRecord =None
             )
+            
+            
+            
             
             
             return None        
@@ -229,6 +235,17 @@ class TRAImportacion_Operaciones_Progress:
                 
                 unInformeImportarContenidos = self.fNewVoidInformeImportarContenidos()
                 aImportResult[ 'import_contents_report'] = unInformeImportarContenidos
+                
+                
+                unInformeImportarXML = {}
+                unElementoContenidoXML = self.fObtenerContenidoXML()
+                if not ( unElementoContenidoXML == None):
+                    unInformeImportarXML = self.fNewVoidInformeImportarXML()
+                    
+                aImportResult[ 'import_XML_report'] = unInformeImportarXML
+                
+                
+                
                 
                 aProgressElement = None
                 aProgressHandler = None
@@ -274,8 +291,13 @@ class TRAImportacion_Operaciones_Progress:
                         
                         
                 aUseCaseNameToAssess = cUseCase_ImportTRAImportacion
-                if aIsToCreateCadenas:
+                
+                if not ( unElementoContenidoXML == None):
+                    aUseCaseNameToAssess = cUseCase_Restore_TRACatalogo
+                    
+                elif aIsToCreateCadenas:
                     aUseCaseNameToAssess  = cUseCase_ImportTRAImportacion_ToCreateCadenas
+                    
                     
                 unUseCaseQueryResult = self.fUseCaseAssessment(  
                     theUseCaseName          = aUseCaseNameToAssess, 
@@ -308,7 +330,7 @@ class TRAImportacion_Operaciones_Progress:
                     theInputParameters      =someInputParameters,
                     theTimestamp            =aStartDateTimeNowTextual,
                     theResult               =aImportResult, 
-                    theInitializeLambda     =fRecatalogInitialize_lambda,
+                    theInitializeLambda     =fImportInitialize_lambda,
                     theLoopLambda           =fImportLoop_lambda,
                     theElementLambda        =None,
                     theFinalizeLambda       =None,

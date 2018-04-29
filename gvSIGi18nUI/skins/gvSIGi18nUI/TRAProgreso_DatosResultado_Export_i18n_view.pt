@@ -201,8 +201,8 @@
                     <td align="left">
 						<strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAExportacion_parm_codigosIdiomasAExportar_label',   'Languages to export-' )" />
                     </td>
-                    <td align="left" >
-						<tal:block tal:repeat="pLanguage python: pExportReport.get( 'languages_requested', [])" >
+                    <td align="left" tal:define="pLanguagesRequested python: pExportReport.get( 'languages_requested', [])" >
+						<tal:block tal:repeat="pLanguage pLanguagesRequested" >
 							<span tal:content="pLanguage" />
 							<br/>
 						</tal:block>
@@ -214,14 +214,19 @@
                     <td align="left">
 						<strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAExportacion_idiomasDeReferencia_label',   'Reference Languages-' )" />
                     </td>
-                    <td align="left" tal:define="pLanguageAndReferenceCodes python:  pExportReport.get( 'reference_languages', {}).items()" >
-						<tal:block tal:repeat="pLanguageAndReference pLanguageAndReferenceCodes" >
-							<span tal:content="python: pLanguageAndReference[ 0]" />
-							&nbsp;
-							:
-							&nbsp;
-							<span tal:content="python: pLanguageAndReference[ 1]" />
+                    <td align="left" tal:define="
+						pLanguagesRequested python: pExportReport.get( 'languages_requested', []);
+						pLanguageAndReferenceCodes_dict python:  pExportReport.get( 'reference_languages', {})" >
+						
+						<tal:block tal:repeat="pLanguage pLanguagesRequested" >
+							<tal:block tal:define="pReferenceLanguage python: pLanguageAndReferenceCodes_dict.get( pLanguage, '')" >
+								<span tal:content="pLanguage" />
+								&nbsp;
+								:
+								&nbsp;
+								<span tal:content="pReferenceLanguage" />
 							<br/>
+							</tal:block>
 						</tal:block>
 					</td>
                     <tal:block tal:define="global pRowIndex python: pRowIndex + 1" />
@@ -253,22 +258,7 @@
                     <tal:block tal:define="global pRowIndex python: pRowIndex + 1" />
                 </tr>
 
-                <tr class="#" tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
-                    <td align="left">
-						<strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAExportacion_parm_codigosIdiomasAExportar_label',   'Languages to export-' )" />
-                    </td>
-                    <td align="left" tal:define="pLanguagesExportReports python: pExportReport.get( 'languages_export_reports', {})" >
-						<tal:block tal:repeat="pLanguageExportReport pLanguagesExportReports" >
-							<span tal:content="python: pLanguageExportReport.get( 'language_code', '')" />
-							&nbsp;
-							:
-							&nbsp;
-							<span tal:content="python: pLanguageExportReport.get( 'success', False)" />
-							<br/>
-						</tal:block>
-					</td>
-                    <tal:block tal:define="global pRowIndex python: pRowIndex + 1" />
-                </tr>
+
 			</tbody>
 		</table>
         

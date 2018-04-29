@@ -47,6 +47,8 @@ from math import floor
 
 import time
 
+from types import UnicodeType 
+
 from DateTime import DateTime
 
 from StringIO import StringIO
@@ -89,7 +91,7 @@ from TRAElemento_Permission_Definitions import cInvalidateStringTranslationsRole
 from TRAElemento_Permission_Definitions_UseCaseNames import cUseCase_InvalidateStringTranslations, cUseCase_BrowseTranslations, cUseCase_TRATraduccionStateChange, cUseCase_TRATraduccionComment
 
 
-
+from TRASplitter import fgReplaceCharsAndSplitWords_asDefaultEncoding, cTRASplitterDefaultEncoding
 
 
 
@@ -2373,14 +2375,29 @@ class TRACatalogo_CursorTraducciones:
         try:
             if not theTextoEnSimbolo:
                 return []
-            unTextoABuscar = theTextoEnSimbolo.strip()
+            
+            aUnicodeTextoEnSimbolo = theTextoEnSimbolo
+            if not isinstance( aUnicodeTextoEnSimbolo, UnicodeType):
+                aUnicodeTextoEnSimbolo = unicode( aUnicodeTextoEnSimbolo, cTRASplitterDefaultEncoding, 'replace')
+            
+            if not aUnicodeTextoEnSimbolo:
+                return []
+            
+            
+            unSimboloEnPalabras = fgReplaceCharsAndSplitWords_asDefaultEncoding( aUnicodeTextoEnSimbolo)
+            if not unSimboloEnPalabras:
+                return []
+            
+            unTextoABuscar = ' '.join( unSimboloEnPalabras)
+            # ACV20110117 error reportado por Mario Carrera
+            # unTextoABuscar = self.theTextoEnSimbolo.strip()
             if not unTextoABuscar:
                 return []
             
             unCatalog = self.getCatalogo().fCatalogTextoCadenas()
             if ( unCatalog == None):
                 return []
-            unaBusqueda = { 'getSimboloEnPalabras': unTextoABuscar, }
+            unaBusqueda = { 'getSimbolo': unTextoABuscar, }
             unosDatosTraducciones = []
             try:
                 unosDatosTraducciones = unCatalog.searchResults( **unaBusqueda)   
@@ -2425,9 +2442,26 @@ class TRACatalogo_CursorTraducciones:
         try:
             if not theIdioma or not theTextoEnCadenaTraducida:
                 return None
-            unTextoABuscar = theTextoEnCadenaTraducida.strip()
+            unTextoEnCadenaTraducida = theTextoEnCadenaTraducida.strip()
+            if not unTextoEnCadenaTraducida:
+                return None
+            
+            aUnicodeTextoEnCadenaTraducida = unTextoEnCadenaTraducida
+            if not isinstance( aUnicodeTextoEnCadenaTraducida, UnicodeType):
+                aUnicodeTextoEnCadenaTraducida = unicode( aUnicodeTextoEnCadenaTraducida, cTRASplitterDefaultEncoding, 'replace')
+            
+            if not aUnicodeTextoEnCadenaTraducida:
+                return None
+            
+            
+            unTextoEnPalabras = fgReplaceCharsAndSplitWords_asDefaultEncoding( aUnicodeTextoEnCadenaTraducida)
+            if not unTextoEnPalabras:
+                return None
+            
+            unTextoABuscar = ' '.join( unTextoEnPalabras)
             if not unTextoABuscar:
                 return None
+            
             
             unCatalog = self.getCatalogo().fCatalogTextoTraduccionesParaIdioma( theIdioma)
             if ( unCatalog == None):
@@ -3436,6 +3470,7 @@ class TRACatalogo_CursorTraducciones:
                 None            
             if unIndexModuloNoEspecificado >= 0:
                 aIncludeModuloNoEspecificado = True
+                unosNombresModulos = unosNombresModulos[:]
                 unosNombresModulos.pop( unIndexModuloNoEspecificado) 
             
             
@@ -3444,6 +3479,7 @@ class TRACatalogo_CursorTraducciones:
          
             unosSimbolosAFiltrar = set()
  
+            unosSimbolosModulos = None
             
             if unosNombresModulos:
                 unosModulosAccesibles = theUseCaseQueryResult.get( 'collected_rule_assessments_by_name', {}).get( 'modules', {}).get( 'accepted_final_objects', [])
