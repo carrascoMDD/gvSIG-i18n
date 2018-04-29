@@ -38,7 +38,10 @@
         tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas.
         global pStartTime       pStartTime | python: here.ModelDDvlPlone_tool.fMillisecondsNow()" >
 
-        <tal:block tal:define="pExecutionRecord python: here.fStartExecution( 'template', 'TRAExportar_Revisar', None, True, { 'log_what': 'details',});
+        <metal:block metal:use-macro="here/TRAProfileExecution/macros/tSetupProfileExecution" />   
+
+
+        <tal:block tal:define="pExecutionRecord python: here.fStartExecution( 'template', 'TRAExportar_Revisar', None, pAllowRootProfileExecution, { 'log_what': 'details',});
             pPermissionsCache python: {};
             pRolesCache python: {};
             pUseCaseAssessmentResultsCache pUseCaseAssessmentResultsCache | python: { };
@@ -57,6 +60,12 @@
               Get the byline - contains details about author and modification date.
             </div>
     
+            
+            <tal:block tal:condition="python: not here.fAllowWrite()" >
+                <div class="portalMessage" >
+                    <span tal:content="python: here.ModelDDvlPlone_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TranslationsCatalogIsLockedAgainstModifications', 'The Translations Catalog Is Locked Against Modifications')" />
+                </div>
+            </tal:block>
     
             <tal:block tal:define="pPermiteEditar python: False; pShowOrHideTrees python: False; pShowTrees python: False">
                 <metal:block metal:use-macro="here/TRACabeceraEnTabla_i18n_view/macros/tCabeceraEnTabla_i18n" />   

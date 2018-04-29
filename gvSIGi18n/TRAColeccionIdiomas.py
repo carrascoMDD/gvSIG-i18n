@@ -2,7 +2,7 @@
 #
 # File: TRAColeccionIdiomas.py
 #
-# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
+# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
 # Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -33,6 +33,7 @@ from AccessControl import ClassSecurityInfo
 from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.TRAColeccionArquetipos import TRAColeccionArquetipos
 from TRAColeccionIdiomas_Operaciones import TRAColeccionIdiomas_Operaciones
+from Products.gvSIGi18n.TRAConRegistroActividad import TRAConRegistroActividad
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
@@ -56,7 +57,7 @@ schema = Schema((
         ),
         contains_collections=False,
         label2='Languages',
-        additional_columns=['codigoIdiomaEnGvSIG', 'codigoInternacionalDeIdioma', 'nombreNativoDeIdioma'],
+        additional_columns=['codigoIdiomaEnGvSIG', 'estaBloqueado', 'codigoInternacionalDeIdioma', 'nombreNativoDeIdioma'],
         label='Idiomas',
         represents_aggregation=True,
         description2='Languages to translate the strings into.',
@@ -77,16 +78,17 @@ schema = Schema((
 TRAColeccionIdiomas_schema = OrderedBaseFolderSchema.copy() + \
     getattr(TRAColeccionArquetipos, 'schema', Schema(())).copy() + \
     getattr(TRAColeccionIdiomas_Operaciones, 'schema', Schema(())).copy() + \
+    getattr(TRAConRegistroActividad, 'schema', Schema(())).copy() + \
     schema.copy()
 
 ##code-section after-schema #fill in your manual code here
 ##/code-section after-schema
 
-class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccionIdiomas_Operaciones):
+class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccionIdiomas_Operaciones, TRAConRegistroActividad):
     """
     """
     security = ClassSecurityInfo()
-    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAColeccionArquetipos,'__implements__',()),) + (getattr(TRAColeccionIdiomas_Operaciones,'__implements__',()),)
+    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAColeccionArquetipos,'__implements__',()),) + (getattr(TRAColeccionIdiomas_Operaciones,'__implements__',()),) + (getattr(TRAConRegistroActividad,'__implements__',()),)
 
     # This name appears in the 'add' box
     archetype_name = 'Coleccion de Idiomas'
@@ -109,7 +111,7 @@ class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccio
 
 
 
-    allowed_content_types = ['TRAIdioma'] + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', [])) + list(getattr(TRAColeccionIdiomas_Operaciones, 'allowed_content_types', []))
+    allowed_content_types = ['TRAIdioma'] + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', [])) + list(getattr(TRAColeccionIdiomas_Operaciones, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', []))
     filter_content_types             = 1
     global_allow                     = 0
     #content_icon = 'TRAColeccionIdiomas.gif'
@@ -141,7 +143,7 @@ class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccio
 
        {'action': "string:${object_url}/TRACrear_Idioma",
         'category': "object_buttons",
-        'id': 'CreateLanguage',
+        'id': 'TRACreateLanguage',
         'name': 'Create Language',
         'permissions': ("Modify portal content",),
         'condition': """python:object.fUseCaseCheckDoable( 'Create_TRAIdioma')"""
@@ -175,6 +177,15 @@ class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccio
        },
 
 
+       {'action': "string:${object_url}/MDDChanges",
+        'category': "object_buttons",
+        'id': 'mddchanges',
+        'name': 'Changes',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
        {'action': "string:$object_url/Editar",
         'category': "object",
         'id': 'edit',
@@ -202,6 +213,15 @@ class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccio
        },
 
 
+       {'action': "string:${object_url}/MDDCacheStatus/",
+        'category': "object_buttons",
+        'id': 'mddcachestatus',
+        'name': 'Cache',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
     )
 
     _at_rename_after_creation = True
@@ -213,12 +233,12 @@ class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccio
 
     # Methods
 
-    security.declarePublic('cb_isCopyable')
-    def cb_isCopyable(self):
+    security.declarePublic('fIsCacheable')
+    def fIsCacheable(self):
         """
         """
         
-        return False
+        return True
 
     security.declarePublic('manage_afterAdd')
     def manage_afterAdd(self,item,container):
@@ -226,13 +246,6 @@ class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccio
         """
         
         return TRAColeccionArquetipos.manage_afterAdd( self, item, container)
-
-    security.declarePublic('cb_isMoveable')
-    def cb_isMoveable(self):
-        """
-        """
-        
-        return False
 
     security.declarePublic('manage_beforeDelete')
     def manage_beforeDelete(self,item,container):
@@ -261,6 +274,13 @@ class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccio
         """
         
         return TRAElemento_Operaciones.fExtraLinks( self)
+
+    security.declarePublic('cb_isCopyable')
+    def cb_isCopyable(self):
+        """
+        """
+        
+        return False
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

@@ -2,7 +2,7 @@
 #
 # File: TRAColeccionCadenas.py
 #
-# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
+# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
 # Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -91,22 +91,6 @@ class TRAColeccionCadenas(BaseBTreeFolder, TRAColeccionArquetipos):
 
     meta_type = 'TRAColeccionCadenas'
     portal_type = 'TRAColeccionCadenas'
-
-
-    # Change Audit fields
-
-    creation_date_field = 'fechaCreacion'
-    creation_user_field = 'usuarioCreador'
-    modification_date_field = 'fechaModificacion'
-    modification_user_field = 'usuarioModificador'
-    deletion_date_field = 'fechaEliminacion'
-    deletion_user_field = 'usuarioEliminador'
-    is_inactive_field = 'estaInactivo'
-    change_counter_field = 'contadorCambios'
-    change_log_field = 'registroDeCambios'
-
-
-
     use_folder_tabs = 0
 
     allowed_content_types = ['TRACadena'] + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', []))
@@ -157,6 +141,15 @@ class TRAColeccionCadenas(BaseBTreeFolder, TRAColeccionArquetipos):
        },
 
 
+       {'action': "string:${object_url}/MDDChanges",
+        'category': "object_buttons",
+        'id': 'mddchanges',
+        'name': 'Changes',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
        {'action': "string:$object_url/Editar",
         'category': "object",
         'id': 'edit',
@@ -193,6 +186,15 @@ class TRAColeccionCadenas(BaseBTreeFolder, TRAColeccionArquetipos):
        },
 
 
+       {'action': "string:${object_url}/MDDCacheStatus/",
+        'category': "object_buttons",
+        'id': 'mddcachestatus',
+        'name': 'Cache',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
     )
 
     _at_rename_after_creation = True
@@ -203,13 +205,6 @@ class TRAColeccionCadenas(BaseBTreeFolder, TRAColeccionArquetipos):
     ##/code-section class-header
 
     # Methods
-
-    security.declarePublic('cb_isMoveable')
-    def cb_isMoveable(self):
-        """
-        """
-        
-        return False
 
     security.declarePublic('manage_beforeDelete')
     def manage_beforeDelete(self,item,container):
@@ -225,6 +220,13 @@ class TRAColeccionCadenas(BaseBTreeFolder, TRAColeccionArquetipos):
         
         return False
 
+    security.declarePublic('cb_isCopyable')
+    def cb_isCopyable(self):
+        """
+        """
+        
+        return False
+
     security.declarePublic('manage_afterAdd')
     def manage_afterAdd(self,item,container):
         """
@@ -232,12 +234,12 @@ class TRAColeccionCadenas(BaseBTreeFolder, TRAColeccionArquetipos):
         
         return TRAColeccionArquetipos.manage_afterAdd( self, item, container)
 
-    security.declarePublic('cb_isCopyable')
-    def cb_isCopyable(self):
+    security.declarePublic('fIsCacheable')
+    def fIsCacheable(self):
         """
         """
         
-        return False
+        return True
 
     security.declarePublic('manage_pasteObjects')
     def manage_pasteObjects(self,cb_copy_data,REQUEST):

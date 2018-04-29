@@ -101,7 +101,7 @@
 					<tal:block tal:condition="pPermiteCrear" >
 		
 						<tal:block tal:define="    
-							pRetrievalStartTime  python: here.fMillisecondsNow();                
+							pRetrievalStartTime  python: here.ModelDDvlPlone_tool.fMillisecondsNow();                
 							pProfilingResults python: (pPerformanceAnalysis or {}).get( 'profiling_results', None);                
 							unosArgs python: { 
 								'theTimeProfilingResults'     :pProfilingResults,
@@ -119,7 +119,7 @@
 								'theCheckedPermissionsCache'  :None,
 								'theAdditionalParams'         :None, };                      
 							SRES  python: here.ModelDDvlPlone_tool.fRetrieveTypeConfig( **unosArgs);
-							pRetrievalEndTime  python: here.fMillisecondsNow();
+							pRetrievalEndTime  python: here.ModelDDvlPlone_tool.fMillisecondsNow();
 							unasTraversals python: [ unaTraversal for unaTraversal in SRES[ 'traversals'] if (unaTraversal[ 'traversal_kind'] == 'aggregation') and ( unaTraversal[ 'traversal_name'] == pAggregationName)]" 
 							tal:condition="unasTraversals" >
 							

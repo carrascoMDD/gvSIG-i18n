@@ -2,7 +2,7 @@
 #
 # File: TRACadena.py
 #
-# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
+# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
 # Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -391,6 +391,15 @@ class TRACadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones):
        },
 
 
+       {'action': "string:${object_url}/MDDChanges",
+        'category': "object_buttons",
+        'id': 'mddchanges',
+        'name': 'Changes',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
        {'action': "string:${object_url}/reference_graph",
         'category': "object",
         'id': 'references',
@@ -418,6 +427,15 @@ class TRACadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones):
        },
 
 
+       {'action': "string:${object_url}/MDDCacheStatus/",
+        'category': "object_buttons",
+        'id': 'mddcachestatus',
+        'name': 'Cache',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
     )
 
     _at_rename_after_creation = True
@@ -442,6 +460,20 @@ class TRACadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones):
         """
         
         return False
+
+    security.declarePublic('fIsActive')
+    def fIsActive(self):
+        """
+        """
+        
+        return self.getEstadoCadena() =='Activa'
+
+    security.declarePublic('fIsInactive')
+    def fIsInactive(self):
+        """
+        """
+        
+        return self.getEstadoCadena() =='Inactiva'
 
     security.declarePublic('manage_afterAdd')
     def manage_afterAdd(self,item,container):
@@ -471,13 +503,6 @@ class TRACadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones):
         
         return TRAArquetipo.manage_beforeDelete( self, item, container)
 
-    security.declarePublic('cb_isMoveable')
-    def cb_isMoveable(self):
-        """
-        """
-        
-        return False
-
     security.declarePublic('manage_pasteObjects')
     def manage_pasteObjects(self,cb_copy_data,REQUEST):
         """
@@ -490,7 +515,7 @@ class TRACadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones):
         """
         """
         
-        return TRAModulo_Operaciones.fExtraLinks( self)
+        return TRAElemento_Operaciones.fExtraLinks( self)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

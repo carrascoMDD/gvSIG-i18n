@@ -2,7 +2,7 @@
 #
 # File: TRAModulo.py
 #
-# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
+# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
 # Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -65,6 +65,7 @@ schema = Schema((
         styleex="volatile=0;IsLiteral=0;",
         description2="If True, then the user may see  the module. If False, then the user can not see  the module. This may happen during long import processes or by coordinator request.",
         ea_guid="{6607BD0C-0619-492e-B4EC-1BD206122B87}",
+        read_only="True",
         scale="0",
         default="True",
         label="Permite ver Modulo",
@@ -97,6 +98,7 @@ schema = Schema((
         styleex="volatile=0;IsLiteral=0;",
         description2="If True, then the user may perform  the changes authorized by the roles held on the module. If False, then the user can not make changes to the module. This may happen during long import processe.",
         ea_guid="{C9E9AD96-7852-49a3-BC7D-45130F8C9816}",
+        read_only="True",
         scale="0",
         default="True",
         label="Permite Modificar Modulo",
@@ -271,6 +273,15 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRAMod
        },
 
 
+       {'action': "string:${object_url}/MDDChanges",
+        'category': "object_buttons",
+        'id': 'mddchanges',
+        'name': 'Changes',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
        {'action': "string:${object_url}/reference_graph",
         'category': "object",
         'id': 'references',
@@ -298,6 +309,15 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRAMod
        },
 
 
+       {'action': "string:${object_url}/MDDCacheStatus/",
+        'category': "object_buttons",
+        'id': 'mddcachestatus',
+        'name': 'Cache',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
     )
 
     _at_rename_after_creation = True
@@ -308,13 +328,6 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRAMod
     ##/code-section class-header
 
     # Methods
-
-    security.declarePublic('cb_isCopyable')
-    def cb_isCopyable(self):
-        """
-        """
-        
-        return False
 
     security.declarePublic('manage_afterAdd')
     def manage_afterAdd(self,item,container):
@@ -344,6 +357,13 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRAMod
         
         return False
 
+    security.declarePublic('cb_isCopyable')
+    def cb_isCopyable(self):
+        """
+        """
+        
+        return False
+
     security.declarePublic('fAllowRead')
     def fAllowRead(self):
         """
@@ -358,12 +378,26 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRAMod
         
         return self.fAllowRead() and self.getPermiteModificar() and self.getCatalogo().fAllowWrite()
 
-    security.declarePublic('cb_isMoveable')
-    def cb_isMoveable(self):
+    security.declarePublic('fIsLocked')
+    def fIsLocked(self):
         """
         """
         
-        return False
+        return not self.getPermiteModificar()
+
+    security.declarePublic('fIsCacheable')
+    def fIsCacheable(self):
+        """
+        """
+        
+        return True
+
+    security.declarePublic('fIsUnLocked')
+    def fIsUnLocked(self):
+        """
+        """
+        
+        return self.getPermiteModificar()
 
     security.declarePublic('fExtraLinks')
     def fExtraLinks(self):

@@ -32,6 +32,7 @@ Model Driven Development sl <gvSIGi18n@ModelDD.org>,
 Antonio Carrasco Valero <carrasco@ModelDD.org>"""
 __docformat__ = 'plaintext'
 
+import cgi 
 
 from codecs                 import lookup           as CODECS_Lookup
 from codecs                 import EncodedFile      as CODECS_EncodedFile
@@ -42,6 +43,7 @@ from StringIO import StringIO
 
 from Products.CMFCore.utils import getToolByName
 
+from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow
 
 from Products.gvSIGi18n.TRAElemento_Constants import *
 
@@ -55,11 +57,11 @@ from Products.gvSIGi18n.TRAElemento_Permission_Definitions import cStateChangeAc
 from Products.gvSIGi18n.TRAElemento_Constants import cNombreModuloNoEspecificadoLabel_MsgId
 
 from Products.gvSIGi18n.TRAElemento_Constants import cInteractionMode_Default, cInteractionMode_Asynchronous, cInteractionMode_Synchronous
-from Products.gvSIGi18n.TRAElemento_Constants import cAccion_Traducir, cAccion_InvalidarTraduccionesCadena
+from Products.gvSIGi18n.TRAElemento_Constants import cAccion_Traducir, cAccion_InvalidarTraduccionesCadena,cAccion_DesactivarCadena, cAccion_ActivarCadena
 from Products.gvSIGi18n.TRAElemento_Constants import cRequestedChangeKind_IntentarTraducir, cRequestedChangeKind_Comentar
 from Products.gvSIGi18n.TRAElemento_Constants import cRequestedChangeKind_HacerPendiente, cRequestedChangeKind_HacerTraducida
 from Products.gvSIGi18n.TRAElemento_Constants import cRequestedChangeKind_HacerRevisada,  cRequestedChangeKind_HacerDefinitiva
-from Products.gvSIGi18n.TRAElemento_Constants import cRequestedChangeKind_InvalidarTraduccionesCadena
+from Products.gvSIGi18n.TRAElemento_Constants import cRequestedChangeKind_InvalidarTraduccionesCadena, cRequestedChangeKind_DesactivarCadena, cRequestedChangeKind_ActivarCadena
 
 cKeyAction_Traducir                 = "action_traducir"
 cKeyAction_TraducirYAvanzar         = "action_traducirYAvanzar"
@@ -192,6 +194,16 @@ cLanguageSizes = {
 }                          
 
 
+# #######################################################################
+""" Utility to escape strings written as HTML.
+
+"""
+def fCGIE( theString, quote=1):
+    if not theString:
+        return theString
+    return cgi.escape( theString, quote=quote)
+    
+
 
 
 
@@ -295,7 +307,7 @@ def TRAChangeAndBrowseTranslations(
     
     """
     mfTranslateI18N     = theCatalogo.fTranslateI18N
-    mfMillisecondsNow   = theCatalogo.fMillisecondsNow
+    
     mfAsUnicode         = theCatalogo.fAsUnicode
     
     
@@ -321,13 +333,13 @@ def TRAChangeAndBrowseTranslations(
     
     pRenderProfile    = theRequest.get( 'theRenderProfile', '') == 'on'
     
-    unExecutionRecord = theCatalogo.fStartExecution( 'external method', 'TRAChangeAndBrowseTranslations', theParentExecutionRecord, False) 
+    unExecutionRecord = theCatalogo.fStartExecution( 'external method', 'TRAChangeAndBrowseTranslations', theParentExecutionRecord, ) 
     
     try:
             
             
         
-        pStartTime = mfMillisecondsNow()
+        pStartTime = fMillisecondsNow()
         
         
         # #################################################################
@@ -393,6 +405,7 @@ def TRAChangeAndBrowseTranslations(
         pSimboloUltimaCadenaEnBloque    = theRequest.get( 'theSimboloUltimaCadenaEnBloque', '')
         pEstadosAIncluir                = theRequest.get( 'theEstadosAIncluir',             []) or []
         pCadenaTraducida                = theRequest.get( 'theCadenaTraducida',             '')
+        pChangeCounter                  = theRequest.get( 'theChgCtr',                      '')
         pComentario                     = theRequest.get( 'Comentario',                     '')        
         pInteractionMode                = theRequest.get( 'theInteractionMode',             theCatalogo.fModoInteraccionPorDefecto())
         pHideStateTransitionColumns     = theRequest.get( 'theHideStateTransitionColumns',  '') == 'on'
@@ -451,6 +464,13 @@ def TRAChangeAndBrowseTranslations(
             
             if pBatchIds_Traducida or pBatchIds_Revisada or pBatchIds_Definitiva:
                 aRequestedChangeKind = cRequestedChangeKind_BatchCambioEstado
+                
+            elif pRequestedNuevoEstadoTraduccion == cAccion_DesactivarCadena:
+                aRequestedChangeKind = cRequestedChangeKind_DesactivarCadena
+            
+            elif pRequestedNuevoEstadoTraduccion == cAccion_ActivarCadena:
+                aRequestedChangeKind = cRequestedChangeKind_ActivarCadena
+            
             
             elif pRequestedNuevoEstadoTraduccion in cTodosEstados:
                 
@@ -525,6 +545,7 @@ def TRAChangeAndBrowseTranslations(
                 #aRequestedChangeKind = cRequestedChangeKind_HacerDefinitiva
       
             pServiceRequestParameters[ 'change_parameters'].update( {
+                'change_counter':               pChangeCounter,
                 'requested_change_kind':        aRequestedChangeKind,
                 'simbolo_cadena_a_traducir':    pSimboloCadenaATraducir,
                 'codigo_idioma_a_traducir':     pCodigoIdiomaATraducir,
@@ -658,6 +679,7 @@ def TRAChangeAndBrowseTranslations(
             'fechaDefinitivoInicial':       theRequest.get( 'theSearchFechaDefinitivoInicial', ''),  
             'fechaDefinitivoFinal':         theRequest.get( 'theSearchFechaDefinitivoFinal',   ''),  
             'usuarioCoordinador':           theRequest.get( 'theSearchUsuarioCoordinador',     ''),  
+            'cadenasInactivas':             theRequest.get( 'theInactiveStrings',              ''),  
         }
                   
         
@@ -764,7 +786,13 @@ def TRAChangeAndBrowseTranslations(
         pAllowedStateTransitions            = pBrowseResult.get( 'allowed_state_transitions',   {}) 
         pAllTargetStatusChanges             = pBrowseResult.get( 'all_target_state_changes',    set()) 
         
-        pAllowInvalidateStringTranslations = pBrowseResult.get( 'allow_invalidate_string_translations',   []) 
+        pAllowInvalidateStringTranslations  = pBrowseResult.get( 'allow_invalidate_string_translations',   False) 
+
+        
+        
+        pBrowsingInactiveStrings            = pBrowseResult.get( 'browsing_inactive_strings',   False) 
+        pAllowDeactivateStrings             = pBrowseResult.get( 'allow_deactivate_strings',    False) 
+        pAllowActivateStrings               = pBrowseResult.get( 'allow_activate_strings',      False) 
 
         pWritePermission                    = pBrowseResult.get( 'write_permission',            False) 
         
@@ -947,10 +975,18 @@ def TRAChangeAndBrowseTranslations(
             <font color="White"> 
                 <span id="cTRAId_ConfirmInvalidateStringTranslationsMsg" class="TRAstyle_NoDisplay">%(gvSIGi18n_ConfirmInvalidateStringTranslationsMsg)s</span>
                 <span id="cTRAId_ReallyInvalidateStringTranslationsMsg" class="TRAstyle_NoDisplay">%(gvSIGi18n_ReallyInvalidateStringTranslationsMsg)s</span>
+                <span id="cTRAId_ConfirmDeactivateStringMsg" class="TRAstyle_NoDisplay">%(gvSIGi18n_ConfirmDeactivateStringMsg)s</span>
+                <span id="cTRAId_ReallyDeactivateStringMsg" class="TRAstyle_NoDisplay">%(gvSIGi18n_ReallyDeactivateStringMsg)s</span>
+                <span id="cTRAId_ConfirmActivateStringMsg" class="TRAstyle_NoDisplay">%(gvSIGi18n_ConfirmActivateStringMsg)s</span>
+                <span id="cTRAId_ReallyActivateStringMsg" class="TRAstyle_NoDisplay">%(gvSIGi18n_ReallyActivateStringMsg)s</span>
             </font>
             \n""" % { 
-            'gvSIGi18n_ConfirmInvalidateStringTranslationsMsg': aTranslationsCache[ 'gvSIGi18n_ConfirmInvalidateStringTranslationsMsg'],
+            'gvSIGi18n_ConfirmInvalidateStringTranslationsMsg':aTranslationsCache[ 'gvSIGi18n_ConfirmInvalidateStringTranslationsMsg'],
             'gvSIGi18n_ReallyInvalidateStringTranslationsMsg': aTranslationsCache[ 'gvSIGi18n_ReallyInvalidateStringTranslationsMsg'],
+            'gvSIGi18n_ConfirmDeactivateStringMsg':            aTranslationsCache[ 'gvSIGi18n_ConfirmDeactivateStringMsg'],
+            'gvSIGi18n_ReallyDeactivateStringMsg':             aTranslationsCache[ 'gvSIGi18n_ReallyDeactivateStringMsg'],
+            'gvSIGi18n_ConfirmActivateStringMsg':              aTranslationsCache[ 'gvSIGi18n_ConfirmActivateStringMsg'],
+            'gvSIGi18n_ReallyActivateStringMsg':               aTranslationsCache[ 'gvSIGi18n_ReallyActivateStringMsg'],
             }
         )
                     
@@ -1031,7 +1067,50 @@ def TRAChangeAndBrowseTranslations(
      
                         
        
-      
+        if not theCatalogo.fAllowWrite():
+            anOutput.write( u"""                 
+          
+            <!-- #################################################################
+            SECTION: Notice: the catalog is locked against modifications
+            ################################################################# -->
+            <table width="100%%" noborder >
+                <tr>
+                    <td>
+                         <div class="portalMessage" >
+                            <span>%s</span>
+                        </div>
+                    </td>
+                    <td width="80" />
+                </tr>
+            </table>
+            """ %  mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TranslationsCatalogIsLockedAgainstModifications', 'The Translations Catalog Is Locked Against Modifications')
+            )
+            
+            
+            
+            
+        if ( not unIdiomaCursor.fAllowWrite()) and theCatalogo.fAllowWrite():
+            anOutput.write( u"""                 
+          
+            <!-- #################################################################
+            SECTION: Notice: the language is locked against modifications
+            ################################################################# -->
+            <table width="100%%" noborder >
+                <tr>
+                    <td>
+                         <div class="portalMessage" >
+                            <span>%s</span>
+                        </div>
+                    </td>
+                    <td width="80" />
+                </tr>
+            </table>
+            """ %  mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_SelectedLanguageIsLockedAgainstModifications', 'The Selected Language Is Locked Against Modifications')
+            )
+            
+            
+            
+            
 
         pRenderCabecera( 
             anOutput, 
@@ -1105,6 +1184,7 @@ def TRAChangeAndBrowseTranslations(
                 pEstadosIncluidos, 
                 pInformeEstadosTodasCadenas, 
                 pInformeEstadosFiltrados, 
+                pBrowsingInactiveStrings,
                 aTranslationsCache
             )
         
@@ -1137,6 +1217,9 @@ def TRAChangeAndBrowseTranslations(
                 pAllowedStateTransitions,
                 pAllTargetStatusChanges,
                 pAllowInvalidateStringTranslations,
+                pBrowsingInactiveStrings,
+                pAllowDeactivateStrings,
+                pAllowActivateStrings,
                 unSimboloCadenaATraducirHolder,
                 pMostrarHistoria,
                 pHideStateTransitionColumns,
@@ -1205,9 +1288,9 @@ def TRAChangeAndBrowseTranslations(
             SECTION: Hidden elements to temporarily store the html content received in the asynchronous response
             ################################################################# -->
             
-            <p class="TRAstyle_NoDisplay" id="cid_TRAAsyncResponseStore" >
+            <div class="TRAstyle_NoDisplay" id="cid_TRAAsyncResponseStore" >
                 &ensp;
-            </p>
+            </div>
             
             \n""" 
         )                    
@@ -1233,7 +1316,7 @@ def TRAChangeAndBrowseTranslations(
             aTranslationsCache
         )
             
-        pEndTime = mfMillisecondsNow()
+        pEndTime = fMillisecondsNow()
             
             
         pRenderCollapsibleTechnicalSections( 
@@ -1243,7 +1326,7 @@ def TRAChangeAndBrowseTranslations(
             pRenderRequest, 
             pRenderFullRequest, 
             pRenderTimes, 
-            False, # pRenderProfile ACV 20090928 Removed. Now it is rendered when the method TRAChangeAndBrowseTranslations completes , 
+            pRenderProfile, # to enable rendering of the placeholder for asynch execution profilings. Actual Rendering requested from the calling template. Sync execution profile is appended at the bottom of the rendered page.
             pRenderAsyncRequest,
             pRenderUserInterfaceEvents,
             pFormSubmit, 
@@ -1329,11 +1412,11 @@ def pRequestStrings(
             )
             aMaxKeyLen = max( [ len( aRequestKey) for aRequestKey in cInterestingRequestKeys])
             for aRequestKey in cInterestingRequestKeys:
-                aKeyString = unContextualObject.fCGIescape( aRequestKey)
+                aKeyString = fCGIE( aRequestKey)
                 unValueString = theRequest.get( aRequestKey, '!?')
                 if unValueString.__class__.__name__ == "list":
                     unValueString = '[ %s ]' % ( ' '.join( unValueString))
-                unValueString = unContextualObject.fCGIescape( unValueString)
+                unValueString = fCGIE( unValueString)
                 unEncodedOutput.write( u"""
                     <tr><td >
                     \n""" 
@@ -1434,7 +1517,8 @@ def pInitTranslationsCache(
             [ 'gvSIGi18n_TRATraduccion_attr_cadenaTraducida_label',     'Translation-' ,],                                                
             [ 'gvSIGi18n_valoractualtraduccion_title',                  'Current-' ,],                                                  
             [ 'gvSIGi18n_nuevovalortraduccion_title',                   'New-' ,],                                                        
-            [ 'gvSIGi18n_TRACadena_attr_id_label',                      'String Id-' ,],                                                  
+            [ 'gvSIGi18n_TRACadena_attr_id_label',                      'String Id-' ,],   
+            [ 'gvSIGi18n_TRATraduccion_attr_contadorCambios_label',     'Changes Counter-' ,],   
             [ 'gvSIGi18n_TRATraduccion_attr_comentario_label',          'Comment-' ,],                                                    
             [ 'gvSIGi18n_comentar_action_label',                        'Comment-' ,],                                                                  
             [ 'gvSIGi18n_TRATraduccion_attr_nombresModulos_label',      'Modules-' ,],                                                    
@@ -1481,9 +1565,19 @@ def pInitTranslationsCache(
             [ 'gvSIGi18n_TranslationAction_InvalidarTraduccionesCadena_help', 'Invalidate String Translations into all languages',],
             [ 'gvSIGi18n_ConfirmInvalidateStringTranslationsMsg', 'Do you want to Invalidate the String Translations into all languages',],
             [ 'gvSIGi18n_ReallyInvalidateStringTranslationsMsg', 'Do you REALLY want to Invalidate the String Translations into all languages',],
-            
-            
-            
+            [ 'gvSIGi18n_InteracionStatusMessage',                       'Interaction Status Message-',],
+            [ 'gvSIGi18n_TranslationAction_DesactivarCadena_label',      'Deactivate String-',],
+            [ 'gvSIGi18n_TranslationAction_DesactivarCadena_help',       'Hide String symbol from all translation activity and all exports.-',],
+            [ 'gvSIGi18n_TranslationAction_ActivarCadena_label',         'Activate String-',],
+            [ 'gvSIGi18n_TranslationAction_ActivarCadena_help',          'Make String symbol available for translation activity and exports.-',],
+            [ 'gvSIGi18n_ConfirmDeactivateStringMsg',                    'Do you want to DEACTIVATE the String, hiding it from all Translation activity and exports-',],
+            [ 'gvSIGi18n_ReallyDeactivateStringMsg',                     'Do you REALLY want to DEACTIVATE the String, hiding it from all Translation activity and exports-',],
+            [ 'gvSIGi18n_ConfirmActivateStringMsg',                      'Do you want to ACTIVATE the String, making it available for Translation and export-',],
+            [ 'gvSIGi18n_ReallyActivateStringMsg',                       'Do you REALLY want to ACTIVATE the String, making it available for Translation and export-',],
+            [ 'gvSIGi18n_BrowsingInactiveStrings_label',                 'Browsing Strings in Inactive State-',],
+            [ 'gvSIGi18n_BrowsingInactive_collapsibleListLabel',          'Inactive-',],
+                        
+
          ]],
     ]
         
@@ -1493,8 +1587,13 @@ def pInitTranslationsCache(
         ]
     )        
     
-    
     unContextualObject.fTranslateI18NManyIntoDict( someDomainsStringsAndDefaultsToTranslate, aTranslationsCache)
+    
+    for aTranslationKey in aTranslationsCache.keys():
+        
+        aTranslation = aTranslationsCache.get( aTranslationKey, u'')
+        anEncodedTranslation = fCGIE( aTranslation)
+        aTranslationsCache[ aTranslationKey] = anEncodedTranslation
         
     return None
 
@@ -1813,7 +1912,7 @@ def pRenderCabecera(
         #<td align="right" valign="center" >
         #\n"""% {
         #'portal_url':                           unContextualObject.portal_url(), 
-        #'flag-icon':                            pLanguagesNamesAndFlags.get( pCodigoIdiomaCursor, {}).get( 'flag', 'tra_flag-ninguna.gif'), 
+        #'flag-icon':                            pLanguagesNamesAndFlags.get( pCodigoIdiomaCursor, {}).get( 'flag', cTRAFlagIdiomaDesconocida), 
         #'codigo-idioma':                        pCodigoIdiomaCursor,  
     #})
     
@@ -1864,7 +1963,9 @@ def pRenderSelectorIdiomaPrincipal(
                 
     for unCodigoIdioma in pTodosCodigosIdiomas:
         anOutput.write( u"""         
-            <option id="%(codigo-idioma)s_id" %(selected-selected)s value="%(codigo-idioma)s">%(codigo-idioma)s %(nombre-idioma)s %(nombre-nativo-idioma)s</option>
+            <option id="%(codigo-idioma)s_id" %(selected-selected)s value="%(codigo-idioma)s">
+                %(codigo-idioma)s %(nombre-idioma)s %(nombre-nativo-idioma)s
+            </option>
             \n""" % { 
             'codigo-idioma':        mfAsUnicode( unCodigoIdioma), 
             'nombre-idioma':        mfAsUnicode( pLanguagesNamesAndFlags.get( unCodigoIdioma, {}).get( 'english', unCodigoIdioma)),
@@ -2069,14 +2170,13 @@ def pRenderSelectorIdiomasReferencia(
         if unDisplayContryFlags:
             anOutput.write( u"""                                                                                                                                                                     
                     <td align="center" valign="center" onclick="pTRAToggleIdiomaReferencia( '%(index-idioma)s'); return true;" class="TRAstyle_Clickable"  >                
-                        <img width="14" height="11" alt="Flag_%(nombre-idioma)s" src="%(portal_url)s/%(flag-icon)s" title="Flag_%(nombre-idioma)s" />
+                        <img width="14" height="11" alt="Flag_%(nombre-idioma)s" src="%(flag-url)s" title="Flag_%(nombre-idioma)s" />
                     </td>
                 \n""" % { 
                 'index-idioma':         str( unIndexRowIdiomaReferencia),
                 'codigo-idioma':        mfAsUnicode( unCodigoIdiomaEnGvSIG),
                 'nombre-idioma':        mfAsUnicode( pLanguagesNamesAndFlags.get( unCodigoIdiomaEnGvSIG, {}).get( 'english', '')),        
-                'portal_url':           unContextualObject.portal_url(), 
-                'flag-icon':            pLanguagesNamesAndFlags.get( unCodigoIdiomaEnGvSIG, {}).get( 'flag', 'tra_flag-ninguna.gif'), 
+                'flag-url':            pLanguagesNamesAndFlags.get( unCodigoIdiomaEnGvSIG, {}).get( 'flag_url', '%s/%s' % ( unContextualObject.portal_url(), cTRAFlagIdiomaDesconocida,)), 
             } )
         
         anOutput.write( u"""                                                                                                                                                                     
@@ -3187,6 +3287,56 @@ def pRenderFiltro(
       
     unTabIndex += 1
     
+    
+ 
+   
+    anOutput.write( u""" 
+
+        <!-- ########################
+        Subsection: Include only Inactive Strings (by default off) 
+        #############################-->
+                                             
+        <table class="listing nosort" id="sct_Filter_InactiveStrings" >
+            <thead>
+                <tr>
+                    <th  align="left"  >
+                        <font size="2">
+                            <strong>
+                                %(gvSIGi18n_FiltroCadenasInactivas_title)s
+                            </strong>
+                        </font>
+                    </th>
+                    <th>
+                        <input type="checkbox" class="noborder"  value="on"  %(is-checked)s name="theInactiveStrings" 
+                            id="theInactiveStrings" />
+                    </th>
+                </tr>
+            </thead>      
+            <tbody>
+                <tr>
+                    <td colspan="2">
+                        <p class="formHelp">
+                            <font size="1">
+                                <span>%(gvSIGi18n_FiltroCadenasInactivas_help)s</span>
+                            </font>
+                        </p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        \n""" % { 
+        'is-checked':                                ( pSearchParameters[ 'cadenasInactivas'] and 'checked="checked"') or '',
+        'tabindex':                                  unTabIndex,
+        'gvSIGi18n_FiltroCadenasInactivas_title':    mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_FiltroCadenasInactivas_title',    'Show Only Inactive Strings-'), 
+        'gvSIGi18n_FiltroCadenasInactivas_help':     mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_FiltroCadenasInactivas_help',     'The system shall present only Strings in the Inactive state.-'), 
+    })                                                
+
+      
+    unTabIndex += 1
+    
+     
+    
+    
     anOutput.write( u"""     
         <br/>
         <input tabindex=%(tabindex)d name="form_submit" style="font-size: 10pt; font-style: italic"  value="%(gvSIGi18n_refrescar_action_label)s" type="submit"/>
@@ -3356,6 +3506,7 @@ def pRenderCollapsibleInforme(
     pEstadosIncluidos, 
     pInformeEstadosTodasCadenas, 
     pInformeEstadosFiltrados,
+    pBrowsingInactiveStrings,
     aTranslationsCache):
     """Render as collapsible the summary section of the translations browser.
     
@@ -3373,6 +3524,7 @@ def pRenderCollapsibleInforme(
             pEstadosIncluidos, 
             pInformeEstadosTodasCadenas,  
             pInformeEstadosFiltrados,
+            pBrowsingInactiveStrings,
             aTranslationsCache
         ),
         False,
@@ -3396,6 +3548,7 @@ def pRenderInforme(
     pEstadosIncluidos, 
     pInformeEstadosTodasCadenas, 
     pInformeEstadosFiltrados,
+    pBrowsingInactiveStrings,
     aTranslationsCache):
     """Render the summary section of the translations browser.
     
@@ -3410,7 +3563,38 @@ def pRenderInforme(
     pNumeroCadenasFiltradas  = pInformeEstadosFiltrados[    'Total'][ 1]
     
     cInformeBiggerFontSize = '1'    
+        
+        
+    anOutput.write( u"""    
+
+        <!-- #################################################################
+        SECTION: Informe de traducciones en TRAIdioma:
+        Total de cadenas en catalogo, 
+        y numero y porcentaje de Traducciones en cada estado
+        con una barra coloreada mostrando los porcentajes en cada estado
+        ################################################################# -->
+        \n"""
+    )
     
+        
+    
+    if pBrowsingInactiveStrings:
+        anOutput.write( u"""    
+    
+            <!-- #################################################################
+            SubSECTION: Clearly state that the user is browsing translations for strings in Inactive state
+            ################################################################# -->
+                         
+            <p>
+                <font size="2" color="red">
+                    <strong>%s</strong>
+                </font>
+            </p>
+            \n""" % aTranslationsCache[ 'gvSIGi18n_BrowsingInactiveStrings_label']
+        )
+    
+            
+        
     anOutput.write( u"""    
 
         <!-- #################################################################
@@ -3717,7 +3901,6 @@ def pRenderEditorDetail(
     
             
             
-        
 
     anOutput.write( u"""
         <!-- #####
@@ -3741,9 +3924,19 @@ def pRenderEditorDetail(
                     <font size="1" ><span id="cid_TRAEditorDetalle_idCadena" ></span></font>
                 </td>
             </tr>
+            <tr class="TRAstyle_NoDisplay" id="cid_TRAEditorDetalle_contadorCambios_row">            
+                <td align="left" valign="baseline" >       
+                    <font size="1" ><strong>%(gvSIGi18n_TRATraduccion_attr_contadorCambios_label)s</strong></font>
+                    &emsp;
+                </td>
+                <td align="left" valign="baseline" colspan="2">       
+                    <font size="1" ><span id="cid_TRAEditorDetalle_contadorCambios" >0</span></font>
+                </td>
+            </tr>
         \n""" % { 
         'gvSIGi18n_Modulos_title':              mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Modulos_title', 'Modules-'), 
         'gvSIGi18n_TRACadena_attr_id_label':    aTranslationsCache[ 'gvSIGi18n_TRACadena_attr_id_label'], 
+        'gvSIGi18n_TRATraduccion_attr_contadorCambios_label':    aTranslationsCache[ 'gvSIGi18n_TRATraduccion_attr_contadorCambios_label'], 
         'pClassFila': cClasesFilas [pIndex %2],
     })
     
@@ -4213,6 +4406,8 @@ def pRenderEditorTextAreaAndButtons(
     unasSizesIdioma,
     unosAllowedTargetStates,
     pAllowInvalidateStringTranslations,
+    pAllowDeactivateStrings,
+    pAllowActivateStrings,
     unEstadoTraduccion,
     aTranslationsCache):
     
@@ -4277,10 +4472,21 @@ def pRenderEditorTextAreaAndButtons(
         \n""" 
     )
     
+    
+    
     anOutput.write( u"""
         <!-- #####
-        ## Hidden Field: the relative new position first previous next or last 
-        #  Alternative to using a button that submits form_submit with the value of the desired movement)
+        ## Hidden Field: the original change counter retrieved or received in the last asynch response for this translation 
+        ##########-->  
+        
+        <input type="hidden" id="theChgCtr" name="theChgCtr" value="" />
+
+        \n""" 
+    )
+    
+    anOutput.write( u"""
+        <!-- #####
+        ## Hidden Field: the relative navigation command 
         ##########-->  
         
         <input type="hidden" id="theGoTo" name="theGoTo" value="" />
@@ -4288,9 +4494,17 @@ def pRenderEditorTextAreaAndButtons(
         \n""" 
     )
     
+    unNumColumns = 2
     
+    if pAllowDeactivateStrings or pAllowActivateStrings:
+        unNumColumns += 1
     
-    unButtonsColumnsWidthString = ( pAllowInvalidateStringTranslations and '33%') or '50%'
+    if pAllowInvalidateStringTranslations:
+        unNumColumns += 1
+        
+    unButtonsColumnsWidth = int( 100 / unNumColumns)
+    unButtonsColumnsWidthString = '%d%%' % unButtonsColumnsWidth
+    
 
     anOutput.write( u"""    
 
@@ -4339,7 +4553,6 @@ def pRenderEditorTextAreaAndButtons(
  
 
     
-    # ACV 20090926 Added in support of UC22 Use Case Invalidate String translations to all languages    
     if pAllowInvalidateStringTranslations:
         anOutput.write( u"""  
             <td align="center" valign"=center" width="%(unButtonsColumnsWidthString)s" >
@@ -4381,8 +4594,68 @@ def pRenderEditorTextAreaAndButtons(
         })
             
 
+    
+    if pAllowDeactivateStrings:
+        anOutput.write( u"""  
+            <td align="center" valign"=center" width="%(unButtonsColumnsWidthString)s" >
+                <img class="TRAstyle_Display TRAstyle_Clickable"
+                    id="TRAStatusChangeButton_DesactivarCadena_Icon" 
+                    onmousedown="fTRAEvtHlr_Editor_Button_DesactivarCadena_OnMouseUp( )"
+                    onkeypress="fTRAEvtHlr_Editor_Button_DesactivarCadena_OnKeyPress( event)"
+                    alt="%(gvSIGi18n_TranslationAction_DesactivarCadena_help)s" 
+                    title="%(gvSIGi18n_TranslationAction_DesactivarCadena_help)s" 
+                    src="%(portal_url)s/delete_icon.gif" />
+                <input  
+                    onmousedown="fTRAEvtHlr_Editor_Button_DesactivarCadena_OnMouseUp( )"
+                    onkeypress="fTRAEvtHlr_Editor_Button_DesactivarCadena_OnKeyPress( event)"
+                    tabindex=5
+                    id="TRAStatusChangeButton_DesactivarCadena" 
+                    class="TRAstyle_Display TRAstyle_Clickable" 
+                    name="TRAStatusChangeButton_DesactivarCadena" 
+                    value="%(action_name)s" 
+                    type="button" 
+                    style="color: Red; font-size: 9pt; font-style: italic; font-weight: 700" />
+            </td>        
+            \n""" % { 
+            'unButtonsColumnsWidthString': unButtonsColumnsWidthString,
+            'action_name':                                                   aTranslationsCache[ 'gvSIGi18n_TranslationAction_DesactivarCadena_label'], 
+            'gvSIGi18n_TranslationAction_DesactivarCadena_help':             aTranslationsCache[ 'gvSIGi18n_TranslationAction_DesactivarCadena_help'],
+            'portal_url':                                                    unPortalURL, 
+            'class-Display':                                                 'TRAstyle_Display',
+        })
+            
         
-        
+
+    if pAllowActivateStrings:
+        anOutput.write( u"""  
+            <td align="center" valign"=center" width="%(unButtonsColumnsWidthString)s" >
+                <img class="TRAstyle_Display TRAstyle_Clickable"
+                    id="TRAStatusChangeButton_ActivarCadena_Icon" 
+                    onmousedown="fTRAEvtHlr_Editor_Button_ActivarCadena_OnMouseUp( )"
+                    onkeypress="fTRAEvtHlr_Editor_Button_ActivarCadena_OnKeyPress( event)"
+                    alt="%(gvSIGi18n_TranslationAction_ActivarCadena_help)s" 
+                    title="%(gvSIGi18n_TranslationAction_ActivarCadena_help)s" 
+                    src="%(portal_url)s/add_icon.gif" />
+                <input  
+                    onmousedown="fTRAEvtHlr_Editor_Button_ActivarCadena_OnMouseUp( )"
+                    onkeypress="fTRAEvtHlr_Editor_Button_ActivarCadena_OnKeyPress( event)"
+                    tabindex=5
+                    id="TRAStatusChangeButton_ActivarCadena" 
+                    class="TRAstyle_Display TRAstyle_Clickable" 
+                    name="TRAStatusChangeButton_ActivarCadena" 
+                    value="%(action_name)s" 
+                    type="button" 
+                    style="color: Red; font-size: 9pt; font-style: italic; font-weight: 700" />
+            </td>        
+            \n""" % { 
+            'unButtonsColumnsWidthString': unButtonsColumnsWidthString,
+            'action_name':                                                aTranslationsCache[ 'gvSIGi18n_TranslationAction_ActivarCadena_label'], 
+            'gvSIGi18n_TranslationAction_ActivarCadena_help':             aTranslationsCache[ 'gvSIGi18n_TranslationAction_ActivarCadena_help'],
+            'portal_url':                                                 unPortalURL, 
+            'class-Display':                                              'TRAstyle_Display',
+        })
+            
+                
     anOutput.write( u"""  
         <td align="right" valign"=center" width="%(unButtonsColumnsWidthString)s" >
             <img class="TRAstyle_Display TRAstyle_Clickable"
@@ -4451,6 +4724,9 @@ def pRenderCollapsibleList(
     pAllowedStateTransitions,
     pAllTargetStatusChanges,
     pAllowInvalidateStringTranslations,
+    pBrowsingInactiveStrings,
+    pAllowDeactivateStrings,
+    pAllowActivateStrings,
     unSimboloCadenaATraducirHolder,
     pMostrarHistoria,
     pHideStateTransitionColumns,
@@ -4464,7 +4740,15 @@ def pRenderCollapsibleList(
     mfTranslateI18N     = unContextualObject.fTranslateI18N
     mfAsUnicode         = unContextualObject.fAsUnicode
     
-    unCursorPositionString =  u'%s %d %s %d %s %d' % ( 
+    unCursorPositionString = u''
+    
+    if pBrowsingInactiveStrings:
+        unCursorPositionString = u'%s ' % (
+            aTranslationsCache[ 'gvSIGi18n_BrowsingInactive_collapsibleListLabel'],
+        )
+        
+    unCursorPositionString =  u'%s %s %d %s %d %s %d' % ( 
+        unCursorPositionString,
         aTranslationsCache[ 'gvSIGi18n_fromToIn_from_label'],
         pBrowseResult.get( 'from_translation_index', 0),
         aTranslationsCache[ 'gvSIGi18n_fromToIn_to_label'],
@@ -4473,6 +4757,8 @@ def pRenderCollapsibleList(
         pBrowseResult.get( 'total_translations', 0),
     )        
     
+          
+ 
     pRenderCollapsible_Lambda(  anOutput,
         u'%s  %s' % ( aTranslationsCache[ 'gvSIGi18n_seccionList_title'], unCursorPositionString),
         u'elid_List_collapsible_dl', 
@@ -4488,6 +4774,9 @@ def pRenderCollapsibleList(
             pAllowedStateTransitions,
             pAllTargetStatusChanges,
             pAllowInvalidateStringTranslations,
+            pBrowsingInactiveStrings,
+            pAllowDeactivateStrings,
+            pAllowActivateStrings,
             unSimboloCadenaATraducirHolder,
             pMostrarHistoria,
             pHideStateTransitionColumns,
@@ -4518,6 +4807,9 @@ def pRenderList(
     pAllowedStateTransitions,
     pAllTargetStatusChanges,
     pAllowInvalidateStringTranslations,
+    pBrowsingInactiveStrings,
+    pAllowDeactivateStrings,
+    pAllowActivateStrings,
     unSimboloCadenaATraducirHolder,
     pMostrarHistoria,
     pHideStateTransitionColumns,
@@ -4696,6 +4988,7 @@ def pRenderList(
         pTradRow_getEstadoTraduccion    = unosDatosTraduccion[ 'getEstadoTraduccion']   or cEstadoTraduccionPendiente 
         pTradRow_getCadenaTraducida     = unosDatosTraduccion[ 'getCadenaTraducida']    or ''
         pTradRow_getNombresModulos      = unosDatosTraduccion[ 'getNombresModulos']     or '' 
+        pTradRow_getContadorCambios     = unosDatosTraduccion[ 'getContadorCambios']    or 0
         pTradRow_getFechaDefinitivo     = unosDatosTraduccion[ 'getFechaDefinitivoTextual']    or ''
         pTradRow_getUsuarioCoordinador  = unosDatosTraduccion[ 'getUsuarioCoordinador']     or ''
         pTradRow_getFechaRevision       = unosDatosTraduccion[ 'getFechaRevisionTextual']      or ''
@@ -4705,7 +4998,9 @@ def pRenderList(
         pTradRow_getFechaCreacion       = unosDatosTraduccion[ 'getFechaCreacionTextual']    or ''
         pTradRow_getUsuarioCreador      = unosDatosTraduccion[ 'getUsuarioCreador']   or ''
         
-        
+        if not isinstance( pTradRow_getContadorCambios, int):
+            pTradRow_getContadorCambios = 0
+            
                     
         unosAllowedTargetStates = pAllowedStateTransitions.get( pTradRow_getEstadoTraduccion, set())
          
@@ -4714,7 +5009,7 @@ def pRenderList(
             (( ( pTradRow_getEstadoTraduccion in [ cEstadoTraduccionPendiente, cEstadoTraduccionTraducida, ]) and \
             ( cEstadoTraduccionTraducida in unosAllowedTargetStates)) and 1) or 0
         
-        unPermiteBotones = ( len( unosAllowedTargetStates) > 0 and 1) or pAllowInvalidateStringTranslations or 0
+        unPermiteBotones = ( len( unosAllowedTargetStates) > 0 and 1) or pAllowInvalidateStringTranslations or pAllowDeactivateStrings or pAllowActivateStrings or False 
 
         unEntrarEnEdicionEventHandler = ''
         # ACV 20091027 fix 
@@ -4732,12 +5027,12 @@ def pRenderList(
         unRowSpanAttribute = ( 'rowspan="%d"' % ( len( unosIdiomasIdiomasReferenciaSinElPrincipal) + 2)) or ''
 
         unSimboloCadenaUnicode          = mfAsUnicode( pTradRow_getSimbolo)   
-        unSimboloCadenaCGIescaped       = unContextualObject.fCGIescape( unSimboloCadenaUnicode)   
-        unSimboloCadenaForWrapLines     = unContextualObject.fCGIescape( fWrapeableLinesString( unSimboloCadenaUnicode,           cSimboloCadenaLineWrapLen))
+        unSimboloCadenaCGIescaped       = fCGIE( unSimboloCadenaUnicode)   
+        unSimboloCadenaForWrapLines     = fCGIE( fWrapeableLinesString( unSimboloCadenaUnicode,           cSimboloCadenaLineWrapLen))
 
         unaCadenaTraducidaUnicode       = mfAsUnicode( pTradRow_getCadenaTraducida)
-        unaCadenaTraducidaCGIescaped    = unContextualObject.fCGIescape( unaCadenaTraducidaUnicode)
-        unaCadenaTraducidaForWrapLines  = unContextualObject.fCGIescape( fWrapeableLinesString( unaCadenaTraducidaUnicode,   cCadenaTraducidaLineWrapLen))  
+        unaCadenaTraducidaCGIescaped    = fCGIE( unaCadenaTraducidaUnicode)
+        unaCadenaTraducidaForWrapLines  = fCGIE( fWrapeableLinesString( unaCadenaTraducidaUnicode,   cCadenaTraducidaLineWrapLen))  
         
         
         unDictRenderValues = { 
@@ -4753,29 +5048,49 @@ def pRenderList(
             'estadoTraduccion':                                     pTradRow_getEstadoTraduccion,            
             'estadoTraduccion_label':                               ( pTradRow_getEstadoTraduccion and aTranslationsCache[ 'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_%s' % pTradRow_getEstadoTraduccion]) or '?',            
             'targetStatusChanges':                                   ' '.join( unosAllowedTargetStates),  
-            # ACV 20090927 Unused. Removedbefore even getting to use it
-            # 'pAllowInvalidateStringTranslations':                   ( pAllowInvalidateStringTranslations and '1') or '0',
             'cadenaTraducida':                                      unaCadenaTraducidaCGIescaped,
             'cadenaTraducida-forWrapLines':                         unaCadenaTraducidaForWrapLines,
             'font-size':                                            unDisplayFontSize_IdiomaPrincipal,
             'pClassFila':                                           cClasesFilas [ pIndex %2], 
             'codigo-idioma':                                        mfAsUnicode( pCodigoIdiomaCursor), 
             'nombre-idioma':                                        mfAsUnicode( pLanguagesNamesAndFlags.get( pCodigoIdiomaCursor, {}).get( 'english', '')),        
-            'flag-icon':                                            mfAsUnicode( pLanguagesNamesAndFlags.get( pCodigoIdiomaCursor, {}).get( 'flag', 'tra_flag-ninguna.gif')), 
+            'flag-icon':                                            mfAsUnicode( pLanguagesNamesAndFlags.get( pCodigoIdiomaCursor, {}).get( 'flag', cTRAFlagIdiomaDesconocida)), 
+            'flag-url':                                             mfAsUnicode( pLanguagesNamesAndFlags.get( pCodigoIdiomaCursor, {}).get( 'flag_url', '')), 
             'pBGColor':                                             cBGColorsDict.get( pTradRow_getEstadoTraduccion,  cBGColorsDict[ cEstadoTraduccionPendiente]),
             'pFGColor':                                             cFGColorsDict.get( pTradRow_getEstadoTraduccion,  cBGColorsDict[ cEstadoTraduccionPendiente]),
             'estado-icon':                                          cIconsDict.get( pTradRow_getEstadoTraduccion, 'tra_pendiente.gif'), 
-            'pTradRow_getNombresModulos':                           unContextualObject.fCGIescape( mfAsUnicode( pTradRow_getNombresModulos)),
+            'pTradRow_getNombresModulos':                           fCGIE( mfAsUnicode( pTradRow_getNombresModulos)),
+            'pTradRow_getContadorCambios':                          pTradRow_getContadorCambios,
             'pTradRow_getFechaDefinitivo':                          pTradRow_getFechaDefinitivo,
-            'pTradRow_getUsuarioCoordinador':                       unContextualObject.fCGIescape(mfAsUnicode(pTradRow_getUsuarioCoordinador)),
+            'pTradRow_getUsuarioCoordinador':                       fCGIE(mfAsUnicode(pTradRow_getUsuarioCoordinador)),
             'pTradRow_getFechaRevision':                            pTradRow_getFechaRevision,
-            'pTradRow_getUsuarioRevisor':                           unContextualObject.fCGIescape(mfAsUnicode(pTradRow_getUsuarioRevisor)),
+            'pTradRow_getUsuarioRevisor':                           fCGIE(mfAsUnicode(pTradRow_getUsuarioRevisor)),
             'pTradRow_getFechaTraduccion':                          pTradRow_getFechaTraduccion,
-            'pTradRow_getUsuarioTraductor':                         unContextualObject.fCGIescape(mfAsUnicode(pTradRow_getUsuarioTraductor)),
+            'pTradRow_getUsuarioTraductor':                         fCGIE(mfAsUnicode(pTradRow_getUsuarioTraductor)),
             'pTradRow_getFechaCreacion':                            pTradRow_getFechaCreacion,
-            'pTradRow_getUsuarioCreador':                           unContextualObject.fCGIescape(mfAsUnicode(pTradRow_getUsuarioCreador)),
+            'pTradRow_getUsuarioCreador':                           fCGIE(mfAsUnicode(pTradRow_getUsuarioCreador)),
         }
         
+        
+
+        anOutput.write( u"""  
+            <tr class="%s TRAstyle_NoDisplay"  id="cid_TRAInteractionMessageHolder_%d">
+                <td colspan="%d">
+                    <font size="1">
+                        <strong>%s</strong>
+                        <span  id="cid_TRAInteractionMessage_%d" >
+                    </font>
+                </td>
+            </tr>
+            \n""" %  (  
+            cClasesFilas [ pIndex %2],
+            pSymbolCellCounter,
+            5 + len( someEstadosConBotonesEnColumnas), 
+            aTranslationsCache[ 'gvSIGi18n_InteracionStatusMessage'],
+            pSymbolCellCounter)
+        )
+        
+         
         
         anOutput.write( u"""  
             <tr class="%(pClassFila)s"  id="cid_FilaPrimeraDeSimbolo_%(symbol_cell_counter)d">
@@ -4786,7 +5101,7 @@ def pRenderList(
                     <span class="TRAstyle_NoDisplay" id="cid_ColumnaCadenasTraducidas_%(symbol_cell_counter)d_simboloCadena" >%(simbolo-cadena)s</span>
                 </td>
                 <td align="center" valign="top" class="TRAstyle_Clickable" onclick="pTRANavegarASimboloCadenaEnFilaNumero( '%(symbol_cell_counter)d')"  >                
-                    <img width="14" height="11" alt="Flag_%(nombre-idioma)s" src="%(portal_url)s/%(flag-icon)s" title="%(nombre-idioma)s" />
+                    <img width="14" height="11" alt="Flag_%(nombre-idioma)s" src="%(flag-url)s" title="%(nombre-idioma)s" />
                 </td>
                 <td align="center" bgcolor="%(pBGColor)s" valign="top" class="TRAstyle_Clickable"
                     id="cid_ColumnaCadenasTraducidas_%(symbol_cell_counter)d_estado_BGcolor"
@@ -4827,6 +5142,9 @@ def pRenderList(
                     <span class="TRAstyle_NoDisplay" id="cid_ColumnaCadenasTraducidas_%(symbol_cell_counter)d_usuarioCoordinador">%(pTradRow_getUsuarioCoordinador)s</span>
                     <span class="TRAstyle_NoDisplay" id="cid_ColumnaCadenasTraducidas_%(symbol_cell_counter)d_fechaDefinitivo">%(pTradRow_getFechaDefinitivo)s</span>
                     <span class="TRAstyle_NoDisplay" id="cid_ColumnaCadenasTraducidas_%(symbol_cell_counter)d_nombresModulos">%(pTradRow_getNombresModulos)s</span>
+                    <span class="TRAstyle_NoDisplay" id="cid_ColumnaCadenasTraducidas_%(symbol_cell_counter)d_contadorCambios">%(pTradRow_getContadorCambios)d</span>
+                    <span class="TRAstyle_NoDisplay" id="cid_ColumnaCadenasTraducidas_%(symbol_cell_counter)d_interactionStatus"></span>
+                    <span class="TRAstyle_NoDisplay" id="cid_ColumnaCadenasTraducidas_%(symbol_cell_counter)d_interactionMessage"></span>
                     \n""" % 
             unDictRenderValues
         )
@@ -4845,6 +5163,8 @@ def pRenderList(
                 unasSizesIdioma,
                 unosAllowedTargetStates,
                 pAllowInvalidateStringTranslations,
+                pAllowDeactivateStrings,
+                pAllowActivateStrings,
                 pTradRow_getEstadoTraduccion,
                 aTranslationsCache
             )
@@ -4918,12 +5238,13 @@ def pRenderList(
             </tr>
             \n"""
         )
-        
-        
+
+                                
+       
         anOutput.write( u"""  
             <tr class="%s">
                 <td  colspan="%d"  id="cid_TRAEditorDetalleHolder_%d" >
-                \n""" %  ( cClasesFilas [ 0], 4 + len( someEstadosConBotonesEnColumnas), pSymbolCellCounter)
+                \n""" %  (  cClasesFilas [ pIndex %2], 4 + len( someEstadosConBotonesEnColumnas), pSymbolCellCounter)
         )
         
         if unRendereadoEditorEnEstaFila:
@@ -4960,8 +5281,8 @@ def pRenderList(
             
                     
             unaCadenaTraducidaReferenciaUnicode       = mfAsUnicode( unaCadenaTraducidaIdiomaReferencia)
-            unaCadenaTraducidaReferenciaCGIescaped    = unContextualObject.fCGIescape( unaCadenaTraducidaReferenciaUnicode)
-            unaCadenaTraducidaReferenciaForWrapLines  = unContextualObject.fCGIescape( fWrapeableLinesString( unaCadenaTraducidaReferenciaUnicode,   cCadenaTraducidaLineWrapLen))
+            unaCadenaTraducidaReferenciaCGIescaped    = fCGIE( unaCadenaTraducidaReferenciaUnicode)
+            unaCadenaTraducidaReferenciaForWrapLines  = fCGIE( fWrapeableLinesString( unaCadenaTraducidaReferenciaUnicode,   cCadenaTraducidaLineWrapLen))
             
             unDictRenderIdiomaReferenciaValues = { 
                 'entrar_en_edicion':                        unEntrarEnEdicionEventHandler,
@@ -4973,7 +5294,8 @@ def pRenderList(
                 'codigo-idioma':                            mfAsUnicode( unIdiomaReferencia),
                 'nombre-idioma':                            mfAsUnicode( pLanguagesNamesAndFlags.get( unIdiomaReferencia, {}).get( 'english', '')),        
                 'portal_url':                               unPortalURL, 
-                'flag-icon':                                pLanguagesNamesAndFlags.get( unIdiomaReferencia, {}).get( 'flag', 'tra_flag-ninguna.gif'), 
+                'flag-icon':                                pLanguagesNamesAndFlags.get( unIdiomaReferencia, {}).get( 'flag', cTRAFlagIdiomaDesconocida), 
+                'flag-url':                                 mfAsUnicode( pLanguagesNamesAndFlags.get( unIdiomaReferencia, {}).get( 'flag_url', '')), 
                 'pBGColor':                                 cBGColorsDict.get( unEstadoTraduccion,  cBGColorsDict[ cEstadoTraduccionPendiente]),
                 'pFGColor':                                 cFGColorsDict.get( unEstadoTraduccion,  cBGColorsDict[ cEstadoTraduccionPendiente]),
                 'estadoTraduccion':                         unEstadoTraduccion,            
@@ -4992,7 +5314,7 @@ def pRenderList(
                 <tr class="%(class-row-idioma)s" >
                     <td align="center" valign="baseline" class="TRAstyle_Clickable" 
                         %(entrar_en_edicion)s >  
-                        <img width="14" height="11" alt="Flag_%(codigo-idioma)s" src="%(portal_url)s/%(flag-icon)s" title="%(codigo-idioma)s" />
+                        <img width="14" height="11" alt="Flag_%(codigo-idioma)s" src="%(flag-url)s" title="%(codigo-idioma)s" />
                     </td>
                     <td align="center"  valign="baseline" %(entrar_en_edicion)s class="TRAstyle_Clickable"  >                
                         <font  size="1" >
@@ -5097,6 +5419,10 @@ def pRenderMessages(
     someDomainsStringsAndDefaultsToTranslate = [
         [ 'gvSIGi18n', [
             [ 'gvSIGi18n_Confirmar_NavegarAIdiomaPrincipalYSimbolo_msgid', 'Please confirm that you want to navigate away from this language into the selected string in a different language-',],
+            [ 'gvSIGi18n_AsyncPhase_RequestQueued_msgid',     'Request Queued.-',],
+            [ 'gvSIGi18n_AsyncPhase_RequestSent_msgid',       'Request Sent.-',],
+            [ 'gvSIGi18n_AsyncPhase_ResponseReceived_msgid',  'Response Received.-',],
+            [ 'gvSIGi18n_AsyncPhase_ChangeSaved_msgid',       'Change Saved.-',],
         ]],
     ]
     
@@ -5107,6 +5433,10 @@ def pRenderMessages(
     anOutput.write( """
         <div id="cid_TRAMessages" class="TRAstyle_NoDisplay">
             <span id="TRAMessage_Confirmar_NavegarAIdiomaPrincipalYSimbolo">%(gvSIGi18n_Confirmar_NavegarAIdiomaPrincipalYSimbolo_msgid)s</span>
+            <span id="TRAMessage_AsyncPhase_RequestQueued">%(gvSIGi18n_AsyncPhase_RequestQueued_msgid)s</span>
+            <span id="TRAMessage_AsyncPhase_RequestSent">%(gvSIGi18n_AsyncPhase_RequestSent_msgid)s</span>
+            <span id="TRAMessage_AsyncPhase_ResponseReceived">%(gvSIGi18n_AsyncPhase_ResponseReceived_msgid)s</span>
+            <span id="TRAMessage_AsyncPhase_ChangeSaved">%(gvSIGi18n_AsyncPhase_ChangeSaved_msgid)s</span>
         </div>
         """ % aMessagesDict
     )
@@ -5317,6 +5647,7 @@ def pRenderTechnicalSections(
             lambda : pRenderTechnical_AsyncRequest( 
                 anOutput, 
                 unContextualObject, 
+                pRenderProfile,
                 aTranslationsCache,
             ),
             False,
@@ -5342,6 +5673,7 @@ def pRenderTechnicalSections(
 def pRenderTechnical_AsyncRequest( 
     anOutput, 
     unContextualObject, 
+    pRenderProfile,
     aTranslationsCache):
     """Render the AsyncRequest technical section of the translations browser.
     
@@ -5373,7 +5705,15 @@ def pRenderTechnical_AsyncRequest(
         <br/>
         \n""" 
     )
-                
+         
+    if pRenderProfile:
+        anOutput.write( u""" 
+            <span><strong>Last asynchcronous Execution Profile</strong> (if requested)</span>
+            <br/>
+            <div id="theTRAAsyncRequest_ExecutionProfile_Holder" />
+            """
+        )
+    
     return None
 
 
@@ -5473,52 +5813,54 @@ def pRenderTechnical_Times(
 
 
 
-def pRenderTechnical_Profile( 
-    anOutput, 
-    unContextualObject,  
-    theTitle, 
-    theExecutionRecord,
-    aTranslationsCache):
-    """Render the detailed execution profiling technical section of the translations browser.
+# ACV 20100112 Rendered by template
+
+#def pRenderTechnical_Profile( 
+    #anOutput, 
+    #unContextualObject,  
+    #theTitle, 
+    #theExecutionRecord,
+    #aTranslationsCache):
+    #"""Render the detailed execution profiling technical section of the translations browser.
     
-    """           
+    #"""           
 
-    if not theExecutionRecord:
-        anOutput.write(  """
-            <br/>
-            <font size="2">
-                <strong>
-                    EMPTY  %(theTitle)s 
-                </strong>
-            </font>
-            <br/>
-            \n""" % { 
-            'theTitle': theTitle, 
-        })  
+    #if not theExecutionRecord:
+        #anOutput.write(  """
+            #<br/>
+            #<font size="2">
+                #<strong>
+                    #EMPTY  %(theTitle)s 
+                #</strong>
+            #</font>
+            #<br/>
+            #\n""" % { 
+            #'theTitle': theTitle, 
+        #})  
         
-    else:
-        anOutput.write(  """
-            <br/>
-            <font size="2">
-                 <strong>
-                    %(theTitle)s
-                 </strong>
-            </font>
-            <br/>
-            <font face="Courier,Courier-New,Courier New,Fixedsys" >
-            \n""" % { 
-            'theTitle': theTitle, 
-        })        
+    #else:
+        #anOutput.write(  """
+            #<br/>
+            #<font size="2">
+                 #<strong>
+                    #%(theTitle)s
+                 #</strong>
+            #</font>
+            #<br/>
+            #<font face="Courier,Courier-New,Courier New,Fixedsys" >
+            #\n""" % { 
+            #'theTitle': theTitle, 
+        #})        
 
-        # ACV200903312200 until we manage to invoke the rendering external method, possibly not from here, but from the calling template
-        # anOutput.write(  theExecutionRecord.fPrettyPrintProfilingResultHTML( theProfilingResult.get( 'root', [])))
-        anOutput.write(  """
-            </font>
-            <br/>
-            \n"""
-        )
+        ## ACV200903312200 until we manage to invoke the rendering external method, possibly not from here, but from the calling template
+        ## anOutput.write(  theExecutionRecord.fPrettyPrintProfilingResultHTML( theProfilingResult.get( 'root', [])))
+        #anOutput.write(  """
+            #</font>
+            #<br/>
+            #\n"""
+        #)
         
-    return None
+    #return None
         
         
 

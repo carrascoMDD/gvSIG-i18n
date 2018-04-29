@@ -2,7 +2,7 @@
 #
 # File: TRAIdioma.py
 #
-# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
+# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
 # Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -65,12 +65,13 @@ schema = Schema((
         styleex="volatile=0;IsLiteral=0;",
         description2="If True, then the users may see  the language. It may be False during long import processes or by coordinator request.",
         ea_guid="{76F8837E-DEC9-4f32-B6CA-0F04ABE405F1}",
+        read_only="True",
         scale="0",
         default="True",
         label="Permite ver Idioma",
         length="0",
         containment="Not Specified",
-        position="15",
+        position="18",
         owner_class_name="TRAIdioma",
         exclude_from_exportconfig="True",
         exclude_from_copyconfig="True"
@@ -97,15 +98,49 @@ schema = Schema((
         styleex="volatile=0;IsLiteral=0;",
         description2="If True, then the user may perform  the changes authorized by the roles held on the language. If False, then the user can not make changes to the language. This may happen during long import processes or coordinator request.",
         ea_guid="{45A11E6E-E5C8-405a-9702-9BF365FFD3DE}",
+        read_only="True",
         scale="0",
         default="True",
         label="Permite Modificar Idioma",
         length="0",
         containment="Not Specified",
-        position="14",
+        position="16",
         owner_class_name="TRAIdioma",
         exclude_from_exportconfig="True",
         exclude_from_copyconfig="True"
+    ),
+
+    ComputedField(
+        name='estaBloqueado',
+        widget=ComputedField._properties['widget'](
+            label="Bloqueado",
+            label2="Locked",
+            description="Si Verdadero, entonces el usuario no puede realizar los cambios a los que permite sus roles en el idioma. Si Falso, entonces puede realizar cambios en el idioma,  Puede ocurrir durante  procesos de importacion largos, o por indicacion del coordinador.",
+            description2="If True, then the user may not  perform  the changes authorized by the roles held on the language. If False, then the user can make changes to the language. This may happen during long import processes or coordinator request.",
+            label_msgid='gvSIGi18n_TRAIdioma_attr_estaBloqueado_label',
+            description_msgid='gvSIGi18n_TRAIdioma_attr_estaBloqueado_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Si Verdadero, entonces el usuario no puede realizar los cambios a los que permite sus roles en el idioma. Si Falso, entonces puede realizar cambios en el idioma,  Puede ocurrir durante  procesos de importacion largos, o por indicacion del coordinador.",
+        duplicates="0",
+        label2="Locked",
+        ea_localid="1593",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;IsLiteral=0;",
+        description2="If True, then the user may not  perform  the changes authorized by the roles held on the language. If False, then the user can make changes to the language. This may happen during long import processes or coordinator request.",
+        ea_guid="{665EC558-519B-4f00-95B1-E468BC7C365E}",
+        scale="0",
+        label="Bloqueado",
+        length="0",
+        containment="Not Specified",
+        position="17",
+        owner_class_name="TRAIdioma",
+        expression="not context.fAllowWrite()",
+        computed_types="boolean",
+        exclude_from_copyconfig="True",
+        exclude_from_exportconfig="True"
     ),
 
     StringField(
@@ -225,18 +260,51 @@ schema = Schema((
     ),
 
     StringField(
+        name='modoSeleccionBandera',
+        widget=SelectionWidget(
+            label="Modo seleccion Bandera",
+            label2="Flag selecction mode",
+            description="Criterio para seleccion de la bandera especifica para este idioma: la bandera seleccionada por la plataforma Zope/Plone, una bandera Plone con nombre especifico, o una imagen adjunta.",
+            description2="Criteria to select the flag to display for this language: the flag seleccted by the Zope/Plone platform, other Plone flag with a specified name, or an Image attachment.",
+            label_msgid='gvSIGi18n_TRAIdioma_attr_modoSeleccionBandera_label',
+            description_msgid='gvSIGi18n_TRAIdioma_attr_modoSeleccionBandera_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Criterio para seleccion de la bandera especifica para este idioma: la bandera seleccionada por la plataforma Zope/Plone, una bandera Plone con nombre especifico, o una imagen adjunta.",
+        vocabulary=['Plone','Especifica','Adjunta',],
+        duplicates="0",
+        vocabulary_msgids=['gvSIGi18n_TRAIdioma_attr_modoSeleccionBandera_option_Plone', 'gvSIGi18n_TRAIdioma_attr_modoSeleccionBandera_option_Especifica', 'gvSIGi18n_TRAIdioma_attr_modoSeleccionBandera_option_Adjunta'],
+        label2="Flag selecction mode",
+        ea_localid="1591",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="Criteria to select the flag to display for this language: the flag seleccted by the Zope/Plone platform, other Plone flag with a specified name, or an Image attachment.",
+        ea_guid="{A8A54230-C7CD-43d1-A5F4-CA882CC2B33A}",
+        vocabulary2=['Plone','Specified','Attached',],
+        scale="0",
+        default="Plone",
+        label="Modo seleccion Bandera",
+        length="0",
+        containment="Not Specified",
+        position="5",
+        owner_class_name="TRAIdioma"
+    ),
+
+    StringField(
         name='iconoBanderaIdioma',
         widget=StringWidget(
             label="Icono de la Bandera",
             label2="Flag Icon",
-            description="Nombre del archivo grafico (usualmente .gif o .png) instalado en Plone, a utilizar como bandera para el idioma. Ha de ser de dimensiones iguales o menores a 16x16 pixels, preferentemente con fondo transparente.",
-            description2="Name of the graphic file (usually .gif or .png) installed in Plone, to use as the flag for the language. Must have dimensions equal or smaller than 16 x 16 pixels, prefereably with transparent background.",
+            description="Nombre de una bandera displonible en  la plataforma Zope/Plone, o la identidad de una imagen adjunta al lenguage, a utilizar como bandera para el idioma. Ha de ser de dimensiones iguales o menores a 16x16 pixels, preferentemente con fondo transparente.",
+            description2="Name of a flag available in the Zope/Plone platform, or the id of an image attached to the language, to use as the flag for the language. Must have dimensions equal or smaller than 16 x 16 pixels, prefereably with transparent background.",
             label_msgid='gvSIGi18n_TRAIdioma_attr_iconoBanderaIdioma_label',
             description_msgid='gvSIGi18n_TRAIdioma_attr_iconoBanderaIdioma_help',
             i18n_domain='gvSIGi18n',
         ),
         scale="0",
-        description="Nombre del archivo grafico (usualmente .gif o .png) instalado en Plone, a utilizar como bandera para el idioma. Ha de ser de dimensiones iguales o menores a 16x16 pixels, preferentemente con fondo transparente.",
+        description="Nombre de una bandera displonible en  la plataforma Zope/Plone, o la identidad de una imagen adjunta al lenguage, a utilizar como bandera para el idioma. Ha de ser de dimensiones iguales o menores a 16x16 pixels, preferentemente con fondo transparente.",
         duplicates="0",
         label2="Flag Icon",
         ea_localid="1581",
@@ -245,10 +313,10 @@ schema = Schema((
         collection="false",
         styleex="volatile=0;",
         length="0",
-        description2="Name of the graphic file (usually .gif or .png) installed in Plone, to use as the flag for the language. Must have dimensions equal or smaller than 16 x 16 pixels, prefereably with transparent background.",
+        description2="Name of a flag available in the Zope/Plone platform, or the id of an image attached to the language, to use as the flag for the language. Must have dimensions equal or smaller than 16 x 16 pixels, prefereably with transparent background.",
         containment="Not Specified",
         ea_guid="{288C7CCE-8ECB-48bb-89F3-C7A64259AFEB}",
-        position="2",
+        position="6",
         owner_class_name="TRAIdioma",
         label="Icono de la Bandera"
     ),
@@ -280,7 +348,7 @@ schema = Schema((
         label="Codigo de Idioma de referencia",
         length="0",
         containment="Not Specified",
-        position="11",
+        position="13",
         owner_class_name="TRAIdioma"
     ),
 
@@ -341,7 +409,7 @@ schema = Schema((
         description2="Languages for which this is an acceptable fallback, in case they lack their own tranlation. This information appears in the files exported as GNU gettext PO format.",
         containment="Not Specified",
         ea_guid="{9FF87A07-8C98-4b8b-9CD3-38DCC86A29D9}",
-        position="12",
+        position="14",
         owner_class_name="TRAIdioma",
         label="Fallback de idiomas"
     ),
@@ -370,7 +438,7 @@ schema = Schema((
         description2="Team in charge of translations to the language. This information appears in the exported files of GNUgettext PO format.",
         containment="Not Specified",
         ea_guid="{CD852AC8-F684-4a10-A1C9-9E3C5A72F7FE}",
-        position="5",
+        position="7",
         owner_class_name="TRAIdioma",
         label="Equipo del idioma"
     ),
@@ -402,7 +470,7 @@ schema = Schema((
         label="Juego de caracteres para exportacion como Java Properties",
         length="0",
         containment="Not Specified",
-        position="6",
+        position="8",
         owner_class_name="TRAIdioma"
     ),
 
@@ -433,7 +501,7 @@ schema = Schema((
         label="Juego de caracteres para exportacion como GNU gettext PO",
         length="0",
         containment="Not Specified",
-        position="7",
+        position="9",
         owner_class_name="TRAIdioma"
     ),
 
@@ -463,7 +531,7 @@ schema = Schema((
         label="Codificacion de transferencia de contenido",
         length="0",
         containment="Not Specified",
-        position="8",
+        position="10",
         owner_class_name="TRAIdioma"
     ),
 
@@ -493,7 +561,7 @@ schema = Schema((
         label="Formas plurales",
         length="0",
         containment="Not Specified",
-        position="9",
+        position="11",
         owner_class_name="TRAIdioma"
     ),
 
@@ -523,7 +591,7 @@ schema = Schema((
         label="Codificaciones preferidas",
         length="0",
         containment="Not Specified",
-        position="10",
+        position="12",
         owner_class_name="TRAIdioma"
     ),
 
@@ -553,7 +621,7 @@ schema = Schema((
         label="Es Idioma Principal",
         length="0",
         containment="Not Specified",
-        position="13",
+        position="15",
         owner_class_name="TRAIdioma"
     ),
 
@@ -620,9 +688,36 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRe
     actions =  (
 
 
+       {'action': "string:${object_url}/TRAExportarGvSIG",
+        'category': "object_buttons",
+        'id': 'TRA_export_language_for_gvSIG',
+        'name': 'Export for gvSIG',
+        'permissions': ("View",),
+        'condition': """python:object.fUseCaseCheckDoable( 'Export')"""
+       },
+
+
+       {'action': "string:${object_url}/TRAConfirmarBloquearIdioma",
+        'category': "object_buttons",
+        'id': 'TRA_bloquear_idioma',
+        'name': 'Lock Language',
+        'permissions': ("Modify portal content",),
+        'condition': """python:object.fUseCaseCheckDoable( 'Lock_TRAIdioma')"""
+       },
+
+
+       {'action': "string:${object_url}/TRAConfirmarDesbloquearIdioma",
+        'category': "object_buttons",
+        'id': 'TRA_desbloquear_idioma',
+        'name': 'Unlock Language',
+        'permissions': ("Modify portal content",),
+        'condition': """python:object.fUseCaseCheckDoable( 'Unlock_TRAIdioma')"""
+       },
+
+
        {'action': "string:${object_url}/TRACopiar_Traducciones",
         'category': "object_buttons",
-        'id': 'CopyTranslations',
+        'id': 'TRACopyTranslations',
         'name': 'Copy Translations',
         'permissions': ("Modify portal content",),
         'condition': """python:object.fUseCaseCheckDoable( 'Copy_Translations')"""
@@ -665,6 +760,15 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRe
        },
 
 
+       {'action': "string:${object_url}/MDDChanges",
+        'category': "object_buttons",
+        'id': 'mddchanges',
+        'name': 'Changes',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
        {'action': "string:${object_url}/reference_graph",
         'category': "object",
         'id': 'references',
@@ -689,6 +793,15 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRe
         'name': 'State',
         'permissions': ("View",),
         'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/MDDCacheStatus/",
+        'category': "object_buttons",
+        'id': 'mddcachestatus',
+        'name': 'Cache',
+        'permissions': ("View",),
+        'condition': """python:1"""
        },
 
 
@@ -738,6 +851,27 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRe
         
         return self.fAllowRead() and self.getPermiteModificar() and self.getCatalogo().fAllowWrite()
 
+    security.declarePublic('fIsCacheable')
+    def fIsCacheable(self):
+        """
+        """
+        
+        return True
+
+    security.declarePublic('fIsLocked')
+    def fIsLocked(self):
+        """
+        """
+        
+        return not self.getPermiteModificar()
+
+    security.declarePublic('fIsUnlocked')
+    def fIsUnlocked(self):
+        """
+        """
+        
+        return self.getPermiteModificar()
+
     security.declarePublic('manage_beforeDelete')
     def manage_beforeDelete(self,item,container):
         """
@@ -751,13 +885,6 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRe
         """
         
         return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
-
-    security.declarePublic('cb_isMoveable')
-    def cb_isMoveable(self):
-        """
-        """
-        
-        return False
 
     security.declarePublic('fExtraLinks')
     def fExtraLinks(self):

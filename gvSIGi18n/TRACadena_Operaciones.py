@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# File: Cadena_operations.py
+# File: TRACadena_operations.py
 #
 # Copyright (c) 2008, 2009 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
 #
@@ -33,7 +33,12 @@ Antonio Carrasco Valero <carrasco@ModelDD.org>"""
 __docformat__ = 'plaintext'
 
 
+import sys
+import traceback
 import logging
+
+import transaction
+
 
 from Products.Archetypes.BaseObject     import BaseObject
 
@@ -48,11 +53,14 @@ from Products.CMFCore       import permissions
 
 from Products.Archetypes.utils import shasattr
 
+from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import ModelDDvlPloneTool_Mutators, cModificationKind_ChangeValues
 
 from TRAElemento_Constants         import *
 
-from TRAElemento_Permission_Definitions import cUseCase_InvalidateStringTranslations, cBoundObject
+from TRAElemento_Permission_Definitions import cUseCase_InvalidateStringTranslations, cUseCase_DeactivateTRACadena, cUseCase_ActivateTRACadena
+from TRAElemento_Permission_Definitions import cBoundObject
 
+from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fDateTimeNow
 
 
 from TRAElemento import TRAElemento
@@ -638,10 +646,11 @@ class TRACadena_Operaciones:
         theIdioma, 
         theCadenaTraducida, 
         theComentario, 
-        theRegistrarHistoria=True, 
-        thePermissionsCache=None, 
-        theRolesCache=None, 
-        theParentExecutionRecord=None):
+        theAdditionalParams      =None,
+        theRegistrarHistoria     =True, 
+        thePermissionsCache      =None, 
+        theRolesCache            =None, 
+        theParentExecutionRecord =None):
         """Set the string translation and change the state from pending to translated and comment to the supplied values. 
 
         Delegate in the TRATraduccion for the supplied language
@@ -669,6 +678,7 @@ class TRACadena_Operaciones:
             return unaTraduccion.fIntentarTraducir( 
                 unaCadenaTraducida, 
                 unComentario, 
+                theAdditionalParams         =theAdditionalParams,
                 theUseCaseQueryResult       =None,
                 theRegistrarHistoria        =theRegistrarHistoria, 
                 thePermissionsCache         =thePermissionsCache, 
@@ -687,9 +697,11 @@ class TRACadena_Operaciones:
     def fComentarTraduccion( self, 
         theIdioma, 
         theComentario, 
-        thePermissionsCache=None, 
-        theRolesCache=None, 
-        theParentExecutionRecord=None):
+        theAdditionalParams      =None,
+        theRegistrarHistoria     =True, 
+        thePermissionsCache      =None, 
+        theRolesCache            =None, 
+        theParentExecutionRecord =None):
         
         unExecutionRecord = self.fStartExecution( 'method',  'fComentarTraduccion', theParentExecutionRecord, False) 
         
@@ -705,7 +717,9 @@ class TRACadena_Operaciones:
     
             return unaTraduccion.fComentar( 
                 unComentario, 
+                theAdditionalParams         =theAdditionalParams,
                 theUseCaseQueryResult       =None,
+                theRegistrarHistoria        =theRegistrarHistoria, 
                 thePermissionsCache         =thePermissionsCache, 
                 theRolesCache               =theRolesCache, 
                 theParentExecutionRecord    =unExecutionRecord
@@ -722,9 +736,11 @@ class TRACadena_Operaciones:
     def fHacerPendienteTraduccion( self, 
         theIdioma, 
         theComentario, 
-        thePermissionsCache=None, 
-        theRolesCache=None, 
-        theParentExecutionRecord=None):
+        theAdditionalParams      =None,
+        theRegistrarHistoria     =True, 
+        thePermissionsCache      =None, 
+        theRolesCache            =None, 
+        theParentExecutionRecord =None):
         
         unExecutionRecord = self.fStartExecution( 'method',  'fHacerPendienteTraduccion', theParentExecutionRecord, False) 
         
@@ -738,7 +754,9 @@ class TRACadena_Operaciones:
             
             return unaTraduccion.fHacerPendiente( 
                 theComentario, 
+                theAdditionalParams         =theAdditionalParams,
                 theUseCaseQueryResult       =None,
+                theRegistrarHistoria        =theRegistrarHistoria, 
                 thePermissionsCache         =thePermissionsCache, 
                 theRolesCache               =theRolesCache, 
                 theParentExecutionRecord    =unExecutionRecord
@@ -756,9 +774,11 @@ class TRACadena_Operaciones:
     def fHacerTraducidaTraduccion( self, 
         theIdioma, 
         theComentario, 
-        thePermissionsCache=None, 
-        theRolesCache=None, 
-        theParentExecutionRecord=None):
+        theAdditionalParams      =None,
+        theRegistrarHistoria     =True, 
+        thePermissionsCache      =None, 
+        theRolesCache            =None, 
+        theParentExecutionRecord =None):
         
         unExecutionRecord = self.fStartExecution( 'method',  'fHacerTraducidaTraduccion', theParentExecutionRecord, False) 
         
@@ -772,10 +792,12 @@ class TRACadena_Operaciones:
  
             return unaTraduccion.fHacerTraducida( 
                 theComentario, 
+                theAdditionalParams         =theAdditionalParams,
                 theUseCaseQueryResult       =None,
-                thePermissionsCache     =thePermissionsCache, 
-                theRolesCache           =theRolesCache, 
-                theParentExecutionRecord=unExecutionRecord
+                theRegistrarHistoria        =theRegistrarHistoria, 
+                thePermissionsCache         =thePermissionsCache, 
+                theRolesCache               =theRolesCache, 
+                theParentExecutionRecord    =unExecutionRecord
             )
         
         finally:
@@ -790,9 +812,11 @@ class TRACadena_Operaciones:
     def fHacerRevisadaTraduccion( self, 
         theIdioma, 
         theComentario, 
-        thePermissionsCache=None, 
-        theRolesCache=None, 
-        theParentExecutionRecord=None):
+        theAdditionalParams      =None,
+        theRegistrarHistoria     =True, 
+        thePermissionsCache      =None, 
+        theRolesCache            =None, 
+        theParentExecutionRecord =None):
         
         unExecutionRecord = self.fStartExecution( 'method',  'fHacerRevisadaTraduccion', theParentExecutionRecord, False) 
         
@@ -806,10 +830,12 @@ class TRACadena_Operaciones:
     
             return unaTraduccion.fHacerRevisada( 
                 theComentario, 
+                theAdditionalParams         =theAdditionalParams,
                 theUseCaseQueryResult       =None,
-                thePermissionsCache     =thePermissionsCache, 
-                theRolesCache           =theRolesCache, 
-                theParentExecutionRecord=unExecutionRecord
+                theRegistrarHistoria        =theRegistrarHistoria, 
+                thePermissionsCache         =thePermissionsCache, 
+                theRolesCache               =theRolesCache, 
+                theParentExecutionRecord    =unExecutionRecord
             )
         
         finally:
@@ -825,9 +851,11 @@ class TRACadena_Operaciones:
     def fHacerDefinitivaTraduccion( self, 
         theIdioma, 
         theComentario, 
-        thePermissionsCache=None, 
-        theRolesCache=None, 
-        theParentExecutionRecord=None):
+        theAdditionalParams      =None,
+        theRegistrarHistoria     =True, 
+        thePermissionsCache      =None, 
+        theRolesCache            =None, 
+        theParentExecutionRecord =None):
         
         unExecutionRecord = self.fStartExecution( 'method',  'fHacerDefinitivaTraduccion', theParentExecutionRecord, False) 
         
@@ -841,10 +869,12 @@ class TRACadena_Operaciones:
     
             return unaTraduccion.fHacerDefinitiva(  
                 theComentario, 
+                theAdditionalParams         =theAdditionalParams,
                 theUseCaseQueryResult       =None,
-                thePermissionsCache     =thePermissionsCache, 
-                theRolesCache           =theRolesCache, 
-                theParentExecutionRecord=unExecutionRecord
+                theRegistrarHistoria        =theRegistrarHistoria, 
+                thePermissionsCache         =thePermissionsCache, 
+                theRolesCache               =theRolesCache, 
+                theParentExecutionRecord    =unExecutionRecord
             )
         
         finally:
@@ -858,9 +888,11 @@ class TRACadena_Operaciones:
     security.declarePrivate( 'fInvalidarTraducciones')    
     def fInvalidarTraducciones( self, 
         theComentario, 
-        thePermissionsCache=None, 
-        theRolesCache=None, 
-        theParentExecutionRecord=None):
+        theAdditionalParams      =None,
+        theRegistrarHistoria     =True, 
+        thePermissionsCache      =None, 
+        theRolesCache            =None, 
+        theParentExecutionRecord =None):
         
         unExecutionRecord = self.fStartExecution( 'method',  'fInvalidarTraducciones', theParentExecutionRecord, False) 
         
@@ -875,6 +907,7 @@ class TRACadena_Operaciones:
                 theParentExecutionRecord= unExecutionRecord,                                          
             )                    
             if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
+                aResult = self.fNewVoidChangeTranslationResult()
                 aResult.update({
                     'status': 'UseCase_assessment_failed: %s' % cUseCase_InvalidateStringTranslations,
                 })
@@ -886,18 +919,273 @@ class TRACadena_Operaciones:
             for unaTraduccion in unasTraducciones:
                 unResultTraduccion = unaTraduccion.fInvalidar( 
                     theComentario, 
+                    theAdditionalParams         =theAdditionalParams,
+                    theRegistrarHistoria        =theRegistrarHistoria, 
                     thePermissionsCache         =thePermissionsCache, 
                     theRolesCache               =theRolesCache, 
                     theParentExecutionRecord    =unExecutionRecord
                 )
+                
+            return unResultTraduccion
         
         finally:
             unExecutionRecord and unExecutionRecord.pEndExecution()
          
   
 
+            
 
 
+    security.declarePrivate( 'fDesactivar')    
+    def fDesactivar( self, 
+        theComentario, 
+        theAdditionalParams      =None,
+        theRegistrarHistoria     =True, 
+        thePermissionsCache      =None, 
+        theRolesCache            =None, 
+        theParentExecutionRecord =None):
+        
+        unExecutionRecord = self.fStartExecution( 'method',  'fDesactivar', theParentExecutionRecord, False) 
+ 
+        try:
+            
+            try:
+                
+                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
+                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+                
+                
+                aResult = self.fNewVoidChangeTranslationResult()
+            
+                unUseCaseQueryResult = self.fUseCaseAssessment(  
+                    theUseCaseName          = cUseCase_DeactivateTRACadena, 
+                    theElementsBindings     = { cBoundObject: self,},
+                    theRulesToCollect       = [ ], 
+                    thePermissionsCache     = unPermissionsCache, 
+                    theRolesCache           = unRolesCache, 
+                    theParentExecutionRecord= unExecutionRecord
+                )
+                if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
+                    aResult.update({
+                        'status': 'UseCase_assessment_failed: %s' % cUseCase_DeactivateTRACadena,
+                    })
+                    return aResult
+                        
+                                    
+                unEstadoCadena = self.getEstadoCadena()
+                
+                aResult.update({
+                    'simboloCadena': self.getSimbolo(),
+                    'idCadena':      self.getId(),
+                    'found': True,
+                    'estadoCadena': unEstadoCadena,
+                })
+                
+                if not ( unEstadoCadena == cEstadoCadenaInactiva):
+                    
+                    self.setEstadoCadena( cEstadoCadenaInactiva)
+                    
+                    unAhora = fDateTimeNow()
+                    
+                    self.pSetFechaCancelacion( unAhora)
+                    
+                    self.pRecatalogCadena()
+                    
+                    
+                    aCatalogo = self.getCatalogo()
+                    if not ( aCatalogo == None):
+                        aCatalogo.pInvalidateSimbolosCadenasOrdenados()
+                        aCatalogo.pFlushCachedTemplates_All()
+
+                    unasTraducciones = self.objectValues( cNombreTipoTRATraduccion)
+                    if unasTraducciones:
+                        for unaTraduccion in unasTraducciones:
+                            unaTraduccion.setEstadoCadena( cEstadoCadenaInactiva)
+                            unaTraduccion.pRecatalogTraduccion( unExecutionRecord)
+                            
+                    
+                                                
+                    
+                    aModelDDvlPloneTool_Mutators = ModelDDvlPloneTool_Mutators()
+                   
+                    aReport = aModelDDvlPloneTool_Mutators.fNewVoidChangeValuesReport()
+                    someFieldReports    = aReport.get( 'field_reports')
+                    aFieldReportsByName = aReport.get( 'field_reports_by_name')       
+
+                    aReportForField = { 'attribute_name': 'estadoCadena', 'effect': 'changed', 'new_value': cEstadoCadenaInactiva, 'previous_value': cEstadoCadenaActiva,}                                                                                                                        
+                    
+                    someFieldReports.append( aReportForField)
+                    aFieldReportsByName[ 'permiteModificar'] = aReportForField
+                    
+                    aModelDDvlPloneTool_Mutators.pSetAudit_Modification( self, cModificationKind_ChangeValues, aReport)     
+                    
+                    transaction.commit()
+                    logging.getLogger( 'gvSIGi18n').info( "COMMIT TRACadena::fDesactivar %s" % '/'.join( self.getPhysicalPath()))
+                    
+                    
+                    aResult.update({
+                        'success': True,
+                        'changed': True,
+                        'estadoCadena': cEstadoCadenaInactiva,
+                    })
+                    
+                else:
+                    aResult.update({
+                        'success': False,
+                        'changed': False,
+                        'estadoCadena': cEstadoCadenaInactiva,
+                    })
+                    
+                     
+                return aResult
+            
+            except:
+                unaExceptionInfo = sys.exc_info()
+                unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
+                
+                unInformeExcepcion = 'Exception during TRACadena::fDesactivar %s \n'  % '/'.join( self.getPhysicalPath())
+                unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
+                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                unInformeExcepcion += unaExceptionFormattedTraceback   
+
+                unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
+
+                if cLogExceptions:
+                    logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
+                
+                return self.fNewVoidChangeTranslationResult()
+        
+             
+        finally:
+            unExecutionRecord and unExecutionRecord.pEndExecution()
+
+            
+ 
+
+
+
+
+    security.declarePrivate( 'fActivar')    
+    def fActivar( self, 
+        theComentario, 
+        theAdditionalParams      =None,
+        theRegistrarHistoria     =True, 
+        thePermissionsCache      =None, 
+        theRolesCache            =None, 
+        theParentExecutionRecord =None):
+        
+        unExecutionRecord = self.fStartExecution( 'method',  'fActivar', theParentExecutionRecord, False) 
+ 
+        try:
+            
+            try:
+                
+                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
+                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+                
+                
+                aResult = self.fNewVoidChangeTranslationResult()
+            
+                unUseCaseQueryResult = self.fUseCaseAssessment(  
+                    theUseCaseName          = cUseCase_ActivateTRACadena, 
+                    theElementsBindings     = { cBoundObject: self,},
+                    theRulesToCollect       = [ ], 
+                    thePermissionsCache     = unPermissionsCache, 
+                    theRolesCache           = unRolesCache, 
+                    theParentExecutionRecord= unExecutionRecord
+                )
+                if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
+                    aResult.update({
+                        'status': 'UseCase_assessment_failed: %s' % cUseCase_ActivateTRACadena,
+                    })
+                    return aResult
+                        
+                                    
+                unEstadoCadena = self.getEstadoCadena()
+                
+                aResult.update({
+                    'simboloCadena': self.getSimbolo(),
+                    'idCadena':      self.getId(),
+                    'found': True,
+                    'estadoCadena': unEstadoCadena,
+                })
+                
+                if not ( unEstadoCadena == cEstadoCadenaActiva):
+                    
+                    self.setEstadoCadena( cEstadoCadenaActiva)
+                    
+                    self.pSetFechaCancelacion( None)                    
+                    
+                    self.pRecatalogCadena()
+                    
+                    
+                    aCatalogo = self.getCatalogo()
+                    if not ( aCatalogo == None):
+                        aCatalogo.pInvalidateSimbolosCadenasOrdenados()
+                        aCatalogo.pFlushCachedTemplates_All()
+
+                    unasTraducciones = self.objectValues( cNombreTipoTRATraduccion)
+                    if unasTraducciones:
+                        for unaTraduccion in unasTraducciones:
+                            unaTraduccion.setEstadoCadena( cEstadoCadenaActiva)
+                            unaTraduccion.pRecatalogTraduccion( unExecutionRecord)
+                            
+                            
+                    
+                    aModelDDvlPloneTool_Mutators = ModelDDvlPloneTool_Mutators()
+                   
+                    aReport = aModelDDvlPloneTool_Mutators.fNewVoidChangeValuesReport()
+                    someFieldReports    = aReport.get( 'field_reports')
+                    aFieldReportsByName = aReport.get( 'field_reports_by_name')       
+
+                    aReportForField = { 'attribute_name': 'estadoCadena', 'effect': 'changed', 'new_value': cEstadoCadenaActiva, 'previous_value': cEstadoCadenaInactiva,}                                                                                                                        
+                    
+                    someFieldReports.append( aReportForField)
+                    aFieldReportsByName[ 'permiteModificar'] = aReportForField
+                    
+                    aModelDDvlPloneTool_Mutators.pSetAudit_Modification( self, cModificationKind_ChangeValues, aReport)     
+                    
+                    transaction.commit()
+                    logging.getLogger( 'gvSIGi18n').info( "COMMIT TRACadena::fActivar %s" % '/'.join( self.getPhysicalPath()))
+                    
+                    
+                    aResult.update({
+                        'success': True,
+                        'changed': True,
+                        'estadoCadena': cEstadoCadenaActiva,
+                    })
+                    
+                else:
+                    aResult.update({
+                        'success': False,
+                        'changed': False,
+                        'estadoCadena': cEstadoCadenaActiva,
+                    })
+                    
+                     
+                return aResult
+            
+            except:
+                unaExceptionInfo = sys.exc_info()
+                unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
+                
+                unInformeExcepcion = 'Exception during TRACadena::fActivar %s \n'  % '/'.join( self.getPhysicalPath())
+                unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
+                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                unInformeExcepcion += unaExceptionFormattedTraceback   
+
+                unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
+
+                if cLogExceptions:
+                    logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
+                
+                return self.fNewVoidChangeTranslationResult()
+        
+             
+        finally:
+            unExecutionRecord and unExecutionRecord.pEndExecution()
+
+            
 
     
 # #########################################################################

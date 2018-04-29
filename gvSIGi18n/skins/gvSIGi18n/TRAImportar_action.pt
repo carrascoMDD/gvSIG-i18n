@@ -38,7 +38,10 @@
         global pStartTime       pStartTime | python: here.ModelDDvlPlone_tool.fMillisecondsNow()" 
         i18n:domain="gvSIGi18n">
 
-        <tal:block tal:define="pExecutionRecord python: here.fStartExecution( 'template', 'TRAImportar_action.pt', None, True, { 'log_what': 'details', 'log_when': True, })" >
+        <metal:block metal:use-macro="here/TRAProfileExecution/macros/tSetupProfileExecution" />   
+
+
+        <tal:block tal:define="pExecutionRecord python: here.fStartExecution( 'template', 'TRAImportar_action.pt', None, pAllowRootProfileExecution, { 'log_what': 'details', 'log_when': True, })" >
     
             <div metal:use-macro="here/document_actions/macros/document_actions">
                 Document actions (print, sendto etc)
@@ -52,6 +55,12 @@
               Get the byline - contains details about author and modification date.
             </div>
             
+            
+            <tal:block tal:condition="python: not here.fAllowWrite()" >
+                <div class="portalMessage" >
+                    <span tal:content="python: here.ModelDDvlPlone_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TranslationsCatalogIsLockedAgainstModifications', 'The Translations Catalog Is Locked Against Modifications')" />
+                </div>
+            </tal:block>
             
      
             <tal:block tal:define="pPermiteEditar python: False; pPermiteEliminar python: False; pShowOrHideTrees python: False">
@@ -104,7 +113,7 @@
                                 pPermissionsCache python: {}; 
                                 pRolesCache python: {};
                                 dummy  python:here.fImportarContenidosIntercambio( False, pPermissionsCache, pRolesCache, pExecutionRecord)" />
-                            <tal:block tal:define="dummy python:request.response.redirect( '%s/TRAInformeProgreso_action/' % here.absolute_url())" />
+                            <tal:block tal:define="dummy python:request.response.redirect( '%s/TRAImportacionProgreso/' % here.absolute_url())" />
                         </tal:block>
                     </tal:block>
                 </tal:block>

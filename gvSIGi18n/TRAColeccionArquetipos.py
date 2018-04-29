@@ -2,7 +2,7 @@
 #
 # File: TRAColeccionArquetipos.py
 #
-# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
+# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
 # Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -32,7 +32,6 @@ __docformat__ = 'plaintext'
 from AccessControl import ClassSecurityInfo
 from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.TRAElemento import TRAElemento
-from Products.gvSIGi18n.TRAConRegistroActividad import TRAConRegistroActividad
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
@@ -50,35 +49,18 @@ schema = Schema((
 ##/code-section after-local-schema
 
 TRAColeccionArquetipos_schema = getattr(TRAElemento, 'schema', Schema(())).copy() + \
-    getattr(TRAConRegistroActividad, 'schema', Schema(())).copy() + \
     schema.copy()
 
 ##code-section after-schema #fill in your manual code here
 ##/code-section after-schema
 
-class TRAColeccionArquetipos(TRAElemento, TRAConRegistroActividad):
+class TRAColeccionArquetipos(TRAElemento):
     """
     """
     security = ClassSecurityInfo()
-    __implements__ = (getattr(TRAElemento,'__implements__',()),) + (getattr(TRAConRegistroActividad,'__implements__',()),)
+    __implements__ = (getattr(TRAElemento,'__implements__',()),)
 
-
-
-    # Change Audit fields
-
-    creation_date_field = 'fechaCreacion'
-    creation_user_field = 'usuarioCreador'
-    modification_date_field = 'fechaModificacion'
-    modification_user_field = 'usuarioModificador'
-    deletion_date_field = 'fechaEliminacion'
-    deletion_user_field = 'usuarioEliminador'
-    is_inactive_field = 'estaInactivo'
-    change_counter_field = 'contadorCambios'
-    change_log_field = 'registroDeCambios'
-
-
-
-    allowed_content_types = [] + list(getattr(TRAElemento, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', []))
+    allowed_content_types = [] + list(getattr(TRAElemento, 'allowed_content_types', []))
 
     actions =  (
 
@@ -105,6 +87,15 @@ class TRAColeccionArquetipos(TRAElemento, TRAConRegistroActividad):
         'category': "object",
         'id': 'view',
         'name': 'View',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:${object_url}/MDDChanges",
+        'category': "object_buttons",
+        'id': 'mddchanges',
+        'name': 'Changes',
         'permissions': ("View",),
         'condition': """python:1"""
        },
@@ -146,6 +137,15 @@ class TRAColeccionArquetipos(TRAElemento, TRAConRegistroActividad):
        },
 
 
+       {'action': "string:${object_url}/MDDCacheStatus/",
+        'category': "object_buttons",
+        'id': 'mddcachestatus',
+        'name': 'Cache',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
     )
 
     _at_rename_after_creation = True
@@ -163,6 +163,13 @@ class TRAColeccionArquetipos(TRAElemento, TRAConRegistroActividad):
         """
         
         return True
+
+    security.declarePublic('cb_isCopyable')
+    def cb_isCopyable(self):
+        """
+        """
+        
+        return False
 
     security.declarePublic('displayContentsTab')
     def displayContentsTab(self):
@@ -191,6 +198,13 @@ class TRAColeccionArquetipos(TRAElemento, TRAConRegistroActividad):
         """
         
         return TRAElemento.manage_beforeDelete( self, item, container)
+
+    security.declarePublic('cb_isMoveable')
+    def cb_isMoveable(self):
+        """
+        """
+        
+        return False
 # end of class TRAColeccionArquetipos
 
 ##code-section module-footer #fill in your manual code here

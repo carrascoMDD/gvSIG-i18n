@@ -41,7 +41,10 @@ import logging
 from Products.CMFCore       import permissions
 from Products.CMFCore.utils  import getToolByName
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneTool import ModelDDvlPloneTool
+from Products.ModelDDvlPloneTool.ModelDDvlPloneTool          import ModelDDvlPloneTool
+from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import ModelDDvlPloneTool_Mutators,cModificationKind_CreateSubElement, cModificationKind_Create
+
+from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow, fDateTimeNow
 
 from TRAElemento_Constants import *
 
@@ -49,6 +52,11 @@ from TRAImportarExportar_Constants import *
 
 from TRAElemento_Permission_Definitions import cUseCase_CreateTRASolicitudCadena, cUseCase_CreateTRACadena, cUseCase_CleanupTRAColeccionSolicitudesCadenas
 from TRAElemento_Permission_Definitions import cBoundObject
+
+
+
+from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fDateTimeNow
+
 
 
 ##/code-section module-header
@@ -224,17 +232,20 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                     
                 unMemberId = self.fGetMemberId()
 
+                unaFechaCreacion = fDateTimeNow()
                 anAttrsDict = { 
                     'title':                            unNewTitle,
                     'description':                      '',
                     'simbolo':                          aNewSymbol,
                     'usuarioCreador':                   unMemberId,
-                    'fechaCreacion':                    self.fDateTimeNow(),
+                    'fechaCreacion':                    unaFechaCreacion,
                     'codigoIdiomaPrincipal':            aMainlanguage,
                     'cadenaTraducidaAIdiomaPrincipal':  aTranslationIntoMainLanguage,
                     'codigoIdiomaReferencia':           aReferenceLanguage,
                     'cadenaTraducidaAIdiomaReferencia': aTranslationIntoReferenceLanguage,
                 }
+                
+                self.pFlushCachedTemplates_All()                            
                 
                 unaIdNuevaSolicitudCadena = self.invokeFactory( cNombreTipoTRASolicitudCadena, aNewId, **anAttrsDict)
                 if not unaIdNuevaSolicitudCadena:
@@ -270,6 +281,56 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
  
                 unSolicitudCadenaCreationReport = { 'effect': 'created', 'new_object_result': unResultadoNuevaSolicitudCadena, }
                         
+                
+            
+                aModelDDvlPloneTool_Mutators = ModelDDvlPloneTool_Mutators()
+                    
+                aCreateElementReport = aModelDDvlPloneTool_Mutators.fNewVoidCreateElementReport()
+                aCreateElementReport.update( { 'effect': 'created', 'new_object_result': unResultadoNuevaSolicitudCadena, })
+                
+                someFieldReports    = aCreateElementReport[ 'field_reports']
+                aFieldReportsByName = aCreateElementReport[ 'field_reports_by_name']
+                
+                aReportForField = { 'attribute_name': 'id',                              'effect': 'changed', 'new_value': unaIdNuevaSolicitudCadena, 'previous_value': '',}
+                someFieldReports.append( aReportForField)            
+                aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
+                
+                aReportForField = { 'attribute_name': 'title',                           'effect': 'changed', 'new_value': unNewTitle,           'previous_value': '',}
+                someFieldReports.append( aReportForField)            
+                aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
+                
+                
+                aReportForField = { 'attribute_name': 'simbolo',                         'effect': 'changed', 'new_value': aNewSymbol,           'previous_value': '',}
+                someFieldReports.append( aReportForField)            
+                aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
+                
+                aReportForField = { 'attribute_name': 'usuarioCreador',                  'effect': 'changed', 'new_value': unMemberId,           'previous_value': '',}
+                someFieldReports.append( aReportForField)            
+                aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
+                
+                aReportForField = { 'attribute_name': 'fechaCreacion',                   'effect': 'changed', 'new_value': unaFechaCreacion,           'previous_value': '',}
+                someFieldReports.append( aReportForField)            
+                aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
+                
+                aReportForField = { 'attribute_name': 'codigoIdiomaPrincipal',           'effect': 'changed', 'new_value': aMainlanguage,           'previous_value': '',}
+                someFieldReports.append( aReportForField)            
+                aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
+                
+                aReportForField = { 'attribute_name': 'cadenaTraducidaAIdiomaPrincipal', 'effect': 'changed', 'new_value': aTranslationIntoMainLanguage,           'previous_value': '',}
+                someFieldReports.append( aReportForField)            
+                aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
+                
+                aReportForField = { 'attribute_name': 'codigoIdiomaReferencia',          'effect': 'changed', 'new_value': aReferenceLanguage,           'previous_value': '',}
+                someFieldReports.append( aReportForField)            
+                aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
+                
+                aReportForField = { 'attribute_name': 'cadenaTraducidaAIdiomaReferencia','effect': 'changed', 'new_value': aTranslationIntoReferenceLanguage,           'previous_value': '',}
+                someFieldReports.append( aReportForField)            
+                aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
+                                   
+                aModelDDvlPloneTool_Mutators.pSetAudit_Creation( self,                    cModificationKind_CreateSubElement, aCreateElementReport, theUseCounter=True)       
+                aModelDDvlPloneTool_Mutators.pSetAudit_Creation( unaNuevaSolicitudCadena, cModificationKind_Create,           aCreateElementReport)       
+                
                 return unSolicitudCadenaCreationReport
                 
  
@@ -304,10 +365,104 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
             
             
             
-            
-            
-            
-            
+
+    
+    security.declarePrivate( 'fCrearImportarYLimpiarCadenas')    
+    def fCrearImportarYLimpiarCadenas( self,
+        thePermissionsCache     =None,
+        theRolesCache           =None,
+        theParentExecutionRecord=None):
+        """Create new instances of TRACadena by executing an import process, then clean up the string requests. Ceate an instance of TRAImportacion with a TRAContenidoIntercambio that will create the language when the import is executed.
+        
+        """
+    
+        unExecutionRecord = self.fStartExecution( 'method',  'fCrearImportarYLimpiarCadenas', None, True, { 'log_what': 'details', 'log_when': True, }) # invoked from ModelDDvlPloneTool still using previous style of time profiling, thus the parameter is not theParentExecutionRecord =None, 
+
+        try:
+             
+            try:
+                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
+                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+                            
+                aCreateImportReport = self.fCrearCadenas( unPermissionsCache, unRolesCache, unExecutionRecord,)
+                if not aCreateImportReport.get( 'effect', '') == 'created':
+                    aResult = { 
+                        'effect': 'error', 
+                        'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCreatingImportProcessToCreateStrings', "Error creating import process to create strings-") + aCreateImportReport.get( 'failure', ''),
+                    }
+                    return aResult
+                
+                unNewObjectResult = aCreateImportReport.get( 'new_object_result', {})
+                if not unNewObjectResult:
+                    aResult = { 
+                        'effect': 'error', 
+                        'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorImportProcessToCreateStringsNotCreated', "Import process to create strings hast not been created-"),
+                    }
+                    return aResult
+                    
+                anImportElement = unNewObjectResult.get( 'object', None)
+                if ( anImportElement == None):
+                    aResult = { 
+                        'effect': 'error', 
+                        'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorImportProcessElementNotCreated', "Import process not been created-"),
+                    }
+                    return aResult
+                
+           
+                anImportExecutionReport = anImportElement.fImportarContenidosIntercambio( False,unPermissionsCache, unRolesCache, unExecutionRecord,)
+                anImportError       = anImportExecutionReport.get( 'error', '')
+                anImportErrorDetail = anImportExecutionReport.get( 'error_detail', '')
+                if anImportError:
+                    aResult = { 
+                        'effect': 'error', 
+                        'failure':  '%s %s %s ' (
+                            self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorImportProcessFailed', "Import process failed-"),
+                            self.fTranslateI18N( 'gvSIGi18n', anImportError, anImportError),
+                            anImportErrorDetail,
+                        ),
+                    }
+                    return aResult
+                    
+                
+                aCleanUpStringsReport = self.fLimpiarCadenas( unPermissionsCache, unRolesCache, unExecutionRecord,)
+                if not aCleanUpStringsReport.get( 'effect', '') == 'deleted':
+                    aResult = { 
+                        'effect': 'error', 
+                        'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCleaningUpStringsRequests', "Error cleaning up strings requests-") + aCleanUpStringsReport.get( 'failure', ''),
+                    }
+                    return aResult
+                
+                aResult = { 
+                    'effect': 'created',
+                    'new_object_result': unNewObjectResult,
+                }
+                
+                return aResult
+                
+            except:
+                unaExceptionInfo = sys.exc_info()
+                unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
+                
+                unInformeExcepcion = 'Exception during fCrearImportarYLimpiarCadenas\n' 
+                unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
+                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                unInformeExcepcion += unaExceptionFormattedTraceback   
+                                         
+                unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
+
+                if cLogExceptions:
+                    logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
+                
+                anActionReport = { 'effect': 'error', 'failure': '%s\n%s' % (   self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCreating_Cadeas_Exception_msgid', "Exception while creating Strings (as import process).-"), unInformeExcepcion, ) }
+                return anActionReport     
+              
+        finally:
+            unExecutionRecord and unExecutionRecord.pEndExecution()
+            unExecutionRecord and unExecutionRecord.pClearLoggedAll()
+
+                    
+                
+                              
             
             
             
@@ -323,7 +478,7 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
         
         """
     
-        unExecutionRecord = self.fStartExecution( 'method',  'fCrearCadenas', None, True, { 'log_what': 'details', 'log_when': True, }) # invoked from ModelDDvlPloneTool still using previous style of time profiling, thus the parameter is not theParentExecutionRecord =None, 
+        unExecutionRecord = self.fStartExecution( 'method',  'fCrearCadenas', None, False, { 'log_what': 'details', 'log_when': True, }) 
 
         try:
             unasDescripcionesContenidosCreados = []
@@ -382,6 +537,9 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                                             someLanguagesEnCadenasACrear.add( unCodigoIdiomaReferencia)
                     
                             
+                if not someSolicitudesCadenasACrear:
+                    anActionReport = { 'effect': 'error', 'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_warningCreating_Strings_NoStringRequestsToCreate_msgid', "There are no New String requests to create. No Import process created.-"), }
+                    return anActionReport  
                             
                             
                 unaColeccionImportaciones = unCatalogo.fObtenerColeccionImportaciones()
@@ -391,7 +549,7 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                 
                      
                 unMemberId = self.fGetMemberId()
-                unaFechaYHora = self.fDateTimeNowTextual()
+                unaFechaYHora =self.fDateTimeNowTextual()
 
                 aPloneUtilsTool = self.getPloneUtilsToolForNormalizeString()  
                
@@ -404,6 +562,8 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                     'title':         unTitleImportacion,
                     'description':   '',
                 }
+                
+                unaColeccionImportaciones.pFlushCachedTemplates_All()                            
                 
                 unaIdNuevaImportacion = unaColeccionImportaciones.invokeFactory( cNombreTipoTRAImportacion, aNewIdImportacion, **anAttrsDictImportacion)
                 if not unaIdNuevaImportacion:
@@ -424,6 +584,8 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                     'title':         unTitleContenidoIntercambio,
                     'description':   '',
                 }
+                
+                unaNuevaImportacion.pFlushCachedTemplates_All()                            
                 
                 unaIdNuevoContenidoIntercambio = unaNuevaImportacion.invokeFactory( cNombreTipoTRAContenidoIntercambio, aNewIdContenidoIntercambio, **anAttrsDictContenidoIntercambio)
                 if not unaIdNuevoContenidoIntercambio:
@@ -481,6 +643,61 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
  
                 unStringsCreationReport = { 'effect': 'created', 'new_object_result': unResultadoNuevaImportacion, }
                         
+                
+                
+                unaColeccionImportaciones.pFlushCachedTemplates_All()                            
+                unaNuevaImportacion.pFlushCachedTemplates_All()                            
+                unNuevoContenidoIntercambio.pFlushCachedTemplates_All()                            
+            
+                aModelDDvlPloneTool_Mutators = ModelDDvlPloneTool_Mutators()
+                    
+                aCreateElementReport = aModelDDvlPloneTool_Mutators.fNewVoidCreateElementReport()
+                aCreateElementReport.update( { 'effect': 'created', 'new_object_result': unResultadoNuevaImportacion, })
+                
+                someFieldReports    = aCreateElementReport[ 'field_reports']
+                aFieldReportsByName = aCreateElementReport[ 'field_reports_by_name']
+                
+                aReportForField = { 'attribute_name': 'id',     'effect': 'changed', 'new_value': unaIdNuevoContenidoIntercambio, 'previous_value': '',}
+                someFieldReports.append( aReportForField)            
+                aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
+                
+                aReportForField = { 'attribute_name': 'title',  'effect': 'changed', 'new_value': unTitleContenidoIntercambio,    'previous_value': '',}
+                someFieldReports.append( aReportForField)            
+                aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
+                
+                                   
+                aModelDDvlPloneTool_Mutators.pSetAudit_Creation( unaColeccionImportaciones,  cModificationKind_CreateSubElement, aCreateElementReport, theUseCounter=True)       
+                aModelDDvlPloneTool_Mutators.pSetAudit_Creation( unaNuevaImportacion,        cModificationKind_Create,           aCreateElementReport)       
+                
+                aContenidoIntercambioTraversalResult = None
+                for aTraversalResult in unResultadoNuevaImportacion.get( 'traversals', []):
+                    if aTraversalResult.get( 'traversal_name', '') == cNombreTraversal_Importacion_ContenidosIntercambio:
+                        aContenidoIntercambioTraversalResult = aTraversalResult
+                        break
+                if aContenidoIntercambioTraversalResult: 
+                    someContenidoIntercambioResults = aContenidoIntercambioTraversalResult.get( 'elements', [])
+                    
+                    for aContenidoIntercambioResult in someContenidoIntercambioResults:
+                        
+                        unNuevoContenidoIntercambioElement = aContenidoIntercambioResult.get( 'object', None)
+                        if not ( unNuevoContenidoIntercambioElement == None):
+                        
+                            aCreateElementReport = aModelDDvlPloneTool_Mutators.fNewVoidCreateElementReport()
+                            aCreateElementReport.update( { 'effect': 'created', 'new_object_result': aContenidoIntercambioResult, })
+                            
+                            someFieldReports    = aCreateElementReport[ 'field_reports']
+                            aFieldReportsByName = aCreateElementReport[ 'field_reports_by_name']
+                            
+                            aReportForField = { 'attribute_name': 'id',     'effect': 'changed', 'new_value': aContenidoIntercambioResult.get( 'id', ''),     'previous_value': '',}
+                            someFieldReports.append( aReportForField)            
+                            aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
+                            
+                            aReportForField = { 'attribute_name': 'title',  'effect': 'changed', 'new_value': aContenidoIntercambioResult.get( 'title', ''),  'previous_value': '',}
+                            someFieldReports.append( aReportForField)            
+                            
+                            aModelDDvlPloneTool_Mutators.pSetAudit_Creation( unaNuevaImportacion,                cModificationKind_CreateSubElement, aCreateElementReport, theUseCounter=True)       
+                            aModelDDvlPloneTool_Mutators.pSetAudit_Creation( unNuevoContenidoIntercambioElement, cModificationKind_Create,           aCreateElementReport)       
+                
                 return unStringsCreationReport
                 
  
@@ -597,6 +814,9 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                     
                     
                 if unasIdsSolicitudesCadenasAEliminar: 
+                    
+                    self.pFlushCachedTemplates_All()                            
+                    
                     self.manage_delObjects( unasIdsSolicitudesCadenasAEliminar)
                 
  

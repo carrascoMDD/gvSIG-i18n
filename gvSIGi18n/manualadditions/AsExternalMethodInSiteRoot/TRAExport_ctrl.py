@@ -45,6 +45,11 @@ from Products.gvSIGi18n.TRAImportarExportar_Constants       import cExportFormat
 
 
 
+cDefaultProductVersionForGvSIGExportFilename = '1'
+
+cDefaultL10NVersionForGvSIGExportFilename    = '1'
+
+
 # #########################################
 #   Rendering utilities
 # #########################################
@@ -60,24 +65,40 @@ from Products.gvSIGi18n.TRAImportarExportar_Constants       import cExportFormat
 
 def fNewVoidEditionParametersCandidateValues():
     unInforme = {
-        'theExportFormat':              '',
-        'theIncludeManifest':           '',
-        'theIncludeLocalesCSV':           '',
-        'theSeparatedModules':          '',
-        'theTipoArchivo':               '',
-        'theDefaultLanguageCode':       '',
-        'theEncodingErrorHandleMode':   '',
+        'theLanguagesToExport':                   [],
+        'theExportFormat':                        '',
+        'theExportFormat_vocabulary':             [],
+        'theExportFormat_vocabulary_msgids':      [],
+        'theIncludeManifest':                     '',
+        'theIncludeManifest_vocabulary':          [],
+        'theIncludeManifest_vocabulary_msgids':   [],
+        'theIncludeLocalesCSV':                   '',
+        'theIncludeLocalesCSV_vocabulary':        [],
+        'theIncludeLocalesCSV_vocabulary_msgids': [],
+        'theSeparatedModules':                    '',
+        'theSeparatedModules_vocabulary':         [],
+        'theSeparatedModules_vocabulary_msgids':  [],
+        'theTipoArchivo':                         '',
+        'theTipoArchivo_vocabulary':              [],
+        'theTipoArchivo_vocabulary_msgids':       [],
+        'theDefaultLanguageCode':                 '',
+        'theDefaultModuleName':                   '',
+        'theEncodingErrorHandleMode':             '',
+        'theEncodingErrorHandleMode_vocabulary':  [],
+        'theEncodingErrorHandleMode_vocabulary_msgids': [],
         'encodings_by_language_code':   { },
-        'informe_idiomas_y_modulos':    {},
+        'informe_idiomas_y_modulos':    { },
+        'theFilenameForGvSIG':          '',
+        'theFilenameForGvSIG_vocabulary':         [],
+        'theFilenameForGvSIG_vocabulary_msgids':  [],
+        'theProductName':               '',
+        'theProductVersion':            '',
+        'theL10NVersions':              { },
     }
     return unInforme
 
-
-
-
-
-
-
+     
+        
 def TRAExport_ParametersCandidateValues( 
     theContextualObject = None,
     theParametersInput               = {},
@@ -184,7 +205,35 @@ def TRAExport_ParametersCandidateValues(
             unInforme[ 'theEncodingErrorHandleMode_vocabulary']         = unEncodingErrorHandleModeVocabulary
             unInforme[ 'theEncodingErrorHandleMode_vocabulary_msgids']  = unEncodingErrorHandleModeMetaAndValue[ 8]
     
+        unExportFilenameForGvSIGMetaAndValue = theContextualObject.getCatalogo().getAttributeMetaAndValue( 'exportarNombreFicheroParaGvSIGPorDefecto')
+        if unExportFilenameForGvSIGMetaAndValue:
+            unExportFilenameForGvSIGVocabulary = unExportFilenameForGvSIGMetaAndValue[ 7]
+            unExportFilenameForGvSIG = theParametersInput.get( 'theFilenameForGvSIG', None)
+            if not ( unExportFilenameForGvSIG in unExportFilenameForGvSIGVocabulary):
+                unExportFilenameForGvSIG = unExportFilenameForGvSIGMetaAndValue[ 1]
+            if not ( unExportFilenameForGvSIG in unExportFilenameForGvSIGVocabulary):
+                unExportFilenameForGvSIG = unExportFilenameForGvSIGVocabulary[ 0]
+            unInforme[ 'theFilenameForGvSIG']                    = unExportFilenameForGvSIG
+            unInforme[ 'theFilenameForGvSIG_vocabulary']         = unExportFilenameForGvSIGVocabulary
+            unInforme[ 'theFilenameForGvSIG_vocabulary_msgids']  = unExportFilenameForGvSIGMetaAndValue[ 8]
         
+            
+        unProductName = theParametersInput.get( 'theProductName', None)
+        if not unProductName:
+            unProductName = theContextualObject.getCatalogo().getNombreProducto()
+        unInforme[ 'theProductName'] = unProductName
+        
+        unProductVersion = theParametersInput.get( 'theProductVersion', None)
+        if not unProductVersion:
+            unProductVersion = cDefaultProductVersionForGvSIGExportFilename
+        unInforme[ 'theProductVersion'] = unProductVersion
+        
+        unL10NVersion = theParametersInput.get( 'theL10NVersion', None)
+        if not unL10NVersion:
+            unL10NVersion = cDefaultL10NVersionForGvSIGExportFilename
+        unInforme[ 'theL10NVersion'] = unL10NVersion
+            
+            
         unInformeIdiomasYModulos = theContextualObject.getCatalogo().fInformeTitulosIdiomasConIdiomaReferenciaYModulosPermitidos( 
             cUseCase_Export, 
             thePermissionsCache         =unPermissionsCache, 
@@ -228,7 +277,8 @@ def TRAExport_ParametersCandidateValues(
         unInforme[ 'theCodificacionesCaracteres'] = unosEncodingsAUtilizar
         
          
-        
+
+            
         unosEncodingsPorCodigoIdioma = { }
         unInforme[ 'encodings_by_language_code'] = unosEncodingsPorCodigoIdioma
         
@@ -245,6 +295,8 @@ def TRAExport_ParametersCandidateValues(
                     if unCodigoIdioma in unosCodigosIdiomasSolicitados:
                         unosCodigosIdiomasAExportar.append( unCodigoIdioma)
                         
+                       
+                        
                     unCodigoIdiomaReferenciaSolicitado = unosCodigosIdiomasReferenciaSolicitados.get( unCodigoIdioma, '')
                     if not unCodigoIdiomaReferenciaSolicitado or not (  unCodigoIdiomaReferenciaSolicitado in todosCodigosIdiomas):
                         unCodigoIdiomaReferenciaSolicitado = unInformeIdioma.get( 'codigo_idioma_referencia', '')
@@ -252,6 +304,8 @@ def TRAExport_ParametersCandidateValues(
                     if unCodigoIdiomaReferenciaSolicitado and ( unCodigoIdiomaReferenciaSolicitado in todosCodigosIdiomas):
                         unosCodigosIdiomasReferencia[ unCodigoIdioma] = unCodigoIdiomaReferenciaSolicitado
                           
+                        
+                        
                     unosEncodingsForLanguage = theContextualObject.fEncodingsForLanguage( unCodigoIdioma)
                     unosEncodingsNamesForLanguage = []
                     if unosEncodingsForLanguage:
@@ -270,7 +324,8 @@ def TRAExport_ParametersCandidateValues(
                         
                     if unEncodingSolicitado and ( unEncodingSolicitado in unosEncodingsNamesForLanguage): 
                         unosEncodingsAUtilizar[ unCodigoIdioma] =  unEncodingSolicitado   
-                                
+                                                 
+                         
         return unInforme
          
 
@@ -285,27 +340,27 @@ def TRAExport_ParametersCandidateValues(
 
 
 
-def TRAExport_EstimateOrExportContent( 
-    theContextualObject = None,
-    theParametersInput               = {},
-    thePermissionsCache              = None,
-    theRolesCache                    = None,
-    theUseCaseAssessmentResultsCache = None,
-    theParentExecutionRecord         = None):
+#def TRAExport_EstimateOrExportContent( 
+    #theContextualObject = None,
+    #theParametersInput               = {},
+    #thePermissionsCache              = None,
+    #theRolesCache                    = None,
+    #theUseCaseAssessmentResultsCache = None,
+    #theParentExecutionRecord         = None):
 
-    unExecutionRecord = theContextualObject.fStartExecution( 'external method', 'TRAExport_EstimateOrExportContent', theParentExecutionRecord, False) 
+    #unExecutionRecord = theContextualObject.fStartExecution( 'external method', 'TRAExport_EstimateOrExportContent', theParentExecutionRecord, False) 
 
-    try:
+    #try:
 
-        unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-        unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+        #unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
+        #unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
         
         
-        return unInforme
+        #return unInforme
          
 
-    finally:
-        unExecutionRecord and unExecutionRecord.pEndExecution()
+    #finally:
+        #unExecutionRecord and unExecutionRecord.pEndExecution()
                       
                 
               

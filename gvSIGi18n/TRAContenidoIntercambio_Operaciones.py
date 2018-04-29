@@ -55,8 +55,14 @@ from Products.CMFCore.utils import getToolByName
 
 from Products.CMFCore       import permissions
 
+from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow, fDateTimeNow, fReprAsString, fEvalString
+
 
 from TRAElemento_Constants import *
+
+
+from TRAElemento_Operaciones            import TRAElemento_Operaciones
+
 
 
 cElementAttributeQuote          = u'"'
@@ -68,6 +74,7 @@ cElementLanguagesClose          = u'</languages>'
 cElementLanguagePrefix          = u'<language code="'
 cElementLanguagePostfix         = u'%s" />'
 cElementLanguage                = cElementLanguagePrefix + cElementLanguagePostfix
+cElementLanguageDetails         = u'<languagesdetails>%s</languagesdetails>'
 cElementModulesOpen             = u'<modules>'
 cElementModulesClose            = u'</modules>'
 cElementModuleOpen              = u'<module>'
@@ -97,6 +104,11 @@ cEstadoExpectTraduccionOrStringClose        = 'ExpectTraduccionOrStringClose'
 cEstadoFinal                                = 'Final'
 
 
+
+
+
+
+
 class TRAContenidoIntercambio_Operaciones:
     """
     """
@@ -117,7 +129,7 @@ class TRAContenidoIntercambio_Operaciones:
     security.declarePrivate( 'pSetContenido')    
     def pSetContenido( self, theContenido):
 
-        unAhora = self.fDateTimeNow()
+        unAhora = fDateTimeNow()
         
         if not theContenido:
             self.setContenido( '')
@@ -140,81 +152,217 @@ class TRAContenidoIntercambio_Operaciones:
         
         aTranslationService = getToolByName( self, 'translation_service', None)
 
-        unStreamContenido = StringIO( u'')
-        
-        unStreamContenido.write( u'%s\n' % cElementTranslationsInterchangeOpen)
+        aContenidoStructureToConvert = self.fNewVoidUploadedContent()
         
         someLanguages = theContenidoUploadedFile.get( 'languages', [])
-        unStreamContenido.write( u'%s\n' % cElementLanguagesOpen)
-        for unLenguage in someLanguages:
-            unStreamContenido.write( u'%s\n' % (cElementLanguage % unLenguage))
-        unStreamContenido.write( u'%s\n' % cElementLanguagesClose)
-             
-        someModules = theContenidoUploadedFile.get( 'modules', [])
-        unStreamContenido.write(  u'%s\n' % cElementModulesOpen)
-        for unModule in someModules:
-            unStreamContenido.write( u'%s%s%s\n' % ( cElementModuleOpen, unModule, cElementModuleClose, ) )
-        unStreamContenido.write( u'%s\n' % cElementModulesClose)
+        if someLanguages:
+            aContenidoStructureToConvert[ 'languages'].extend( someLanguages)
         
-        someStringsAndTranslations = theContenidoUploadedFile.get( 'strings_and_translations', {})
-        someStringsWithEncodingErrors = theContenidoUploadedFile.get( 'strings_with_encoding_errors', {})
-        someStringsSources = theContenidoUploadedFile.get( 'strings_sources', {})
+        someLanguagesDetails = theContenidoUploadedFile.get( 'languages_details', [])
+        if someLanguagesDetails:
+            
+            someLanguagesDetailsToConvert = aContenidoStructureToConvert[ 'languages_details']
+            
+            for aLanguage, aLanguageDetails in someLanguagesDetails.items():
+                
+                if aLanguage and aLanguageDetails:
+                    
+                    someDetailsForLanguageToConvert = someLanguagesDetailsToConvert.get( aLanguage, {})
+                    if not someDetailsForLanguageToConvert:
+                        someDetailsForLanguageToConvert = {}
+                        someLanguagesDetailsToConvert[ aLanguage] = someDetailsForLanguageToConvert
+                        
+                    for aDetailKey, aDetailValue in aLanguageDetails.items():
+                        
+                        if aDetailKey and ( aDetailKey in cAcceptedLanguageDetailKeys):
 
-        unStreamContenido.write( u'%s\n' % cElementStringsOpen)
+                            someDetailsForLanguageToConvert[ aDetailKey] = aDetailValue
+                        
+        
+        someModules = theContenidoUploadedFile.get( 'modules', [])
+        aContenidoStructureToConvert[ 'modules'] = someModules[:]
+       
+        
+        
+        someStringsAndTranslations    = theContenidoUploadedFile.get( 'strings_and_translations', {})
+        someStringsWithEncodingErrors = theContenidoUploadedFile.get( 'strings_with_encoding_errors', {})
+        someStringsSources            = theContenidoUploadedFile.get( 'strings_sources', {})
+
+        someStringsAndTranslationsToConvert    = aContenidoStructureToConvert[ 'strings_and_translations']
+        someStringsWithEncodingErrorsToConvert = aContenidoStructureToConvert[ 'strings_with_encoding_errors']
+        someStringsSourcesToConvert            = aContenidoStructureToConvert[ 'strings_sources']
+
         
         someSymbols = someStringsAndTranslations.keys()
         for unSimbolo in someSymbols:
-            unStreamContenido.write( u'%s\n' %  ( cElementStringOpen % aTranslationService.asunicodetype( unSimbolo, errors="strict")))
-            unasTranslations = someStringsAndTranslations.get( unSimbolo, {})
+            
+           
+            unasTranslations                = someStringsAndTranslations.get( unSimbolo, {})
+            unosLanguages                   = unasTranslations.keys()
             unosLenguagesWithEncodingErrors = someStringsWithEncodingErrors.get( unSimbolo, [])
-            unosLanguages = unasTranslations.keys()
+
+            unasTranslationsToConvert = someStringsAndTranslationsToConvert.get( unSimbolo, {})
+            if not unasTranslationsToConvert:
+                unasTranslationsToConvert = { }
+                someStringsAndTranslationsToConvert[ unSimbolo] = unasTranslationsToConvert
+                
+            unosLenguagesWithEncodingErrorsToConvert = someStringsWithEncodingErrorsToConvert.get( unSimbolo, [])
+            if not unosLenguagesWithEncodingErrorsToConvert:
+                unosLenguagesWithEncodingErrorsToConvert = [ ]
+                someStringsWithEncodingErrorsToConvert[ unSimbolo] = unosLenguagesWithEncodingErrorsToConvert
+                
+            unosSourcesToConvert = someStringsSourcesToConvert.get( unSimbolo, [])
+            if not unosSourcesToConvert:
+                unosSourcesToConvert = [ ]
+                someStringsSourcesToConvert[ unSimbolo] = unosSourcesToConvert
+                
+                
+                
             for unLenguage in unosLanguages:
-                unLenguageUnicode = aTranslationService.asunicodetype( unLenguage, errors="strict")
-                if ( unLenguage in unosLenguagesWithEncodingErrors):
-                    unStreamContenido.write( cElementEncodingError % unLenguageUnicode )
-                else:
+                
+                if not ( unLenguage in unosLenguagesWithEncodingErrors):
+                    
                     unaTranslation = unasTranslations.get( unLenguage, '')
                     if unaTranslation:
+                        
                         unaTranslation = unaTranslation.replace('\n', '').replace( '\t', '')
-                        unaTranslationUnicode = ''
-                        try:
-                            unaTranslationUnicode = aTranslationService.asunicodetype( unaTranslation, errors="strict")
-                        except:
-                            None
-                        if unaTranslationUnicode:
-                            try:
-                                unaStringElementTraduccion = cElementTranslation % ( unLenguageUnicode, unaTranslationUnicode,)
-                                unStreamContenido.write( u'%s\n' % unaStringElementTraduccion)
-                            except:
-                                None
+                        if unaTranslation:
+                            
+                            unasTranslationsToConvert[ unLenguage] =  unaTranslation 
+                           
+                else:
+                    if not ( unLenguage in unosLenguagesWithEncodingErrorsToConvert):
+                        unosLenguagesWithEncodingErrorsToConvert.append( unLenguage)
             
-            unString_Sources = someStringsSources.get( unSimbolo, '').strip()
+            unString_Sources = someStringsSources.get( unSimbolo, [])
             if unString_Sources:
-                try:
-                    unStreamContenido.write( u'%s%s%s\n' % ( cElementSourcesOpen, unString_Sources, cElementSourcesClose,))
-                except:
-                    None
+                unosSourcesToConvert.extend( unString_Sources)
+                                
+
+
+        unStringContenido = fReprAsString( aContenidoStructureToConvert)
+        
+        return unStringContenido
+    
+
+
+
+
+    
+            
+    #security.declarePrivate( 'fStringFromContenidoDeUploadedFile_ORIG')    
+    #def fStringFromContenidoDeUploadedFile_ORIG( self, theContenidoUploadedFile):
+        
+        #aTranslationService = getToolByName( self, 'translation_service', None)
+
+        #unStreamContenido = StringIO( u'')
+        
+        #unStreamContenido.write( u'%s\n' % cElementTranslationsInterchangeOpen)
+        
+        #someLanguages = theContenidoUploadedFile.get( 'languages', [])
+        #unStreamContenido.write( u'%s\n' % cElementLanguagesOpen)
+        #for unLenguage in someLanguages:
+            #unStreamContenido.write( u'%s\n' % (cElementLanguage % unLenguage))
+        #unStreamContenido.write( u'%s\n' % cElementLanguagesClose)
+
+        
+        
+        #someLanguagesDetails = theContenidoUploadedFile.get( 'languages_details', [])
+        #if someLanguagesDetails:
+            #someUnicodeLanguagesDetails = {}
+            
+            #for unLenguage in someLanguagesDetails.keys():
+
+                #someDetailsForLanguage = {}
+
+                #unosDetailsForLanguage = someLanguagesDetails[ unLenguage]
+                #if unosDetailsForLanguage:
+                    
+                    #unosDetailsKeys = unosDetailsForLanguage.keys()
+                    #for unDetailKey in unosDetailsKeys:
+
+                        #unDetailValue = unosDetailsKeys.get( unDetailKey)
+                        #if unDetailValue:
+
+                            #unUnicodeDetailValue = aTranslationService.asunicodetype( unDetailValue, errors="strict")
+                            #if unUnicodeDetailValue:
+
+                                #someDetailsForLanguage[ unDetailKey] = unUnicodeDetailValue
+                    
+                #if someDetailsForLanguage:
+                    #someUnicodeLanguagesDetails[ unLenguage] = someDetailsForLanguage
+            
+            #if someUnicodeLanguagesDetails:
+                    
+                #aLanguagesDetailsString = fReprAsString( someUnicodeLanguagesDetails)
+                #unStreamContenido.write( u'%s\n' % (cElementLanguageDetails % aLanguagesDetailsString))
+            
+
+            
+            
+        #unStreamContenido.write( u'%s\n' % (cElementLanguage % fReprAsString( someLanguagesDetails)))
+        
+        #someModules = theContenidoUploadedFile.get( 'modules', [])
+        #unStreamContenido.write(  u'%s\n' % cElementModulesOpen)
+        #for unModule in someModules:
+            #unStreamContenido.write( u'%s%s%s\n' % ( cElementModuleOpen, unModule, cElementModuleClose, ) )
+        #unStreamContenido.write( u'%s\n' % cElementModulesClose)
+        
+        #someStringsAndTranslations = theContenidoUploadedFile.get( 'strings_and_translations', {})
+        #someStringsWithEncodingErrors = theContenidoUploadedFile.get( 'strings_with_encoding_errors', {})
+        #someStringsSources = theContenidoUploadedFile.get( 'strings_sources', {})
+
+        #unStreamContenido.write( u'%s\n' % cElementStringsOpen)
+        
+        #someSymbols = someStringsAndTranslations.keys()
+        #for unSimbolo in someSymbols:
+            #unStreamContenido.write( u'%s\n' %  ( cElementStringOpen % aTranslationService.asunicodetype( unSimbolo, errors="strict")))
+            #unasTranslations = someStringsAndTranslations.get( unSimbolo, {})
+            #unosLenguagesWithEncodingErrors = someStringsWithEncodingErrors.get( unSimbolo, [])
+            #unosLanguages = unasTranslations.keys()
+            #for unLenguage in unosLanguages:
+                #unLenguageUnicode = aTranslationService.asunicodetype( unLenguage, errors="strict")
+                #if ( unLenguage in unosLenguagesWithEncodingErrors):
+                    #unStreamContenido.write( cElementEncodingError % unLenguageUnicode )
+                #else:
+                    #unaTranslation = unasTranslations.get( unLenguage, '')
+                    #if unaTranslation:
+                        #unaTranslation = unaTranslation.replace('\n', '').replace( '\t', '')
+                        #unaTranslationUnicode = ''
+                        #try:
+                            #unaTranslationUnicode = aTranslationService.asunicodetype( unaTranslation, errors="strict")
+                        #except:
+                            #None
+                        #if unaTranslationUnicode:
+                            #try:
+                                #unaStringElementTraduccion = cElementTranslation % ( unLenguageUnicode, unaTranslationUnicode,)
+                                #unStreamContenido.write( u'%s\n' % unaStringElementTraduccion)
+                            #except:
+                                #None
+            
+            #unString_Sources = someStringsSources.get( unSimbolo, '').strip()
+            #if unString_Sources:
+                #try:
+                    #unStreamContenido.write( u'%s%s%s\n' % ( cElementSourcesOpen, unString_Sources, cElementSourcesClose,))
+                #except:
+                    #None
                 
             
                                 
-            unStreamContenido.write( u'%s\n' % cElementStringClose)
+            #unStreamContenido.write( u'%s\n' % cElementStringClose)
                     
-        unStreamContenido.write( u'%s\n' % cElementStringsClose)
+        #unStreamContenido.write( u'%s\n' % cElementStringsClose)
             
-        unStreamContenido.write( u'%s\n' % cElementTranslationsInterchangeClose)
+        #unStreamContenido.write( u'%s\n' % cElementTranslationsInterchangeClose)
 
-        unStringContenidoUnicode = unStreamContenido.getvalue()
+        #unStringContenidoUnicode = unStreamContenido.getvalue()
 
-        unStringContenidoEncoded = aTranslationService.encode( unStringContenidoUnicode) 
+        #unStringContenidoEncoded = aTranslationService.encode( unStringContenidoUnicode) 
         
-        return unStringContenidoEncoded
+        #return unStringContenidoEncoded
     
 
 
-
-
-    
-    
     
     
             
@@ -239,197 +387,207 @@ class TRAContenidoIntercambio_Operaciones:
             
             
                                            
-                     
-            
 
     security.declarePrivate( 'fContenidoFromString')    
     def fContenidoFromString( self, theContenidoString, theParentExecutionRecord=None):
         
-        unExecutionRecord = self.fStartExecution( 'method',  'fContenidoFromString', theParentExecutionRecord,  False, ) 
+        if not theContenidoString:
+            return None
         
-        try:
-            
-            unContenido = self.fNewVoidUploadedContent()
-            
-            if not theContenidoString:
-                return unContenido
-    
-            aTranslationService = getToolByName( self, 'translation_service', None)
-            unContenidoUnicodeString = ''
-            try:
-                unContenidoUnicodeString = aTranslationService.asunicodetype( theContenidoString, errors="strict")
-            except:
-                None
-            if not unContenidoUnicodeString:
-                return unContenido
+        aContenido = fEvalString( theContenidoString)
+        
+        return aContenido
     
             
-            someLines = unContenidoUnicodeString.split( '\n')
-            unNumLines = len( someLines)
-            unLineIndex = 0
+
+    #security.declarePrivate( 'fContenidoFromString')    
+    #def fContenidoFromString( self, theContenidoString, theParentExecutionRecord=None):
+        
+        #unExecutionRecord = self.fStartExecution( 'method',  'fContenidoFromString', theParentExecutionRecord,  False, ) 
+        
+        #try:
             
-            unEstado = cEstadoExpectTranslationsInterchange
-            unEstadoError = ''
-            unCurrentLineIndex = -1
-            unCurrentSymbol = ''
+            #unContenido = self.fNewVoidUploadedContent()
             
-            while( unLineIndex < unNumLines):
-                unaLine = someLines[ unLineIndex].strip()
-                unCurrentLineIndex = unLineIndex
-                unLineIndex += 1
-                if unaLine:
+            #if not theContenidoString:
+                #return unContenido
     
-                    if unEstado == cEstadoExpectTranslationsInterchange:
-                        if unaLine.startswith( cElementTranslationsInterchangeOpen):
-                            unEstado = cEstadoExpectLanguagesOrModulesOrStringsOrTranslationsInterchangeClose    
-                            continue
+            #aTranslationService = getToolByName( self, 'translation_service', None)
+            #unContenidoUnicodeString = ''
+            #try:
+                #unContenidoUnicodeString = aTranslationService.asunicodetype( theContenidoString, errors="strict")
+            #except:
+                #None
+            #if not unContenidoUnicodeString:
+                #return unContenido
+    
+            
+            #someLines = unContenidoUnicodeString.split( '\n')
+            #unNumLines = len( someLines)
+            #unLineIndex = 0
+            
+            #unEstado = cEstadoExpectTranslationsInterchange
+            #unEstadoError = ''
+            #unCurrentLineIndex = -1
+            #unCurrentSymbol = ''
+            
+            #while( unLineIndex < unNumLines):
+                #unaLine = someLines[ unLineIndex].strip()
+                #unCurrentLineIndex = unLineIndex
+                #unLineIndex += 1
+                #if unaLine:
+    
+                    #if unEstado == cEstadoExpectTranslationsInterchange:
+                        #if unaLine.startswith( cElementTranslationsInterchangeOpen):
+                            #unEstado = cEstadoExpectLanguagesOrModulesOrStringsOrTranslationsInterchangeClose    
+                            #continue
      
-                        if unaLine.startswith( cElementTranslationsInterchangeClose):
-                            unEstado = cEstadoFinal    
-                            continue
+                        #if unaLine.startswith( cElementTranslationsInterchangeClose):
+                            #unEstado = cEstadoFinal    
+                            #continue
     
-                        else:
-                            unEstadoError = unEstado
-                            break
+                        #else:
+                            #unEstadoError = unEstado
+                            #break
     
-                    elif unEstado == cEstadoExpectLanguagesOrModulesOrStringsOrTranslationsInterchangeClose:
-                        if unaLine.startswith( cElementLanguagesOpen):
-                            unEstado = cEstadoExpectLanguageOrLanguagesClose    
-                            continue
+                    #elif unEstado == cEstadoExpectLanguagesOrModulesOrStringsOrTranslationsInterchangeClose:
+                        #if unaLine.startswith( cElementLanguagesOpen):
+                            #unEstado = cEstadoExpectLanguageOrLanguagesClose    
+                            #continue
                         
-                        elif unaLine.startswith( cElementModulesOpen):
-                            unEstado = cEstadoExpectModuleOrModulesClose    
-                            continue
+                        #elif unaLine.startswith( cElementModulesOpen):
+                            #unEstado = cEstadoExpectModuleOrModulesClose    
+                            #continue
                                            
-                        elif unaLine.startswith( cElementStringsOpen):
-                            unEstado = cEstadoExpectStringOrStringsClose    
-                            continue
+                        #elif unaLine.startswith( cElementStringsOpen):
+                            #unEstado = cEstadoExpectStringOrStringsClose    
+                            #continue
                             
-                        else:
-                            unEstadoError = unEstado
-                            break
+                        #else:
+                            #unEstadoError = unEstado
+                            #break
                      
-                    elif unEstado == cEstadoExpectLanguageOrLanguagesClose:
-                        if unaLine.startswith( cElementLanguagePrefix):
-                            unQuoteIndex = unaLine.find( cElementAttributeQuote, len( cElementLanguagePrefix))
-                            if unQuoteIndex:
-                                unLanguageCode = unaLine[ len( cElementLanguagePrefix): unQuoteIndex]
-                                if unLanguageCode:
-                                    unEncodedLanguageCode = aTranslationService.encode( unLanguageCode)
-                                    if unEncodedLanguageCode:
-                                        unContenido[ 'languages'].append( unEncodedLanguageCode)
-                            unEstado = cEstadoExpectLanguageOrLanguagesClose
-                            continue
+                    #elif unEstado == cEstadoExpectLanguageOrLanguagesClose:
+                        #if unaLine.startswith( cElementLanguagePrefix):
+                            #unQuoteIndex = unaLine.find( cElementAttributeQuote, len( cElementLanguagePrefix))
+                            #if unQuoteIndex:
+                                #unLanguageCode = unaLine[ len( cElementLanguagePrefix): unQuoteIndex]
+                                #if unLanguageCode:
+                                    #unEncodedLanguageCode = aTranslationService.encode( unLanguageCode)
+                                    #if unEncodedLanguageCode:
+                                        #unContenido[ 'languages'].append( unEncodedLanguageCode)
+                            #unEstado = cEstadoExpectLanguageOrLanguagesClose
+                            #continue
     
-                        elif unaLine.startswith( cElementLanguagesClose):
-                            unEstado = cEstadoExpectLanguagesOrModulesOrStringsOrTranslationsInterchangeClose
-                            continue
+                        #elif unaLine.startswith( cElementLanguagesClose):
+                            #unEstado = cEstadoExpectLanguagesOrModulesOrStringsOrTranslationsInterchangeClose
+                            #continue
                         
-                    elif unEstado == cEstadoExpectModuleOrModulesClose:
-                        if unaLine.startswith( cElementModuleOpen):
-                            unCloseIndex = unaLine.find( cElementModuleClose, len( cElementModuleOpen))
-                            if unCloseIndex:
-                                unModuleName = unaLine[ len( cElementModuleOpen): unCloseIndex]
-                                if unModuleName:
-                                    unEncodedModuleName = aTranslationService.encode( unModuleName)
-                                    if unEncodedModuleName:
-                                        unContenido[ 'modules'].append( unEncodedModuleName)
-                            unEstado = cEstadoExpectModuleOrModulesClose
-                            continue
+                    #elif unEstado == cEstadoExpectModuleOrModulesClose:
+                        #if unaLine.startswith( cElementModuleOpen):
+                            #unCloseIndex = unaLine.find( cElementModuleClose, len( cElementModuleOpen))
+                            #if unCloseIndex:
+                                #unModuleName = unaLine[ len( cElementModuleOpen): unCloseIndex]
+                                #if unModuleName:
+                                    #unEncodedModuleName = aTranslationService.encode( unModuleName)
+                                    #if unEncodedModuleName:
+                                        #unContenido[ 'modules'].append( unEncodedModuleName)
+                            #unEstado = cEstadoExpectModuleOrModulesClose
+                            #continue
     
-                        elif unaLine.startswith( cElementModulesClose):
-                            unEstado = cEstadoExpectLanguagesOrModulesOrStringsOrTranslationsInterchangeClose
-                            continue
+                        #elif unaLine.startswith( cElementModulesClose):
+                            #unEstado = cEstadoExpectLanguagesOrModulesOrStringsOrTranslationsInterchangeClose
+                            #continue
     
-                    elif unEstado == cEstadoExpectStringOrStringsClose:
-                        if unaLine.startswith( cElementStringPrefix):
-                            unQuoteIndex = unaLine.find( '"', len( cElementStringPrefix))
-                            if unQuoteIndex:
-                                unSymbol = unaLine[ len( cElementStringPrefix): unQuoteIndex]
-                                if unSymbol:
-                                    unEncodedSymbol = aTranslationService.encode( unSymbol)
-                                    unCurrentSymbol = unEncodedSymbol
-                                    if not ( unContenido[ 'strings_and_translations'].has_key( unCurrentSymbol)):
-                                        unContenido[ 'strings_and_translations'][ unCurrentSymbol] = {}
-                            unEstado = cEstadoExpectTraduccionOrStringClose
-                            continue
+                    #elif unEstado == cEstadoExpectStringOrStringsClose:
+                        #if unaLine.startswith( cElementStringPrefix):
+                            #unQuoteIndex = unaLine.find( '"', len( cElementStringPrefix))
+                            #if unQuoteIndex:
+                                #unSymbol = unaLine[ len( cElementStringPrefix): unQuoteIndex]
+                                #if unSymbol:
+                                    #unEncodedSymbol = aTranslationService.encode( unSymbol)
+                                    #unCurrentSymbol = unEncodedSymbol
+                                    #if not ( unContenido[ 'strings_and_translations'].has_key( unCurrentSymbol)):
+                                        #unContenido[ 'strings_and_translations'][ unCurrentSymbol] = {}
+                            #unEstado = cEstadoExpectTraduccionOrStringClose
+                            #continue
     
-                        elif unaLine.startswith( cElementStringsClose):
-                            unEstado = cEstadoExpectLanguagesOrModulesOrStringsOrTranslationsInterchangeClose
-                            continue
+                        #elif unaLine.startswith( cElementStringsClose):
+                            #unEstado = cEstadoExpectLanguagesOrModulesOrStringsOrTranslationsInterchangeClose
+                            #continue
     
-                    elif unEstado == cEstadoExpectTraduccionOrStringClose:
-                        if not unCurrentSymbol:
-                            unEstadoError = unEstado
-                            break
+                    #elif unEstado == cEstadoExpectTraduccionOrStringClose:
+                        #if not unCurrentSymbol:
+                            #unEstadoError = unEstado
+                            #break
                              
-                        if unaLine.startswith( cElementTranslationPrefix):
-                            unQuoteIndex = unaLine.find( cElementAttributeQuote, len( cElementTranslationPrefix))
-                            if unQuoteIndex:
-                                unLanguage = unaLine[ len( cElementTranslationPrefix): unQuoteIndex]
-                                if unLanguage:
-                                    unEncodedLanguage = aTranslationService.encode( unLanguage)
-                                    unGTIndex = unaLine.find( cElementDelimiterGT, unQuoteIndex + 1)
-                                    if unGTIndex:
-                                        unCloseIndex = unaLine.find( cElementTranslationClose, unGTIndex + 1)
-                                        if unCloseIndex:
-                                            unaUnicodeTranslation = unaLine[ unGTIndex + 1: unCloseIndex]
-                                            if unaUnicodeTranslation:
-                                                unaEncodedTranslation = aTranslationService.encode( unaUnicodeTranslation)
-                                                if unaEncodedTranslation:
-                                                    unContenido[ 'strings_and_translations'][ unCurrentSymbol][ unEncodedLanguage] = unaEncodedTranslation
+                        #if unaLine.startswith( cElementTranslationPrefix):
+                            #unQuoteIndex = unaLine.find( cElementAttributeQuote, len( cElementTranslationPrefix))
+                            #if unQuoteIndex:
+                                #unLanguage = unaLine[ len( cElementTranslationPrefix): unQuoteIndex]
+                                #if unLanguage:
+                                    #unEncodedLanguage = aTranslationService.encode( unLanguage)
+                                    #unGTIndex = unaLine.find( cElementDelimiterGT, unQuoteIndex + 1)
+                                    #if unGTIndex:
+                                        #unCloseIndex = unaLine.find( cElementTranslationClose, unGTIndex + 1)
+                                        #if unCloseIndex:
+                                            #unaUnicodeTranslation = unaLine[ unGTIndex + 1: unCloseIndex]
+                                            #if unaUnicodeTranslation:
+                                                #unaEncodedTranslation = aTranslationService.encode( unaUnicodeTranslation)
+                                                #if unaEncodedTranslation:
+                                                    #unContenido[ 'strings_and_translations'][ unCurrentSymbol][ unEncodedLanguage] = unaEncodedTranslation
                                                 
-                            unEstado = cEstadoExpectTraduccionOrStringClose
-                            continue
+                            #unEstado = cEstadoExpectTraduccionOrStringClose
+                            #continue
                         
-                        elif unaLine.startswith( cElementEncodingErrorPrefix):
+                        #elif unaLine.startswith( cElementEncodingErrorPrefix):
                             
-                            unQuoteIndex = unaLine.find( cElementAttributeQuote, len( cElementEncodingErrorPrefix))
-                            if unQuoteIndex:
-                                unLanguage = unaLine[ len( cElementEncodingErrorPrefix): unQuoteIndex]
-                                if unLanguage:
-                                    if unContenido[ 'strings_with_encoding_errors'].has_key( unCurrentSymbol):
-                                        unContenido[ 'strings_with_encoding_errors'][ unCurrentSymbol].append( unLanguage)   
-                                    else:
-                                        unContenido[ 'strings_with_encoding_errors'][ unCurrentSymbol] = [  unLanguage, ]
-                            unEstado = cEstadoExpectTraduccionOrStringClose
-                            continue # ACV OJO 200904012058 (should not matter much having a continue or not, as there is nothing after this in the loop
+                            #unQuoteIndex = unaLine.find( cElementAttributeQuote, len( cElementEncodingErrorPrefix))
+                            #if unQuoteIndex:
+                                #unLanguage = unaLine[ len( cElementEncodingErrorPrefix): unQuoteIndex]
+                                #if unLanguage:
+                                    #if unContenido[ 'strings_with_encoding_errors'].has_key( unCurrentSymbol):
+                                        #unContenido[ 'strings_with_encoding_errors'][ unCurrentSymbol].append( unLanguage)   
+                                    #else:
+                                        #unContenido[ 'strings_with_encoding_errors'][ unCurrentSymbol] = [  unLanguage, ]
+                            #unEstado = cEstadoExpectTraduccionOrStringClose
+                            #continue # ACV OJO 200904012058 (should not matter much having a continue or not, as there is nothing after this in the loop
 
                         
                         
                         
-                        elif unaLine.startswith( cElementSourcesOpen):
+                        #elif unaLine.startswith( cElementSourcesOpen):
                             
-                            unCloseIndex = unaLine.find( cElementSourcesClose, len( cElementSourcesOpen))
-                            if unCloseIndex:
-                                unSources = unaLine[ len( cElementSourcesOpen): unCloseIndex]
-                                if unSources:
-                                    unStringSources = unContenido[ 'strings_sources'].get( unCurrentSymbol, '').strip()
-                                    if not unStringSources:
-                                        unStringSources = unSources
-                                    else:
-                                        if not ( unStringSources.find( unSources) >= 0):
-                                            unStringSources = '%s %s' % ( unStringSources, unSources, )
-                                    if unStringSources:
-                                        unContenido[ 'strings_sources'][ unCurrentSymbol] = unStringSources  
+                            #unCloseIndex = unaLine.find( cElementSourcesClose, len( cElementSourcesOpen))
+                            #if unCloseIndex:
+                                #unSources = unaLine[ len( cElementSourcesOpen): unCloseIndex]
+                                #if unSources:
+                                    #unStringSources = unContenido[ 'strings_sources'].get( unCurrentSymbol, '').strip()
+                                    #if not unStringSources:
+                                        #unStringSources = unSources
+                                    #else:
+                                        #if not ( unStringSources.find( unSources) >= 0):
+                                            #unStringSources = '%s %s' % ( unStringSources, unSources, )
+                                    #if unStringSources:
+                                        #unContenido[ 'strings_sources'][ unCurrentSymbol] = unStringSources  
                                         
-                            unEstado = cEstadoExpectTraduccionOrStringClose
-                            continue 
+                            #unEstado = cEstadoExpectTraduccionOrStringClose
+                            #continue 
                         
-                        elif unaLine.startswith( cElementStringClose):
-                            unEstado = cEstadoExpectStringOrStringsClose
-                            continue
+                        #elif unaLine.startswith( cElementStringClose):
+                            #unEstado = cEstadoExpectStringOrStringsClose
+                            #continue
     
-                    elif unEstado == cEstadoFinal:
-                        break
+                    #elif unEstado == cEstadoFinal:
+                        #break
                     
-                    else:
-                        unEstadoError = unEstado
-                        break
+                    #else:
+                        #unEstadoError = unEstado
+                        #break
                         
-            return unContenido
-        finally:
-            unExecutionRecord and unExecutionRecord.pEndExecution()
+            #return unContenido
+        #finally:
+            #unExecutionRecord and unExecutionRecord.pEndExecution()
        
         
       
@@ -552,11 +710,61 @@ class TRAContenidoIntercambio_Operaciones:
 
     
   
+ 
     
     
+            
     
-    
-    
+    security.declarePublic( 'fExtraLinks')    
+    def fExtraLinks( self):
+        
+        unosExtraLinks = TRAElemento_Operaciones.fExtraLinks( self)
+        if not unosExtraLinks:
+            unosExtraLinks = [ ]
+        
+        unaURL = self.absolute_url()
+        if not unaURL:
+            return unosExtraLinks
+        
+
+        unExtraLink = self.fNewVoidExtraLink()
+        unExtraLink.update( {
+            'label'   : self.fTranslateI18N( 'plone', 'Data', 'Data-',),
+            'href'    : '%s/TRAContenidoIntercambioDatos/' % unaURL,
+            'icon'    : '',
+            'domain'  : 'plone',
+            'msgid'   : 'Data',
+        })
+        unosExtraLinks.append( unExtraLink)      
+        
+        
+        unImportacionURL = self.getContenedor().absolute_url()
+        if not unImportacionURL:
+            return unosExtraLinks
+        
+        unExtraLink = self.fNewVoidExtraLink()
+        unExtraLink.update( {
+            'label'   : self.fTranslateI18N( 'plone', 'Summary', 'Summary-',),
+            'href'    : '%s/TRAImportacionContenidosSumario/' % unImportacionURL,
+            'icon'    : '',
+            'domain'  : 'plone',
+            'msgid'   : 'Summary',
+        })
+        unosExtraLinks.append( unExtraLink)
+                            
+        unExtraLink = self.fNewVoidExtraLink()
+        unExtraLink.update( {
+            'label'   : self.fTranslateI18N( 'plone', 'Details', 'Details-',),
+            'href'    : '%s/TRAImportacionContenidosDetalle/' % unImportacionURL,
+            'icon'    : '',
+            'domain'  : 'plone',
+            'msgid'   : 'Details',
+        })
+        unosExtraLinks.append( unExtraLink)
+                                    
+
+        return unosExtraLinks
+        
     
  
 

@@ -5,8 +5,41 @@
 |
 |
 
+version 1.2.0.12
+----------------
 
-**As by v200911211405**
+610	ADMI12 When using separate storage for gvSIGi18n, add service to add to the ZCatalog the folders from the separate storage, to avoid rebuilding the ZCatalog, because some sites have difficulties in running ZCatalog re-creations	2009-12-12 03:00	  2009-12-19 03:00	100%
+603	AUDI01 Add action to object actions menu to inspect changes on elements of all types except TRACadena (string) and TRATraduccion (translation)	2009-12-06 16:00	  2009-12-13 16:00	100%
+604	AUDI02 Record changes not handled by the ModelDDvlPlone framework, like create import contents, create language, create new string request	2009-12-06 17:00	  2009-12-13 17:00	100%
+601	BUG: Fails to import Java .properties files not starting with \'text\' in their filename, whether imported in a .zip or .jar file or by themselves	2009-12-06 03:00	  2009-12-13 03:00	100%
+602	BUG: Fails to import NON Zipped Java .properties file with no header stating the language	2009-12-06 13:00	  2009-12-13 13:00	100%
+540	Changes GNU gettext .PO imported Domain names into lower case when SUC10 Import	2009-11-19 08:00	  2009-11-26 08:00	100%
+363	Error in template when manually creating an status report	2009-09-25 00:00	  2009-10-02 00:00	100%
+46	EXPO02 Export translations with archive name ...	2009-07-03 12:00	  2009-07-03 15:00	100%
+638	EXPO09 Add Export action internally parametrized to supply a full backup of the translations catalog, able to re-create the translations by import, excluding their history of changes	2010-01-19 17:00	  2010-01-26 17:00	100%
+55	IDIO02 Show flags including the ones not pre-defined in Plone	2009-07-21 11:00	  2009-07-21 14:00	100%
+680	IMPL01 Place the external methods inside the custom folder in portal_skins	2010-01-22 06:00	  2010-01-29 06:00	100%
+362	IMPO 08 Does not initialize or present Status Reports before and after import	2009-09-25 00:00	  2009-10-02 00:00	100%
+572	In Translations Page MUST CGI escape also the localized strings of internationalized symbols	2009-11-23 11:00	  2009-11-30 11:00	100%
+621	PERF07 Allow to switch on or off the execution profiling and report at the bottom of each page, by changing a simple variable assignment in a single TAL template	2009-12-15 07:00	  2009-12-22 07:00	100%
+625	PERF07 Cache all views: Root, Status by Languages, Import Data, Interchange Content Details, invalidating when elements change	2009-12-16 02:00	  2009-12-23 02:00	100%
+639	SUC21x1 Execute automatically all steps of Use Case "Request additional String to be translated" (create import process, execute import process, cleanup string requests)	2010-01-20 04:00	  2010-01-27 04:00	100%
+382	SUC 28 Use Case De-Activate and Activate a String	2009-09-27 02:00	  2009-10-04 02:00	100%
+367	SUC 30 Block and Unblock access to a specific language	2009-09-25 08:00	  2009-10-02 08:00	100%
+529	SUC33x2 Browse translations filtering by Fragments of Symbols separated by hypens, or under-scores	2009-11-14 02:00	  2009-11-21 02:00	100%
+674	SUC47 Obtain translations for a language, ready to distribute for gvSIG-desktop extension, without requesting all the Export parameters	2010-01-21 19:00	  2010-01-28 19:00	100%
+626	SUC49 Reuse Import process already launched, to allow Coordinators to execute the process again	2009-12-16 05:00	  2009-12-23 05:00	100%
+44	UC15-2 Use Case Extension Change Translation detecting multiuser	2009-07-02 09:00	  2009-07-02 16:00	100%
+485	UC28 Create Language Copying Strings from existing Language, extends UC23 Create Language	2009-11-02 23:00	  2009-11-09 23:00	100%
+51	UITR07 Add to translations screen a note for color shading	2009-07-17 08:00	  2009-07-17 11:00	100%
+616	UITR08 Send pending changes to server, by informing the user that there are requests queuede to be asynchronously sent to the server, such that the user may cancel abandoing the page and allow the requests to be sent	2009-12-15 01:00	  2009-12-22 01:00	100%
+624	UITR19 Add to Filter in Translationso Page the option to present only Strings in Inactive State	2009-12-16 00:00	  2009-12-23 00:00	100%
+553	UITR Translations page::Reference Language Selector::Names of languages not wekk known to Plone are not shown	2009-11-21 06:00	  2009-11-28 06:00	100%
+617	USEX06 When the Catalog is locked, display a message at the top of all pages	2009-12-15 06:00	  2009-12-22 06:00	100%
+618	USEX07 When the main Language is not writeable for the User, display a message at the top of the translations page	2009-12-15 06:00	  2009-12-22 06:00	100%
+679	When creating a language not well known to Plone, the title and english name of the language are not recorded	2010-01-22 05:00	  2010-01-29 05:00	100%
+
+
 
 |
 |

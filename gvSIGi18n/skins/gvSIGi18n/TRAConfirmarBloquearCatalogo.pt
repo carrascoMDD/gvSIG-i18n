@@ -40,8 +40,11 @@
         tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas." 
         i18n:domain="gvSIGi18n">
 
+
+        <metal:block metal:use-macro="here/TRAProfileExecution/macros/tSetupProfileExecution" />   
+
         <tal:block tal:define="
-            pExecutionRecord python: here.fStartExecution( 'template', 'TRAConfirmarBloquearCatalogo.pt', None, True, { 'log_what': 'details', 'log_when': True, });
+            pExecutionRecord python: here.fStartExecution( 'template', 'TRAConfirmarBloquearCatalogo.pt', None, pAllowRootProfileExecution, { 'log_what': 'details', 'log_when': True, });
             pPermissionsCache python: {};
             pRolesCache python: {}" >
             
@@ -57,6 +60,12 @@
               Get the byline - contains details about author and modification date.
             </div>
             
+            
+            <tal:block tal:condition="python: not here.fAllowWrite()" >
+                <div class="portalMessage" >
+                    <span tal:content="python: here.ModelDDvlPlone_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TranslationsCatalogIsLockedAgainstModifications', 'The Translations Catalog Is Locked Against Modifications')" />
+                </div>
+            </tal:block>
             
     
             <tal:block tal:define="pPermiteEditar python: False; pPermiteEliminar python: False; pShowOrHideTrees python: False">

@@ -69,8 +69,12 @@ from Products.CMFCore.utils         import getToolByName
 
 
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneTool import cModelDDvlPloneToolName, ModelDDvlPloneTool
+from Products.ModelDDvlPloneTool.ModelDDvlPloneTool                   import cModelDDvlPloneToolId,          ModelDDvlPloneTool
+from Products.ModelDDvlPloneConfiguration.ModelDDvlPloneConfiguration import cModelDDvlPloneConfigurationId, ModelDDvlPloneConfiguration
 
+
+
+from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow
 
 
 from TRAElemento_Constants import *
@@ -106,6 +110,7 @@ from TRAElemento_Permission_Definitions import cTRAUserGroups_Catalogo_Authorize
 cLogInformeLazyCrear     = True
 
 
+from Products.ModelDDvlPloneTool.ModelDDvlPloneTool import cInstall_Tools_On_PortalSkinsCustom, cInstallPath_PortalSkinsCustom
 
 
 
@@ -129,9 +134,42 @@ class TRACatalogo_Inicializacion:
 
 
    
-
+            
     
-
+    security.declarePrivate('fInstallContainer_Tools')
+    def fInstallContainer_Tools( self):
+        
+        unPortalRoot = self.fPortalRoot()
+        
+        if unPortalRoot == None:
+            return None
+        
+        if not cInstall_Tools_On_PortalSkinsCustom:
+            return unPortalRoot
+        
+        if not cInstallPath_PortalSkinsCustom:
+            return unPortalRoot
+            
+        
+        aTraversedObject = unPortalRoot
+        for aTraversal in cInstallPath_PortalSkinsCustom:
+            aNextObject = None
+            try:
+                aNextObject = aTraversedObject[ aTraversal]
+            except ValueError, AttributeError:
+                None
+            if aNextObject == None:
+                return None
+            
+            aTraversedObject = aNextObject
+            
+        if aTraversedObject == None:
+            return None
+        
+        return aTraversedObject
+    
+    
+            
 
         
             
@@ -448,6 +486,10 @@ class TRACatalogo_Inicializacion:
                             unInforme[ 'success']   =  False
                             unInforme[ 'condition'] = 'user_can_NOT_initialize_TRACatalogo'
                             return unInforme
+
+                        
+                        self.pFlushCachedTemplates_All()
+                        
                         
                     else:
                         unUseCaseQueryResult = self.fUseCaseAssessment(  
@@ -462,10 +504,10 @@ class TRACatalogo_Inicializacion:
                             unInforme[ 'success']   =  False
                             unInforme[ 'condition'] = 'user_can_NOT_verify_TRACatalogo'
                             return unInforme
-                        
-                                    
+                                                         
                                 
                 unInforme[ 'ModelDDvlPloneTool']               = self.fLazyCrearModelDDvlPloneTool(            theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
+                unInforme[ 'ModelDDvlPloneConfiguration']      = self.fLazyCrearModelDDvlPloneConfiguration(   theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
                 unInforme[ 'external_methods']                 = self.fLazyCrearTodosExternalMethods(          theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
                 unInforme[ 'colecciones']                      = self.fLazyCrearCollections(                   theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
                 unInforme[ 'catalogs_cadenas']                 = self.fLazyCrearCatalogsEIndicesEnCatalogo(    theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
@@ -479,6 +521,7 @@ class TRACatalogo_Inicializacion:
                 
                 unInforme[ 'success'] = \
                     unInforme[ 'ModelDDvlPloneTool']            and unInforme[ 'ModelDDvlPloneTool'][ 'success'] and  \
+                    unInforme[ 'ModelDDvlPloneConfiguration']   and unInforme[ 'ModelDDvlPloneConfiguration'][ 'success'] and  \
                     unInforme[ 'external_methods']              and unInforme[ 'external_methods'][ 'success'] and  \
                     unInforme[ 'colecciones']                   and unInforme[ 'colecciones'][ 'success']  and  \
                     unInforme[ 'catalogs_cadenas']              and unInforme[ 'catalogs_cadenas'][ 'success'] and \
@@ -656,15 +699,22 @@ class TRACatalogo_Inicializacion:
                         unInforme[ 'condition'] = 'user_can_NOT_initialize_TRACatalogo'
                         return unInforme
                     
-                unPortalRoot = self.fPortalRoot()
-                if not unPortalRoot:
-                    unInforme[ 'success']   =  False
-                    unInforme[ 'condition'] = 'FAILURE_accessing_portal_root"'
+                unInforme.update( {
+                    'install_on_portalskinscustom': cInstall_Tools_On_PortalSkinsCustom,
+                    'installpath':                  ( cInstall_Tools_On_PortalSkinsCustom and cInstallPath_PortalSkinsCustom) or '',
+                })
+
+                unInstallContainer = self.fInstallContainer_Tools()
+                if not unInstallContainer:
+                    unInforme.update({
+                        'success':   False,
+                        'condition': 'No_InstallContainer',
+                    })
                     return unInforme
                 
                 unExternalMethod = None
                 try:
-                    unExternalMethod = aq_get( unPortalRoot, theExtMethodId, None, 1)
+                    unExternalMethod = aq_get( unInstallContainer, theExtMethodId, None, 1)
                 except:
                     None  
                 if unExternalMethod:
@@ -710,10 +760,10 @@ class TRACatalogo_Inicializacion:
                     unInforme[ 'status']  = 'creation_failed'
                     return unInforme
                     
-                unPortalRoot._setObject( theExtMethodId,  unNewExternalMethod)
+                unInstallContainer._setObject( theExtMethodId,  unNewExternalMethod)
                 unExternalMethod = None
                 try:
-                    unExternalMethod = aq_get( unPortalRoot, theExtMethodId, None, 1)
+                    unExternalMethod = aq_get( unInstallContainer, theExtMethodId, None, 1)
                 except:
                     None  
                 if not unExternalMethod:
@@ -798,21 +848,25 @@ class TRACatalogo_Inicializacion:
                         unInforme[ 'condition'] = 'user_can_NOT_initialize_TRACatalogo'
                         return unInforme    
                     
+                unInforme.update({
+                    'install_on_portalskinscustom': cInstall_Tools_On_PortalSkinsCustom,
+                    'installpath':                  ( cInstall_Tools_On_PortalSkinsCustom and cInstallPath_PortalSkinsCustom) or '',
+                    'tool_id':                      cModelDDvlPloneToolId,
+                    'tool_class_name':              'ModelDDvlPloneTool',
+                })
                     
-                unPortalRoot = self.fPortalRoot()
-                if not unPortalRoot:
-                    unInforme[ 'success']   =  False
-                    unInforme[ 'condition'] = 'No_portal_root'
+                unInstallContainer = self.fInstallContainer_Tools()
+                if not unInstallContainer:
+                    unInforme.update({
+                        'success':   False,
+                        'condition': 'No_InstallContainer',
+                    })
                     return unInforme
                 
-                unInforme.update({
-                    'tool_id':          cModelDDvlPloneToolName,
-                    'tool_class_name':  'ModelDDvlPloneTool',
-                })
                 
                 aModelDDvlPloneTool = None
                 try:
-                    aModelDDvlPloneTool = aq_get( unPortalRoot, cModelDDvlPloneToolName, None, 1)
+                    aModelDDvlPloneTool = aq_get( unInstallContainer, cModelDDvlPloneToolId, None, 1)
                 except:
                     None  
                 if aModelDDvlPloneTool:
@@ -827,10 +881,10 @@ class TRACatalogo_Inicializacion:
          
                 
                 unaNuevaTool = ModelDDvlPloneTool( ) 
-                unPortalRoot._setObject( cModelDDvlPloneToolName,  unaNuevaTool)
+                unInstallContainer._setObject( cModelDDvlPloneToolId,  unaNuevaTool)
                 aModelDDvlPloneTool = None
                 try:
-                    aModelDDvlPloneTool = aq_get( unPortalRoot, cModelDDvlPloneToolName, None, 1)
+                    aModelDDvlPloneTool = aq_get( unInstallContainer, cModelDDvlPloneToolId, None, 1)
                 except:
                     None  
                 if not aModelDDvlPloneTool:
@@ -872,7 +926,118 @@ class TRACatalogo_Inicializacion:
         
 
  
-    
+
+   
+    security.declarePrivate( 'fLazyCrearModelDDvlPloneConfiguration')
+    def fLazyCrearModelDDvlPloneConfiguration( self, theAllowCreation=False, theCheckPermissions=True, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
+       
+        unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearModelDDvlPloneConfiguration', theParentExecutionRecord, False) 
+
+        try:
+            unInforme = self.fNewVoidInformeLazyCrearTool()
+                
+            try:
+        
+                if not self.Title():
+                    unInforme[ 'success']   =  False
+                    unInforme[ 'condition'] = 'Premature_initialization'
+                    return unInforme
+                    
+                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
+                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+
+                if theCheckPermissions:
+            
+                    unUseCaseQueryResult = self.fUseCaseAssessment(  
+                        theUseCaseName          = cUseCase_InitializeTRACatalogo, 
+                        theElementsBindings     = { cBoundObject: self,},
+                        theRulesToCollect       = [ ], 
+                        thePermissionsCache     = unPermissionsCache, 
+                        theRolesCache           = unRolesCache, 
+                        theParentExecutionRecord= unExecutionRecord
+                    )
+                    if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
+                        unInforme[ 'success']   =  False
+                        unInforme[ 'condition'] = 'user_can_NOT_initialize_TRACatalogo'
+                        return unInforme    
+                    
+                unInforme.update({
+                    'install_on_portalskinscustom': cInstall_Tools_On_PortalSkinsCustom,
+                    'installpath':                  ( cInstall_Tools_On_PortalSkinsCustom and cInstallPath_PortalSkinsCustom) or '',
+                    'tool_id':                      cModelDDvlPloneConfigurationId,
+                    'tool_class_name':              'ModelDDvlPloneConfiguration',
+                })
+                    
+                unInstallContainer = self.fInstallContainer_Tools()
+                if not unInstallContainer:
+                    unInforme.update({
+                        'success':   False,
+                        'condition': 'No_InstallContainer',
+                    })
+                    return unInforme                    
+                
+
+                
+                aModelDDvlPloneConfiguration = None
+                try:
+                    aModelDDvlPloneConfiguration = aq_get( unInstallContainer, cModelDDvlPloneConfigurationId, None, 1)
+                except:
+                    None  
+                if aModelDDvlPloneConfiguration:
+                    unInforme[ 'success'] = True
+                    unInforme[ 'status']  = 'exists'
+                    return unInforme
+                
+                if not ( theAllowCreation and cLazyCreateModelDDvlPloneConfiguration):
+                    unInforme[ 'success'] = False
+                    unInforme[ 'status'] = 'missing'         
+                    return unInforme
+         
+                
+                unaNuevaTool = ModelDDvlPloneConfiguration( ) 
+                unInstallContainer._setObject( cModelDDvlPloneConfigurationId,  unaNuevaTool)
+                aModelDDvlPloneConfiguration = None
+                try:
+                    aModelDDvlPloneConfiguration = aq_get( unInstallContainer, cModelDDvlPloneConfigurationId, None, 1)
+                except:
+                    None  
+                if not aModelDDvlPloneConfiguration:
+                    unInforme[ 'success'] = False
+                    unInforme[ 'status']  = 'creation_failed'
+                    return unInforme
+                
+                unInforme[ 'success'] = True
+                unInforme[ 'status']  = 'created'
+                
+                return unInforme
+            
+            except:
+                unaExceptionInfo = sys.exc_info()
+                unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
+                
+                unInformeExcepcion = 'Exception during Lazy Initialization operation fLazyCrearModelDDvlPloneConfiguration\n' 
+                unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
+                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                unInformeExcepcion += unaExceptionFormattedTraceback   
+                         
+                unInforme[ 'success'] = False
+                unInforme[ 'condition'] = 'exception'
+                unInforme[ 'exception'] = unInformeExcepcion
+                
+                unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
+
+                if cLogExceptions:
+                    logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
+
+                return unInforme
+             
+        finally:
+            unExecutionRecord and unExecutionRecord.pEndExecution()
+
+         
+
+        
+            
     
     # #############################################################
     # Collections creation
@@ -1570,11 +1735,11 @@ class TRACatalogo_Inicializacion:
                             if unIndexesOrSchemasOrLexiconsAdded and not unCatalogJustCreated:
                                 unCatalogsChanged = True
                                 
-                                unStartTime = self.fMillisecondsNow()
+                                unStartTime = fMillisecondsNow()
                                 
                                 unCatalog.refreshCatalog()
             
-                                unEndTime = self.fMillisecondsNow()
+                                unEndTime = fMillisecondsNow()
                                 unCatalogReportEntry[ 'catalog_refreshed'] = True
                                 unCatalogReportEntry[ 'catalog_refresh_duration'] = unEndTime - unStartTime
                                 
@@ -2293,6 +2458,21 @@ class TRACatalogo_Inicializacion:
                 self.pWriteLine( anOutput,  '\n', 1)
                 
                 
+                
+                
+            unResultadoModelDDvlPloneConfiguration = theInforme.get( 'ModelDDvlPloneConfiguration', {})        
+            if not unResultadoModelDDvlPloneConfiguration:
+                self.pWriteLine( anOutput,  'no ModelDDvlPloneConfiguration initialization\n\n', 1)
+            else:
+                if unResultadoModelDDvlPloneConfiguration.get( 'success', False):
+                    self.pWriteLine( anOutput,  'success ModelDDvlPloneConfiguration status: %s' % unResultadoModelDDvlPloneConfiguration.get( 'status', ''), 1)    
+                else:
+                    self.pWriteLine( anOutput,  'FAILURE ModelDDvlPloneConfiguration status: %s' % unResultadoModelDDvlPloneConfiguration.get( 'status', ''), 1)    
+                    if unResultadoModelDDvlPloneConfiguration.get( 'exception', ''):
+                        self.pWriteLine( anOutput,  'exception:\n%s\n\n' % unResultadoModelDDvlPloneConfiguration.get( 'exception', ''), 1)
+
+                self.pWriteLine( anOutput,  '\n', 1)
+                                
                
             unResultadoExtMethods = theInforme.get( 'external_methods', {})        
             if not unResultadoExtMethods:

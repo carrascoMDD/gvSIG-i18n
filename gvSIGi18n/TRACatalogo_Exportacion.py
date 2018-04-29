@@ -50,6 +50,7 @@ from StringIO import StringIO
 
 from zipfile import ZipFile, ZIP_STORED, ZIP_DEFLATED
 
+from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow, fDateTimeNow
 
 
 from TRAElemento_Constants         import *
@@ -217,10 +218,184 @@ class TRACatalogo_Exportacion:
         return unResult
     
 
+    
+
+    
+                
+    security.declareProtected( permissions.View, 'fExportarIdiomaParaGvSIG')    
+    def fExportarIdiomaParaGvSIG( self, 
+        theIdioma                        = None,
+        theParametersInput               = None,
+        thePermissionsCache              = None,
+        theRolesCache                    = None,
+        theParentExecutionRecord         = None):
+        """Export Translations into the selected languages, in any Module, with the parameters prefered for gvSIG. 
+        
+        """
+  
+        unExecutionRecord = self.fStartExecution( 'method',  'fExportarIdiomaParaGvSIG', theParentExecutionRecord, False) 
+
+        try:
+            
+            try:
+                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
+                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+
+                
+                if ( theIdioma == None):
+                    return None
+                
+                unCodigoIdioma = theIdioma.getCodigoIdiomaEnGvSIG()
+                if not unCodigoIdioma:
+                    return None
+                    
+                unosCodigosIdiomas           = [ unCodigoIdioma,]
+                unosCodigosIdiomasReferencia = dict( [ ( unCodigoIdioma, (( unCodigoIdioma == 'en') and 'es') or 'en',)])
+                
+                someExportParameters = {
+                    'theLanguagesToExport':         unosCodigosIdiomas,
+                    'theCodigosIdiomaReferencia':   unosCodigosIdiomasReferencia,
+                    'theCodificacionesCaracteres':  dict( [ ( unCodigo, cUnicodeEscapeEncoding,) for unCodigo in unosCodigosIdiomas]), 
+                    'theModulesToExport':           [ unModulo.Title() for unModulo in self.fObtenerTodosModulos()] + [ cModuloNoEspecificado_ValorNombre,],
+                    'theExportFormat':              cExportFormatOption_JavaProperties,
+                    'theIncludeManifest':           'No',
+                    'theIncludeManifest_vocabulary': ['Si', 'No',],
+                    'theIncludeLocalesCSV':         'Si',
+                    'theIncludeLocalesCSV_vocabulary': ['Si', 'No',],
+                    'theSeparatedModules':          'No',
+                    'theSeparatedModules_vocabulary': ['Si', 'No',],
+                    'theDefaultLanguageCode':       'es',
+                    'theTipoArchivo':               cZipFilePostfix,
+                    'theEncodingErrorHandleMode':   cEncodingErrorHandleMode_BackslashReplaceAndContinue,
+                    'theFilenameForGvSIG':          'Si',
+                    'theFilenameForGvSIG_vocabulary': ['Si', 'No',],
+                    'theProductName':               theParametersInput.get( 'theProductName',    self.getNombreProducto()),
+                    'theProductVersion':            theParametersInput.get( 'theProductVersion', '1'),
+                    'theL10NVersion':               theParametersInput.get( 'theL10NVersion',    '1'),
+                    'theSpecificFilename':          None,
+                }
+                
+                anExportReport = self.fExportarTraducciones( 
+                    False, 
+                    someExportParameters, 
+                    unPermissionsCache, 
+                    unRolesCache, 
+                    None, 
+                    unExecutionRecord,
+                )
+                return anExportReport
+            
+   
+            except:
+                    
+                unaExceptionInfo = sys.exc_info()
+                unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
+                
+                unInformeExcepcion = 'Exception during fExportarBackup\n' 
+                unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
+                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                unInformeExcepcion += unaExceptionFormattedTraceback   
+
+                unInforme= {
+                    'success':              False,
+                    'status':               cExportStatus_Exception,
+                    'exception':            unInformeExcepcion,
+                }
+                
+                unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
+                if cLogExceptions:
+                    logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
+                    
+                return unInforme                 
+    
+        finally:
+            unExecutionRecord and unExecutionRecord.pEndExecution()
+                      
+   
+                             
      
     
                 
+    security.declareProtected( permissions.View, 'fExportarBackup')    
+    def fExportarBackup( self, 
+        thePermissionsCache              = None,
+        theRolesCache                    = None,
+        theParentExecutionRecord         = None):
+        """Export all Translations of all Strings into all languages, in any Module, such that importing the export result shall recreate the translations catalog, except the history of changes. 
+        
+        """
+  
+        unExecutionRecord = self.fStartExecution( 'method',  'fExportarBackup', theParentExecutionRecord, False) 
 
+        try:
+            
+            try:
+                    
+                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
+                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+
+                unosCodigosIdiomas = [ unIdioma.getCodigoIdiomaEnGvSIG() for unIdioma in self.fObtenerTodosIdiomas()]
+                someExportParameters = {
+                    'theLanguagesToExport':         unosCodigosIdiomas,
+                    'theCodigosIdiomaReferencia':   {}, # No reference language
+                    'theCodificacionesCaracteres':  dict( [ ( unCodigo, cDefaultExportEncodingName_GNUgettextPO,) for unCodigo in unosCodigosIdiomas]), 
+                    'theModulesToExport':           [ unModulo.Title() for unModulo in self.fObtenerTodosModulos()] + [ cModuloNoEspecificado_ValorNombre,],
+                    'theExportFormat':              cExportFormatOption_GNUgettextPO,
+                    'theIncludeManifest':           'Si',
+                    'theIncludeManifest_vocabulary': ['Si', 'No',],
+                    'theIncludeLocalesCSV':         'Si',
+                    'theIncludeLocalesCSV_vocabulary': ['Si', 'No',],
+                    'theSeparatedModules':          'No',
+                    'theSeparatedModules_vocabulary': ['Si', 'No',],
+                    'theTipoArchivo':               cZipFilePostfix,
+                    'theEncodingErrorHandleMode':   cEncodingErrorHandleMode_BackslashReplaceAndContinue,
+                    'theFilenameForGvSIG':          'No',
+                    'theFilenameForGvSIG_vocabulary': ['Si', 'No',],
+                    'theProductName':               self.getNombreProducto(),
+                    'theProductVersion':            '',
+                    'theL10NVersion':               '',
+                    'theSpecificFilename':          '%s_BACKUP_%s_%s.zip' % ( self.getNombreProducto(), self.fDateTimeNowTextual().replace( ' ', '_'), self.fGetMemberId())
+                }
+                
+                anExportReport = self.fExportarTraducciones( 
+                    False, 
+                    someExportParameters, 
+                    unPermissionsCache, 
+                    unRolesCache, 
+                    None, 
+                    unExecutionRecord,
+                )
+                return anExportReport
+            
+   
+            except:
+                    
+                unaExceptionInfo = sys.exc_info()
+                unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
+                
+                unInformeExcepcion = 'Exception during fExportarBackup\n' 
+                unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
+                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                unInformeExcepcion += unaExceptionFormattedTraceback   
+
+                unInforme= {
+                    'success':              False,
+                    'status':               cExportStatus_Exception,
+                    'exception':            unInformeExcepcion,
+                }
+                
+                unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
+                if cLogExceptions:
+                    logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
+                    
+                return unInforme                 
+    
+        finally:
+            unExecutionRecord and unExecutionRecord.pEndExecution()
+                      
+   
+                            
+                
     
     security.declareProtected( permissions.View, 'fExportarTraducciones')    
     def fExportarTraducciones( self, 
@@ -257,14 +432,20 @@ class TRACatalogo_Exportacion:
                 theNombresModulos               = theParametersInput.get( 'theModulesToExport', [])
                 theIncluirModuloNoEspecificado  = cModuloNoEspecificado_ValorNombre in theNombresModulos
                 theExportFormat                 = theParametersInput.get( 'theExportFormat', '')
-                theIncludeManifest              = theParametersInput.get( 'theIncludeManifest', '')  == ( theParametersInput.get( 'theIncludeManifest_vocabulary',  ['',])[ 0])
-                theIncludeLocalesCSV              = theParametersInput.get( 'theIncludeLocalesCSV', '')  == ( theParametersInput.get( 'theIncludeLocalesCSV_vocabulary',  ['',])[ 0])
-                theSeparatedModules             = theParametersInput.get( 'theSeparatedModules', '') == ( theParametersInput.get( 'theSeparatedModules_vocabulary', ['',])[ 0])
+                theIncludeManifest              = theParametersInput.get( 'theIncludeManifest', '')    == ( theParametersInput.get( 'theIncludeManifest_vocabulary',  ['xXxXxXx',])[ 0])
+                theIncludeLocalesCSV            = theParametersInput.get( 'theIncludeLocalesCSV', '')  == ( theParametersInput.get( 'theIncludeLocalesCSV_vocabulary',  ['xXxXxXx',])[ 0])
+                theSeparatedModules             = theParametersInput.get( 'theSeparatedModules', '')   == ( theParametersInput.get( 'theSeparatedModules_vocabulary', ['xXxXxXx',])[ 0])
                 theTipoArchivo                  = theParametersInput.get( 'theTipoArchivo', '')
                 theDefaultLanguageCode          = theParametersInput.get( 'theDefaultLanguageCode', '')
                 theDefaultModuleName            = theParametersInput.get( 'theDefaultModuleName', '')
                 theEncodingErrorHandleMode      = theParametersInput.get( 'theEncodingErrorHandleMode', '')
+                theFilenameForGvSIG             = theParametersInput.get( 'theFilenameForGvSIG', '')   == ( theParametersInput.get( 'theFilenameForGvSIG_vocabulary', ['xXxXxXx',])[ 0])
+                theProductName                  = theParametersInput.get( 'theProductName', '')
+                theProductVersion               = theParametersInput.get( 'theProductVersion', '')
+                theL10NVersion                  = theParametersInput.get( 'theL10NVersion', '')
+                theSpecificFilename             = theParametersInput.get( 'theSpecificFilename', '')
                 
+       
                  
                 unInforme[ 'languages_requested'] = ( theCodigosIdiomas or [])[:]
                 unInforme[ 'modules_requested']   = ( theNombresModulos or [])[:]
@@ -947,8 +1128,14 @@ class TRACatalogo_Exportacion:
                                 if unResultFicheroExportacion:
                                     unContenidoFicheroExportacion = unResultFicheroExportacion.get( 'contenido', '')
                                     unZipFile.writestr( unFileNamePO, unContenidoFicheroExportacion)
-                                
-                unNombreArchivoDescarga = self.fNombreArchivoExportacion( [ unCodigoEIdioma[ 0] for unCodigoEIdioma in unosCodigosEIdiomasOrdenados], unosNombresModulosOrdenados, theIncluirModuloNoEspecificado, theTipoArchivo)
+                  
+                if theSpecificFilename:
+                    unNombreArchivoDescarga = theSpecificFilename
+                elif theFilenameForGvSIG:
+                    unNombreArchivoDescarga = self.fNombreArchivoExportacion_ForGvSIG( unosCodigosEIdiomasOrdenados[ 0][ 0], theProductName, theProductVersion, theL10NVersion, theTipoArchivo)
+                else:
+                    unNombreArchivoDescarga = self.fNombreArchivoExportacion( [ unCodigoEIdioma[ 0] for unCodigoEIdioma in unosCodigosEIdiomasOrdenados], unosNombresModulosOrdenados, theIncluirModuloNoEspecificado, theTipoArchivo)
+                
                 unInforme[ 'download_filename'] = unNombreArchivoDescarga
                 
                 
@@ -999,6 +1186,29 @@ class TRACatalogo_Exportacion:
             unExecutionRecord and unExecutionRecord.pEndExecution()
                       
    
+            
+            
+            
+            
+    security.declarePrivate( 'fNombreArchivoExportacion_ForGvSIG')    
+    def fNombreArchivoExportacion_ForGvSIG( self, theCodigoIdioma, theProductName, theProductVersion, theL10NVersion, theTipoArchivo):
+        
+        unArchivePostfix = theTipoArchivo
+        if not ( unArchivePostfix in cOutputFilePostfixes):
+            unArchivePostfix = cZipFilePostfix    
+
+        unNombreArchivoExportacion = '%s_%s-language-v%s-%s%s' % ( 
+            theProductName,
+            theProductVersion,
+            theL10NVersion,
+            theCodigoIdioma,
+            unArchivePostfix
+        )
+
+        return unNombreArchivoExportacion
+        
+        
+        
     
     security.declarePrivate( 'fNombreArchivoExportacion')    
     def fNombreArchivoExportacion( self, theCodigosIdioma, theNombresModulos, theIncluirModuloNoEspecificado, theTipoArchivo):
@@ -1061,9 +1271,9 @@ class TRACatalogo_Exportacion:
         
         unArchivePostfix = theTipoArchivo
         if not ( unArchivePostfix in cOutputFilePostfixes):
-            unArchivePostfix = cJarFilePostfix    
+            unArchivePostfix = cZipFilePostfix    
   
-        unNow = self.fDateTimeNow()
+        unNow = fDateTimeNow()
         unTimestamp = '%4.4d%02d%02d%02d%02d%02d' % ( unNow.year(), unNow.month(), unNow.day(), unNow.hour(), unNow.minute(), unNow.second())    
         
         unNombreArchivoExportacion = '%s%s%s%s%s%s%s%s' % ( cExportZipFileNamePrefix, cOutputFileNameLanguageSeparator, unosCodigosIdiomasNombreArchivo, cOutputFileNameModuleSeparator, unLastNombresModulosNombreArchivo, cOutputFileNameModuleSeparator, unTimestamp, unArchivePostfix)
@@ -1446,7 +1656,7 @@ class TRACatalogo_Exportacion:
             cPrefixLineaLenguaje,  
             unCodigoIdioma,
             cPrefixLineaTimestamp, 
-            str( self.fDateTimeNow()),
+            str( fDateTimeNow()),
         )
         
         if theCodificacionCaracteres == cEncodingUnicodeEscape:
@@ -1904,7 +2114,7 @@ class TRACatalogo_Exportacion:
         
         unCodigoIdioma = theIdioma.getCodigoIdiomaEnGvSIG()
         
-        unAhora = self.fDateTimeNow()
+        unAhora = fDateTimeNow()
         unOffset = int( unAhora.tzoffset() / 3600)
         unOffsetSign = '+'
         if unOffset < 0:
@@ -2281,7 +2491,7 @@ class TRACatalogo_Exportacion:
         
         unCodigoIdioma = theIdioma.getCodigoIdiomaEnGvSIG()
         
-        unAhora = self.fDateTimeNow()
+        unAhora = fDateTimeNow()
         unOffset = int( unAhora.tzoffset() / 3600)
         unOffsetSign = '+'
         if unOffset < 0:

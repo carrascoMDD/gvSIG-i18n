@@ -2,7 +2,7 @@
 #
 # File: Install.py
 #
-# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
+# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
 # Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -29,6 +29,12 @@ __author__ = """Conselleria de Infraestructuras y Transporte de la Generalidad V
 Antonio Carrasco Valero <carrasco@ModelDD.org>"""
 __docformat__ = 'plaintext'
 
+
+# #############################
+# ACV 20091124 To control logging and avoid excessive warnings upon server start or product reinstall
+import logging
+from logging import ERROR as cLoggingLevel_ERROR
+# ACV 20091124 
 
 import os.path
 import sys

@@ -41,8 +41,11 @@
         global pStartTime       pStartTime | python: here.ModelDDvlPlone_tool.fMillisecondsNow()" 
         i18n:domain="gvSIGi18n">
 
+
+        <metal:block metal:use-macro="here/TRAProfileExecution/macros/tSetupProfileExecution" />   
+
         <tal:block tal:define="
-            pExecutionRecord python: here.fStartExecution( 'template', 'TRAVerificar_action.pt', None, True, { 'log_what': 'details', 'log_when': True, });
+            pExecutionRecord python: here.fStartExecution( 'template', 'TRAVerificar_action.pt', None, pAllowRootProfileExecution, { 'log_what': 'details', 'log_when': True, });
             pPermissionsCache python: {};
             pRolesCache python: {}" >
             
@@ -57,6 +60,14 @@
             <div metal:use-macro="here/document_byline/macros/byline">
               Get the byline - contains details about author and modification date.
             </div>
+            
+            
+            
+            <tal:block tal:condition="python: not here.fAllowWrite()" >
+                <div class="portalMessage" >
+                    <span tal:content="python: here.ModelDDvlPlone_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TranslationsCatalogIsLockedAgainstModifications', 'The Translations Catalog Is Locked Against Modifications')" />
+                </div>
+            </tal:block>
             
             
     
@@ -148,7 +159,7 @@
                 <tal:block tal:condition="python: not( pInicializarUseCaseAssessmentResult and pInicializarUseCaseAssessmentResult.get( 'success', False))">    
                     <br/>
                     <br/>
-                    <font size="1" color="gray">
+                    <font size="3" >
                         <strong>
                             <tal:block tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_userCanNotInitializeCatalogo_msgid',   'You are not allowed to verify the translations catalog.-' )" />
                         </strong>

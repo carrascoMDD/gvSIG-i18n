@@ -2,7 +2,7 @@
 #
 # File: TRAArquetipo.py
 #
-# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
+# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
 # Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -83,6 +83,15 @@ class TRAArquetipo(TRAElemento):
        },
 
 
+       {'action': "string:${object_url}/MDDChanges",
+        'category': "object_buttons",
+        'id': 'mddchanges',
+        'name': 'Changes',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
        {'action': "string:${object_url}/reference_graph",
         'category': "object",
         'id': 'references',
@@ -110,6 +119,15 @@ class TRAArquetipo(TRAElemento):
        },
 
 
+       {'action': "string:${object_url}/MDDCacheStatus/",
+        'category': "object_buttons",
+        'id': 'mddcachestatus',
+        'name': 'Cache',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
     )
 
     _at_rename_after_creation = True
@@ -120,6 +138,13 @@ class TRAArquetipo(TRAElemento):
     ##/code-section class-header
 
     # Methods
+
+    security.declarePublic('cb_isCopyable')
+    def cb_isCopyable(self):
+        """
+        """
+        
+        return False
 
     security.declarePublic('displayContentsTab')
     def displayContentsTab(self):
@@ -148,6 +173,13 @@ class TRAArquetipo(TRAElemento):
         """
         
         return TRAElemento.manage_beforeDelete( self, item, container)
+
+    security.declarePublic('cb_isMoveable')
+    def cb_isMoveable(self):
+        """
+        """
+        
+        return False
 # end of class TRAArquetipo
 
 ##code-section module-footer #fill in your manual code here

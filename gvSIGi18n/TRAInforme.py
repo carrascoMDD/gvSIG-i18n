@@ -2,7 +2,7 @@
 #
 # File: TRAInforme.py
 #
-# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
+# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
 # Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -45,36 +45,6 @@ from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import Reference
 
 schema = Schema((
 
-    BooleanField(
-        name='esAutoActualizable',
-        widget=BooleanField._properties['widget'](
-            label="Es Auto-Actualizable",
-            label2="Is Auto-Updated",
-            description="Si el informe se actualiza automaticamente bajo demanda, pero no mas frecuentemente que cierto intervalo de tiempo.",
-            description2="Whether the report is automatically updated upon demand (but not more frequently than a certain time period).",
-            label_msgid='gvSIGi18n_TRAInforme_attr_esAutoActualizable_label',
-            description_msgid='gvSIGi18n_TRAInforme_attr_esAutoActualizable_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        description="Si el informe se actualiza automaticamente bajo demanda, pero no mas frecuentemente que cierto intervalo de tiempo.",
-        duplicates="0",
-        label2="Is Auto-Updated",
-        ea_localid="857",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        description2="Whether the report is automatically updated upon demand (but not more frequently than a certain time period).",
-        ea_guid="{6175A4D5-254D-4ef2-ADE5-E9AFC307B599}",
-        scale="0",
-        default="False",
-        label="Es Auto-Actualizable",
-        length="0",
-        containment="Not Specified",
-        position="1",
-        owner_class_name="TRAInforme"
-    ),
-
     #Inactivo
     StringField(
         name='estadoProceso',
@@ -107,7 +77,7 @@ schema = Schema((
         label="Estado del Proceso",
         length="0",
         containment="Not Specified",
-        position="3",
+        position="1",
         owner_class_name="TRAInforme"
     ),
 
@@ -138,7 +108,7 @@ schema = Schema((
         label="Comenzo a ejecutar",
         length="0",
         containment="Not Specified",
-        position="4",
+        position="2",
         owner_class_name="TRAInforme"
     ),
 
@@ -168,7 +138,7 @@ schema = Schema((
         label="Usuario Informador",
         length="0",
         containment="Not Specified",
-        position="6",
+        position="4",
         owner_class_name="TRAInforme"
     ),
 
@@ -199,7 +169,7 @@ schema = Schema((
         label="Exito?",
         length="0",
         containment="Not Specified",
-        position="5",
+        position="3",
         owner_class_name="TRAInforme"
     ),
 
@@ -229,7 +199,7 @@ schema = Schema((
         label="Fecha y Hora de Comienzo",
         length="0",
         containment="Not Specified",
-        position="7",
+        position="5",
         owner_class_name="TRAInforme"
     ),
 
@@ -259,15 +229,15 @@ schema = Schema((
         label="Fecha y Hora de Fin",
         length="0",
         containment="Not Specified",
-        position="8",
+        position="6",
         owner_class_name="TRAInforme"
     ),
 
     TextField(
         name='informeExcepcion',
         widget=TextAreaWidget(
-            label="Informe de Excepcion",
-            label2="Exception report",
+            label="Excepcion",
+            label2="Exception",
             description="Cuando la elaboracion del informe de estado finaliza con una condicion de error, contiene el informe del error de la aplicacion.",
             description2="When the ellaboration of the status report terminates with an error, contains the applicacion exception report.",
             label_msgid='gvSIGi18n_TRAInforme_attr_informeExcepcion_label',
@@ -276,7 +246,7 @@ schema = Schema((
         ),
         description="Cuando la elaboracion del informe de estado finaliza con una condicion de error, contiene el informe del error de la aplicacion.",
         duplicates="0",
-        label2="Exception report",
+        label2="Exception",
         ea_localid="772",
         derived="0",
         precision=0,
@@ -286,10 +256,10 @@ schema = Schema((
         ea_guid="{4CE08483-728C-4fe1-98A5-C6CF6FF8DD28}",
         read_only="True",
         scale="0",
-        label="Informe de Excepcion",
+        label="Excepcion",
         length="0",
         containment="Not Specified",
-        position="9",
+        position="7",
         owner_class_name="TRAInforme"
     ),
 
@@ -320,16 +290,16 @@ schema = Schema((
         label="Informe por Idiomas",
         length="0",
         containment="Not Specified",
-        position="12",
+        position="10",
         owner_class_name="TRAInforme",
-        custom_presentation_view="TRAInformeIdiomas_i18n_view"
+        custom_presentation_view="TRAInformeIdiomas_CustomView"
     ),
 
     TextField(
         name='informeExcepcionIdiomas',
         widget=TextAreaWidget(
-            label="Excepcion en Informe Idiomas",
-            label2="Exception report",
+            label="Excepcion durante Informe por Idiomas",
+            label2="Exception during Languages Report",
             description="Cuando la elaboracion del informe de estado por idiomas finaliza con una condicion de error, contiene el informe del error de la aplicacion.",
             description2="When the ellaboration of the Languages status report terminates with an error, contains the applicacion exception report.",
             label_msgid='gvSIGi18n_TRAInforme_attr_informeExcepcionIdiomas_label',
@@ -338,7 +308,7 @@ schema = Schema((
         ),
         description="Cuando la elaboracion del informe de estado por idiomas finaliza con una condicion de error, contiene el informe del error de la aplicacion.",
         duplicates="0",
-        label2="Exception report",
+        label2="Exception during Languages Report",
         ea_localid="1460",
         derived="0",
         precision=0,
@@ -348,10 +318,10 @@ schema = Schema((
         ea_guid="{B0CD5D6A-FA31-43f0-B518-21FE7E9D268E}",
         read_only="True",
         scale="0",
-        label="Excepcion en Informe Idiomas",
+        label="Excepcion durante Informe por Idiomas",
         length="0",
         containment="Not Specified",
-        position="11",
+        position="9",
         owner_class_name="TRAInforme"
     ),
 
@@ -382,68 +352,38 @@ schema = Schema((
         label="Informe por Modulos e Idiomas",
         length="0",
         containment="Not Specified",
-        position="13",
+        position="11",
         owner_class_name="TRAInforme",
-        custom_presentation_view="TRAInformeModulos_i18n_view"
+        custom_presentation_view="TRAInformeModulos_CustomView"
     ),
 
     TextField(
         name='informeExcepcionModulos',
         widget=TextAreaWidget(
-            label="Excepcion en Informe por Modulos",
-            label2="Exception report",
-            description="Cuando la elaboracion del informe de estado por modulos finaliza con una condicion de error, contiene el informe del error de la aplicacion.",
-            description2="When the ellaboration of the Modules status report terminates with an error, contains the applicacion exception report.",
+            label="Excepcion durante Informe por Modulos e Idiomas",
+            label2="Exception during Modules and Languages Report",
+            description="Cuando la elaboracion del informe de estado por modulose idiomas  finaliza con una condicion de error, contiene el informe del error de la aplicacion.",
+            description2="When the ellaboration of the status report by Modules and Lanaguages terminates with an error, contains the applicacion exception report.",
             label_msgid='gvSIGi18n_TRAInforme_attr_informeExcepcionModulos_label',
             description_msgid='gvSIGi18n_TRAInforme_attr_informeExcepcionModulos_help',
             i18n_domain='gvSIGi18n',
         ),
-        description="Cuando la elaboracion del informe de estado por modulos finaliza con una condicion de error, contiene el informe del error de la aplicacion.",
+        description="Cuando la elaboracion del informe de estado por modulose idiomas  finaliza con una condicion de error, contiene el informe del error de la aplicacion.",
         duplicates="0",
-        label2="Exception report",
+        label2="Exception during Modules and Languages Report",
         ea_localid="1461",
         derived="0",
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        description2="When the ellaboration of the Modules status report terminates with an error, contains the applicacion exception report.",
+        description2="When the ellaboration of the status report by Modules and Lanaguages terminates with an error, contains the applicacion exception report.",
         ea_guid="{068E1D59-A5B9-4a5c-89DE-4DE7FCB02B9B}",
         read_only="True",
         scale="0",
-        label="Excepcion en Informe por Modulos",
+        label="Excepcion durante Informe por Modulos e Idiomas",
         length="0",
         containment="Not Specified",
-        position="10",
-        owner_class_name="TRAInforme"
-    ),
-
-    IntegerField(
-        name='minimoIntervaloActualizacionEnMinutos',
-        widget=IntegerField._properties['widget'](
-            label="Intervalo minimo de actualizacion en Minutos",
-            label2="Minimum Update Interval in Minutes",
-            description="Si es Auto-Actualizable, es el Intervalo minimo de tiempo en minutos a esperar antes de actualizar automaticamente el informe. Si el valor es 0, el informe se actualizara en todas las solilcitudes de los usuarios, posiblemente sobrecargando el eistema.",
-            description2="If the Report is set to be Auto-Updated, Minimum Time interval in minutes to wait before automatically updating the report. If 0, the report will be updated upon demand at every user request, possibly over-loading the system.",
-            label_msgid='gvSIGi18n_TRAInforme_attr_minimoIntervaloActualizacionEnMinutos_label',
-            description_msgid='gvSIGi18n_TRAInforme_attr_minimoIntervaloActualizacionEnMinutos_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        description="Si es Auto-Actualizable, es el Intervalo minimo de tiempo en minutos a esperar antes de actualizar automaticamente el informe. Si el valor es 0, el informe se actualizara en todas las solilcitudes de los usuarios, posiblemente sobrecargando el eistema.",
-        duplicates="0",
-        label2="Minimum Update Interval in Minutes",
-        ea_localid="877",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        description2="If the Report is set to be Auto-Updated, Minimum Time interval in minutes to wait before automatically updating the report. If 0, the report will be updated upon demand at every user request, possibly over-loading the system.",
-        ea_guid="{531CA267-DB73-4576-904E-6801AA70911E}",
-        scale="0",
-        default="30",
-        label="Intervalo minimo de actualizacion en Minutos",
-        length="0",
-        containment="Not Specified",
-        position="2",
+        position="8",
         owner_class_name="TRAInforme"
     ),
 
@@ -523,10 +463,10 @@ class TRAInforme(OrderedBaseFolder, TRAArquetipo, TRAInforme_Operaciones, TRACon
 
        {'action': "string:${object_url}/TRAElaborarInforme_action",
         'category': "object_buttons",
-        'id': 'informar',
+        'id': 'TRAElaborarInforme',
         'name': 'Build Report',
         'permissions': ("Modify portal content",),
-        'condition': """python:object.fAllowWrite() and ( ( True or not object.getHaComenzado()) or object.getEsAutoActualizable())"""
+        'condition': """python:0"""
        },
 
 
@@ -557,6 +497,15 @@ class TRAInforme(OrderedBaseFolder, TRAArquetipo, TRAInforme_Operaciones, TRACon
        },
 
 
+       {'action': "string:${object_url}/MDDChanges",
+        'category': "object_buttons",
+        'id': 'mddchanges',
+        'name': 'Changes',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
        {'action': "string:${object_url}/reference_graph",
         'category': "object",
         'id': 'references',
@@ -581,6 +530,15 @@ class TRAInforme(OrderedBaseFolder, TRAArquetipo, TRAInforme_Operaciones, TRACon
         'name': 'State',
         'permissions': ("View",),
         'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/MDDCacheStatus/",
+        'category': "object_buttons",
+        'id': 'mddcachestatus',
+        'name': 'Cache',
+        'permissions': ("View",),
+        'condition': """python:1"""
        },
 
 
@@ -616,19 +574,12 @@ class TRAInforme(OrderedBaseFolder, TRAArquetipo, TRAInforme_Operaciones, TRACon
         
         return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
 
-    security.declarePublic('cb_isMoveable')
-    def cb_isMoveable(self):
+    security.declarePublic('fIsCacheable')
+    def fIsCacheable(self):
         """
         """
         
-        return False
-
-    security.declarePublic('cb_isCopyable')
-    def cb_isCopyable(self):
-        """
-        """
-        
-        return False
+        return True
 
     security.declarePublic('displayContentsTab')
     def displayContentsTab(self):
@@ -643,6 +594,13 @@ class TRAInforme(OrderedBaseFolder, TRAArquetipo, TRAInforme_Operaciones, TRACon
         """
         
         return TRAElemento_Operaciones.fExtraLinks( self)
+
+    security.declarePublic('cb_isCopyable')
+    def cb_isCopyable(self):
+        """
+        """
+        
+        return False
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

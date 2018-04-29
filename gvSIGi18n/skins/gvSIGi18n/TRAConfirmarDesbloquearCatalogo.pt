@@ -41,8 +41,11 @@
         global pStartTime       pStartTime | python: here.ModelDDvlPlone_tool.fMillisecondsNow()" 
         i18n:domain="gvSIGi18n">
 
+
+        <metal:block metal:use-macro="here/TRAProfileExecution/macros/tSetupProfileExecution" />   
+
         <tal:block tal:define="
-            pExecutionRecord python: here.fStartExecution( 'template', 'TRAConfirmarDesbloquearCatalogo.pt', None, True, { 'log_what': 'details', 'log_when': True, });
+            pExecutionRecord python: here.fStartExecution( 'template', 'TRAConfirmarDesbloquearCatalogo.pt', None, pAllowRootProfileExecution, { 'log_what': 'details', 'log_when': True, });
             pPermissionsCache python: {};
             pRolesCache python: {}" >
             
@@ -59,6 +62,12 @@
             </div>
             
             
+            
+            <tal:block tal:condition="python: not here.fAllowWrite()" >
+                <div class="portalMessage" >
+                    <span tal:content="python: here.ModelDDvlPlone_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TranslationsCatalogIsLockedAgainstModifications', 'The Translations Catalog Is Locked Against Modifications')" />
+                </div>
+            </tal:block>
     
             <tal:block tal:define="pPermiteEditar python: False; pPermiteEliminar python: False; pShowOrHideTrees python: False">
                 <metal:block metal:use-macro="here/TRACabeceraEnTabla_i18n_view/macros/tCabeceraEnTabla_i18n" />   
@@ -151,7 +160,7 @@
                     <br/>
                     <font size="3" color="gray">
                         <strong>
-                            <tal:block tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_userCanNotUnlockCatalogo_msgid',   'You are not allowed to lock the translations catalog.-' )" />
+                            <tal:block tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_userCanNotUnlockCatalogo_msgid',   'You are not allowed to unlock the translations catalog.-' )" />
                         </strong>
                     </font>
                 </tal:block>

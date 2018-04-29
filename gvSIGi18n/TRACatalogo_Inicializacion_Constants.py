@@ -45,6 +45,9 @@ from TRAElemento_Constants import *
 from TRARoles       import *
 
 
+from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Inicializacion_Constants import cExternalMetodDefinitions as cExternalMetodDefinitions_ModelDDvlPlone
+
+
 ##/code-section module-header
 
 ##code-section after-local-schema #fill in your manual code here
@@ -242,7 +245,7 @@ cIndexesCatalogoFiltroTraducciones  = cIndexesCatalogoBusquedaTraducciones + [
 ]
 cSchemaFieldsCatalogoFiltroTraducciones  = [ 'Type', 'getPathDelRaiz', 'getCodigoIdiomaEnGvSIG', ] + \
                                            [ aIdxSpec[ 0] for aIdxSpec in cIndexesCatalogoFiltroTraducciones] + \
-                                           [ 'getCadenaTraducida', 'getComentario', 'getNombresModulos',]
+                                           [ 'getCadenaTraducida', 'getComentario', 'getNombresModulos', 'getContadorCambios',]
        
 
 
@@ -293,35 +296,33 @@ cCatalogsDetailsParaIdioma = [
 # External methods to create
 #
 
-cChangeAndBrowseTranslationsExtMethod           = "TRAChangeAndBrowseTranslations"
-cSizesIdiomaExtMethod                           = "TRASizesIdioma"
-cRenderPermissionDefinitionsExtMethod           = "TRARenderPermissionDefinitions"
-cRenderLoggedUsedAndRolesHereExtMethod          = "TRARenderLoggedUsedHere"
-cRenderGroupsRolesHereExtMethod                 = "TRARenderGroupsRolesHere"
-cRenderRenderExecutionDetails                   = "TRARenderExecutionDetails"
+cExtMethod_ChangeAndBrowseTranslations           = "TRAChangeAndBrowseTranslations"
+cExtMethod_SizesIdioma                           = "TRASizesIdioma"
+cExtMethod_RenderPermissionDefinitions           = "TRARenderPermissionDefinitions"
+cExtMethod_RenderLoggedUsedAndRolesHere          = "TRARenderLoggedUsedHere"
+cExtMethod_RenderGroupsRolesHere                 = "TRARenderGroupsRolesHere"
+cExtMethod_RenderExecutionDetails                = "TRARenderExecutionDetails"
 
 
 
 cExternalMetodDefinitions = [
-    [ cChangeAndBrowseTranslationsExtMethod,                 # module  
-        [ cChangeAndBrowseTranslationsExtMethod,    ]   * 3, # function id title
-        [ cSizesIdiomaExtMethod,                    ]   * 3, # function id title
-    ],
-    [ cChangeAndBrowseTranslationsExtMethod,                 # module  
-        [ cChangeAndBrowseTranslationsExtMethod,    ]   * 3, # function id title
+    [ cExtMethod_ChangeAndBrowseTranslations,                 # module  
+        [ cExtMethod_ChangeAndBrowseTranslations,    ]   * 3, # function id title name
+        [ cExtMethod_SizesIdioma,                    ]   * 3, # function id title name
     ],
     [ 'TRARenderSecurity',                                   # module  
-       [ cRenderPermissionDefinitionsExtMethod,     ]   * 3, # function id title
-       [ cRenderLoggedUsedAndRolesHereExtMethod,    ]   * 3, # function id title
-       [ cRenderGroupsRolesHereExtMethod,           ]   * 3, # function id title
+       [ cExtMethod_RenderPermissionDefinitions,     ]   * 3, # function id title name
+       [ cExtMethod_RenderLoggedUsedAndRolesHere,    ]   * 3, # function id title name
+       [ cExtMethod_RenderGroupsRolesHere,           ]   * 3, # function id title name
     ],    
     [ 'TRARenderProfiling',                                  # module  
-        [ cRenderRenderExecutionDetails,            ]   * 3, # function id title
+        [ cExtMethod_RenderExecutionDetails,            ]   * 3, # function id title name
+
     ],
     [ 'TRAExport_ctrl',                                  # module  
-        [ 'TRAExport_ParametersCandidateValues',    ]   * 3, # function id title
+        [ 'TRAExport_ParametersCandidateValues',    ]   * 3, # function id title name
     ],
- ]
+] + cExternalMetodDefinitions_ModelDDvlPlone
 
 
 ##/code-section module-footer

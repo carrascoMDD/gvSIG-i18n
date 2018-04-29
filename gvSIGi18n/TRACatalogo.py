@@ -2,7 +2,7 @@
 #
 # File: TRACatalogo.py
 #
-# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
+# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
 # Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -34,6 +34,7 @@ from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.TRAArquetipo import TRAArquetipo
 from TRACatalogo_Inicializacion import TRACatalogo_Inicializacion
 from TRACatalogo_Informes import TRACatalogo_Informes
+from TRACatalogo_Globales import TRACatalogo_Globales
 from TRACatalogo_Operaciones import TRACatalogo_Operaciones
 from TRACatalogo_CursorTraducciones import TRACatalogo_CursorTraducciones
 from TRACatalogo_Exportacion import TRACatalogo_Exportacion
@@ -110,7 +111,7 @@ schema = Schema((
         label="Producto",
         length="0",
         containment="Not Specified",
-        position="15",
+        position="21",
         owner_class_name="TRACatalogo"
     ),
 
@@ -140,7 +141,7 @@ schema = Schema((
         label="Codigo de Idioma por defecto",
         length="0",
         containment="Not Specified",
-        position="5",
+        position="10",
         owner_class_name="TRACatalogo"
     ),
 
@@ -170,7 +171,7 @@ schema = Schema((
         label="Codigo de Idioma para Solicitudes de Nuevas Cadenas",
         length="0",
         containment="Not Specified",
-        position="6",
+        position="11",
         owner_class_name="TRACatalogo"
     ),
 
@@ -200,7 +201,7 @@ schema = Schema((
         label="Codigo de Idioma de Referencia  para Solicitudes de Nuevas Cadenas",
         length="0",
         containment="Not Specified",
-        position="7",
+        position="12",
         owner_class_name="TRACatalogo"
     ),
 
@@ -230,7 +231,7 @@ schema = Schema((
         label="Nombre de Modulo por defecto",
         length="0",
         containment="Not Specified",
-        position="14",
+        position="20",
         owner_class_name="TRACatalogo"
     ),
 
@@ -256,11 +257,11 @@ schema = Schema((
         description2="Iinformation that appears in the exported files of GNUgettext PO format, when exporting separately in its own file strings that do not pertain to any module,  to indicate the application or module to which the translations apply.",
         ea_guid="{F9D57218-C3F9-4a24-804F-1CBB941BE9EA}",
         scale="0",
-        default="gvSIG18n",
+        default="gvSIGi18n",
         label="Dominio para cadenas sin modulo",
         length="0",
         containment="Not Specified",
-        position="16",
+        position="22",
         owner_class_name="TRACatalogo"
     ),
 
@@ -320,7 +321,7 @@ schema = Schema((
         label="Numero de Traducciones en pagina por defecto",
         length="0",
         containment="Not Specified",
-        position="3",
+        position="8",
         owner_class_name="TRACatalogo"
     ),
 
@@ -383,7 +384,7 @@ schema = Schema((
         label="Formato de exportacion por defecto",
         length="0",
         containment="Not Specified",
-        position="8",
+        position="13",
         owner_class_name="TRACatalogo"
     ),
 
@@ -416,7 +417,7 @@ schema = Schema((
         label="Incluir fichero locales.csv",
         length="0",
         containment="Not Specified",
-        position="11",
+        position="17",
         owner_class_name="TRACatalogo"
     ),
 
@@ -449,106 +450,157 @@ schema = Schema((
         label="Incluir fichero MANIFEST.MF",
         length="0",
         containment="Not Specified",
-        position="12",
+        position="18",
         owner_class_name="TRACatalogo"
     ),
 
-    StringField(
-        name='modulosPorSeparadoPorDefecto',
-        widget=SelectionWidget(
-            label="Exportar modulos por separado",
-            label2="Export separated modules",
-            description="Exportar cada modulo por separado en su propio fichero, todos ellos incluidos en el archivo descargable.",
-            description2="Exprot each module in its own file, with all of them packed in the downloadable archive.",
-            label_msgid='gvSIGi18n_TRACatalogo_attr_modulosPorSeparadoPorDefecto_label',
-            description_msgid='gvSIGi18n_TRACatalogo_attr_modulosPorSeparadoPorDefecto_help',
+    IntegerField(
+        name='segundosMinimosRetencionInformeIdiomas',
+        widget=IntegerField._properties['widget'](
+            label="Minimo Tiempo en segundos que se retiene el Informe de Estado por Idiomas",
+            label2="Minimum Time in seconds to retain Status Report by Languages",
+            description="Tiempo en segundos que se retendra el Informe de Estado por Idiomas, aunque sus resultados sean inexactos por alguna modificacion del estado de traducciones, para evitar recalculo excesivo por cambios poco relevantes.",
+            description2="Time in seconds that the Status Report by Languages shall be retained, even if the results have become inaccurate because of any modification of translations status. To avoid excessive recalculation for barely relevant changes.",
+            label_msgid='gvSIGi18n_TRACatalogo_attr_segundosMinimosRetencionInformeIdiomas_label',
+            description_msgid='gvSIGi18n_TRACatalogo_attr_segundosMinimosRetencionInformeIdiomas_help',
             i18n_domain='gvSIGi18n',
         ),
-        description="Exportar cada modulo por separado en su propio fichero, todos ellos incluidos en el archivo descargable.",
-        vocabulary=['Si','No',],
+        description="Tiempo en segundos que se retendra el Informe de Estado por Idiomas, aunque sus resultados sean inexactos por alguna modificacion del estado de traducciones, para evitar recalculo excesivo por cambios poco relevantes.",
         duplicates="0",
-        vocabulary_msgids=['gvSIGi18n_TRACatalogo_attr_modulosPorSeparadoPorDefecto_option_Si', 'gvSIGi18n_TRACatalogo_attr_modulosPorSeparadoPorDefecto_option_No'],
-        label2="Export separated modules",
-        ea_localid="1487",
+        label2="Minimum Time in seconds to retain Status Report by Languages",
+        ea_localid="1583",
         derived="0",
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        description2="Exprot each module in its own file, with all of them packed in the downloadable archive.",
-        ea_guid="{238F900C-0D19-4a2d-96B6-1D26B987CACC}",
-        vocabulary2=['Yes','No',],
+        description2="Time in seconds that the Status Report by Languages shall be retained, even if the results have become inaccurate because of any modification of translations status. To avoid excessive recalculation for barely relevant changes.",
+        ea_guid="{46E6C4B5-2AD9-4d59-BD9A-C93ECB3C9265}",
         scale="0",
-        default="No",
-        label="Exportar modulos por separado",
+        default="60",
+        label="Minimo Tiempo en segundos que se retiene el Informe de Estado por Idiomas",
         length="0",
         containment="Not Specified",
-        position="13",
+        position="5",
         owner_class_name="TRACatalogo"
     ),
 
-    StringField(
-        name='tipoArchivoExportacionPorDefecto',
-        widget=SelectionWidget(
-            label="Tipo de archivo descargable por defecto",
-            label2="Default downladable archive kind",
-            description="Tipo de archivo en que se descargan el modulo o modulos exportados. Puede ser .jar o .zip.",
-            description2="Type of the archive used to pack the module or modules for download.",
-            label_msgid='gvSIGi18n_TRACatalogo_attr_tipoArchivoExportacionPorDefecto_label',
-            description_msgid='gvSIGi18n_TRACatalogo_attr_tipoArchivoExportacionPorDefecto_help',
+    IntegerField(
+        name='numeroDeCambiosAnularInformeIdiomas',
+        widget=IntegerField._properties['widget'](
+            label="Cambios para Anular Informe Idiomas",
+            label2="Changes to invalidate Report by Languages",
+            description="Numero de cambios de estado de Traducciones que causan la anulacion del Informe de Estado por Idiomas, incluso aunque no haya expirado el plazo de retencion del informe.",
+            description2="Number of Translation status changes that shall cause the invalidation of the Status Report by Languages, even if the minimum retention time has not lapsed yet.",
+            label_msgid='gvSIGi18n_TRACatalogo_attr_numeroDeCambiosAnularInformeIdiomas_label',
+            description_msgid='gvSIGi18n_TRACatalogo_attr_numeroDeCambiosAnularInformeIdiomas_help',
             i18n_domain='gvSIGi18n',
         ),
-        description="Tipo de archivo en que se descargan el modulo o modulos exportados. Puede ser .jar o .zip.",
-        vocabulary=['.jar','.zip',],
+        description="Numero de cambios de estado de Traducciones que causan la anulacion del Informe de Estado por Idiomas, incluso aunque no haya expirado el plazo de retencion del informe.",
         duplicates="0",
-        vocabulary_msgids=['gvSIGi18n_TRACatalogo_attr_tipoArchivoExportacionPorDefecto_option_.jar', 'gvSIGi18n_TRACatalogo_attr_tipoArchivoExportacionPorDefecto_option_.zip'],
-        label2="Default downladable archive kind",
-        ea_localid="1488",
+        label2="Changes to invalidate Report by Languages",
+        ea_localid="1584",
         derived="0",
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        description2="Type of the archive used to pack the module or modules for download.",
-        ea_guid="{93F813BD-34E0-4e2e-956F-EDF70D324A35}",
-        vocabulary2=['.jar','.zip',],
+        description2="Number of Translation status changes that shall cause the invalidation of the Status Report by Languages, even if the minimum retention time has not lapsed yet.",
+        ea_guid="{72EA73A3-2DEC-4fbb-973D-A40573168F6C}",
         scale="0",
-        default=".zip",
-        label="Tipo de archivo descargable por defecto",
+        default="10",
+        label="Cambios para Anular Informe Idiomas",
         length="0",
         containment="Not Specified",
-        position="10",
+        position="4",
         owner_class_name="TRACatalogo"
     ),
 
-    StringField(
-        name='modoGestionErrorCodificacionExportacionPorDefecto',
-        widget=SelectionWidget(
-            label="Modo de gestion de errores de codificacion",
-            label2="Encoding errors handling mode",
-            description="Como reaccionar ante la ocurrencia de errores de codificacion de caracteres durante la exportacion de traducciones.",
-            description2="How to react upon occurences of encoding errors errors during the translations export process.",
-            label_msgid='gvSIGi18n_TRACatalogo_attr_modoGestionErrorCodificacionExportacionPorDefecto_label',
-            description_msgid='gvSIGi18n_TRACatalogo_attr_modoGestionErrorCodificacionExportacionPorDefecto_help',
+    IntegerField(
+        name='segundosMinimosRetencionInformeModulosEIdiomas',
+        widget=IntegerField._properties['widget'](
+            label="Minimo Tiempo en segundos que se retiene el Informe de Estado por Modulos e Idiomas",
+            label2="Minimum Time in seconds to retain Status Report by Modules and Languages",
+            description="Tiempo en segundos que se retendra el Informe de Estado por Modulos e Idiomas, aunque sus resultados sean inexactos por alguna modificacion del estado de traducciones, para evitar recalculo excesivo por cambios poco relevantes.",
+            description2="Time in seconds that the Status Report by Modules and Languages shall be retained, even if the results have become inaccurate because of any modification of translations status. To avoid excessive recalculation for barely relevant changes.",
+            label_msgid='gvSIGi18n_TRACatalogo_attr_segundosMinimosRetencionInformeModulosEIdiomas_label',
+            description_msgid='gvSIGi18n_TRACatalogo_attr_segundosMinimosRetencionInformeModulosEIdiomas_help',
             i18n_domain='gvSIGi18n',
         ),
-        description="Como reaccionar ante la ocurrencia de errores de codificacion de caracteres durante la exportacion de traducciones.",
-        vocabulary=[ 'Cancelar al primer error', 'Contar todos los errores y cancelar', 'Ignorar y continuar', 'Sustituir y continuar', 'Sustituir por XML y continuar', 'Sustituir por escape y continuar',],
+        description="Tiempo en segundos que se retendra el Informe de Estado por Modulos e Idiomas, aunque sus resultados sean inexactos por alguna modificacion del estado de traducciones, para evitar recalculo excesivo por cambios poco relevantes.",
         duplicates="0",
-        vocabulary_msgids=['gvSIGi18n_TRACatalogo_attr_modoGestionErrorCodificacionExportacionPorDefecto_option_Cancelar al primer error', 'gvSIGi18n_TRACatalogo_attr_modoGestionErrorCodificacionExportacionPorDefecto_option_Contar todos los errores y cancelar', 'gvSIGi18n_TRACatalogo_attr_modoGestionErrorCodificacionExportacionPorDefecto_option_Ignorar y continuar', 'gvSIGi18n_TRACatalogo_attr_modoGestionErrorCodificacionExportacionPorDefecto_option_Sustituir y continuar', 'gvSIGi18n_TRACatalogo_attr_modoGestionErrorCodificacionExportacionPorDefecto_option_Sustituir por XML y continuar', 'gvSIGi18n_TRACatalogo_attr_modoGestionErrorCodificacionExportacionPorDefecto_option_Sustituir por escape y continuar'],
-        label2="Encoding errors handling mode",
-        ea_localid="1489",
+        label2="Minimum Time in seconds to retain Status Report by Modules and Languages",
+        ea_localid="1587",
         derived="0",
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        description2="How to react upon occurences of encoding errors errors during the translations export process.",
-        ea_guid="{FBE6DB96-51E1-45bd-BD8A-ED2B319AAFDD}",
-        vocabulary2=[ 'Cancel on first error', 'Count all errors and cancel', 'Ignore and continue', 'Replace and continue', 'XML replace and continue', 'Backslash replace and continue',],
+        description2="Time in seconds that the Status Report by Modules and Languages shall be retained, even if the results have become inaccurate because of any modification of translations status. To avoid excessive recalculation for barely relevant changes.",
+        ea_guid="{D8B188A2-0626-40cd-B2BA-8759F7283616}",
         scale="0",
-        default="Sustituir por escape y continuar",
-        label="Modo de gestion de errores de codificacion",
+        default="1800",
+        label="Minimo Tiempo en segundos que se retiene el Informe de Estado por Modulos e Idiomas",
         length="0",
         containment="Not Specified",
-        position="9",
+        position="7",
+        owner_class_name="TRACatalogo"
+    ),
+
+    IntegerField(
+        name='numeroDeCambiosAnularInformeModulosEIdiomas',
+        widget=IntegerField._properties['widget'](
+            label="Cambios para Anular Informe Modulos e Idiomas",
+            label2="Changes to invalidate Report by Modules and Languages",
+            description="Numero de cambios de estado de Traducciones que causan la anulacion del Informe de Estado por Modulos e Idiomas, incluso aunque no haya expirado el plazo de retencion del informe.",
+            description2="Number of Translation status changes that shall cause the invalidation of the Status Report by Modules and Languages, even if the minimum retention time has not lapsed yet.",
+            label_msgid='gvSIGi18n_TRACatalogo_attr_numeroDeCambiosAnularInformeModulosEIdiomas_label',
+            description_msgid='gvSIGi18n_TRACatalogo_attr_numeroDeCambiosAnularInformeModulosEIdiomas_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Numero de cambios de estado de Traducciones que causan la anulacion del Informe de Estado por Modulos e Idiomas, incluso aunque no haya expirado el plazo de retencion del informe.",
+        duplicates="0",
+        label2="Changes to invalidate Report by Modules and Languages",
+        ea_localid="1586",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="Number of Translation status changes that shall cause the invalidation of the Status Report by Modules and Languages, even if the minimum retention time has not lapsed yet.",
+        ea_guid="{88EC54C8-424B-4a1e-B0B8-9BADC4E3BFCF}",
+        scale="0",
+        default="30",
+        label="Cambios para Anular Informe Modulos e Idiomas",
+        length="0",
+        containment="Not Specified",
+        position="6",
+        owner_class_name="TRACatalogo"
+    ),
+
+    IntegerField(
+        name='maximoNumeroCambiosRecientes',
+        widget=IntegerField._properties['widget'](
+            label="Maximo numero de Cambios Recientes",
+            label2="Maximum number of Recent Changes",
+            description="El sistema recordara cambios recientes de estados de traducciones, hasta este maximo, despreciando los cambios mas antiguos cuando se exceda el maximo.",
+            description2="The system shall record recent Translation status changes, up to this maximum, discarding the oldest ones when the maximum is exceeded,",
+            label_msgid='gvSIGi18n_TRACatalogo_attr_maximoNumeroCambiosRecientes_label',
+            description_msgid='gvSIGi18n_TRACatalogo_attr_maximoNumeroCambiosRecientes_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="El sistema recordara cambios recientes de estados de traducciones, hasta este maximo, despreciando los cambios mas antiguos cuando se exceda el maximo.",
+        duplicates="0",
+        label2="Maximum number of Recent Changes",
+        ea_localid="1585",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="The system shall record recent Translation status changes, up to this maximum, discarding the oldest ones when the maximum is exceeded,",
+        ea_guid="{FA1DD245-141B-46df-8764-2ACDE92809D2}",
+        scale="0",
+        default="100",
+        label="Maximo numero de Cambios Recientes",
+        length="0",
+        containment="Not Specified",
+        position="3",
         owner_class_name="TRACatalogo"
     ),
 
@@ -577,7 +629,7 @@ schema = Schema((
         label="Ultima Version importada del producto",
         length="0",
         containment="Not Specified",
-        position="17",
+        position="23",
         owner_class_name="TRACatalogo",
         expression="context.fDeriveUltimaVersionImportada()",
         computed_types="string"
@@ -608,7 +660,7 @@ schema = Schema((
         label="Identificador del Ultimo Build Importado",
         length="0",
         containment="Not Specified",
-        position="18",
+        position="24",
         owner_class_name="TRACatalogo",
         expression="context.fDeriveUltimoBuildImportado()",
         computed_types="string"
@@ -639,7 +691,7 @@ schema = Schema((
         label="Fecha de Ultima Importacion",
         length="0",
         containment="Not Specified",
-        position="19",
+        position="25",
         owner_class_name="TRACatalogo",
         expression="context.fDeriveFechaUltimaImportacion()",
         computed_types="DateTime"
@@ -670,7 +722,7 @@ schema = Schema((
         label="Fecha del Ultimo Informe de Estado",
         length="0",
         containment="Not Specified",
-        position="20",
+        position="26",
         owner_class_name="TRACatalogo",
         expression="context.fDeriveFechaUltimoInforme()",
         computed_types="DateTime"
@@ -827,6 +879,72 @@ schema = Schema((
     ),
 
     StringField(
+        name='exportarNombreFicheroParaGvSIGPorDefecto',
+        widget=SelectionWidget(
+            label="Export File for gvSIGby default",
+            label2="Exportar Fichero para gvSIGpor defecto",
+            description="Exportar Fichero con nombre segun el estandar de gvSIG para ficheros de distribucion de localizaciones.",
+            description2="Export File with name according to the gvSIG standard for distribution of localization files.",
+            label_msgid='gvSIGi18n_TRACatalogo_attr_exportarNombreFicheroParaGvSIGPorDefecto_label',
+            description_msgid='gvSIGi18n_TRACatalogo_attr_exportarNombreFicheroParaGvSIGPorDefecto_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Exportar Fichero con nombre segun el estandar de gvSIG para ficheros de distribucion de localizaciones.",
+        vocabulary=['Si','No',],
+        duplicates="0",
+        vocabulary_msgids=['gvSIGi18n_TRACatalogo_attr_exportarNombreFicheroParaGvSIGPorDefecto_option_Si', 'gvSIGi18n_TRACatalogo_attr_exportarNombreFicheroParaGvSIGPorDefecto_option_No'],
+        label2="Exportar Fichero para gvSIGpor defecto",
+        ea_localid="1592",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="Export File with name according to the gvSIG standard for distribution of localization files.",
+        ea_guid="{652CFFA7-EAE4-47d3-9288-0F78EC6E3877}",
+        vocabulary2=['Yes','No',],
+        scale="0",
+        default="Si",
+        label="Export File for gvSIGby default",
+        length="0",
+        containment="Not Specified",
+        position="16",
+        owner_class_name="TRACatalogo"
+    ),
+
+    StringField(
+        name='modoGestionErrorCodificacionExportacionPorDefecto',
+        widget=SelectionWidget(
+            label="Modo de gestion de errores de codificacion",
+            label2="Encoding errors handling mode",
+            description="Como reaccionar ante la ocurrencia de errores de codificacion de caracteres durante la exportacion de traducciones.",
+            description2="How to react upon occurences of encoding errors errors during the translations export process.",
+            label_msgid='gvSIGi18n_TRACatalogo_attr_modoGestionErrorCodificacionExportacionPorDefecto_label',
+            description_msgid='gvSIGi18n_TRACatalogo_attr_modoGestionErrorCodificacionExportacionPorDefecto_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Como reaccionar ante la ocurrencia de errores de codificacion de caracteres durante la exportacion de traducciones.",
+        vocabulary=[ 'Cancelar al primer error', 'Contar todos los errores y cancelar', 'Ignorar y continuar', 'Sustituir y continuar', 'Sustituir por XML y continuar', 'Sustituir por escape y continuar',],
+        duplicates="0",
+        vocabulary_msgids=['gvSIGi18n_TRACatalogo_attr_modoGestionErrorCodificacionExportacionPorDefecto_option_Cancelar al primer error', 'gvSIGi18n_TRACatalogo_attr_modoGestionErrorCodificacionExportacionPorDefecto_option_Contar todos los errores y cancelar', 'gvSIGi18n_TRACatalogo_attr_modoGestionErrorCodificacionExportacionPorDefecto_option_Ignorar y continuar', 'gvSIGi18n_TRACatalogo_attr_modoGestionErrorCodificacionExportacionPorDefecto_option_Sustituir y continuar', 'gvSIGi18n_TRACatalogo_attr_modoGestionErrorCodificacionExportacionPorDefecto_option_Sustituir por XML y continuar', 'gvSIGi18n_TRACatalogo_attr_modoGestionErrorCodificacionExportacionPorDefecto_option_Sustituir por escape y continuar'],
+        label2="Encoding errors handling mode",
+        ea_localid="1489",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="How to react upon occurences of encoding errors errors during the translations export process.",
+        ea_guid="{FBE6DB96-51E1-45bd-BD8A-ED2B319AAFDD}",
+        vocabulary2=[ 'Cancel on first error', 'Count all errors and cancel', 'Ignore and continue', 'Replace and continue', 'XML replace and continue', 'Backslash replace and continue',],
+        scale="0",
+        default="Sustituir por escape y continuar",
+        label="Modo de gestion de errores de codificacion",
+        length="0",
+        containment="Not Specified",
+        position="14",
+        owner_class_name="TRACatalogo"
+    ),
+
+    StringField(
         name='modoInteraccionPorDefecto',
         widget=SelectionWidget(
             label="Modo de Interaccion con el Servidor por defecto",
@@ -855,7 +973,40 @@ schema = Schema((
         label="Modo de Interaccion con el Servidor por defecto",
         length="0",
         containment="Not Specified",
-        position="4",
+        position="9",
+        owner_class_name="TRACatalogo"
+    ),
+
+    StringField(
+        name='modulosPorSeparadoPorDefecto',
+        widget=SelectionWidget(
+            label="Exportar modulos por separado",
+            label2="Export separated modules",
+            description="Exportar cada modulo por separado en su propio fichero, todos ellos incluidos en el archivo descargable.",
+            description2="Exprot each module in its own file, with all of them packed in the downloadable archive.",
+            label_msgid='gvSIGi18n_TRACatalogo_attr_modulosPorSeparadoPorDefecto_label',
+            description_msgid='gvSIGi18n_TRACatalogo_attr_modulosPorSeparadoPorDefecto_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Exportar cada modulo por separado en su propio fichero, todos ellos incluidos en el archivo descargable.",
+        vocabulary=['Si','No',],
+        duplicates="0",
+        vocabulary_msgids=['gvSIGi18n_TRACatalogo_attr_modulosPorSeparadoPorDefecto_option_Si', 'gvSIGi18n_TRACatalogo_attr_modulosPorSeparadoPorDefecto_option_No'],
+        label2="Export separated modules",
+        ea_localid="1487",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="Exprot each module in its own file, with all of them packed in the downloadable archive.",
+        ea_guid="{238F900C-0D19-4a2d-96B6-1D26B987CACC}",
+        vocabulary2=['Yes','No',],
+        scale="0",
+        default="No",
+        label="Exportar modulos por separado",
+        length="0",
+        containment="Not Specified",
+        position="19",
         owner_class_name="TRACatalogo"
     ),
 
@@ -885,7 +1036,7 @@ schema = Schema((
         length="0",
         exclude_from_traversalconfig="True",
         containment="Not Specified",
-        position="23",
+        position="29",
         owner_class_name="TRACatalogo"
     ),
 
@@ -915,7 +1066,40 @@ schema = Schema((
         length="0",
         exclude_from_traversalconfig="True",
         containment="Not Specified",
-        position="21",
+        position="27",
+        owner_class_name="TRACatalogo"
+    ),
+
+    StringField(
+        name='tipoArchivoExportacionPorDefecto',
+        widget=SelectionWidget(
+            label="Tipo de archivo descargable por defecto",
+            label2="Default downladable archive kind",
+            description="Tipo de archivo en que se descargan el modulo o modulos exportados. Puede ser .jar o .zip.",
+            description2="Type of the archive used to pack the module or modules for download.",
+            label_msgid='gvSIGi18n_TRACatalogo_attr_tipoArchivoExportacionPorDefecto_label',
+            description_msgid='gvSIGi18n_TRACatalogo_attr_tipoArchivoExportacionPorDefecto_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Tipo de archivo en que se descargan el modulo o modulos exportados. Puede ser .jar o .zip.",
+        vocabulary=['.jar','.zip',],
+        duplicates="0",
+        vocabulary_msgids=['gvSIGi18n_TRACatalogo_attr_tipoArchivoExportacionPorDefecto_option_.jar', 'gvSIGi18n_TRACatalogo_attr_tipoArchivoExportacionPorDefecto_option_.zip'],
+        label2="Default downladable archive kind",
+        ea_localid="1488",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="Type of the archive used to pack the module or modules for download.",
+        ea_guid="{93F813BD-34E0-4e2e-956F-EDF70D324A35}",
+        vocabulary2=['.jar','.zip',],
+        scale="0",
+        default=".zip",
+        label="Tipo de archivo descargable por defecto",
+        length="0",
+        containment="Not Specified",
+        position="15",
         owner_class_name="TRACatalogo"
     ),
 
@@ -949,7 +1133,7 @@ schema = Schema((
         length="0",
         multiValued=0,
         containment="Not Specified",
-        position="24",
+        position="30",
         owner_class_name="TRACatalogo"
     ),
 
@@ -978,12 +1162,12 @@ schema = Schema((
         allowed_types=['TRAInforme'],
         read_only="True",
         scale="0",
-        additional_columns=['esAutoActualizable', 'haCompletadoConExito'],
+        additional_columns=['haCompletadoConExito'],
         label="Ultimo Informe de Estado",
         length="0",
         multiValued=0,
         containment="Not Specified",
-        position="22",
+        position="28",
         owner_class_name="TRACatalogo"
     ),
 
@@ -997,6 +1181,7 @@ TRACatalogo_schema = OrderedBaseFolderSchema.copy() + \
     getattr(TRAArquetipo, 'schema', Schema(())).copy() + \
     getattr(TRACatalogo_Inicializacion, 'schema', Schema(())).copy() + \
     getattr(TRACatalogo_Informes, 'schema', Schema(())).copy() + \
+    getattr(TRACatalogo_Globales, 'schema', Schema(())).copy() + \
     getattr(TRACatalogo_Operaciones, 'schema', Schema(())).copy() + \
     getattr(TRACatalogo_CursorTraducciones, 'schema', Schema(())).copy() + \
     getattr(TRACatalogo_Exportacion, 'schema', Schema(())).copy() + \
@@ -1006,11 +1191,11 @@ TRACatalogo_schema = OrderedBaseFolderSchema.copy() + \
 ##code-section after-schema #fill in your manual code here
 ##/code-section after-schema
 
-class TRACatalogo(OrderedBaseFolder, TRAArquetipo, TRACatalogo_Inicializacion, TRACatalogo_Informes, TRACatalogo_Operaciones, TRACatalogo_CursorTraducciones, TRACatalogo_Exportacion, TRAConRegistroActividad):
+class TRACatalogo(OrderedBaseFolder, TRAArquetipo, TRACatalogo_Inicializacion, TRACatalogo_Informes, TRACatalogo_Globales, TRACatalogo_Operaciones, TRACatalogo_CursorTraducciones, TRACatalogo_Exportacion, TRAConRegistroActividad):
     """
     """
     security = ClassSecurityInfo()
-    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAArquetipo,'__implements__',()),) + (getattr(TRACatalogo_Inicializacion,'__implements__',()),) + (getattr(TRACatalogo_Informes,'__implements__',()),) + (getattr(TRACatalogo_Operaciones,'__implements__',()),) + (getattr(TRACatalogo_CursorTraducciones,'__implements__',()),) + (getattr(TRACatalogo_Exportacion,'__implements__',()),) + (getattr(TRAConRegistroActividad,'__implements__',()),)
+    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAArquetipo,'__implements__',()),) + (getattr(TRACatalogo_Inicializacion,'__implements__',()),) + (getattr(TRACatalogo_Informes,'__implements__',()),) + (getattr(TRACatalogo_Globales,'__implements__',()),) + (getattr(TRACatalogo_Operaciones,'__implements__',()),) + (getattr(TRACatalogo_CursorTraducciones,'__implements__',()),) + (getattr(TRACatalogo_Exportacion,'__implements__',()),) + (getattr(TRAConRegistroActividad,'__implements__',()),)
 
     # This name appears in the 'add' box
     archetype_name = 'Catalogo de Traducciones'
@@ -1033,7 +1218,7 @@ class TRACatalogo(OrderedBaseFolder, TRAArquetipo, TRACatalogo_Inicializacion, T
 
 
 
-    allowed_content_types = ['TRAColeccionInformes', 'TRAColeccionCadenas', 'TRAColeccionImportaciones', 'TRAColeccionSolicitudesCadenas', 'TRAColeccionIdiomas', 'TRAColeccionModulos'] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Inicializacion, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Informes, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Operaciones, 'allowed_content_types', [])) + list(getattr(TRACatalogo_CursorTraducciones, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Exportacion, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', []))
+    allowed_content_types = ['TRAColeccionInformes', 'TRAColeccionCadenas', 'TRAColeccionImportaciones', 'TRAColeccionSolicitudesCadenas', 'TRAColeccionIdiomas', 'TRAColeccionModulos'] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Inicializacion, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Informes, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Globales, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Operaciones, 'allowed_content_types', [])) + list(getattr(TRACatalogo_CursorTraducciones, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Exportacion, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', []))
     filter_content_types             = 1
     global_allow                     = 1
     content_icon = 'tracatalogo.gif'
@@ -1054,21 +1239,39 @@ class TRACatalogo(OrderedBaseFolder, TRAArquetipo, TRACatalogo_Inicializacion, T
     actions =  (
 
 
+       {'action': "string:${object_url}/Tabular/",
+        'category': "object",
+        'id': 'TRA_advanced',
+        'name': 'Advanced View',
+        'permissions': ("View",),
+        'condition': """python:object.fUseCaseCheckDoable( 'Advanced_View_on_any_TRA_element')"""
+       },
+
+
+       {'action': "string:${object_url}/TRACatalogoDetalle",
+        'category': "object",
+        'id': 'TRA_detalle',
+        'name': 'Details',
+        'permissions': ("View",),
+        'condition': """python:False and object.fUseCaseCheckDoable( 'EllaborateInformeModulesAndLanguages')"""
+       },
+
+
+       {'action': "string:${object_url}/TRACatalogoInforme",
+        'category': "object",
+        'id': 'TRA_informe',
+        'name': 'Report',
+        'permissions': ("View",),
+        'condition': """python:object.fUseCaseCheckDoable( 'EllaborateInformeLanguages')"""
+       },
+
+
        {'action': "string:${object_url}/TRAConfirmarBloquearCatalogo",
         'category': "object_buttons",
         'id': 'TRA_bloquear_catalogo',
         'name': 'Lock Catalog',
         'permissions': ("Modify portal content",),
         'condition': """python:object.fUseCaseCheckDoable( 'Lock_TRACatalogo')"""
-       },
-
-
-       {'action': "string:${object_url}/idiomas/TRACrear_Idioma",
-        'category': "object_buttons",
-        'id': 'CreateLanguage',
-        'name': 'Create Language',
-        'permissions': ("Modify portal content",),
-        'condition': """python:object.fObtenerColeccionIdiomas() and object.fObtenerColeccionIdiomas().fUseCaseCheckDoable( 'Create_TRAIdioma')"""
        },
 
 
@@ -1090,12 +1293,48 @@ class TRACatalogo(OrderedBaseFolder, TRAArquetipo, TRACatalogo_Inicializacion, T
        },
 
 
+       {'action': "string:${object_url}/informes/TRACrear_Informe",
+        'category': "object_buttons",
+        'id': 'TRACreateInforme',
+        'name': 'Create Report',
+        'permissions': ("Modify portal content",),
+        'condition': """python:object.fObtenerColeccionInformes() and object.fObtenerColeccionInformes().fUseCaseCheckDoable( 'Create_TRAInforme')"""
+       },
+
+
+       {'action': "string:${object_url}/idiomas/TRACrear_Idioma",
+        'category': "object_buttons",
+        'id': 'TRACreateLanguage',
+        'name': 'Create Language',
+        'permissions': ("Modify portal content",),
+        'condition': """python:object.fObtenerColeccionIdiomas() and object.fObtenerColeccionIdiomas().fUseCaseCheckDoable( 'Create_TRAIdioma')"""
+       },
+
+
+       {'action': "string:${object_url}/solicitudescadenas/TRACrear_SolicitudCadena/?theNewTypeName=TRASolicitudCadena&theAggregationName=solicitudesCadenas",
+        'category': "object_buttons",
+        'id': 'TRACreateCadena',
+        'name': 'Create New String Request',
+        'permissions': ("Modify portal content",),
+        'condition': """python:object.fObtenerColeccionSolicitudesCadenas() and object.fObtenerColeccionSolicitudesCadenas().fUseCaseCheckDoable( 'Create_TRACadena')"""
+       },
+
+
        {'action': "string:$object_url/base_edit",
         'category': "object",
         'id': 'edit',
         'name': 'Edit',
         'permissions': ("Modify portal content",),
         'condition': """python:'portal_factory' in object.getPhysicalPath()"""
+       },
+
+
+       {'action': "string:${object_url}/TRACatalogo",
+        'category': "object",
+        'id': 'view',
+        'name': 'View',
+        'permissions': ("View",),
+        'condition': """python:1"""
        },
 
 
@@ -1117,15 +1356,6 @@ class TRACatalogo(OrderedBaseFolder, TRAArquetipo, TRACatalogo_Inicializacion, T
        },
 
 
-       {'action': "string:${object_url}/TRACatalogo",
-        'category': "object",
-        'id': 'view',
-        'name': 'View',
-        'permissions': ("View",),
-        'condition': """python:1"""
-       },
-
-
        {'action': "string:${object_url}/sharing",
         'category': "object",
         'id': 'local_roles',
@@ -1141,6 +1371,15 @@ class TRACatalogo(OrderedBaseFolder, TRAArquetipo, TRACatalogo_Inicializacion, T
         'name': 'Folder Listing',
         'permissions': ("View",),
         'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/MDDChanges",
+        'category': "object_buttons",
+        'id': 'mddchanges',
+        'name': 'Changes',
+        'permissions': ("View",),
+        'condition': """python:1"""
        },
 
 
@@ -1171,6 +1410,15 @@ class TRACatalogo(OrderedBaseFolder, TRAArquetipo, TRACatalogo_Inicializacion, T
        },
 
 
+       {'action': "string:${object_url}/MDDCacheStatus/",
+        'category': "object_buttons",
+        'id': 'mddcachestatus',
+        'name': 'Cache',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
     )
 
 
@@ -1185,6 +1433,13 @@ class TRACatalogo(OrderedBaseFolder, TRAArquetipo, TRACatalogo_Inicializacion, T
 
     # Methods
 
+    security.declarePublic('fIsCacheable')
+    def fIsCacheable(self):
+        """
+        """
+        
+        return True
+
     security.declarePublic('cb_isCopyable')
     def cb_isCopyable(self):
         """
@@ -1192,19 +1447,26 @@ class TRACatalogo(OrderedBaseFolder, TRAArquetipo, TRACatalogo_Inicializacion, T
         
         return False
 
-    security.declarePublic('cb_isMoveable')
-    def cb_isMoveable(self):
-        """
-        """
-        
-        return ( 'portal_factory' in self.getPhysicalPath()) or self.getPhysicalPath()[-1:][0].startswith( 'tracatalogo.')
-
     security.declarePublic('displayContentsTab')
     def displayContentsTab(self):
         """
         """
         
         return False
+
+    security.declarePublic('manage_beforeDelete')
+    def manage_beforeDelete(self,item,container):
+        """
+        """
+        
+        return TRACatalogo_Operaciones.pHandle_manage_beforeDelete( self, item, container)
+
+    security.declarePublic('fExtraLinks')
+    def fExtraLinks(self):
+        """
+        """
+        
+        return TRAElemento_Operaciones.fExtraLinks( self)
 
     security.declarePublic('getEsRaiz')
     def getEsRaiz(self):
@@ -1219,20 +1481,6 @@ class TRACatalogo(OrderedBaseFolder, TRAArquetipo, TRACatalogo_Inicializacion, T
         """
         
         return TRACatalogo_Operaciones.pHandle_manage_afterAdd( self, item, container)
-
-    security.declarePublic('fExtraLinks')
-    def fExtraLinks(self):
-        """
-        """
-        
-        return TRAElemento_Operaciones.fExtraLinks( self)
-
-    security.declarePublic('manage_beforeDelete')
-    def manage_beforeDelete(self,item,container):
-        """
-        """
-        
-        return TRACatalogo_Operaciones.pHandle_manage_beforeDelete( self, item, container)
 
     security.declarePublic('manage_pasteObjects')
     def manage_pasteObjects(self,cb_copy_data,REQUEST):
