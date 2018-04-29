@@ -1,10 +1,20 @@
 ﻿gvSIG-i18n RELEASE NOTES
 ========================
 
+Patch 20110127 cumulative on v 1.2.1
+------------------------------------------------
+Changed TRACAtalogo_Exportacion.py to fix bug that was fixed in 1.2.4:
+BUG EXPO for gvSIG-i18n extension fails to unicode_escape non ascii chars (i.e. latin chars, althoughit does for non-ascii and non-latin)
+Now correclty escapes all required characters when exporting for gvSIG ( java.properties format, with unicode_escape encoding).
 
 
-Patch 20110125
-----------------
+
+|
+|
+
+
+Patch 20110125 cumulative on v 1.2.1
+------------------------------------------------
 Changed TRACAtalogo_Exportacion.py and added ExternalMethod TRAExportAdditionalConfig.py,
 to export translation status, module names and contributing users and dates.
 
@@ -14,8 +24,8 @@ to export translation status, module names and contributing users and dates.
 
 
 
-Patch 20101111
-----------------
+Patch 20101111 cumulative on v 1.2.1
+------------------------------------------------
 Fix TRATraduccion_Operaciones::fIntentarTraducir 
 to avoid exception because of wrong signature of invocation to fResultForChangeCounterDetectedOverwrite, problem posted by Victor Acevedo on 20101028
 
@@ -26,7 +36,7 @@ to avoid exception because of wrong signature of invocation to fResultForChangeC
  
 
 Patch 20100915
-----------------
+------------------------------------------------
 Fix TRAElemento_Operaciones::pFlushCachedTemplates_All 
 to avoid using damaged Plone portal_catalog ZCatalog instance, by problem posted by Mario Carrera on 20100907
 

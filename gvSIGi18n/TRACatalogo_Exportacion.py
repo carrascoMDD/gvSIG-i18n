@@ -339,8 +339,8 @@ class TRACatalogo_Exportacion:
                 
                 someExportParameters = {
                     'theLanguagesToExport':         unosCodigosIdiomas,
-                    'theCodigosIdiomaReferencia':   unosCodigosIdiomasReferencia,
-                    'theCodificacionesCaracteres':  dict( [ ( unCodigo, cUnicodeEscapeEncoding,) for unCodigo in unosCodigosIdiomas]), 
+                    'theCodigosIdiomaReferencia':   unosCodigosIdiomasReferencia, 
+                    'theCodificacionesCaracteres':  dict( [ ( unCodigo, cEncodingUnicodeEscape,) for unCodigo in unosCodigosIdiomas]),  # ACV patch 20110127 was cUnicodeEscapeEncoding  = 'raw_unicode_escape'
                     'theModulesToExport':           [ unModulo.Title() for unModulo in self.fObtenerTodosModulos()] + [ cModuloNoEspecificado_ValorNombre,],
                     'theExportFormat':              cExportFormatOption_JavaProperties,
                     'theIncludeManifest':           'No',
