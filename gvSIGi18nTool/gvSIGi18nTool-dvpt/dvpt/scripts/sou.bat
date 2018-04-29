@@ -22,7 +22,7 @@ xcopy .\*.bat   .\dvpt\scripts  /Y /I
 
 
 
-copy "D:\Works\MDD\Plone\ArchGenXML152ACV\ArchGenXML152ACV15wksp\distros\ArchGenXML152ACV15b20091202.zip" .\dvpt\
+copy "D:\Works\MDD\Plone\ArchGenXML152ACV\ArchGenXML152ACV15wksp\distros\ArchGenXML152ACV16b20110301.zip" .\dvpt\
 copy "D:\Works\MDD\Plone\gvSIGi18n\TRA0103wk\ThirdParty\distros\CJKSplitter073.zip" .\dvpt\
 copy "D:\Works\MDD\Plone\gvSIGi18n\TRA0103wk\ThirdParty\distros\ZopeChinaPak082.zip" .\dvpt\
 

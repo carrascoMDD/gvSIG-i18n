@@ -2,7 +2,7 @@
 #
 # File: TRAModulo.py
 #
-# Copyright (c) 2011 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+# Copyright (c) 2008, 2009, 2010, 2011 Conselleria de Infraestructuras y
 # Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -121,8 +121,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRAModulo_attr_dominio_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="Dato que aparece en los ficheros de exportacion de tipo GNUgettext PO, para identificar la aplicacion o modulo a que se aplican las traducciones.",
+        searchable=0,
         duplicates="0",
         label2="Domain",
         ea_localid="1170",
@@ -130,13 +130,14 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="Iinformation that appears in the exported files of GNUgettext PO format, to indicate the application or module to which the translations apply.",
-        containment="Not Specified",
         ea_guid="{70C5AFBA-F231-4944-BC58-D108311B4B10}",
+        scale="0",
+        label="Dominio",
+        length="0",
+        containment="Not Specified",
         position="1",
-        owner_class_name="TRAModulo",
-        label="Dominio"
+        owner_class_name="TRAModulo"
     ),
 
     BooleanField(

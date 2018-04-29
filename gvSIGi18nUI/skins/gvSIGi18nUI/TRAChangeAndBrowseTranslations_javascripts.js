@@ -1573,14 +1573,16 @@ function fTRAEvtHlr_Editor_TextArea_OnKeyPress( event) {
                     if (( unKeyActionTab == cKeyAction_Traducir) || ( unKeyActionTab == cKeyAction_TraducirYAvanzar))  {
                     
                         if ( ! fTRANoConfirmTranslationChanges()) {
+                        
+                            var unAvoidConfirmation  = fTRA_GetConstantValue( 'cTRAId_ToAvoidConfirmationDialogsCheckDoNotConfirmOptionMsg');
                             var unConfirmTranslateMsg = fTRA_GetConstantValue( 'cTRAId_ConfirmTranslateMsg');
-                            var unConfirmed = window.confirm( unConfirmTranslateMsg + '?');
+                            var unConfirmed          = window.confirm( unConfirmTranslateMsg + '?\n' + unAvoidConfirmation);                        
                             if (! unConfirmed) {
                                 return false;
                             }
                         
                             var unReallyConfirmTranslateMsg = fTRA_GetConstantValue( 'cTRAId_ReallyConfirmTranslateMsg');
-                            unConfirmed = window.confirm( unReallyConfirmTranslateMsg + '?');
+                            unConfirmed = window.confirm( unReallyConfirmTranslateMsg + '?\n' + unAvoidConfirmation);
                             if (! unConfirmed) {
                                 return false;
                             }   
@@ -1680,14 +1682,16 @@ function fTRAEvtHlr_Editor_TextArea_OnKeyPress( event) {
                         pLogUserInterfaceEvent( 'fTRAEvtHlr_Editor_TextArea_OnKeyPress', 'action: ' + unKeyActionCR + ' phase: traducir');
                         
                         if ( ! fTRANoConfirmTranslationChanges()) {
-                            var unConfirmTranslateMsg = fTRA_GetConstantValue( 'cTRAId_ConfirmTranslateMsg');
-                            var unConfirmed = window.confirm( unConfirmTranslateMsg + '?');
+                        
+                            var unAvoidConfirmation    = fTRA_GetConstantValue( 'cTRAId_ToAvoidConfirmationDialogsCheckDoNotConfirmOptionMsg');
+                            var unConfirmTranslateMsg  = fTRA_GetConstantValue( 'cTRAId_ConfirmTranslateMsg');
+                            var unConfirmed            = window.confirm( unConfirmTranslateMsg + '?\n' + unAvoidConfirmation);                                                
                             if (! unConfirmed) {
                                 return false;
                             }
                         
                             var unReallyConfirmTranslateMsg = fTRA_GetConstantValue( 'cTRAId_ReallyConfirmTranslateMsg');
-                            unConfirmed = window.confirm( unReallyConfirmTranslateMsg + '?');
+                            unConfirmed = window.confirm( unReallyConfirmTranslateMsg + '?\n' + unAvoidConfirmation);
                             if (! unConfirmed) {
                                 return false;
                             }  
@@ -1836,14 +1840,16 @@ function fTRAEvtHlr_Editor_Button_Traducir_OnMouseUp() {
             try {
                   
                 if ( ! fTRANoConfirmTranslationChanges()) {
-                    var unConfirmTranslateMsg = fTRA_GetConstantValue( 'cTRAId_ConfirmTranslateMsg');
-                    var unConfirmed = window.confirm( unConfirmTranslateMsg + '?');
+                
+                    var unAvoidConfirmation    = fTRA_GetConstantValue( 'cTRAId_ToAvoidConfirmationDialogsCheckDoNotConfirmOptionMsg');
+                    var unConfirmTranslateMsg  = fTRA_GetConstantValue( 'cTRAId_ConfirmTranslateMsg');
+                    var unConfirmed            = window.confirm( unConfirmTranslateMsg + '?\n' + unAvoidConfirmation);                                                
                     if (! unConfirmed) {
                         return false;
                     }
                 
                     var unReallyConfirmTranslateMsg = fTRA_GetConstantValue( 'cTRAId_ReallyConfirmTranslateMsg');
-                    unConfirmed = window.confirm( unReallyConfirmTranslateMsg + '?');
+                    unConfirmed = window.confirm( unReallyConfirmTranslateMsg + '?\n' + unAvoidConfirmation);
                     if (! unConfirmed) {
                         return false;
                     }    
@@ -1920,14 +1926,15 @@ function fTRAEvtHlr_Editor_Button_Traducir_OnKeyPress( event) {
                 if ( unKeyNumber == cKeyNumberCR) {
                 
                     if ( ! fTRANoConfirmTranslationChanges()) {
-                        var unConfirmTranslateMsg = fTRA_GetConstantValue( 'cTRAId_ConfirmTranslateMsg');
-                        var unConfirmed = window.confirm( unConfirmTranslateMsg + '?');
+                        var unAvoidConfirmation    = fTRA_GetConstantValue( 'cTRAId_ToAvoidConfirmationDialogsCheckDoNotConfirmOptionMsg');
+                        var unConfirmTranslateMsg  = fTRA_GetConstantValue( 'cTRAId_ConfirmTranslateMsg');
+                        var unConfirmed            = window.confirm( unConfirmTranslateMsg + '?\n' + unAvoidConfirmation);                                                
                         if (! unConfirmed) {
                             return false;
                         }
                     
                         var unReallyConfirmTranslateMsg = fTRA_GetConstantValue( 'cTRAId_ReallyConfirmTranslateMsg');
-                        unConfirmed = window.confirm( unReallyConfirmTranslateMsg + '?');
+                        unConfirmed = window.confirm( unReallyConfirmTranslateMsg + '?\n' + unAvoidConfirmation);
                         if (! unConfirmed) {
                             return false;
                         } 
@@ -1995,14 +2002,16 @@ function fTRAEvtHlr_Editor_Button_Pendiente_OnMouseUp() {
 
             try {
                 if ( ! fTRANoConfirmTranslationDelete()) {
-                    var unConfirmDeleteMsg = fTRA_GetConstantValue( 'cTRAId_ConfirmDeleteMsg');
-                    var unConfirmed = window.confirm( unConfirmDeleteMsg + '?');
+                
+                    var unAvoidConfirmation    = fTRA_GetConstantValue( 'cTRAId_ToAvoidConfirmationDialogsCheckDoNotConfirmOptionMsg');
+                    var unConfirmDeleteMsg     = fTRA_GetConstantValue( 'cTRAId_ConfirmDeleteMsg');
+                    var unConfirmed            = window.confirm( unConfirmDeleteMsg + '?\n' + unAvoidConfirmation);                                                
                     if (! unConfirmed) {
                         return false;
                     }
                 
                     var unReallyConfirmDeleteMsg = fTRA_GetConstantValue( 'cTRAId_ReallyConfirmDeleteMsg');
-                    unConfirmed = window.confirm( unReallyConfirmDeleteMsg + '?');
+                    unConfirmed = window.confirm( unReallyConfirmDeleteMsg + '?\n' + unAvoidConfirmation);
                     if (! unConfirmed) {
                         return false;
                     } 
@@ -2059,14 +2068,15 @@ function fTRAEvtHlr_Editor_Button_Pendiente_OnKeyPress( event) {
         try {
     
             if ( ! fTRANoConfirmTranslationDelete()) {
-                var unConfirmDeleteMsg = fTRA_GetConstantValue( 'cTRAId_ConfirmDeleteMsg');
-                var unConfirmed = window.confirm( unConfirmDeleteMsg + '?');
+                var unAvoidConfirmation    = fTRA_GetConstantValue( 'cTRAId_ToAvoidConfirmationDialogsCheckDoNotConfirmOptionMsg');
+                var unConfirmDeleteMsg     = fTRA_GetConstantValue( 'cTRAId_ConfirmDeleteMsg');
+                var unConfirmed            = window.confirm( unConfirmDeleteMsg + '?\n' + unAvoidConfirmation);                                                
                 if (! unConfirmed) {
                     return false;
                 }
             
                 var unReallyConfirmDeleteMsg = fTRA_GetConstantValue( 'cTRAId_ReallyConfirmDeleteMsg');
-                unConfirmed = window.confirm( unReallyConfirmDeleteMsg + '?');
+                unConfirmed = window.confirm( unReallyConfirmDeleteMsg + '?\n' + unAvoidConfirmation);
                 if (! unConfirmed) {
                     return false;
                 } 
@@ -2300,14 +2310,15 @@ function fTRAEvtHlr_Editor_Button_DesactivarCadena_OnMouseUp() {
 
             try {
             
+                var unAvoidConfirmation  = fTRA_GetConstantValue( 'cTRAId_ToAvoidConfirmationDialogsCheckDoNotConfirmOptionMsg');
                 var unDeactivateStringMsg = fTRA_GetConstantValue( 'cTRAId_ConfirmDeactivateStringMsg');
-                var unConfirmed = window.confirm( unDeactivateStringMsg + '?');
+                var unConfirmed = window.confirm( unDeactivateStringMsg + '?\n' + unAvoidConfirmation);
                 if (! unConfirmed) {
                     return false;
                 }
             
                 var unReallyDeactivateStringMsg = fTRA_GetConstantValue( 'cTRAId_ReallyDeactivateStringMsg');
-                unConfirmed = window.confirm( unReallyDeactivateStringMsg + '?');
+                unConfirmed = window.confirm( unReallyDeactivateStringMsg + '?\n' + unAvoidConfirmation);
                 if (! unConfirmed) {
                     return false;
                 }
@@ -2367,14 +2378,15 @@ function fTRAEvtHlr_Editor_Button_DesactivarCadena_OnKeyPress( event) {
                 
                 if ( unKeyNumber == cKeyNumberCR) {
                 
+                    var unAvoidConfirmation  = fTRA_GetConstantValue( 'cTRAId_ToAvoidConfirmationDialogsCheckDoNotConfirmOptionMsg');
                     var unDeactivateStringMsg = fTRA_GetConstantValue( 'cTRAId_ConfirmDeactivateStringMsg');
-                    var unConfirmed = window.confirm( unDeactivateStringMsg + '?');
+                    var unConfirmed = window.confirm( unDeactivateStringMsg + '?\n' + unAvoidConfirmation);
                     if (! unConfirmed) {
                         return false;
                     }
                 
                     var unReallyDeactivateStringMsg = fTRA_GetConstantValue( 'cTRAId_ReallyDeactivateStringMsg');
-                    unConfirmed = window.confirm( unReallyDeactivateStringMsg + '?');
+                    unConfirmed = window.confirm( unReallyDeactivateStringMsg + '?\n' + unAvoidConfirmation);
                     if (! unConfirmed) {
                         return false;
                     }
@@ -2434,15 +2446,15 @@ function fTRAEvtHlr_Editor_Button_ActivarCadena_OnMouseUp() {
             pTRADisableElementWithId( 'TRAStatusChangeButton_ActivarCadena_Icon');
 
             try {
-            
+                var unAvoidConfirmation  = fTRA_GetConstantValue( 'cTRAId_ToAvoidConfirmationDialogsCheckDoNotConfirmOptionMsg');
                 var unActivateStringMsg = fTRA_GetConstantValue( 'cTRAId_ConfirmActivateStringMsg');
-                var unConfirmed = window.confirm( unActivateStringMsg + '?');
+                var unConfirmed = window.confirm( unActivateStringMsg + '?\n' + unAvoidConfirmation);
                 if (! unConfirmed) {
                     return false;
                 }
             
                 var unReallyActivateStringMsg = fTRA_GetConstantValue( 'cTRAId_ReallyActivateStringMsg');
-                unConfirmed = window.confirm( unReallyActivateStringMsg + '?');
+                unConfirmed = window.confirm( unReallyActivateStringMsg + '?\n' + unAvoidConfirmation);
                 if (! unConfirmed) {
                     return false;
                 }
@@ -2502,14 +2514,15 @@ function fTRAEvtHlr_Editor_Button_ActivarCadena_OnKeyPress( event) {
                 
                 if ( unKeyNumber == cKeyNumberCR) {
                 
-                    var unActivateStringMsg = fTRA_GetConstantValue( 'cTRAId_ConfirmActivateStringMsg');
-                    var unConfirmed = window.confirm( unActivateStringMsg + '?');
+                var unAvoidConfirmation  = fTRA_GetConstantValue( 'cTRAId_ToAvoidConfirmationDialogsCheckDoNotConfirmOptionMsg');
+                var unActivateStringMsg = fTRA_GetConstantValue( 'cTRAId_ConfirmActivateStringMsg');
+                var unConfirmed = window.confirm( unActivateStringMsg + '?\n' + unAvoidConfirmation);
                     if (! unConfirmed) {
                         return false;
                     }
                 
                     var unReallyActivateStringMsg = fTRA_GetConstantValue( 'cTRAId_ReallyActivateStringMsg');
-                    unConfirmed = window.confirm( unReallyActivateStringMsg + '?');
+                    unConfirmed = window.confirm( unReallyActivateStringMsg + '?\n' + unAvoidConfirmation);
                     if (! unConfirmed) {
                         return false;
                     }
@@ -2578,14 +2591,15 @@ function fTRAEvtHlr_Editor_Button_StatusChange_OnMouseUp( theEditorIndex, theNew
         
         
             if ( ! fTRANoConfirmStatusChanges()) {
+                var unAvoidConfirmation  = fTRA_GetConstantValue( 'cTRAId_ToAvoidConfirmationDialogsCheckDoNotConfirmOptionMsg');
                 var unConfirmStatusMsg = fTRA_GetConstantValue( 'cTRAId_ConfirmStatusChangeMsg');
-                var unConfirmed = window.confirm( unConfirmStatusMsg + '?');
+                var unConfirmed = window.confirm( unConfirmStatusMsg + '?\n' + unAvoidConfirmation);
                 if (! unConfirmed) {
                     return false;
                 }
             
                 var unReallyConfirmStatusMsg = fTRA_GetConstantValue( 'cTRAId_ReallyConfirmStatusChangeMsg');
-                unConfirmed = window.confirm( unReallyConfirmStatusMsg + '?');
+                unConfirmed = window.confirm( unReallyConfirmStatusMsg + '?\n' + unAvoidConfirmation);
                 if (! unConfirmed) {
                     return false;
                 }   
@@ -2651,14 +2665,15 @@ function fTRAEvtHlr_BatchStatusChange_Apply_Button_OnMouseUp() {
             return false;
         }
 
-        var unConfirmBatchMsg = fTRA_GetConstantValue( 'cTRAId_ConfirmBatchMsg');
-        var unConfirmed = window.confirm( unConfirmBatchMsg + '?');
+        var unAvoidConfirmation  = fTRA_GetConstantValue( 'cTRAId_ToAvoidConfirmationDialogsCheckDoNotConfirmOptionMsg');
+        var unConfirmBatchMsg    = fTRA_GetConstantValue( 'cTRAId_ConfirmBatchMsg');
+        var unConfirmed          = window.confirm( unConfirmBatchMsg + '?\n' + unAvoidConfirmation);
         if (! unConfirmed) {
             return false;
         }
     
         var unReallyConfirmBatchMsg = fTRA_GetConstantValue( 'cTRAId_ReallyConfirmBatchMsg');
-        unConfirmed = window.confirm( unReallyConfirmBatchMsg + '?');
+        unConfirmed = window.confirm( unReallyConfirmBatchMsg + '?\n' + unAvoidConfirmation);
         if (! unConfirmed) {
             return false;
         }           

@@ -2,7 +2,7 @@
 #
 # File: TRAIdioma.py
 #
-# Copyright (c) 2011 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+# Copyright (c) 2008, 2009, 2010, 2011 Conselleria de Infraestructuras y
 # Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -154,8 +154,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRAIdioma_attr_codigoIdiomaEnGvSIG_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="Codigo de Idioma en gvSIG, que soporta algunos idiomas para los que no existe (todavia) un codigo internacional.",
+        searchable=0,
         duplicates="0",
         label2="Language code in gvSIG",
         ea_localid="305",
@@ -163,13 +163,14 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="Language code in gvSIG, as gvSIG supports some languages for which there is no international code (yet).",
-        containment="Not Specified",
         ea_guid="{C8E57D89-5CEC-48f0-B926-DA83FCDC9EAD}",
+        scale="0",
+        label="Codigo de Idioma en gvSIG",
+        length="0",
+        containment="Not Specified",
         position="3",
-        owner_class_name="TRAIdioma",
-        label="Codigo de Idioma en gvSIG"
+        owner_class_name="TRAIdioma"
     ),
 
     StringField(
@@ -183,8 +184,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRAIdioma_attr_codigoInternacionalDeIdioma_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="Codigo internacional estandard de Idioma, segun las convenciones I18N.",
+        searchable=0,
         duplicates="0",
         label2="International language code",
         ea_localid="306",
@@ -192,13 +193,14 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="Standard international language code,according to the I18N conventions.",
-        containment="Not Specified",
         ea_guid="{32F6E759-E25D-4145-8961-613BE5F817F3}",
+        scale="0",
+        label="Codigo internacional de Idioma",
+        length="0",
+        containment="Not Specified",
         position="5",
-        owner_class_name="TRAIdioma",
-        label="Codigo internacional de Idioma"
+        owner_class_name="TRAIdioma"
     ),
 
     StringField(
@@ -303,8 +305,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRAIdioma_attr_iconoBanderaIdioma_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="Nombre de una bandera displonible en  la plataforma Zope/Plone, o la identidad de una imagen adjunta al lenguage, a utilizar como bandera para el idioma. Ha de ser de dimensiones iguales o menores a 16x16 pixels, preferentemente con fondo transparente.",
+        searchable=0,
         duplicates="0",
         label2="Flag Icon",
         ea_localid="1581",
@@ -312,13 +314,14 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="Name of a flag available in the Zope/Plone platform, or the id of an image attached to the language, to use as the flag for the language. Must have dimensions equal or smaller than 16 x 16 pixels, prefereably with transparent background.",
-        containment="Not Specified",
         ea_guid="{288C7CCE-8ECB-48bb-89F3-C7A64259AFEB}",
+        scale="0",
+        label="Icono de la Bandera",
+        length="0",
+        containment="Not Specified",
         position="11",
-        owner_class_name="TRAIdioma",
-        label="Icono de la Bandera"
+        owner_class_name="TRAIdioma"
     ),
 
     StringField(
@@ -333,7 +336,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Codigo de Idioma de referencia, que se incluira por defecto en exportaciones en formato Java .properties, y cuyas traducciones se incluyen como linea Default en exportaciones GNUgettext PO.",
-        vocabulary='fIdiomasReferenciaVocabulary',
+        searchable=0,
         duplicates="0",
         label2="Reference Language code",
         ea_localid="1480",
@@ -344,6 +347,7 @@ schema = Schema((
         description2="Reference Language code, to be included by default when exporting as Java .properties, and to be included in the Default line when exporting GNUgettext PO.",
         ea_guid="{7E793C73-BE06-4e83-913D-FD9794AF12BC}",
         scale="0",
+        vocabulary='fIdiomasReferenciaVocabulary',
         default="en",
         label="Codigo de Idioma de referencia",
         length="0",
@@ -377,6 +381,7 @@ schema = Schema((
         ea_guid="{1998DD39-C104-403c-B6F5-31F7870D527D}",
         vocabulary2=['General','Country','Variation',],
         scale="0",
+        searchable=0,
         default="General",
         label="Ambito",
         length="0",
@@ -396,8 +401,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRAIdioma_attr_fallbackDeIdiomas_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="Idiomas para los que este es una sustitucion aceptable, en ausencia de una traduccion propia. Este dato aparece en los ficheros exportados en formato GNUgettext PO.",
+        searchable=0,
         duplicates="0",
         label2="Is fall back for languages",
         ea_localid="1169",
@@ -405,13 +410,14 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="Languages for which this is an acceptable fallback, in case they lack their own tranlation. This information appears in the files exported as GNU gettext PO format.",
-        containment="Not Specified",
         ea_guid="{9FF87A07-8C98-4b8b-9CD3-38DCC86A29D9}",
+        scale="0",
+        label="Fallback de idiomas",
+        length="0",
+        containment="Not Specified",
         position="9",
-        owner_class_name="TRAIdioma",
-        label="Fallback de idiomas"
+        owner_class_name="TRAIdioma"
     ),
 
     StringField(
@@ -455,7 +461,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Juego de caracteres en que se han de codificar los ficheros exportados en formatoJava .properties.  Usualmente toma el valor=UTF-8",
-        vocabulary='fEncodingsForLanguageVocabulary',
+        searchable=0,
         duplicates="0",
         label2="Char set for export as Java Properties files",
         ea_localid="1167",
@@ -466,6 +472,7 @@ schema = Schema((
         description2="Charset to be used to encode exported files in Java Properties format. Usually takes the value=UTF-8.",
         ea_guid="{74268AAB-89C3-41c4-9214-E0ADC26DCCB1}",
         scale="0",
+        vocabulary='fEncodingsForLanguageVocabulary',
         default="unicode_escape",
         label="Juego de caracteres para exportacion como Java Properties",
         length="0",
@@ -497,6 +504,7 @@ schema = Schema((
         description2="Charset to be used to encode exported files in GNUgettext PO format. Usually takes the value=UTF-8",
         ea_guid="{D4D30879-EC3B-44d0-B1BC-9F41CD6AB3D4}",
         scale="0",
+        searchable=0,
         default="utf-8",
         label="Juego de caracteres para exportacion como GNU gettext PO",
         length="0",
@@ -517,6 +525,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Equipo a cargo de traducir al idioma. Este dato aparece en los ficheros de exportacion de tipo GNUgettext PO. Usualmente toma el valor=8bit",
+        searchable=0,
         duplicates="0",
         label2="Content transfer encoding",
         ea_localid="1165",
@@ -547,6 +556,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Dato que aparece en los ficheros de exportacion de tipo GNUgettext PO. Usualmente toma el valor=nplurals=1; plural=0",
+        searchable=0,
         duplicates="0",
         label2="Plural forms",
         ea_localid="1166",
@@ -577,6 +587,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Dato que aparece en los ficheros de exportacion de tipo GNUgettext PO. Usualmente toma el valor=latin1 utf-8",
+        searchable=0,
         duplicates="0",
         label2="Preferred encodings",
         ea_localid="1168",

@@ -2,7 +2,7 @@
 #
 # File: TRAConfiguracionImportacion.py
 #
-# Copyright (c) 2011 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+# Copyright (c) 2008, 2009, 2010, 2011 Conselleria de Infraestructuras y
 # Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -56,6 +56,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Nombre del modulo a utilizar cuando Importar usando nombre de modulo configurado, o no se puede obtener, bien del nombre del dominio en ficheros GNU gettext .PO, o de la estructura de carpetas si el contenido a importar es una archivo .jar o .zip.",
+        searchable=0,
         duplicates="0",
         label2="Default Module Name",
         ea_localid="1955",
@@ -86,6 +87,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Codigo del lenguage para importar plantillas de traduccion GNUgettext .POT, o para Java .properties que no tienen el codigo del lenguage como sufijo en el nombre del fichero.",
+        searchable=0,
         duplicates="0",
         label2="Default Language Code",
         ea_localid="1954",

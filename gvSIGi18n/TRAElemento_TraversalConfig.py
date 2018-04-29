@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # File: TRAElemento_TraversalConfig.py
-## Copyright (c) 2011 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+## Copyright (c) 2008, 2009, 2010, 2011 Conselleria de Infraestructuras y
 # Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)

@@ -5088,3 +5088,23 @@ msgstr "Administradores"
 msgid "gvSIGi18n_LanguagesAndModules_label"
 msgstr "Idiomas y Modulos"
 
+#. Default: "To avoid confirmation dialogs, check the Do not confirm ... box in Options"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ToAvoidConfirmationDialogsCheckDoNotConfirmOptionMsg"
+msgstr "Para evitar dialogos de confirmacion, seleccione la Opcion No Confirmar ..."
+
+
+
+
+
+#. Default: "Do you want to CHANGE STATUS of the Translation"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ConfirmStatusChangeMsg"
+msgstr "Desea cambiar el Estado de la Traduccion"
+
+
+#. Default: "Do you REALLY want to CHANGE STATUS of the Translation"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ReallyConfirmStatusChangeMsg"
+msgstr "REALMENTE Desea cambiar el Estado de la Traduccion"
+

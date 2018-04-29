@@ -105,6 +105,8 @@ class TRACatalogo_Retrieval:
         unasColecciones = self.fObjectValues( cNombreTipoTRAColeccionIdiomas) #
         if unasColecciones == None:
             return None
+        if not unasColecciones:
+            return None
         return unasColecciones[ 0]
          
   
@@ -283,6 +285,9 @@ class TRACatalogo_Retrieval:
         unasColecciones = self.fObjectValues( cNombreTipoTRAColeccionModulos) #
         if unasColecciones == None:
             return None
+        if not unasColecciones:
+            return None
+        
         return unasColecciones[ 0]
          
     
@@ -433,6 +438,9 @@ class TRACatalogo_Retrieval:
         unasColecciones = self.fObjectValues( cNombreTipoTRAColeccionSolicitudesCadenas)
         if unasColecciones == None:
             return None
+        if not unasColecciones:
+            return None
+        
         return unasColecciones[ 0]
          
     
@@ -461,6 +469,9 @@ class TRACatalogo_Retrieval:
         unasColecciones = self.fObjectValues( cNombreTipoTRAColeccionCadenas)
         if unasColecciones == None:
             return None
+        if not unasColecciones:
+            return None
+        
         return unasColecciones[ 0]
          
     
@@ -684,6 +695,9 @@ class TRACatalogo_Retrieval:
         unasColecciones = self.fObtenerTodasColeccionesContribuciones( ) #
         if unasColecciones == None:
             return None
+        if not unasColecciones:
+            return None
+        
         return unasColecciones[ 0]
         
     
@@ -734,6 +748,9 @@ class TRACatalogo_Retrieval:
         unasColecciones = self.fObtenerTodasColeccionesInformes( ) #
         if unasColecciones == None:
             return None
+        if not unasColecciones:
+            return None
+        
         return unasColecciones[ 0]
     
 
@@ -856,6 +873,9 @@ class TRACatalogo_Retrieval:
         unasColecciones = self.fObtenerTodasColeccionesProgresos( ) #
         if unasColecciones == None:
             return None
+        if not unasColecciones:
+            return None
+        
         return unasColecciones[ 0]
     
 
@@ -903,6 +923,9 @@ class TRACatalogo_Retrieval:
         unasColecciones = self.fObjectValues( cNombreTipoTRAColeccionImportaciones) #
         if unasColecciones == None:
             return None
+        if not unasColecciones:
+            return None
+        
         return unasColecciones[ 0]
     
              
@@ -976,6 +999,8 @@ class TRACatalogo_Retrieval:
             return None
         
         unaIdConfiguracion = cTRAConfiguracionElementIdsByAspect.get( theAspectoConfiguracion, None)
+        if not unaIdConfiguracion:
+            return None
         unaConfiguracion = self.getElementoPorID( unaIdConfiguracion)
         
         return unaConfiguracion

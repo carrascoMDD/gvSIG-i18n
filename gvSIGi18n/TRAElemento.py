@@ -2,7 +2,7 @@
 #
 # File: TRAElemento.py
 #
-# Copyright (c) 2011 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+# Copyright (c) 2008, 2009, 2010, 2011 Conselleria de Infraestructuras y
 # Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -208,8 +208,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRAElemento_attr_text_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="Una descripcion textual extensa del elemento.",
+        searchable=True,
         duplicates="0",
         label2="Text",
         ea_localid="248",
@@ -217,13 +217,14 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="Extended textual description of the element.",
-        containment="Not Specified",
         ea_guid="{EEA3C90B-1EF9-4097-9764-5F5C490F47B8}",
+        scale="0",
+        label="Texto",
+        length="0",
+        containment="Not Specified",
         position="0",
-        owner_class_name="TRAElemento",
-        label="Texto"
+        owner_class_name="TRAElemento"
     ),
 
 ),

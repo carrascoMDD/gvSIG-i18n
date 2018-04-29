@@ -2,7 +2,7 @@
 #
 # File: TRAConfiguracion.py
 #
-# Copyright (c) 2011 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+# Copyright (c) 2008, 2009, 2010, 2011 Conselleria de Infraestructuras y
 # Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -57,6 +57,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Aspecto del catalogo de traducciones cuya operacion se configura en este elemento.",
+        searchable=0,
         duplicates="0",
         label2="Configurable Aspect",
         ea_localid="1951",

@@ -1125,7 +1125,10 @@ class TRAImportacion_Operaciones( \
                 unContenidoIntercambioCreationReport = None
                  
                 unosClavesYContenidosParaOrdenar = [ [ '%s|||%s' % (  '|'.join( sorted( unUploadedContent.get( 'content_data', {}).get('languages',[]))), ' '.join( sorted( unUploadedContent.get( 'content_data', {}).get( 'modules', []))),), unUploadedContent] for unUploadedContent in unosContenidos]
-                unosClavesYContenidosOrdenados = sorted( unosClavesYContenidosParaOrdenar, lambda unC, otroC : cmp( unC[ 0] , otroC[ 0]) )
+                
+                # ACV 20110302 Do not alter the order of loaded entries.
+                #unosClavesYContenidosOrdenados = sorted( unosClavesYContenidosParaOrdenar, lambda unC, otroC : cmp( unC[ 0] , otroC[ 0]) )
+                unosClavesYContenidosOrdenados = unosClavesYContenidosParaOrdenar # sorted( unosClavesYContenidosParaOrdenar, lambda unC, otroC : cmp( unC[ 0] , otroC[ 0]) )
                 
                 aPloneUtilsTool = self.getPloneUtilsToolForNormalizeString()  
                 

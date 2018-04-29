@@ -2,7 +2,7 @@
 #
 # File: TRAConfiguracionExportacion.py
 #
-# Copyright (c) 2011 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+# Copyright (c) 2008, 2009, 2010, 2011 Conselleria de Infraestructuras y
 # Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -56,6 +56,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Al exportar en formato Java .properties, los ficheros exportados para este idioma no incluiran el codigo de idioma en el nombre del fichero Java .properties.",
+        searchable=0,
         duplicates="0",
         label2="Default Language Code",
         ea_localid="1953",
@@ -218,6 +219,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Cuando se exporta un fichero para cada modulo, es el nombre a utilizar en los nombres de archivos GNUgettext PO, o para las carpetas contenedoras de ficheros Java .properties, para las cadenas para las que no se ha especificado modulo.",
+        searchable=0,
         duplicates="0",
         label2="Default Module Name",
         ea_localid="1952",
@@ -248,6 +250,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Dato que aparece en los ficheros de exportacion de tipo GNU gettext PO, cuando se exportan separadamente en su propio fichero cadenas que no pertenecen a un modulo, para identificar la aplicacion o modulo a que se aplican las traducciones.",
+        searchable=0,
         duplicates="0",
         label2="Domain for strings not in a module",
         ea_localid="1482",

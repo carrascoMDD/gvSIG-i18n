@@ -2,7 +2,7 @@
 #
 # File: TRAInforme.py
 #
-# Copyright (c) 2011 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+# Copyright (c) 2008, 2009, 2010, 2011 Conselleria de Infraestructuras y
 # Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -215,6 +215,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Cuando la elaboracion del informe de estado finaliza con una condicion de error, contiene el informe del error de la aplicacion.",
+        searchable=0,
         duplicates="0",
         label2="Exception",
         ea_localid="772",
@@ -245,6 +246,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Informe del estado de traduccion por idiomas.",
+        searchable=0,
         duplicates="0",
         label2="Report by Languages",
         ea_localid="779",
@@ -277,6 +279,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Cuando la elaboracion del informe de estado por idiomas finaliza con una condicion de error, contiene el informe del error de la aplicacion.",
+        searchable=0,
         duplicates="0",
         label2="Exception during Languages Report",
         ea_localid="1460",
@@ -307,6 +310,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Informe del estado de traduccion por modulos y detallado por  idiomas.",
+        searchable=0,
         duplicates="0",
         label2="Report by Modules",
         ea_localid="806",
@@ -339,6 +343,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Cuando la elaboracion del informe de estado por modulos e idiomas  finaliza con una condicion de error, contiene el informe del error de la aplicacion.",
+        searchable=0,
         duplicates="0",
         label2="Exception during Modules and Languages Report",
         ea_localid="1461",
@@ -369,6 +374,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Usuario que ha solicitado creado el Informe.",
+        searchable=0,
         duplicates="0",
         label2="Reporting User",
         ea_localid="782",

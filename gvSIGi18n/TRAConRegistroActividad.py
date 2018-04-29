@@ -2,7 +2,7 @@
 #
 # File: TRAConRegistroActividad.py
 #
-# Copyright (c) 2011 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+# Copyright (c) 2008, 2009, 2010, 2011 Conselleria de Infraestructuras y
 # Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -84,6 +84,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Usuario que creo el elemento.",
+        searchable=0,
         duplicates="0",
         label2="Creator User",
         ea_localid="1553",
@@ -150,6 +151,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Usuario que modifico el elemento.",
+        searchable=0,
         duplicates="0",
         label2="Modification User",
         ea_localid="1555",
@@ -217,6 +219,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Usuario que elimino el elemento.",
+        searchable=0,
         duplicates="0",
         label2="Deletion User",
         ea_localid="1557",
@@ -249,6 +252,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Regitro de los cambios efectuados sobre el elemento a lo largo del tiempo por diferentes usuarios.",
+        searchable=0,
         duplicates="0",
         label2="Change Log",
         ea_localid="1559",

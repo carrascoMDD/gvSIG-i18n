@@ -2,7 +2,7 @@
 #
 # File: TRAContribuciones.py
 #
-# Copyright (c) 2011 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+# Copyright (c) 2008, 2009, 2010, 2011 Conselleria de Infraestructuras y
 # Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -57,6 +57,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Usuario que ha solicitado creado el Informe.",
+        searchable=0,
         duplicates="0",
         label2="Reporting User",
         ea_localid="2070",
@@ -117,6 +118,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Identificador del elemento utilizado para controlar el progreso del proceso de larga duración.",
+        searchable=0,
         duplicates="0",
         label2="Progress Control element Identifier",
         ea_localid="2076",
@@ -182,6 +184,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Informe de Contribuciones por Usuarios que traducen el catalogo,",
+        searchable=0,
         duplicates="0",
         label2="Contributions report",
         ea_localid="2069",

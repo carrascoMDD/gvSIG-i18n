@@ -1,4 +1,4 @@
 call overlight.bat
-call overUIlight.bat
-#call toollight.bat
+call overlightUI.bat
+call overlighttool.bat
 TIME /T

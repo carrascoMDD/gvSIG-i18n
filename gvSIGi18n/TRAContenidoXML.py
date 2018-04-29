@@ -2,7 +2,7 @@
 #
 # File: TRAContenidoXML.py
 #
-# Copyright (c) 2011 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+# Copyright (c) 2008, 2009, 2010, 2011 Conselleria de Infraestructuras y
 # Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -178,6 +178,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Contenidos binarios como imagenes de banderas de idiomas, leidos desde una copia de seguridad de un catalogo de traducciones .",
+        searchable=0,
         duplicates="0",
         label2="Binary Contents (flag images)",
         ea_localid="2056",
@@ -209,6 +210,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Contenido del fichero XML leido desde una copia de seguridad de un catalogo de traducciones .",
+        searchable=0,
         duplicates="0",
         label2="XML Contents",
         ea_localid="2055",

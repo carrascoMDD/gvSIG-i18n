@@ -198,6 +198,7 @@ THE EXISTING GROUPS WILL BE USED AND ROLES ASSIGNED TO THEM IN EACH CORRESPONDIN
     Make sure that the 3rd party products are installed :
     ZopeChinaPak
     CJKSplitter
+    Relations
 
 17) Copy to the Extensions folder of the Plone instance,
     all external method files in each of the products' folder

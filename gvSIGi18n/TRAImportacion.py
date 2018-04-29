@@ -2,7 +2,7 @@
 #
 # File: TRAImportacion.py
 #
-# Copyright (c) 2011 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+# Copyright (c) 2008, 2009, 2010, 2011 Conselleria de Infraestructuras y
 # Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -58,6 +58,7 @@ schema = Schema((
         ),
         containment="Not Specified",
         description="Usuario que ha realizado la importacion.",
+        searchable=0,
         duplicates="0",
         label2="Importer User",
         ea_localid="602",
@@ -117,8 +118,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRAImportacion_attr_versionDelProducto_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="Version del Producto que se importa en este proceso. Cuando se ejecute la importacion, este dato se establecera como el valor de la Ultima Version importada del producto, en el catalogo de traducciones.",
+        searchable=0,
         duplicates="0",
         label2="Product Version",
         ea_localid="419",
@@ -126,13 +127,14 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="Product Version imported in this process. When the import executes, this data will be set as the value of the Last Imported Product Version in the translations catalog.",
-        containment="Not Specified",
         ea_guid="{4D88E1D8-7FDA-43fd-87C0-BA2A7D756AF3}",
+        scale="0",
+        label="Version del producto",
+        length="0",
+        containment="Not Specified",
         position="23",
-        owner_class_name="TRAImportacion",
-        label="Version del producto"
+        owner_class_name="TRAImportacion"
     ),
 
     StringField(
@@ -146,8 +148,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRAImportacion_attr_buildDelProducto_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="Identificador del Build del Producto que se importa en este proceso. Cuando se ejecute la importacion, este dato se establecera como el valor del Identificador del Ultimo Build Importado, en el catalogo de traducciones.",
+        searchable=0,
         duplicates="0",
         label2="Product Build identifier",
         ea_localid="432",
@@ -155,13 +157,14 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="Product Build identifier imported in this process. When the import executes, this data will be set as the value of the Last Imported Product Build identifier  in the translations catalog.",
-        containment="Not Specified",
         ea_guid="{4A1EF8CC-9271-41a5-A444-5F92D60663CA}",
+        scale="0",
+        label="Identificador del Build",
+        length="0",
+        containment="Not Specified",
         position="0",
-        owner_class_name="TRAImportacion",
-        label="Identificador del Build"
+        owner_class_name="TRAImportacion"
     ),
 
     StringField(
@@ -177,6 +180,7 @@ schema = Schema((
         ),
         containment="Not Specified",
         description="Codigo del lenguage para importar plantillas de traduccion GNUgettext .POT, o para Java .properties que no tienen el codigo del lenguage como sufijo en el nombre del fichero.",
+        searchable=0,
         duplicates="0",
         label2="Default Language Code",
         ea_localid="1475",
@@ -207,6 +211,7 @@ schema = Schema((
         ),
         containment="Not Specified",
         description="Nombre del modulo a utilizar cuando Importar usando nombre de modulo configurado, o no se puede obtener, bien del nombre del dominio en ficheros GNU gettext .PO, o de la estructura de carpetas si el contenido a importar es una archivo .jar o .zip.",
+        searchable=0,
         duplicates="0",
         label2="Default Module Name",
         ea_localid="1476",
@@ -317,6 +322,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Identificador del elemento utilizado para controlar el progreso del proceso de larga duración.",
+        searchable=0,
         duplicates="0",
         label2="Progress Control element Identifier",
         ea_localid="1705",

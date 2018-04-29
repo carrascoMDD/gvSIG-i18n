@@ -115,10 +115,11 @@
                             unIdPhotoUsuario   python: pMemberInfo.get( 'photo_id', '');
                             unURLPhotoUsuario  python: pMemberInfo.get( 'photo_URL', '');
                             unURLHomeUsuario   python: pMemberInfo.get( 'home_URL', '')">
-                            <table tal:condition="unNombreUsuario">
+                            <table style="display: inline;" width="100%" cellspacing="0" cellpadding="0" frame="void" 
+                                tal:condition="unNombreUsuario">
                                 <tbody>
                                     <tr tal:condition="unURLPhotoUsuario">
-                                        <td width="40" >
+                                        <td valign="top" width="40" >
                                             <a href="#" title="#" tal:condition="python: unURLPhotoUsuario and not ( unIdPhotoUsuario == 'defaultUser.gif')"
                                                 tal:attributes="href python:  unURLHomeUsuario; title python: '%s %s' % ( unIdUsuario, unNombreUsuario,)">
                                                 <img width="40" alt="#" src="#"
@@ -130,18 +131,19 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td width="40" >
+                                        <td valign="top" width="40" >
                                             <a href="#" title="#" tal:condition="unNombreUsuario"
                                                 tal:attributes="href python:  unURLHomeUsuario; title python: '%s %s' % ( unIdUsuario, unNombreUsuario,)">
                                                 <span tal:content="unNombreUsuario" />
                                             </a>
                                         </td>
                                     </tr>
-                                <tbody>
+                                </tbody>
                             </table>
                             &emsp;
                         </tal:block>
                     </tal:block>
+                    <br/>
                     <br/>
                 </tal:block>
 
@@ -284,10 +286,11 @@
                             unIdPhotoUsuario   python: pAdminInfo.get( 'photo_id', '');
                             unURLPhotoUsuario  python: pAdminInfo.get( 'photo_URL', '');
                             unURLHomeUsuario   python: pAdminInfo.get( 'home_URL', '')">
-                            <table tal:condition="unNombreUsuario">
+                            <table style="display: inline;" width="100%" cellspacing="0" cellpadding="0" frame="void" 
+                                tal:condition="unNombreUsuario">
                                 <tbody>
                                     <tr tal:condition="unURLPhotoUsuario">
-                                        <td width="40" >
+                                        <td valign="top" width="40" >
                                             <a href="#" title="#" tal:condition="python: unURLPhotoUsuario and not ( unIdPhotoUsuario == 'defaultUser.gif')"
                                                 tal:attributes="href python:  unURLHomeUsuario; title python: '%s %s' % ( unIdUsuario, unNombreUsuario,)">
                                                 <img width="40" alt="#" src="#"
@@ -299,7 +302,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td width="40" >
+                                        <td valign="bottom" width="40" >
                                             <a href="#" title="#" tal:condition="unNombreUsuario"
                                                 tal:attributes="href python:  unURLHomeUsuario; title python: '%s %s' % ( unIdUsuario, unNombreUsuario,)">
                                                 <span tal:content="unNombreUsuario" />

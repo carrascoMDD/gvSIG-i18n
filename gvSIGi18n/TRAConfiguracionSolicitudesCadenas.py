@@ -2,7 +2,7 @@
 #
 # File: TRAConfiguracionSolicitudesCadenas.py
 #
-# Copyright (c) 2011 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+# Copyright (c) 2008, 2009, 2010, 2011 Conselleria de Infraestructuras y
 # Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -56,6 +56,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Codigo del lenguage en el que se requiere una traduccion cuando se solicitan nuevas cadenas.",
+        searchable=0,
         duplicates="0",
         label2="Language Code  for new String Requests",
         ea_localid="1921",
@@ -86,6 +87,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Codigo del lenguage para el que el desarrollador puede proporcionar una traduccion de referencia, cuando se solicitan nuevas cadenas.",
+        searchable=0,
         duplicates="0",
         label2="Reference Language Code for new String Requests",
         ea_localid="1920",

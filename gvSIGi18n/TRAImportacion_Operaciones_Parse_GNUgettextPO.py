@@ -690,8 +690,21 @@ class TRAImportacion_Operaciones_Parse_GNUgettextPO:
         
                     """            
                     if unEsPOTfile:
-                        unTranslationEncoded = unCursorRecord[ 'default_encoded']
-                        unTranslationError   = unCursorRecord[ 'default_error']
+                        unPOTDefaultEncoded = unCursorRecord[ 'default_encoded']
+                        unPOTDefaultError   = unCursorRecord[ 'default_error']
+                        
+                        if unPOTDefaultEncoded and ( not unPOTDefaultError):
+                            unTranslationEncoded = unPOTDefaultEncoded
+                            unTranslationError   = unPOTDefaultError
+                            
+                        else:
+                            unPOTSymbolEncoded = unCursorRecord[ 'symbol_encoded']
+                            unPOTDefaultError  = unCursorRecord[ 'symbol_error']
+                            
+                            if unPOTSymbolEncoded and ( not unPOTDefaultError):
+                                unTranslationEncoded = unPOTDefaultEncoded
+                                unTranslationError   = unPOTDefaultError
+                            
                         
                     else:
                         unTranslationEncoded = unCursorRecord[ 'translation_encoded']

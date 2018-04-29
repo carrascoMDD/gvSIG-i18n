@@ -2,7 +2,7 @@
 #
 # File: TRASolicitudCadena.py
 #
-# Copyright (c) 2011 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+# Copyright (c) 2008, 2009, 2010, 2011 Conselleria de Infraestructuras y
 # Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -57,6 +57,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="El simbolo que identifica la Cadena que se solicita crear.",
+        searchable=0,
         duplicates="0",
         label2="Symbol",
         ea_localid="1516",
@@ -120,6 +121,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Representacion textual de la fecha en que se creo la cadena a traducir.",
+        searchable=0,
         duplicates="0",
         label2="Creation Date as text",
         ea_localid="1522",
@@ -150,6 +152,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Usuario que creo o importo la cadena a traducir.",
+        searchable=0,
         duplicates="0",
         label2="Creator user",
         ea_localid="1518",
@@ -180,6 +183,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="La fecha en que la cadena fue cancelada, de forma que no vuelva a ser considerada para su traduccion.",
+        searchable=0,
         duplicates="0",
         label2="Cancelation Date",
         ea_localid="1523",
@@ -210,6 +214,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Nombres de los Modulos en los que se usa esta cadena.",
+        searchable=0,
         duplicates="0",
         label2="Modules",
         ea_localid="1534",
@@ -239,8 +244,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRASolicitudCadena_attr_referenciasFuentes_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="Referencias a codigo fuente donde aparece esta cadena.",
+        searchable=0,
         duplicates="0",
         label2="Source references",
         ea_localid="1524",
@@ -248,13 +253,14 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="References to source code where the string is used.",
-        containment="Not Specified",
         ea_guid="{63018342-F0CE-44a1-9EDC-734730A9FC5E}",
+        scale="0",
+        label="Referencias a fuentes",
+        length="0",
+        containment="Not Specified",
         position="8",
-        owner_class_name="TRASolicitudCadena",
-        label="Referencias a fuentes"
+        owner_class_name="TRASolicitudCadena"
     ),
 
     StringField(
@@ -269,7 +275,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Codigo de Idioma Principal para el que el desarrollador proporciona una traducción.",
-        vocabulary='fVocabulary_CodigoIdiomaPrincipal',
+        searchable=0,
         duplicates="0",
         label2="Main Language code",
         ea_localid="1530",
@@ -281,6 +287,7 @@ schema = Schema((
         ea_guid="{E14EFE05-76A1-4432-9B81-B98CB8DE66DE}",
         read_only="True",
         scale="0",
+        vocabulary='fVocabulary_CodigoIdiomaPrincipal',
         label="Codigo de Idioma Principal",
         length="0",
         containment="Not Specified",
@@ -299,8 +306,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRASolicitudCadena_attr_cadenaTraducidaAIdiomaPrincipal_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="Cadena traducida al Idioma principal, suministrada por el desarrollador.",
+        searchable=0,
         duplicates="0",
         label2="Translation into the main language",
         ea_localid="1528",
@@ -308,13 +315,14 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="String translated to the main Language, supplied by the developer.",
-        containment="Not Specified",
         ea_guid="{5D47B672-17A5-46c0-8C08-F72075FB49E4}",
+        scale="0",
+        label="Traduccion al Idioma Principal",
+        length="0",
+        containment="Not Specified",
         position="0",
-        owner_class_name="TRASolicitudCadena",
-        label="Traduccion al Idioma Principal"
+        owner_class_name="TRASolicitudCadena"
     ),
 
     StringField(
@@ -329,7 +337,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Codigo de Idioma de referencia para el que el desarrollador proporciona una traducción.",
-        vocabulary='fVocabulary_CodigoIdiomaReferencia',
+        searchable=0,
         duplicates="0",
         label2="Reference Language code",
         ea_localid="1527",
@@ -340,6 +348,7 @@ schema = Schema((
         description2="Reference Language code for which the developer supplies a translation.",
         ea_guid="{D20AAA93-7307-43f5-A043-24EA875BF767}",
         scale="0",
+        vocabulary='fVocabulary_CodigoIdiomaReferencia',
         label="Codigo de Idioma de referencia",
         length="0",
         containment="Not Specified",
@@ -358,8 +367,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRASolicitudCadena_attr_cadenaTraducidaAIdiomaReferencia_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="Cadena traducida al Idioma de referencia, suministrada por el desarrollador.",
+        searchable=0,
         duplicates="0",
         label2="Translation into the reference language",
         ea_localid="1529",
@@ -367,13 +376,14 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="String translated to the reference Language, supplied by the developer.",
-        containment="Not Specified",
         ea_guid="{ED296F39-B610-4e7b-AE4D-FE9C68BD947F}",
+        scale="0",
+        label="Traduccion al idioma de referencia",
+        length="0",
+        containment="Not Specified",
         position="1",
-        owner_class_name="TRASolicitudCadena",
-        label="Traduccion al idioma de referencia"
+        owner_class_name="TRASolicitudCadena"
     ),
 
 ),

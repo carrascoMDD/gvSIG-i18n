@@ -2,7 +2,7 @@
 #
 # File: TRAParametrosControlProgreso.py
 #
-# Copyright (c) 2011 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+# Copyright (c) 2008, 2009, 2010, 2011 Conselleria de Infraestructuras y
 # Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -57,6 +57,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="El tipo del proceso del cual este elemento mantiene los parametros iniciales de control de su progreso.",
+        searchable=0,
         duplicates="0",
         label2="Process Type",
         ea_localid="1720",

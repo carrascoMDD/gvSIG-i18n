@@ -2,7 +2,7 @@
 #
 # File: TRAConfiguracionVarios.py
 #
-# Copyright (c) 2011 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+# Copyright (c) 2008, 2009, 2010, 2011 Conselleria de Infraestructuras y
 # Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -116,6 +116,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Usuarios administradores, que aparecen al final de la lista de contribuidores, aunque hayan efectuado el mayor numero de cambios sobre el catalogo de traducciones.",
+        searchable=0,
         duplicates="0",
         label2="Administrator users",
         ea_localid="2077",

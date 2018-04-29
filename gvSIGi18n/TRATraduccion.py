@@ -2,7 +2,7 @@
 #
 # File: TRATraduccion.py
 #
-# Copyright (c) 2011 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+# Copyright (c) 2008, 2009, 2010, 2011 Conselleria de Infraestructuras y
 # Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -55,8 +55,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRATraduccion_attr_simbolo_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="El simbolo original que identifica la Cadena a traducir.",
+        searchable=0,
         duplicates="0",
         label2="Symbol",
         ea_localid="307",
@@ -64,13 +64,14 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="The original symbol identifying the string to be translated.",
-        containment="Not Specified",
         ea_guid="{9601C385-3396-492f-BC82-10FC4DED739A}",
+        scale="0",
+        label="Simbolo",
+        length="0",
+        containment="Not Specified",
         position="16",
-        owner_class_name="TRATraduccion",
-        label="Simbolo"
+        owner_class_name="TRATraduccion"
     ),
 
     StringField(
@@ -84,8 +85,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRATraduccion_attr_codigoIdiomaEnGvSIG_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="Codigo de Idioma en gvSIG, que soporta algunos idiomas para los que no existe (todavia) un codigo internacional.",
+        searchable=0,
         duplicates="0",
         label2="Language code in gvSIG",
         ea_localid="308",
@@ -93,13 +94,14 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="Language code in gvSIG, as gvSIG supports some languages for which there is no international code (yet).",
-        containment="Not Specified",
         ea_guid="{084C77CD-8E2C-4ba3-ABAE-502699EF3196}",
+        scale="0",
+        label="Codigo de Idioma en gvSIG",
+        length="0",
+        containment="Not Specified",
         position="0",
-        owner_class_name="TRATraduccion",
-        label="Codigo de Idioma en gvSIG"
+        owner_class_name="TRATraduccion"
     ),
 
     StringField(
@@ -113,8 +115,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRATraduccion_attr_cadenaTraducida_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="Cadena traducida al Idioma.",
+        searchable=0,
         duplicates="0",
         label2="Translation",
         ea_localid="311",
@@ -122,13 +124,14 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="String translated to the Language.",
-        containment="Not Specified",
         ea_guid="{E3340BC4-DCC7-49a3-AB41-C4EB29E64EC1}",
+        scale="0",
+        label="Traduccion",
+        length="0",
+        containment="Not Specified",
         position="1",
-        owner_class_name="TRATraduccion",
-        label="Traduccion"
+        owner_class_name="TRATraduccion"
     ),
 
     StringField(
@@ -174,8 +177,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRATraduccion_attr_fechaTraduccionTextual_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="La fecha en que la Cadena fue traducida al Idioma.",
+        searchable=0,
         duplicates="0",
         label2="Translation Date",
         ea_localid="1335",
@@ -183,13 +186,14 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="Date when the String was translated to the Language.",
-        containment="Not Specified",
         ea_guid="{B62B3CB4-0EAC-4e31-8FA4-E06046DEDB9E}",
+        scale="0",
+        label="Fecha de Traduccion",
+        length="0",
+        containment="Not Specified",
         position="10",
-        owner_class_name="TRATraduccion",
-        label="Fecha de Traduccion"
+        owner_class_name="TRATraduccion"
     ),
 
     StringField(
@@ -203,8 +207,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRATraduccion_attr_usuarioTraductor_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="Usuario que ha traducido la Cadena al Idioma.",
+        searchable=0,
         duplicates="0",
         label2="Translator",
         ea_localid="313",
@@ -212,13 +216,14 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="User who translated this string into this language.",
-        containment="Not Specified",
         ea_guid="{E6E7E23E-C722-4324-A8B1-0DC4DA6B6EB6}",
+        scale="0",
+        label="Traductor",
+        length="0",
+        containment="Not Specified",
         position="21",
-        owner_class_name="TRATraduccion",
-        label="Traductor"
+        owner_class_name="TRATraduccion"
     ),
 
     StringField(
@@ -232,8 +237,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRATraduccion_attr_fechaRevisionTextual_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="La fecha en que reviso la Traduccion de la Cadena al Idioma.",
+        searchable=0,
         duplicates="0",
         label2="Review Date",
         ea_localid="1336",
@@ -241,13 +246,14 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="The date when the String Translation to the Language was reviewed.",
-        containment="Not Specified",
         ea_guid="{F3E84661-ADAA-427f-B5CD-729A33244458}",
+        scale="0",
+        label="Fecha de Revision",
+        length="0",
+        containment="Not Specified",
         position="9",
-        owner_class_name="TRATraduccion",
-        label="Fecha de Revision"
+        owner_class_name="TRATraduccion"
     ),
 
     StringField(
@@ -261,8 +267,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRATraduccion_attr_usuarioRevisor_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="Usuario que reviso la Traduccion de la Cadena al Idioma.",
+        searchable=0,
         duplicates="0",
         label2="Reviewer",
         ea_localid="315",
@@ -270,13 +276,14 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="User who reviewd the String Translation to the Language.",
-        containment="Not Specified",
         ea_guid="{6BFF5745-AFFD-468a-A2DC-6520395136A8}",
+        scale="0",
+        label="Revisor",
+        length="0",
+        containment="Not Specified",
         position="20",
-        owner_class_name="TRATraduccion",
-        label="Revisor"
+        owner_class_name="TRATraduccion"
     ),
 
     StringField(
@@ -293,6 +300,7 @@ schema = Schema((
         scale="0",
         description="""La fecha en que la Traduccion al Idioma se bloqueo como definitiva.
         The date when the translation into the Language was locked as definitive.""",
+        searchable=0,
         duplicates="0",
         label2="Definitive Date",
         ea_localid="1337",
@@ -319,8 +327,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRATraduccion_attr_usuarioCoordinador_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="Usuario con capacidades de Coordinador que hizo Definitiva la traduccion de la cadena al idioma.",
+        searchable=0,
         duplicates="0",
         label2="Coordinator",
         ea_localid="1331",
@@ -328,13 +336,14 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="User with Coordinator capabilities, who made Definitive the string translation into the language.",
-        containment="Not Specified",
         ea_guid="{075407C5-F759-47ec-AA8C-FFDB360AF510}",
+        scale="0",
+        label="Coordinador",
+        length="0",
+        containment="Not Specified",
         position="17",
-        owner_class_name="TRATraduccion",
-        label="Coordinador"
+        owner_class_name="TRATraduccion"
     ),
 
     StringField(
@@ -348,8 +357,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRATraduccion_attr_idCadena_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="El identificador (interno) de la Cadena a traducir.",
+        searchable=0,
         duplicates="0",
         label2="String Id",
         ea_localid="319",
@@ -357,13 +366,14 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="The (internal) identifier of the String to translate.",
-        containment="Not Specified",
         ea_guid="{0039F177-5DA5-4244-91D1-4C9899F8C166}",
+        scale="0",
+        label="Id Cadena",
+        length="0",
+        containment="Not Specified",
         position="12",
-        owner_class_name="TRATraduccion",
-        label="Id Cadena"
+        owner_class_name="TRATraduccion"
     ),
 
     StringField(
@@ -409,8 +419,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRATraduccion_attr_nombresModulos_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="Nombres de los Modulos en los que se usa esta cadena.",
+        searchable=0,
         duplicates="0",
         label2="Modules",
         ea_localid="725",
@@ -418,13 +428,14 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="Names of the Modules using this String.",
-        containment="Not Specified",
         ea_guid="{F0B3B52D-CCE4-44df-AA40-8BE97DFA8BE1}",
+        scale="0",
+        label="Modulos",
+        length="0",
+        containment="Not Specified",
         position="14",
-        owner_class_name="TRATraduccion",
-        label="Modulos"
+        owner_class_name="TRATraduccion"
     ),
 
     StringField(
@@ -438,8 +449,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRATraduccion_attr_referenciasFuentes_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="Referencias a codigo fuente donde aparece esta cadena.",
+        searchable=0,
         duplicates="0",
         label2="Source references",
         ea_localid="2079",
@@ -447,13 +458,14 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="References to source code where the string is used.",
-        containment="Not Specified",
         ea_guid="{6499827C-178C-4cd2-A5DE-77D713E980DC}",
+        scale="0",
+        label="Referencias a fuentes",
+        length="0",
+        containment="Not Specified",
         position="15",
-        owner_class_name="TRATraduccion",
-        label="Referencias a fuentes"
+        owner_class_name="TRATraduccion"
     ),
 
     TextField(
@@ -467,8 +479,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRATraduccion_attr_comentario_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="Comentarios acerca de esta traduccion.",
+        searchable=0,
         duplicates="0",
         label2="Comment",
         ea_localid="693",
@@ -476,13 +488,14 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="Comments to this translation.",
-        containment="Not Specified",
         ea_guid="{49F28A8C-A23F-4328-AAD5-494C2832C49A}",
+        scale="0",
+        label="Comentario",
+        length="0",
+        containment="Not Specified",
         position="2",
-        owner_class_name="TRATraduccion",
-        label="Comentario"
+        owner_class_name="TRATraduccion"
     ),
 
     StringField(
@@ -496,8 +509,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRATraduccion_attr_indicadoresPO_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="Indicadores utilizados por GNU gettext PO , como fuzzy e indicacion que la cadena de una cadena de formateo de un lenguage de programacion especifico.",
+        searchable=0,
         duplicates="0",
         label2="GNU gettext PO flags",
         ea_localid="1492",
@@ -505,13 +518,14 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="Flags used by GNU gettext PO, like fuzzy and indicators that the string is a formatting string in a specific programming language.",
-        containment="Not Specified",
         ea_guid="{7836B327-05EE-4df9-8F0C-EF4CBE063312}",
+        scale="0",
+        label="Indicadores para GNU gettext PO",
+        length="0",
+        containment="Not Specified",
         position="13",
-        owner_class_name="TRATraduccion",
-        label="Indicadores para GNU gettext PO"
+        owner_class_name="TRATraduccion"
     ),
 
     TextField(
@@ -525,8 +539,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRATraduccion_attr_historia_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="Historia de cambios a la traduccion de la cadena al idioma.",
+        searchable=0,
         duplicates="0",
         label2="History",
         ea_localid="318",
@@ -534,13 +548,14 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="History of changes to the string's translation into the Language.",
-        containment="Not Specified",
         ea_guid="{A6F66985-751D-423f-98CF-635384D8ABD4}",
+        scale="0",
+        label="Historia",
+        length="0",
+        containment="Not Specified",
         position="11",
-        owner_class_name="TRATraduccion",
-        label="Historia"
+        owner_class_name="TRATraduccion"
     ),
 
     IntegerField(
@@ -588,8 +603,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRATraduccion_attr_fechaCreacionTextual_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="La fecha en que la Traduccion al lenguage fue creada, bien como Traducida o como Pendiente.",
+        searchable=0,
         duplicates="0",
         label2="Creation Date",
         ea_localid="1470",
@@ -597,13 +612,14 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="Date when the translation into the Language was created, either in Translated or Pending state.",
-        containment="Not Specified",
         ea_guid="{38A791EF-7F1A-4824-86D9-4C670C7643C9}",
+        scale="0",
+        label="Fecha de Creacion",
+        length="0",
+        containment="Not Specified",
         position="6",
-        owner_class_name="TRATraduccion",
-        label="Fecha de Creacion"
+        owner_class_name="TRATraduccion"
     ),
 
     StringField(
@@ -617,8 +633,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRATraduccion_attr_fechaModificacionTextual_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="La fecha en que la Traduccion al lenguage fue modificada, bien como recien creada, o por traduccion o cambio de estado.",
+        searchable=0,
         duplicates="0",
         label2="Modification Date",
         ea_localid="1717",
@@ -626,13 +642,14 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="Date when the translation into the Language was modified, as just created, translated or changed status.",
-        containment="Not Specified",
         ea_guid="{5C5E9C0A-BB15-44a9-931A-B63C3EF94C62}",
+        scale="0",
+        label="Fecha de Modificacion",
+        length="0",
+        containment="Not Specified",
         position="8",
-        owner_class_name="TRATraduccion",
-        label="Fecha de Modificacion"
+        owner_class_name="TRATraduccion"
     ),
 
     StringField(
@@ -646,8 +663,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRATraduccion_attr_usuarioCreador_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="Usuario que creo la traduccion al lenguage, bien en estado Traducida o Pendiente, durante un proceso de importaciono creacion de lenguage.",
+        searchable=0,
         duplicates="0",
         label2="Creator",
         ea_localid="1471",
@@ -655,13 +672,14 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="User who created the translation into the language in Translated or Pending state, during an import or language creation process.",
-        containment="Not Specified",
         ea_guid="{E2D4ACFF-A4BB-4dc9-A8B8-149E7033FB14}",
+        scale="0",
+        label="Creador",
+        length="0",
+        containment="Not Specified",
         position="18",
-        owner_class_name="TRATraduccion",
-        label="Creador"
+        owner_class_name="TRATraduccion"
     ),
 
     StringField(
@@ -675,8 +693,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRATraduccion_attr_usuarioModificador_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="Usuario que ha modificado la Traduccion al lenguage, bien como recien creada, o por traduccion o cambio de estado.",
+        searchable=0,
         duplicates="0",
         label2="User",
         ea_localid="1718",
@@ -684,13 +702,14 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="User that modified the translation into the Language, as just created, translated or changed status.",
-        containment="Not Specified",
         ea_guid="{EE30B571-501B-43d5-9A20-E2BA82EF6782}",
+        scale="0",
+        label="Modificador",
+        length="0",
+        containment="Not Specified",
         position="19",
-        owner_class_name="TRATraduccion",
-        label="Modificador"
+        owner_class_name="TRATraduccion"
     ),
 
 ),

@@ -2,7 +2,7 @@
 #
 # File: TRASimbolosOrdenados.py
 #
-# Copyright (c) 2011 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+# Copyright (c) 2008, 2009, 2010, 2011 Conselleria de Infraestructuras y
 # Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -56,6 +56,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Nombres de Modulos y los Simbolos de las cadenas a traducir en el modulo, ordenados.",
+        searchable=0,
         duplicates="0",
         label2="Module names and Sorted String symbols",
         ea_localid="885",
@@ -86,6 +87,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Simbolos de las cadenas a traducir, ordenados.",
+        searchable=0,
         duplicates="0",
         label2="Sorted String symbols",
         ea_localid="304",

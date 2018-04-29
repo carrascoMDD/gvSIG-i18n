@@ -2,7 +2,7 @@
 #
 # File: TRACadena.py
 #
-# Copyright (c) 2011 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+# Copyright (c) 2008, 2009, 2010, 2011 Conselleria de Infraestructuras y
 # Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -55,8 +55,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRACadena_attr_simbolo_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="El simbolo original que identifica la Cadena a traducir.",
+        searchable=0,
         duplicates="0",
         label2="Symbol",
         ea_localid="297",
@@ -64,13 +64,14 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="The original symbol identifying the string to be translated.",
-        containment="Not Specified",
         ea_guid="{D7A26052-9642-4336-9E66-D7C7AAD9D7E6}",
+        scale="0",
+        label="Simbolo",
+        length="0",
+        containment="Not Specified",
         position="5",
-        owner_class_name="TRACadena",
-        label="Simbolo"
+        owner_class_name="TRACadena"
     ),
 
     StringField(
@@ -117,8 +118,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRACadena_attr_fechaCreacionTextual_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="Representacion textual de la fecha en que se creo la cadena a traducir.",
+        searchable=0,
         duplicates="0",
         label2="Creation Date as text",
         ea_localid="1334",
@@ -126,13 +127,14 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="Textual representation of the date when the String was first created.",
-        containment="Not Specified",
         ea_guid="{37522DDE-9593-4f36-8686-C889D5C6B928}",
+        scale="0",
+        label="Fecha de Creacion como texto",
+        length="0",
+        containment="Not Specified",
         position="2",
-        owner_class_name="TRACadena",
-        label="Fecha de Creacion como texto"
+        owner_class_name="TRACadena"
     ),
 
     StringField(
@@ -146,8 +148,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRACadena_attr_usuarioCreador_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="Usuario que creo o importo la cadena a traducir.",
+        searchable=0,
         duplicates="0",
         label2="Creator user",
         ea_localid="300",
@@ -155,13 +157,14 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="User who created or imported the string to be translated.",
-        containment="Not Specified",
         ea_guid="{419A6822-511F-48d5-9D48-A75E8E596478}",
+        scale="0",
+        label="Usuario Creador",
+        length="0",
+        containment="Not Specified",
         position="6",
-        owner_class_name="TRACadena",
-        label="Usuario Creador"
+        owner_class_name="TRACadena"
     ),
 
     StringField(
@@ -175,8 +178,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRACadena_attr_fechaCancelacionTextual_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="La fecha en que la cadena fue cancelada, de forma que no vuelva a ser considerada para su traduccion.",
+        searchable=0,
         duplicates="0",
         label2="Cancelation Date",
         ea_localid="1338",
@@ -184,13 +187,14 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="The date when the String was cancelled, such that the string won't be considered again for translation.",
-        containment="Not Specified",
         ea_guid="{897F7F5D-B75C-4084-8D79-B7639A72865C}",
+        scale="0",
+        label="Fecha de Cancelacion",
+        length="0",
+        containment="Not Specified",
         position="1",
-        owner_class_name="TRACadena",
-        label="Fecha de Cancelacion"
+        owner_class_name="TRACadena"
     ),
 
     StringField(
@@ -204,8 +208,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRACadena_attr_nombresModulos_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="Nombres de los Modulos en los que se usa esta cadena.",
+        searchable=0,
         duplicates="0",
         label2="Modules",
         ea_localid="757",
@@ -213,13 +217,14 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="Names of the Modules using this String.",
-        containment="Not Specified",
         ea_guid="{0CFE460B-2B53-47e7-A1D9-72BDFAC41336}",
+        scale="0",
+        label="Modulos",
+        length="0",
+        containment="Not Specified",
         position="3",
-        owner_class_name="TRACadena",
-        label="Modulos"
+        owner_class_name="TRACadena"
     ),
 
     StringField(
@@ -233,8 +238,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRACadena_attr_referenciasFuentes_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="Referencias a codigo fuente donde aparece esta cadena.",
+        searchable=0,
         duplicates="0",
         label2="Source references",
         ea_localid="1491",
@@ -242,13 +247,14 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="References to source code where the string is used.",
-        containment="Not Specified",
         ea_guid="{11E67965-20C0-4a3e-B113-5A320582937E}",
+        scale="0",
+        label="Referencias a fuentes",
+        length="0",
+        containment="Not Specified",
         position="4",
-        owner_class_name="TRACadena",
-        label="Referencias a fuentes"
+        owner_class_name="TRACadena"
     ),
 
     ComputedField(
