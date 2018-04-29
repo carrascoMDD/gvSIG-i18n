@@ -49,6 +49,7 @@ from TRARoles               import *
 from TRAElemento_Constants                 import *
 from TRAElemento_Constants_Activity        import *
 from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Contributions   import *
 from TRAElemento_Constants_Dates           import *
 from TRAElemento_Constants_Encoding        import *
 from TRAElemento_Constants_Import          import *

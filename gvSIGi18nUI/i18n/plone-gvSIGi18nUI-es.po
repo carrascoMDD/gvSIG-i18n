@@ -355,3 +355,17 @@ msgid "Process specification"
 msgstr "Especificacion proceso"
 
 
+
+
+
+#. Default: "Create Contributions Report"
+#: TRACatalogo.py TRAColeccionContribuciones.py
+msgid "Create Contributions report"
+msgstr "Crear Informe de Contribuciones"
+
+
+#. Default: "Create Import to Restore Backup"
+#: TRACatalogo.py TRAColeccionImportaciones.py
+msgid "Create Import to Restore Backup"
+msgstr "Crear Importacion para Recuperar"
+

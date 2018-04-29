@@ -72,6 +72,8 @@ cTRAParametrosControlProgreso_Export_Title               = "Export Progress Cont
 cTRAParametrosControlProgreso_Import_Id                  = "parametros-control-progreso-import"
 cTRAParametrosControlProgreso_Import_Title               = "Import Progress Control Parameters"
 
+cTRAParametrosControlProgreso_Contributions_Id           = "parametros-control-progreso-contributions"
+cTRAParametrosControlProgreso_Contributions_Title        = "Contributions report Progress Control Parameters"
 
 
 
@@ -97,7 +99,7 @@ cTRAProgress_LogLongLivedProcess   = True
 cTRAYieldProcessorEnabled           = True
 
 cTRAProgress_MaxTimePercentageToYield = 95
-cTRAProgress_MaxMillisecondsToYield   = 5000
+cTRAProgress_MaxMillisecondsToYield   = 10000
 
 cTRAProgress_PauseMilliseconds        = 1000
 
@@ -128,6 +130,7 @@ cTRAProgreso_EstadoProcesos = [
 """
 
 cTRAProgress_ProcessType_Void             = 'Vacio'
+
 cTRAProgress_ProcessType_Verify           = 'Verificar'
 cTRAProgress_ProcessType_Initialize       = 'Inicializar'
 cTRAProgress_ProcessType_Inventory        = 'Inventario'
@@ -141,6 +144,7 @@ cTRAProgress_ProcessType_Backup           = 'Copia_Seguridad'
 cTRAProgress_ProcessType_ExportGvSIG      = 'Exportar_para_gvSIG'
 cTRAProgress_ProcessType_Export           = 'Exportar'
 cTRAProgress_ProcessType_Import           = 'Importar'
+cTRAProgress_ProcessType_Contributions    = 'Contribuciones'
 
 cTRAProgress_ProcessTypes_NonVoid = [
     cTRAProgress_ProcessType_Verify,
@@ -156,6 +160,7 @@ cTRAProgress_ProcessTypes_NonVoid = [
     cTRAProgress_ProcessType_ExportGvSIG,
     cTRAProgress_ProcessType_Export,
     cTRAProgress_ProcessType_Import,
+    cTRAProgress_ProcessType_Contributions,
 ]
 
 cTRAProgress_ProcessTypes = [ cTRAProgress_ProcessType_Void,] + cTRAProgress_ProcessTypes_NonVoid 
@@ -175,6 +180,7 @@ cTRAParametrosControlProgresoIDs_forProcessTypes = {
     cTRAProgress_ProcessType_ExportGvSIG:      cTRAParametrosControlProgreso_ExportGvSIG_Id,
     cTRAProgress_ProcessType_Export:           cTRAParametrosControlProgreso_Export_Id,
     cTRAProgress_ProcessType_Import:           cTRAParametrosControlProgreso_Import_Id,
+    cTRAProgress_ProcessType_Contributions:    cTRAParametrosControlProgreso_Contributions_Id,
 }
 
 
@@ -182,8 +188,19 @@ cTRAParametrosControlProgresoIDs_forProcessTypes = {
 cTRAProgress_ControlRequest_Ignored = 'Ignored'
 
 cTRAProgress_Control_RunAfterPrevious     = 'RunAfterPrevious'
-cTRAProgress_Control_RunAfterPrevious_Yes = 'Yes'
-cTRAProgress_Control_RunAfterPrevious_No  = 'No'
+cTRAProgress_Control_CreateReportBefore   = 'CreateReportBefore'
+cTRAProgress_Control_CreateReportAfter    = 'CreateReportAfter'
+
+cTRAProgress_Control_YesNoPropertyNames   = [ 
+    cTRAProgress_Control_RunAfterPrevious, 
+    cTRAProgress_Control_CreateReportBefore, 
+    cTRAProgress_Control_CreateReportAfter,
+]
+
+cTRAProgress_Control_Yes = 'Yes'
+cTRAProgress_Control_No  = 'No'
+
+
 
 cTRAProgress_SupportKind_None           = 'None'
 cTRAProgress_SupportKind_Persistent     = 'Persistent'
@@ -261,6 +278,9 @@ cTRAProgress_SupportKinds_ForProcessTypes = {
         { 'types': cTodosNombresTipos,                               'support_kinds': [ cTRAProgress_SupportKind_Persistent, cTRAProgress_SupportKind_StoreResults, cTRAProgress_SupportKind_Logging, cTRAProgress_SupportKind_Transactional, cTRAProgress_SupportKind_YieldProcessor, ],},
     ],
     cTRAProgress_ProcessType_Import: [                                                                                                                                                       
+        { 'types': cTodosNombresTipos,                               'support_kinds': [ cTRAProgress_SupportKind_Persistent, cTRAProgress_SupportKind_StoreResults, cTRAProgress_SupportKind_Logging, cTRAProgress_SupportKind_Transactional, cTRAProgress_SupportKind_YieldProcessor, ],},
+    ],
+    cTRAProgress_ProcessType_Contributions: [                                                                                                                                                       
         { 'types': cTodosNombresTipos,                               'support_kinds': [ cTRAProgress_SupportKind_Persistent, cTRAProgress_SupportKind_StoreResults, cTRAProgress_SupportKind_Logging, cTRAProgress_SupportKind_Transactional, cTRAProgress_SupportKind_YieldProcessor, ],},
     ],
     

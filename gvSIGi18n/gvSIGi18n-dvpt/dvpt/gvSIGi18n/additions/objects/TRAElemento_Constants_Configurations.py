@@ -53,8 +53,8 @@ cTRAConfiguracion_Backup_Id                      = "configuracion-copiaseguridad
 cTRAConfiguracion_Backup_Title                   = "Backup Configuration"
 cTRAConfiguracion_SolicitudesCadenas_Id          = "configuracion-solicitudescadenas"
 cTRAConfiguracion_SolicitudesCadenas_Title       = "String Requests Configuration"
-cTRAConfiguracion_AlmacenPaginas_Id              = "configuracion-almacenpaginas"
-cTRAConfiguracion_AlmacenPaginas_Title           = "Pages Caching Configuration"
+cTRAConfiguracion_InvalidacionInformes_Id        = "configuracion-invalidacioninformes"
+cTRAConfiguracion_InvalidacionInformes_Title     = "Reports Invalidation Configuration"
 cTRAConfiguracion_PaginaTraducciones_Id          = "configuracion-paginatraducciones"
 cTRAConfiguracion_PaginaTraducciones_Title       = "Translations Page Configuration"
 cTRAConfiguracion_PerfilEjecucion_Id             = "configuracion-perfilejecucion"
@@ -80,7 +80,7 @@ cTRAConfiguracionAspecto_Exportacion        = "Export"
 cTRAConfiguracionAspecto_ExportarParaGvSIG  = "ExportForGvSIG"
 cTRAConfiguracionAspecto_Backup             = "Backup"
 cTRAConfiguracionAspecto_SolicitudesCadenas = "StringRequests"
-cTRAConfiguracionAspecto_AlmacenPaginas     = "PagesCache"
+cTRAConfiguracionAspecto_InvalidacionInformes = "ReportsInvalidation"
 cTRAConfiguracionAspecto_PaginaTraducciones = "TranslationsPage"
 cTRAConfiguracionAspecto_PerfilEjecucion    = "ExecutionProfile"
 cTRAConfiguracionAspecto_Varios             = "Various"
@@ -93,7 +93,7 @@ cTRAConfiguracionElementIdsByAspect = {
     cTRAConfiguracionAspecto_ExportarParaGvSIG:        cTRAConfiguracion_ExportacionParaGvSIG_Id,
     cTRAConfiguracionAspecto_Backup:                   cTRAConfiguracion_Backup_Id,
     cTRAConfiguracionAspecto_SolicitudesCadenas:       cTRAConfiguracion_SolicitudesCadenas_Id,
-    cTRAConfiguracionAspecto_AlmacenPaginas:           cTRAConfiguracion_AlmacenPaginas_Id,
+    cTRAConfiguracionAspecto_InvalidacionInformes:     cTRAConfiguracion_InvalidacionInformes_Id,
     cTRAConfiguracionAspecto_PaginaTraducciones:       cTRAConfiguracion_PaginaTraducciones_Id,
     cTRAConfiguracionAspecto_PerfilEjecucion:          cTRAConfiguracion_PerfilEjecucion_Id,
     cTRAConfiguracionAspecto_Varios:                   cTRAConfiguracion_Varios_Id,

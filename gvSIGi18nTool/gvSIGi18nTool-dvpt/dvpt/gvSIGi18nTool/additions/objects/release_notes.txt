@@ -1,6 +1,35 @@
 ﻿gvSIG-i18n RELEASE NOTES
 ========================
 
+version 2.0.6
+------------------------------------------------
+Fixed bug preventing to add interchange content files to an import.
+
+Added element type to store Contribution reports, a process to generate the report, and a view to present various slices of the contributions report.
+
+Fixed bug preventing to use wildcards, parenthesis and double quotes in the search string when searching for Symbols or for translations.
+
+Always include the language code in the filename of .properties export files, ignoring if the language is the main one, to avoid confussion with files named just tex.properties, which sometimes was interpreted as containing language 'es' and some others as'en'.
+
+Added option to long-lived processes configuration to yield processor 
+only at transactional boundaries (if transactions are enabled for the process).
+
+Add to the Activity report a link to navigate to the last Contributions report. 
+
+
+
+Known bug:
+When searching for strings in both the symbol and translation, all records are returned.
+
+Known bug:
+Translation history records show the actor user rather than the translation.
+
+
+Known bug:
+When exporting in GNU gettext .PO format, the default entries for each translation is exported as empty, and does not include the translation in the reference language selected in the export configuration form.
+
+
+
 version 2.0.5
 ------------------------------------------------
 Extend the presentation of the TRAUncatalog utility to display the types to uncatalog.

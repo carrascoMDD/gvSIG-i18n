@@ -1,6 +1,6 @@
 attrib .\gvSIGi18nTool\*.* -R /S
 
-attrib .\gvSIGi18nTool_dep_sec\*.* -R /S
+REM attrib .\gvSIGi18nTool_dep_sec\*.* -R /S
 
 call overrideTool.bat
 

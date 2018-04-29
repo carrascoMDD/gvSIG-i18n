@@ -116,15 +116,16 @@ class TRAElemento_Meta:
             'TRACadena',
             'TRACatalogo',
             'TRAColeccionCadenas',
+            'TRAColeccionContribuciones',
             'TRAColeccionIdiomas',
             'TRAColeccionImportaciones',
             'TRAColeccionInformes',
             'TRAColeccionModulos',
             'TRAColeccionProgresos',
             'TRAColeccionSolicitudesCadenas',
-            'TRAConfiguracionAlmacenPaginas',
             'TRAConfiguracionExportacion',
             'TRAConfiguracionImportacion',
+            'TRAConfiguracionInvalidacionInformes',
             'TRAConfiguracionPaginaTraducciones',
             'TRAConfiguracionPerfilEjecucion',
             'TRAConfiguracionPermisos',
@@ -132,6 +133,7 @@ class TRAElemento_Meta:
             'TRAConfiguracionVarios',
             'TRAContenidoIntercambio',
             'TRAContenidoXML',
+            'TRAContribuciones',
             'TRAIdioma',
             'TRAImportacion',
             'TRAInforme',
@@ -165,6 +167,10 @@ class TRAElemento_Meta:
                 from Products.gvSIGi18n.TRAColeccionCadenas         import TRAColeccionCadenas
                 return TRAColeccionCadenas            
 
+            if theMetaTypeName == 'TRAColeccionContribuciones':
+                from Products.gvSIGi18n.TRAColeccionContribuciones         import TRAColeccionContribuciones
+                return TRAColeccionContribuciones            
+
             if theMetaTypeName == 'TRAColeccionIdiomas':
                 from Products.gvSIGi18n.TRAColeccionIdiomas         import TRAColeccionIdiomas
                 return TRAColeccionIdiomas            
@@ -189,10 +195,6 @@ class TRAElemento_Meta:
                 from Products.gvSIGi18n.TRAColeccionSolicitudesCadenas         import TRAColeccionSolicitudesCadenas
                 return TRAColeccionSolicitudesCadenas            
 
-            if theMetaTypeName == 'TRAConfiguracionAlmacenPaginas':
-                from Products.gvSIGi18n.TRAConfiguracionAlmacenPaginas         import TRAConfiguracionAlmacenPaginas
-                return TRAConfiguracionAlmacenPaginas            
-
             if theMetaTypeName == 'TRAConfiguracionExportacion':
                 from Products.gvSIGi18n.TRAConfiguracionExportacion         import TRAConfiguracionExportacion
                 return TRAConfiguracionExportacion            
@@ -200,6 +202,10 @@ class TRAElemento_Meta:
             if theMetaTypeName == 'TRAConfiguracionImportacion':
                 from Products.gvSIGi18n.TRAConfiguracionImportacion         import TRAConfiguracionImportacion
                 return TRAConfiguracionImportacion            
+
+            if theMetaTypeName == 'TRAConfiguracionInvalidacionInformes':
+                from Products.gvSIGi18n.TRAConfiguracionInvalidacionInformes         import TRAConfiguracionInvalidacionInformes
+                return TRAConfiguracionInvalidacionInformes            
 
             if theMetaTypeName == 'TRAConfiguracionPaginaTraducciones':
                 from Products.gvSIGi18n.TRAConfiguracionPaginaTraducciones         import TRAConfiguracionPaginaTraducciones
@@ -228,6 +234,10 @@ class TRAElemento_Meta:
             if theMetaTypeName == 'TRAContenidoXML':
                 from Products.gvSIGi18n.TRAContenidoXML         import TRAContenidoXML
                 return TRAContenidoXML            
+
+            if theMetaTypeName == 'TRAContribuciones':
+                from Products.gvSIGi18n.TRAContribuciones         import TRAContribuciones
+                return TRAContribuciones            
 
             if theMetaTypeName == 'TRAIdioma':
                 from Products.gvSIGi18n.TRAIdioma         import TRAIdioma

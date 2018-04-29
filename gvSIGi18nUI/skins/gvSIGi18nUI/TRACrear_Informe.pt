@@ -42,8 +42,13 @@
         
 
            
+        <tal:block tal:define="
+        pExecutionRecord python: here.TRAgvSIGi18n_tool.fStartExecution( here, 'template', 'TRACrear_Informe.pt', None, True, { 'log_what': 'details', 'log_when': True, });
+            pPermissionsCache python: {};
+            pRolesCache python: {}" >
 
-        <tal:block tal:define="pExecutionRecord python: here.TRAgvSIGi18n_tool.fStartExecution( here, 'template', 'TRACrear_Informe.pt', None, True, { 'log_what': 'details', 'log_when': True, })" >
+      
+   
     
             <div metal:use-macro="here/document_actions/macros/document_actions">
                 Document actions (print, sendto etc)

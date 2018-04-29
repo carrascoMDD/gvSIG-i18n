@@ -42,6 +42,7 @@ import logging
 
 import threading
 
+from DateTime import DateTime
 
 from AccessControl                  import ClassSecurityInfo
 
@@ -88,6 +89,10 @@ class TRACatalogo_Globales:
     
     """    
 
+    gTRAStartupDate = DateTime()
+    
+    
+    
     """Used to XOR millisecond values to produce and test 'magic' HTTP request parameters to avoid triggering actions on requests confirmed long after the confirmation was prompted by the system.
     
     """    
@@ -158,6 +163,7 @@ class TRACatalogo_Globales:
     """
     gStatusReportByLanguagesTimeMillis           = { }
     gStatusReportByModulesAndLanguagesTimeMillis = { }
+    gContributionsReportTimeMillis               = { }
     
 
     # #######################################################
@@ -166,6 +172,7 @@ class TRACatalogo_Globales:
     """
     gNumTranslationsStatusChangesSinceReportByLanguages             = { }
     gNumTranslationsStatusChangesSinceReportByModulesAndLanguages   = { }
+    gNumTranslationsStatusChangesSinceContributionsReport             = { }
 
     
     
@@ -210,6 +217,28 @@ class TRACatalogo_Globales:
     # #######################################################
 
    
+    
+    security.declareProtected( permissions.View, 'fStartupDate')
+    def fStartupDate(self,):
+        aStartupDate = TRACatalogo_Globales.gTRAStartupDate
+        
+        if not aStartupDate:
+            aStartupDate = DateTime()
+            TRACatalogo_Globales.gTRAStartupDate = aStartupDate
+    
+        return aStartupDate
+    
+    
+    
+ 
+    security.declareProtected( permissions.View, 'fStartupDateString')
+    def fStartupDateString(self,):
+        aStartupDate = self.fStartupDate()
+        if not aStartupDate:
+            return ''
+        
+        aStartupDateString = self.fDateTimeToString( aStartupDate)
+        return aStartupDateString
     
  
 

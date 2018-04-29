@@ -347,3 +347,20 @@ msgstr "XML Data"
 msgid "Process specification"
 msgstr "Process specification"
 
+
+
+
+
+
+
+
+#. Default: "Crear Informe de Contribuciones"
+#: TRACatalogo.py TRAColeccionContribuciones.py
+msgid "Create Contributions report"
+msgstr "Create Contributions Report"
+
+
+#. Default: "Crear Importacion para Recuperar"
+#: TRACatalogo.py TRAColeccionImportaciones.py
+msgid "Create Import to Restore Backup"
+msgstr "Create Import to Restore Backup"

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# File: TRAConfiguracionAlmacenPaginas_Operaciones.py
+# File: TRAConfiguracionInvalidacionInformes_Operaciones.py
 #
 # Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
 #
@@ -48,6 +48,7 @@ from Products.CMFCore.utils  import getToolByName
 from TRAElemento_Constants                 import *
 from TRAElemento_Constants_Activity        import *
 from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Contributions   import *
 from TRAElemento_Constants_Dates           import *
 from TRAElemento_Constants_Encoding        import *
 from TRAElemento_Constants_Import          import *
@@ -82,7 +83,7 @@ from TRAUtils                              import *
 ##code-section after-schema #fill in your manual code here
 ##/code-section after-schema
 
-class TRAConfiguracionAlmacenPaginas_Operaciones:
+class TRAConfiguracionInvalidacionInformes_Operaciones:
     """
     """
     security = ClassSecurityInfo()
@@ -155,7 +156,7 @@ class TRAConfiguracionAlmacenPaginas_Operaciones:
     
                                 
 
-# end of class TRAConfiguracionAlmacenPaginas_Operaciones
+# end of class TRAConfiguracionInvalidacionInformes_Operaciones
 
 ##code-section module-footer #fill in your manual code here
 ##/code-section module-footer

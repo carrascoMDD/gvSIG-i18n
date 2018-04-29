@@ -37,8 +37,8 @@ from Products.gvSIGi18n.TRAConRegistroActividad import TRAConRegistroActividad
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
-from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import ReferenceBrowserWidget
 from TRAElemento_Operaciones import TRAElemento_Operaciones
+from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import ReferenceBrowserWidget
 
 ##code-section module-header #fill in your manual code here
 ##/code-section module-header
@@ -109,36 +109,6 @@ schema = Schema((
         length="0",
         containment="Not Specified",
         position="2",
-        owner_class_name="TRAInforme"
-    ),
-
-    StringField(
-        name='usuarioInformador',
-        widget=StringWidget(
-            label="Usuario Informador",
-            label2="Reporting User",
-            description="Usuario que ha solicitado creado el Informe.",
-            description2="User who requested the ellaboration of the report.",
-            label_msgid='gvSIGi18n_TRAInforme_attr_usuarioInformador_label',
-            description_msgid='gvSIGi18n_TRAInforme_attr_usuarioInformador_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        description="Usuario que ha solicitado creado el Informe.",
-        duplicates="0",
-        label2="Reporting User",
-        ea_localid="782",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        description2="User who requested the ellaboration of the report.",
-        ea_guid="{8BD63B05-0F14-49b3-80A1-0222C34E3C8E}",
-        read_only="True",
-        scale="0",
-        label="Usuario Informador",
-        length="0",
-        containment="Not Specified",
-        position="4",
         owner_class_name="TRAInforme"
     ),
 
@@ -384,6 +354,36 @@ schema = Schema((
         length="0",
         containment="Not Specified",
         position="8",
+        owner_class_name="TRAInforme"
+    ),
+
+    StringField(
+        name='usuarioInformador',
+        widget=StringWidget(
+            label="Usuario Informador",
+            label2="Reporting User",
+            description="Usuario que ha solicitado creado el Informe.",
+            description2="User who requested the ellaboration of the report.",
+            label_msgid='gvSIGi18n_TRAInforme_attr_usuarioInformador_label',
+            description_msgid='gvSIGi18n_TRAInforme_attr_usuarioInformador_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Usuario que ha solicitado creado el Informe.",
+        duplicates="0",
+        label2="Reporting User",
+        ea_localid="782",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="User who requested the ellaboration of the report.",
+        ea_guid="{8BD63B05-0F14-49b3-80A1-0222C34E3C8E}",
+        read_only="True",
+        scale="0",
+        label="Usuario Informador",
+        length="0",
+        containment="Not Specified",
+        position="4",
         owner_class_name="TRAInforme"
     ),
 

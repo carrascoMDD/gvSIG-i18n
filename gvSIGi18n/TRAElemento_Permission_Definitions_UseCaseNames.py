@@ -112,7 +112,8 @@ cUseCase_TRATraduccionComment           = 'Comment_on_TRATraduccion'
 cUseCase_InvalidateStringTranslations   = 'Invalidate_String_Translations'
 cUseCase_ConfigureExecutionProfilingEnablement_Global = 'Configure_ExecutionProfilingEnablement_Global'
 cUseCase_ConfigureExecutionProfilingEnablement_TRACatalogo = 'Configure_ExecutionProfilingEnablement_TRACatalogo'
-
+cUseCase_CreateTRAContribuciones        = 'Create_TRAContribuciones'
+cUseCase_EditTRAContribuciones          = 'Edit_TRAContribuciones'
 
 
                                                                 
@@ -179,13 +180,14 @@ cTRAUseCaseNames = [
     cUseCase_EditTRAInforme,
     cUseCase_AddModulesToTRACadena,
     cUseCase_RemoveModulesFromTRACadena,
-    cUseCase_ConfigureExecutionProfilingEnablement_Global,
-    cUseCase_ConfigureExecutionProfilingEnablement_TRACatalogo,
+    #cUseCase_ConfigureExecutionProfilingEnablement_Global,
+    #cUseCase_ConfigureExecutionProfilingEnablement_TRACatalogo,
     cUseCase_EditTRAParametrosControlProgreso,
     cUseCase_ControlTRAProgreso,
     cUseCase_ConfigureTRAProgreso,
     #cUseCase_EditTRAProgreso,
     cUseCase_ViewResultsTRAProgreso,
+    cUseCase_CreateTRAContribuciones,
 ]
 
 

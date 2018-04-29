@@ -54,12 +54,13 @@ cNombreTipoTRAParametrosControlProgreso = "TRAParametrosControlProgreso"
 cNombreTipoTRAConfiguracionImportacion  = "TRAConfiguracionImportacion"
 cNombreTipoTRAConfiguracionExportacion  = "TRAConfiguracionExportacion"
 cNombreTipoTRAConfiguracionSolicitudesCadenas  = "TRAConfiguracionSolicitudesCadenas"
-cNombreTipoTRAConfiguracionAlmacenPaginas  = "TRAConfiguracionAlmacenPaginas"
+cNombreTipoTRAConfiguracionInvalidacionInformes  = "TRAConfiguracionInvalidacionInformes"
 cNombreTipoTRAConfiguracionPaginaTraducciones  = "TRAConfiguracionPaginaTraducciones"
 cNombreTipoTRAConfiguracionPerfilEjecucion  = "TRAConfiguracionPerfilEjecucion"
 cNombreTipoTRAConfiguracionVarios       = "TRAConfiguracionVarios"
 cNombreTipoTRAConfiguracionPermisos     = "TRAConfiguracionPermisos"
 cNombreTipoTRASimbolosOrdenados         = "TRASimbolosOrdenados"
+cNombreTipoTRAContribuciones            = "TRAContribuciones"
 cNombreTipoTRAColeccionIdiomas          = "TRAColeccionIdiomas"
 cNombreTipoTRAColeccionModulos          = "TRAColeccionModulos"
 cNombreTipoTRAColeccionCadenas          = "TRAColeccionCadenas"
@@ -67,6 +68,7 @@ cNombreTipoTRAColeccionInformes         = "TRAColeccionInformes"
 cNombreTipoTRAColeccionImportaciones    = "TRAColeccionImportaciones"
 cNombreTipoTRAColeccionSolicitudesCadenas= "TRAColeccionSolicitudesCadenas"
 cNombreTipoTRAColeccionProgresos        = "TRAColeccionProgresos"
+cNombreTipoTRAColeccionContribuciones   = "TRAColeccionContribuciones"
 
 
 # cNombreTipo_cualquiera   = '--AnyType--'
@@ -89,12 +91,14 @@ cPreferredTypesOrder = [
     cNombreTipoTRAColeccionSolicitudesCadenas,
     cNombreTipoTRASolicitudCadena,
     cNombreTipoTRAColeccionProgresos,
+    cNombreTipoTRAColeccionContribuciones,
+    cNombreTipoTRAContribuciones,
     cNombreTipoTRAProgreso,
     cNombreTipoTRAParametrosControlProgreso,
     cNombreTipoTRAConfiguracionImportacion,
     cNombreTipoTRAConfiguracionExportacion,
     cNombreTipoTRAConfiguracionSolicitudesCadenas,
-    cNombreTipoTRAConfiguracionAlmacenPaginas,
+    cNombreTipoTRAConfiguracionInvalidacionInformes,
     cNombreTipoTRAConfiguracionPaginaTraducciones,
     cNombreTipoTRAConfiguracionPerfilEjecucion,
     cNombreTipoTRAConfiguracionVarios,
@@ -126,11 +130,13 @@ cTodosNombresTiposCacheables = [
     cNombreTipoTRAConfiguracionImportacion,
     cNombreTipoTRAConfiguracionExportacion,
     cNombreTipoTRAConfiguracionSolicitudesCadenas,
-    cNombreTipoTRAConfiguracionAlmacenPaginas,
+    cNombreTipoTRAConfiguracionInvalidacionInformes,
     cNombreTipoTRAConfiguracionPaginaTraducciones,
     cNombreTipoTRAConfiguracionPerfilEjecucion,
     cNombreTipoTRAConfiguracionVarios,
     cNombreTipoTRASimbolosOrdenados,
+    cNombreTipoTRAColeccionContribuciones,
+    cNombreTipoTRAContribuciones,
 ]
 
 
@@ -142,6 +148,7 @@ cTodosNombresTiposColecciones = [
     cNombreTipoTRAColeccionImportaciones, 
     cNombreTipoTRAColeccionSolicitudesCadenas,
     cNombreTipoTRAColeccionProgresos,
+    cNombreTipoTRAColeccionContribuciones,
 ]
 
 
@@ -149,7 +156,7 @@ cTodosNombresTiposConfiguracion = [
     cNombreTipoTRAConfiguracionImportacion,
     cNombreTipoTRAConfiguracionExportacion,
     cNombreTipoTRAConfiguracionSolicitudesCadenas,
-    cNombreTipoTRAConfiguracionAlmacenPaginas,
+    cNombreTipoTRAConfiguracionInvalidacionInformes,
     cNombreTipoTRAConfiguracionPaginaTraducciones,
     cNombreTipoTRAConfiguracionPerfilEjecucion,
     cNombreTipoTRAConfiguracionVarios,
@@ -178,7 +185,7 @@ cTodosNombresTiposWithoutChildren = [
     cNombreTipoTRAConfiguracionImportacion,
     cNombreTipoTRAConfiguracionExportacion,
     cNombreTipoTRAConfiguracionSolicitudesCadenas,
-    cNombreTipoTRAConfiguracionAlmacenPaginas,
+    cNombreTipoTRAConfiguracionInvalidacionInformes,
     cNombreTipoTRAConfiguracionPaginaTraducciones,
     cNombreTipoTRAConfiguracionPerfilEjecucion,
     cNombreTipoTRAConfiguracionVarios,
@@ -211,7 +218,7 @@ cTodosNombresTiposWithChildrenOrRelationsOrPloneElements = cTodosNombresTiposWit
     cNombreTipoTRAConfiguracionImportacion,
     cNombreTipoTRAConfiguracionExportacion,
     cNombreTipoTRAConfiguracionSolicitudesCadenas,
-    cNombreTipoTRAConfiguracionAlmacenPaginas,
+    cNombreTipoTRAConfiguracionInvalidacionInformes,
     cNombreTipoTRAConfiguracionPaginaTraducciones,
     cNombreTipoTRAConfiguracionPerfilEjecucion,
     cNombreTipoTRAConfiguracionVarios,
@@ -251,7 +258,7 @@ cTodosNombresTiposConfiguracion = [
     cNombreTipoTRAConfiguracionImportacion,
     cNombreTipoTRAConfiguracionExportacion,
     cNombreTipoTRAConfiguracionSolicitudesCadenas,
-    cNombreTipoTRAConfiguracionAlmacenPaginas,
+    cNombreTipoTRAConfiguracionInvalidacionInformes,
     cNombreTipoTRAConfiguracionPaginaTraducciones,
     cNombreTipoTRAConfiguracionPerfilEjecucion,
     cNombreTipoTRAConfiguracionVarios,
@@ -292,7 +299,7 @@ cTRATypesToReuseIdsOnRestoreBackup = [
     cNombreTipoTRAConfiguracionImportacion,
     cNombreTipoTRAConfiguracionExportacion,
     cNombreTipoTRAConfiguracionSolicitudesCadenas,
-    cNombreTipoTRAConfiguracionAlmacenPaginas,
+    cNombreTipoTRAConfiguracionInvalidacionInformes,
     cNombreTipoTRAConfiguracionPaginaTraducciones,
     cNombreTipoTRAConfiguracionPerfilEjecucion,
     cNombreTipoTRAConfiguracionVarios,

@@ -170,22 +170,7 @@ class TRAgvSIGi18nTool_Catalog:
     
     
            
-    
-    
-    security.declareProtected( permissions.View, 'fLabelModuloNoEspecificado')
-    def fLabelModuloNoEspecificado(self,
-        theContextualElement    =None,):
-        
-        if theContextualElement == None:
-            return ''
-        
-        unCatalogo = theContextualElement.getCatalogo()
-        if unCatalogo == None:
-            return ''
-        
-        return unCatalogo.fLabelModuloNoEspecificado()
-    
-            
+
     
     
     

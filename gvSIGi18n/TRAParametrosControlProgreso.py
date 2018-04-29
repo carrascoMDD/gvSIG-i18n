@@ -45,21 +45,18 @@ from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import Reference
 
 schema = Schema((
 
-    #Inactivo
     StringField(
         name='tipoProceso',
         widget=StringWidget(
             label="Tipo del Proceso",
             label2="Process Type",
-            description="""Inactivo
-            El tipo del proceso del cual este elemento mantiene los parametros iniciales de control de su progreso.""",
+            description="El tipo del proceso del cual este elemento mantiene los parametros iniciales de control de su progreso.",
             description2="Type of the process whose initial progress control parameters are maintained by this element.",
             label_msgid='gvSIGi18n_TRAParametrosControlProgreso_attr_tipoProceso_label',
             description_msgid='gvSIGi18n_TRAParametrosControlProgreso_attr_tipoProceso_help',
             i18n_domain='gvSIGi18n',
         ),
-        description="""Inactivo
-        El tipo del proceso del cual este elemento mantiene los parametros iniciales de control de su progreso.""",
+        description="El tipo del proceso del cual este elemento mantiene los parametros iniciales de control de su progreso.",
         duplicates="0",
         label2="Process Type",
         ea_localid="1720",
@@ -74,7 +71,7 @@ schema = Schema((
         label="Tipo del Proceso",
         length="0",
         containment="Not Specified",
-        position="14",
+        position="0",
         owner_class_name="TRAParametrosControlProgreso"
     ),
 
@@ -89,7 +86,6 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRAParametrosControlProgreso_attr_crearInformeAntes_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="Cuendo sea verdadero, se creara un informe detallado de estado antes de ejecutar proceso.",
         duplicates="0",
         label2="Create Report Before",
@@ -98,13 +94,15 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="When true, a detailed status report shall be created before executing the process.",
-        containment="Not Specified",
         ea_guid="{4DED20F9-F187-48d5-A220-7EA18D0E0C6A}",
-        position="2",
-        owner_class_name="TRAParametrosControlProgreso",
-        label="Crear Informe Antes"
+        scale="0",
+        default="False",
+        label="Crear Informe Antes",
+        length="0",
+        containment="Not Specified",
+        position="1",
+        owner_class_name="TRAParametrosControlProgreso"
     ),
 
     BooleanField(
@@ -118,7 +116,6 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRAParametrosControlProgreso_attr_crearInformeDespues_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="Cuendo sea verdadero, se creara un informe detallado de estado despues de ejecutar el proceso.",
         duplicates="0",
         label2="Create Report After",
@@ -127,13 +124,15 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="When true, a detailed status report shall be created after executing the process.",
-        containment="Not Specified",
         ea_guid="{E3B22B84-2CB3-46d5-99DF-AD3B00CD02C2}",
-        position="3",
-        owner_class_name="TRAParametrosControlProgreso",
-        label="Crear Informe Despues"
+        scale="0",
+        default="False",
+        label="Crear Informe Despues",
+        length="0",
+        containment="Not Specified",
+        position="2",
+        owner_class_name="TRAParametrosControlProgreso"
     ),
 
     BooleanField(
@@ -162,7 +161,7 @@ schema = Schema((
         label="Guardar Resultados Habilitado",
         length="0",
         containment="Not Specified",
-        position="5",
+        position="8",
         owner_class_name="TRAParametrosControlProgreso"
     ),
 
@@ -192,7 +191,7 @@ schema = Schema((
         label="Guardar Resultados Maximo Elementos Leidos",
         length="0",
         containment="Not Specified",
-        position="6",
+        position="9",
         owner_class_name="TRAParametrosControlProgreso"
     ),
 
@@ -222,7 +221,7 @@ schema = Schema((
         label="Guardar Resultados Maximo Elementos Modificados",
         length="0",
         containment="Not Specified",
-        position="7",
+        position="10",
         owner_class_name="TRAParametrosControlProgreso"
     ),
 
@@ -252,7 +251,7 @@ schema = Schema((
         label="Guardar Resultados Maximo Milisegundos",
         length="0",
         containment="Not Specified",
-        position="8",
+        position="11",
         owner_class_name="TRAParametrosControlProgreso"
     ),
 
@@ -282,7 +281,7 @@ schema = Schema((
         label="Transacciones Habilitado",
         length="0",
         containment="Not Specified",
-        position="15",
+        position="18",
         owner_class_name="TRAParametrosControlProgreso"
     ),
 
@@ -312,7 +311,7 @@ schema = Schema((
         label="Transacciones Maximo Elementos Leidos",
         length="0",
         containment="Not Specified",
-        position="16",
+        position="18",
         owner_class_name="TRAParametrosControlProgreso"
     ),
 
@@ -342,7 +341,7 @@ schema = Schema((
         label="Transacciones Maximo Elementos Modificados",
         length="0",
         containment="Not Specified",
-        position="17",
+        position="19",
         owner_class_name="TRAParametrosControlProgreso"
     ),
 
@@ -372,7 +371,7 @@ schema = Schema((
         label="Transacciones Maximo Milisegundos",
         length="0",
         containment="Not Specified",
-        position="18",
+        position="20",
         owner_class_name="TRAParametrosControlProgreso"
     ),
 
@@ -402,7 +401,7 @@ schema = Schema((
         label="Registro Habilitado",
         length="0",
         containment="Not Specified",
-        position="9",
+        position="12",
         owner_class_name="TRAParametrosControlProgreso"
     ),
 
@@ -432,7 +431,7 @@ schema = Schema((
         label="Registro Maximo Elementos Leidos",
         length="0",
         containment="Not Specified",
-        position="10",
+        position="13",
         owner_class_name="TRAParametrosControlProgreso"
     ),
 
@@ -462,7 +461,7 @@ schema = Schema((
         label="Registro Maximo Elementos Modificados",
         length="0",
         containment="Not Specified",
-        position="11",
+        position="14",
         owner_class_name="TRAParametrosControlProgreso"
     ),
 
@@ -492,7 +491,7 @@ schema = Schema((
         label="Registro Maximo Milisegundos",
         length="0",
         containment="Not Specified",
-        position="12",
+        position="15",
         owner_class_name="TRAParametrosControlProgreso"
     ),
 
@@ -522,7 +521,7 @@ schema = Schema((
         label="Registro Maximo Transacciones",
         length="0",
         containment="Not Specified",
-        position="13",
+        position="17",
         owner_class_name="TRAParametrosControlProgreso"
     ),
 
@@ -552,7 +551,37 @@ schema = Schema((
         label="Ceder Procesador Habilitado",
         length="0",
         containment="Not Specified",
-        position="0",
+        position="3",
+        owner_class_name="TRAParametrosControlProgreso"
+    ),
+
+    BooleanField(
+        name='cederProcesador_soloEntreTransacciones',
+        widget=BooleanField._properties['widget'](
+            label="Solo entre Transaciones",
+            label2="Only between Transactions",
+            description="Si Verdadero, entonces el sistema solo cedera el procesador entre transacciones, si las transaciones estan habilitadas.",
+            description2="If True, then the system shall yield the processor only between transactions, if transactions are enabled.",
+            label_msgid='gvSIGi18n_TRAParametrosControlProgreso_attr_cederProcesador_soloEntreTransacciones_label',
+            description_msgid='gvSIGi18n_TRAParametrosControlProgreso_attr_cederProcesador_soloEntreTransacciones_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Si Verdadero, entonces el sistema solo cedera el procesador entre transacciones, si las transaciones estan habilitadas.",
+        duplicates="0",
+        label2="Only between Transactions",
+        ea_localid="2078",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;IsLiteral=0;",
+        description2="If True, then the system shall yield the processor only between transactions, if transactions are enabled.",
+        ea_guid="{0435EF09-8907-40db-8CFC-FC7D5B672BDF}",
+        scale="0",
+        default="True",
+        label="Solo entre Transaciones",
+        length="0",
+        containment="Not Specified",
+        position="3",
         owner_class_name="TRAParametrosControlProgreso"
     ),
 
@@ -582,7 +611,7 @@ schema = Schema((
         label="Ceder Procesador Porcentaje Tiempo Actividad",
         length="0",
         containment="Not Specified",
-        position="4",
+        position="7",
         owner_class_name="TRAParametrosControlProgreso"
     ),
 
@@ -612,7 +641,7 @@ schema = Schema((
         label="Ceder Procesador Maximo Elementos Leidos",
         length="0",
         containment="Not Specified",
-        position="1",
+        position="4",
         owner_class_name="TRAParametrosControlProgreso"
     ),
 
@@ -642,7 +671,7 @@ schema = Schema((
         label="Ceder Procesador Maximo Elementos Modificados",
         length="0",
         containment="Not Specified",
-        position="2",
+        position="5",
         owner_class_name="TRAParametrosControlProgreso"
     ),
 
@@ -668,11 +697,11 @@ schema = Schema((
         description2="For Yield Processor: when this number of milliseconds has lapsed since the processor was last yield, the system shall yield the processor to be used by other processes.",
         ea_guid="{B334F134-1257-4f6c-B1C1-C50CDEA5B4FF}",
         scale="0",
-        default="5000",
+        default="1000",
         label="Ceder Procesador Maximo Milisegundos",
         length="0",
         containment="Not Specified",
-        position="3",
+        position="6",
         owner_class_name="TRAParametrosControlProgreso"
     ),
 

@@ -57,7 +57,7 @@ _cTRATodosNombresTiposDesCatalogables_DePortalCatalog = [
     "TRAConfiguracionImportacion",       
     "TRAConfiguracionExportacion",       
     "TRAConfiguracionSolicitudesCadenas",
-    "TRAConfiguracionAlmacenPaginas",    
+    "TRAConfiguracionInvalidacionInformes",    
     "TRAConfiguracionPaginaTraducciones",
     "TRAConfiguracionPerfilEjecucion",   
     "TRAConfiguracionVarios",            

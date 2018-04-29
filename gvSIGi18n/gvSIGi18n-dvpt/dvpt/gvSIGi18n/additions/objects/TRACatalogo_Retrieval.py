@@ -103,7 +103,7 @@ class TRACatalogo_Retrieval:
     def fObtenerColeccionIdiomas( self, ):
    
         unasColecciones = self.fObjectValues( cNombreTipoTRAColeccionIdiomas) #
-        if not unasColecciones:
+        if unasColecciones == None:
             return None
         return unasColecciones[ 0]
          
@@ -113,7 +113,7 @@ class TRACatalogo_Retrieval:
     def fObtenerTodasColeccionesIdiomas( self, ):
    
         unasColecciones = self.fObjectValues( cNombreTipoTRAColeccionIdiomas) #
-        if not unasColecciones:
+        if unasColecciones == None:
             return []
         return unasColecciones
                  
@@ -281,7 +281,7 @@ class TRACatalogo_Retrieval:
     def fObtenerColeccionModulos( self, ):
    
         unasColecciones = self.fObjectValues( cNombreTipoTRAColeccionModulos) #
-        if not unasColecciones:
+        if unasColecciones == None:
             return None
         return unasColecciones[ 0]
          
@@ -290,7 +290,7 @@ class TRACatalogo_Retrieval:
     def fObtenerTodasColeccionesModulos( self, ):
    
         unasColecciones = self.fObjectValues( cNombreTipoTRAColeccionModulos) #
-        if not unasColecciones:
+        if unasColecciones == None:
             return []
         return unasColecciones
          
@@ -431,7 +431,7 @@ class TRACatalogo_Retrieval:
     def fObtenerColeccionSolicitudesCadenas( self, ):
    
         unasColecciones = self.fObjectValues( cNombreTipoTRAColeccionSolicitudesCadenas)
-        if not unasColecciones:
+        if unasColecciones == None:
             return None
         return unasColecciones[ 0]
          
@@ -443,7 +443,7 @@ class TRACatalogo_Retrieval:
     def fObtenerTodasColeccionesSolicitudesCadenas( self, ):
    
         unasColecciones = self.fObjectValues( cNombreTipoTRAColeccionSolicitudesCadenas)
-        if not unasColecciones:
+        if unasColecciones == None:
             return []
         return unasColecciones
          
@@ -459,7 +459,7 @@ class TRACatalogo_Retrieval:
     def fObtenerColeccionCadenas( self, ):
    
         unasColecciones = self.fObjectValues( cNombreTipoTRAColeccionCadenas)
-        if not unasColecciones:
+        if unasColecciones == None:
             return None
         return unasColecciones[ 0]
          
@@ -470,7 +470,7 @@ class TRACatalogo_Retrieval:
     def fObtenerTodasColeccionesCadenas( self, ):
    
         unasColecciones = self.fObjectValues( cNombreTipoTRAColeccionCadenas)
-        if not unasColecciones:
+        if unasColecciones == None:
             return []
         return unasColecciones
     
@@ -678,12 +678,52 @@ class TRACatalogo_Retrieval:
     """
 
 
-     
+    security.declareProtected( permissions.View, 'fObtenerColeccionContribuciones')
+    def fObtenerColeccionContribuciones( self, ):
+   
+        unasColecciones = self.fObtenerTodasColeccionesContribuciones( ) #
+        if unasColecciones == None:
+            return None
+        return unasColecciones[ 0]
+        
+    
+    
+    
+    security.declareProtected( permissions.View, 'fObtenerTodasColeccionesContribuciones')
+    def fObtenerTodasColeccionesContribuciones( self, ):
+   
+        unasColecciones = self.fObjectValues( cNombreTipoTRAColeccionContribuciones) #
+        if unasColecciones == None:
+            return []
+        return unasColecciones
+            
+
+    
+    
+
+    security.declareProtected( permissions.View, 'fObtenerUltimoContribuciones')
+    def fObtenerUltimoContribuciones( self, ):
+   
+        unaColeccionContribuciones = self.fObtenerColeccionContribuciones( )
+        if unaColeccionContribuciones == None:
+            return None
+        
+        unasContribuciones = unaColeccionContribuciones.fObjectValues( cNombreTipoTRAContribuciones) 
+        
+        if not unasContribuciones:
+            return None
+        
+        return unasContribuciones[ len( unasContribuciones) - 1]
+            
+    
+    
+    
+    
     security.declareProtected( permissions.View, 'fObtenerColeccionInformes')
     def fObtenerColeccionInformes( self, ):
    
         unasColecciones = self.fObtenerTodasColeccionesInformes( ) #
-        if not unasColecciones:
+        if unasColecciones == None:
             return None
         return unasColecciones[ 0]
     
@@ -694,7 +734,7 @@ class TRACatalogo_Retrieval:
     def fObtenerTodasColeccionesInformes( self, ):
    
         unasColecciones = self.fObjectValues( cNombreTipoTRAColeccionInformes) #
-        if not unasColecciones:
+        if unasColecciones == None:
             return []
         return unasColecciones
             
@@ -722,7 +762,7 @@ class TRACatalogo_Retrieval:
     def fObtenerColeccionProgresos( self, ):
    
         unasColecciones = self.fObtenerTodasColeccionesProgresos( ) #
-        if not unasColecciones:
+        if unasColecciones == None:
             return None
         return unasColecciones[ 0]
     
@@ -733,7 +773,7 @@ class TRACatalogo_Retrieval:
     def fObtenerTodasColeccionesProgresos( self, ):
    
         unasColecciones = self.fObjectValues( cNombreTipoTRAColeccionProgresos) #
-        if not unasColecciones:
+        if unasColecciones == None:
             return []
         return unasColecciones
             
@@ -769,7 +809,7 @@ class TRACatalogo_Retrieval:
     def fObtenerColeccionImportaciones( self, ):
    
         unasColecciones = self.fObjectValues( cNombreTipoTRAColeccionImportaciones) #
-        if not unasColecciones:
+        if unasColecciones == None:
             return None
         return unasColecciones[ 0]
     
@@ -778,7 +818,7 @@ class TRACatalogo_Retrieval:
     def fObtenerTodasColeccionesImportaciones( self, ):
    
         unasColecciones = self.fObjectValues( cNombreTipoTRAColeccionImportaciones) #
-        if not unasColecciones:
+        if unasColecciones == None:
             return []
         return unasColecciones
     

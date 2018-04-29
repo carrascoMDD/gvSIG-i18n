@@ -135,8 +135,8 @@ schema = Schema((
         description2='Translations catalog configurations, each one with parameters controlling an aspect of operations on the catalog.',
         multiValued=1,
         owner_class_name="TRACatalogo",
-        expression="context.objectValues(['TRAConfiguracionAlmacenPaginas', 'TRAConfiguracionExportacion', 'TRAConfiguracionImportacion', 'TRAConfiguracionPaginaTraducciones', 'TRAConfiguracionPerfilEjecucion', 'TRAConfiguracionPermisos', 'TRAConfiguracionSolicitudesCadenas', 'TRAConfiguracionVarios'])",
-        computed_types=['TRAConfiguracionAlmacenPaginas', 'TRAConfiguracionExportacion', 'TRAConfiguracionImportacion', 'TRAConfiguracionPaginaTraducciones', 'TRAConfiguracionPerfilEjecucion', 'TRAConfiguracionPermisos', 'TRAConfiguracionSolicitudesCadenas', 'TRAConfiguracionVarios'],
+        expression="context.objectValues(['TRAConfiguracionExportacion', 'TRAConfiguracionImportacion', 'TRAConfiguracionInvalidacionInformes', 'TRAConfiguracionPaginaTraducciones', 'TRAConfiguracionPerfilEjecucion', 'TRAConfiguracionPermisos', 'TRAConfiguracionSolicitudesCadenas', 'TRAConfiguracionVarios'])",
+        computed_types=['TRAConfiguracionExportacion', 'TRAConfiguracionImportacion', 'TRAConfiguracionInvalidacionInformes', 'TRAConfiguracionPaginaTraducciones', 'TRAConfiguracionPerfilEjecucion', 'TRAConfiguracionPermisos', 'TRAConfiguracionSolicitudesCadenas', 'TRAConfiguracionVarios'],
         non_framework_elements=False,
         description='Configuraciones del catalogo de traducciones, cada una con parametros controlando un aspecto del las operaciones sobre el catalogo.'
     ),
@@ -289,6 +289,31 @@ schema = Schema((
         computed_types=['TRAColeccionProgresos'],
         non_framework_elements=False,
         description='Coleccion de informes de Progreso acerca de Procesos de larga duracion'
+    ),
+
+    ComputedField(
+        name='coleccionContribuciones',
+        widget=ComputedWidget(
+            label="Coleccion de Contribuciones",
+            label2="Contributions collection",
+            description="Coleccion de Informes de Contribuciones por Usuarios a la traduccion del catalogo",
+            description2="Colection of Contributions by Users  to the translation of the catalog",
+            label_msgid='gvSIGi18n_TRACatalogo_contents_coleccionContribuciones_label',
+            description_msgid='gvSIGi18n_TRACatalogo_contents_coleccionContribuciones_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        contains_collections=True,
+        label2='Contributions collection',
+        label='Coleccion de Contribuciones',
+        represents_aggregation=True,
+        description2='Colection of Contributions by Users  to the translation of the catalog',
+        multiValued=1,
+        owner_class_name="TRACatalogo",
+        multiplicity_higher=1,
+        expression="context.objectValues(['TRAColeccionContribuciones'])",
+        computed_types=['TRAColeccionContribuciones'],
+        non_framework_elements=False,
+        description='Coleccion de Informes de Contribuciones por Usuarios a la traduccion del catalogo'
     ),
 
     ComputedField(
@@ -446,7 +471,7 @@ class TRACatalogo(OrderedBaseFolder, TRAArquetipo, TRACatalogo_Inicializacion, T
 
 
 
-    allowed_content_types = ['TRAColeccionInformes', 'TRAColeccionCadenas', 'TRAParametrosControlProgreso', 'TRAColeccionImportaciones', 'TRAColeccionSolicitudesCadenas', 'TRASimbolosOrdenados', 'TRAColeccionIdiomas', 'TRAColeccionProgresos', 'TRAColeccionModulos', 'TRAConfiguracionAlmacenPaginas', 'TRAConfiguracionExportacion', 'TRAConfiguracionSolicitudesCadenas', 'TRAConfiguracionImportacion', 'TRAConfiguracionPaginaTraducciones', 'TRAConfiguracionVarios', 'TRAConfiguracionPerfilEjecucion', 'TRAConfiguracionPermisos'] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Inicializacion, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Informes, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Globales, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Operaciones, 'allowed_content_types', [])) + list(getattr(TRACatalogo_CursorTraducciones, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Actividad, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Exportacion, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', []))
+    allowed_content_types = ['TRAColeccionInformes', 'TRAColeccionCadenas', 'TRAParametrosControlProgreso', 'TRAColeccionImportaciones', 'TRAColeccionSolicitudesCadenas', 'TRASimbolosOrdenados', 'TRAColeccionIdiomas', 'TRAColeccionProgresos', 'TRAColeccionModulos', 'TRAColeccionContribuciones', 'TRAConfiguracionInvalidacionInformes', 'TRAConfiguracionExportacion', 'TRAConfiguracionSolicitudesCadenas', 'TRAConfiguracionImportacion', 'TRAConfiguracionPaginaTraducciones', 'TRAConfiguracionVarios', 'TRAConfiguracionPerfilEjecucion', 'TRAConfiguracionPermisos'] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Inicializacion, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Informes, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Globales, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Operaciones, 'allowed_content_types', [])) + list(getattr(TRACatalogo_CursorTraducciones, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Actividad, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Exportacion, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', []))
     filter_content_types             = 1
     global_allow                     = 1
     content_icon = 'tracatalogo.gif'
@@ -518,6 +543,15 @@ class TRACatalogo(OrderedBaseFolder, TRAArquetipo, TRACatalogo_Inicializacion, T
         'name': 'Create Import',
         'permissions': ("Modify portal content",),
         'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable(object, 'Create_TRAImportacion')"""
+       },
+
+
+       {'action': "string:${object_url}/contribuciones/TRACrear_Contribuciones",
+        'category': "object_buttons",
+        'id': 'Create_TRAContribuciones',
+        'name': 'Create Contributions report',
+        'permissions': ("Modify portal content",),
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable(object, 'Create_TRAContribuciones')"""
        },
 
 

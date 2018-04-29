@@ -56,6 +56,7 @@ from TRAgvSIGi18nTool_Constants import *
 from TRAgvSIGi18nTool_Cache           import TRAgvSIGi18nTool_Cache
 from TRAgvSIGi18nTool_Catalog         import TRAgvSIGi18nTool_Catalog
 from TRAgvSIGi18nTool_Configurations  import TRAgvSIGi18nTool_Configurations
+from TRAgvSIGi18nTool_Contributions   import TRAgvSIGi18nTool_Contributions
 from TRAgvSIGi18nTool_Credits         import TRAgvSIGi18nTool_Credits
 from TRAgvSIGi18nTool_Dates           import TRAgvSIGi18nTool_Dates
 from TRAgvSIGi18nTool_Element         import TRAgvSIGi18nTool_Element
@@ -100,6 +101,7 @@ class TRAgvSIGi18nTool( UniqueObject, PropertyManager, SimpleItem.SimpleItem, Ac
     TRAgvSIGi18nTool_Cache, \
     TRAgvSIGi18nTool_Catalog, \
     TRAgvSIGi18nTool_Configurations, \
+    TRAgvSIGi18nTool_Contributions, \
     TRAgvSIGi18nTool_Credits, \
     TRAgvSIGi18nTool_Dates, \
     TRAgvSIGi18nTool_Element, \

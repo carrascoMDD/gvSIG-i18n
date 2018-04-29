@@ -3622,9 +3622,7 @@ def pRenderFiltro(
                             </strong>
                         </font>
                         <p class="formHelp">
-                            <span >%(gvSIGi18n_searchByWords_WildcardsAlowed_help)s</span>
-                            <br/>
-                            <span >%(gvSIGi18n_searchByWords_OrAlowed_help)s</span>
+                            <span >%(gvSIGi18n_searchByWords_help)s</span>
                         </p>
                     </th>
                 </tr>
@@ -3632,8 +3630,7 @@ def pRenderFiltro(
             <tbody>  
             \n""" % { 
         'gvSIGi18n_BusquedasPorPalabrasContenidasEnSimboloOTraduccion_title':  mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_BusquedasPorPalabrasContenidasEnSimboloOTraduccion_title',    'Filter by words in the symbol or the translation-'), 
-        'gvSIGi18n_searchByWords_WildcardsAlowed_help':  mfCRs2BRs( mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_searchByWords_WildcardsAlowed_help',    'Wildcards (* and ?) are permitted, but not at the beginning of words.-')), 
-        'gvSIGi18n_searchByWords_OrAlowed_help':         mfCRs2BRs( mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_searchByWords_OrAlowed_help',           'You may enter OR between words, to retrieve records containing ANY (not ALL) of the words.-')), 
+        'gvSIGi18n_searchByWords_help':  mfCRs2BRs( fCGIE( mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_searchByWords_help',    'Wildcards (* and ?) are permitted, but not at the beginning of words. You may use AND OR NOT between strings or groups of strings. You may group a subcriteria between parenthesis. You may specify exact sentences by surrounding them in double-quotes.-'))), 
     })            
 
              
@@ -3661,7 +3658,7 @@ def pRenderFiltro(
         </tr>
         \n""" % { 
         'tabindex':                                             unTabIndex,
-        'simbolo':                                              mfAsUnicode( pSearchParameters[ 'simbolo']),
+        'simbolo':                                      fCGIE( mfAsUnicode( pSearchParameters[ 'simbolo'])),
         'gvSIGi18n_TRATraduccion_attr_simbolo_label':   aTranslationsCache[ 'gvSIGi18n_TRATraduccion_attr_simbolo_label'],
         'gvSIGi18n_TRATraduccion_attr_simbolo_help':    mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TRATraduccion_attr_simbolo_help',  'The symbol of the string to translate.-'), 
         'gvSIGi18n_searchBySimbolo_help':               mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_searchBySimbolo_help',             'Enter words to search for in the string symbols. Wildcards (* and ?) are permitted.-'), 
@@ -3696,7 +3693,7 @@ def pRenderFiltro(
         </tr>
         \n""" % { 
         'tabindex':                                             unTabIndex,
-        'cadenaTraducida':                                      mfAsUnicode( pSearchParameters[ 'cadenaTraducida']),
+        'cadenaTraducida':                                      fCGIE( mfAsUnicode( pSearchParameters[ 'cadenaTraducida'])),
         'gvSIGi18n_TRATraduccion_attr_cadenaTraducida_label':   mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TRATraduccion_attr_cadenaTraducida_label', 'Translation-'), 
         'font-size':                                            unasSizesIdioma[ 'edit_font_size'],
         'field-size':                                           unasSizesIdioma[ 'filter_field_size'] / 2,

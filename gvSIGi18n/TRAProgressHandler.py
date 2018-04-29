@@ -1076,9 +1076,9 @@ class TRAProgressHandler:
                     aStoreResults_Counters[ 'elements_changed_since_last'] = 0
                          
                     aTransactional_Counters   = self.vProgressControlCounters.get( cTRAProgress_SupportKind_Transactional, {})
+                    aTransactional_Counters[ 'milliseconds_when_last'] = aMillisecondsNow
                     aTransactional_Counters[ 'elements_traversed_since_last'] = 0
                     aTransactional_Counters[ 'elements_changed_since_last'] = 0
-                    aTransactional_Counters[ 'milliseconds_when_last'] = aMillisecondsNow
                             
                     aYieldProcessor_Counters   = self.vProgressControlCounters.get( cTRAProgress_SupportKind_YieldProcessor, {})
                     aYieldProcessor_Counters[ 'milliseconds_when_last'] = aMillisecondsNow
@@ -1111,28 +1111,35 @@ class TRAProgressHandler:
                     unosParameterChanges = unControlRequestToHandle.get( 'parameter_changes', { })
                     if unosParameterChanges:
 
-                        if unosParameterChanges.has_key( cTRAProgress_Control_RunAfterPrevious):
-                            aChangedValue = unosParameterChanges.get( cTRAProgress_Control_RunAfterPrevious, False)
-                            if aChangedValue in [ True, False,]:
-                                pass
-                            elif aChangedValue.__class__.__name__ in [ 'str', 'unicode',]:
-                                if aChangedValue == cTRAProgress_Control_RunAfterPrevious_Yes:
-                                    aChangedValue = True
-                                elif aChangedValue == cTRAProgress_Control_RunAfterPrevious_No:
-                                    aChangedValue = False
-                                else:
-                                    aChangedValue = False
-                                                                
-                            aCurrentValue = self.vProgressControlParameters.get( cTRAProgress_Control_RunAfterPrevious, False)
+                        for aYesNOPropertyName in cTRAProgress_Control_YesNoPropertyNames:
                             
-                            if not ( aChangedValue == aCurrentValue):
+                            if unosParameterChanges.has_key( aYesNOPropertyName):
                                 
-                                self.vProgressControlParameters[ cTRAProgress_Control_RunAfterPrevious] = aChangedValue 
-                                unThereAreControlParameterChanges = True
-                             
-                                unChangedParameters.append( [ cTRAProcessControl_Action_ChangeParameters, cTRAProgress_Control_RunAfterPrevious, aCurrentValue, aChangedValue])                              
+                                aChangedValue = unosParameterChanges.get( aYesNOPropertyName, False)
+                                
+                                if not ( aChangedValue == None) and not ( aChangedValue == ''):
+                                    
+                                    if aChangedValue in [ True, False,]:
+                                        pass
+                                    elif aChangedValue.__class__.__name__ in [ 'str', 'unicode',]:
+                                        if aChangedValue == cTRAProgress_Control_Yes:
+                                            aChangedValue = True
+                                        elif aChangedValue == cTRAProgress_Control_No:
+                                            aChangedValue = False
+                                        else:
+                                            aChangedValue = False
+                                                                        
+                                    aCurrentValue = self.vProgressControlParameters.get( aYesNOPropertyName, False)
+                                    
+                                    if not ( aChangedValue == aCurrentValue):
+                                        
+                                        self.vProgressControlParameters[ aYesNOPropertyName] = aChangedValue 
+                                        unThereAreControlParameterChanges = True
+                                     
+                                        unChangedParameters.append( [ cTRAProcessControl_Action_ChangeParameters, aYesNOPropertyName, aCurrentValue, aChangedValue])                              
                             
                             
+                                        
                         for aProgressSupportKind in cTRAProgress_SupportKinds_Configurable:
                         
                             unosParameterChangesToSupportKind = unosParameterChanges.get( aProgressSupportKind,  {})
@@ -1140,37 +1147,63 @@ class TRAProgressHandler:
                                     
                                 aCurrentControlParametersForSupportKind = self.vProgressControlParameters.get( aProgressSupportKind, {})
                                 if aCurrentControlParametersForSupportKind:
+                                        
                                     
                                     for aChangedKey in unosParameterChangesToSupportKind.keys():
                                         
                                         if aCurrentControlParametersForSupportKind.has_key( aChangedKey):
                                             
                                             aChangedValue = unosParameterChangesToSupportKind.get( aChangedKey, None)
+                                            
                                             if not ( aChangedValue == None) and not ( aChangedValue == ''):
-                                                if aChangedValue in [ True, False,]:
-                                                    pass
+                                            
+                                                if ( aProgressSupportKind == cTRAProgress_SupportKind_YieldProcessor) and ( aChangedKey == 'only_between_transactions'):
                                                 
-                                                elif aChangedValue.__class__.__name__ in [ 'str', 'unicode',]:
-                                                    if aChangedValue == str( True):
-                                                        aChangedValue = True
-                                                    elif aChangedValue == str( False):
-                                                        aChangedValue = False
-                                                    else:
-                                                        aNewChangedValue = None
-                                                        try:
-                                                            aNewChangedValue = int( aChangedValue)
-                                                        except:
-                                                            None
-                                                        if not ( aNewChangedValue == None):
-                                                            aChangedValue = aNewChangedValue
+                                                    aChangedValue = unosParameterChangesToSupportKind.get( aChangedKey, False)
+                                                    if aChangedValue in [ True, False,]:
+                                                        pass
+                                                    elif aChangedValue.__class__.__name__ in [ 'str', 'unicode',]:
+                                                        if aChangedValue == cTRAProgress_Control_Yes:
+                                                            aChangedValue = True
+                                                        elif aChangedValue == cTRAProgress_Control_No:
+                                                            aChangedValue = False
+                                                        else:
+                                                            aChangedValue = False
+                                                                                        
+                                                    aCurrentValue = aCurrentControlParametersForSupportKind.get( aChangedKey, None)
+                                                    if not ( aChangedValue == aCurrentValue):
                                                         
-                                                
-                                                aCurrentValue = aCurrentControlParametersForSupportKind.get( aChangedKey, None)
-                                                if not ( aChangedValue == aCurrentValue):
+                                                        aCurrentControlParametersForSupportKind[ aChangedKey] = aChangedValue 
+                                                        unThereAreControlParameterChanges = True
+                                                        unChangedParameters.append( [ cTRAProcessControl_Action_ChangeParameters, aProgressSupportKind, aChangedKey, aCurrentValue, aChangedValue])                              
                                                     
-                                                    aCurrentControlParametersForSupportKind[ aChangedKey] = aChangedValue 
-                                                    unThereAreControlParameterChanges = True
-                                                    unChangedParameters.append( [ cTRAProcessControl_Action_ChangeParameters, aProgressSupportKind, aChangedKey, aCurrentValue, aChangedValue])                              
+                                                    
+    
+                                                else:
+                                                    if aChangedValue in [ True, False,]:
+                                                        pass
+                                                    
+                                                    elif aChangedValue.__class__.__name__ in [ 'str', 'unicode',]:
+                                                        if aChangedValue == str( True):
+                                                            aChangedValue = True
+                                                        elif aChangedValue == str( False):
+                                                            aChangedValue = False
+                                                        else:
+                                                            aNewChangedValue = None
+                                                            try:
+                                                                aNewChangedValue = int( aChangedValue)
+                                                            except:
+                                                                None
+                                                            if not ( aNewChangedValue == None):
+                                                                aChangedValue = aNewChangedValue
+                                                            
+                                                    
+                                                    aCurrentValue = aCurrentControlParametersForSupportKind.get( aChangedKey, None)
+                                                    if not ( aChangedValue == aCurrentValue):
+                                                        
+                                                        aCurrentControlParametersForSupportKind[ aChangedKey] = aChangedValue 
+                                                        unThereAreControlParameterChanges = True
+                                                        unChangedParameters.append( [ cTRAProcessControl_Action_ChangeParameters, aProgressSupportKind, aChangedKey, aCurrentValue, aChangedValue])                              
                                                     
                                                     
                     if unThereAreControlParameterChanges:
@@ -1639,51 +1672,62 @@ class TRAProgressHandler:
         aYieldProcessor_MillisecondsActiveSinceLast = 0
         
         if aYieldProcessor_Enabled:
-                        
+            
             aYieldProcessor_Counters   = self.vProgressControlCounters.get( cTRAProgress_SupportKind_YieldProcessor, {})
             
-            if aNumElementsRead:
-                aYieldProcessor_Counters[ 'elements_traversed_since_last'] += aNumElementsRead
-                
-            if aNumElementsModified:
-                aYieldProcessor_Counters[ 'elements_changed_since_last']   += aNumElementsModified
-                
             aYieldProcessor_MillisecondsActiveSinceLast = 0
             aYieldProcessor_Counter_MillisecondsWhenLast = aYieldProcessor_Counters.get( 'milliseconds_when_last', 0)
             if aYieldProcessor_Counter_MillisecondsWhenLast:
                 aYieldProcessor_MillisecondsActiveSinceLast = aMillisecondsNow - aYieldProcessor_Counter_MillisecondsWhenLast
             
-
-            if False and ( not aYieldProcessor_ActionRequired) and aTransactional_ActionRequired:
-                """Do not couple the two facilities.
-                
-                """
-                aYieldProcessor_ActionRequired = True
+            aYieldProcessor_OnlyBetweenTransactions = aTransactional_Enabled and aYieldProcessor_Parms.get( 'only_between_transactions', False)
             
-            else:
-                aYieldProcessor_Parm_MaxMilliseconds  = aYieldProcessor_Parms.get( 'max_milliseconds', 0)
-                if aYieldProcessor_Parm_MaxMilliseconds:
-                    aYieldProcessor_Counters[ 'milliseconds_since_last'] = aYieldProcessor_MillisecondsActiveSinceLast
-                    if aYieldProcessor_MillisecondsActiveSinceLast >= aYieldProcessor_Parm_MaxMilliseconds:
-                        aYieldProcessor_ActionRequired = True
+            if aYieldProcessor_OnlyBetweenTransactions:
+                if aTransactional_ActionRequired:
+                    aYieldProcessor_ActionRequired = True
+                else:
+                    None
                 
-                        
-                if not aYieldProcessor_ActionRequired:
+            else:
+                
+                if aNumElementsRead:
+                    aYieldProcessor_Counters[ 'elements_traversed_since_last'] += aNumElementsRead
                     
-                    aYieldProcessor_Parm_MaxElementsTraversed  = aYieldProcessor_Parms.get( 'max_elements_traversed', 0)
-                    if aYieldProcessor_Parm_MaxElementsTraversed:
-                        aYieldProcessorCounters_ElementsTraversedSinceLast = aYieldProcessor_Counters.get( 'elements_traversed_since_last', 0)
-                        if aYieldProcessorCounters_ElementsTraversedSinceLast >= aYieldProcessor_Parm_MaxElementsTraversed:
+                if aNumElementsModified:
+                    aYieldProcessor_Counters[ 'elements_changed_since_last']   += aNumElementsModified
+                    
+                
+    
+                if False and ( not aYieldProcessor_ActionRequired) and aTransactional_ActionRequired:
+                    """Do not couple the two facilities.
+                    
+                    """
+                    aYieldProcessor_ActionRequired = True
+                
+                else:
+                    aYieldProcessor_Parm_MaxMilliseconds  = aYieldProcessor_Parms.get( 'max_milliseconds', 0)
+                    if aYieldProcessor_Parm_MaxMilliseconds:
+                        aYieldProcessor_Counters[ 'milliseconds_since_last'] = aYieldProcessor_MillisecondsActiveSinceLast
+                        if aYieldProcessor_MillisecondsActiveSinceLast >= aYieldProcessor_Parm_MaxMilliseconds:
                             aYieldProcessor_ActionRequired = True
                     
                             
-                if not aYieldProcessor_ActionRequired:
-                    
-                    aYieldProcessor_Parm_MaxElementsChanged  = aYieldProcessor_Parms.get( 'max_elements_changed', 0)
-                    if aYieldProcessor_Parm_MaxElementsChanged:
-                        aYieldProcessorCounters_ElementsChangedSinceLast = aYieldProcessor_Counters.get( 'elements_changed_since_last', 0)
-                        if aYieldProcessorCounters_ElementsChangedSinceLast >= aYieldProcessor_Parm_MaxElementsChanged:
-                            aYieldProcessor_ActionRequired = True
+                    if not aYieldProcessor_ActionRequired:
+                        
+                        aYieldProcessor_Parm_MaxElementsTraversed  = aYieldProcessor_Parms.get( 'max_elements_traversed', 0)
+                        if aYieldProcessor_Parm_MaxElementsTraversed:
+                            aYieldProcessorCounters_ElementsTraversedSinceLast = aYieldProcessor_Counters.get( 'elements_traversed_since_last', 0)
+                            if aYieldProcessorCounters_ElementsTraversedSinceLast >= aYieldProcessor_Parm_MaxElementsTraversed:
+                                aYieldProcessor_ActionRequired = True
+                        
+                                
+                    if not aYieldProcessor_ActionRequired:
+                        
+                        aYieldProcessor_Parm_MaxElementsChanged  = aYieldProcessor_Parms.get( 'max_elements_changed', 0)
+                        if aYieldProcessor_Parm_MaxElementsChanged:
+                            aYieldProcessorCounters_ElementsChangedSinceLast = aYieldProcessor_Counters.get( 'elements_changed_since_last', 0)
+                            if aYieldProcessorCounters_ElementsChangedSinceLast >= aYieldProcessor_Parm_MaxElementsChanged:
+                                aYieldProcessor_ActionRequired = True
             
 
             if aYieldProcessor_ActionRequired:

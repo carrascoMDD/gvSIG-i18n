@@ -2046,17 +2046,10 @@ msgstr "Introduza palabras a buscar en las traducciones al idioma."
 
 
 
-
-#. Default: "Wildcards (* and ?) are permitted,\nbut not at the beginning of words."
+#. Default: "Wildcards (* and ?) are permitted, but not at the beginning of words.\nYou may use AND OR NOT between strings or groups of strings.\nYou may group a subcriteria between parenthesis.\nYou may specify exact sentences by surrounding them in double-quotes."
 #: TRAChangeAndBrowseTranslations.py
-msgid "gvSIGi18n_searchByWords_WildcardsAlowed_help"
-msgstr "Puede utilizar comodines (* y ?),\npero no al comienzo de palabra."
-
-#. Default: "You may enter OR between words,\nto retrieve records containing ANY (not ALL) of the words."
-#: TRAChangeAndBrowseTranslations.py
-msgid "gvSIGi18n_searchByWords_OrAlowed_help"
-msgstr "Puede introducir OR entre palabras,\npara recuperar registros conteniendo ALGUNA (no TODAS) las palabras."
-
+msgid "gvSIGi18n_searchByWords_help"
+msgstr "Puede incluir comodines (* y ?),\npero no al comienzo de palabra.Puede usar AND OR NOT entre palabras o grupos de palabras.\nPuede agrupar un subcriterio entre parentesis.\nPuede especificar frases exactas rodeandolas entre comillas dobles."
 
 
 #. Default: "You may enter conditions for translations to match.\nAll conditions shals be met (AND logic, set intersection).\nClick Refresh button to update the list."
@@ -3669,6 +3662,11 @@ msgid "gvSIGi18n_ProgressResults_Importar_title"
 msgstr "Resultados de Importar (proceso de larga duracion)"
 
 
+#. Default: "Contributions Report Results (a long-lived process)"
+#: TRAProgressResults_inner.pt
+msgid "gvSIGi18n_ProgressResults_Contribuciones_title"
+msgstr "Resultados de Informe de Contribuciones (proceso de larga duracion)"
+
 
 
 
@@ -3682,8 +3680,6 @@ msgstr "Verificar"
 #: TRAProgressResults_inner.pt
 msgid "gvSIGi18n_ProcessType_Inicializar_msgid"
 msgstr "Inicializar"
-
-
 
 
 #. Default: "Inventory"
@@ -3730,6 +3726,11 @@ msgstr "Exportar"
 #: TRAProgressResults_inner.pt
 msgid "gvSIGi18n_ProcessType_Importar_msgid"
 msgstr "Importar"
+
+#. Default: "Contributions"
+#: TRAProgressResults_inner.pt
+msgid "gvSIGi18n_ProcessType_Contribuciones_msgid"
+msgstr "Contribuciones"
 
 
 
@@ -3828,6 +3829,10 @@ msgstr "Deshabilitado"
 
 
 
+#. Default: "Only between transactions (if both enabled)"
+#: TRAProgreso_ParametrosControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_parametrosControl_only_between_transactions_label"
+msgstr "Solo entre transacciones (si ambos habilitados)"
 
 
 #. Default: "Maximum time between actions (milliseconds)"
@@ -4148,7 +4153,7 @@ msgstr "Confirmar solicitud para Exportar un archivo de Copia de Seguridad con t
 #. Default: "Confirm to perform an Backup of the elements in the translations Catalog, possibly taking a long time and demanding significant server resources, depending on the number of elements found, with usually higher cost with higher number of strings and languages (as seen in the root or summary report pages)"
 #: TRABackup_action.pt
 msgid "gvSIGi18n_confirmarBackup_help"
-msgstr "Confirme para realizar una Copia de Seguridad de elementos en el catalogo de traducciones, posiblemente tardando bastante tiempo y utilizando considerables recursos del servidor, dependiendo del numero de elementos encontrados, usualmente con un coste mayor con numeros elevados de cadenas e idiomas (como se aprecian en la pagina raiz e informes de estado."
+msgstr "Confirme para realizar una Copia de Seguridad de elementos en el catalogo de traducciones, posiblemente tardando bastante tiempo y utilizando considerables recursos del servidor, dependiendo del numero de elementos encontrados, usualmente con un coste mayor con numeros elevados de cadenas e idiomas (como se aprecian en la pagina raiz e informes de estado)."
 
 
 
@@ -4537,4 +4542,272 @@ msgid "gvSIGi18n_ExportGvSIGAllLanguagesOfAllElements"
 msgstr "Exportar todos los Idiomas a un fichero para gvSIG con todas las cadenas y sus traducciones"
 
 
+
+#. Default: "Modification"
+#: TRAChangeAndBrowseTranslations.pt
+msgid "gvSIGi18n_Modificacion"
+msgstr "Modificacion"
+
+
+
+
+
+
+
+
+
+
+#. Default: "The Contributions report is not available yet, or failed"  
+#: TRAProgreso_DatosResultado_Contributions_i18n_view.pt
+msgid "gvSIGi18n_ContributionsReport_NotAvailableYet_orFailed"
+msgstr "El Informe de Contribuciones no esta disponible todavia, o a fallado"  
+
+
+#. Default: "Number of elements affected by creating the Contributions report"  
+#: TRAProgreso_DatosResultado_Contributions_i18n_view.pt
+msgid "gvSIGi18n_NumberOfElementsAffected_ContributionsReport"
+msgstr "Numero de elementos afectados al crear el Informe de Contribuciones"  
+
+
+
+
+
+
+
+#. Default: "Create Contributions Report"  
+#: TRACrear_Contribuciones_i18n_view.pt
+msgid "gvSIGi18n_Create_Contributions_Report"
+msgstr "Crear Informe de Contribuciones"  
+
+#. Default: "Confirm request to Create a Report of Contributions to the Translation Catalog"  
+#: TRACrear_Contribuciones_i18n_view.pt
+msgid "gvSIGi18n_confirmarCrearInformeContribuciones_msgid"
+msgstr "Confirmar solicitud para Crear un Informe de Contribuciones al Catalogo de Traducciones"
+
+
+#. Default: "Confirm to Create a Report of Contributions to the translations catalog by its users, possibly taking a long time and demanding significant server resources, depending on the number of elements found, with usually higher cost with higher number of strings and languages (as seen in the root or summary report pages)."
+#: TRACrear_Contribuciones_i18n_view.pt
+msgid "gvSIGi18n_confirmarCrearContribuciones_help"
+msgstr "Confirmar para crear un Informe de Contribuciones al catalogo de traducciones, posiblemente tardando bastante tiempo y utilizando considerables recursos del servidor, dependiendo del numero de elementos encontrados, usualmente con un coste mayor con numeros elevados de cadenas e idiomas (como se aprecian en la pagina raiz e informes de estado)."
+
+
+
+
+
+
+#. Default: "Report for Contributions to the Translations Catalog"  
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsReport_label"
+msgstr "Informe de Contribuciones al Catalogo de Traducciones"  
+
+#. Default: "Contributions Report Date"  
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_fechaInformeContribuciones_label"
+msgstr "Fecha de Informe de Contribuciones"  
+
+#. Default: "Today" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsReport_Period_Today"
+msgstr "Hoy" 
+
+#. Default: "Yesterday" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsReport_Period_Yesterday"
+msgstr "Ayer" 
+
+#. Default: "Last 7 Days" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsReport_Period_Last7Days"
+msgstr "Ultimos 7 Dias" 
+
+#. Default: "Last 30 Days" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsReport_Period_Last30Days"
+msgstr "Ultimos 30 Dias" 
+
+#. Default: "Last 365 Days" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsReport_Period_Last365Days"
+msgstr "Ultimos 365 Dias" 
+
+#. Default: "Before 365 Days" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsReport_Period_Before365Days"
+msgstr "Antes de 365 Dias" 
+
+
+#. Default: "Contributions Totals" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsTotals_label"
+msgstr "Contribuciones Totales" 
+
+#. Default: "Contributions by Languages" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsByLanguages_label"
+msgstr "Contribuciones a Idiomas" 
+
+#. Default: "Details of Contributions by Languages" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsByLanguagesDetails_label"
+msgstr "Detalles de Contribuciones a Idiomas" 
+
+#. Default: "Details" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsReport_Details"
+msgstr "Detalles" 
+
+#. Default: "Contributions Totals with Details"
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsTotals_WithDetails_label"
+msgstr "Contribuciones Totales con Detalles"
+
+
+#. Default: "Contributions by Languages with Details" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsByLanguages_WithDetails_label"
+msgstr "Contribuciones a Idiomas con Detalles" 
+
+
+#. Default: "Raw Contributions report (expression in Python language)" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsRaw_label"
+msgstr "Informe sin formatear (una expresion del lenguaje de programacion Python)" 
+
+
+#. Default: "Contributions from Users for all Languages" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsUsuarios_TodosIdiomas_label"
+msgstr "Contribuciones por los Usuarios a todos los Idiomas" 
+
+#. Default: "Contributions from Users for all Languages (with Details)" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsUsuarios_TodosIdiomas_WithDetails_label"
+msgstr "Contribuciones por los Usuarios a todos los Idiomas (con Detalles)" 
+
+
+#. Default: "Contributions from Administrators for all Languages" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsAdmins_TodosIdiomas_label"
+msgstr "Contribuciones por los Administradores a todos los Idiomas" 
+
+#. Default: "Contributions from Administrators for all Languages (with Details)" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsAdmins_TodosIdiomas_WithDetails_label"
+msgstr "Contribuciones por los Administradores a todos los Idiomas (con Detalles)" 
+
+
+#. Default: "Contributions for Language" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_Contributions_Idioma_label"
+msgstr "Contribuciones al Idioma" 
+
+#. Default: "Contributions for Language (with Details)" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_Contributions_Idioma_WithDetails_label"
+msgstr "Contribuciones al Idioma (con Detalles)" 
+
+#. Default: "Contributions from Users for Language" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsUsuarios_Idioma_label"
+msgstr "Contribuciones al Idioma por los Usuarios" 
+
+#. Default: "Contributions from Users for Language (with Details)" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsUsuarios_Idioma_WithDetails_label"
+msgstr "Contribuciones al Idioma por los Usuarios (con Detalles)" 
+
+#. Default: "Contributions from Administrators for Language" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsAdmins_Idioma_label"
+msgstr "Contribuciones al Idioma por los Administradores" 
+
+#. Default: "Contributions from Administrators for Language  (with Details)" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsAdmins_Idioma_WithDetails_label"
+msgstr "Contribuciones al Idioma por los Administradores (con Detalles)" 
+
+
+#. Default: "No Report Available about Contributions for Language" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsUsuarios_NoReportForIdioma_label"
+msgstr "No esta disponible informe de Contribuciones al Idioma" 
+
+#. Default: "Languages" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_Languages"
+msgstr "Idiomas" 
+  
+#. Default: "Member id" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_MemberId"
+msgstr "Identificador de Usuario" 
+
+#. Default: "User name" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_UserName"
+msgstr "Nombre del Usuario" 
+
+#. Default: "Photo" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_UserPhoto"
+msgstr "Foto" 
+
+                                                                                                                                   
+
+#. Default: "Scroll Up To All Languages" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ScrollUpToAllLanguages"
+msgstr "Subir hasta Todos los Idiomas" 
+
+#. Default: "Scroll Up To All Users" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ScrollUpToAllUsers"
+msgstr "Subir hasta Todos los Usuarios" 
+
+                                                                                                                                                                                                                     
+
+#. Default: "Details legend: Cr=Created, Tr=Translated, Re=Reviewed, De=Definitive(locked)" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_Details_help"
+msgstr "Leyenda de Detalles: Cr=Creacion, Tr=Traduccion, Re=Revision, De=Definitiva(bloqueda)" 
+
+
+
+
+
+#. Default: "Activity Report only reflects changes to the translations catalog performed since the time the web servers were last started, on:"
+#: TRACAtalogoActividad:inner.pt
+msgid "gvSIGi18n_InformeActividadDesdeArranque_help"
+msgstr "El Informe de Actividad solamente refleja cambios a traducciones realizados desde que se arrancaron por ultima vaz los servidores que ejecutan la aplicacion, el:"
+
+
+#. Default: "Activity Report reflects the most recent changes, and is refreshed after just a short period of time, or a low number of changes."
+#: TRACAtalogoActividad:inner.pt
+msgid "gvSIGi18n_InformeActividadHastaMasReciente_help"
+msgstr "El Informe de Actividad refleja los cambios mas recientes, y se refresca tras tan solo un corto periodo de tiempo, o un reducido numero de cambios."
+
+#. Default: "To review a more complete report of changes to the translations catalog, including changes made before the servers were started, please visit the last Contributions report."
+#: TRACAtalogoActividad:inner.pt
+msgid "gvSIGi18n_InformeContribucionesMasCompleto_help"
+msgstr "Para revisar un informe mas completo de cambios al catalogo de traducciones, incluyendo cambios realizados antes que arrancaran los servidores, por favor visite el ultimo Informe de Contribuciones."
+
+#. Default: "The last Contributions report may not include the most recent changes, because it is generated on demand by translations Coordinators or authorized Users."
+#: TRACAtalogoActividad:inner.pt
+msgid "gvSIGi18n_InformeContribucionesPuedeNoEstarAlDia_help"
+msgstr "El ultimo Informe de Contribuciones puede no incluir los cambios mas recientes, porque se genera bajo demanda por los Coordinadores de traducciones o Usuarios autorizados."
+                      
+#. Default: "For a recently updated Contributions report, please ask your translations Coordinator, or generate a new one yourself, if you have permission, by clicking on the create contributions report action on the actions menu."
+#: TRACAtalogoActividad:inner.pt
+msgid "gvSIGi18n_InformeContribucionesSolicitarACoordinadorOGenerar_help"
+msgstr "Para un Informe de Contribuciones actualizado recientemente, por favor solicitelo a su Coordinador, o genere uno Usted mismo, si tiene permisos, pulsando sobre la accion crear informe de contribuciones en el menu de acciones."
+
+#. Default: "No Contributions Report Available for review."
+#: TRACAtalogoActividad:inner.pt
+msgid "gvSIGi18n_InformeContribucionesNotAvailable_msgid"
+msgstr "No hay disponible ningun Informe de Contribuciones."
+
+#. Default: "Last Contributions Report"
+#: TRACAtalogoActividad:inner.pt
+msgid "gvSIGi18n_LastContributionsReport_msgid"
+msgstr "Informe de Contribuciones"
 

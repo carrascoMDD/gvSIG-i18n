@@ -54,6 +54,7 @@ from Products.CMFCore       import permissions
 from TRAElemento_Constants                 import *
 from TRAElemento_Constants_Activity        import *
 from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Contributions   import *
 from TRAElemento_Constants_Dates           import *
 from TRAElemento_Constants_Encoding        import *
 from TRAElemento_Constants_Import          import *
@@ -182,6 +183,7 @@ class TRAParametrosControlProgreso_Operaciones:
             theProgressControlParms[ cTRAProgress_SupportKind_YieldProcessor] = aProgressControlParms_YieldProcessor
 
         aProgressControlParms_YieldProcessor[ 'enabled']                    = ( cTRAProgress_SupportKind_YieldProcessor in theProgressSupportKinds) and self.getCederProcesador_habilitado()
+        aProgressControlParms_YieldProcessor[ 'only_between_transactions']  = self.getCederProcesador_soloEntreTransacciones()
         aProgressControlParms_YieldProcessor[ 'max_milliseconds']           = self.getCederProcesador_maximoMilisegundos()
         aProgressControlParms_YieldProcessor[ 'max_elements_traversed']     = self.getCederProcesador_maximoElementosLeidos()
         aProgressControlParms_YieldProcessor[ 'max_elements_changed']       = self.getCederProcesador_maximoElementosModificados()

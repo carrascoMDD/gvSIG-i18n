@@ -29,6 +29,11 @@ msgstr "Translations Catalog"
 msgid "Coleccion de Cadenas"
 msgstr "Strings collection"
 
+#. Default: "Coleccion de Contribuciones"
+#: TRAColeccionContribuciones
+msgid "Coleccion de Contribuciones"
+msgstr "Contributions Collection"
+
 #. Default: "Coleccion de Idiomas"
 #: TRAColeccionIdiomas
 msgid "Coleccion de Idiomas"
@@ -59,11 +64,6 @@ msgstr "Progresses Collection"
 msgid "Coleccion de Solicitudes de creacion de Cadenas"
 msgstr "Strings creation request collection"
 
-#. Default: "Configuracion Almacen Paginas"
-#: TRAConfiguracionAlmacenPaginas
-msgid "Configuracion Almacen Paginas"
-msgstr "Pages Cache Configuration"
-
 #. Default: "Configuracion Exportacion"
 #: TRAConfiguracionExportacion
 msgid "Configuracion Exportacion"
@@ -73,6 +73,11 @@ msgstr "Export Configuration"
 #: TRAConfiguracionImportacion
 msgid "Configuracion Importacion"
 msgstr "Import Configuration"
+
+#. Default: "Configuracion Invalidacion Informes"
+#: TRAConfiguracionInvalidacionInformes
+msgid "Configuracion Invalidacion Informes"
+msgstr "Reports Invalidation Configuration"
 
 #. Default: "Configuracion Pagina Traducciones"
 #: TRAConfiguracionPaginaTraducciones
@@ -108,6 +113,11 @@ msgstr "Interchange Content"
 #: TRAContenidoXML
 msgid "Contenido XML"
 msgstr "XML Content"
+
+#. Default: "Informe de Contribuciones"
+#: TRAContribuciones
+msgid "Informe de Contribuciones"
+msgstr "Contributions Report"
 
 #. Default: "Idioma"
 #: TRAIdioma

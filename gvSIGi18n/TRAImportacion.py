@@ -72,7 +72,7 @@ schema = Schema((
         label="Usuario Importador",
         length="0",
         default_method="fGetMemberId_safe",
-        position="23",
+        position="22",
         owner_class_name="TRAImportacion"
     ),
 
@@ -130,7 +130,7 @@ schema = Schema((
         description2="Product Version imported in this process. When the import executes, this data will be set as the value of the Last Imported Product Version in the translations catalog.",
         containment="Not Specified",
         ea_guid="{4D88E1D8-7FDA-43fd-87C0-BA2A7D756AF3}",
-        position="24",
+        position="23",
         owner_class_name="TRAImportacion",
         label="Version del producto"
     ),
@@ -220,7 +220,7 @@ schema = Schema((
         label="Nombre de Modulo por defecto",
         length="0",
         default_method="fInitial_NombreModuloPorDefecto",
-        position="21",
+        position="20",
         owner_class_name="TRAImportacion"
     ),
 
@@ -250,7 +250,7 @@ schema = Schema((
         label="Numero Maximo de Lineas a Explorar",
         length="0",
         default_method="fInitial_NumeroMaximoLineasAExplorar",
-        position="22",
+        position="21",
         owner_class_name="TRAImportacion"
     ),
 
@@ -331,7 +331,7 @@ schema = Schema((
         label="Identificador del elemento de Control del Progreso",
         length="0",
         containment="Not Specified",
-        position="4",
+        position="5",
         owner_class_name="TRAImportacion"
     ),
 
@@ -364,7 +364,7 @@ schema = Schema((
         length="0",
         multiValued=0,
         containment="Not Specified",
-        position="3",
+        position="4",
         owner_class_name="TRAImportacion",
         expression="context.fDeriveElementoProgreso()",
         computed_types="['TRAProgreso', ]"
@@ -396,7 +396,7 @@ schema = Schema((
         label="Importar usando nombre de modulo configurado",
         length="0",
         default_method="fInitial_ImportarConNombreModuloConfigurado",
-        position="5",
+        position="6",
         owner_class_name="TRAImportacion"
     ),
 
@@ -578,7 +578,7 @@ schema = Schema((
         label="Importar para Recuperar copia de seguridad",
         length="0",
         containment="Not Specified",
-        position="2",
+        position="3",
         owner_class_name="TRAImportacion"
     ),
 
@@ -608,7 +608,7 @@ schema = Schema((
         label="Importar propiedades TRACatalogo desde XML",
         length="0",
         default_method="fInitial_ImportarXMLTRACatalogo",
-        position="12",
+        position="13",
         owner_class_name="TRAImportacion"
     ),
 
@@ -638,7 +638,7 @@ schema = Schema((
         label="Importar las TRAConfiguracion desde XML",
         length="0",
         default_method="fInitial_ImportarXMLTRAConfiguraciones",
-        position="11",
+        position="12",
         owner_class_name="TRAImportacion"
     ),
 
@@ -668,7 +668,7 @@ schema = Schema((
         label="Importar los TRAParametrosControlProgreso desde XML",
         length="0",
         default_method="fInitial_ImportarXMLTRAParametrosControl",
-        position="12",
+        position="14",
         owner_class_name="TRAImportacion"
     ),
 
@@ -698,7 +698,7 @@ schema = Schema((
         label="Importar los TRAIdioma desde XML",
         length="0",
         default_method="fInitial_ImportarXMLTRAIdiomas",
-        position="13",
+        position="15",
         owner_class_name="TRAImportacion"
     ),
 
@@ -728,7 +728,7 @@ schema = Schema((
         label="Importar los TRASolicitudCadena desde XML",
         length="0",
         default_method="fInitial_ImportarXMLTRASolicitudesCadenas",
-        position="14",
+        position="16",
         owner_class_name="TRAImportacion"
     ),
 
@@ -758,7 +758,7 @@ schema = Schema((
         label="Importar los TRAModulo desde XML",
         length="0",
         default_method="fInitial_ImportarXMLTRAModulos",
-        position="15",
+        position="17",
         owner_class_name="TRAImportacion"
     ),
 
@@ -788,7 +788,7 @@ schema = Schema((
         label="Importar los TRAInforme desde XML",
         length="0",
         default_method="fInitial_ImportarXMLTRAInformes",
-        position="16",
+        position="18",
         owner_class_name="TRAImportacion"
     ),
 
@@ -821,7 +821,7 @@ schema = Schema((
         length="0",
         exclude_from_traversalconfig="True",
         containment="Not Specified",
-        position="20",
+        position="19",
         owner_class_name="TRAImportacion",
         custom_presentation_view="TRAInformeContenidosImportacion_CustomView",
         computed_types="text",

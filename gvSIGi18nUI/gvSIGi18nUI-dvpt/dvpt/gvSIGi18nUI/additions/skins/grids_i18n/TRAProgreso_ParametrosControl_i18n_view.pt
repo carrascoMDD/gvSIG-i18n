@@ -75,31 +75,24 @@
                 </thead>
                 
                 
-                <tal:block tal:define="pParametrosControl_RunAfterPrevious python: pParametrosControl.get( 'RunAfterPrevious', False)" >
-                    <thead>
-                        <tr>
+                <tal:block tal:define="global pRowIndex python: 0;
+					pParametrosControl_RunAfterPrevious python: pParametrosControl.get( 'RunAfterPrevious', False);
+					pParametrosControl_CreateReportBefore python: pParametrosControl.get( 'CreateReportBefore', False);
+					pParametrosControl_CreateReportAfter python: pParametrosControl.get( 'CreateReportAfter', False)" >
+                    <tbody>
+						<tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]" >
                             <td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_runAfterPrevious_label', 'Run After Previous-')"/>
                             <td align="center" tal:content="python: ( pParametrosControl_RunAfterPrevious and pLabelYes) or pLabelNo" />
                         </tr>
-                    </thead>
-                </tal:block>
-                
-                <tal:block tal:define="pParametrosControl_CreateReportBefore python: pParametrosControl.get( 'CreateReportBefore', False)" >
-                    <thead>
-                        <tr>
+						<tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]" >
                             <td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAParametrosControlProgreso_attr_crearInformeAntes_label', 'Create Report Before-')"/>
                             <td align="center" tal:content="python: ( pParametrosControl_CreateReportBefore and pLabelYes) or pLabelNo" />
                         </tr>
-                    </thead>
-                </tal:block>
-                
-                <tal:block tal:define="pParametrosControl_CreateReportAfter python: pParametrosControl.get( 'CreateReportAfter', False)" >
-                    <thead>
-                        <tr>
+						<tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]" >
                             <td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAParametrosControlProgreso_attr_crearInformeDespues_label', 'Create Report After-')"/>
                             <td align="center" tal:content="python: ( pParametrosControl_CreateReportAfter and pLabelYes) or pLabelNo" />
                         </tr>
-                    </thead>
+                    </tbody>
                 </tal:block>
                 
                 <tal:block tal:define="pParametrosControl_StoreResults python: pParametrosControl.get( 'StoreResults', None)" >
@@ -115,7 +108,7 @@
                             pParametrosControl_StoreResults_Enabled python: pParametrosControl_StoreResults.get( 'enabled', False)" >
                             <tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
                                 <td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_parametrosControl_enabled_label', 'enabled')"/>
-                                <td align="right" tal:content="python: '%s' % pParametrosControl_StoreResults_Enabled" />
+                                <td align="center" tal:content="python: '%s' % pParametrosControl_StoreResults_Enabled" />
                             </tr>
                             <tal:block tal:condition="pParametrosControl_StoreResults_Enabled" >
                                 <tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
@@ -149,7 +142,7 @@
                             pParametrosControl_Transactional_Enabled python: pParametrosControl_Transactional.get( 'enabled', False)" >
                             <tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
                                 <td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_parametrosControl_enabled_label', 'enabled')"/>
-                                <td align="right" tal:content="python: '%s' % pParametrosControl_Transactional_Enabled" />
+                                <td align="center" tal:content="python: '%s' % pParametrosControl_Transactional_Enabled" />
                             </tr>
                             <tal:block tal:condition="pParametrosControl_Transactional_Enabled" >
                                 <tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
@@ -185,7 +178,7 @@
                             pParametrosControl_Logging_Enabled python: pParametrosControl_Logging.get( 'enabled', False)" >
                             <tr class="#" tal:define="global pRowIndex python: pRowIndex + 1" tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
                                 <td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_parametrosControl_enabled_label', 'enabled')"/>
-                                <td align="right" tal:content="python: '%s' % pParametrosControl_Logging_Enabled" />
+                                <td align="center" tal:content="python: '%s' % pParametrosControl_Logging_Enabled" />
                             </tr>
                             <tal:block tal:condition="pParametrosControl_Logging_Enabled" >
                                 <tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
@@ -226,9 +219,13 @@
                             pParametrosControl_YieldProcessor_Enabled python: pParametrosControl_YieldProcessor.get( 'enabled', False)" >
                             <tr class="#" tal:define="global pRowIndex python: pRowIndex + 1" tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
                                 <td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_parametrosControl_enabled_label', 'enabled')"/>
-                                <td align="right" tal:content="python: '%s' % pParametrosControl_YieldProcessor_Enabled" />
+                                <td align="center" tal:content="python: '%s' % pParametrosControl_YieldProcessor_Enabled" />
                             </tr>
                             <tal:block tal:condition="pParametrosControl_YieldProcessor_Enabled" >
+                                <tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
+                                    <td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_parametrosControl_only_between_transactions_label', 'only_between_transactions')"/>
+									<td align="center" tal:content="python: ( pParametrosControl_YieldProcessor.get( 'only_between_transactions', 0) and pLabelYes) or pLabelNo" />
+                                </tr>
                                 <tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
                                     <td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_parametrosControl_max_milliseconds_label', 'max_milliseconds')"/>
                                     <td align="right" tal:content="python:'%d' % pParametrosControl_YieldProcessor.get( 'max_milliseconds', 0)" />

@@ -46,6 +46,7 @@ from Products.CMFCore.utils  import getToolByName
 from TRAElemento_Constants                 import *
 from TRAElemento_Constants_Activity        import *
 from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Contributions   import *
 from TRAElemento_Constants_Dates           import *
 from TRAElemento_Constants_Encoding        import *
 from TRAElemento_Constants_Import          import *
@@ -581,7 +582,7 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                 if ( aProgressElement == None):
                     aResult = { 
                         'effect': 'error', 
-                        'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorProgressElementNotKnownByImportProcessElement', "Progress element is not known by import process element-"),
+                        'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorProgressElementNotKnownByImportProcessElement', "Progress element is not known by progress handler-"),
                     }
                     return aResult
                 

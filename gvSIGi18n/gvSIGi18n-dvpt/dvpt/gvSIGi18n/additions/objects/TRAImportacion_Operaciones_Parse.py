@@ -77,6 +77,7 @@ from Products.Archetypes.utils import getRelURL
 from TRAElemento_Constants                 import *
 from TRAElemento_Constants_Activity        import *
 from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Contributions   import *
 from TRAElemento_Constants_Dates           import *
 from TRAElemento_Constants_Encoding        import *
 from TRAElemento_Constants_Import          import *
@@ -789,10 +790,10 @@ class TRAImportacion_Operaciones_Parse( \
                                 
                                 for otherUploadedEntry in someUploadedEntries:
                                     
-                                    otherFileName = otherFileName.get( 'file_name', '')
+                                    otherFileName = otherUploadedEntry.get( 'file_name', '')
                                     if otherFileName == unFileName:
                                         
-                                        otherIsReference = otherFileName.get( 'is_reference', False) 
+                                        otherIsReference = otherUploadedEntry.get( 'is_reference', False) 
                                         if otherIsReference:
                                             if not unIsReference:
                                                 someUploadedEntries.remove( otherUploadedEntry)

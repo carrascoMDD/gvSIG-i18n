@@ -36,8 +36,8 @@ from TRAConfiguracionVarios_Operaciones import TRAConfiguracionVarios_Operacione
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
-from TRAElemento_Operaciones import TRAElemento_Operaciones
 from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import ReferenceBrowserWidget
+from TRAElemento_Operaciones import TRAElemento_Operaciones
 
 ##code-section module-header #fill in your manual code here
 ##/code-section module-header
@@ -100,7 +100,37 @@ schema = Schema((
         label="Tiempo en segundos para confirmar Accion",
         length="0",
         containment="Not Specified",
-        position="30",
+        position="1",
+        owner_class_name="TRAConfiguracionVarios"
+    ),
+
+    StringField(
+        name='usuariosAdministradores',
+        widget=StringWidget(
+            label="Usuarios administradores",
+            label2="Administrator users",
+            description="Usuarios administradores, que aparecen al final de la lista de contribuidores, aunque hayan efectuado el mayor numero de cambios sobre el catalogo de traducciones.",
+            description2="Administrator users, who shall appear at the bottom of the list of contributing users, even if they have performed a higher number of changes into the translations catalog.",
+            label_msgid='gvSIGi18n_TRAConfiguracionVarios_attr_usuariosAdministradores_label',
+            description_msgid='gvSIGi18n_TRAConfiguracionVarios_attr_usuariosAdministradores_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Usuarios administradores, que aparecen al final de la lista de contribuidores, aunque hayan efectuado el mayor numero de cambios sobre el catalogo de traducciones.",
+        duplicates="0",
+        label2="Administrator users",
+        ea_localid="2077",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="Administrator users, who shall appear at the bottom of the list of contributing users, even if they have performed a higher number of changes into the translations catalog.",
+        ea_guid="{EC837CE0-6AAB-4669-B7E6-866EBCA38838}",
+        scale="0",
+        default="mcarrera vacevedo tcarrasco",
+        label="Usuarios administradores",
+        length="0",
+        containment="Not Specified",
+        position="2",
         owner_class_name="TRAConfiguracionVarios"
     ),
 

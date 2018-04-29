@@ -46,7 +46,6 @@ cTRAPrivateCacheViewsForQualifiedUsers = [
     'TRACatalogoInforme',           'TRACatalogoInforme_NoHeaderNoFooter', 
     'TRACatalogoDetalle',           'TRACatalogoDetalle_NoHeaderNoFooter',
     'TRASeguridadUsuarioConectado', 'TRASeguridadUsuarioConectado_NoHeaderNoFooter',
-    
 ]
 
 

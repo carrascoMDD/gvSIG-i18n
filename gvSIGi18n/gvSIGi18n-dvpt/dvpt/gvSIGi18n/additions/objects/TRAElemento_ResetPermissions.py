@@ -328,7 +328,7 @@ class TRAElemento_ResetPermissions:
                 if ( aProgressElement == None):
                     aResult = { 
                         'success':   False, 
-                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorProgressElementNotKnownByImportProcessElement', "Progress element is not known by import process element-"),
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorProgressElementNotKnownByImportProcessElement', "Progress element is not known by progress handler-"),
                     }
                     return aResult
                 

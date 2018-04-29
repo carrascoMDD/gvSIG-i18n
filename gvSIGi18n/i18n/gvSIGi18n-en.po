@@ -174,6 +174,16 @@ msgstr "Strings collection"
 msgid "gvSIGi18n_TRACatalogo_contents_coleccionCadenas_help"
 msgstr "Collection of strings to translate to a number of languages."
 
+#. Default: "Coleccion de Contribuciones"
+#: TRACatalogo coleccionContribuciones
+msgid "gvSIGi18n_TRACatalogo_contents_coleccionContribuciones_label"
+msgstr "Contributions collection"
+
+#. Default: "Coleccion de Informes de Contribuciones por Usuarios a la traduccion del catalogo"
+#: TRACatalogo coleccionContribuciones
+msgid "gvSIGi18n_TRACatalogo_contents_coleccionContribuciones_help"
+msgstr "Colection of Contributions by Users  to the translation of the catalog"
+
 #. Default: "Coleccion de Idiomas"
 #: TRACatalogo coleccionIdiomas
 msgid "gvSIGi18n_TRACatalogo_contents_coleccionIdiomas_label"
@@ -293,6 +303,26 @@ msgstr "Strings to translate"
 #: TRAColeccionCadenas cadenas
 msgid "gvSIGi18n_TRAColeccionCadenas_contents_cadenas_help"
 msgstr "Strings to translate to the various languages."
+
+#. Default: "Coleccion de Contribuciones"
+#: TRAColeccionContribuciones
+msgid "gvSIGi18n_TRAColeccionContribuciones_label"
+msgstr "Contributions Collection"
+
+#. Default: "Coleccion de Informes de Contribuciones por Usuarios a la traduccion del catalogo"
+#: TRAColeccionContribuciones
+msgid "gvSIGi18n_TRAColeccionContribuciones_help"
+msgstr "Colection of Reports on Contributions by Users  to the translation of the catalog"
+
+#. Default: "Contribuciones"
+#: TRAColeccionContribuciones contribuciones
+msgid "gvSIGi18n_TRAColeccionContribuciones_contents_contribuciones_label"
+msgstr "Contributions"
+
+#. Default: "Informes de Contribuciones por Usuarios a la traduccion del catalogo"
+#: TRAColeccionContribuciones contribuciones
+msgid "gvSIGi18n_TRAColeccionContribuciones_contents_contribuciones_help"
+msgstr "Reports on Contributions by Users  to the translation of the catalog"
 
 #. Default: "Coleccion de Idiomas"
 #: TRAColeccionIdiomas
@@ -533,76 +563,6 @@ msgstr "Configurable Aspect"
 #: TRAConfiguracion aspectoConfiguracion
 msgid "gvSIGi18n_TRAConfiguracion_attr_aspectoConfiguracion_help"
 msgstr "Aspect of the translations catalog, whose operations are configured in this element."
-
-#. Default: "Configuracion Almacen Paginas"
-#: TRAConfiguracionAlmacenPaginas
-msgid "gvSIGi18n_TRAConfiguracionAlmacenPaginas_label"
-msgstr "Pages Cache Configuration"
-
-#. Default: "Configuracion del catalogo de traducciones, con parametros controlando las operaciones del almacen de paginas del catalogo."
-#: TRAConfiguracionAlmacenPaginas
-msgid "gvSIGi18n_TRAConfiguracionAlmacenPaginas_help"
-msgstr "Translations catalog configuration, with parameters controlling translations catalog cache operations."
-
-#. Default: "Cambios para Anular Informe Actividad"
-#: TRAConfiguracionAlmacenPaginas numeroDeActividadesAnularInformeActividad
-msgid "gvSIGi18n_TRAConfiguracionAlmacenPaginas_attr_numeroDeActividadesAnularInformeActividad_label"
-msgstr "Changes to invalidate Activity Report"
-
-#. Default: "Numero de Actividades que causan la anulacion del Informe de Actividad, incluso aunque no haya expirado el plazo de retencion del informe."
-#: TRAConfiguracionAlmacenPaginas numeroDeActividadesAnularInformeActividad
-msgid "gvSIGi18n_TRAConfiguracionAlmacenPaginas_attr_numeroDeActividadesAnularInformeActividad_help"
-msgstr "Number of Activities that shall cause the invalidation of the Activity Report, even if the minimum retention time has not lapsed yet."
-
-#. Default: "Cambios para Anular Informe Idiomas"
-#: TRAConfiguracionAlmacenPaginas numeroDeCambiosAnularInformeIdiomas
-msgid "gvSIGi18n_TRAConfiguracionAlmacenPaginas_attr_numeroDeCambiosAnularInformeIdiomas_label"
-msgstr "Changes to invalidate Report by Languages"
-
-#. Default: "Numero de cambios de estado de Traducciones que causan la anulacion del Informe de Estado por Idiomas, incluso aunque no haya expirado el plazo de retencion del informe."
-#: TRAConfiguracionAlmacenPaginas numeroDeCambiosAnularInformeIdiomas
-msgid "gvSIGi18n_TRAConfiguracionAlmacenPaginas_attr_numeroDeCambiosAnularInformeIdiomas_help"
-msgstr "Number of Translation status changes that shall cause the invalidation of the Status Report by Languages, even if the minimum retention time has not lapsed yet."
-
-#. Default: "Cambios para Anular Informe Modulos e Idiomas"
-#: TRAConfiguracionAlmacenPaginas numeroDeCambiosAnularInformeModulosEIdiomas
-msgid "gvSIGi18n_TRAConfiguracionAlmacenPaginas_attr_numeroDeCambiosAnularInformeModulosEIdiomas_label"
-msgstr "Changes to invalidate Report by Modules and Languages"
-
-#. Default: "Numero de cambios de estado de Traducciones que causan la anulacion del Informe de Estado por Modulos e Idiomas, incluso aunque no haya expirado el plazo de retencion del informe."
-#: TRAConfiguracionAlmacenPaginas numeroDeCambiosAnularInformeModulosEIdiomas
-msgid "gvSIGi18n_TRAConfiguracionAlmacenPaginas_attr_numeroDeCambiosAnularInformeModulosEIdiomas_help"
-msgstr "Number of Translation status changes that shall cause the invalidation of the Status Report by Modules and Languages, even if the minimum retention time has not lapsed yet."
-
-#. Default: "Minimo Tiempo en segundos que se retiene el Informe de Actividad"
-#: TRAConfiguracionAlmacenPaginas segundosMinimosRetencionInformeActividad
-msgid "gvSIGi18n_TRAConfiguracionAlmacenPaginas_attr_segundosMinimosRetencionInformeActividad_label"
-msgstr "Minimum Time in seconds to retain the Activity Report"
-
-#. Default: "Tiempo en segundos que se retendra el Informe deActividad, aunque sus resultados sean inexactos por alguna modificacion del estado de traducciones, para evitar recalculo excesivo por cambios poco relevantes."
-#: TRAConfiguracionAlmacenPaginas segundosMinimosRetencionInformeActividad
-msgid "gvSIGi18n_TRAConfiguracionAlmacenPaginas_attr_segundosMinimosRetencionInformeActividad_help"
-msgstr "Time in seconds that the Activity Report shall be retained, even if the results have become inaccurate because of any modification of translations status. To avoid excessive recalculation for barely relevant changes."
-
-#. Default: "Minimo Tiempo en segundos que se retiene el Informe de Estado por Idiomas"
-#: TRAConfiguracionAlmacenPaginas segundosMinimosRetencionInformeIdiomas
-msgid "gvSIGi18n_TRAConfiguracionAlmacenPaginas_attr_segundosMinimosRetencionInformeIdiomas_label"
-msgstr "Minimum Time in seconds to retain Status Report by Languages"
-
-#. Default: "Tiempo en segundos que se retendra el Informe de Estado por Idiomas, aunque sus resultados sean inexactos por alguna modificacion del estado de traducciones, para evitar recalculo excesivo por cambios poco relevantes."
-#: TRAConfiguracionAlmacenPaginas segundosMinimosRetencionInformeIdiomas
-msgid "gvSIGi18n_TRAConfiguracionAlmacenPaginas_attr_segundosMinimosRetencionInformeIdiomas_help"
-msgstr "Time in seconds that the Status Report by Languages shall be retained, even if the results have become inaccurate because of any modification of translations status. To avoid excessive recalculation for barely relevant changes."
-
-#. Default: "Minimo Tiempo en segundos que se retiene el Informe de Estado por Modulos e Idiomas"
-#: TRAConfiguracionAlmacenPaginas segundosMinimosRetencionInformeModulosEIdiomas
-msgid "gvSIGi18n_TRAConfiguracionAlmacenPaginas_attr_segundosMinimosRetencionInformeModulosEIdiomas_label"
-msgstr "Minimum Time in seconds to retain Status Report by Modules and Languages"
-
-#. Default: "Tiempo en segundos que se retendra el Informe de Estado por Modulos e Idiomas, aunque sus resultados sean inexactos por alguna modificacion del estado de traducciones, para evitar recalculo excesivo por cambios poco relevantes."
-#: TRAConfiguracionAlmacenPaginas segundosMinimosRetencionInformeModulosEIdiomas
-msgid "gvSIGi18n_TRAConfiguracionAlmacenPaginas_attr_segundosMinimosRetencionInformeModulosEIdiomas_help"
-msgstr "Time in seconds that the Status Report by Modules and Languages shall be retained, even if the results have become inaccurate because of any modification of translations status. To avoid excessive recalculation for barely relevant changes."
 
 #. Default: "Configuracion Exportacion"
 #: TRAConfiguracionExportacion
@@ -1203,6 +1163,96 @@ msgstr "Time in seconds to confirm Import process"
 #: TRAConfiguracionImportacion segundosParaConfirmarImportacion
 msgid "gvSIGi18n_TRAConfiguracionImportacion_attr_segundosParaConfirmarImportacion_help"
 msgstr "Time in seconds for the User to confirm launching the Import process. If the User does not confirm in this period of time, and he wishes to perform the import, the user shall request Import again."
+
+#. Default: "Configuracion Invalidacion Informes"
+#: TRAConfiguracionInvalidacionInformes
+msgid "gvSIGi18n_TRAConfiguracionInvalidacionInformes_label"
+msgstr "Reports Invalidation Configuration"
+
+#. Default: "Configuracion del catalogo de traducciones, con parametros controlando la invalidacion de informes generados del catalogo."
+#: TRAConfiguracionInvalidacionInformes
+msgid "gvSIGi18n_TRAConfiguracionInvalidacionInformes_help"
+msgstr "Translations catalog configuration, with parameters controlling the invalidation of reports generated from the catalog."
+
+#. Default: "Cambios para Anular Informe Actividad"
+#: TRAConfiguracionInvalidacionInformes numeroDeActividadesAnularInformeActividad
+msgid "gvSIGi18n_TRAConfiguracionInvalidacionInformes_attr_numeroDeActividadesAnularInformeActividad_label"
+msgstr "Changes to invalidate Activity Report"
+
+#. Default: "Numero de Actividades que causan la anulacion del Informe de Actividad, incluso aunque no haya expirado el plazo de retencion del informe."
+#: TRAConfiguracionInvalidacionInformes numeroDeActividadesAnularInformeActividad
+msgid "gvSIGi18n_TRAConfiguracionInvalidacionInformes_attr_numeroDeActividadesAnularInformeActividad_help"
+msgstr "Number of Activities that shall cause the invalidation of the Activity Report, even if the minimum retention time has not lapsed yet."
+
+#. Default: "Cambios para Anular Informe de Contribuciones"
+#: TRAConfiguracionInvalidacionInformes numeroDeCambiosAnularInformeContribuciones
+msgid "gvSIGi18n_TRAConfiguracionInvalidacionInformes_attr_numeroDeCambiosAnularInformeContribuciones_label"
+msgstr "Changes to invalidate Contributions Report"
+
+#. Default: "Numero de cambios de estado de Traducciones que causan la anulacion del Informe de Usuarios Contribuidores, incluso aunque no haya expirado el plazo de retencion del informe."
+#: TRAConfiguracionInvalidacionInformes numeroDeCambiosAnularInformeContribuciones
+msgid "gvSIGi18n_TRAConfiguracionInvalidacionInformes_attr_numeroDeCambiosAnularInformeContribuciones_help"
+msgstr "Number of Translation status changes that shall cause the invalidation of the User Contributions Report, even if the minimum retention time has not lapsed yet."
+
+#. Default: "Cambios para Anular Informe Idiomas"
+#: TRAConfiguracionInvalidacionInformes numeroDeCambiosAnularInformeIdiomas
+msgid "gvSIGi18n_TRAConfiguracionInvalidacionInformes_attr_numeroDeCambiosAnularInformeIdiomas_label"
+msgstr "Changes to invalidate Report by Languages"
+
+#. Default: "Numero de cambios de estado de Traducciones que causan la anulacion del Informe de Estado por Idiomas, incluso aunque no haya expirado el plazo de retencion del informe."
+#: TRAConfiguracionInvalidacionInformes numeroDeCambiosAnularInformeIdiomas
+msgid "gvSIGi18n_TRAConfiguracionInvalidacionInformes_attr_numeroDeCambiosAnularInformeIdiomas_help"
+msgstr "Number of Translation status changes that shall cause the invalidation of the Status Report by Languages, even if the minimum retention time has not lapsed yet."
+
+#. Default: "Cambios para Anular Informe Modulos e Idiomas"
+#: TRAConfiguracionInvalidacionInformes numeroDeCambiosAnularInformeModulosEIdiomas
+msgid "gvSIGi18n_TRAConfiguracionInvalidacionInformes_attr_numeroDeCambiosAnularInformeModulosEIdiomas_label"
+msgstr "Changes to invalidate Report by Modules and Languages"
+
+#. Default: "Numero de cambios de estado de Traducciones que causan la anulacion del Informe de Estado por Modulos e Idiomas, incluso aunque no haya expirado el plazo de retencion del informe."
+#: TRAConfiguracionInvalidacionInformes numeroDeCambiosAnularInformeModulosEIdiomas
+msgid "gvSIGi18n_TRAConfiguracionInvalidacionInformes_attr_numeroDeCambiosAnularInformeModulosEIdiomas_help"
+msgstr "Number of Translation status changes that shall cause the invalidation of the Status Report by Modules and Languages, even if the minimum retention time has not lapsed yet."
+
+#. Default: "Minimo Tiempo en segundos que se retiene el Informe de Actividad"
+#: TRAConfiguracionInvalidacionInformes segundosMinimosRetencionInformeActividad
+msgid "gvSIGi18n_TRAConfiguracionInvalidacionInformes_attr_segundosMinimosRetencionInformeActividad_label"
+msgstr "Minimum Time in seconds to retain the Activity Report"
+
+#. Default: "Tiempo en segundos que se retendra el Informe deActividad, aunque sus resultados sean inexactos por alguna modificacion del estado de traducciones, para evitar recalculo excesivo por cambios poco relevantes."
+#: TRAConfiguracionInvalidacionInformes segundosMinimosRetencionInformeActividad
+msgid "gvSIGi18n_TRAConfiguracionInvalidacionInformes_attr_segundosMinimosRetencionInformeActividad_help"
+msgstr "Time in seconds that the Activity Report shall be retained, even if the results have become inaccurate because of any modification of translations status. To avoid excessive recalculation for barely relevant changes."
+
+#. Default: "Minimo Tiempo en segundos que se retiene el Informe de Estado por Modulos e Idiomas"
+#: TRAConfiguracionInvalidacionInformes segundosMinimosRetencionInformeContribuciones
+msgid "gvSIGi18n_TRAConfiguracionInvalidacionInformes_attr_segundosMinimosRetencionInformeContribuciones_label"
+msgstr "Minimum Time in seconds to retain Status Report by Modules and Languages"
+
+#. Default: "Tiempo en segundos que se retendra el Informe de Estado por Modulos e Idiomas, aunque sus resultados sean inexactos por alguna modificacion del estado de traducciones, para evitar recalculo excesivo por cambios poco relevantes."
+#: TRAConfiguracionInvalidacionInformes segundosMinimosRetencionInformeContribuciones
+msgid "gvSIGi18n_TRAConfiguracionInvalidacionInformes_attr_segundosMinimosRetencionInformeContribuciones_help"
+msgstr "Time in seconds that the Status Report by Modules and Languages shall be retained, even if the results have become inaccurate because of any modification of translations status. To avoid excessive recalculation for barely relevant changes."
+
+#. Default: "Minimo Tiempo en segundos que se retiene el Informe de Estado por Idiomas"
+#: TRAConfiguracionInvalidacionInformes segundosMinimosRetencionInformeIdiomas
+msgid "gvSIGi18n_TRAConfiguracionInvalidacionInformes_attr_segundosMinimosRetencionInformeIdiomas_label"
+msgstr "Minimum Time in seconds to retain Status Report by Languages"
+
+#. Default: "Tiempo en segundos que se retendra el Informe de Estado por Idiomas, aunque sus resultados sean inexactos por alguna modificacion del estado de traducciones, para evitar recalculo excesivo por cambios poco relevantes."
+#: TRAConfiguracionInvalidacionInformes segundosMinimosRetencionInformeIdiomas
+msgid "gvSIGi18n_TRAConfiguracionInvalidacionInformes_attr_segundosMinimosRetencionInformeIdiomas_help"
+msgstr "Time in seconds that the Status Report by Languages shall be retained, even if the results have become inaccurate because of any modification of translations status. To avoid excessive recalculation for barely relevant changes."
+
+#. Default: "Minimo Tiempo en segundos que se retiene el Informe de Estado por Modulos e Idiomas"
+#: TRAConfiguracionInvalidacionInformes segundosMinimosRetencionInformeModulosEIdiomas
+msgid "gvSIGi18n_TRAConfiguracionInvalidacionInformes_attr_segundosMinimosRetencionInformeModulosEIdiomas_label"
+msgstr "Minimum Time in seconds to retain Status Report by Modules and Languages"
+
+#. Default: "Tiempo en segundos que se retendra el Informe de Estado por Modulos e Idiomas, aunque sus resultados sean inexactos por alguna modificacion del estado de traducciones, para evitar recalculo excesivo por cambios poco relevantes."
+#: TRAConfiguracionInvalidacionInformes segundosMinimosRetencionInformeModulosEIdiomas
+msgid "gvSIGi18n_TRAConfiguracionInvalidacionInformes_attr_segundosMinimosRetencionInformeModulosEIdiomas_help"
+msgstr "Time in seconds that the Status Report by Modules and Languages shall be retained, even if the results have become inaccurate because of any modification of translations status. To avoid excessive recalculation for barely relevant changes."
 
 #. Default: "Configuracion Pagina Traducciones"
 #: TRAConfiguracionPaginaTraducciones
@@ -2124,6 +2174,16 @@ msgstr "Time in seconds to confirm launch of a long process"
 msgid "gvSIGi18n_TRAConfiguracionVarios_attr_segundosParaConfirmarAccion_help"
 msgstr "Time in seconds for the User to confirm the launch of a long process. If the User does not confirm in this period of time, the user shall request the action again."
 
+#. Default: "Usuarios administradores"
+#: TRAConfiguracionVarios usuariosAdministradores
+msgid "gvSIGi18n_TRAConfiguracionVarios_attr_usuariosAdministradores_label"
+msgstr "Administrator users"
+
+#. Default: "Usuarios administradores, que aparecen al final de la lista de contribuidores, aunque hayan efectuado el mayor numero de cambios sobre el catalogo de traducciones."
+#: TRAConfiguracionVarios usuariosAdministradores
+msgid "gvSIGi18n_TRAConfiguracionVarios_attr_usuariosAdministradores_help"
+msgstr "Administrator users, who shall appear at the bottom of the list of contributing users, even if they have performed a higher number of changes into the translations catalog."
+
 #. Default: "Contenido de Intercambio"
 #: TRAContenidoIntercambio
 msgid "gvSIGi18n_TRAContenidoIntercambio_label"
@@ -2363,6 +2423,66 @@ msgstr "Contributor User"
 #: TRAContenidoXML usuarioContribuidor
 msgid "gvSIGi18n_TRAContenidoXML_attr_usuarioContribuidor_help"
 msgstr "User who uploaded the interchange content file or archive with string translations into languages."
+
+#. Default: "Informe de Contribuciones"
+#: TRAContribuciones
+msgid "gvSIGi18n_TRAContribuciones_label"
+msgstr "Contributions Report"
+
+#. Default: "Informe de Contribuciones por Usuarios a la traduccion del catalogo"
+#: TRAContribuciones
+msgid "gvSIGi18n_TRAContribuciones_help"
+msgstr "Report on Contributions by Users  to the translation of the catalog"
+
+#. Default: "Elemento de Progreso y Resultados"
+#: TRAContribuciones elementoProgreso
+msgid "gvSIGi18n_TRAContribuciones_attr_elementoProgreso_label"
+msgstr "Progress and Results element"
+
+#. Default: "Elemento para control del Progreso de la creacion del informe y almacenamiento de los resultados durante el proceso."
+#: TRAContribuciones elementoProgreso
+msgid "gvSIGi18n_TRAContribuciones_attr_elementoProgreso_help"
+msgstr "Element to control the Progress of the report process, and storage of import results during the process."
+
+#. Default: "Fecha y Hora de Fin"
+#: TRAContribuciones fechaFinProceso
+msgid "gvSIGi18n_TRAContribuciones_attr_fechaFinProceso_label"
+msgstr "End Date and Time"
+
+#. Default: "Fecha y hora en que termino la elaboracion del informe de contribuciones."
+#: TRAContribuciones fechaFinProceso
+msgid "gvSIGi18n_TRAContribuciones_attr_fechaFinProceso_help"
+msgstr "Date and Time when the ellaboration of the contributions report was terminated."
+
+#. Default: "Identificador del elemento de Control del Progreso"
+#: TRAContribuciones identificadorElementoProgreso
+msgid "gvSIGi18n_TRAContribuciones_attr_identificadorElementoProgreso_label"
+msgstr "Progress Control element Identifier"
+
+#. Default: "Identificador del elemento utilizado para controlar el progreso del proceso de larga duración."
+#: TRAContribuciones identificadorElementoProgreso
+msgid "gvSIGi18n_TRAContribuciones_attr_identificadorElementoProgreso_help"
+msgstr "Identifier of the element used to control the progress of the long-lived process."
+
+#. Default: "Informe de Contribuciones"
+#: TRAContribuciones informeContribuciones
+msgid "gvSIGi18n_TRAContribuciones_attr_informeContribuciones_label"
+msgstr "Contributions report"
+
+#. Default: "Informe de Contribuciones por Usuarios que traducen el catalogo,"
+#: TRAContribuciones informeContribuciones
+msgid "gvSIGi18n_TRAContribuciones_attr_informeContribuciones_help"
+msgstr "Report or the Contributions by Users translating the catalog."
+
+#. Default: "Usuario Informador"
+#: TRAContribuciones usuarioInformador
+msgid "gvSIGi18n_TRAContribuciones_attr_usuarioInformador_label"
+msgstr "Reporting User"
+
+#. Default: "Usuario que ha solicitado creado el Informe."
+#: TRAContribuciones usuarioInformador
+msgid "gvSIGi18n_TRAContribuciones_attr_usuarioInformador_help"
+msgstr "User who requested the ellaboration of the report."
 
 #. Default: "TRAElemento"
 #: TRAElemento
@@ -3174,6 +3294,16 @@ msgstr "Yield Processor Activity Time Percentage"
 msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_cederProcesador_porcentajeTiempoActividad_help"
 msgstr "For Yield Processor: the system shall limit the activity of processes of this kind, to this percentage of time, by yielding control of the processor to be used by other processes."
 
+#. Default: "Solo entre Transaciones"
+#: TRAParametrosControlProgreso cederProcesador_soloEntreTransacciones
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_cederProcesador_soloEntreTransacciones_label"
+msgstr "Only between Transactions"
+
+#. Default: "Si Verdadero, entonces el sistema solo cedera el procesador entre transacciones, si las transaciones estan habilitadas."
+#: TRAParametrosControlProgreso cederProcesador_soloEntreTransacciones
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_cederProcesador_soloEntreTransacciones_help"
+msgstr "If True, then the system shall yield the processor only between transactions, if transactions are enabled."
+
 #. Default: "Crear Informe Antes"
 #: TRAParametrosControlProgreso crearInformeAntes
 msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_crearInformeAntes_label"
@@ -3289,7 +3419,7 @@ msgstr "For Logging: when this number of transactions have been committed since 
 msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_tipoProceso_label"
 msgstr "Process Type"
 
-#. Default: "InactivoEl tipo del proceso del cual este elemento mantiene los parametros iniciales de control de su progreso."
+#. Default: "El tipo del proceso del cual este elemento mantiene los parametros iniciales de control de su progreso."
 #: TRAParametrosControlProgreso tipoProceso
 msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_tipoProceso_help"
 msgstr "Type of the process whose initial progress control parameters are maintained by this element."

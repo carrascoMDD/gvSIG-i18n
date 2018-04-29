@@ -2,7 +2,7 @@ attrib D:\dvpt\plone251\Data\Products\gvSIGi18nTests\*.* -R /S
 
 call extensions-attrib.bat
 
-xcopy "D:\dvpt\plone251\Data\Products\gvSIGi18nTests" .\gvSIGi18nTests_dep_sec  /E /Y /I /K
+REM xcopy "D:\dvpt\plone251\Data\Products\gvSIGi18nTests" .\gvSIGi18nTests_dep_sec  /E /Y /I /K
 
 xcopy .\gvSIGi18nTests  "D:\dvpt\plone251\Data\Products\gvSIGi18nTests" /E /Y /I /K
 

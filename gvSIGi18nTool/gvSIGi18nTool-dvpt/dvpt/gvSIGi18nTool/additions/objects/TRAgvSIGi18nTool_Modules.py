@@ -62,7 +62,24 @@ class TRAgvSIGi18nTool_Modules:
     security = ClassSecurityInfo()
         
              
-
+    
+    
+    security.declareProtected( permissions.View, 'fLabelModuloNoEspecificado')
+    def fLabelModuloNoEspecificado(self,
+        theContextualElement    =None,):
+        
+        if theContextualElement == None:
+            return ''
+        
+        unCatalogo = theContextualElement.getCatalogo()
+        if unCatalogo == None:
+            return ''
+        
+        return unCatalogo.fLabelModuloNoEspecificado()
+    
+            
+    
+    
     security.declareProtected( permissions.View, 'fTodosNombresModulos')
     def fTodosNombresModulos( self, 
         theContextualElement     =None):

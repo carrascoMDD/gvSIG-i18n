@@ -163,6 +163,24 @@
 									<tal:block tal:condition="python: here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theRunAfterPrevious', '') == 'No'" >
 										<tal:block tal:define="void python: pNuevosParametrosControl.update( { 'RunAfterPrevious':  False,})" />
 									</tal:block>
+									
+									
+									<tal:block tal:condition="python: here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theCreateReportBefore', '') == 'Yes'" >
+										<tal:block tal:define="void python: pNuevosParametrosControl.update( { 'CreateReportBefore':  True,})" />
+									</tal:block>
+									<tal:block tal:condition="python: here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theCreateReportBefore', '') == 'No'" >
+										<tal:block tal:define="void python: pNuevosParametrosControl.update( { 'CreateReportBefore':  False,})" />
+									</tal:block>
+
+									
+									<tal:block tal:condition="python: here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theCreateReportAfter', '') == 'Yes'" >
+										<tal:block tal:define="void python: pNuevosParametrosControl.update( { 'CreateReportAfter':  True,})" />
+									</tal:block>
+									<tal:block tal:condition="python: here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theCreateReportAfter', '') == 'No'" >
+										<tal:block tal:define="void python: pNuevosParametrosControl.update( { 'CreateReportAfter':  False,})" />
+									</tal:block>
+									
+																		
 								
 									<tal:block tal:define="pNuevosParametrosControl_StoreResults python: pNuevosParametrosControl.get( 'StoreResults', {})" >
 										<tal:block tal:condition="python: here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theStoreResults_Enabled', '') == 'Enabled'" >
@@ -224,10 +242,22 @@
 										<tal:block tal:condition="python: ( not ( here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theYieldProcessor_Enabled', '') == 'Enabled'))  and ( not ( here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theYieldProcessor_Enabled', '') == 'Disabled')) " >
 											<tal:block tal:define="void python: pNuevosParametrosControl_YieldProcessor.update( { 'enabled':  None,})" />
 										</tal:block>
+										
+										<tal:block tal:condition="python: here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theYieldProcessor_only_between_transactions', '') == 'Yes'" >
+											<tal:block tal:define="void python: pNuevosParametrosControl_YieldProcessor.update( { 'only_between_transactions':  True,})" />
+										</tal:block>
+										<tal:block tal:condition="python: here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theYieldProcessor_only_between_transactions', '') == 'No'" >
+											<tal:block tal:define="void python: pNuevosParametrosControl_YieldProcessor.update( { 'only_between_transactions':  False,})" />
+										</tal:block>
+										<tal:block tal:condition="python: ( not ( here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theYieldProcessor_only_between_transactions', '') == 'Yes'))  and ( not ( here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theYieldProcessor_only_between_transactions', '') == 'No')) " >
+											<tal:block tal:define="void python: pNuevosParametrosControl_YieldProcessor.update( { 'only_between_transactions':  None,})" />
+										</tal:block>
+										
 										<tal:block tal:define="void python: pNuevosParametrosControl_YieldProcessor.update( { 'max_milliseconds':             here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theYieldProcessor_max_milliseconds', ''),})" />
 										<tal:block tal:define="void python: pNuevosParametrosControl_YieldProcessor.update( { 'max_elements_traversed':       here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theYieldProcessor_max_elements_traversed', ''),})" />
 										<tal:block tal:define="void python: pNuevosParametrosControl_YieldProcessor.update( { 'max_elements_changed':         here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theYieldProcessor_max_elements_changed', ''),})" />
 										<tal:block tal:define="void python: pNuevosParametrosControl_YieldProcessor.update( { 'percent_active_time':          here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theYieldProcessor_percent_active_time', ''),})" />
+									
 									</tal:block>
 								
 									
@@ -235,7 +265,7 @@
 										pServiceResult python: here.TRAgvSIGi18n_tool.fService_ProcessControl( 
 											theContextualElement     =here,
 											theProcessControlAction  ='ChangeParameters',
-											theAdditionalParams       =pNuevosParametrosControl,
+											theAdditionalParams      =pNuevosParametrosControl,
 											thePermissionsCache      =pPermissionsCache,
 											theRolesCache            =pRolesCache,
 											theParentExecutionRecord =pExecutionRecord);
@@ -304,9 +334,12 @@
 												
 												
 												
-												<tal:block tal:define="pParametrosControl_RunAfterPrevious python: pParametrosControl.get( 'RunAfterPrevious', False)" >
-													<thead>
-														<tr>
+												<tal:block tal:define="global pRowIndex python: 0;
+														pParametrosControl_RunAfterPrevious   python: pParametrosControl.get( 'RunAfterPrevious', False);
+														pParametrosControl_CreateReportAfter  python: pParametrosControl.get( 'CreateReportAfter', False);
+														pParametrosControl_CreateReportBefore python: pParametrosControl.get( 'CreateReportBefore', False)" >
+													<tbody>
+														<tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]" >
 															<td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_runAfterPrevious_label', 'Run After Previous-')"/>
 															<td align="center" tal:content="python: ( pParametrosControl_RunAfterPrevious and pLabelYes) or pLabelNo" />
 															<td align="center"  tal:define="pName string:theRunAfterPrevious">
@@ -333,15 +366,9 @@
 			
 															</td>
 														</tr>
-													</thead>
-												</tal:block>
 												
 												
-												
-												
-												<tal:block tal:define="pParametrosControl_CreateReportBefore python: pParametrosControl.get( 'CreateReportBefore', False)" >
-													<thead>
-														<tr>
+														<tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]" >
 															<td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAParametrosControlProgreso_attr_crearInformeAntes_label', 'Create Report Before-')"/>
 															<td align="center" tal:content="python: ( pParametrosControl_CreateReportBefore and pLabelYes) or pLabelNo" />
 															<td align="center"  tal:define="pName string:theCreateReportBefore">
@@ -367,14 +394,9 @@
 																</tal:block>
 															</td>
 														</tr>
-													</thead>
-												</tal:block>
-												
-												
-												
-												<tal:block tal:define="pParametrosControl_CreateReportAfter python: pParametrosControl.get( 'CreateReportAfter', False)" >
-													<thead>
-														<tr>
+														
+														
+														<tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]" >
 															<td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAParametrosControlProgreso_attr_crearInformeDespues_label', 'Create Report After-')"/>
 															<td align="center" tal:content="python: ( pParametrosControl_CreateReportAfter and pLabelYes) or pLabelNo" />
 															<td align="center"  tal:define="pName string:theCreateReportAfter">
@@ -400,10 +422,12 @@
 																</tal:block>
 															</td>
 														</tr>
-													</thead>
+													</tbody>
 												</tal:block>
 																						
 												 
+												
+												
 												
 												<tal:block tal:define="pParametrosControl_StoreResults python: pParametrosControl.get( 'StoreResults', None)" >
 													<tal:block tal:condition="python: pParametrosControl_StoreResults" >
@@ -672,6 +696,39 @@
 																			tal:attributes="name pName; id string:cid_CtrlParms_YieldProcessor_Enabled_False" />
 																	</tal:block>
 																</td>
+															</tr>
+															
+															<tr class="#" tal:define="
+																	global pRowIndex python: pRowIndex + 1;
+																	pParametrosControl_YieldProcessor_OnlyBetweenTransactions python: pParametrosControl_YieldProcessor.get( 'only_between_transactions', False)"  
+																tal:attributes="class python: pClasesFilas[ pRowIndex % 2]" >
+																
+																<td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_parametrosControl_only_between_transactions_label', 'only_between_transactions')"/>
+																<td align="center" tal:content="python: ( pParametrosControl_YieldProcessor_OnlyBetweenTransactions and pLabelYes) or pLabelNo" />
+																<td align="center"  tal:define="pName string:theYieldProcessor_only_between_transactions">
+																	<tal:block tal:condition="pParametrosControl_YieldProcessor_OnlyBetweenTransactions" >
+																		<span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_Yes', 'Yes')"/> 
+																		&nbsp;
+																		<input type="radio" class="noborder" checked="checked" value="Yes" name="#" id="#"
+																			tal:attributes="name pName; id string:cid_CtrlParms_YieldProcessor_only_between_transactions_Yes" />
+																		&emsp;&emsp;
+																		<span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_No', 'No')"/> 
+																		<input type="radio" class="noborder" value="No" name="#" id="#"
+																			tal:attributes="name pName; id string:cid_CtrlParms_YieldProcessor_only_between_transactions_No" />
+																	</tal:block>
+																	<tal:block tal:condition="not: pParametrosControl_YieldProcessor_OnlyBetweenTransactions" >
+																		<span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_Yes', 'Yes')"/> 
+																		&nbsp;
+																		<input type="radio" class="noborder" value="Yes" name="#" id="#"
+																			tal:attributes="name pName; id string:cid_CtrlParms_YieldProcessor_only_between_transactions_Yes" />
+																		&emsp;&emsp;
+																		<span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_No', 'No')"/> 
+																		<input type="radio" class="noborder" checked="checked"  value="No" name="#" id="#"
+																			tal:attributes="name pName; id string:cid_CtrlParms_YieldProcessor_only_between_transactions_No" />
+																	</tal:block>
+				
+																</td>
+																
 															</tr>
 															<tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
 																<td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_parametrosControl_max_milliseconds_label', 'max_milliseconds')"/>

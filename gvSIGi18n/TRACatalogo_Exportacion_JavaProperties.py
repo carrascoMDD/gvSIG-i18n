@@ -55,6 +55,7 @@ from zipfile import ZipFile, ZIP_STORED, ZIP_DEFLATED
 from TRAElemento_Constants                 import *
 from TRAElemento_Constants_Activity        import *
 from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Contributions   import *
 from TRAElemento_Constants_Dates           import *
 from TRAElemento_Constants_Encoding        import *
 from TRAElemento_Constants_Import          import *
@@ -113,8 +114,9 @@ class TRACatalogo_Exportacion_JavaProperties:
         if not theCodigoIdioma:
             return ''
         
-        if theCodigoIdioma == theCodigoIdiomaPorDefecto:
-            return  ''
+        # ACV 20110210 By request of Mario Carrera, always include in the .properties filename the code of the language.
+        #if theCodigoIdioma == theCodigoIdiomaPorDefecto:
+            #return  ''
         
         return '_' + theCodigoIdioma.replace( cLanguageSeparatorCountry, cPropertiesFileCharBeforeCountry)
         

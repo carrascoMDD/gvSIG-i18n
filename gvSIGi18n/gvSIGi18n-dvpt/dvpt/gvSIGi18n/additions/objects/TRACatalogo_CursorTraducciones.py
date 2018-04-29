@@ -67,6 +67,8 @@ from Products.CMFCore       import permissions
 from TRAElemento_Constants                 import *
 from TRAElemento_Constants_Activity        import *
 from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Contributions   import *
+from TRAElemento_Constants_Contributions   import *
 from TRAElemento_Constants_Dates           import *
 from TRAElemento_Constants_Encoding        import *
 from TRAElemento_Constants_Import          import *
@@ -91,7 +93,8 @@ from TRAElemento_Permission_Definitions import cInvalidateStringTranslationsRole
 from TRAElemento_Permission_Definitions_UseCaseNames import cUseCase_InvalidateStringTranslations, cUseCase_BrowseTranslations, cUseCase_TRATraduccionStateChange, cUseCase_TRATraduccionComment
 
 
-from TRASplitter import fgReplaceCharsAndSplitWords_asDefaultEncoding, cTRASplitterDefaultEncoding
+from TRASplitter import fgReplaceCharsAndSplitWords_asDefaultEncoding, cTRASplitterDefaultEncoding, cTRASplitterAllSpecialChars
+
 
 
 
@@ -2384,7 +2387,20 @@ class TRACatalogo_CursorTraducciones:
                 return []
             
             
-            unSimboloEnPalabras = fgReplaceCharsAndSplitWords_asDefaultEncoding( aUnicodeTextoEnSimbolo)
+            
+            # BEGIN ACV 20110209 Fix bug preventing the use of wildcards in search criteria
+            
+            anIsGlob = False
+            
+            for aChar in cTRASplitterAllSpecialChars:
+                if aChar in aUnicodeTextoEnSimbolo:
+                    anIsGlob = True
+                    break
+                
+            # END ACV 20110209 Fix bug preventing the use of wildcards in search criteria
+
+                   
+            unSimboloEnPalabras = fgReplaceCharsAndSplitWords_asDefaultEncoding( aUnicodeTextoEnSimbolo, theIsGlob=anIsGlob)
             if not unSimboloEnPalabras:
                 return []
             
@@ -2454,7 +2470,23 @@ class TRACatalogo_CursorTraducciones:
                 return None
             
             
-            unTextoEnPalabras = fgReplaceCharsAndSplitWords_asDefaultEncoding( aUnicodeTextoEnCadenaTraducida)
+            
+            
+            # BEGIN ACV 20110209 Fix bug preventing the use of wildcards in search criteria
+            
+            anIsGlob = False
+            
+            for aChar in cTRASplitterAllSpecialChars:
+                if aChar in aUnicodeTextoEnCadenaTraducida:
+                    anIsGlob = True
+                    break
+                
+            # END ACV 20110209 Fix bug preventing the use of wildcards in search criteria
+
+            
+                    
+                    
+            unTextoEnPalabras = fgReplaceCharsAndSplitWords_asDefaultEncoding( aUnicodeTextoEnCadenaTraducida, theIsGlob=anIsGlob)
             if not unTextoEnPalabras:
                 return None
             

@@ -52,6 +52,7 @@ from Products.CMFCore       import permissions
 from TRAElemento_Constants                 import *
 from TRAElemento_Constants_Activity        import *
 from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Contributions   import *
 from TRAElemento_Constants_Dates           import *
 from TRAElemento_Constants_Encoding        import *
 from TRAElemento_Constants_Import          import *
@@ -333,7 +334,7 @@ class TRAImportacion_Operaciones_Progress:
                     theInitializeLambda     =fImportInitialize_lambda,
                     theLoopLambda           =fImportLoop_lambda,
                     theElementLambda        =None,
-                    theElementPLoneLambda   =None,
+                    theElementPloneLambda   =None,
                     theFinalizeLambda       =None,
                     theLockCatalog          =True,
                     thePermissionsCache     =unPermissionsCache, 
@@ -351,7 +352,7 @@ class TRAImportacion_Operaciones_Progress:
                 if ( aProgressElement == None):
                     aResult = { 
                         'success':   False, 
-                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorProgressElementNotKnownByImportProcessElement', "Progress element is not known by import process element-"),
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorProgressElementNotKnownByImportProcessElement', "Progress element is not known by progress handler-"),
                     }
                     return aResult
                 

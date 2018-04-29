@@ -190,7 +190,7 @@ cExportarXMLTypeConfigFilters = {
         {   'portal_type': 'TRACatalogo',
             'traversals':  [ 'configuraciones',],
         },
-        {   'portal_type': 'TRAConfiguracionAlmacenPaginas',
+        {   'portal_type': 'TRAConfiguracionInvalidacionInformes',
             'attrs':       [
                 'aspectoConfiguracion', 
                 'segundosMinimosRetencionInformeIdiomas', 
@@ -334,6 +334,7 @@ cExportarXMLTypeConfigFilters = {
                 'aspectoConfiguracion', 
                 'maximoNumeroCambiosRecientes', 
                 'segundosParaConfirmarAccion', 
+                'usuariosAdministradores',
             ],
             'traversals':  [ 'imagenes','archivos','documentos','noticias','enlaces',],
         },
@@ -367,6 +368,7 @@ cExportarXMLTypeConfigFilters = {
                 'registro_maximoTransacciones', 
                 
                 'cederProcesador_habilitado', 
+                'cederProcesador_soloEntreTransacciones', 
                 'cederProcesador_porcentajeTiempoActividad', 
                 'cederProcesador_maximoElementosLeidos', 
                 'cederProcesador_maximoElementosModificados', 

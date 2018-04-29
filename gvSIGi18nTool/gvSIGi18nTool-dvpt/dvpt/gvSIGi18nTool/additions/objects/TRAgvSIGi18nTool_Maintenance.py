@@ -63,6 +63,10 @@ class TRAgvSIGi18nTool_Maintenance:
 
 
         
+    
+    
+
+        
     security.declarePublic( 'fVerifyOrInitialize')
     def fVerifyOrInitialize(self, 
         theContextualElement     =None,

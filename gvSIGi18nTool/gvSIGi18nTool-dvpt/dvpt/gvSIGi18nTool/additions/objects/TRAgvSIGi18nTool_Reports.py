@@ -73,7 +73,7 @@ class TRAgvSIGi18nTool_Reports:
             return { 'effect': 'error', 'failure':  cTRAToolCondition_NoContextualElement, }
         
         if not ( theContextualElement.meta_type == 'TRAColeccionInformes'):
-            return { 'effect': 'error', 'failure':  cTRAToolCondition_NoContextualElement, }
+            return { 'effect': 'error', 'failure':  cTRAToolCondition_ContextualElementOfWrongType, }
         
         return theContextualElement.fCrearInforme( 
             thePermissionsCache     =thePermissionsCache, 
@@ -84,14 +84,29 @@ class TRAgvSIGi18nTool_Reports:
         
 
     
+    security.declareProtected( permissions.View, 'fInformeContribuciones')
+    def fInformeContribuciones( self, 
+        theContextualElement    =None,):
+        """Obtain report objects structure from the instance stored internally as the content of a string field.
+        
+        """
+        
+        if theContextualElement == None:
+            return {  'error':  cTRAToolCondition_NoContextualElement, }
+        
+        if not ( theContextualElement.meta_type == 'TRAContribuciones'):
+            return {  'error':  cTRAToolCondition_ContextualElementOfWrongType, }
+        
+        return theContextualElement.fInformeContribuciones( )
     
+        
     
      
                 
     security.declareProtected( permissions.View, 'fInformeIdiomas')
     def fInformeIdiomas( self, 
         theContextualElement    =None,):
-        """Create report objects structure from the instance stored internally as the content of a string field.
+        """Obtain report objects structure from the instance stored internally as the content of a string field.
         
         """
         
@@ -99,7 +114,7 @@ class TRAgvSIGi18nTool_Reports:
             return {  'error':  cTRAToolCondition_NoContextualElement, }
         
         if not ( theContextualElement.meta_type == 'TRAInforme'):
-            return {  'error':  cTRAToolCondition_NoContextualElement, }
+            return {  'error':  cTRAToolCondition_ContextualElementOfWrongType, }
         
         return theContextualElement.fInformeIdiomas( )
     
@@ -112,7 +127,7 @@ class TRAgvSIGi18nTool_Reports:
     security.declareProtected( permissions.View, 'fInformeModulos')
     def fInformeModulos( self, 
         theContextualElement    =None,):
-        """Create report objects structure from the instance stored internally as the content of a string field.
+        """Obtain report objects structure from the instance stored internally as the content of a string field.
         
         """
         
@@ -120,7 +135,7 @@ class TRAgvSIGi18nTool_Reports:
             return {  'error':  cTRAToolCondition_NoContextualElement, }
         
         if not ( theContextualElement.meta_type == 'TRAInforme'):
-            return {  'error':  cTRAToolCondition_NoContextualElement, }
+            return {  'error':  cTRAToolCondition_ContextualElementOfWrongType, }
         
         return theContextualElement.fInformeModulos( )
     

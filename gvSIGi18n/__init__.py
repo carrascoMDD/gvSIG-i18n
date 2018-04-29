@@ -98,7 +98,7 @@ def initialize(context):
     import TRASimbolosOrdenados
     import TRACatalogo
     import TRAColeccionIdiomas
-    import TRAConfiguracionAlmacenPaginas
+    import TRAConfiguracionInvalidacionInformes
     import TRAConfiguracionVarios
     import TRAContenidoIntercambio
     import TRAConfiguracionImportacion
@@ -108,8 +108,10 @@ def initialize(context):
     import TRAIdioma
     import TRAColeccionModulos
     import TRATraduccion
+    import TRAColeccionContribuciones
     import TRAColeccionProgresos
     import TRAConfiguracionPermisos
+    import TRAContribuciones
     import TRAConfiguracionPerfilEjecucion
     import TRASolicitudCadena
 

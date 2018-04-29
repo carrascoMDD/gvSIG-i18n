@@ -640,6 +640,7 @@ class TRAElemento_VoidResults:
         def fNewVoidProgressControlParms_YieldProcessor():
             someProcessControlParms = fNewVoidProgressControlParms_General()
             someProcessControlParms.update( {
+                'only_between_transactions':          False,
                 'percent_active_time':                0,
             })
                                     

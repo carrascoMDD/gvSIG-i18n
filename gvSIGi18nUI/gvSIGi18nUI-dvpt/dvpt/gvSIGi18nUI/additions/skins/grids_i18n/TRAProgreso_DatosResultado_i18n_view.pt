@@ -92,9 +92,12 @@
                     <metal:block metal:use-macro="here/TRAProgreso_DatosResultado_VerifyOrInitialize_i18n_view/macros/tProgreso_DatosResultado_VerifyOrInitialize_i18n" />   
                 </tal:block>
                  
+                <tal:block tal:condition="python: pProcessType == 'Contribuciones'" >
+                    <metal:block metal:use-macro="here/TRAProgreso_DatosResultado_Contributions_i18n_view/macros/tProgreso_DatosResultado_Contributions_i18n" />   
+                </tal:block>
 				
 				
-                <tal:block tal:condition="python: not( pProcessType in [ 'Verificar', 'Inicializar', 'Inventario', 'ReCatalogar', 'Verificar_Permisos', 'ReEstablecer_Permisos', 'Eliminar_Modulo', 'Renombrar_Modulo', 'Eliminar_Idioma', 'Copia_Seguridad', 'Exportar_para_gvSIG', 'Exportar', 'Importar',])" >
+                <tal:block tal:condition="python: not( pProcessType in [ 'Verificar', 'Inicializar', 'Inventario', 'ReCatalogar', 'Verificar_Permisos', 'ReEstablecer_Permisos', 'Eliminar_Modulo', 'Renombrar_Modulo', 'Eliminar_Idioma', 'Copia_Seguridad', 'Exportar_para_gvSIG', 'Exportar', 'Importar', 'Contribuciones',])" >
                     <p>
                         <font size="3" color="red" >
                             <strong i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_unknownProcessKind_warning_msgid">Process of unknown kind - can not show results.-</strong>
@@ -272,8 +275,14 @@
                         <td align="left">
                             <strong  tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_Progress_ErrorDetails_label',  'Error Details-' )" />
                         </td>
-                        <td align="left" >
-                            <span tal:content="python:  pDatosResultado.get( 'error_details', '')" />
+                        <td align="left" tal:define="pErrorDetails python: pDatosResultado.get( 'error_details', '')" >
+                            <tal:block tal:condition="pErrorDetails" >
+								<textarea readonly style="font-size: 8pt"  cols="80"  rows="#"
+									tal:define="pLines python: pErrorDetails.splitlines()" 
+									tal:attributes="rows python: max( 2, min( len( pLines), 10))">
+<tal:block tal:repeat="pLine pLines" tal:content="pLine"/>
+</textarea>							
+                            </tal:block>
                         </td>
                         <tal:block tal:define="global pRowIndex python: pRowIndex + 1" />
                     </tr>

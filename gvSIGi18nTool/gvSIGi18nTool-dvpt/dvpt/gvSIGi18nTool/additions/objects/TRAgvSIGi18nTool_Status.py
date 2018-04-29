@@ -58,7 +58,69 @@ class TRAgvSIGi18nTool_Status:
     """
 
     security = ClassSecurityInfo()
+    
+    
+    
+
+      
+    security.declareProtected( permissions.View, 'fElaborarInformeContribuciones')
+    def fElaborarInformeContribuciones(self, 
+        theContextualElement    =None,
+        theCheckPermissions         =True, 
+        thePermissionsCache         =None, 
+        theRolesCache               =None, 
+        theParentExecutionRecord    =None):
+        """Generate Report By Languages
+
+        """        
         
+        if theContextualElement == None:
+            return {
+                'error':    cTRAToolCondition_NoContextualElement,   
+            } 
+            
+        unCatalogo = theContextualElement.getCatalogo()
+        if unCatalogo == None:
+            return {
+                'error':    cTRAToolCondition_NoCatalogElement,   
+            }
+        
+        return unCatalogo.fElaborarInformeContribuciones(
+            theCheckPermissions         =theCheckPermissions, 
+            thePermissionsCache         =thePermissionsCache, 
+            theRolesCache               =theRolesCache, 
+            theParentExecutionRecord    =theParentExecutionRecord,
+        )
+    
+    
+        
+        
+        
+    
+    
+    #security.declareProtected( permissions.View, 'fInvalidateObsoleteContributionsReport')
+    #def fInvalidateObsoleteContributionsReport(self,
+        #theContextualElement        =None,):
+        
+        #if theContextualElement == None:
+            #return {
+                #'invalidated':    False,   
+            #} 
+            
+        #unCatalogo = theContextualElement.getCatalogo()
+        #if unCatalogo == None:
+            #return {
+                #'invalidated':    False,   
+            #}
+        
+        #return unCatalogo.fInvalidateObsoleteContributionsReport()
+        
+        
+    
+            
+    
+    
+    
       
     security.declareProtected( permissions.View, 'fElaborarInformeIdiomas')
     def fElaborarInformeIdiomas(self, 

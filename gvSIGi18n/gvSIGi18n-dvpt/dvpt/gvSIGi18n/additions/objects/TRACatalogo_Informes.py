@@ -61,6 +61,7 @@ from TRACatalogo_Globales import TRACatalogo_Globales
 from TRAElemento_Constants                 import *
 from TRAElemento_Constants_Activity        import *
 from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Contributions   import *
 from TRAElemento_Constants_Dates           import *
 from TRAElemento_Constants_Encoding        import *
 from TRAElemento_Constants_Import          import *
@@ -169,6 +170,8 @@ class TRACatalogo_Informes:
 
 
 
+    
+
     security.declarePrivate( 'fNewVoidInformeIdiomas')
     def fNewVoidInformeIdiomas(self):
         """Instantiate Results  for Languages report.
@@ -176,6 +179,8 @@ class TRACatalogo_Informes:
         """
 
         unNuevoInforme = {
+            'success':                          False,
+            'report_date':                '',
             'numero_cadenas':       0,
             'estados':              cTodosEstados[:],
             'informes_idiomas':     [],
@@ -198,6 +203,8 @@ class TRACatalogo_Informes:
             'nombre_nativo_idioma':             '',
             'codigo_idioma_en_gvsig':           '',
             'codigo_internacional_idioma':      '',
+            'flag':                             '',
+            'flag_url':                         '',
             'url_idioma':                       '',
             'informes_estados':                 self.fNewVoidInformeTodosEstados(),
             'total_traducciones':               0,  # only used with modules report
@@ -272,6 +279,157 @@ class TRACatalogo_Informes:
         }
         return unInforme
 
+    
+    
+    
+    
+    
+    
+    
+
+    security.declarePrivate( 'fNewVoidInformeContribuciones')
+    def fNewVoidInformeContribuciones(self):
+        """Instantiate Results  for Contributions report.
+
+        """
+
+        unNuevoInforme = {
+            'success':                    False,
+            'report_date':                '',
+            'reporting_user':             '',
+            'error':                      '',
+            'exception':                  '',
+            
+            'period_keys':                cTRAContribucionesReport_Periods[:],
+            'modes_keys':                 cTRAContribucion_Modos[:],
+
+            'periods_dates':              dict( [ [ aPeriodKey, [ '', '',] ] for  aPeriodKey in cTRAContribucionesReport_Periods]),
+            'periods_totals':             dict( [ [ aPeriodKey, self.fNewVoidInformeContribucionesYModos(), ] for  aPeriodKey in cTRAContribucionesReport_Periods]),
+            
+            'sorted_language_codes':      [ ],
+
+            'total_contributions':        0,
+            
+            'total_contributions_by_mode': dict( [ [ aModeKey, 0 ] for  aModeKey in cTRAContribucion_Modos]),
+           
+            'contributions_by_language':  { },
+
+            'contributions_by_user':      { },
+            
+            'alphabetical_user_ids':      [ ],
+            
+            'rank_user_ids_total':        [ ],
+            'rank_user_ids_by_periods':   dict( [ [ aPeriodKey, [ ], ] for  aPeriodKey in cTRAContribucionesReport_Periods]),
+            'rank_admin_user_ids_total':  [ ],
+            'rank_admin_user_ids_by_periods': dict( [ [ aPeriodKey, [ ], ] for  aPeriodKey in cTRAContribucionesReport_Periods]),
+            
+            'admin_user_ids':             [ ],
+            
+            # to do
+            'users_member_info':          { },
+            
+        }
+        return  unNuevoInforme
+
+
+
+    
+    
+    security.declarePrivate( 'fNewVoidInformeContribucionesIdioma')
+    def fNewVoidInformeContribucionesIdioma(self):
+        """Instantiate Results  for Contributions report for a specific Language.
+
+        """
+
+        unNuevoInforme = {
+            'nombre_idioma':                    '',
+            'nombre_nativo_idioma':             '',
+            'codigo_idioma_en_gvsig':           '',
+            'codigo_internacional_idioma':      '',
+            'url_idioma':                       '',
+            'flag':                             '',
+            'flag_url':                         '',
+
+            'total_contributions':              0,         
+            'total_contributions_by_mode':      dict( [ [ aModeKey, 0 ] for  aModeKey in cTRAContribucion_Modos]),
+            
+            'periods_totals':                   dict( [ [ aPeriodKey, self.fNewVoidInformeContribucionesYModos(), ] for  aPeriodKey in cTRAContribucionesReport_Periods]),
+            'contributions_by_periods':         dict( [ [ aPeriodKey, { }, ] for  aPeriodKey in cTRAContribucionesReport_Periods]),
+
+            'contributions_by_user':            { },
+            
+            'rank_user_ids_total':              [ ],
+            'rank_user_ids_by_periods':         dict( [ [ aPeriodKey, [ ], ] for  aPeriodKey in cTRAContribucionesReport_Periods]),
+            'rank_admin_user_ids_total':        [ ],
+            'rank_admin_user_ids_by_periods':   dict( [ [ aPeriodKey, [ ], ] for  aPeriodKey in cTRAContribucionesReport_Periods]),
+        
+        }
+        return  unNuevoInforme
+
+    
+ 
+    security.declarePrivate( 'fNewVoidInformeContribucionesYModos')
+    def fNewVoidInformeContribucionesYModos(self,):
+        """Instantiate Result for the report of Contributions accumulated by contribution mode.
+
+        """
+        unNuevoInforme = { 
+            'total_contributions':    0,
+            'contributions_by_mode':  dict( [ [ aModeKey, 0 ] for  aModeKey in cTRAContribucion_Modos]),
+        }  
+        return  unNuevoInforme
+
+    
+ 
+    security.declarePrivate( 'fNewVoidInformeContribucionesTotalesUsuario')
+    def fNewVoidInformeContribucionesUsuario(self, ):
+        """Instantiate Result for the report of Contributions by one User.
+
+        """
+        unNuevoInforme = { 
+            'total_contributions':        0,
+            'contributions_by_mode':      dict( [ [ aModeKey, 0 ] for  aModeKey in cTRAContribucion_Modos]),
+            'contributions_by_periods':   dict( [ [ aPeriodKey, self.fNewVoidInformeContribucionesUsuarioEnPeriodo(), ] for  aPeriodKey in cTRAContribucionesReport_Periods]),
+            'contributed_language_codes': [ ],
+        }  
+        return  unNuevoInforme
+
+    
+    
+    
+    security.declarePrivate( 'fNewVoidInformeContribucionesUsuarioEnIdioma')
+    def fNewVoidInformeContribucionesUsuarioEnIdioma(self, ):
+        """Instantiate Result for the report of Contributions by one User in one language.
+
+        """
+        unNuevoInforme = { 
+            'total_contributions':        0,
+            'contributions_by_mode':      dict( [ [ aModeKey, 0 ] for  aModeKey in cTRAContribucion_Modos]),
+            'contributions_by_periods':   dict( [ [ aPeriodKey, self.fNewVoidInformeContribucionesUsuarioEnPeriodo(), ] for  aPeriodKey in cTRAContribucionesReport_Periods]),
+        }  
+        return  unNuevoInforme
+    
+
+    
+    
+    
+    security.declarePrivate( 'fNewVoidInformeContribucionesUsuarioEnPeriodo')
+    def fNewVoidInformeContribucionesUsuarioEnPeriodo(self,):
+        """Instantiate Result for the report of Contributions by one User.
+
+        """
+        unNuevoInforme = { 
+            'total_contributions':    0,
+            'contributions_by_mode':  dict( [ [ aModeKey, 0 ] for  aModeKey in cTRAContribucion_Modos]),
+        }  
+        return  unNuevoInforme
+
+    
+    
+
+
+    
+    
 
 
     security.declarePrivate( 'fNewVoidInformeActividad')
@@ -281,10 +439,13 @@ class TRACatalogo_Informes:
         """
         unNuevoInforme = {
             'success':                         False,
+            'startup_date':                    None,
             'report_date':                     None,
             'totals':                          self.fNewVoidInformeActividad_TodosPeriodos( 'total'),
             'activity_reports_by_language':    { },
             'period_keys':                     [ ],
+            'last_contributions_report_title': '',
+            'last_contributions_report_URL':   '',
         }
         return  unNuevoInforme
 
@@ -501,6 +662,743 @@ class TRACatalogo_Informes:
     """  
 
 
+
+
+    security.declareProtected( permissions.View, 'fElaborarInformeContribuciones')
+    def fElaborarInformeContribuciones(self, 
+        theProcessControlManager    =None,
+        thePermissionsCache         =None, 
+        theRolesCache               =None, 
+        theParentExecutionRecord    =None):
+        """Generate Report By Languages
+
+        """        
+
+        unExecutionRecord = self.fStartExecution( 'method',  'fElaborarInformeContribuciones', theParentExecutionRecord, False) 
+
+        try:
+            try:   
+                unInforme = self.fNewVoidInformeContribuciones()
+                unInforme[ 'report_date']    = self.fDateTimeNowString()
+                unInforme[ 'reporting_user'] = self.fGetMemberId()
+
+
+                unPermissionsCache = fDictOrNew( thePermissionsCache)
+                unRolesCache       = fDictOrNew( theRolesCache)
+
+                unosLanguagesNamesAndFlagsPorCodigo = self.fLanguagesNamesAndFlagsPorCodigo()
+
+
+                unosIdiomasAccesibles = self.getCatalogo().fObtenerTodosIdiomas()
+                if not unosIdiomasAccesibles:
+                    return unInforme
+                
+                
+                
+                
+                
+                
+                # #######################################
+                """Retrieve from configuration the names of users that administer the translations catalog, and thus shall appear at the bottom of contributing users, even if they have performed a higher number of changes into the translations catalog.
+                
+                """
+                unosUsuariosAdministradores = [ ]
+                unaConfiguracionVarios = self.fObtenerConfiguracion( cTRAConfiguracionAspecto_Varios)
+                if unaConfiguracionVarios:        
+                    unosUsuariosAdministradoresString = unaConfiguracionVarios.getUsuariosAdministradores()
+                    if unosUsuariosAdministradoresString:
+                        unosUsuariosAdministradores = unosUsuariosAdministradoresString.split()
+                        
+                unInforme[ 'admin_user_ids'] = sorted( unosUsuariosAdministradores)        
+                        
+                
+                
+                
+                
+                
+                # #######################################
+                """Calculate significant period dates.
+                
+                """
+                unDateTimeNow             = self.fDateTimeNow()
+                unDateTimeNowString       = self.fDateToStoreString( unDateTimeNow )
+                unDateTimeNowString       = unDateTimeNowString[:10]
+                
+                unDateTimeToday           = unDateTimeNow
+                unDateTimeTodayString     = unDateTimeNowString
+                unDateTimeTodayBeginString  = '%s 00:00:00' % unDateTimeTodayString
+                unDateTimeTodayEndString    = '%s 23:59:59' % unDateTimeTodayString
+                unInforme[ 'periods_dates'][ cTRAContribucionesReport_Period_Today] = [ unDateTimeTodayBeginString, unDateTimeTodayEndString,]
+                
+                unDateTimeTodayBegin      = DateTime( unDateTimeTodayBeginString)
+                
+                unDateTimeYesterday       = unDateTimeTodayBegin - 1
+                unDateTimeYesterdayString = self.fDateToStoreString( unDateTimeYesterday)
+                unDateTimeYesterdayString = unDateTimeYesterdayString[:10]
+                unDateTimeYesterdayBeginString = '%s 00:00:00' % unDateTimeYesterdayString
+                unDateTimeYesterdayEndString   = '%s 23:59:59' % unDateTimeYesterdayString
+                unInforme[ 'periods_dates'][ cTRAContribucionesReport_Period_Yesterday] = [ unDateTimeYesterdayBeginString, unDateTimeYesterdayEndString,]
+
+                
+                unDateTimeLast7Days       = unDateTimeTodayBegin - 7
+                unDateTimeLast7DaysString = self.fDateToStoreString( unDateTimeLast7Days)
+                unDateTimeLast7DaysString = unDateTimeLast7DaysString[:10]
+                unDateTimeLast7DaysBeginString = '%s 00:00:00' % unDateTimeLast7DaysString
+                unDateTimeLast7DaysEndString   = unDateTimeTodayEndString
+                unInforme[ 'periods_dates'][ cTRAContribucionesReport_Period_Last7Days] = [ unDateTimeLast7DaysBeginString, unDateTimeLast7DaysEndString,]
+                                
+                
+                unDateTimeLast30Days       = unDateTimeTodayBegin - 30
+                unDateTimeLast30DaysString = self.fDateToStoreString( unDateTimeLast30Days)
+                unDateTimeLast30DaysString = unDateTimeLast30DaysString[:10]
+                unDateTimeLast30DaysBeginString = '%s 00:00:00' % unDateTimeLast30DaysString
+                unDateTimeLast30DaysEndString   = unDateTimeTodayEndString
+                unInforme[ 'periods_dates'][ cTRAContribucionesReport_Period_Last30Days] = [ unDateTimeLast30DaysBeginString, unDateTimeLast30DaysEndString,]
+                
+                
+                unDateTimeLast365Days       = unDateTimeTodayBegin - 365
+                unDateTimeLast365DaysString = self.fDateToStoreString( unDateTimeLast365Days)
+                unDateTimeLast365DaysString = unDateTimeLast365DaysString[:10]
+                unDateTimeLast365DaysBeginString = '%s 00:00:00' %  unDateTimeLast365DaysString
+                unDateTimeLast365DaysEndString  = unDateTimeTodayEndString
+                unInforme[ 'periods_dates'][ cTRAContribucionesReport_Period_Last365Days] = [ unDateTimeLast365DaysBeginString, unDateTimeLast365DaysEndString,]
+                
+                
+                unDateTimeBefore365Days       = unDateTimeTodayBegin - 366
+                unDateTimeBefore365DaysString = self.fDateToStoreString( unDateTimeBefore365Days)
+                unDateTimeBefore365DaysString = unDateTimeBefore365DaysString[:10]
+                unDateTimeBefore365DaysEndString   = unDateTimeBefore365DaysString
+                unDateTimeBefore365DaysBeginString = '1900-01-01 00:00:00' 
+                unInforme[ 'periods_dates'][ cTRAContribucionesReport_Period_Before365Days] = [ unDateTimeBefore365DaysBeginString, unDateTimeBefore365DaysEndString,]
+                
+                
+                
+                
+                
+                
+
+                # #######################################
+                """Retrieve accessible languages.
+                
+                """
+
+                unosIdiomasAccesiblesParaOrdenar = [ [ unIdioma.getCodigoIdiomaEnGvSIG(), unIdioma,] for unIdioma in unosIdiomasAccesibles]
+                unosIdiomasAccesiblesOrdenados = sorted( unosIdiomasAccesiblesParaOrdenar, lambda unCodigoEIdioma, otroCodigoEIdioma: cmp( unCodigoEIdioma[ 0], otroCodigoEIdioma[ 0]))
+                unosIdiomasAccesibles = [ unCodigoEIdioma[ 1] for unCodigoEIdioma in unosIdiomasAccesiblesOrdenados]
+
+
+                
+                
+                
+                
+                
+                
+                # #######################################
+                """Iterate on translations for all languages.
+                
+                """
+                
+                for unIdioma in unosIdiomasAccesibles:                
+                    
+                    
+                    
+                    # #######################################
+                    """Add report entry for the language.
+                    
+                    """
+                    unInformeIdioma = self.fNewVoidInformeContribucionesIdioma()
+                    
+                    unCodigoIdioma = unIdioma.getCodigoIdiomaEnGvSIG()
+                    unInformeIdioma.update( {
+                        'nombre_idioma':                unIdioma.Title(), 
+                        'codigo_idioma_en_gvsig':       unCodigoIdioma, 
+                        'codigo_internacional_idioma':  unIdioma.getCodigoInternacionalDeIdioma(),
+                        'nombre_nativo_idioma':         unIdioma.getNombreNativoDeIdioma(),
+                        'flag':                         unosLanguagesNamesAndFlagsPorCodigo.get( unCodigoIdioma, {}).get( 'flag', cTRAFlagIdiomaDesconocida),
+                        'flag_url':                     self.fAsUnicode( unosLanguagesNamesAndFlagsPorCodigo.get( unCodigoIdioma, {}).get( 'flag_url', '%s/%s' % ( self.fPortalURL(), cTRAFlagIdiomaDesconocida,))),
+                        'url_idioma':                   unIdioma.absolute_url(), 
+                    } )       
+                    unInforme[ 'contributions_by_language'][ unCodigoIdioma] = unInformeIdioma
+                    unInforme[ 'sorted_language_codes'] = sorted(  unInforme[ 'contributions_by_language'].keys())
+
+                    
+                    theProcessControlManager.pProcessStep( self, { unIdioma.meta_type: 1, }, None)
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    # #######################################
+                    """Search for index records for the translations into the language.
+                    
+                    """
+                    
+                    unCatalogFiltroTraducciones = self.getCatalogo().fCatalogFiltroTraduccionesParaIdioma( unIdioma)
+
+
+                    unTotalTraducciones = 0            
+
+                    unaBusqueda = {   
+                        #'getEstadoCadena':   cEstadoCadenaActiva, # ACV 20110207 Count contributions even if the string was later deactivated.
+                    }
+
+                    unosResultadosBusqueda      = unCatalogFiltroTraducciones.searchResults(**unaBusqueda)
+
+                    
+                    
+                    
+                        
+                    # #######################################
+                    """Scan all found translation index records for the language.
+                    
+                    """
+                    for unResultadoTraduccion in unosResultadosBusqueda:
+                        
+                        unEstadoTraduccion = unResultadoTraduccion[ 'getEstadoTraduccion']
+                        
+                        unUsuarioCreador   = unResultadoTraduccion[ 'getUsuarioCreador']
+                        unaFechaCreacion   = unResultadoTraduccion[ 'getFechaCreacionTextual']
+                        
+                        
+                        
+                        
+                        # #######################################
+                        """Accumulate for the user a translation creation contribution.
+                        
+                        """
+                        if unUsuarioCreador and unaFechaCreacion:
+                                
+                            self.pAcumularContribucionDeUsuario( 
+                                theProcessControlManager           =theProcessControlManager,
+                                theInforme                         =unInforme, 
+                                theCodigoIdioma                    =unCodigoIdioma,
+                                theUsuario                         =unUsuarioCreador, 
+                                theFecha                           =unaFechaCreacion,
+                                theModoContribucion                =cTRAContribucion_Modo_Creacion,
+                            )
+                            
+                    
+                            
+                        if unEstadoTraduccion in [ cEstadoTraduccionTraducida, cEstadoTraduccionRevisada, cEstadoTraduccionDefinitiva,]:
+                            
+                            
+                            
+                            
+                            # #######################################
+                            """Accumulate for the user a translation change contribution.
+                            
+                            """
+                            unUsuarioTraductor = unResultadoTraduccion[ 'getUsuarioTraductor']
+                            unaFechaTraduccion = unResultadoTraduccion[ 'getFechaTraduccionTextual']
+                            if unUsuarioTraductor and unaFechaTraduccion:
+                                
+                                self.pAcumularContribucionDeUsuario( 
+                                    theProcessControlManager           =theProcessControlManager,
+                                    theInforme                         =unInforme, 
+                                    theCodigoIdioma                    =unCodigoIdioma,
+                                    theUsuario                         =unUsuarioTraductor, 
+                                    theFecha                           =unaFechaTraduccion,
+                                    theModoContribucion                =cTRAContribucion_Modo_Traduccion,
+                                )
+
+                                
+                                
+                                
+                            if unEstadoTraduccion in [ cEstadoTraduccionRevisada, cEstadoTraduccionDefinitiva,]:
+                                
+                                # #######################################
+                                """Accumulate for the user a translation review contribution.
+                                
+                                """
+                                unUsuarioRevisor   = unResultadoTraduccion[ 'getUsuarioRevisor']
+                                unaFechaRevision   = unResultadoTraduccion[ 'getFechaRevisionTextual']
+                                if unUsuarioRevisor and unaFechaRevision:
+                                    
+                                    self.pAcumularContribucionDeUsuario( 
+                                        theProcessControlManager           =theProcessControlManager,
+                                        theInforme                         =unInforme, 
+                                        theCodigoIdioma                    =unCodigoIdioma,
+                                        theUsuario                         =unUsuarioRevisor, 
+                                        theFecha                           =unaFechaRevision,
+                                        theModoContribucion                =cTRAContribucion_Modo_Revision,
+                                    )
+                                    
+                                
+                                    
+                                    
+                                if unEstadoTraduccion in [ cEstadoTraduccionDefinitiva,]:
+                                
+                                    # #######################################
+                                    """Accumulate for the user a translation lock (make definitive) contribution.
+                                    
+                                    """
+                                    unUsuarioCoordinador   = unResultadoTraduccion[ 'getUsuarioCoordinador']
+                                    unaFechaDefinitivo     = unResultadoTraduccion[ 'getFechaDefinitivoTextual']
+                                    if unUsuarioCoordinador and unaFechaDefinitivo:
+                                        
+                                        self.pAcumularContribucionDeUsuario( 
+                                            theProcessControlManager           =theProcessControlManager,
+                                            theInforme                         =unInforme, 
+                                            theCodigoIdioma                    =unCodigoIdioma,
+                                            theUsuario                         =unUsuarioCoordinador, 
+                                            theFecha                           =unaFechaDefinitivo,
+                                            theModoContribucion                =cTRAContribucion_Modo_Definitiva,
+                                        )
+                                        
+                
+                
+                
+                        theProcessControlManager.pProcessStep( self, { cNombreTipoTRATraduccion: 1,}, None)
+   
+                                        
+                
+                                        
+                                        
+                # #######################################
+                """Collect from all languages the number of contributions and id for each non-administrator user, and each administrator, to be ranked later by the number of their contributions.
+                
+                """
+                                        
+                unasContributionsByUsers = unInforme[ 'contributions_by_user']
+                
+                someTotalsAndUserIds                     = [ ]
+                somePeriodsTotalsAndUserIds              = dict( [ [ aPeriodKey, [ ], ] for  aPeriodKey in cTRAContribucionesReport_Periods])
+                someTotalsAndAdministratorUserIds        = [ ]
+                somePeriodsTotalsAndAdministratorUserIds = dict( [ [ aPeriodKey, [ ], ] for  aPeriodKey in cTRAContribucionesReport_Periods])
+                
+                someUserIds = unasContributionsByUsers.keys()
+                for aUserId in someUserIds:
+                    
+                    if not ( aUserId in unosUsuariosAdministradores):
+                        
+                        aUserContributions = unasContributionsByUsers.get( aUserId, {})
+                        if aUserContributions:
+                            
+                            if aUserContributions.get( 'total_contributions', 0):
+                                someTotalsAndUserIds.append( [ aUserContributions.get( 'total_contributions', 0), aUserId,])
+                                
+                                for  aPeriodKey in cTRAContribucionesReport_Periods:
+                                    aUserContributionsInPeriod = aUserContributions[ 'contributions_by_periods'].get( aPeriodKey, {})
+                                    if aUserContributionsInPeriod:
+                                        
+                                        if aUserContributionsInPeriod.get( 'total_contributions', 0):                                        
+                                            somePeriodsTotalsAndUserIds[ aPeriodKey].append( [ aUserContributionsInPeriod.get( 'total_contributions', 0), aUserId,])                         
+                    
+                    else:                               
+                        aUserContributions = unasContributionsByUsers.get( aUserId, {})
+                        if aUserContributions:
+                            
+                            if aUserContributions.get( 'total_contributions', 0):
+                                someTotalsAndAdministratorUserIds.append( [ aUserContributions.get( 'total_contributions', 0), aUserId,])
+                                
+                                for  aPeriodKey in cTRAContribucionesReport_Periods:
+                                    aUserContributionsInPeriod = aUserContributions[ 'contributions_by_periods'].get( aPeriodKey, {})
+                                    if aUserContributionsInPeriod:
+                                        
+                                        if aUserContributionsInPeriod.get( 'total_contributions', 0):
+                                            somePeriodsTotalsAndAdministratorUserIds[ aPeriodKey].append( [ aUserContributionsInPeriod.get( 'total_contributions', 0), aUserId,])                         
+                        
+                                        
+                                        
+                # #######################################
+                """Rank changes in all languages by administrator and non-administrator users according to the number of their contributions.
+                
+                """
+                someSortedTotalsAndUserIds = sorted( someTotalsAndUserIds, lambda aCountAndId, otherCountAndId: cmp( aCountAndId[ 0], otherCountAndId[ 0]), reverse=True,)
+                someSortedTotalsUserIds = [ aCountAndId[ 1] for aCountAndId in someSortedTotalsAndUserIds]
+
+                unInforme[ 'rank_user_ids_total'] = someSortedTotalsUserIds
+                
+                
+                someSortedTotalsAndAdministratorUserIds = sorted( someTotalsAndAdministratorUserIds, lambda aCountAndId, otherCountAndId: cmp( aCountAndId[ 0], otherCountAndId[ 0]), reverse=True,)
+                someSortedTotalsAdministratorUserIds = [ aCountAndId[ 1] for aCountAndId in someSortedTotalsAndAdministratorUserIds]
+
+                unInforme[ 'rank_admin_user_ids_total'] = someSortedTotalsAdministratorUserIds
+                
+
+                
+                for  aPeriodKey in cTRAContribucionesReport_Periods:
+                                            
+                    someTotalsAndUserIdsInPeriod = somePeriodsTotalsAndUserIds[ aPeriodKey]                         
+                    someSortedTotalsAndUserIdsInPeriod = sorted( someTotalsAndUserIdsInPeriod, lambda aCountAndId, otherCountAndId: cmp( aCountAndId[ 0], otherCountAndId[ 0]), reverse=True,)
+                    someSortedUserIdsInPeriod = [ aCountAndId[ 1] for aCountAndId in someSortedTotalsAndUserIdsInPeriod]                     
+                    unInforme[ 'rank_user_ids_by_periods'][ aPeriodKey] = someSortedUserIdsInPeriod
+                
+                    someTotalsAndAdministratorUserIdsInPeriod = somePeriodsTotalsAndAdministratorUserIds[ aPeriodKey]                         
+                    someSortedTotalsAndAdministratorUserIdsInPeriod = sorted( someTotalsAndAdministratorUserIdsInPeriod, lambda aCountAndId, otherCountAndId: cmp( aCountAndId[ 0], otherCountAndId[ 0]), reverse=True,)
+                    someSortedAdministratorUserIdsInPeriod = [ aCountAndId[ 1] for aCountAndId in someSortedTotalsAndAdministratorUserIdsInPeriod]                     
+                    
+                    unInforme[ 'rank_admin_user_ids_by_periods'][ aPeriodKey] = someSortedAdministratorUserIdsInPeriod
+                
+             
+                    
+                    
+                    
+                    
+                    
+                # #######################################
+                """Loop through all languages, collecting from each language the number of contributions and id for each non-administrator user, and each administrator, to be ranked later by the number of their contributions.
+                
+                """
+                for unCodigoIdioma in unInforme[ 'contributions_by_language'].keys():
+                    
+                    # #######################################
+                    """Collect from one language the number of contributions and id for each non-administrator user, and each administrator, to be ranked later by the number of their contributions.
+                    
+                    """
+
+                    unInformeIdioma = unInforme[ 'contributions_by_language'][ unCodigoIdioma]
+                                        
+                    someLanguageTotalsAndUserIdsDict                     = { }
+                    someLanguagePeriodsTotalsAndUserIdsDict              = dict( [ [ aPeriodKey, { }, ] for  aPeriodKey in cTRAContribucionesReport_Periods])
+                    someLanguageTotalsAndAdministratorUserIdsDict        = { }
+                    someLanguagePeriodsTotalsAndAdministratorUserIdsDict = dict( [ [ aPeriodKey, { }, ] for  aPeriodKey in cTRAContribucionesReport_Periods])
+                    
+                    for aPeriodKey in cTRAContribucionesReport_Periods:
+                        
+                        unasContributionsByUsers = unInformeIdioma[ 'contributions_by_periods'][ aPeriodKey]
+                        
+                        for aUserId in unasContributionsByUsers.keys():
+                            
+                                            
+                            if not ( aUserId in unosUsuariosAdministradores):
+                                
+                                aUserContributions = unasContributionsByUsers.get( aUserId, {})
+                                if aUserContributions:
+                                    
+                                    if aUserContributions.get( 'total_contributions', 0):
+                                        
+                                        someLanguageTotalsAndUserIdsDict[ aUserId] = someLanguageTotalsAndUserIdsDict.get( aUserId, 0) + aUserContributions.get( 'total_contributions', 0)
+                                                                                
+                                        someLanguagePeriodsTotalsAndUserIdsDict[ aPeriodKey][ aUserId] = someLanguagePeriodsTotalsAndUserIdsDict[ aPeriodKey].get( aUserId, 0) + aUserContributions.get( 'total_contributions', 0)
+                            
+                                                    
+                                                    
+                            else:                               
+                                aUserContributions = unasContributionsByUsers.get( aUserId, {})
+                                if aUserContributions:
+                                    
+                                    if aUserContributions.get( 'total_contributions', 0):
+                                        
+                                        someLanguageTotalsAndAdministratorUserIdsDict[ aUserId] = someLanguageTotalsAndAdministratorUserIdsDict.get( aUserId, 0) + aUserContributions.get( 'total_contributions', 0)
+                                                                                
+                                        someLanguagePeriodsTotalsAndAdministratorUserIdsDict[ aPeriodKey][ aUserId] = someLanguagePeriodsTotalsAndAdministratorUserIdsDict[ aPeriodKey].get( aUserId, 0) + aUserContributions.get( 'total_contributions', 0)
+                      
+                                       
+                                      
+                                        
+                                        
+                    # #######################################
+                    """Build from the info collected above, the arrays with number of contributions and user ids, to be sorted (ranked).
+                    
+                    """
+                                        
+                    someLanguageTotalsAndUserIds                     = [ [ someLanguageTotalsAndUserIdsDict[ aUserId], aUserId,] for aUserId in someLanguageTotalsAndUserIdsDict.keys()]
+                    someLanguagePeriodsTotalsAndUserIds              = dict( [ [ aPeriodKey, [ ], ] for  aPeriodKey in cTRAContribucionesReport_Periods])
+                    for  aPeriodKey in cTRAContribucionesReport_Periods:
+                        someLanguagePeriodsTotalsAndUserIds[ aPeriodKey] = [ [ someLanguagePeriodsTotalsAndUserIdsDict[ aPeriodKey][ aUserId], aUserId,] for aUserId in someLanguagePeriodsTotalsAndUserIdsDict[ aPeriodKey].keys()]
+                    
+                        
+                        
+                    someLanguageTotalsAndAdministratorUserIds        = [ [ someLanguageTotalsAndAdministratorUserIdsDict[ aUserId], aUserId,] for aUserId in someLanguageTotalsAndAdministratorUserIdsDict.keys()]
+                    someLanguagePeriodsTotalsAndAdministratorUserIds = dict( [ [ aPeriodKey, [ ], ] for  aPeriodKey in cTRAContribucionesReport_Periods])
+                    for  aPeriodKey in cTRAContribucionesReport_Periods:
+                        someLanguagePeriodsTotalsAndAdministratorUserIds[ aPeriodKey] = [ [ someLanguagePeriodsTotalsAndAdministratorUserIdsDict[ aPeriodKey][ aUserId], aUserId,] for aUserId in someLanguagePeriodsTotalsAndAdministratorUserIdsDict[ aPeriodKey].keys()]
+                                        
+                                            
+                                   
+                        
+                        
+                    # #######################################
+                    """Rank changes in all languages by administrator and non-administrator users according to the number of their contributions.
+                    
+                    """
+                    someSortedLanguageTotalsAndUserIds = sorted( someLanguageTotalsAndUserIds, lambda aCountAndId, otherCountAndId: cmp( aCountAndId[ 0], otherCountAndId[ 0]), reverse=True,)
+                    someSortedLanguageTotalsUserIds = [ aCountAndId[ 1] for aCountAndId in someSortedLanguageTotalsAndUserIds]
+    
+                    unInformeIdioma[ 'rank_user_ids_total'] = someSortedLanguageTotalsUserIds
+                    
+                    
+                    someSortedLanguageTotalsAndAdministratorUserIds = sorted( someLanguageTotalsAndAdministratorUserIds, lambda aCountAndId, otherCountAndId: cmp( aCountAndId[ 0], otherCountAndId[ 0]), reverse=True,)
+                    someSortedLanguageTotalsAdministratorUserIds = [ aCountAndId[ 1] for aCountAndId in someSortedLanguageTotalsAndAdministratorUserIds]
+    
+                    unInformeIdioma[ 'rank_admin_user_ids_total'] = someSortedLanguageTotalsAdministratorUserIds
+                    
+    
+                    
+                    for  aPeriodKey in cTRAContribucionesReport_Periods:
+                                                
+                        someLanguageTotalsAndUserIdsInPeriod = someLanguagePeriodsTotalsAndUserIds[ aPeriodKey]                         
+                        someSortedLanguageTotalsAndUserIdsInPeriod = sorted( someLanguageTotalsAndUserIdsInPeriod, lambda aCountAndId, otherCountAndId: cmp( aCountAndId[ 0], otherCountAndId[ 0]), reverse=True,)
+                        someSortedLanguageUserIdsInPeriod = [ aCountAndId[ 1] for aCountAndId in someSortedLanguageTotalsAndUserIdsInPeriod]                     
+                        unInformeIdioma[ 'rank_user_ids_by_periods'][ aPeriodKey] = someSortedLanguageUserIdsInPeriod
+                    
+                        someLanguageTotalsAndAdministratorUserIdsInPeriod = someLanguagePeriodsTotalsAndAdministratorUserIds[ aPeriodKey]                         
+                        someSortedLanguageTotalsAndAdministratorUserIdsInPeriod = sorted( someLanguageTotalsAndAdministratorUserIdsInPeriod, lambda aCountAndId, otherCountAndId: cmp( aCountAndId[ 0], otherCountAndId[ 0]), reverse=True,)
+                        someSortedLanguageAdministratorUserIdsInPeriod = [ aCountAndId[ 1] for aCountAndId in someSortedLanguageTotalsAndAdministratorUserIdsInPeriod]                     
+                        
+                        unInformeIdioma[ 'rank_admin_user_ids_by_periods'][ aPeriodKey] = someSortedLanguageAdministratorUserIdsInPeriod
+                    
+                                         
+                        
+                        
+                # #######################################
+                """Retrieve information about the members.
+                
+                """
+                aModelDDvlPloneTool = self.fModelDDvlPloneTool()
+                
+                if not( aModelDDvlPloneTool == None):        
+                    
+                    unasContributionsByUsers = unInforme[ 'contributions_by_user']
+                    someUserIds              = unasContributionsByUsers.keys()
+                    
+                    for aUserId in someUserIds:
+                        aMemberInfo = aModelDDvlPloneTool.fGetMemberInfoForUserId( self, aUserId)
+                        if aMemberInfo:
+                            unInforme[ 'users_member_info'][ aUserId] = aMemberInfo
+                    
+                
+                        
+                        
+                                            
+                # #######################################
+                """Report sucessfully completed.
+                
+                """
+                unInforme[ 'report_date'] = self.fDateTimeNowString()   
+                unInforme[ 'success'] = True
+                
+                                
+                return unInforme
+
+            except:
+                unaExceptionInfo = sys.exc_info()
+                unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
+
+                unInformeExcepcion = 'Exception during fElaborarInformeContribuciones\n' 
+                unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
+                try:
+                    unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                except:
+                    None
+                unInformeExcepcion += unaExceptionFormattedTraceback   
+
+                unInforme[ 'success'] = False
+                unInforme[ 'condition'] = 'exception'
+                unInforme[ 'exception'] = unInformeExcepcion
+
+                unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
+
+                if cLogExceptions:
+                    logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
+
+                return unInforme
+
+        finally:
+            unExecutionRecord and unExecutionRecord.pEndExecution()
+
+            
+            
+            
+            
+            
+
+    security.declareProtected( permissions.View, 'pAcumularContribucionDeUsuario')
+    def pAcumularContribucionDeUsuario(self, 
+        theProcessControlManager           =None,
+        theInforme                         =None, 
+        theCodigoIdioma                    =None,
+        theUsuario                         =None, 
+        theFecha                           =None,
+        theModoContribucion                =None,):
+        
+        
+        if theProcessControlManager == None:
+            return self
+        
+        if theInforme == None:
+            return self
+        
+        if not theCodigoIdioma:
+            return self
+        
+        if not ( theUsuario and theFecha):
+            return self
+        
+        if not theModoContribucion:
+            return self
+        
+        if not ( theModoContribucion in cTRAContribucion_Modos):
+            return self
+        
+        
+        
+        
+        
+
+        # #############################################################
+        """Determine periods to accumulate into.
+    
+        """          
+        somePeriodsToAccumulateInto = [ ]
+        
+        for aPeriodKey in cTRAContribucionesReport_Periods:
+            if ( theFecha >= theInforme[ 'periods_dates'][ aPeriodKey][ 0]) and \
+               ( theFecha <= theInforme[ 'periods_dates'][ aPeriodKey][ 1]):
+                somePeriodsToAccumulateInto.append( aPeriodKey)
+        
+                
+                
+        
+        
+        # ########################################           
+        """Accumulate total of all contributions made on any periods in all languages by all users in all modes.
+        
+        """
+        theInforme[ 'total_contributions'] += 1
+        
+        theInforme[ 'total_contributions_by_mode'][ theModoContribucion] += 1
+        
+        
+        
+        
+        
+        # ########################################           
+        """Accumulate totals for specific periods in all languages by all users in all modes and for each mode.
+        
+        """
+        for aPeriodKey in somePeriodsToAccumulateInto:
+            theInforme[ 'periods_totals'][ aPeriodKey][ 'total_contributions'] += 1
+            theInforme[ 'periods_totals'][ aPeriodKey][ 'contributions_by_mode'][ theModoContribucion] += 1
+        
+            
+            
+            
+            
+        
+        # ########################################           
+        """Accumulate for the user totals in all languages, for each mode, and for each period totals and modes.
+        
+        """
+        unasContribucionesTotalesUsuario = theInforme[ 'contributions_by_user'].get( theUsuario, None)
+        if unasContribucionesTotalesUsuario == None:
+            unasContribucionesTotalesUsuario = self.fNewVoidInformeContribucionesUsuario()
+            theInforme[ 'contributions_by_user'][ theUsuario] = unasContribucionesTotalesUsuario
+            theInforme[ 'alphabetical_user_ids'] = sorted( theInforme[ 'contributions_by_user'].keys())
+            
+
+            
+        unasContribucionesTotalesUsuario[ 'total_contributions'] += 1
+        unasContribucionesTotalesUsuario[ 'contributions_by_mode'][ theModoContribucion] += 1
+
+        for aPeriodKey in somePeriodsToAccumulateInto:
+            unasContribucionesTotalesUsuario[ 'contributions_by_periods'][ aPeriodKey][ 'total_contributions'] += 1
+            unasContribucionesTotalesUsuario[ 'contributions_by_periods'][ aPeriodKey][ 'contributions_by_mode'][ theModoContribucion] += 1
+            
+
+            
+            
+        someContributedLanguages = unasContribucionesTotalesUsuario[ 'contributed_language_codes']
+        if not ( theCodigoIdioma in someContributedLanguages):
+            someContributedLanguages.append( theCodigoIdioma)
+            unasContribucionesTotalesUsuario[ 'contributed_language_codes'] = sorted( someContributedLanguages)
+        
+            
+            
+            
+            
+        
+        # ########################################           
+        """Accumulate for translation language. Create structure if no results for language have been ellaborated yet.
+        
+        """
+        unasContribucionesIdioma = theInforme[ 'contributions_by_language'].get( theCodigoIdioma, None)
+        if unasContribucionesIdioma == None:
+            unasContribucionesIdioma = self.fNewVoidInformeContribucionesIdioma()
+            theInforme[ 'contributions_by_language'][ theCodigoIdioma] = unasContribucionesIdioma
+        
+        unasContribucionesIdioma[ 'total_contributions'] += 1
+        unasContribucionesIdioma[ 'total_contributions_by_mode'][ theModoContribucion] += 1
+        
+        
+        
+        
+        
+        # ########################################           
+        """Accumulate for the user in the translation language, for each mode, and for each period totals and modes.
+        
+        """
+        unasContribucionesIdiomaUsuario = unasContribucionesIdioma[ 'contributions_by_user'].get( theUsuario, None)
+        if unasContribucionesIdiomaUsuario == None:
+            unasContribucionesIdiomaUsuario = self.fNewVoidInformeContribucionesUsuarioEnIdioma()
+            unasContribucionesIdioma[ 'contributions_by_user'][ theUsuario] = unasContribucionesIdiomaUsuario
+
+            
+        unasContribucionesIdiomaUsuario[ 'total_contributions'] += 1
+        unasContribucionesIdiomaUsuario[ 'contributions_by_mode'][ theModoContribucion] += 1
+
+        
+        for aPeriodKey in somePeriodsToAccumulateInto:
+            unasContribucionesIdiomaUsuario[ 'contributions_by_periods'][ aPeriodKey][ 'total_contributions'] += 1
+            unasContribucionesIdiomaUsuario[ 'contributions_by_periods'][ aPeriodKey][ 'contributions_by_mode'][ theModoContribucion] += 1
+            
+            
+            
+            
+        
+        # ########################################           
+        """Accumulate totals for specific periods in current language by all users in all modes and for each mode.
+        
+        """
+        for aPeriodKey in somePeriodsToAccumulateInto:
+            
+            unasContribucionesIdioma[ 'periods_totals'][ aPeriodKey][ 'total_contributions'] += 1
+            unasContribucionesIdioma[ 'periods_totals'][ aPeriodKey][ 'contributions_by_mode'][ theModoContribucion] += 1
+        
+            
+            
+            
+                
+                
+            # #############################################################
+            """Accumulate number of contributions by periods.
+        
+            """  
+            someContributionsByUsers = unasContribucionesIdioma[ 'contributions_by_periods'][ aPeriodKey]
+        
+        
+            
+            
+            
+            # ########################################           
+            """Accumulate for user. Create structure if no results for user have been ellaborated yet.
+            
+            """
+            unasContribucionesUsuario = someContributionsByUsers.get( theUsuario, None)
+            if unasContribucionesUsuario == None:
+                unasContribucionesUsuario = self.fNewVoidInformeContribucionesUsuarioEnPeriodo()
+                someContributionsByUsers[ theUsuario] = unasContribucionesUsuario
+                
+                    
+            unasContribucionesUsuario[ 'total_contributions'] += 1
+             
+            unasContribucionesUsuario[ 'contributions_by_mode'][ theModoContribucion] += 1
+
+                
+        
+        return self
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     security.declareProtected( permissions.View, 'fElaborarInformeIdiomas')
     def fElaborarInformeIdiomas(self, 
@@ -964,7 +1862,9 @@ class TRACatalogo_Informes:
         try:
             try:   
                 unInforme = self.fNewVoidInformeActividad()
-                unInforme[ 'report_date'] = self.fDateTimeNowString()
+                
+                unInforme[ 'startup_date']  = self.fStartupDateString()
+                unInforme[ 'report_date']   = self.fDateTimeNowString()
 
 
                 unPermissionsCache = fDictOrNew( thePermissionsCache)
@@ -1081,7 +1981,7 @@ class TRACatalogo_Informes:
                                     unPeriodKey_Last7Days = None
                                     if anActivityDate >= unDateTimeLast7DaysString:
                                         unPeriodKey_Last7Days = cActivityReport_Period_Last7Days
-                                        self.pAcumularActividadEnPeriodoInforme( anActivity, unPeriodKey_Last7Days, unInforme)
+                                        self.pAcumularActividadEnPeriodoInforme( anActivity, cActivityReport_Period_Last7Days, unInforme)
                                         
                                         
                                         
@@ -1160,6 +2060,19 @@ class TRACatalogo_Informes:
 
                         
                         
+                # #############################################################
+                """Retrieve last contributions report.
+            
+                """  
+                  
+                unaContribuciones = self.fObtenerUltimoContribuciones()
+                if not ( unaContribuciones == None):
+                    unInforme.update( {
+                        'last_contributions_report_title': unaContribuciones.Title(),
+                        'last_contributions_report_URL':   unaContribuciones.absolute_url(),
+                    })     
+                                            
+                                        
                                     
                 unInforme[ 'report_date'] = self.fDateTimeNowString()   
                 unInforme[ 'success'] = True
@@ -1321,7 +2234,7 @@ class TRACatalogo_Informes:
             """Check if the counter of changes since the last time the status report by languages was generated, is bigger than the maximum configured for the catalog. 
             
             """
-            unaConfiguracion = self.fObtenerConfiguracion( cTRAConfiguracionAspecto_AlmacenPaginas)
+            unaConfiguracion = self.fObtenerConfiguracion( cTRAConfiguracionAspecto_InvalidacionInformes)
             
             unNumeroDeCambiosAnularInformeIdiomas = 0
             if not ( unaConfiguracion == None):
@@ -1467,8 +2380,194 @@ class TRACatalogo_Informes:
     
     
     
+
+       
+    
+    #security.declarePrivate( 'fInvalidateObsoleteContributionsReport')
+    #def fInvalidateObsoleteContributionsReport(self, ):
+        #"""If the Contributions Report is too old, or enough changes have been applied to translations in the catalog, invalidate the status report by languages for the catalog.
+        
+        #"""
+                
+        #aReport = self.fNewVoidReportInvalidateObsoleteStatusReports()
+        
+        #unPathDelRaiz = self.fPathDelRaiz()
+        #if not unPathDelRaiz:
+            #return aReport        
+        #aReport[ 'path_del_raiz'] = unPathDelRaiz
+        
+        
+        #unMustInvalidate              = False
+        #unVoteMustInvalidateByNumbers = False
+        #unVoteMustInvalidateByTime    = False
+            
+        #try:
+            ## #################
+            #"""MUTEX LOCK. 
+            
+            #"""
+            ## !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            #self.pAcquireGlobalsLock( )
+            ## !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            
+                
+                       
+            ## ####################################################################
+            #"""Check if the counter of changes since the last time the status report by languages was generated, is bigger than the maximum configured for the catalog. 
+            
+            #"""
+            #unaConfiguracion = self.fObtenerConfiguracion( cTRAConfiguracionAspecto_InvalidacionInformes)
+            
+            #unNumeroDeCambiosAnularInformeIdiomas = 0
+            #if not ( unaConfiguracion == None):
+                #unNumeroDeCambiosAnularInformeIdiomas = unaConfiguracion.getNumeroDeCambiosAnularInformeIdiomas()
+            #if not unNumeroDeCambiosAnularInformeIdiomas:
+                #unNumeroDeCambiosAnularInformeIdiomas = 0
+                
+            #aReport[ 'changes_threshold'] = unNumeroDeCambiosAnularInformeIdiomas
+
+            #if TRACatalogo_Globales.gNumTranslationsStatusChangesSinceContributionsReport == None:
+                #TRACatalogo_Globales.gNumTranslationsStatusChangesSinceContributionsReport = { }
+                
+            #unNumTranslationsStatusChangesForRoot = TRACatalogo_Globales.gNumTranslationsStatusChangesSinceContributionsReport.get( unPathDelRaiz, None)
+            #if unNumTranslationsStatusChangesForRoot == None:
+                #unNumTranslationsStatusChangesForRoot = 0
+                
+            #aReport[ 'changes_recorded'] = unNumTranslationsStatusChangesForRoot
+                
+            #if unNumTranslationsStatusChangesForRoot >= unNumeroDeCambiosAnularInformeIdiomas:
+                #unVoteMustInvalidateByNumbers = True
+            
+                        
+                
+                
+                
+            ## ####################################################################
+            #"""Check if enough time has lapsed since the last time the user contributions report was generated. 
+            
+            #"""
+            #unSegundosMinimosRetencionInformeIdiomas = 0
+            #if not ( unaConfiguracion == None):
+                #unaConfiguracion.getSegundosMinimosRetencionInformeIdiomas()
+            #if not unSegundosMinimosRetencionInformeIdiomas:
+                #unSegundosMinimosRetencionInformeIdiomas = 0
+                
+            #aReport[ 'seconds_threshold'] = unSegundosMinimosRetencionInformeIdiomas
+                
+
+            #if TRACatalogo_Globales.gContributionsReportTimeMillis == None:
+                #TRACatalogo_Globales.gContributionsReportTimeMillis = { }
+                
+            #unStatusContributionsReportTimeMillis = TRACatalogo_Globales.gContributionsReportTimeMillis.get( unPathDelRaiz, None)
+            #if unStatusContributionsReportTimeMillis == None:
+                #unStatusContributionsReportTimeMillis = 0
+                
+            #unosMillisecondsNow = self.fMillisecondsNow()
+            
+            #unosSecondsLapsed =  int(( unosMillisecondsNow - unStatusContributionsReportTimeMillis) / 1000)
+            #aReport[ 'seconds_lapsed'] = unosSecondsLapsed
+
+            #if unosSecondsLapsed >= unSegundosMinimosRetencionInformeIdiomas:
+                #unVoteMustInvalidateByTime = True
+                
+            
+            #if unVoteMustInvalidateByNumbers:
+                #unMustInvalidate = True
+            #else:
+                #if unVoteMustInvalidateByTime and unNumTranslationsStatusChangesForRoot:
+                    #unMustInvalidate = True
+                    
+                
+                
+                
+        #finally:
+            ## #################
+            #"""MUTEX UNLOCK. 
+            
+            #"""
+            ## !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            #self.pReleaseGlobalsLock( )
+            ## !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+            
+            
+        #if unMustInvalidate:
+            #self.pFlushCachedTemplates( [ 'TRACatalogoContribuciones', 'TRACatalogoContribuciones_NoHeaderNoFooter',])
+            #aReport[ 'invalidated'] = True
+            
+        #return aReport
+            
+    
+
     
     
+        
+
+    #security.declarePrivate( 'pContributionsReportJustGenerated')
+    #def pContributionsReportJustGenerated(self, ):
+        #"""Record the time now, and Reset the counter of changes since the report was generated.
+        
+        #"""
+                
+        #unPathDelRaiz = self.fPathDelRaiz()
+        #if not unPathDelRaiz:
+            #return self
+        
+        #unMustInvalidate = False
+            
+        #try:
+            ## #################
+            #"""MUTEX LOCK. 
+            
+            #"""
+            ## !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            #self.pAcquireGlobalsLock( )
+            ## !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            
+            
+                        
+            ## ####################################################################
+            #"""Record the current time as the status report generation time. 
+            
+            #"""
+            #if TRACatalogo_Globales.gContributionsReportTimeMillis == None:
+                #TRACatalogo_Globales.gContributionsReportTimeMillis = { }
+                
+            #unosMillisecondsNow = self.fMillisecondsNow()
+
+            #TRACatalogo_Globales.gContributionsReportTimeMillis[ unPathDelRaiz] = unosMillisecondsNow
+                 
+                
+                
+                       
+            ## ####################################################################
+            #"""Reset the counter of changes since the status report was generated.
+            
+            #"""
+              
+            #if TRACatalogo_Globales.gNumTranslationsStatusChangesSinceContributionsReport == None:
+                #TRACatalogo_Globales.gNumTranslationsStatusChangesSinceContributionsReport = { }
+                
+            #TRACatalogo_Globales.gNumTranslationsStatusChangesSinceContributionsReport[ unPathDelRaiz] = 0
+                
+        #finally:
+            ## #################
+            #"""MUTEX UNLOCK. 
+            
+            #"""
+            ## !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            #self.pReleaseGlobalsLock( )
+            ## !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+        #return self
+            
+    
+    
+    
+    
+    
+        
     
 
     
@@ -1504,7 +2603,7 @@ class TRACatalogo_Informes:
             """Check if the counter of changes since the last time the status report by languages was generated, is bigger than the maximum configured for the catalog. 
             
             """
-            unaConfiguracion = self.fObtenerConfiguracion( cTRAConfiguracionAspecto_AlmacenPaginas)
+            unaConfiguracion = self.fObtenerConfiguracion( cTRAConfiguracionAspecto_InvalidacionInformes)
             
             unNumeroDeCambiosAnularInformeModulosEIdiomas = 0
             if not ( unaConfiguracion == None):
@@ -1682,11 +2781,11 @@ class TRACatalogo_Informes:
             """Check if the counter of changes since the last time the activity report was generated, is bigger than the maximum configured for the catalog. 
             
             """
-            unaConfiguracion = self.fObtenerConfiguracion( cTRAConfiguracionAspecto_AlmacenPaginas)
+            unaConfiguracion = self.fObtenerConfiguracion( cTRAConfiguracionAspecto_InvalidacionInformes)
             
             unNumeroDeActividadesAnularInformeActividad = 0
             if not ( unaConfiguracion == None):
-                unNumeroDeActividadesAnularInformeActividad = unaConfiguracion.fObtenerConfiguracion( cTRAConfiguracionAspecto_AlmacenPaginas).getNumeroDeActividadesAnularInformeActividad()
+                unNumeroDeActividadesAnularInformeActividad = unaConfiguracion.fObtenerConfiguracion( cTRAConfiguracionAspecto_InvalidacionInformes).getNumeroDeActividadesAnularInformeActividad()
             if not unNumeroDeActividadesAnularInformeActividad:
                 unNumeroDeActividadesAnularInformeActividad = 0
                 

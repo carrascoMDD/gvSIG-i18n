@@ -68,9 +68,9 @@ from Products.ATContentTypes.content.base import updateAliases
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
-from Products.CMFCore.utils  import getToolByName
-from Acquisition  import aq_inner, aq_parent
 from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import ReferenceBrowserWidget
+from Acquisition  import aq_inner, aq_parent
+from Products.CMFCore.utils  import getToolByName
 
 ##code-section module-header #fill in your manual code here
 ##/code-section module-header

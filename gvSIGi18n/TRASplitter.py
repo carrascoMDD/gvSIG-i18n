@@ -43,16 +43,32 @@ from Products.ZCTextIndex.PipelineFactory import element_factory
 from types import UnicodeType 
 
 
-
 from TRAUnicode           import fUnicodeReplacements
 from TRAUnicode_Constants import cUnicode_Limit
+
+
+
+
 
 
 cTRASplitterDefaultEncoding = 'utf-8'
 
 
-cSplitterWildcards = [ u'*', u'?',]
+cTRASplitterWildcards = [ u'*', u'?',]
 
+
+cTRASplitterParenthesis_Open  = [ u'(',]
+cTRASplitterParenthesis_Close = [ u')',]
+
+cTRASplitterParenthesis = cTRASplitterParenthesis_Open + cTRASplitterParenthesis_Close
+
+cTRASplitterNegate = [ u'-',]
+
+
+cTRASplitterDoubleQuote = [ u'"',]
+
+
+cTRASplitterAllSpecialChars = cTRASplitterWildcards + cTRASplitterParenthesis + cTRASplitterNegate + cTRASplitterDoubleQuote
 
 
 def getSupportedEncoding(encodings):
@@ -77,14 +93,21 @@ def fgReplaceCharsAndSplitWords_asUnicode( theString, theIsGlob=False):
     
     for aChar in theString:
         
-        if ( aChar in cSplitterWildcards):
+        
+        if aChar in cTRASplitterAllSpecialChars:
             if theIsGlob:
-                aCurrentWordString = aStream.getvalue()
-                if aCurrentWordString:
-                    aWordWithWildcard = '%s%s' % ( aCurrentWordString, aChar,)
-                    someResultWordStrings.append( aWordWithWildcard)
-                    aStream.close()
-                    aStream = StringIO( u'')
+
+                # BEGIN ACV 20110209 Fix bug preventing the use of wildcards in search criteria
+                aStream.write( aChar)
+                
+                #aCurrentWordString = aStream.getvalue()
+                #if aCurrentWordString:
+                    #aWordWithWildcard = '%s%s' % ( aCurrentWordString, aChar,)
+                    #someResultWordStrings.append( aWordWithWildcard)
+                    #aStream.close()
+                    #aStream = StringIO( u'')
+                    
+                # END ACV 20110209 Fix bug preventing the use of wildcards in search criteria
                     
             else:
                 aCurrentWordString = aStream.getvalue()
@@ -92,7 +115,9 @@ def fgReplaceCharsAndSplitWords_asUnicode( theString, theIsGlob=False):
                     someResultWordStrings.append( aCurrentWordString)
                     aStream.close()
                     aStream = StringIO( u'')
-                
+                    
+
+                    
         else:   
             aCharIndex = ord( aChar)
             if aCharIndex and ( aCharIndex < cUnicode_Limit):
@@ -197,68 +222,6 @@ class TRASplitter:
     def fReplaceCharsAndSplitWords(self, theString, theIsGlob=False):
         return fgReplaceCharsAndSplitWords_asUnicode( theString, theIsGlob)
     
-        #if not theString:
-            #return []
-        
-        #someUnicodeReplacements = fUnicodeReplacements( )
-        #if not someUnicodeReplacements:
-            #return [ theString,]
-        
-        #someResultWordStrings = [ ]
-        
-        #aStream = StringIO( u'')
-        
-        #for aChar in theString:
-            
-            #if ( aChar in cSplitterWildcards):
-                #if theIsGlob:
-                    #aCurrentWordString = aStream.getvalue()
-                    #if aCurrentWordString:
-                        #aWordWithWildcard = '%s%s' % ( aCurrentWordString, aChar,)
-                        #someResultWordStrings.append( aWordWithWildcard)
-                        #aStream.close()
-                        #aStream = StringIO( u'')
-                        
-                #else:
-                    #aCurrentWordString = aStream.getvalue()
-                    #if aCurrentWordString:
-                        #someResultWordStrings.append( aCurrentWordString)
-                        #aStream.close()
-                        #aStream = StringIO( u'')
-                    
-            #else:   
-                #aCharIndex = ord( aChar)
-                #if aCharIndex and ( aCharIndex < cUnicode_Limit):
-                    
-                    #aReplacementCharIndex = someUnicodeReplacements[ aCharIndex]
-                    
-                    #if not aReplacementCharIndex: # out of range
-                        #aCurrentWordString = aStream.getvalue()
-                        #if aCurrentWordString:
-                            #someResultWordStrings.append( aCurrentWordString)
-                            #aStream.close()
-                            #aStream = StringIO( u'')
-                       
-                    #elif aReplacementCharIndex > 0: # Concatenate in words
-                        #aStream.write( unichr( aReplacementCharIndex))
-                            
-                    #else:  # Single Char symbol
-                        #aCurrentWordString = aStream.getvalue()
-                        #if aCurrentWordString:
-                            #someResultWordStrings.append( aCurrentWordString)
-                            #aStream.close()
-                            #aStream = StringIO( u'')
-                        #someResultWordStrings.append( unichr( 0 - aReplacementCharIndex))
-                
-        #aCurrentWordString = aStream.getvalue()
-        #if aCurrentWordString:
-            #someResultWordStrings.append( aCurrentWordString)
-                
-        #aStream.close()
-        
-        #return someResultWordStrings
-    
-        
     
 
     

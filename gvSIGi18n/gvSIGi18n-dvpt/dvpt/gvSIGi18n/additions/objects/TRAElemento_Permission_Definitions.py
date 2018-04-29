@@ -357,7 +357,7 @@ cTypesAcquiringRoleAssignments =  [
     cNombreTipoTRAConfiguracionImportacion,
     cNombreTipoTRAConfiguracionExportacion,
     cNombreTipoTRAConfiguracionSolicitudesCadenas,
-    cNombreTipoTRAConfiguracionAlmacenPaginas,
+    cNombreTipoTRAConfiguracionInvalidacionInformes,
     cNombreTipoTRAConfiguracionPaginaTraducciones,
     cNombreTipoTRAConfiguracionPerfilEjecucion,
     cNombreTipoTRAConfiguracionVarios,

@@ -56,6 +56,7 @@ from Products.CMFCore       import permissions
 from TRAElemento_Constants                 import *
 from TRAElemento_Constants_Activity        import *
 from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Contributions   import *
 from TRAElemento_Constants_Dates           import *
 from TRAElemento_Constants_Encoding        import *
 from TRAElemento_Constants_Import          import *
@@ -1561,6 +1562,7 @@ class TRAProgreso_Operaciones:
                         aStringIO.write( """        log_every_nth_transactions %d\n""" % someProgressParms.get( 'log_every_nth_transactions', 0))
                                      
                     if aProgress_SupportKind == cTRAProgress_SupportKind_YieldProcessor:
+                        aStringIO.write( """        only_between_transactions %s\n""" % ( someProgressParms.get( 'only_between_transactions', False) and 'YES') or 'NO')
                         aStringIO.write( """        percent_active_time %d\n""" % someProgressParms.get( 'percent_active_time', 0))
             
                     aStringIO.write( """\n""")
