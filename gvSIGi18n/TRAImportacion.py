@@ -576,13 +576,14 @@ schema = Schema((
         label2='Translations Interchange Contents',
         additional_columns=['excluirDeImportacion', 'nombreModulo', 'usuarioContribuidor', 'fechaContenido'],
         label='Contenido Intercambio Traducciones',
+        represents_aggregation=True,
         description2='Contains strings and translations contributed by a user, and to be imported.',
         multiValued=1,
         factory_views={ 'TRAContenidoIntercambio' : 'TRACrear_ContenidoIntercambio',},
         owner_class_name="TRAImportacion",
         expression="context.objectValues(['TRAContenidoIntercambio'])",
         computed_types=['TRAContenidoIntercambio'],
-        represents_aggregation=True,
+        non_framework_elements=False,
         description='Contiene cadenas y traducciones contribuidas por un usuario, para su importacion.'
     ),
 
@@ -829,12 +830,13 @@ schema = Schema((
         label2='Status Reports Before and After',
         additional_columns=['esAutoActualizable', 'estadoProceso', 'fechaFinProceso', 'haCompletadoConExito'],
         label='Informes Estado Antes y Despues',
+        represents_aggregation=True,
         description2='Catalog Status Reports, its Languages, Modules, Strings and Translations, at the beginning of the import process, and after termination of the process.',
         multiValued=1,
         owner_class_name="TRAImportacion",
         expression="context.objectValues(['TRAInforme'])",
         computed_types=['TRAInforme'],
-        represents_aggregation=True,
+        non_framework_elements=False,
         description='Informes del Estado del Catalogo, sus Idiomas, Modulos, Cadenas y Traducciones, al comenzar el proceso de importacion, y tras terminar el proceso de importacion.'
     ),
 
@@ -883,12 +885,12 @@ class TRAImportacion(OrderedBaseFolder, TRAArquetipo, TRAImportacion_Operaciones
     actions =  (
 
 
-       {'action': "string:${object_url}/sharing",
+       {'action': "string:$object_url/content_status_history",
         'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
-        'condition': 'python:1'
+        'id': 'content_status_history',
+        'name': 'State',
+        'permissions': ("View",),
+        'condition': 'python:0'
        },
 
 
@@ -901,39 +903,21 @@ class TRAImportacion(OrderedBaseFolder, TRAArquetipo, TRAImportacion_Operaciones
        },
 
 
+       {'action': "string:${object_url}/sharing",
+        'category': "object",
+        'id': 'local_roles',
+        'name': 'Sharing',
+        'permissions': ("Manage properties",),
+        'condition': 'python:0'
+       },
+
+
        {'action': "string:${object_url}/reference_graph",
         'category': "object",
         'id': 'references',
         'name': 'References',
         'permissions': ("Modify portal content",),
         'condition': 'python:0'
-       },
-
-
-       {'action': "string:$object_url/content_status_history",
-        'category': "object",
-        'id': 'content_status_history',
-        'name': 'State',
-        'permissions': ("View",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:${object_url}/sharing",
-        'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
-        'condition': 'python:object.fRoleQuery_IsManagerOrCoordinator()'
-       },
-
-
-       {'action': "string:${object_url}/Tabular",
-        'category': "object",
-        'id': 'view',
-        'name': 'View',
-        'permissions': ("View",),
-        'condition': 'python:1'
        },
 
 
@@ -973,6 +957,15 @@ class TRAImportacion(OrderedBaseFolder, TRAArquetipo, TRAImportacion_Operaciones
        },
 
 
+       {'action': "string:${object_url}/Tabular",
+        'category': "object",
+        'id': 'view',
+        'name': 'View',
+        'permissions': ("View",),
+        'condition': 'python:1'
+       },
+
+
     )
 
     _at_rename_after_creation = True
@@ -984,12 +977,12 @@ class TRAImportacion(OrderedBaseFolder, TRAArquetipo, TRAImportacion_Operaciones
 
     # Methods
 
-    security.declarePublic('manage_beforeDelete')
-    def manage_beforeDelete(self,item,container):
+    security.declarePublic('cb_isCopyable')
+    def cb_isCopyable(self):
         """
         """
         
-        return TRAArquetipo.manage_beforeDelete( self, item, container)
+        return False
 
     security.declarePublic('manage_afterAdd')
     def manage_afterAdd(self,item,container):
@@ -997,6 +990,20 @@ class TRAImportacion(OrderedBaseFolder, TRAArquetipo, TRAImportacion_Operaciones
         """
         
         return TRAArquetipo.manage_afterAdd( self, item, container)
+
+    security.declarePublic('manage_beforeDelete')
+    def manage_beforeDelete(self,item,container):
+        """
+        """
+        
+        return TRAArquetipo.manage_beforeDelete( self, item, container)
+
+    security.declarePublic('manage_pasteObjects')
+    def manage_pasteObjects(self,cb_copy_data,REQUEST):
+        """
+        """
+        
+        return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

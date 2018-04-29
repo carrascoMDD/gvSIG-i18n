@@ -45,7 +45,6 @@
             <span tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TRAColeccionIdiomas_contents_idiomas_label',   'Languages-' )" />
             <span tal:condition="pHeaderPostfix" tal:content="pHeaderPostfix" />
          </h2>         
-        <p class="formHelp" tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_InformeModulosIntensiveWarning_msgid',  'Reporting the Modules and Languages Status is an intensive process. therefore it is performed periodically by the Coordinator, but not at each user request-' )" />
     
         <tal:block tal:condition="pInformeIdiomas" >
          

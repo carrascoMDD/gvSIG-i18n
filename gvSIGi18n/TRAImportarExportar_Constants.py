@@ -350,6 +350,7 @@ cWesternLanguageMarkInSourceMap =  'en'
 cEncodingSeparatorSentinelName  = '--encoding_separator--'
 
 cUTFEncodingsForAllLanguages = [ 
+    [ cEncodingUnicodeEscape, cEncodingUnicodeEscape, []], 
     [ cEncodingUTF8, cEncodingUTF8, []], 
     [ u'utf_7', u'U7,unicode-1-1-utf-7', []], 
      [ u'utf_8_sig', u'utf_8_sig', []], 

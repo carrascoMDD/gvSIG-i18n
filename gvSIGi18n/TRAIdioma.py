@@ -33,7 +33,6 @@ from AccessControl import ClassSecurityInfo
 from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.TRAArquetipo import TRAArquetipo
 from Products.gvSIGi18n.TRAIdioma_Operaciones import TRAIdioma_Operaciones
-from Products.Relations.field import RelationField
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
@@ -251,120 +250,6 @@ schema = Schema((
         position="12",
         owner_class_name="TRAIdioma",
         label="Fallback de idiomas"
-    ),
-
-    RelationField(
-        name='referenciaDeIdiomas',
-        inverse_relation_label="Idiomas a los que sirve de referencia",
-        additional_columns=['codigoIdiomaEnGvSIG', 'codigoInternacionalDeIdioma', 'nombreNativoDelIdioma', 'esIdiomaDePais', 'esVariacionDeIdiomaDePais'],
-        inverse_relation_description="Idiomas que preferentemente sirven de referencia a los traductores para traducir a este idioma.",
-        description="Idiomas que preferentemente sirven de referencia a los traductores para traducir a este idioma.",
-        relationship='IdiomasReferencia',
-        inverse_relation_field_name='idiomasReferencia',
-        inverse_relation_label2="Languages to which this serves as reference",
-        label2="Reference Languages",
-        inverse_relation_description2="Languages that translators use prefereably as a reference to translate into this language.",
-        widget=ReferenceBrowserWidget(
-            label="Idiomas de Referencia",
-            label2="Reference Languages",
-            description="Idiomas que preferentemente sirven de referencia a los traductores para traducir a este idioma.",
-            description2="Languages that translators use prefereably as a reference to translate into this language.",
-            label_msgid='gvSIGi18n_TRAIdioma_rel_referenciaDeIdiomas_label',
-            description_msgid='gvSIGi18n_TRAIdioma_rel_referenciaDeIdiomas_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        label="Idiomas de Referencia",
-        description2="Languages that translators use prefereably as a reference to translate into this language.",
-        multiValued=1,
-        containment="Unspecified",
-        inverse_relationship='ReferenciaDeIdiomas',
-        owner_class_name="TRAIdioma",
-        deststyle="Union=0;Derived=0;AllowDuplicates=0;Owned=0;Navigable=Unspecified;"
-    ),
-
-    RelationField(
-        name='idiomasReferencia',
-        inverse_relation_label="Idiomas de Referencia",
-        additional_columns=[ 'codigoIdiomaEnGvSIG','codigoInternacionalDeIdioma','nombreNativoDelIdioma','esIdiomaDePais','esVariacionDeIdiomaDePais',],
-        inverse_relation_description="Idiomas que preferentemente sirven de referencia a los traductores para traducir a este idioma.",
-        description="Idiomas que preferentemente sirven de referencia a los traductores para traducir a este idioma.",
-        relationship='ReferenciaDeIdiomas',
-        inverse_relation_field_name='referenciaDeIdiomas',
-        sourcestyle="Union=0;Derived=0;AllowDuplicates=0;Owned=0;Navigable=Unspecified;",
-        inverse_relation_label2="Reference Languages",
-        label2="Languages to which this serves as reference",
-        inverse_relation_description2="Languages that translators use prefereably as a reference to translate into this language.",
-        widget=ReferenceBrowserWidget(
-            label="Idiomas a los que sirve de referencia",
-            label2="Languages to which this serves as reference",
-            description="Idiomas que preferentemente sirven de referencia a los traductores para traducir a este idioma.",
-            description2="Languages that translators use prefereably as a reference to translate into this language.",
-            label_msgid='gvSIGi18n_TRAIdioma_rel_idiomasReferencia_label',
-            description_msgid='gvSIGi18n_TRAIdioma_rel_idiomasReferencia_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        label="Idiomas a los que sirve de referencia",
-        description2="Languages that translators use prefereably as a reference to translate into this language.",
-        multiValued=1,
-        containment="Unspecified",
-        inverse_relationship='IdiomasReferencia'
-    ),
-
-    RelationField(
-        name='baseDeIdiomas',
-        inverse_relation_label="Base de Idiomas",
-        additional_columns=['codigoIdiomaEnGvSIG', 'codigoInternacionalDeIdioma', 'nombreNativoDelIdioma', 'esIdiomaDePais'],
-        inverse_relation_description="Idiomas que son una especializacion de este en un pais, o una variacion de un idioma propio a un pais.",
-        description="Idioma del que este es un caso especial para un pais o una variacion en un pais.",
-        relationship='IdiomaBase',
-        inverse_relation_field_name='idiomaBase',
-        inverse_relation_label2="Base for Languages",
-        label2="Base Language",
-        inverse_relation_description2="Languages that are derived from this, as a country specific specialization, or a variation of a country specific language.",
-        widget=ReferenceBrowserWidget(
-            label="Idioma Base",
-            label2="Base Language",
-            description="Idioma del que este es un caso especial para un pais o una variacion en un pais.",
-            description2="Language for which this is a country specific specialization, or a variation of a country specific language.",
-            label_msgid='gvSIGi18n_TRAIdioma_rel_baseDeIdiomas_label',
-            description_msgid='gvSIGi18n_TRAIdioma_rel_baseDeIdiomas_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        label="Idioma Base",
-        description2="Language for which this is a country specific specialization, or a variation of a country specific language.",
-        multiValued=1,
-        containment="Unspecified",
-        inverse_relationship='BaseDeIdiomas',
-        owner_class_name="TRAIdioma",
-        deststyle="Union=0;Derived=0;AllowDuplicates=0;Owned=0;Navigable=Unspecified;"
-    ),
-
-    RelationField(
-        name='idiomaBase',
-        inverse_relation_label="Idioma Base",
-        additional_columns=[ 'codigoIdiomaEnGvSIG','codigoInternacionalDeIdioma','nombreNativoDelIdioma','esIdiomaDePais',],
-        inverse_relation_description="Idioma del que este es un caso especial para un pais o una variacion en un pais.",
-        description="Idiomas que son una especializacion de este en un pais, o una variacion de un idioma propio a un pais.",
-        relationship='BaseDeIdiomas',
-        inverse_relation_field_name='baseDeIdiomas',
-        sourcestyle="Union=0;Derived=0;AllowDuplicates=0;Owned=0;Navigable=Unspecified;",
-        inverse_relation_label2="Base Language",
-        label2="Base for Languages",
-        inverse_relation_description2="Language for which this is a country specific specialization, or a variation of a country specific language.",
-        widget=ReferenceBrowserWidget(
-            label="Base de Idiomas",
-            label2="Base for Languages",
-            description="Idiomas que son una especializacion de este en un pais, o una variacion de un idioma propio a un pais.",
-            description2="Languages that are derived from this, as a country specific specialization, or a variation of a country specific language.",
-            label_msgid='gvSIGi18n_TRAIdioma_rel_idiomaBase_label',
-            description_msgid='gvSIGi18n_TRAIdioma_rel_idiomaBase_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        label="Base de Idiomas",
-        description2="Languages that are derived from this, as a country specific specialization, or a variation of a country specific language.",
-        multiValued=0,
-        containment="Unspecified",
-        inverse_relationship='IdiomaBase'
     ),
 
     StringField(
@@ -623,12 +508,12 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones):
     actions =  (
 
 
-       {'action': "string:${object_url}/sharing",
+       {'action': "string:$object_url/content_status_history",
         'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
-        'condition': 'python:1'
+        'id': 'content_status_history',
+        'name': 'State',
+        'permissions': ("View",),
+        'condition': 'python:0'
        },
 
 
@@ -637,6 +522,15 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones):
         'id': 'folderlisting',
         'name': 'Folder Listing',
         'permissions': ("View",),
+        'condition': 'python:0'
+       },
+
+
+       {'action': "string:${object_url}/sharing",
+        'category': "object",
+        'id': 'local_roles',
+        'name': 'Sharing',
+        'permissions': ("Manage properties",),
         'condition': 'python:0'
        },
 
@@ -650,12 +544,21 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones):
        },
 
 
-       {'action': "string:$object_url/content_status_history",
+       {'action': "string:${object_url}/TRACopiar_Traducciones",
         'category': "object",
-        'id': 'content_status_history',
-        'name': 'State',
-        'permissions': ("View",),
-        'condition': 'python:0'
+        'id': 'CopyTranslations',
+        'name': 'Copy Translations',
+        'permissions': ("Modify portal content",),
+        'condition': 'python:object.fRoleQuery_IsManagerOrCoordinator()'
+       },
+
+
+       {'action': "string:$object_url/Editar",
+        'category': "object",
+        'id': 'edit',
+        'name': 'Edit',
+        'permissions': ("Modify portal content",),
+        'condition': 'python:1'
        },
 
 
@@ -677,24 +580,6 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones):
        },
 
 
-       {'action': "string:$object_url/Editar",
-        'category': "object",
-        'id': 'edit',
-        'name': 'Edit',
-        'permissions': ("Modify portal content",),
-        'condition': 'python:1'
-       },
-
-
-       {'action': "string:${object_url}/TRACopiar_Traducciones",
-        'category': "object",
-        'id': 'CopyTranslations',
-        'name': 'Copy Translations',
-        'permissions': ("Modify portal content",),
-        'condition': 'python:object.fRoleQuery_IsManagerOrCoordinator()'
-       },
-
-
     )
 
     _at_rename_after_creation = True
@@ -705,6 +590,13 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones):
     ##/code-section class-header
 
     # Methods
+
+    security.declarePublic('cb_isCopyable')
+    def cb_isCopyable(self):
+        """
+        """
+        
+        return False
 
     security.declarePublic('manage_afterAdd')
     def manage_afterAdd(self,item,container):
@@ -719,6 +611,13 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones):
         """
         
         return TRAArquetipo.manage_beforeDelete( self, item, container)
+
+    security.declarePublic('manage_pasteObjects')
+    def manage_pasteObjects(self,cb_copy_data,REQUEST):
+        """
+        """
+        
+        return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

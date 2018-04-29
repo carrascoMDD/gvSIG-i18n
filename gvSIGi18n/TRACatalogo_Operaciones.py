@@ -67,6 +67,9 @@ from TRAElemento import TRAElemento
 from TRAElemento_Permission_Definitions import cUseCase_VerifyTRACatalogo, cUseCase_InitializeTRACatalogo, cUseCase_Export, cUseCase_ConfigureTRACatalogo
 from TRAElemento_Permission_Definitions import cUseCase_AuthorizeUsers, cUseCase_ReviewUsersAuthorizations
 
+from TRAElemento_Permission_Definitions import cTRAUserGroups_Catalogo
+from TRAElemento_Permission_Definitions import cTRAUserGroups_Catalogo_AuthorizedOnIndividualIdiomas, cTRAUserGroups_Catalogo_AuthorizedOnIndividualModulos
+
 
 
 
@@ -919,7 +922,7 @@ class TRACatalogo_Operaciones:
     security.declareProtected( permissions.View, 'fObtenerSimbolosTodasCadenasSinOrdenar')    
     def fObtenerSimbolosTodasCadenasSinOrdenar(self):
         unCatalog = self.fCatalogBusquedaCadenas()
-        if not unCatalog:
+        if ( unCatalog == None):
             return []
         unaBusqueda = { 
             'getEstadoCadena': cEstadoCadenaActiva,
@@ -933,7 +936,7 @@ class TRACatalogo_Operaciones:
     security.declareProtected( permissions.View, 'fObtenerNumeroCadenas')    
     def fObtenerNumeroCadenas( self):
         unCatalog = self.fCatalogBusquedaCadenas()
-        if not unCatalog:
+        if ( unCatalog == None):
             return 0
         unaBusqueda = { 
             'getEstadoCadena': cEstadoCadenaActiva,
@@ -968,7 +971,7 @@ class TRACatalogo_Operaciones:
             return None                   
 
         unCatalog = self.fCatalogBusquedaCadenas() 
-        if not unCatalog:
+        if ( unCatalog == None):
             return None
         unaBusqueda = { 
             'getId' :      theID,
@@ -990,7 +993,7 @@ class TRACatalogo_Operaciones:
             return None                   
 
         unCatalog = self.fCatalogBusquedaCadenas() 
-        if not unCatalog:
+        if ( unCatalog == None):
             return None
         unaBusqueda = { 
             'getSimbolo' :      theSimboloCadena,
@@ -1012,7 +1015,7 @@ class TRACatalogo_Operaciones:
     def getHighestCadenaIdNumber( self):
         
         unCatalog = self.fCatalogBusquedaCadenas() 
-        if not unCatalog:
+        if ( unCatalog == None):
             return 0
         unaBusqueda = {}
         unosResultadosBusqueda = unCatalog.searchResults(**unaBusqueda)
@@ -1265,16 +1268,21 @@ class TRACatalogo_Operaciones:
                 theParentExecutionRecord= unExecutionRecord
             )
     
-            self.fLazyCrearUserGroupsParaIdioma(
-                theAllowCreation        = True, 
-                theIdioma               = unNuevoIdioma,  
-                theCheckPermissions     = False, 
-                thePermissionsCache     = unPermissionsCache, 
-                theRolesCache           = unRolesCache, 
-                theParentExecutionRecord= unExecutionRecord
-            )
+            # ACV 20090914 Simpler security schema: no user groups for languages or modules, shall assign local roles to users directly on the language or module element
+            #self.fLazyCrearUserGroupsParaIdioma(
+                #theAllowCreation        = True, 
+                #theIdioma               = unNuevoIdioma,  
+                #theCheckPermissions     = False, 
+                #thePermissionsCache     = unPermissionsCache, 
+                #theRolesCache           = unRolesCache, 
+                #theParentExecutionRecord= unExecutionRecord
+            #)
                          
+            # ACV 20090914 Simpler security schema: no user groups for languages or modules, shall assign local roles to users directly on the language or module element
+            if not self.fSetLocalRolesEnIdiomaForCatalogUserGroups( unNuevoIdioma):
+                return None
             
+                                                             
             unIndexIdiomaAnterior = -1
             for unIndexIdioma in range( len( unosCodigosIdioma)):
                 unCodigoIdioma = unosCodigosIdioma[ unIndexIdioma]
@@ -1298,14 +1306,7 @@ class TRACatalogo_Operaciones:
         
 
 
- 
-
-
-  
-  
-  
-
-
+    
 
     security.declarePrivate(  'fCrearModulo')
     def fCrearModulo( self, 
@@ -1356,8 +1357,14 @@ class TRACatalogo_Operaciones:
           
             unNuevoModulo.pSetPermissions()
            
+            # ACV 20090914 Simpler security schema: no user groups for languages or modules, shall assign local roles to users directly on the language or module element
+            # Method invoked below fLazyCrearUserGroupsParaModulo was never implemented
             # self.fLazyCrearUserGroupsParaModulo(       unNuevoModulo, False)
 
+            
+            # ACV 20090914 Simpler security schema: no user groups for languages or modules, shall assign local roles to users directly on the language or module element
+            if not self.fSetLocalRolesEnModuloForCatalogUserGroups( unNuevoModulo):
+                return None
             
             
            
@@ -1385,7 +1392,78 @@ class TRACatalogo_Operaciones:
         
      
  
-    
+
+
+    security.declarePrivate( 'fSetLocalRolesEnIdiomaForCatalogUserGroups')
+    def fSetLocalRolesEnIdiomaForCatalogUserGroups( self, theIdioma):
+        if not theIdioma:
+            return False
+        
+        someUserGroupsNamesAndRolesCatalogo = cTRAUserGroups_Catalogo
+        someUserGroupsToSetRolesEnIdioma     = cTRAUserGroups_Catalogo_AuthorizedOnIndividualIdiomas
+ 
+        for unUserGroupToSetRoles in someUserGroupsToSetRolesEnIdioma:
+            unosRolesToSet = []
+            for unUserGroupNameAndRoles in someUserGroupsNamesAndRolesCatalogo:
+                unUserGroupName = unUserGroupNameAndRoles[ 0]
+                if unUserGroupName == unUserGroupToSetRoles:
+                    unosRolesToSet = unUserGroupNameAndRoles[ 1]
+                    break
+                
+            if unosRolesToSet:
+                
+                unUserGroupId = self.fUserGroupIdEnCatalogoFor( unUserGroupToSetRoles)
+                
+                unosExistingGroupRoles    = list( theIdioma.get_local_roles_for_userid( unUserGroupId))[:]
+                unosNonExistingGroupRoles = list( set( unosRolesToSet) - set( unosExistingGroupRoles))
+                
+                if unosNonExistingGroupRoles:
+                         
+                    theIdioma.manage_addLocalRoles( unUserGroupId, tuple( unosNonExistingGroupRoles))
+                    # ACV 200903212354 learned from Products.CMFCore.MembershipTool.MembershipTool.setLocalRoles()                     
+                    theIdioma.reindexObjectSecurity()
+                    
+        return True                        
+                        
+                        
+                        
+                        
+
+ 
+
+
+    security.declarePrivate( 'fSetLocalRolesEnModuloForCatalogUserGroups')
+    def fSetLocalRolesEnModuloForCatalogUserGroups( self, theModulo):
+        if not theModulo:
+            return False
+        
+        someUserGroupsNamesAndRolesCatalogo  = cTRAUserGroups_Catalogo
+        someUserGroupsToSetRolesEnModulo     = cTRAUserGroups_Catalogo_AuthorizedOnIndividualModulos
+ 
+        for unUserGroupToSetRoles in someUserGroupsToSetRolesEnModulo:
+            unosRolesToSet = []
+            for unUserGroupNameAndRoles in someUserGroupsNamesAndRolesCatalogo:
+                unUserGroupName = unUserGroupNameAndRoles[ 0]
+                if unUserGroupName == unUserGroupToSetRoles:
+                    unosRolesToSet = unUserGroupNameAndRoles[ 1]
+                    break
+                
+            if unosRolesToSet:
+                
+                unUserGroupId = self.fUserGroupIdEnCatalogoFor( unUserGroupToSetRoles)
+                
+                unosExistingGroupRoles    = list( theModulo.get_local_roles_for_userid( unUserGroupId))[:]
+                unosNonExistingGroupRoles = list( set( unosRolesToSet) - set( unosExistingGroupRoles))
+                
+                if unosNonExistingGroupRoles:
+                         
+                    theModulo.manage_addLocalRoles( unUserGroupId, tuple( unosNonExistingGroupRoles))
+                    # ACV 200903212354 learned from Products.CMFCore.MembershipTool.MembershipTool.setLocalRoles()                     
+                    theModulo.reindexObjectSecurity()
+                    
+        return True                        
+                   
+        
     
     
     
@@ -2033,7 +2111,7 @@ class TRACatalogo_Operaciones:
 #            unaBusqueda[ 'getPathDelRaiz'] = self.getPathDelRaiz() 
             
             unCatalogFiltroCadenas = self.fCatalogFiltroCadenas()
-            if not unCatalogFiltroCadenas:
+            if ( unCatalogFiltroCadenas == None):
                 return self
             unosDatosCadenas = unCatalogFiltroCadenas.searchResults( **unaBusqueda ) 
             

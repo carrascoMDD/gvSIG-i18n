@@ -128,8 +128,8 @@
             pDefaultModuleName                  python: pExport_EditParameters_Parameters_output.get( 'theDefaultModuleName',                   '');
             pLanguagesToExport                  python: pExport_EditParameters_Parameters_output.get( 'theLanguagesToExport',                   []);
             pModulesToExport                    python: pExport_EditParameters_Parameters_output.get( 'theModulesToExport',                   []);
-            pCodigosIdiomaReferencia            python: pExport_EditParameters_Parameters_output.get( 'theCodigosIdiomaReferencia',             []);
-            pCodificacionesCaracteres           python: pExport_EditParameters_Parameters_output.get( 'theCodificacionesCaracteres',             []);
+            pCodigosIdiomaReferencia            python: pExport_EditParameters_Parameters_output.get( 'theCodigosIdiomaReferencia',             {});
+            pCodificacionesCaracteres           python: pExport_EditParameters_Parameters_output.get( 'theCodificacionesCaracteres',             {});
             pEncodingErrorHandleMode                    python: pExport_EditParameters_Parameters_output.get( 'theEncodingErrorHandleMode',   '');
             pEncodingErrorHandleModeVocabulary          python: pExport_EditParameters_Parameters_output.get( 'theEncodingErrorHandleMode_vocabulary',   []);
             pEncodingErrorHandleModeVocabularyMsgIds    python: pExport_EditParameters_Parameters_output.get( 'theEncodingErrorHandleMode_vocabulary_msgids',   []);

@@ -55,13 +55,14 @@ schema = Schema((
         label2='Languages',
         additional_columns=['codigoIdiomaEnGvSIG', 'codigoInternacionalDeIdioma', 'nombreNativoDeIdioma', 'codigoIdiomaReferencia', 'ambitoDelIdioma', 'juegoDeCaracteresParaJavaProperties', 'juegoDeCaracteresParaPO', 'fallbackDeIdiomas'],
         label='Idiomas',
+        represents_aggregation=True,
         description2='Languages to translate the strings into.',
         multiValued=1,
         factory_views={ 'TRAIdioma' : 'TRACrear_Idioma',},
         owner_class_name="TRAColeccionIdiomas",
         expression="context.objectValues(['TRAIdioma'])",
         computed_types=['TRAIdioma'],
-        represents_aggregation=True,
+        non_framework_elements=False,
         description='Idiomas a los que se desea traducir las cadena.'
     ),
 
@@ -110,11 +111,38 @@ class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccio
     actions =  (
 
 
+       {'action': "string:$object_url/content_status_history",
+        'category': "object",
+        'id': 'content_status_history',
+        'name': 'State',
+        'permissions': ("View",),
+        'condition': 'python:0'
+       },
+
+
+       {'action': "string:$object_url/Editar",
+        'category': "object",
+        'id': 'edit',
+        'name': 'Edit',
+        'permissions': ("Modify portal content",),
+        'condition': 'python:0'
+       },
+
+
        {'action': "string:${object_url}/folder_listing",
         'category': "folder",
         'id': 'folderlisting',
         'name': 'Folder Listing',
         'permissions': ("View",),
+        'condition': 'python:0'
+       },
+
+
+       {'action': "string:${object_url}/sharing",
+        'category': "object",
+        'id': 'local_roles',
+        'name': 'Sharing',
+        'permissions': ("Manage properties",),
         'condition': 'python:0'
        },
 
@@ -137,39 +165,12 @@ class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccio
        },
 
 
-       {'action': "string:$object_url/Editar",
-        'category': "object",
-        'id': 'edit',
-        'name': 'Edit',
-        'permissions': ("Modify portal content",),
-        'condition': 'python:0'
-       },
-
-
        {'action': "string:${object_url}/sharing",
         'category': "object",
         'id': 'local_roles',
         'name': 'Sharing',
         'permissions': ("Manage properties",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:$object_url/content_status_history",
-        'category': "object",
-        'id': 'content_status_history',
-        'name': 'State',
-        'permissions': ("View",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:${object_url}/sharing",
-        'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
-        'condition': 'python:0'
+        'condition': 'python:object.fRoleQuery_IsCoordinator()'
        },
 
 
@@ -184,6 +185,13 @@ class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccio
 
     # Methods
 
+    security.declarePublic('cb_isCopyable')
+    def cb_isCopyable(self):
+        """
+        """
+        
+        return False
+
     security.declarePublic('manage_afterAdd')
     def manage_afterAdd(self,item,container):
         """
@@ -197,6 +205,13 @@ class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccio
         """
         
         return TRAColeccionArquetipos.manage_beforeDelete( self, item, container)
+
+    security.declarePublic('manage_pasteObjects')
+    def manage_pasteObjects(self,cb_copy_data,REQUEST):
+        """
+        """
+        
+        return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

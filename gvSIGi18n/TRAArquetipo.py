@@ -65,12 +65,12 @@ class TRAArquetipo(TRAElemento):
     actions =  (
 
 
-       {'action': "string:${object_url}/sharing",
+       {'action': "string:$object_url/content_status_history",
         'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
-        'condition': 'python:1'
+        'id': 'content_status_history',
+        'name': 'State',
+        'permissions': ("View",),
+        'condition': 'python:0'
        },
 
 
@@ -83,20 +83,20 @@ class TRAArquetipo(TRAElemento):
        },
 
 
+       {'action': "string:${object_url}/sharing",
+        'category': "object",
+        'id': 'local_roles',
+        'name': 'Sharing',
+        'permissions': ("Manage properties",),
+        'condition': 'python:0'
+       },
+
+
        {'action': "string:${object_url}/reference_graph",
         'category': "object",
         'id': 'references',
         'name': 'References',
         'permissions': ("Modify portal content",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:$object_url/content_status_history",
-        'category': "object",
-        'id': 'content_status_history',
-        'name': 'State',
-        'permissions': ("View",),
         'condition': 'python:0'
        },
 

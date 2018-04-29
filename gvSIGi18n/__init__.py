@@ -85,7 +85,6 @@ def initialize(context):
     import TRACatalogo_Inicializacion
     import TRAModulo
     import TRAIdioma_Operaciones
-    import TRAElemento_Permissions
     import TRAColeccionCadenas
     import TRACatalogo_Informes
     import TRAInforme
@@ -94,23 +93,18 @@ def initialize(context):
     import TRACadena
     import TRAColeccionSolicitudesCadenas
     import TRAElemento
-    import TRAElemento_Constants
     import TRAColeccionSolicitudesCadenas_Operaciones
-    import TRAElemento_Operaciones
     import TRACatalogo
     import TRAColeccionIdiomas
     import TRACatalogo_CursorTraducciones
     import TRAModulo_Operaciones
-    import TRAElemento_TraversalConfig
     import TRACatalogo_Operaciones
     import TRAImportacion_Operaciones
     import TRAContenidoIntercambio
     import TRAImportacion
-    import TRAElemento_Meta
     import TRACatalogo_Exportacion
     import TRAContenidoIntercambio_Operaciones
     import TRAIdioma
-    import TRACatalogo_Eliminacion
     import TRATraduccion_Operaciones
     import TRAColeccionModulos
     import TRAColeccionIdiomas_Operaciones

@@ -492,12 +492,12 @@ class TRAInforme(OrderedBaseFolder, TRAArquetipo, TRAInforme_Operaciones):
     actions =  (
 
 
-       {'action': "string:${object_url}/sharing",
+       {'action': "string:$object_url/content_status_history",
         'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
-        'condition': 'python:1'
+        'id': 'content_status_history',
+        'name': 'State',
+        'permissions': ("View",),
+        'condition': 'python:0'
        },
 
 
@@ -510,24 +510,6 @@ class TRAInforme(OrderedBaseFolder, TRAArquetipo, TRAInforme_Operaciones):
        },
 
 
-       {'action': "string:${object_url}/reference_graph",
-        'category': "object",
-        'id': 'references',
-        'name': 'References',
-        'permissions': ("Modify portal content",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:$object_url/content_status_history",
-        'category': "object",
-        'id': 'content_status_history',
-        'name': 'State',
-        'permissions': ("View",),
-        'condition': 'python:0'
-       },
-
-
        {'action': "string:${object_url}/sharing",
         'category': "object",
         'id': 'local_roles',
@@ -537,12 +519,12 @@ class TRAInforme(OrderedBaseFolder, TRAArquetipo, TRAInforme_Operaciones):
        },
 
 
-       {'action': "string:${object_url}/Tabular",
+       {'action': "string:${object_url}/reference_graph",
         'category': "object",
-        'id': 'view',
-        'name': 'View',
-        'permissions': ("View",),
-        'condition': 'python:1'
+        'id': 'references',
+        'name': 'References',
+        'permissions': ("Modify portal content",),
+        'condition': 'python:0'
        },
 
 
@@ -564,6 +546,15 @@ class TRAInforme(OrderedBaseFolder, TRAArquetipo, TRAInforme_Operaciones):
        },
 
 
+       {'action': "string:${object_url}/Tabular",
+        'category': "object",
+        'id': 'view',
+        'name': 'View',
+        'permissions': ("View",),
+        'condition': 'python:1'
+       },
+
+
     )
 
     _at_rename_after_creation = True
@@ -575,12 +566,12 @@ class TRAInforme(OrderedBaseFolder, TRAArquetipo, TRAInforme_Operaciones):
 
     # Methods
 
-    security.declarePublic('manage_beforeDelete')
-    def manage_beforeDelete(self,item,container):
+    security.declarePublic('cb_isCopyable')
+    def cb_isCopyable(self):
         """
         """
         
-        return TRAArquetipo.manage_beforeDelete( self, item, container)
+        return False
 
     security.declarePublic('manage_afterAdd')
     def manage_afterAdd(self,item,container):
@@ -588,6 +579,20 @@ class TRAInforme(OrderedBaseFolder, TRAArquetipo, TRAInforme_Operaciones):
         """
         
         return TRAArquetipo.manage_afterAdd( self, item, container)
+
+    security.declarePublic('manage_beforeDelete')
+    def manage_beforeDelete(self,item,container):
+        """
+        """
+        
+        return TRAArquetipo.manage_beforeDelete( self, item, container)
+
+    security.declarePublic('manage_pasteObjects')
+    def manage_pasteObjects(self,cb_copy_data,REQUEST):
+        """
+        """
+        
+        return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

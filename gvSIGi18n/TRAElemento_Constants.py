@@ -240,8 +240,9 @@ cEncodingUTF8   = 'utf-8'
 cEncodingUTF16  = 'utf-16'
 cEncodingLatin  = 'ISO-8859-1'
 
+cEncodingUnicodeEscape   = 'unicode_escape'
 
-
+cMaxUnescapedCharOrdinal = 126
 
 cRequestedChangeKind_IntentarTraducir   = 'TryToTranslate'
 cRequestedChangeKind_Comentar           = 'Comment'

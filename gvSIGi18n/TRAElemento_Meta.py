@@ -35,12 +35,6 @@ from AccessControl                  import ClassSecurityInfo
 from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.config import *
 
-schema = Schema((
-
-),
-)
-
-TRAElemento_Meta_schema = BaseSchema.copy() +     schema.copy()
 
 
 class TRAElemento_Meta:            
@@ -48,14 +42,6 @@ class TRAElemento_Meta:
     """
     """
     security = ClassSecurityInfo()
-
-    # This name appears in the 'add' box
-    archetype_name = 'TRAElemento_Meta'
-    
-    meta_type = 'TRAElemento_Meta'
-    portal_type = 'TRAElemento_Meta'
-
-    schema = TRAElemento_Meta_schema
 
     
     security.declarePrivate('fArchetypeSchemaByName')

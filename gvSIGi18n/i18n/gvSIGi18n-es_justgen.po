@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gvSIGi18n\n"
-"POT-Creation-Date: Sat Aug 15 03:48:01 2009\n"
-"PO-Revision-Date: Sat Aug 15 03:48:01 2009\n"
+"POT-Creation-Date: Mon Sep 21 05:48:25 2009\n"
+"PO-Revision-Date: Mon Sep 21 05:48:25 2009\n"
 "Last-Translator: Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>\n"
 "Language-Team: Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>\n"
 "MIME-Version: 1.0\n"
@@ -566,16 +566,6 @@ msgstr "TRACatalogo_CursorTraducciones"
 msgid "gvSIGi18n_TRACatalogo_CursorTraducciones_help"
 msgstr "TRACatalogo_CursorTraducciones"
 
-#. Default: "TRACatalogo_Eliminacion"
-#: TRACatalogo_Eliminacion
-msgid "gvSIGi18n_TRACatalogo_Eliminacion_label"
-msgstr "TRACatalogo_Eliminacion"
-
-#. Default: "TRACatalogo_Eliminacion"
-#: TRACatalogo_Eliminacion
-msgid "gvSIGi18n_TRACatalogo_Eliminacion_help"
-msgstr "TRACatalogo_Eliminacion"
-
 #. Default: "TRACatalogo_Exportacion"
 #: TRACatalogo_Exportacion
 msgid "gvSIGi18n_TRACatalogo_Exportacion_label"
@@ -926,56 +916,6 @@ msgstr "Noticias"
 msgid "gvSIGi18n_TRAElemento_contents_noticias_help"
 msgstr "Elementos de Plone conteniendo una Noticia."
 
-#. Default: "TRAElemento_Constants"
-#: TRAElemento_Constants
-msgid "gvSIGi18n_TRAElemento_Constants_label"
-msgstr "TRAElemento_Constants"
-
-#. Default: "TRAElemento_Constants"
-#: TRAElemento_Constants
-msgid "gvSIGi18n_TRAElemento_Constants_help"
-msgstr "TRAElemento_Constants"
-
-#. Default: "TRAElemento_Meta"
-#: TRAElemento_Meta
-msgid "gvSIGi18n_TRAElemento_Meta_label"
-msgstr "TRAElemento_Meta"
-
-#. Default: "TRAElemento_Meta"
-#: TRAElemento_Meta
-msgid "gvSIGi18n_TRAElemento_Meta_help"
-msgstr "TRAElemento_Meta"
-
-#. Default: "TRAElemento_Operaciones"
-#: TRAElemento_Operaciones
-msgid "gvSIGi18n_TRAElemento_Operaciones_label"
-msgstr "TRAElemento_Operaciones"
-
-#. Default: "TRAElemento_Operaciones"
-#: TRAElemento_Operaciones
-msgid "gvSIGi18n_TRAElemento_Operaciones_help"
-msgstr "TRAElemento_Operaciones"
-
-#. Default: "TRAElemento_Permissions"
-#: TRAElemento_Permissions
-msgid "gvSIGi18n_TRAElemento_Permissions_label"
-msgstr "TRAElemento_Permissions"
-
-#. Default: "TRAElemento_Permissions"
-#: TRAElemento_Permissions
-msgid "gvSIGi18n_TRAElemento_Permissions_help"
-msgstr "TRAElemento_Permissions"
-
-#. Default: "TRAElemento_TraversalConfig"
-#: TRAElemento_TraversalConfig
-msgid "gvSIGi18n_TRAElemento_TraversalConfig_label"
-msgstr "TRAElemento_TraversalConfig"
-
-#. Default: "TRAElemento_TraversalConfig"
-#: TRAElemento_TraversalConfig
-msgid "gvSIGi18n_TRAElemento_TraversalConfig_help"
-msgstr "TRAElemento_TraversalConfig"
-
 #. Default: "Idioma"
 #: TRAIdioma
 msgid "gvSIGi18n_TRAIdioma_label"
@@ -1140,46 +1080,6 @@ msgstr "Nombre propio del idioma"
 #: TRAIdioma nombreNativoDeIdioma
 msgid "gvSIGi18n_TRAIdioma_attr_nombreNativoDeIdioma_help"
 msgstr "Nombre del idioma expresado en su idioma."
-
-#. Default: "Idioma Base"
-#: TRAIdioma baseDeIdiomas
-msgid "gvSIGi18n_TRAIdioma_rel_baseDeIdiomas_label"
-msgstr "Idioma Base"
-
-#. Default: "Idioma del que este es un caso especial para un pais o una variacion en un pais."
-#: TRAIdioma baseDeIdiomas
-msgid "gvSIGi18n_TRAIdioma_rel_baseDeIdiomas_help"
-msgstr "Idioma del que este es un caso especial para un pais o una variacion en un pais."
-
-#. Default: "Base de Idiomas"
-#: TRAIdioma baseDeIdiomas
-msgid "gvSIGi18n_TRAIdioma_rel_idiomaBase_label"
-msgstr "Base de Idiomas"
-
-#. Default: "Idiomas que son una especializacion de este en un pais, o una variacion de un idioma propio a un pais."
-#: TRAIdioma baseDeIdiomas
-msgid "gvSIGi18n_TRAIdioma_rel_idiomaBase_help"
-msgstr "Idiomas que son una especializacion de este en un pais, o una variacion de un idioma propio a un pais."
-
-#. Default: "Idiomas de Referencia"
-#: TRAIdioma referenciaDeIdiomas
-msgid "gvSIGi18n_TRAIdioma_rel_referenciaDeIdiomas_label"
-msgstr "Idiomas de Referencia"
-
-#. Default: "Idiomas que preferentemente sirven de referencia a los traductores para traducir a este idioma."
-#: TRAIdioma referenciaDeIdiomas
-msgid "gvSIGi18n_TRAIdioma_rel_referenciaDeIdiomas_help"
-msgstr "Idiomas que preferentemente sirven de referencia a los traductores para traducir a este idioma."
-
-#. Default: "Idiomas a los que sirve de referencia"
-#: TRAIdioma referenciaDeIdiomas
-msgid "gvSIGi18n_TRAIdioma_rel_idiomasReferencia_label"
-msgstr "Idiomas a los que sirve de referencia"
-
-#. Default: "Idiomas que preferentemente sirven de referencia a los traductores para traducir a este idioma."
-#: TRAIdioma referenciaDeIdiomas
-msgid "gvSIGi18n_TRAIdioma_rel_idiomasReferencia_help"
-msgstr "Idiomas que preferentemente sirven de referencia a los traductores para traducir a este idioma."
 
 #. Default: "TRAIdioma_Operaciones"
 #: TRAIdioma_Operaciones

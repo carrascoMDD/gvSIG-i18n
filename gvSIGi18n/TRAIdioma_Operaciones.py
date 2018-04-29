@@ -323,7 +323,7 @@ class TRAIdioma_Operaciones:
                     return anActionReport  
 
                 unCatalogBusquedaTraduccionesInSourceIdioma = unCatalogo.fCatalogBusquedaTraduccionesParaIdioma( unSourceIdioma)
-                if not unCatalogBusquedaTraduccionesInSourceIdioma:
+                if ( unCatalogBusquedaTraduccionesInSourceIdioma == None):
                     anActionReport = { 'effect': 'error', 'failure':  'InternalError: gvSIGi18n_copyTranslations_internalError_Missing_CatalogBusquedaTraducciones_SourceLanguage', }
                     return anActionReport  
                
@@ -353,7 +353,7 @@ class TRAIdioma_Operaciones:
                             unasTraduccionesACopiar.append( unaTraducccion)
                         
                 if not unasTraduccionesACopiar:
-                    if someSourceStatesToCopy:
+                    if theSourceStatesToCopy:
                         anActionReport = { 'effect': 'warning', 'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_copyTranslations_action_warning_NoTranslationsInSourceLanguageInSpecifiedStates', "There are no Translations in the selected source Language in the specified states.-"), }
                     else:
                         anActionReport = { 'effect': 'warning', 'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_copyTranslations_action_warning_NoTranslationsInSourceLanguage', "There are no Translations in the selected source Language.-"), }

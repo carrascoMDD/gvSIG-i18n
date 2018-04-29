@@ -10,31 +10,31 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0\n"
-"Language-Code: es\n"
-"Language-Name: Spanish\n"
+"Language-Code: en\n"
+"Language-Name: English\n"
 "Preferred-Encodings: latin1 utf-8\n"
 "Domain: gvSIGi18n\n"
-"X-Is-Fallback-For: es-ar es-bo es-co es-cr es-cl es-do es-ec es-sv es-gt es-hn es-mx es-ni es-pa es-py es-pe es-pr es-es es-uy es-ve\n"
+"X-Is-Fallback-For: en-au en-bz en-ca en-ie en-jm en-nz en-ph en-za en-tt en-gb en-us en-zw\n"
 
 #. Default: "Cadena"
 #: TRACadena
 msgid "Cadena"
-msgstr "Cadena"
+msgstr "String to translate"
 
 #. Default: "Catalogo de Traducciones"
 #: TRACatalogo
 msgid "Catalogo de Traducciones"
-msgstr "Catalogo de Traducciones"
+msgstr "Translations Catalog"
 
 #. Default: "Coleccion de Cadenas"
 #: TRAColeccionCadenas
 msgid "Coleccion de Cadenas"
-msgstr "Coleccion de Cadenas"
+msgstr "Strings collection"
 
 #. Default: "Coleccion de Idiomas"
 #: TRAColeccionIdiomas
 msgid "Coleccion de Idiomas"
-msgstr "Coleccion de Idiomas"
+msgstr "Languages collection"
 
 #. Default: "TRAColeccionIdiomas_Operaciones"
 #: TRAColeccionIdiomas_Operaciones
@@ -44,22 +44,22 @@ msgstr "TRAColeccionIdiomas_Operaciones"
 #. Default: "Coleccion de Importaciones"
 #: TRAColeccionImportaciones
 msgid "Coleccion de Importaciones"
-msgstr "Coleccion de Importaciones"
+msgstr "Import processes collection"
 
 #. Default: "Coleccion de Informes de Estado"
 #: TRAColeccionInformes
 msgid "Coleccion de Informes de Estado"
-msgstr "Coleccion de Informes de Estado"
+msgstr "Status Reports Collection"
 
 #. Default: "Coleccion de Modulos"
 #: TRAColeccionModulos
 msgid "Coleccion de Modulos"
-msgstr "Coleccion de Modulos"
+msgstr "Modules collection"
 
 #. Default: "Coleccion de Solicitudes de creacion de Cadenas"
 #: TRAColeccionSolicitudesCadenas
 msgid "Coleccion de Solicitudes de creacion de Cadenas"
-msgstr "Coleccion de Solicitudes de creacion de Cadenas"
+msgstr "Strings creation request collection"
 
 #. Default: "TRAColeccionSolicitudesCadenas_Operaciones"
 #: TRAColeccionSolicitudesCadenas_Operaciones
@@ -69,115 +69,34 @@ msgstr "TRAColeccionSolicitudesCadenas_Operaciones"
 #. Default: "Contenido de Intercambio"
 #: TRAContenidoIntercambio
 msgid "Contenido de Intercambio"
-msgstr "Contenido de Intercambio"
+msgstr "Interchange Content"
 
 #. Default: "Idioma"
 #: TRAIdioma
 msgid "Idioma"
-msgstr "Idioma"
+msgstr "Language"
 
 #. Default: "Importacion"
 #: TRAImportacion
 msgid "Importacion"
-msgstr "Importacion"
+msgstr "Import process"
 
 #. Default: "Informe de Estado"
 #: TRAInforme
 msgid "Informe de Estado"
-msgstr "Informe de Estado"
+msgstr "Status Report"
 
 #. Default: "Modulo"
 #: TRAModulo
 msgid "Modulo"
-msgstr "Modulo"
+msgstr "Module"
 
 #. Default: "Solicitud Creacion Cadena"
 #: TRASolicitudCadena
 msgid "Solicitud Creacion Cadena"
-msgstr "Solicitud Creacion Cadena"
+msgstr "String creation request"
 
 #. Default: "Traduccion"
 #: TRATraduccion
 msgid "Traduccion"
-msgstr "Traduccion"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#. Default: "Verify"
-#: TRACatalogo
-msgid "Verify"
-msgstr "Verificar"
-
-#. Default: "Initialize"
-#: TRAArquetipo
-msgid "Initialize"
-msgstr "Inicializar"
-
-#. Default: "Export"
-#: TRAArquetipo
-msgid "Export"
-msgstr "Exportar"
-
-#. Default: "Import"
-#: TRAArquetipo
-msgid "Import"
-msgstr "Importar"
-
-#. Default: "Configure"
-#: TRAArquetipo
-msgid "Configure"
-msgstr "Configurar"
-
-
-#. Default: "Content"
-#: TRAContenidoIntercambio
-msgid "Content"
-msgstr "Contenido"
-
-#. Default: "Contents"
-#: TRAImportacion
-msgid "Contents"
-msgstr "Contenidos"
-
-#. Default: "Data"
-#: TRAContenidoIntercambio TRAImportacion
-msgid "Data"
-msgstr "Datos"
-
-#. Default: "Progress"
-#: TRAImportacion
-msgid "Progress"
-msgstr "Progreso"
-
-#. Default: "Copy Translations"
-#: TRAIdioma
-msgid "Copy Translations"
-msgstr "Copiar Traducciones"
-
-#. Default: "Create Strings"
-#: TRAIdioma
-msgid "Create Strings"
-msgstr "Crear Cadenas"
-
-#. Default: "Clean-up Strings"
-#: TRAIdioma
-msgid "Clean-up Strings"
-msgstr "Limpiar Cadenas"
-
-
-
-
+msgstr "Translation"

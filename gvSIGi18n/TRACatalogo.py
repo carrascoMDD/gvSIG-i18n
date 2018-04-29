@@ -37,7 +37,6 @@ from Products.gvSIGi18n.TRACatalogo_Inicializacion import TRACatalogo_Inicializa
 from Products.gvSIGi18n.TRACatalogo_Informes import TRACatalogo_Informes
 from Products.gvSIGi18n.TRACatalogo_Operaciones import TRACatalogo_Operaciones
 from Products.gvSIGi18n.TRACatalogo_CursorTraducciones import TRACatalogo_CursorTraducciones
-from Products.gvSIGi18n.TRACatalogo_Eliminacion import TRACatalogo_Eliminacion
 from Products.gvSIGi18n.TRACatalogo_Exportacion import TRACatalogo_Exportacion
 from Products.gvSIGi18n.config import *
 
@@ -652,16 +651,18 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRACatalogo_contents_coleccionIdiomas_help',
             i18n_domain='gvSIGi18n',
         ),
-        description='Coleccion de idiomas a los que se desea traducir las cadenas.',
+        contains_collections=True,
         label2='Languages collection',
         label='Coleccion de Idiomas',
+        represents_aggregation=True,
         description2='Collection of languages to translate the strings into.',
         multiValued=1,
         owner_class_name="TRACatalogo",
         multiplicity_higher=1,
         expression="context.objectValues(['TRAColeccionIdiomas'])",
         computed_types=['TRAColeccionIdiomas'],
-        represents_aggregation=True
+        non_framework_elements=False,
+        description='Coleccion de idiomas a los que se desea traducir las cadenas.'
     ),
 
     ComputedField(
@@ -675,16 +676,18 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRACatalogo_contents_coleccionModulos_help',
             i18n_domain='gvSIGi18n',
         ),
-        description='Coleccion de Modulos en el Producto a traducir.',
+        contains_collections=True,
         label2='Modules collection',
         label='Coleccion de Modulos',
+        represents_aggregation=True,
         description2='Collection of Modules in the Product to Translate',
         multiValued=1,
         owner_class_name="TRACatalogo",
         multiplicity_higher=1,
         expression="context.objectValues(['TRAColeccionModulos'])",
         computed_types=['TRAColeccionModulos'],
-        represents_aggregation=True
+        non_framework_elements=False,
+        description='Coleccion de Modulos en el Producto a traducir.'
     ),
 
     ComputedField(
@@ -698,16 +701,18 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRACatalogo_contents_coleccionImportaciones_help',
             i18n_domain='gvSIGi18n',
         ),
-        description='Coleccion de procesos de Importacion para cargar modulos, idiomas, cadenas y traducciones.',
+        contains_collections=True,
         label2='Import processes collection',
         label='Coleccion de Importaciones',
+        represents_aggregation=True,
         description2='Collection of Import processes to load modules,  languages, strings and translations.',
         multiValued=1,
         owner_class_name="TRACatalogo",
         multiplicity_higher=1,
         expression="context.objectValues(['TRAColeccionImportaciones'])",
         computed_types=['TRAColeccionImportaciones'],
-        represents_aggregation=True
+        non_framework_elements=False,
+        description='Coleccion de procesos de Importacion para cargar modulos, idiomas, cadenas y traducciones.'
     ),
 
     ComputedField(
@@ -721,16 +726,18 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRACatalogo_contents_coleccionCadenas_help',
             i18n_domain='gvSIGi18n',
         ),
-        description='Coleccion de Cadenas a traducir a los varios idiomas.',
+        contains_collections=True,
         label2='Strings collection',
         label='Coleccion de Cadenas',
+        represents_aggregation=True,
         description2='Collection of strings to translate to a number of languages.',
         multiValued=1,
         owner_class_name="TRACatalogo",
         multiplicity_higher=1,
         expression="context.objectValues(['TRAColeccionCadenas'])",
         computed_types=['TRAColeccionCadenas'],
-        represents_aggregation=True
+        non_framework_elements=False,
+        description='Coleccion de Cadenas a traducir a los varios idiomas.'
     ),
 
     ComputedField(
@@ -744,16 +751,18 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRACatalogo_contents_coleccionInformes_help',
             i18n_domain='gvSIGi18n',
         ),
-        description='Coleccion de Informes del Estado de traducciones en Modulos e Idiomas.',
+        contains_collections=True,
         label2='Status Reports collection',
         label='Coleccion de Informes de Estado',
+        represents_aggregation=True,
         description2='Collection of Status Reports of Translations to  Languages and Modules',
         multiValued=1,
         owner_class_name="TRACatalogo",
         multiplicity_higher=1,
         expression="context.objectValues(['TRAColeccionInformes'])",
         computed_types=['TRAColeccionInformes'],
-        represents_aggregation=True
+        non_framework_elements=False,
+        description='Coleccion de Informes del Estado de traducciones en Modulos e Idiomas.'
     ),
 
     ComputedField(
@@ -767,16 +776,18 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRACatalogo_contents_coleccionSolicitudesCadenas_help',
             i18n_domain='gvSIGi18n',
         ),
-        description='Coleccion de solicitudes realizadas por los desarrolladores, para crear nuevas cadenas.',
+        contains_collections=True,
         label2='String Requests Collection',
         label='Coleccion de Solicitudes de Cadenas',
+        represents_aggregation=True,
         description2='Collection of requests by developers to create new strings.',
         multiValued=1,
         owner_class_name="TRACatalogo",
         multiplicity_higher=1,
         expression="context.objectValues(['TRAColeccionSolicitudesCadenas'])",
         computed_types=['TRAColeccionSolicitudesCadenas'],
-        represents_aggregation=True
+        non_framework_elements=False,
+        description='Coleccion de solicitudes realizadas por los desarrolladores, para crear nuevas cadenas.'
     ),
 
     StringField(
@@ -953,25 +964,24 @@ TRACatalogo_schema = OrderedBaseFolderSchema.copy() + \
     getattr(TRACatalogo_Informes, 'schema', Schema(())).copy() + \
     getattr(TRACatalogo_Operaciones, 'schema', Schema(())).copy() + \
     getattr(TRACatalogo_CursorTraducciones, 'schema', Schema(())).copy() + \
-    getattr(TRACatalogo_Eliminacion, 'schema', Schema(())).copy() + \
     getattr(TRACatalogo_Exportacion, 'schema', Schema(())).copy() + \
     schema.copy()
 
 ##code-section after-schema #fill in your manual code here
 ##/code-section after-schema
 
-class TRACatalogo(OrderedBaseFolder, TRACatalogo_Autorizaciones, TRAArquetipo, TRACatalogo_Inicializacion, TRACatalogo_Informes, TRACatalogo_Operaciones, TRACatalogo_CursorTraducciones, TRACatalogo_Eliminacion, TRACatalogo_Exportacion):
+class TRACatalogo(OrderedBaseFolder, TRACatalogo_Autorizaciones, TRAArquetipo, TRACatalogo_Inicializacion, TRACatalogo_Informes, TRACatalogo_Operaciones, TRACatalogo_CursorTraducciones, TRACatalogo_Exportacion):
     """
     """
     security = ClassSecurityInfo()
-    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRACatalogo_Autorizaciones,'__implements__',()),) + (getattr(TRAArquetipo,'__implements__',()),) + (getattr(TRACatalogo_Inicializacion,'__implements__',()),) + (getattr(TRACatalogo_Informes,'__implements__',()),) + (getattr(TRACatalogo_Operaciones,'__implements__',()),) + (getattr(TRACatalogo_CursorTraducciones,'__implements__',()),) + (getattr(TRACatalogo_Eliminacion,'__implements__',()),) + (getattr(TRACatalogo_Exportacion,'__implements__',()),)
+    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRACatalogo_Autorizaciones,'__implements__',()),) + (getattr(TRAArquetipo,'__implements__',()),) + (getattr(TRACatalogo_Inicializacion,'__implements__',()),) + (getattr(TRACatalogo_Informes,'__implements__',()),) + (getattr(TRACatalogo_Operaciones,'__implements__',()),) + (getattr(TRACatalogo_CursorTraducciones,'__implements__',()),) + (getattr(TRACatalogo_Exportacion,'__implements__',()),)
 
     # This name appears in the 'add' box
     archetype_name = 'Catalogo de Traducciones'
 
     meta_type = 'TRACatalogo'
     portal_type = 'TRACatalogo'
-    allowed_content_types = ['TRAColeccionInformes', 'TRAColeccionCadenas', 'TRAColeccionImportaciones', 'TRAColeccionSolicitudesCadenas', 'TRAColeccionIdiomas', 'TRAColeccionModulos'] + list(getattr(TRACatalogo_Autorizaciones, 'allowed_content_types', [])) + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Inicializacion, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Informes, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Operaciones, 'allowed_content_types', [])) + list(getattr(TRACatalogo_CursorTraducciones, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Eliminacion, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Exportacion, 'allowed_content_types', []))
+    allowed_content_types = ['TRAColeccionInformes', 'TRAColeccionCadenas', 'TRAColeccionImportaciones', 'TRAColeccionSolicitudesCadenas', 'TRAColeccionIdiomas', 'TRAColeccionModulos'] + list(getattr(TRACatalogo_Autorizaciones, 'allowed_content_types', [])) + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Inicializacion, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Informes, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Operaciones, 'allowed_content_types', [])) + list(getattr(TRACatalogo_CursorTraducciones, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Exportacion, 'allowed_content_types', []))
     filter_content_types = 1
     global_allow = 1
     content_icon = 'tracatalogo.gif'
@@ -991,12 +1001,12 @@ class TRACatalogo(OrderedBaseFolder, TRACatalogo_Autorizaciones, TRAArquetipo, T
     actions =  (
 
 
-       {'action': "string:${object_url}/sharing",
+       {'action': "string:$object_url/content_status_history",
         'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
-        'condition': 'python:1'
+        'id': 'content_status_history',
+        'name': 'State',
+        'permissions': ("View",),
+        'condition': 'python:0'
        },
 
 
@@ -1005,6 +1015,15 @@ class TRACatalogo(OrderedBaseFolder, TRACatalogo_Autorizaciones, TRAArquetipo, T
         'id': 'folderlisting',
         'name': 'Folder Listing',
         'permissions': ("View",),
+        'condition': 'python:0'
+       },
+
+
+       {'action': "string:${object_url}/sharing",
+        'category': "object",
+        'id': 'local_roles',
+        'name': 'Sharing',
+        'permissions': ("Manage properties",),
         'condition': 'python:0'
        },
 
@@ -1018,30 +1037,12 @@ class TRACatalogo(OrderedBaseFolder, TRACatalogo_Autorizaciones, TRAArquetipo, T
        },
 
 
-       {'action': "string:$object_url/content_status_history",
+       {'action': "string:${object_url}/Editar",
         'category': "object",
-        'id': 'content_status_history',
-        'name': 'State',
-        'permissions': ("View",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:${object_url}/sharing",
-        'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:${object_url}/TRACatalogo",
-        'category': "object",
-        'id': 'view',
-        'name': 'View',
-        'permissions': ("View",),
-        'condition': 'python:1'
+        'id': 'TRA_configurar',
+        'name': 'Configure',
+        'permissions': ("Modify portal content",),
+        'condition': 'python:object.fUseCaseCheckDoable_ConfigureTRACatalogo()'
        },
 
 
@@ -1054,12 +1055,12 @@ class TRACatalogo(OrderedBaseFolder, TRACatalogo_Autorizaciones, TRAArquetipo, T
        },
 
 
-       {'action': "string:${object_url}/Editar",
+       {'action': "string:${object_url}/TRAExportar",
         'category': "object",
-        'id': 'TRA_configurar',
-        'name': 'Configure',
-        'permissions': ("Modify portal content",),
-        'condition': 'python:object.fUseCaseCheckDoable_ConfigureTRACatalogo()'
+        'id': 'TRA_export_translations',
+        'name': 'Export',
+        'permissions': ("View",),
+        'condition': 'python:object.fUseCaseCheckDoable_Export()'
        },
 
 
@@ -1072,12 +1073,12 @@ class TRACatalogo(OrderedBaseFolder, TRACatalogo_Autorizaciones, TRAArquetipo, T
        },
 
 
-       {'action': "string:${object_url}/TRAExportar",
+       {'action': "string:${object_url}/TRACatalogo",
         'category': "object",
-        'id': 'TRA_export_translations',
-        'name': 'Export',
+        'id': 'view',
+        'name': 'View',
         'permissions': ("View",),
-        'condition': 'python:object.fUseCaseCheckDoable_Export()'
+        'condition': 'python:1'
        },
 
 
@@ -1091,6 +1092,20 @@ class TRACatalogo(OrderedBaseFolder, TRACatalogo_Autorizaciones, TRAArquetipo, T
     ##/code-section class-header
 
     # Methods
+
+    security.declarePublic('cb_isCopyable')
+    def cb_isCopyable(self):
+        """
+        """
+        
+        return False
+
+    security.declarePublic('getEsRaiz')
+    def getEsRaiz(self):
+        """
+        """
+        
+        return True
 
     security.declarePublic('manage_afterAdd')
     def manage_afterAdd(self,item,container):
@@ -1106,12 +1121,12 @@ class TRACatalogo(OrderedBaseFolder, TRACatalogo_Autorizaciones, TRAArquetipo, T
         
         return TRAArquetipo.manage_beforeDelete( self, item, container)
 
-    security.declarePublic('getEsRaiz')
-    def getEsRaiz(self):
+    security.declarePublic('manage_pasteObjects')
+    def manage_pasteObjects(self,cb_copy_data,REQUEST):
         """
         """
         
-        return True
+        return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

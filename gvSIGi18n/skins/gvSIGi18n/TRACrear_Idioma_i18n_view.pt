@@ -142,7 +142,7 @@
 								<p class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearIdioma_action_page_help">Select one of the known languages, or Enter the language code and name of the language in english. Optionally enter the international code (if different) and the native language name.-</p>
 								<br/>			    
 								<p><strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRACrearIioma_wellKnownLanguages_label">Well Known Languages-</strong></p>
-								<p  class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRACrearIioma_wellKnownLanguages_helpl">The following are languages well known to the gvSIG-i18n application. Leave the --- option to enter another language, in the fields below.-</p>
+								<p  class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRACrearIioma_wellKnownLanguages_help">The following are languages well known to the gvSIG-i18n application. Leave the --- option to enter another language, in the fields below.-</p>
 								
 								<select  style="font-size: 9pt;" name="theNewKnownCodigoIdioma" id="theNewKnownCodigoIdioma" >
 									<option 
@@ -173,7 +173,7 @@
 							<input originalvalue="#" name="theAggregationName" value="#" type="hidden"
 								tal:attributes="originalvalue python: pAggregationName;value python: pAggregationName" />
 								
-							<p><strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRACrearIioma_otherLanguageData_label">Enter data for a language not yet known to the gvSIG-i18n application-</strong></p>
+							<p><strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRACrearIioma_otherLanguageData_label">Enter data for a language not known yet to the gvSIG-i18n application-</strong></p>
 							<br/>			    
 		
 							<p><strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAIdioma_attr_codigoIdiomaEnGvSIG_label">Language code in gvSIG-</strong></p>

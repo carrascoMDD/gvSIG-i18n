@@ -56,7 +56,13 @@ from Products.ZCTextIndex.Lexicon   import CaseNormalizer
 from Products.ZCTextIndex.Lexicon   import Splitter
 from Products.ZCTextIndex.Lexicon   import StopWordRemover
 
-from Products.CJKSplitter.CJKSplitter import CJKSplitter
+
+gCJKSplitter = None
+try:
+    from Products.CJKSplitter.CJKSplitter import CJKSplitter as gCJKSplitter
+except:
+    None
+    
 
 from Products.CMFCore               import permissions
 from Products.CMFCore.utils         import getToolByName
@@ -73,14 +79,16 @@ from TRAElemento_Constants import *
 from TRACatalogo_Inicializacion_Constants import *
 
 
-from TRAElemento_Permission_Definitions import cTRAUserGroups_Catalogo, cTRAUserGroups_AllIdiomas, cTRAUserGroups_Idioma, cTRAUserGroups_Modulo
+from TRAElemento_Permission_Definitions import cTRAUserGroups_Catalogo
 from TRAElemento_Permission_Definitions import cUseCase_InitializeTRACatalogo, cBoundObject
 from TRAElemento_Permission_Definitions import cTRAUserGroups_Catalogo_AuthorizedOnCatalogo
 from TRAElemento_Permission_Definitions import cTRAUserGroups_Catalogo_AuthorizedOnIndividualIdiomas, cTRAUserGroups_Catalogo_AuthorizedOnIndividualModulos
-from TRAElemento_Permission_Definitions import cTRAUserGroups_AllIdiomas_AuthorizedOnColeccionIdiomas
-from TRAElemento_Permission_Definitions import cTRAUserGroups_AllModulos_AuthorizedOnColeccionModulos
-from TRAElemento_Permission_Definitions import cTRAUserGroups_Idioma_AuthorizedOnCatalogo, cTRAUserGroups_Idioma_AuthorizedOnIdioma
-from TRAElemento_Permission_Definitions import cTRAUserGroups_Modulo_AuthorizedOnCatalogo, cTRAUserGroups_Modulo_AuthorizedOnModulo
+# ACV 20090914 NOW approach: Simpler security schema: no user groups for languages or modules, shall assign local roles to users directly on the language or module element
+# from TRAElemento_Permission_Definitions import cTRAUserGroups_AllIdiomas, cTRAUserGroups_Idioma, cTRAUserGroups_Modulo
+# from TRAElemento_Permission_Definitions import cTRAUserGroups_AllIdiomas_AuthorizedOnColeccionIdiomas
+# from TRAElemento_Permission_Definitions import cTRAUserGroups_AllModulos_AuthorizedOnColeccionModulos
+# from TRAElemento_Permission_Definitions import cTRAUserGroups_Idioma_AuthorizedOnCatalogo, cTRAUserGroups_Idioma_AuthorizedOnIdioma
+# from TRAElemento_Permission_Definitions import cTRAUserGroups_Modulo_AuthorizedOnCatalogo, cTRAUserGroups_Modulo_AuthorizedOnModulo
 
 
 
@@ -458,9 +466,10 @@ class TRACatalogo_Inicializacion:
                 unInforme[ 'catalogs_cadenas']                 = self.fLazyCrearCatalogsEIndicesEnCatalogo(    theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
                 unInforme[ 'catalogs_idiomas']                 = self.fLazyCrearCatalogsEIndicesTodosIdiomas(  theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord) 
                 unInforme[ 'user_groups_catalogo']             = self.fLazyCrearUserGroupsCatalogo(            theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
-                unInforme[ 'user_groups_all_idiomas']          = self.fLazyCrearUserGroupsAllIdiomas(          theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
+                # ACV 20090914 Simpler security schema: no user groups for languages or modules, shall assign local roles to users directly on the language or module element
+                # unInforme[ 'user_groups_all_idiomas']          = self.fLazyCrearUserGroupsAllIdiomas(          theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
                 # unInforme[ 'user_groups_all_modulos']          = self.fLazyCrearUserGroupsAllModulos(          theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
-                unInforme[ 'user_groups_idiomas']              = self.fLazyCrearUserGroupsIdiomas(             theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
+                # unInforme[ 'user_groups_idiomas']              = self.fLazyCrearUserGroupsIdiomas(             theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
                 # unInforme[ 'user_groups_modulos']             = self.fLazyCrearUserGroupsModulos(             theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
                 
                 unInforme[ 'success'] = \
@@ -469,9 +478,10 @@ class TRACatalogo_Inicializacion:
                     unInforme[ 'colecciones']                   and unInforme[ 'colecciones'][ 'success']  and  \
                     unInforme[ 'catalogs_cadenas']              and unInforme[ 'catalogs_cadenas'][ 'success'] and \
                     (( not unInforme[ 'catalogs_idiomas'])      or len( [ unInformeCatalogs for unInformeCatalogs in unInforme[ 'catalogs_idiomas'] if unInformeCatalogs[ 'success']]) == len( unInforme[ 'catalogs_idiomas'])) and \
-                    unInforme[ 'user_groups_catalogo']          and unInforme[ 'user_groups_catalogo'][ 'success'] and \
-                    unInforme[ 'user_groups_all_idiomas']       and unInforme[ 'user_groups_all_idiomas'][ 'success'] and \
-                    (( not unInforme[ 'user_groups_idiomas'])   or len( [ unInformeGroups for unInformeGroups in unInforme[ 'user_groups_idiomas'] if unInformeGroups[ 'success']]) == len( unInforme[ 'user_groups_idiomas'])) # and
+                    unInforme[ 'user_groups_catalogo']          and unInforme[ 'user_groups_catalogo'][ 'success'] # and \
+                    # ACV 20090914 Simpler security schema: no user groups for languages or modules, shall assign local roles to users directly on the language or module element
+                    #unInforme[ 'user_groups_all_idiomas']       and unInforme[ 'user_groups_all_idiomas'][ 'success'] and \
+                    #(( not unInforme[ 'user_groups_idiomas'])   or len( [ unInformeGroups for unInformeGroups in unInforme[ 'user_groups_idiomas'] if unInformeGroups[ 'success']]) == len( unInforme[ 'user_groups_idiomas'])) # and
                     # unInforme[ 'user_groups_all_modulos']       and unInforme[ 'user_groups_all_modulos'][ 'success'] and  \
                     # (( not unInforme[ 'user_groups_modulos'])  or len( [ unInformeGroups for unInformeGroups in unInforme[ 'user_groups_modulos'] if unInformeGroups[ 'success']]) == len( unInforme[ 'user_groups_modulos'])) # and
             
@@ -1173,7 +1183,7 @@ class TRACatalogo_Inicializacion:
                 if not unLanguage:
                     return self.fNewVoidInformeLazyCrearTodosCatalogs()
          
-                if unLanguage in cLanguagesWithChineseJapaneseKoreanLexicon:
+                if (unLanguage in cLanguagesWithChineseJapaneseKoreanLexicon) and not ( gCJKSplitter == None):
                     unSpecialPipelineSpec = cLexiconPipelineChineseJapaneseKorean[:]
                     
                 return  self.fLazyCrearCatalogsEIndicesEnContenedor( 
@@ -1358,7 +1368,7 @@ class TRACatalogo_Inicializacion:
                                 # special case for Chinese Japanese Korean indexing
                                 if theSpecialPipelineSpec:
                                     unosPipelineElementNames = theSpecialPipelineSpec
-        
+                                            
                                 unLexiconReportEntry = self.fNewVoidInformeLazyCrearLexicon( unCatalogReportEntry)
                                 unLexiconReportEntry.update( {            
                                     'type':                     'lexicon',
@@ -1396,7 +1406,7 @@ class TRACatalogo_Inicializacion:
                                             elif unPipelineElementName == 'StopWordRemover':
                                                 unosPipelineElements.append( StopWordRemover())  
                                             elif unPipelineElementName == 'CJKSplitter':
-                                                unosPipelineElements.append( CJKSplitter())  
+                                                unosPipelineElements.append( gCJKSplitter())  
                                         if not unosPipelineElements:
                                             unLexiconReportEntry.update( {
                                                 'status':                               'empty_pipeline',           
@@ -1623,9 +1633,10 @@ class TRACatalogo_Inicializacion:
                 lambda theGroupName: self.fUserGroupIdEnCatalogoFor( theGroupName), 
                 [ 
                     [ cTRAUserGroups_Catalogo_AuthorizedOnCatalogo,             [ self,], ], 
-                    # ACV 20090403 Global catalogs not assigned roles in specific languages 
-                    #[ cTRAUserGroups_Catalogo_AuthorizedOnIndividualIdiomas,    self.fObtenerTodosIdiomas(), ], 
-                    # [ cTRAUserGroups_Catalogo_AuthorizedOnIndividualModulos,  [] + self.fObtenerTodosModulos(), ], 
+                    # ACV 20090403 NOW discarded: Global catalogs not assigned roles in specific languages 
+                    # ACV 20090914 NOW approach: Simpler security schema: no user groups for languages or modules, shall assign local roles to users directly on the language or module element
+                    [ cTRAUserGroups_Catalogo_AuthorizedOnIndividualIdiomas,    self.fObtenerTodosIdiomas(), ], 
+                    [ cTRAUserGroups_Catalogo_AuthorizedOnIndividualModulos,  [] + self.fObtenerTodosModulos(), ], 
                 ], 
                 None,
                 theCheckPermissions,
@@ -1640,52 +1651,52 @@ class TRACatalogo_Inicializacion:
     
 
  
-   
-    security.declarePrivate( 'fLazyCrearUserGroupsAllIdiomas')
-    def fLazyCrearUserGroupsAllIdiomas(self, theAllowCreation=False, theCheckPermissions=True, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
-        unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearUserGroupsAllIdiomas', theParentExecutionRecord, False) 
+    # ACV 20090914 Simpler security schema: no user groups for languages or modules, shall assign local roles to users directly on the language or module element
+    #security.declarePrivate( 'fLazyCrearUserGroupsAllIdiomas')
+    #def fLazyCrearUserGroupsAllIdiomas(self, theAllowCreation=False, theCheckPermissions=True, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
+        #unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearUserGroupsAllIdiomas', theParentExecutionRecord, False) 
 
-        try:
-            return self.fLazyCrearUserGroups(
-                theAllowCreation,
-                cTRAUserGroups_AllIdiomas, 
-                lambda theGroupName: self.fUserGroupIdAllIdiomasFor( theGroupName), 
-                [ 
-                    [ cTRAUserGroups_AllIdiomas_AuthorizedOnColeccionIdiomas,        [ self.fObtenerColeccionIdiomas(),], ], 
-                #    [ cTRAUserGroups_AllIdiomas_AuthorizedOnIndividualIdiomas,       [ self.fObtenerColeccionIdiomas(),], ],  # ACV 200904040208 Added
-                ], 
-                lambda theGroupName: self.fUserGroupIdEnCatalogoFor( theGroupName), 
-                theCheckPermissions,
-                thePermissionsCache,
-                theRolesCache,
-                unExecutionRecord
-            )    
-        finally:
-            unExecutionRecord and unExecutionRecord.pEndExecution()
+        #try:
+            #return self.fLazyCrearUserGroups(
+                #theAllowCreation,
+                #cTRAUserGroups_AllIdiomas, 
+                #lambda theGroupName: self.fUserGroupIdAllIdiomasFor( theGroupName), 
+                #[ 
+                    #[ cTRAUserGroups_AllIdiomas_AuthorizedOnColeccionIdiomas,        [ self.fObtenerColeccionIdiomas(),], ], 
+                ##    [ cTRAUserGroups_AllIdiomas_AuthorizedOnIndividualIdiomas,       [ self.fObtenerColeccionIdiomas(),], ],  # ACV 200904040208 Added
+                #], 
+                #lambda theGroupName: self.fUserGroupIdEnCatalogoFor( theGroupName), 
+                #theCheckPermissions,
+                #thePermissionsCache,
+                #theRolesCache,
+                #unExecutionRecord
+            #)    
+        #finally:
+            #unExecutionRecord and unExecutionRecord.pEndExecution()
     
    
     
    
-    security.declarePrivate( 'fLazyCrearUserGroupsAllModulos')
-    def fLazyCrearUserGroupsAllModulos(self, theAllowCreation=False, theCheckPermissions=True, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
-        unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearUserGroupsAllModulos', theParentExecutionRecord, False) 
+    #security.declarePrivate( 'fLazyCrearUserGroupsAllModulos')
+    #def fLazyCrearUserGroupsAllModulos(self, theAllowCreation=False, theCheckPermissions=True, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
+        #unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearUserGroupsAllModulos', theParentExecutionRecord, False) 
 
-        try:
-            return self.fLazyCrearUserGroups(
-                theAllowCreation,
-                cTRAUserGroups_AllModulos, 
-                lambda theGroupName: self.fUserGroupIdAllModulosFor( theGroupName), 
-                [ 
-                    [ cTRAUserGroups_AllModulos_AuthorizedOnColeccionModulos,          [ self.fObtenerColeccionModulos(),], ], 
-                ], 
-                None,
-                theCheckPermissions,
-                thePermissionsCache,
-                theRolesCache,
-                unExecutionRecord
-            )    
-        finally:
-            unExecutionRecord and unExecutionRecord.pEndExecution()
+        #try:
+            #return self.fLazyCrearUserGroups(
+                #theAllowCreation,
+                #cTRAUserGroups_AllModulos, 
+                #lambda theGroupName: self.fUserGroupIdAllModulosFor( theGroupName), 
+                #[ 
+                    #[ cTRAUserGroups_AllModulos_AuthorizedOnColeccionModulos,          [ self.fObtenerColeccionModulos(),], ], 
+                #], 
+                #None,
+                #theCheckPermissions,
+                #thePermissionsCache,
+                #theRolesCache,
+                #unExecutionRecord
+            #)    
+        #finally:
+            #unExecutionRecord and unExecutionRecord.pEndExecution()
     
    
     
@@ -1694,69 +1705,69 @@ class TRACatalogo_Inicializacion:
     
     
    
-    security.declarePrivate( 'fLazyCrearUserGroupsIdiomas')
-    def fLazyCrearUserGroupsIdiomas(self, 
-        theAllowCreation=False, 
-        theCheckPermissions=True, 
-        thePermissionsCache=None, 
-        theRolesCache=None, 
-        theParentExecutionRecord=None):
+    #security.declarePrivate( 'fLazyCrearUserGroupsIdiomas')
+    #def fLazyCrearUserGroupsIdiomas(self, 
+        #theAllowCreation=False, 
+        #theCheckPermissions=True, 
+        #thePermissionsCache=None, 
+        #theRolesCache=None, 
+        #theParentExecutionRecord=None):
         
-        unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearUserGroupsIdiomas', theParentExecutionRecord, False) 
+        #unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearUserGroupsIdiomas', theParentExecutionRecord, False) 
 
-        try:
-            unosIdiomas = self.fObtenerTodosIdiomas()
-            unosInformesIdiomas = []
-            for unIdioma in unosIdiomas:
-                unInforme = self.fLazyCrearUserGroupsParaIdioma(  
-                    theAllowCreation, 
-                    unIdioma, 
-                    theCheckPermissions, 
-                    thePermissionsCache, 
-                    theRolesCache, 
-                    unExecutionRecord
-                )    
-                if unInforme:
-                    unosInformesIdiomas.append( unInforme)
+        #try:
+            #unosIdiomas = self.fObtenerTodosIdiomas()
+            #unosInformesIdiomas = []
+            #for unIdioma in unosIdiomas:
+                #unInforme = self.fLazyCrearUserGroupsParaIdioma(  
+                    #theAllowCreation, 
+                    #unIdioma, 
+                    #theCheckPermissions, 
+                    #thePermissionsCache, 
+                    #theRolesCache, 
+                    #unExecutionRecord
+                #)    
+                #if unInforme:
+                    #unosInformesIdiomas.append( unInforme)
          
-            return unosInformesIdiomas
-        finally:
-            unExecutionRecord and unExecutionRecord.pEndExecution()
+            #return unosInformesIdiomas
+        #finally:
+            #unExecutionRecord and unExecutionRecord.pEndExecution()
     
   
     
     
-    security.declarePrivate( 'fLazyCrearUserGroupsParaIdioma')
-    def fLazyCrearUserGroupsParaIdioma(self, 
-        theAllowCreation=False, 
-        theIdioma=None, 
-        theCheckPermissions=True, 
-        thePermissionsCache=None, 
-        theRolesCache=None, 
-        theParentExecutionRecord=None):
+    #security.declarePrivate( 'fLazyCrearUserGroupsParaIdioma')
+    #def fLazyCrearUserGroupsParaIdioma(self, 
+        #theAllowCreation=False, 
+        #theIdioma=None, 
+        #theCheckPermissions=True, 
+        #thePermissionsCache=None, 
+        #theRolesCache=None, 
+        #theParentExecutionRecord=None):
         
-        unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearUserGroupsParaIdioma', theParentExecutionRecord, False, None, 'language: %s' %  theIdioma or 'unknown') 
+        #unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearUserGroupsParaIdioma', theParentExecutionRecord, False, None, 'language: %s' %  theIdioma or 'unknown') 
 
-        try:
-            if not theIdioma:
-                return []
+        #try:
+            #if not theIdioma:
+                #return []
             
-            return self.fLazyCrearUserGroups(  
-                theAllowCreation, 
-                cTRAUserGroups_Idioma, 
-                lambda theGroupName: self.fUserGroupIdIdiomaFor( theGroupName, theIdioma), 
-                [ 
-                    [ cTRAUserGroups_Idioma_AuthorizedOnCatalogo,             [ self,], ], 
-                    [ cTRAUserGroups_Idioma_AuthorizedOnIdioma,               [ theIdioma,], ], 
-                ], 
-                lambda theGroupName: self.fUserGroupIdEnCatalogoFor( theGroupName), 
-                theCheckPermissions, 
-                thePermissionsCache,
-                theRolesCache,
-                unExecutionRecord
-            )  
-        finally:
-            unExecutionRecord and unExecutionRecord.pEndExecution()
+            #return self.fLazyCrearUserGroups(  
+                #theAllowCreation, 
+                #cTRAUserGroups_Idioma, 
+                #lambda theGroupName: self.fUserGroupIdIdiomaFor( theGroupName, theIdioma), 
+                #[ 
+                    #[ cTRAUserGroups_Idioma_AuthorizedOnCatalogo,             [ self,], ], 
+                    #[ cTRAUserGroups_Idioma_AuthorizedOnIdioma,               [ theIdioma,], ], 
+                #], 
+                #lambda theGroupName: self.fUserGroupIdEnCatalogoFor( theGroupName), 
+                #theCheckPermissions, 
+                #thePermissionsCache,
+                #theRolesCache,
+                #unExecutionRecord
+            #)  
+        #finally:
+            #unExecutionRecord and unExecutionRecord.pEndExecution()
   
     
     
@@ -1765,64 +1776,64 @@ class TRACatalogo_Inicializacion:
   
     
    
-    security.declarePrivate( 'fLazyCrearUserGroupsModulos')
-    def fLazyCrearUserGroupsModulos(self, theAllowCreation=False, theCheckPermissions=True, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
-        unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearUserGroupsModulos', theParentExecutionRecord, False) 
+    #security.declarePrivate( 'fLazyCrearUserGroupsModulos')
+    #def fLazyCrearUserGroupsModulos(self, theAllowCreation=False, theCheckPermissions=True, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
+        #unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearUserGroupsModulos', theParentExecutionRecord, False) 
 
-        try:
-            unosModulos = self.fObtenerTodosModulos()
-            unosInformesModulos = []
-            for unModulo in unosModulos:
-                unInforme = self.fLazyCrearUserGroupsParaModulo(  
-                    theAllowCreation, 
-                    unModulo, 
-                    theCheckPermissions, 
-                    thePermissionsCache, 
-                    theRolesCache, 
-                    unExecutionRecord
-                )    
-                if unInforme:
-                    unosInformesModulos.append( unInforme)
+        #try:
+            #unosModulos = self.fObtenerTodosModulos()
+            #unosInformesModulos = []
+            #for unModulo in unosModulos:
+                #unInforme = self.fLazyCrearUserGroupsParaModulo(  
+                    #theAllowCreation, 
+                    #unModulo, 
+                    #theCheckPermissions, 
+                    #thePermissionsCache, 
+                    #theRolesCache, 
+                    #unExecutionRecord
+                #)    
+                #if unInforme:
+                    #unosInformesModulos.append( unInforme)
          
-            return unosInformesModulos
-        finally:
-            unExecutionRecord and unExecutionRecord.pEndExecution()
+            #return unosInformesModulos
+        #finally:
+            #unExecutionRecord and unExecutionRecord.pEndExecution()
     
     
     
         
         
-    security.declarePrivate( 'fLazyCrearUserGroupsParaModulo')
-    def fLazyCrearUserGroupsParaModulo(self, 
-        theAllowCreation=False, 
-        theModulo=None, 
-        theCheckPermissions=True, 
-        thePermissionsCache=None, 
-        theRolesCache=None, 
-        theParentExecutionRecord=None):
+    #security.declarePrivate( 'fLazyCrearUserGroupsParaModulo')
+    #def fLazyCrearUserGroupsParaModulo(self, 
+        #theAllowCreation=False, 
+        #theModulo=None, 
+        #theCheckPermissions=True, 
+        #thePermissionsCache=None, 
+        #theRolesCache=None, 
+        #theParentExecutionRecord=None):
         
-        unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearUserGroupsParaModulo', theParentExecutionRecord, False) 
+        #unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearUserGroupsParaModulo', theParentExecutionRecord, False) 
 
-        try:
-            if not theModulo:
-                return []
+        #try:
+            #if not theModulo:
+                #return []
             
-            return self.fLazyCrearUserGroups( 
-                theAllowCreation, 
-                cTRAUserGroups_Modulo, 
-                lambda theGroupName: self.fUserGroupIdModuloFor( theGroupName, theModulo), 
-                [  
-                    [ cTRAUserGroups_Modulo_AuthorizedOnCatalogo,             [ self,], ], 
-                    [ cTRAUserGroups_Modulo_AuthorizedOnModulo,               [ theModulo,], ], 
-                ], 
-                None,
-                theCheckPermissions, 
-                thePermissionsCache,
-                theRolesCache,
-                unExecutionRecord
-            )  
-        finally:
-            unExecutionRecord and unExecutionRecord.pEndExecution()
+            #return self.fLazyCrearUserGroups( 
+                #theAllowCreation, 
+                #cTRAUserGroups_Modulo, 
+                #lambda theGroupName: self.fUserGroupIdModuloFor( theGroupName, theModulo), 
+                #[  
+                    #[ cTRAUserGroups_Modulo_AuthorizedOnCatalogo,             [ self,], ], 
+                    #[ cTRAUserGroups_Modulo_AuthorizedOnModulo,               [ theModulo,], ], 
+                #], 
+                #None,
+                #theCheckPermissions, 
+                #thePermissionsCache,
+                #theRolesCache,
+                #unExecutionRecord
+            #)  
+        #finally:
+            #unExecutionRecord and unExecutionRecord.pEndExecution()
     
   
     
@@ -2301,12 +2312,13 @@ class TRACatalogo_Inicializacion:
             unResultadoUserGroups = theInforme.get( 'user_groups_catalogo', {})  
             self.fPrettyPrintLazyUserGroupsCreationResult_AtLevel( anOutput, unResultadoUserGroups, 'TRACatalogo')
 
-            unResultadoUserGroups = theInforme.get( 'user_groups_all_idiomas', {})  
-            self.fPrettyPrintLazyUserGroupsCreationResult_AtLevel( anOutput, unResultadoUserGroups, 'TRACatalogo_AllIdiomas')
+            # ACV 20090914 Simpler security schema: no user groups for languages or modules, shall assign local roles to users directly on the language or module element
+            #unResultadoUserGroups = theInforme.get( 'user_groups_all_idiomas', {})  
+            #self.fPrettyPrintLazyUserGroupsCreationResult_AtLevel( anOutput, unResultadoUserGroups, 'TRACatalogo_AllIdiomas')
 
-            unosResultadosUserGroupsIdiomas = theInforme.get( 'user_groups_idiomas', [])  
-            for unResultadoUserGroups in unosResultadosUserGroupsIdiomas:
-                self.fPrettyPrintLazyUserGroupsCreationResult_AtLevel( anOutput, unResultadoUserGroups, 'TRAIdioma')
+            #unosResultadosUserGroupsIdiomas = theInforme.get( 'user_groups_idiomas', [])  
+            #for unResultadoUserGroups in unosResultadosUserGroupsIdiomas:
+                #self.fPrettyPrintLazyUserGroupsCreationResult_AtLevel( anOutput, unResultadoUserGroups, 'TRAIdioma')
 
             #unosResultadosUserGroupsModulos = theInforme.get( 'user_groups_modulos', [])  
             #for unResultadoUserGroups in unosResultadosUserGroupsModulos:

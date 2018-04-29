@@ -1223,7 +1223,7 @@ class TRACatalogo_Exportacion:
                 return[]
             
             aCatalog = self.fCatalogFiltroTraduccionesParaIdioma( theIdioma) 
-            if not aCatalog:
+            if ( aCatalog == None):
                 return []
             
             unaBusqueda = { 
@@ -1256,7 +1256,7 @@ class TRACatalogo_Exportacion:
                 return []
             
             aCatalog = self.fCatalogFiltroTraduccionesParaIdioma( theIdioma) 
-            if not aCatalog:
+            if ( aCatalog == None):
                 return []
             
             unaBusqueda = { 
@@ -1293,7 +1293,7 @@ class TRACatalogo_Exportacion:
                 return []
                         
             aCatalog = self.fCatalogFiltroTraduccionesParaIdioma( theIdioma) 
-            if not aCatalog:
+            if ( aCatalog == None):
                 return []
             
             unaBusqueda = { 
@@ -1324,7 +1324,7 @@ class TRACatalogo_Exportacion:
                 return []
                         
             aCatalog = self.fCatalogFiltroTraduccionesParaIdioma( theIdioma) 
-            if not aCatalog:
+            if ( aCatalog == None):
                 return []
             
             unaBusqueda = { 
@@ -1345,8 +1345,11 @@ class TRACatalogo_Exportacion:
     security.declarePrivate( 'fFromSystemEncodingToUnicodeToUTF8')    
     def fFromSystemEncodingToUnicodeToUTF8( self, theString, theTranslationService, theSystemToUnicodeErrorsMode,  theUnicodeToUTF8ErrorsMode):
         
-        if not theString  or not theTranslationService:
+        if not theTranslationService:
             return ( '', cResultCondition_Internal_MissingParameter,)
+        
+        if not theString:
+            return ( '', '',)
         
              
         unStringUnicode  = ''
@@ -1367,6 +1370,48 @@ class TRACatalogo_Exportacion:
     
         
     
+    security.declarePrivate( 'fFromSystemEncodingToUnicodeEscape')    
+    def fFromSystemEncodingToUnicodeEscape( self, theString, theTranslationService, theSystemToUnicodeErrorsMode,):
+        
+        if not theTranslationService:
+            return ( '', cResultCondition_Internal_MissingParameter,)
+        
+        if not theString:
+            return ( '', '',)
+        
+             
+        unStringUnicode  = ''
+        try:
+            unStringUnicode = theTranslationService.asunicodetype( theString, errors=theSystemToUnicodeErrorsMode)
+        except:
+            return ( '', cResultCondition_Encoding_FailureFromSystemToUnicode,)
+        
+        unStringEscaped = ''
+        
+        for unUnicodeChar in unStringUnicode:
+            unCharOrdinal = ord( unUnicodeChar)
+            
+            if unCharOrdinal <= cMaxUnescapedCharOrdinal:
+                unStringEscaped += chr( unCharOrdinal)
+            else:
+                unCharEscaped = '\\u'
+                if unCharOrdinal < 256:
+                    unCharEscaped += '%02x' % unCharOrdinal
+                elif unCharOrdinal < (256 * 256):
+                    unCharEscaped += '%04x' % unCharOrdinal
+                elif unCharOrdinal < (256 * 256 * 256):
+                    unCharEscaped += '%06x' % unCharOrdinal
+                elif unCharOrdinal < (256 * 256 * 256 * 256):
+                    unCharEscaped += '%08x' % unCharOrdinal
+                else:
+                    return ( unStringEscaped ,cResultCondition_Encoding_FailureFromSystemToUnicodeEscape,)
+                
+                unStringEscaped += unCharEscaped        
+                
+        return ( unStringEscaped, '')
+    
+    
+    
     
     
 # ####################################################
@@ -1380,6 +1425,7 @@ class TRACatalogo_Exportacion:
         theResult,
         theIdioma, 
         theNombreModulo, 
+        theCodificacionCaracteres,
         theEncodingErrorHandleMode, 
         theSystemToUnicodeErrorsMode,
         theUnicodeToUTF8ErrorsMode,
@@ -1401,23 +1447,35 @@ class TRACatalogo_Exportacion:
             str( self.fDateTimeNow()),
         )
         
-        unStringToWriteUTF8, unEncodingErrorCondition = self.fFromSystemEncodingToUnicodeToUTF8( 
-            unaStringToWrite, 
-            theTranslationService, 
-            theSystemToUnicodeErrorsMode, 
-            theUnicodeToUTF8ErrorsMode
-        )
-        
-        if unEncodingErrorCondition:
-            if unEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicode:
-                theResult[ 'header_error_codificacion_SystemToUnicode'] = True    
-            elif unEncodingErrorCondition == cResultCondition_Encoding_FailureFromUnicodeToUTF8:
-                theResult[ 'header_error_codificacion_UnicodeToUTF'] = True    
-            return False
+        if theCodificacionCaracteres == cEncodingUnicodeEscape:
+            unStringToWriteEncoded, unEncodingErrorCondition = self.fFromSystemEncodingToUnicodeEscape( 
+                unaStringToWrite, 
+                theTranslationService, 
+                theSystemToUnicodeErrorsMode, 
+            )
+            
+            if unEncodingErrorCondition:
+                if unEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicodeEscape:
+                    theResult[ 'header_error_codificacion_SystemToUnicode'] = True    
+                return False
+        else: 
+            unStringToWriteEncoded, unEncodingErrorCondition = self.fFromSystemEncodingToUnicodeToUTF8( 
+                unaStringToWrite, 
+                theTranslationService, 
+                theSystemToUnicodeErrorsMode, 
+                theUnicodeToUTF8ErrorsMode
+            )
+            
+            if unEncodingErrorCondition:
+                if unEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicode:
+                    theResult[ 'header_error_codificacion_SystemToUnicode'] = True    
+                elif unEncodingErrorCondition == cResultCondition_Encoding_FailureFromUnicodeToUTF8:
+                    theResult[ 'header_error_codificacion_UnicodeToUTF'] = True    
+                return False
             
         
         try:    
-            theBuffer.write( unStringToWriteUTF8)
+            theBuffer.write( unStringToWriteEncoded)
         except:
             theResult[ 'header_error_codificacion_Export'] = True 
             return False
@@ -1435,6 +1493,7 @@ class TRACatalogo_Exportacion:
         theBuffer, 
         theResult,
         theResultadosTraducciones, 
+        theCodificacionCaracteres,
         theEncodingErrorHandleMode, 
         theSystemToUnicodeErrorsMode, 
         theUnicodeToUTF8ErrorsMode, 
@@ -1457,59 +1516,86 @@ class TRACatalogo_Exportacion:
             
             
             unSimboloCadena   = unResultadoTraduccion[ 'getSimbolo']
+            unSimboloCadenaEncoded = ''
             
             if not unSimboloCadena:
                 unHayErrorSimbolo = True
                 continue
             
-            unSimboloCadenaUTF8, unSimboloCadenaEncodingErrorCondition = self.fFromSystemEncodingToUnicodeToUTF8( 
-                unSimboloCadena, 
-                theTranslationService, 
-                theSystemToUnicodeErrorsMode, 
-                theUnicodeToUTF8ErrorsMode, 
-            )
-            if unSimboloCadenaEncodingErrorCondition or not unSimboloCadenaUTF8:
+            if theCodificacionCaracteres == cEncodingUnicodeEscape:
+                unSimboloCadenaEncoded, unSimboloCadenaEncodingErrorCondition = self.fFromSystemEncodingToUnicodeEscape( 
+                    unSimboloCadena, 
+                    theTranslationService, 
+                    theSystemToUnicodeErrorsMode, 
+                )
                 
-                if unSimboloCadenaEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicode:
-                    theResult[ 'simbolos_error_codificacion_SystemToUnicode'].append( unSimboloCadena)    
-                    
-                elif unSimboloCadenaEncodingErrorCondition == cResultCondition_Encoding_FailureFromUnicodeToUTF8:
-                    theResult[ 'simbolos_error_codificacion_UnicodeToUTF'].append( unSimboloCadena)    
-            
-                if theEncodingErrorHandleMode in [ cEncodingErrorHandleMode_CancelOnFirstError,]:
-                    return ( unosSimbolosErroresCodificacion, unasTraduccionesErroresCodificacion,) 
-                else:
-                    unHayErrorSimbolo = True
-                    unHayError = True
-                        
-                
-                
-            unaCadenaTraducida     = unResultadoTraduccion[ 'getCadenaTraducida']
-            unaCadenaTraducidaUTF8, unaCadenaTraducidaEncodingErrorCondition = self.fFromSystemEncodingToUnicodeToUTF8( 
-                unaCadenaTraducida, 
-                theTranslationService, 
-                theSystemToUnicodeErrorsMode, 
-                theUnicodeToUTF8ErrorsMode, 
-            )
-            if unaCadenaTraducidaEncodingErrorCondition or not unaCadenaTraducidaUTF8:
-                
-                if unaCadenaTraducidaEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicode:
-                    theResult[ 'traducciones_error_codificacion_SystemToUnicode'].append( unSimboloCadena)    
-
-                elif unaCadenaTraducidaEncodingErrorCondition == cResultCondition_Encoding_FailureFromUnicodeToUTF8:
-                    theResult[ 'traducciones_error_codificacion_UnicodeToUTF'].append( unSimboloCadena)    
-            
-                if theEncodingErrorHandleMode in [ cEncodingErrorHandleMode_CancelOnFirstError,]:
+                if unSimboloCadenaEncodingErrorCondition or not unSimboloCadenaEncoded:
+                    if unEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicodeEscape:
+                        theResult[ 'simbolos_error_codificacion_SystemToUnicode'] = True    
                     return False
-                else:
-                    unHayErrorTraduccion = True
-                    unHayError =  True
+            else: 
+                unSimboloCadenaEncoded, unSimboloCadenaEncodingErrorCondition = self.fFromSystemEncodingToUnicodeToUTF8( 
+                    unSimboloCadena, 
+                    theTranslationService, 
+                    theSystemToUnicodeErrorsMode, 
+                    theUnicodeToUTF8ErrorsMode, 
+                )
+                if unSimboloCadenaEncodingErrorCondition or not unSimboloCadenaEncoded:
+                    
+                    if unSimboloCadenaEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicode:
+                        theResult[ 'simbolos_error_codificacion_SystemToUnicode'].append( unSimboloCadena)    
+                        
+                    elif unSimboloCadenaEncodingErrorCondition == cResultCondition_Encoding_FailureFromUnicodeToUTF8:
+                        theResult[ 'simbolos_error_codificacion_UnicodeToUTF'].append( unSimboloCadena)    
+                
+                    if theEncodingErrorHandleMode in [ cEncodingErrorHandleMode_CancelOnFirstError,]:
+                        return ( unosSimbolosErroresCodificacion, unasTraduccionesErroresCodificacion,) 
+                    else:
+                        unHayErrorSimbolo = True
+                        unHayError = True
+                        
+            unaCadenaTraducida     = unResultadoTraduccion[ 'getCadenaTraducida']
+            unaCadenaTraducidaEncoded = ''
+            
+            if unaCadenaTraducida:
+                if theCodificacionCaracteres == cEncodingUnicodeEscape:
+                    unaCadenaTraducidaEncoded, unaCadenaTraducidaEncodingErrorCondition = self.fFromSystemEncodingToUnicodeEscape( 
+                        unaCadenaTraducida, 
+                        theTranslationService, 
+                        theSystemToUnicodeErrorsMode, 
+                    )
+                    
+                    if unaCadenaTraducidaEncodingErrorCondition or not unaCadenaTraducidaEncoded:
+                        if unEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicodeEscape:
+                            theResult[ 'simbolos_error_codificacion_SystemToUnicode'] = True    
+                        return False
+                else: 
+                    
+                    unaCadenaTraducidaEncoded, unaCadenaTraducidaEncodingErrorCondition = self.fFromSystemEncodingToUnicodeToUTF8( 
+                        unaCadenaTraducida, 
+                        theTranslationService, 
+                        theSystemToUnicodeErrorsMode, 
+                        theUnicodeToUTF8ErrorsMode, 
+                    )
+                    if unaCadenaTraducidaEncodingErrorCondition or not unaCadenaTraducidaEncoded:
+                        
+                        if unaCadenaTraducidaEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicode:
+                            theResult[ 'traducciones_error_codificacion_SystemToUnicode'].append( unSimboloCadena)    
+        
+                        elif unaCadenaTraducidaEncodingErrorCondition == cResultCondition_Encoding_FailureFromUnicodeToUTF8:
+                            theResult[ 'traducciones_error_codificacion_UnicodeToUTF'].append( unSimboloCadena)    
+                    
+                        if theEncodingErrorHandleMode in [ cEncodingErrorHandleMode_CancelOnFirstError,]:
+                            return False
+                        else:
+                            unHayErrorTraduccion = True
+                            unHayError =  True
              
                 
                 
-            if ( not unHayErrorSimbolo) and unSimboloCadenaUTF8:
+            if ( not unHayErrorSimbolo) and unSimboloCadenaEncoded:
                 try:    
-                    theBuffer.write( unSimboloCadenaUTF8)
+                    theBuffer.write( unSimboloCadenaEncoded)
                 except:
                     theResult[ 'simbolos_error_codificacion_Export'].append( unSimboloCadena)    
                     if theEncodingErrorHandleMode in [ cEncodingErrorHandleMode_CancelOnFirstError,]:
@@ -1520,9 +1606,9 @@ class TRACatalogo_Exportacion:
                     
                 theBuffer.write( "=" )
                         
-                if ( not unHayErrorTraduccion) and unaCadenaTraducidaUTF8:
+                if ( not unHayErrorTraduccion) and unaCadenaTraducidaEncoded:
                     try:    
-                        theBuffer.write( unaCadenaTraducidaUTF8)
+                        theBuffer.write( unaCadenaTraducidaEncoded)
                     except:
                         theResult[ 'traducciones_error_codificacion_Export'].append( unSimboloCadena)    
                         if theEncodingErrorHandleMode in [ cEncodingErrorHandleMode_CancelOnFirstError,]:
@@ -1571,10 +1657,17 @@ class TRACatalogo_Exportacion:
                 
                 unBufferResultado = StringIO()
                         
+                unaCodificacionCaracteres = theCodificacionCaracteres
+                unaCodificacionEntrada    = cEncodingUTF8
+                
+                if unaCodificacionCaracteres == cEncodingUnicodeEscape:
+                    unaCodificacionCaracteres = cEncodingASCII
+                    unaCodificacionEntrada    = cEncodingASCII
+                    
                 
                 unEncodedFile = None
                 try:
-                    unEncodedFile = CODECS_EncodedFile( unBufferResultado, cEncodingUTF8, theCodificacionCaracteres, errors=theEncodedFileErrorsMode)
+                    unEncodedFile = CODECS_EncodedFile( unBufferResultado, unaCodificacionEntrada, unaCodificacionCaracteres, errors=theEncodedFileErrorsMode)
                 except:
                     None
                 
@@ -1589,6 +1682,7 @@ class TRACatalogo_Exportacion:
                     unResult,
                     theIdioma, 
                     theNombreModulo, 
+                    theCodificacionCaracteres,
                     theEncodingErrorHandleMode, 
                     theSystemToUnicodeErrorsMode,
                     theUnicodeToUTF8ErrorsMode,
@@ -1617,6 +1711,7 @@ class TRACatalogo_Exportacion:
                     unEncodedFile, 
                     unResult,
                     theResultadosTraducciones,
+                    theCodificacionCaracteres,
                     theEncodingErrorHandleMode,
                     theSystemToUnicodeErrorsMode,
                     theUnicodeToUTF8ErrorsMode,
@@ -1743,6 +1838,47 @@ class TRACatalogo_Exportacion:
    
     security.declarePrivate( 'fWriteHeader_GNUgettextPO')    
     def fWriteHeader_GNUgettextPO( self, 
+        theBuffer, 
+        theResult,
+        theIdioma, 
+        theNombreModulo, 
+        theEncodingName, 
+        theEncodingErrorHandleMode, 
+        theSystemToUnicodeErrorsMode,
+        theUnicodeToUTF8ErrorsMode,
+        theTranslationService):
+        
+        if theEncodingName == cEncodingUnicodeEscape:
+            return self.fWriteHeader_GNUgettextPO_UnicodeEscape( 
+                theBuffer, 
+                theResult,
+                theIdioma, 
+                theNombreModulo, 
+                theEncodingName, 
+                theEncodingErrorHandleMode, 
+                theSystemToUnicodeErrorsMode,
+                theUnicodeToUTF8ErrorsMode,
+                theTranslationService,
+            )
+   
+        return self.fWriteHeader_GNUgettextPO_Encoding( 
+            theBuffer, 
+            theResult,
+            theIdioma, 
+            theNombreModulo, 
+            theEncodingName, 
+            theEncodingErrorHandleMode, 
+            theSystemToUnicodeErrorsMode,
+            theUnicodeToUTF8ErrorsMode,
+            theTranslationService,
+        )
+
+    
+    
+    
+    
+    security.declarePrivate( 'fWriteHeader_GNUgettextPO_Encoding')    
+    def fWriteHeader_GNUgettextPO_Encoding( self, 
         theBuffer, 
         theResult,
         theIdioma, 
@@ -1961,7 +2097,7 @@ class TRACatalogo_Exportacion:
             
         unFallbackUTF8 = '' 
         unEncodedString, unEncodingErrorCondition = self.fFromSystemEncodingToUnicodeToUTF8( 
-            self.fQuoteForGNUgettextPO( theIdioma.getBaseDeIdiomas()), 
+            self.fQuoteForGNUgettextPO( theIdioma.getFallbackDeIdiomas()), 
             theTranslationService, 
             theSystemToUnicodeErrorsMode, 
             theUnicodeToUTF8ErrorsMode, 
@@ -2118,6 +2254,348 @@ class TRACatalogo_Exportacion:
 
      
 
+    security.declarePrivate( 'fWriteHeader_GNUgettextPO_UnicodeEscape')    
+    def fWriteHeader_GNUgettextPO_UnicodeEscape( self, 
+        theBuffer, 
+        theResult,
+        theIdioma, 
+        theNombreModulo, 
+        theEncodingName, 
+        theEncodingErrorHandleMode, 
+        theSystemToUnicodeErrorsMode,
+        theUnicodeToUTF8ErrorsMode,
+        theTranslationService):
+
+
+        if not theResult:
+            return False
+
+        if not theIdioma or not theBuffer:
+            theResult[ 'status'] = cResultCondition_Internal_MissingParameter    
+            return False
+
+        
+        unErrorEnHeader = False
+        
+        unCodigoIdioma = theIdioma.getCodigoIdiomaEnGvSIG()
+        
+        unAhora = self.fDateTimeNow()
+        unOffset = int( unAhora.tzoffset() / 3600)
+        unOffsetSign = '+'
+        if unOffset < 0:
+            unOffsetSign = '-'
+    
+        unPOTimestampEncoded = ''
+        unEncodedString, unEncodingErrorCondition = self.fFromSystemEncodingToUnicodeEscape( 
+            '%4.4d-%02d-%02d %02d:%02d%s%02d00' % ( unAhora.year(), unAhora.month(), unAhora.day(), unAhora.hour(), unAhora.minute(), unOffsetSign, unOffset, ), 
+            theTranslationService, 
+            theSystemToUnicodeErrorsMode, 
+        )
+        if unEncodingErrorCondition:
+            unErrorEnHeader = True
+            if unEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicode:
+                theResult[ 'header_error_codificacion_SystemToUnicode'] = True    
+            if theEncodingErrorHandleMode == cEncodingErrorHandleMode_CancelOnFirstError:
+                return False
+        else:    
+            unPOTimestampEncoded = unEncodedString
+        
+            
+        unNombreProductoEncoded = '' 
+        unEncodedString, unEncodingErrorCondition = self.fFromSystemEncodingToUnicodeEscape( 
+            self.fQuoteForGNUgettextPO( self.getNombreProducto()), 
+            theTranslationService, 
+            theSystemToUnicodeErrorsMode, 
+        )
+        if unEncodingErrorCondition:
+            unErrorEnHeader = True
+            if unEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicode:
+                theResult[ 'header_error_codificacion_SystemToUnicode'] = True    
+            if theEncodingErrorHandleMode == cEncodingErrorHandleMode_CancelOnFirstError:
+                return False
+        else:    
+            unNombreProductoEncoded = unEncodedString
+            
+            
+        unLastTranslatorEncoded = '' 
+        unEncodedString, unEncodingErrorCondition = self.fFromSystemEncodingToUnicodeEscape( 
+            self.fQuoteForGNUgettextPO( theIdioma.getEquipoTraductor()), 
+            theTranslationService, 
+            theSystemToUnicodeErrorsMode, 
+        )
+        if unEncodingErrorCondition:
+            unErrorEnHeader = True
+            if unEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicode:
+                theResult[ 'header_error_codificacion_SystemToUnicode'] = True    
+            if theEncodingErrorHandleMode == cEncodingErrorHandleMode_CancelOnFirstError:
+                return False
+        else:    
+            unLastTranslatorEncoded = unEncodedString
+            
+        unLanguageTeamEncoded = unLastTranslatorEncoded
+            
+        #unCharSetEncoded = '' 
+        #unEncodedString, unEncodingErrorCondition = self.fFromSystemEncodingToUnicodeEscape( 
+            #self.fQuoteForGNUgettextPO( theEncodingName), 
+            #theTranslationService, 
+            #theSystemToUnicodeErrorsMode, 
+        #)
+        #if unEncodingErrorCondition:
+            #unErrorEnHeader = True
+            #if unEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicode:
+                #theResult[ 'header_error_codificacion_SystemToUnicode'] = True    
+            #if theEncodingErrorHandleMode == cEncodingErrorHandleMode_CancelOnFirstError:
+                #return False
+        #else:    
+            #unCharSetEncoded  = unEncodedString
+            
+                 
+            
+        unaCodificacionTransferenciaContenidoEncoded = '' 
+        unEncodedString, unEncodingErrorCondition = self.fFromSystemEncodingToUnicodeEscape( 
+            self.fQuoteForGNUgettextPO( theIdioma.getCodificacionTransferenciaContenido()), 
+            theTranslationService, 
+            theSystemToUnicodeErrorsMode, 
+        )
+        if unEncodingErrorCondition:
+            unErrorEnHeader = True
+            if unEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicode:
+                theResult[ 'header_error_codificacion_SystemToUnicode'] = True    
+            if theEncodingErrorHandleMode == cEncodingErrorHandleMode_CancelOnFirstError:
+                return False
+        else:    
+            unaCodificacionTransferenciaContenidoEncoded = unEncodedString
+            
+        unasFormasPluralesEncoded = '' 
+        unEncodedString, unEncodingErrorCondition = self.fFromSystemEncodingToUnicodeEscape( 
+            self.fQuoteForGNUgettextPO( theIdioma.getFormasPlurales()), 
+            theTranslationService, 
+            theSystemToUnicodeErrorsMode, 
+        )
+        if unEncodingErrorCondition:
+            unErrorEnHeader = True
+            if unEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicode:
+                theResult[ 'header_error_codificacion_SystemToUnicode'] = True    
+            if theEncodingErrorHandleMode == cEncodingErrorHandleMode_CancelOnFirstError:
+                return False
+        else:    
+            unasFormasPluralesEncoded = unEncodedString
+            
+        unCodigoIdiomaEncoded = '' 
+        unEncodedString, unEncodingErrorCondition = self.fFromSystemEncodingToUnicodeEscape( 
+            unCodigoIdioma, 
+            theTranslationService, 
+            theSystemToUnicodeErrorsMode, 
+        )
+        if unEncodingErrorCondition:
+            unErrorEnHeader = True
+            if unEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicode:
+                theResult[ 'header_error_codificacion_SystemToUnicode'] = True    
+            if theEncodingErrorHandleMode == cEncodingErrorHandleMode_CancelOnFirstError:
+                return False
+        else:    
+            unCodigoIdiomaEncoded = unEncodedString
+            
+        unNombreNativoIdiomaEncoded = '' 
+        unEncodedString, unEncodingErrorCondition = self.fFromSystemEncodingToUnicodeEscape( 
+            self.fQuoteForGNUgettextPO( theIdioma.getNombreNativoDeIdioma()), 
+            theTranslationService, 
+            theSystemToUnicodeErrorsMode, 
+        )
+        if unEncodingErrorCondition:
+            unErrorEnHeader = True
+            if unEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicode:
+                theResult[ 'header_error_codificacion_SystemToUnicode'] = True    
+            if theEncodingErrorHandleMode == cEncodingErrorHandleMode_CancelOnFirstError:
+                return False
+        else:    
+            unNombreNativoIdiomaEncoded = unEncodedString
+            
+             
+        unasCodificacionesPreferidasEncoded = '' 
+        unEncodedString, unEncodingErrorCondition = self.fFromSystemEncodingToUnicodeEscape( 
+            self.fQuoteForGNUgettextPO( theIdioma.getCodificacionesPreferidas()), 
+            theTranslationService, 
+            theSystemToUnicodeErrorsMode, 
+        )
+        if unEncodingErrorCondition:
+            unErrorEnHeader = True
+            if unEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicode:
+                theResult[ 'header_error_codificacion_SystemToUnicode'] = True    
+            if theEncodingErrorHandleMode == cEncodingErrorHandleMode_CancelOnFirstError:
+                return False
+        else:    
+            unasCodificacionesPreferidasEncoded = unEncodedString
+             
+        unDominioEncoded = '' 
+        unEncodedString, unEncodingErrorCondition = self.fFromSystemEncodingToUnicodeEscape( 
+            self.fQuoteForGNUgettextPO( theNombreModulo or self.getDominioPorDefecto()), 
+            theTranslationService, 
+            theSystemToUnicodeErrorsMode, 
+        )
+        if unEncodingErrorCondition:
+            unErrorEnHeader = True
+            if unEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicode:
+                theResult[ 'header_error_codificacion_SystemToUnicode'] = True    
+            if theEncodingErrorHandleMode == cEncodingErrorHandleMode_CancelOnFirstError:
+                return False
+        else:    
+            unDominioEncoded = unEncodedString
+            
+        unFallbackEncoded = '' 
+        unEncodedString, unEncodingErrorCondition = self.fFromSystemEncodingToUnicodeEscape( 
+            self.fQuoteForGNUgettextPO( theIdioma.getFallbackDeIdiomas()), 
+            theTranslationService, 
+            theSystemToUnicodeErrorsMode, 
+        )
+        if unEncodingErrorCondition:
+            unErrorEnHeader = True
+            if unEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicode:
+                theResult[ 'header_error_codificacion_SystemToUnicode'] = True    
+            if theEncodingErrorHandleMode == cEncodingErrorHandleMode_CancelOnFirstError:
+                return False
+        else:    
+            unFallbackEncoded = unEncodedString
+               
+            
+            
+        try:    
+            theBuffer.write( cGNUgettextPOHeaderTemplateString_Top)
+        except:
+            theResult[ 'header_error_codificacion_Export'] = True    
+            if theEncodingErrorHandleMode == cEncodingErrorHandleMode_CancelOnFirstError:
+                return False
+            
+        
+        theBuffer.write( cGNUgettextPOHeaderLabel_ProjectIdVersion)
+        if unNombreProductoEncoded:
+            try:    
+                theBuffer.write( unNombreProductoEncoded)
+            except:
+                theResult[ 'header_error_codificacion_Export'] = True    
+                if theEncodingErrorHandleMode == cEncodingErrorHandleMode_CancelOnFirstError:
+                    return False
+        theBuffer.write( cGNUgettextPOHeader_AfterValue)
+            
+        theBuffer.write( cGNUgettextPOHeaderLabel_POTCreationDate)
+        if unPOTimestampEncoded:
+            try:    
+                theBuffer.write( unPOTimestampEncoded)
+            except:
+                theResult[ 'header_error_codificacion_Export'] = True    
+                if theEncodingErrorHandleMode == cEncodingErrorHandleMode_CancelOnFirstError:
+                    return False
+        theBuffer.write( cGNUgettextPOHeader_AfterValue)
+
+        theBuffer.write( cGNUgettextPOHeaderLabel_PORevisionDate)
+        if unPOTimestampEncoded:
+            try:    
+                theBuffer.write( unPOTimestampEncoded)
+            except:
+                theResult[ 'header_error_codificacion_Export'] = True    
+                if theEncodingErrorHandleMode == cEncodingErrorHandleMode_CancelOnFirstError:
+                    return False
+        theBuffer.write( cGNUgettextPOHeader_AfterValue)
+        
+        theBuffer.write( cGNUgettextPOHeaderLabel_LastTranslator)
+        if unLastTranslatorEncoded:
+            try:    
+                theBuffer.write( unLastTranslatorEncoded)
+            except:
+                theResult[ 'header_error_codificacion_Export'] = True    
+                if theEncodingErrorHandleMode == cEncodingErrorHandleMode_CancelOnFirstError:
+                    return False
+        theBuffer.write( cGNUgettextPOHeader_AfterValue)
+        
+        theBuffer.write( cGNUgettextPOHeaderLabel_LanguageTeam)
+        if unLanguageTeamEncoded:
+            try:    
+                theBuffer.write( unLanguageTeamEncoded)
+            except:
+                theResult[ 'header_error_codificacion_Export'] = True    
+                if theEncodingErrorHandleMode == cEncodingErrorHandleMode_CancelOnFirstError:
+                    return False
+        theBuffer.write( cGNUgettextPOHeader_AfterValue)
+        
+        theBuffer.write( cGNUgettextPOHeaderLabel_MIMEVersion)
+        theBuffer.write( cGNUgettextPOHeader_AfterValue)
+
+        theBuffer.write( cGNUgettextPOHeaderLabel_ContentType)
+        try:    
+            theBuffer.write( cEncodingASCII)
+        except:
+            theResult[ 'header_error_codificacion_Export'] = True    
+            if theEncodingErrorHandleMode == cEncodingErrorHandleMode_CancelOnFirstError:
+                return False
+        theBuffer.write( cGNUgettextPOHeader_AfterValue)
+             
+        theBuffer.write( cGNUgettextPOHeaderLabel_ContentTransferEncoding)
+        if unaCodificacionTransferenciaContenidoEncoded:
+            try:    
+                theBuffer.write( unaCodificacionTransferenciaContenidoEncoded)
+            except:
+                theResult[ 'header_error_codificacion_Export'] = True    
+                if theEncodingErrorHandleMode == cEncodingErrorHandleMode_CancelOnFirstError:
+                    return False
+        theBuffer.write( cGNUgettextPOHeader_AfterValue)
+             
+        theBuffer.write( cGNUgettextPOHeaderLabel_PluralForms)
+        if unasFormasPluralesEncoded:
+            try:    
+                theBuffer.write( unasFormasPluralesEncoded)
+            except:
+                theResult[ 'header_error_codificacion_Export'] = True    
+                if theEncodingErrorHandleMode == cEncodingErrorHandleMode_CancelOnFirstError:
+                    return False
+        theBuffer.write( cGNUgettextPOHeader_AfterValue)
+             
+        theBuffer.write( cGNUgettextPOHeaderLabel_LanguageCode)
+        if unCodigoIdiomaEncoded:
+            try:    
+                theBuffer.write( unCodigoIdiomaEncoded)
+            except:
+                theResult[ 'header_error_codificacion_Export'] = True    
+                if theEncodingErrorHandleMode == cEncodingErrorHandleMode_CancelOnFirstError:
+                    return False
+        theBuffer.write( cGNUgettextPOHeader_AfterValue)
+             
+        theBuffer.write( cGNUgettextPOHeaderLabel_LanguageName)
+        if unNombreNativoIdiomaEncoded:
+            try:    
+                theBuffer.write( unNombreNativoIdiomaEncoded)
+            except:
+                theResult[ 'header_error_codificacion_Export'] = True    
+                if theEncodingErrorHandleMode == cEncodingErrorHandleMode_CancelOnFirstError:
+                    return False
+        theBuffer.write( cGNUgettextPOHeader_AfterValue)
+             
+        theBuffer.write( cGNUgettextPOHeaderLabel_PreferredEncodings)
+        if unasCodificacionesPreferidasEncoded:
+            try:    
+                theBuffer.write( unasCodificacionesPreferidasEncoded)
+            except:
+                theResult[ 'header_error_codificacion_Export'] = True    
+                if theEncodingErrorHandleMode == cEncodingErrorHandleMode_CancelOnFirstError:
+                    return False
+        theBuffer.write( cGNUgettextPOHeader_AfterValue)
+             
+        theBuffer.write( cGNUgettextPOHeaderLabel_Domain)
+        if unDominioEncoded:
+            try:    
+                theBuffer.write( unDominioEncoded)
+            except:
+                theResult[ 'header_error_codificacion_Export'] = True    
+                if theEncodingErrorHandleMode == cEncodingErrorHandleMode_CancelOnFirstError:
+                    return False
+        theBuffer.write( cGNUgettextPOHeader_AfterValue)
+
+        theBuffer.write( '\n')
+             
+        return not unErrorEnHeader
+
+    
+    
+    
     
     security.declarePrivate( 'fQuoteForGNUgettextPO')    
     def fQuoteForGNUgettextPO( self, theString):
@@ -2135,6 +2613,7 @@ class TRACatalogo_Exportacion:
         theResultadosTraducciones, 
         theResultadosTraduccionesReferencia, 
         theSourcesCadenasPorSimbolo,
+        theCodificacionCaracteres,
         theEncodingErrorHandleMode, 
         theSystemToUnicodeErrorsMode, 
         theUnicodeToUTF8ErrorsMode, 
@@ -2168,84 +2647,126 @@ class TRACatalogo_Exportacion:
             
             
             unSimboloCadena   = unResultadoTraduccion[ 'getSimbolo']
+            unSimboloCadenaEncoded = ''
             
             if not unSimboloCadena:
                 unHayErrorSimbolo = True
                 continue
             
-            unSimboloCadenaUTF8, unSimboloCadenaEncodingErrorCondition = self.fFromSystemEncodingToUnicodeToUTF8( 
-                unSimboloCadena, 
-                theTranslationService, 
-                theSystemToUnicodeErrorsMode, 
-                theUnicodeToUTF8ErrorsMode, 
-            )
-            if unSimboloCadenaEncodingErrorCondition or not unSimboloCadenaUTF8:
+            if theCodificacionCaracteres == cEncodingUnicodeEscape:
+                unSimboloCadenaEncoded, unSimboloCadenaEncodingErrorCondition = self.fFromSystemEncodingToUnicodeEscape( 
+                    unSimboloCadena, 
+                    theTranslationService, 
+                    theSystemToUnicodeErrorsMode, 
+                )
                 
-                unHayErrorSimbolo = True
-                unHayError        = True
-                
-                if unSimboloCadenaEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicode:
-                    theResult[ 'simbolos_error_codificacion_SystemToUnicode'].append( unSimboloCadena)    
+                if unSimboloCadenaEncodingErrorCondition or not unSimboloCadenaEncoded:
+                    if unEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicodeEscape:
+                        theResult[ 'simbolos_error_codificacion_SystemToUnicode'] = True    
+                    return False
+            else: 
+                unSimboloCadenaEncoded, unSimboloCadenaEncodingErrorCondition = self.fFromSystemEncodingToUnicodeToUTF8( 
+                    unSimboloCadena, 
+                    theTranslationService, 
+                    theSystemToUnicodeErrorsMode, 
+                    theUnicodeToUTF8ErrorsMode, 
+                )
+                if unSimboloCadenaEncodingErrorCondition or not unSimboloCadenaEncoded:
                     
-                elif unSimboloCadenaEncodingErrorCondition == cResultCondition_Encoding_FailureFromUnicodeToUTF8:
-                    theResult[ 'simbolos_error_codificacion_UnicodeToUTF'].append( unSimboloCadena)    
-            
-                if theEncodingErrorHandleMode in [ cEncodingErrorHandleMode_CancelOnFirstError,]:
-                    return ( unosSimbolosErroresCodificacion, unasTraduccionesErroresCodificacion,) 
+                    unHayErrorSimbolo = True
+                    unHayError        = True
+                    
+                    if unSimboloCadenaEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicode:
+                        theResult[ 'simbolos_error_codificacion_SystemToUnicode'].append( unSimboloCadena)    
+                        
+                    elif unSimboloCadenaEncodingErrorCondition == cResultCondition_Encoding_FailureFromUnicodeToUTF8:
+                        theResult[ 'simbolos_error_codificacion_UnicodeToUTF'].append( unSimboloCadena)    
+                
+                    if theEncodingErrorHandleMode in [ cEncodingErrorHandleMode_CancelOnFirstError,]:
+                        return ( unosSimbolosErroresCodificacion, unasTraduccionesErroresCodificacion,) 
 
                          
-                
             unaCadenaTraducida     = unResultadoTraduccion[ 'getCadenaTraducida']
-            unaCadenaTraducidaUTF8, unaCadenaTraducidaEncodingErrorCondition = self.fFromSystemEncodingToUnicodeToUTF8( 
-                unaCadenaTraducida, 
-                theTranslationService, 
-                theSystemToUnicodeErrorsMode, 
-                theUnicodeToUTF8ErrorsMode, 
-            )
-            if unaCadenaTraducidaEncodingErrorCondition or not unaCadenaTraducidaUTF8:
-                
-                unHayErrorTraduccion = True
-                unHayError =  True
-                
-                if unaCadenaTraducidaEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicode:
-                    theResult[ 'traduccionesRefrencia_error_codificacion_SystemToUnicode'].append( unSimboloCadena)    
-
-                elif unaCadenaTraducidaEncodingErrorCondition == cResultCondition_Encoding_FailureFromUnicodeToUTF8:
-                    theResult[ 'traduccionesReferencia_error_codificacion_UnicodeToUTF'].append( unSimboloCadena)    
+            unaCadenaTraducidaEncoded = ''
             
-                if theEncodingErrorHandleMode in [ cEncodingErrorHandleMode_CancelOnFirstError,]:
-                    return False
-
-             
-            
-            unaCadenaTraducidaReferenciaUTF8 = ''
-            unResultadoTraduccionReferencia  = unosResultadosTraduccionesReferencia.get( unSimboloCadena, {})
-            if unResultadoTraduccionReferencia:
-                unaCadenaTraducidaReferencia     = unResultadoTraduccionReferencia[ 'getCadenaTraducida']
-                if unaCadenaTraducidaReferencia:
-                    unaCadenaTraducidaReferenciaUTF8, unaCadenaTraducidaReferenciaEncodingErrorCondition = self.fFromSystemEncodingToUnicodeToUTF8( 
-                        unaCadenaTraducidaReferencia, 
+            if unaCadenaTraducida:
+                if theCodificacionCaracteres == cEncodingUnicodeEscape:
+                    unaCadenaTraducidaEncoded, unaCadenaTraducidaEncodingErrorCondition = self.fFromSystemEncodingToUnicodeEscape( 
+                        unaCadenaTraducida, 
+                        theTranslationService, 
+                        theSystemToUnicodeErrorsMode, 
+                    )
+                    
+                    if unaCadenaTraducidaEncodingErrorCondition or not unaCadenaTraducidaEncoded:
+                        if unEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicodeEscape:
+                            theResult[ 'simbolos_error_codificacion_SystemToUnicode'] = True    
+                        return False
+                else: 
+                    unaCadenaTraducidaEncoded, unaCadenaTraducidaEncodingErrorCondition = self.fFromSystemEncodingToUnicodeToUTF8( 
+                        unaCadenaTraducida, 
                         theTranslationService, 
                         theSystemToUnicodeErrorsMode, 
                         theUnicodeToUTF8ErrorsMode, 
                     )
-                    if unaCadenaTraducidaReferenciaEncodingErrorCondition:
+                    if unaCadenaTraducidaEncodingErrorCondition or not unaCadenaTraducidaEncoded:
                         
-                        unHayErrorTraduccionReferencia = True
+                        unHayErrorTraduccion = True
                         unHayError =  True
                         
-                        if unaCadenaTraducidaReferenciaEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicode:
-                            theResult[ 'traducciones_error_codificacion_SystemToUnicode'].append( unSimboloCadena)    
+                        if unaCadenaTraducidaEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicode:
+                            theResult[ 'traduccionesRefrencia_error_codificacion_SystemToUnicode'].append( unSimboloCadena)    
         
-                        elif unaCadenaTraducidaReferenciaEncodingErrorCondition == cResultCondition_Encoding_FailureFromUnicodeToUTF8:
-                            theResult[ 'traducciones_error_codificacion_UnicodeToUTF'].append( unSimboloCadena)    
+                        elif unaCadenaTraducidaEncodingErrorCondition == cResultCondition_Encoding_FailureFromUnicodeToUTF8:
+                            theResult[ 'traduccionesReferencia_error_codificacion_UnicodeToUTF'].append( unSimboloCadena)    
                     
                         if theEncodingErrorHandleMode in [ cEncodingErrorHandleMode_CancelOnFirstError,]:
-                            return False                   
+                            return False
+
+             
+            
+            unaCadenaTraducidaReferenciaEncoded = ''
+            
+            unResultadoTraduccionReferencia  = unosResultadosTraduccionesReferencia.get( unSimboloCadena, {})
+            if unResultadoTraduccionReferencia:
+                unaCadenaTraducidaReferencia     = unResultadoTraduccionReferencia[ 'getCadenaTraducida']
+                if unaCadenaTraducidaReferencia:
+                    
+                    if theCodificacionCaracteres == cEncodingUnicodeEscape:
+                        unaCadenaTraducidaReferenciaEncoded, unaCadenaTraducidaReferenciaEncodingErrorCondition = self.fFromSystemEncodingToUnicodeEscape( 
+                            unaCadenaTraducidaReferencia, 
+                            theTranslationService, 
+                            theSystemToUnicodeErrorsMode, 
+                        )
+                        
+                        if unaCadenaTraducidaReferenciaEncodingErrorCondition or not unaCadenaTraducidaReferenciaEncoded:
+                            if unEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicodeEscape:
+                                theResult[ 'simbolos_error_codificacion_SystemToUnicode'] = True    
+                            return False
+                    else: 
+                    
+                        unaCadenaTraducidaReferenciaEncoded, unaCadenaTraducidaReferenciaEncodingErrorCondition = self.fFromSystemEncodingToUnicodeToUTF8( 
+                            unaCadenaTraducidaReferencia, 
+                            theTranslationService, 
+                            theSystemToUnicodeErrorsMode, 
+                            theUnicodeToUTF8ErrorsMode, 
+                        )
+                        if unaCadenaTraducidaReferenciaEncodingErrorCondition:
+                            
+                            unHayErrorTraduccionReferencia = True
+                            unHayError =  True
+                            
+                            if unaCadenaTraducidaReferenciaEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicode:
+                                theResult[ 'traducciones_error_codificacion_SystemToUnicode'].append( unSimboloCadena)    
+            
+                            elif unaCadenaTraducidaReferenciaEncodingErrorCondition == cResultCondition_Encoding_FailureFromUnicodeToUTF8:
+                                theResult[ 'traducciones_error_codificacion_UnicodeToUTF'].append( unSimboloCadena)    
+                        
+                            if theEncodingErrorHandleMode in [ cEncodingErrorHandleMode_CancelOnFirstError,]:
+                                return False                   
                         
                         
                         
-            if not theSourcesCadenasPorSimbolo.has_key( unSimboloCadena):
+            if not theSourcesCadenasPorSimbolo:
                 for otroResultadoTraduccion in theResultadosTraducciones:
                     otroSimboloCadena   = otroResultadoTraduccion[ 'getSimbolo']
                     if otroSimboloCadena:
@@ -2271,9 +2792,9 @@ class TRACatalogo_Exportacion:
                 else:
                     unHayError =  True
                     
-            if ( not unHayErrorDefaultLabel) and ( not unHayErrorTraduccionReferencia) and unaCadenaTraducidaReferenciaUTF8:
+            if ( not unHayErrorDefaultLabel) and ( not unHayErrorTraduccionReferencia) and unaCadenaTraducidaReferenciaEncoded:
                 try:    
-                    theBuffer.write( unaCadenaTraducidaReferenciaUTF8)
+                    theBuffer.write( unaCadenaTraducidaReferenciaEncoded)
                 except:
                     theResult[ 'traduccionesReferencia_error_codificacion_Export'].append( unSimboloCadena)    
                     if theEncodingErrorHandleMode in [ cEncodingErrorHandleMode_CancelOnFirstError,]:
@@ -2313,9 +2834,9 @@ class TRACatalogo_Exportacion:
                 else:
                     unHayError =  True
 
-            if ( not unHayErrorSimboloLabel) and ( not unHayErrorSimbolo) and unSimboloCadenaUTF8:
+            if ( not unHayErrorSimboloLabel) and ( not unHayErrorSimbolo) and unSimboloCadenaEncoded:
                 try:    
-                    theBuffer.write( unSimboloCadenaUTF8)
+                    theBuffer.write( unSimboloCadenaEncoded)
                 except:
                     theResult[ 'simbolos_error_codificacion_Export'].append( unSimboloCadena)    
                     if theEncodingErrorHandleMode in [ cEncodingErrorHandleMode_CancelOnFirstError,]:
@@ -2338,9 +2859,9 @@ class TRACatalogo_Exportacion:
                 else:
                     unHayError =  True
                     
-            if ( not unHayErrorCadenaTraducidaLabel) and  ( not unHayErrorTraduccion) and unaCadenaTraducidaUTF8:
+            if ( not unHayErrorCadenaTraducidaLabel) and  ( not unHayErrorTraduccion) and unaCadenaTraducidaEncoded:
                 try:    
-                    theBuffer.write( unaCadenaTraducidaUTF8)
+                    theBuffer.write( unaCadenaTraducidaEncoded)
                 except:
                     theResult[ 'traducciones_error_codificacion_Export'].append( unSimboloCadena)    
                     if theEncodingErrorHandleMode in [ cEncodingErrorHandleMode_CancelOnFirstError,]:
@@ -2397,10 +2918,17 @@ class TRACatalogo_Exportacion:
                 
                
                 unBufferResultado = StringIO()
+                
+                unaCodificacionCaracteres = theCodificacionCaracteres
+                unaCodificacionEntrada    = cEncodingUTF8
+                
+                if unaCodificacionCaracteres == cEncodingUnicodeEscape:
+                    unaCodificacionCaracteres = cEncodingASCII
+                    unaCodificacionEntrada    = cEncodingASCII
                     
                 unEncodedFile = None
                 try:
-                    unEncodedFile = CODECS_EncodedFile( unBufferResultado, cEncodingUTF8, theCodificacionCaracteres, errors=theEncodedFileErrorsMode)
+                    unEncodedFile = CODECS_EncodedFile( unBufferResultado, unaCodificacionEntrada, unaCodificacionCaracteres, errors=theEncodedFileErrorsMode)
                 except:
                     None
                 
@@ -2448,6 +2976,7 @@ class TRACatalogo_Exportacion:
                     theResultadosTraducciones,
                     theResultadosTraduccionesReferencia,
                     theSourcesCadenasPorSimbolo,
+                    theCodificacionCaracteres,
                     theEncodingErrorHandleMode,
                     theSystemToUnicodeErrorsMode,
                     theUnicodeToUTF8ErrorsMode,

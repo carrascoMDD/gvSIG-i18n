@@ -2097,7 +2097,7 @@ class TRACatalogo_CursorTraducciones:
                 return []
     
             unCatalog = self.getCatalogo().fCatalogBusquedaTraduccionesParaIdioma( theIdioma)
-            if not unCatalog:
+            if ( unCatalog == None):
                 return []
             unosDatosTraducciones = unCatalog.searchResults( **theCriterioBusqueda)                
               
@@ -2131,7 +2131,7 @@ class TRACatalogo_CursorTraducciones:
                 return []
  
             unCatalog = self.getCatalogo().fCatalogFiltroTraduccionesParaIdioma( theIdioma)
-            if not unCatalog:
+            if ( unCatalog == None):
                 return []
             unosDatosTraducciones = unCatalog.searchResults( **theCriterioBusqueda)                
               
@@ -2174,7 +2174,7 @@ class TRACatalogo_CursorTraducciones:
                 return []
             
             unCatalog = self.getCatalogo().fCatalogTextoCadenas()
-            if not unCatalog:
+            if ( unCatalog == None):
                 return []
             unaBusqueda = { 'getSimboloEnPalabras': unTextoABuscar, }
             unosDatosTraducciones = []
@@ -2226,7 +2226,7 @@ class TRACatalogo_CursorTraducciones:
                 return None
             
             unCatalog = self.getCatalogo().fCatalogTextoTraduccionesParaIdioma( theIdioma)
-            if not unCatalog:
+            if ( unCatalog == None):
                 return []
             unaBusqueda = { 'getCadenaTraducida': unTextoABuscar, }
             unosDatosTraducciones = []            

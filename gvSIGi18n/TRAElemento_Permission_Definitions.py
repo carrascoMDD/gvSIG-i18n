@@ -190,29 +190,29 @@ cTRAUserGroups_Catalogo_AuthorizedOnIndividualModulos = [
     cTRADevelopers_group,
 ]
 
+# ACV 20090914 Simpler security schema: no user groups for languages or modules, shall assign local roles to users directly on the language or module element
+#cTRAUserGroups_AllIdiomas = [
+    #[ cTRACoordinators_group,   [ cTRACoordinator_role,   ], ],
+    #[ cTRADevelopers_group,     [ cTRADeveloper_role,   ], ],
+    #[ cTRAReviewers_group,      [ cTRAReviewer_role,      ], ],
+    #[ cTRATranslators_group,    [ cTRATranslator_role,    ], ],
+    #[ cTRAVisitors_group,       [ cTRAVisitor_role,       ], ],
+#]
 
-cTRAUserGroups_AllIdiomas = [
-    [ cTRACoordinators_group,   [ cTRACoordinator_role,   ], ],
-    [ cTRADevelopers_group,     [ cTRADeveloper_role,   ], ],
-    [ cTRAReviewers_group,      [ cTRAReviewer_role,      ], ],
-    [ cTRATranslators_group,    [ cTRATranslator_role,    ], ],
-    [ cTRAVisitors_group,       [ cTRAVisitor_role,       ], ],
-]
-
-cTRAUserGroups_AllIdiomas_AuthorizedOnColeccionIdiomas  = [ unGrAndRs[ 0] for unGrAndRs in cTRAUserGroups_AllIdiomas] 
-cTRAUserGroups_AllIdiomas_AuthorizedOnIndividualIdiomas = [ unGrAndRs[ 0] for unGrAndRs in cTRAUserGroups_AllIdiomas] 
+#cTRAUserGroups_AllIdiomas_AuthorizedOnColeccionIdiomas  = [ unGrAndRs[ 0] for unGrAndRs in cTRAUserGroups_AllIdiomas] 
+#cTRAUserGroups_AllIdiomas_AuthorizedOnIndividualIdiomas = [ unGrAndRs[ 0] for unGrAndRs in cTRAUserGroups_AllIdiomas] 
 
 
 
-cTRAUserGroups_AllModulos = [
-    [ cTRACoordinators_group,   [ cTRACoordinator_role,   ], ],
-    [ cTRADevelopers_group,     [ cTRADeveloper_role,   ], ],
-    [ cTRAReviewers_group,      [ cTRAReviewer_role,      ], ],
-    [ cTRATranslators_group,    [ cTRATranslator_role,    ], ],
-    [ cTRAVisitors_group,       [ cTRAVisitor_role,       ], ],
-]
+#cTRAUserGroups_AllModulos = [
+    #[ cTRACoordinators_group,   [ cTRACoordinator_role,   ], ],
+    #[ cTRADevelopers_group,     [ cTRADeveloper_role,   ], ],
+    #[ cTRAReviewers_group,      [ cTRAReviewer_role,      ], ],
+    #[ cTRATranslators_group,    [ cTRATranslator_role,    ], ],
+    #[ cTRAVisitors_group,       [ cTRAVisitor_role,       ], ],
+#]
 
-cTRAUserGroups_AllModulos_AuthorizedOnColeccionModulos = [ unGrAndRs[ 0] for unGrAndRs in cTRAUserGroups_AllModulos] 
+#cTRAUserGroups_AllModulos_AuthorizedOnColeccionModulos = [ unGrAndRs[ 0] for unGrAndRs in cTRAUserGroups_AllModulos] 
 
 
 
@@ -241,15 +241,16 @@ cTRAUserGroups_Modulo_AuthorizedOnModulo   = [ unGrAndRs[ 0] for unGrAndRs in cT
 
 # ##########################################################################
 """Types that shall acquire Role assignments to users and groups
-TRAColeccionIdiomas does not acquire.
-TRAIdioma shall cut if the language is to be managged by language specific groups
+A manager or coordinator may set TRAIdioma to not acquire
+such that the roles for the language 
+must be set on the language for each authorized individual user.
 
-The configuration for language becoming managed by its specific group
-is controlled by a management function of the application.
 
 """
+# ACV 20090914 Simpler security schema: no user groups for languages or modules, shall assign local roles to users directly on the language or module element
 cTypesAcquiringRoleAssignments =  [
-    cNombreTipoTRACatalogo,               
+    cNombreTipoTRACatalogo,   
+    cNombreTipoTRAColeccionIdiomas,
     cNombreTipoTRAIdioma,                 
     cNombreTipoTRAColeccionModulos, # To be removed to enable module management by specific user groups
     cNombreTipoTRAModulo,                 

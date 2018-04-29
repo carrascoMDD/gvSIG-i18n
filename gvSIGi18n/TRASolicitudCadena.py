@@ -417,12 +417,12 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones)
     actions =  (
 
 
-       {'action': "string:${object_url}/sharing",
+       {'action': "string:$object_url/content_status_history",
         'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
-        'condition': 'python:1'
+        'id': 'content_status_history',
+        'name': 'State',
+        'permissions': ("View",),
+        'condition': 'python:0'
        },
 
 
@@ -431,6 +431,15 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones)
         'id': 'folderlisting',
         'name': 'Folder Listing',
         'permissions': ("View",),
+        'condition': 'python:0'
+       },
+
+
+       {'action': "string:${object_url}/sharing",
+        'category': "object",
+        'id': 'local_roles',
+        'name': 'Sharing',
+        'permissions': ("Manage properties",),
         'condition': 'python:0'
        },
 
@@ -444,21 +453,12 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones)
        },
 
 
-       {'action': "string:$object_url/content_status_history",
+       {'action': "string:$object_url/Editar",
         'category': "object",
-        'id': 'content_status_history',
-        'name': 'State',
-        'permissions': ("View",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:${object_url}/sharing",
-        'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
-        'condition': 'python:0'
+        'id': 'edit',
+        'name': 'Edit',
+        'permissions': ("Modify portal content",),
+        'condition': 'python:object.fRoleQuery_IsCoordinatorOrDeveloper()'
        },
 
 
@@ -468,15 +468,6 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones)
         'name': 'View',
         'permissions': ("View",),
         'condition': 'python:1'
-       },
-
-
-       {'action': "string:$object_url/Editar",
-        'category': "object",
-        'id': 'edit',
-        'name': 'Edit',
-        'permissions': ("Modify portal content",),
-        'condition': 'python:object.fRoleQuery_IsCoordinatorOrDeveloper()'
        },
 
 
@@ -491,6 +482,13 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones)
 
     # Methods
 
+    security.declarePublic('cb_isCopyable')
+    def cb_isCopyable(self):
+        """
+        """
+        
+        return False
+
     security.declarePublic('manage_afterAdd')
     def manage_afterAdd(self,item,container):
         """
@@ -504,6 +502,13 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones)
         """
         
         return TRAArquetipo.manage_beforeDelete( self, item, container)
+
+    security.declarePublic('manage_pasteObjects')
+    def manage_pasteObjects(self,cb_copy_data,REQUEST):
+        """
+        """
+        
+        return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

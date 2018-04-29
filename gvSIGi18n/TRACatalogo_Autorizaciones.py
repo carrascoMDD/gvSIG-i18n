@@ -36,7 +36,8 @@ from Products.gvSIGi18n.config import *
 ##code-section module-header #fill in your manual code here
 
 from  TRAElemento_Permission_Definitions import cUseCase_ReviewUsersAuthorizations
-from  TRAElemento_Permission_Definitions import cTRAUserGroups_AllIdiomas, cTRAUserGroups_Idioma
+# ACV 20090914 Simpler security schema: no user groups for languages or modules, shall assign local roles to users directly on the language or module element
+# from  TRAElemento_Permission_Definitions import cTRAUserGroups_AllIdiomas, cTRAUserGroups_Idioma
 
 
 
@@ -101,7 +102,7 @@ class TRACatalogo_Autorizaciones:
        
 
     
-    
+    # ACV 20090914 Simpler security schema: no user groups for languages or modules, shall assign local roles to users directly on the language or module element
     security.declarePrivate( 'fInformeAuthorizacionesIdiomas')
     def fInformeAuthorizacionesIdiomas(self, 
         thePermissionsCache=None, 
@@ -158,29 +159,30 @@ class TRACatalogo_Autorizaciones:
                 
                 unosInformesUsuariosIdiomaByUserId = { }
                 
-                for unGroupSpec in cTRAUserGroups_Idioma:
+                # ACV 20090914 Simpler security schema: no user groups for languages or modules, shall assign local roles to users directly on the language or module element
+                #for unGroupSpec in cTRAUserGroups_Idioma:
                     
-                    unGroupName     = unGroupSpec[ 0]
-                    unGroupRoles    = unGroupSpec[ 1]
+                    #unGroupName     = unGroupSpec[ 0]
+                    #unGroupRoles    = unGroupSpec[ 1]
                     
-                    unGroupId = self.fUserGroupIdIdiomaFor( unGroupName, theIdioma)
-                    unosUsuariosEnGrupo = self.fUsersInGroupId( unGroupId)
+                    #unGroupId = self.fUserGroupIdIdiomaFor( unGroupName, theIdioma)
+                    #unosUsuariosEnGrupo = self.fUsersInGroupId( unGroupId)
                     
-                    for unUserIdAndName in unosUsuariosEnGrupo:
-                        unUserId   = unUserIdAndName[ 0]
-                        unUserName = unUserIdAndName[ 1]
-                        unInformeAutorizacionesUsuarioEnIdioma = unosInformesUsuariosIdiomaByUserId.get( unUserId, None)
-                        if not unInformeAutorizacionesUsuarioEnIdioma:
-                            unInformeAutorizacionesUsuarioEnIdioma = self.fNewVoidInformeAutorizacionesUsuarioEnIdioma()
-                            unInformeAutorizacionesUsuarioEnIdioma[ 'user_id']   = unUserId
-                            unInformeAutorizacionesUsuarioEnIdioma[ 'user_name'] = unUserName
-                            unosInformesUsuariosIdiomaByUserId[ unUserId] = unInformeAutorizacionesUsuarioEnIdioma
+                    #for unUserIdAndName in unosUsuariosEnGrupo:
+                        #unUserId   = unUserIdAndName[ 0]
+                        #unUserName = unUserIdAndName[ 1]
+                        #unInformeAutorizacionesUsuarioEnIdioma = unosInformesUsuariosIdiomaByUserId.get( unUserId, None)
+                        #if not unInformeAutorizacionesUsuarioEnIdioma:
+                            #unInformeAutorizacionesUsuarioEnIdioma = self.fNewVoidInformeAutorizacionesUsuarioEnIdioma()
+                            #unInformeAutorizacionesUsuarioEnIdioma[ 'user_id']   = unUserId
+                            #unInformeAutorizacionesUsuarioEnIdioma[ 'user_name'] = unUserName
+                            #unosInformesUsuariosIdiomaByUserId[ unUserId] = unInformeAutorizacionesUsuarioEnIdioma
                             
-                        unosRolesUsuarioEnIdioma = unInformeAutorizacionesUsuarioEnIdioma.get( 'authorized_roles', [])
+                        #unosRolesUsuarioEnIdioma = unInformeAutorizacionesUsuarioEnIdioma.get( 'authorized_roles', [])
                         
-                        for unRole in unGroupRoles:
-                            if not ( unRole in unosRolesUsuarioEnIdioma):    
-                                unosRolesUsuarioEnIdioma.append( unRole)
+                        #for unRole in unGroupRoles:
+                            #if not ( unRole in unosRolesUsuarioEnIdioma):    
+                                #unosRolesUsuarioEnIdioma.append( unRole)
                                 
                 unInformeIdioma[ 'users_authorizations'] = unosInformesUsuariosIdiomaByUserId.values()
                 unosInformesIdiomas.append( unInformeIdioma)
@@ -193,29 +195,30 @@ class TRACatalogo_Autorizaciones:
             
             unosInformesUsuariosAllIdiomasByUserId = { }
 
-            for unGroupSpec in cTRAUserGroups_AllIdiomas:
+            # ACV 20090914 Simpler security schema: no user groups for languages or modules, shall assign local roles to users directly on the language or module element
+            #for unGroupSpec in cTRAUserGroups_AllIdiomas:
                 
-                unGroupName     = unGroupSpec[ 0]
-                unGroupRoles    = unGroupSpec[ 1]
+                #unGroupName     = unGroupSpec[ 0]
+                #unGroupRoles    = unGroupSpec[ 1]
                 
-                unGroupId = self.fUserGroupIdAllIdiomasFor( unGroupName)
-                unosUsuariosEnGrupo = self.fUsersInGroupId( unGroupId)
+                #unGroupId = self.fUserGroupIdAllIdiomasFor( unGroupName)
+                #unosUsuariosEnGrupo = self.fUsersInGroupId( unGroupId)
                 
-                for unUserIdAndName in unosUsuariosEnGrupo:
-                    unUserId   = unUserIdAndName[ 0]
-                    unUserName = unUserIdAndName[ 1]
-                    unInformeAutorizacionesUsuarioEnIdioma = unosInformesUsuariosAllIdiomasByUserId.get( unUserId, None)
-                    if not unInformeAutorizacionesUsuarioAllIdiomas:
-                        unInformeAutorizacionesUsuarioAllIdiomas = self.fNewVoidInformeAutorizacionesUsuarioEnIdioma()
-                        unInformeAutorizacionesUsuarioAllIdiomas[ 'user_id']   = unUserId
-                        unInformeAutorizacionesUsuarioAllIdiomas[ 'user_name'] = unUserName
-                        unosInformesUsuariosAllIdiomasByUserId[ unUserId] = unInformeAutorizacionesUsuarioAllIdiomas
+                #for unUserIdAndName in unosUsuariosEnGrupo:
+                    #unUserId   = unUserIdAndName[ 0]
+                    #unUserName = unUserIdAndName[ 1]
+                    #unInformeAutorizacionesUsuarioEnIdioma = unosInformesUsuariosAllIdiomasByUserId.get( unUserId, None)
+                    #if not unInformeAutorizacionesUsuarioAllIdiomas:
+                        #unInformeAutorizacionesUsuarioAllIdiomas = self.fNewVoidInformeAutorizacionesUsuarioEnIdioma()
+                        #unInformeAutorizacionesUsuarioAllIdiomas[ 'user_id']   = unUserId
+                        #unInformeAutorizacionesUsuarioAllIdiomas[ 'user_name'] = unUserName
+                        #unosInformesUsuariosAllIdiomasByUserId[ unUserId] = unInformeAutorizacionesUsuarioAllIdiomas
                         
-                    unosRolesUsuarioAllIdiomas = unInformeAutorizacionesUsuarioEnIdioma.get( 'authorized_roles', [])
+                    #unosRolesUsuarioAllIdiomas = unInformeAutorizacionesUsuarioEnIdioma.get( 'authorized_roles', [])
                     
-                    for unRole in unGroupRoles:
-                        if not ( unRole in unosRolesUsuarioAllIdiomas):    
-                            unosRolesUsuarioAllIdiomas.append( unRole)
+                    #for unRole in unGroupRoles:
+                        #if not ( unRole in unosRolesUsuarioAllIdiomas):    
+                            #unosRolesUsuarioAllIdiomas.append( unRole)
                             
             unInforme[ 'users_authorizations_all_idiomas'] = unosInformesUsuariosAllIdiomasByUserId.values()
             

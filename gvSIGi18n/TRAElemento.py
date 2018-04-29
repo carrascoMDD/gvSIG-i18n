@@ -31,17 +31,20 @@ __docformat__ = 'plaintext'
 
 from AccessControl import ClassSecurityInfo
 from Products.Archetypes.atapi import *
-from Products.gvSIGi18n.TRAElemento_Meta import TRAElemento_Meta
-from Products.gvSIGi18n.TRAElemento_TraversalConfig import TRAElemento_TraversalConfig
-from Products.gvSIGi18n.TRAElemento_Operaciones import TRAElemento_Operaciones
+from Products.gvSIGi18n.TRAElemento_MappingConfig import TRAElemento_MappingConfig
+from Products.gvSIGi18n.TRAElemento_ExportConfig import TRAElemento_ExportConfig
+from Products.gvSIGi18n.TRAElemento_CopyConfig import TRAElemento_CopyConfig
+from TRAElemento_Meta import TRAElemento_Meta
+from TRAElemento_TraversalConfig import TRAElemento_TraversalConfig
+from TRAElemento_Operaciones import TRAElemento_Operaciones
 from Products.ATContentTypes.content.base import ATCTMixin
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
+from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import ReferenceBrowserWidget
+from Acquisition  import aq_inner, aq_parent
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils  import getToolByName
-from Acquisition  import aq_inner, aq_parent
-from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import ReferenceBrowserWidget
 
 ##code-section module-header #fill in your manual code here
 ##/code-section module-header
@@ -59,16 +62,17 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRAElemento_contents_archivos_help',
             i18n_domain='gvSIGi18n',
         ),
-        description='Elementos Plone convencionales conteniendo un Fichero de contenido arbitrario.',
+        contains_collections=False,
         label2='Files',
         label='Ficheros',
+        represents_aggregation=True,
         description2='Conventional Plone elements containing a File of arbitrary contents.',
         multiValued=1,
         owner_class_name="TRAElemento",
         expression="context.objectValues(['File'])",
         computed_types=['File'],
-        represents_aggregation=True,
-        contains_collections=False
+        non_framework_elements=False,
+        description='Elementos Plone convencionales conteniendo un Fichero de contenido arbitrario.'
     ),
 
     ComputedField(
@@ -82,16 +86,17 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRAElemento_contents_documentos_help',
             i18n_domain='gvSIGi18n',
         ),
-        description='Elementos del tipo documento convencional en Plone.',
+        contains_collections=False,
         label2='Documents',
         label='Documentos',
+        represents_aggregation=True,
         description2='Elements of the Plone Document type.',
         multiValued=1,
         owner_class_name="TRAElemento",
         expression="context.objectValues(['Document'])",
         computed_types=['Document'],
-        represents_aggregation=True,
-        contains_collections=False
+        non_framework_elements=False,
+        description='Elementos del tipo documento convencional en Plone.'
     ),
 
     ComputedField(
@@ -105,16 +110,17 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRAElemento_contents_enlaces_help',
             i18n_domain='gvSIGi18n',
         ),
-        description='Elementos Plone conteniendo una referencia a una pagina Web (URLs como http://www.gvSIG.org)',
+        contains_collections=False,
         label2='Link',
         label='Enlace',
+        represents_aggregation=True,
         description2='Plone Elements containing a reference to a Web page (URLs like http://www.gvSIG.org)',
         multiValued=1,
         owner_class_name="TRAElemento",
         expression="context.objectValues(['Link'])",
         computed_types=['Link'],
-        represents_aggregation=True,
-        contains_collections=False
+        non_framework_elements=False,
+        description='Elementos Plone conteniendo una referencia a una pagina Web (URLs como http://www.gvSIG.org)'
     ),
 
     ComputedField(
@@ -128,16 +134,17 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRAElemento_contents_imagenes_help',
             i18n_domain='gvSIGi18n',
         ),
-        description='Elementos Plone convencionales conteniendo una Imagen.',
+        contains_collections=False,
         label2='Images',
         label='Imagenes',
+        represents_aggregation=True,
         description2='Conventional Plone elements containing an Image.',
         multiValued=1,
         owner_class_name="TRAElemento",
         expression="context.objectValues(['Image'])",
         computed_types=['Image'],
-        represents_aggregation=True,
-        contains_collections=False
+        non_framework_elements=False,
+        description='Elementos Plone convencionales conteniendo una Imagen.'
     ),
 
     ComputedField(
@@ -151,16 +158,17 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRAElemento_contents_noticias_help',
             i18n_domain='gvSIGi18n',
         ),
-        description='Elementos de Plone conteniendo una Noticia.',
+        contains_collections=False,
         label2='News Items',
         label='Noticias',
+        represents_aggregation=True,
         description2='Plone Elements containing a news posting.',
         multiValued=1,
         owner_class_name="TRAElemento",
         expression="context.objectValues(['News_Item'])",
         computed_types=['News_Item'],
-        represents_aggregation=True,
-        contains_collections=False
+        non_framework_elements=False,
+        description='Elementos de Plone conteniendo una Noticia.'
     ),
 
     TextField(
@@ -198,7 +206,10 @@ schema = Schema((
 ##code-section after-local-schema #fill in your manual code here
 ##/code-section after-local-schema
 
-TRAElemento_schema = getattr(TRAElemento_Meta, 'schema', Schema(())).copy() + \
+TRAElemento_schema = getattr(TRAElemento_MappingConfig, 'schema', Schema(())).copy() + \
+    getattr(TRAElemento_ExportConfig, 'schema', Schema(())).copy() + \
+    getattr(TRAElemento_CopyConfig, 'schema', Schema(())).copy() + \
+    getattr(TRAElemento_Meta, 'schema', Schema(())).copy() + \
     getattr(TRAElemento_TraversalConfig, 'schema', Schema(())).copy() + \
     getattr(TRAElemento_Operaciones, 'schema', Schema(())).copy() + \
     getattr(ATCTMixin, 'schema', Schema(())).copy() + \
@@ -207,13 +218,13 @@ TRAElemento_schema = getattr(TRAElemento_Meta, 'schema', Schema(())).copy() + \
 ##code-section after-schema #fill in your manual code here
 ##/code-section after-schema
 
-class TRAElemento(TRAElemento_Meta, TRAElemento_TraversalConfig, TRAElemento_Operaciones, ATCTMixin):
+class TRAElemento(TRAElemento_MappingConfig, TRAElemento_ExportConfig, TRAElemento_CopyConfig, TRAElemento_Meta, TRAElemento_TraversalConfig, TRAElemento_Operaciones, ATCTMixin):
     """
     """
     security = ClassSecurityInfo()
-    __implements__ = (getattr(TRAElemento_Meta,'__implements__',()),) + (getattr(TRAElemento_TraversalConfig,'__implements__',()),) + (getattr(TRAElemento_Operaciones,'__implements__',()),) + (getattr(ATCTMixin,'__implements__',()),)
+    __implements__ = (getattr(TRAElemento_MappingConfig,'__implements__',()),) + (getattr(TRAElemento_ExportConfig,'__implements__',()),) + (getattr(TRAElemento_CopyConfig,'__implements__',()),) + (getattr(TRAElemento_Meta,'__implements__',()),) + (getattr(TRAElemento_TraversalConfig,'__implements__',()),) + (getattr(TRAElemento_Operaciones,'__implements__',()),) + (getattr(ATCTMixin,'__implements__',()),)
 
-    allowed_content_types = ['Image', 'Document', 'File', 'Link', 'News Item'] + list(getattr(TRAElemento_Meta, 'allowed_content_types', [])) + list(getattr(TRAElemento_TraversalConfig, 'allowed_content_types', [])) + list(getattr(TRAElemento_Operaciones, 'allowed_content_types', [])) + list(getattr(ATCTMixin, 'allowed_content_types', []))
+    allowed_content_types = ['Image', 'Document', 'File', 'Link', 'News Item'] + list(getattr(TRAElemento_MappingConfig, 'allowed_content_types', [])) + list(getattr(TRAElemento_ExportConfig, 'allowed_content_types', [])) + list(getattr(TRAElemento_CopyConfig, 'allowed_content_types', [])) + list(getattr(TRAElemento_Meta, 'allowed_content_types', [])) + list(getattr(TRAElemento_TraversalConfig, 'allowed_content_types', [])) + list(getattr(TRAElemento_Operaciones, 'allowed_content_types', [])) + list(getattr(ATCTMixin, 'allowed_content_types', []))
     _at_rename_after_creation = True
 
     schema = TRAElemento_schema
@@ -223,19 +234,26 @@ class TRAElemento(TRAElemento_Meta, TRAElemento_TraversalConfig, TRAElemento_Ope
 
     # Methods
 
+    security.declarePublic('CookedBody')
+    def CookedBody(self,setlevel=0,stx_level=None):
+        """
+        """
+        
+        return getToolByName( self, 'ModelDDvlPlone_tool').fCookedBodyForElement( None, self, stx_level, setlevel, None)
+
+    security.declarePublic('fAllowPaste')
+    def fAllowPaste(self):
+        """
+        """
+        
+        return False
+
     security.declarePublic('getContenedor')
     def getContenedor(self):
         """
         """
         
         return aq_parent( aq_inner( self))
-
-    security.declarePublic('getNombreProyecto')
-    def getNombreProyecto(self):
-        """
-        """
-        
-        return 'gvSIGi18n'
 
     security.declarePublic('getContenedorContenedor')
     def getContenedorContenedor(self):
@@ -244,12 +262,12 @@ class TRAElemento(TRAElemento_Meta, TRAElemento_TraversalConfig, TRAElemento_Ope
         
         return aq_parent( aq_parent( aq_inner( self)))
 
-    security.declarePublic('getProductPrefix')
-    def getProductPrefix(self):
+    security.declarePublic('getEditableBody')
+    def getEditableBody(self):
         """
         """
         
-        return "TRA"
+        return getToolByName( self, 'ModelDDvlPlone_tool').fEditableBodyForElement( None, self, None)
 
     security.declarePublic('getEsColeccion')
     def getEsColeccion(self):
@@ -257,6 +275,27 @@ class TRAElemento(TRAElemento_Meta, TRAElemento_TraversalConfig, TRAElemento_Ope
         """
         
         return False
+
+    security.declarePublic('getEsRaiz')
+    def getEsRaiz(self):
+        """
+        """
+        
+        return not aq_parent( aq_inner( self)) or (self.meta_type == "TRACatalogo")
+
+    security.declarePublic('getNombreProyecto')
+    def getNombreProyecto(self):
+        """
+        """
+        
+        return 'gvSIGi18n'
+
+    security.declarePublic('getProductPrefix')
+    def getProductPrefix(self):
+        """
+        """
+        
+        return "TRA"
 
     security.declarePublic('manage_afterAdd')
     def manage_afterAdd(self,item,container):
@@ -271,27 +310,6 @@ class TRAElemento(TRAElemento_Meta, TRAElemento_TraversalConfig, TRAElemento_Ope
         """
         
         return TRAElemento_Operaciones.pHandle_manage_beforeDelete( self, item, container)
-
-    security.declarePublic('getEsRaiz')
-    def getEsRaiz(self):
-        """
-        """
-        
-        return not aq_parent( aq_inner( self)) or (self.meta_type == "TRACatalogo")
-
-    security.declarePublic('CookedBody')
-    def CookedBody(self,setlevel=0,stx_level=None):
-        """
-        """
-        
-        return getToolByName( self, 'ModelDDvlPlone_tool').fCookedBodyForElement( None, self, stx_level, setlevel, None)
-
-    security.declarePublic('getEditableBody')
-    def getEditableBody(self):
-        """
-        """
-        
-        return getToolByName( self, 'ModelDDvlPlone_tool').fEditableBodyForElement( None, self, None)
 # end of class TRAElemento
 
 ##code-section module-footer #fill in your manual code here

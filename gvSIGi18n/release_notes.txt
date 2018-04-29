@@ -1,19 +1,476 @@
-------------
-version 1.2.0.6build200908150447 
+gvSIG-i18n RELEASE NOTES
+========================
+
+
+|
+|
+
+
+
+version 1.2.0.7
+---------------
+
+|
+|
+
+
+**RESOLVED**
+
+
+ETTY02-2 TRAIdioma: Remove unused relationships referenceLanguages  baseLanguages
+
+EXPO01 Export with unicode escape also for chars 127 - 255
+
+I10N 01 Localize user interface screens for UC Create Language  Create Strings  Copy Transalations  into languages ES and EN
+
+INTL 01 Make optional the availability of Plone products ZopeChinaPak and CJKSplitter
+
+SECU04 Alternative  optinal  simpler security model that does not create so many Zope User Groups
+
+UC 25 Plone paste : do not allow
+
+UC26 Plone copy: do not allow
+
+
+
+|
+|
+
+**KNOWN BUGS**
+
+IBWR01 Opera: Translations Screen error in columns layout because lack of support for HTML rowspan
+
+BUG UI Textual view should not be available in root TRACatalog element (now raises an exception)
+
+IMPO Create missing Translations : Report the number of created translations
+
+IMPO Copy Language : Estimate correctly the number of expected write operations
+
+UITR Translations page::Reference Language Selector::Names of languages not wekk known to Plone are not shown
+
+UITR Translation details are not shown in editor, if the connected user does not have role TRATraductor or TRAReviewer, or TRACoordinator, or TRAManager
+
+
+
+|
+|
+
+
+**POSTPONED**
+
+ADMI01 Upon translations catalog deletion, delete user groups controlling accesses to the translations catalog
+
+ADMI02 Uninstall gvSIG-i18n Plone Product
+
+ADMI07 Add Action to Rebuild strings and translations Plone catalogs
+
+COMU02 Edit and publish pages to present the gvSIG-i18n product to OSOR communities
+
+DOCU01 Edit and publish gvSIG-i18n user documentation
+
+DOCU02 Edit and publish gvSIG-i18n install documentation
+
+DOCU03 Edit and publish gvSIG-i18n administration documentation
+
+EXPO02 Export translations with archive name matching the gvSIG standard format for localization archives
+
+EXPO03 Detect if translations into a language have been changed lately
+
+EXPO04 Export translations in XLIFF format
+
+EXPO05 Export Translation Memories in TMX format
+
+FEAT01 Use Cases in support of Translation Memories
+
+IDIO02 Show flags including the ones not pre-defined in Plone
+
+IMPO03 Block/unblock changes to translations while importing
+
+IMPO04 Import translations in XLIFF format
+
+IMPO05 Import Translation Memories in TMX format
+
+IMPO 06 Present duration estimations in the Import Progress report
+
+IMPO 07 Automatically refresh import process progress report page
+
+IMPO 08 Disable framework Use Case SUC 16 Import onto an element a Zipped archive with XML file and binary contents
+
+IMPO 09 Disable framework Use Case SUC 15 Export an element and its contens a Zipped archive with XML file and binary contents
+
+Place the external methods inside the custom folder in portal_skins
+
+PLAT01 Port to Plone 3.x
+
+UC15-2  Use Case Extension &quot;Change Translation and/or Translation Status  detecting unintended multiuser translation overwrites 
+
+UC18 Use Case &quot;Examine User Role assignments for All languages and specific languages&quot;
+
+UC19 Use Case &quot;Establish User Role assignments for All languages and specific languages&quot;
+
+UC22 Use Case &quot;Invalidate String translations to all languages&quot;
+
+UI 01 Avoid Delete of some types of elements
+
+UITR07 Add to translations screen an informative note for color shading
+
+UITR08 Send pending changes to server
+
+UITR10v2 Batch status changes
+
+UITR13 Show translations statuses as letters not just as icons
+
+UITR14 Remove go-to-translation action when clicking on a translation's main language flag
+
+
+
+
+|
+|
+
+------------------------------
+
+|
+|
+
+
+version 1.2.0.6
+---------------
+
+|
+|
+
+
+**RESOLVED**
 
 EATR01 Remove Attribute pathDelRaiz from all entities
+
 EATR02 Remove the Type attribute from catalog schemas
+
 UC24 Use Case Copy Translations from Language	
-------------
- 
-version 1.2.0.5build200908140434 
+
+
+|
+|
+
+------------------------------
+
+|
+|
+
+
+version 1.2.0.5
+---------------
+
+|
+|
+
+
+**RESOLVED**
+  
 
 ADMI08 Describe recipe to create and mount an additional file to store the translations
+
 ADMI09 Downloadable in tar.gz format	
+
 BUG AttributeError TRARenderExecutionDetails	
+
 BUG Security access error message prints also a Python dict	
+
 BUG TRACatalogo is not initialized when supplying an id	
+
 UC21 Use Case Add String to be translated	
+
 UC23 Create Language	
-------------
+
+
+
+|
+|
+
+------------------------------
+
+|
+|
+
+
+version 1.2.0.4
+---------------
+
+|
+|
+
+
+**RESOLVED**
+  
+
+Same as 1.2.0.2 with the right version number in file version.txt	
+
+
+|
+|
+
+------------------------------
+
+|
+|
+
+
+version 1.2.0.3
+---------------
+
+|
+|
+
+
+**VOID AND NOT RELEASED**
+ 
+
+
+|
+|
+
+------------------------------
+
+|
+|
+
+
+version 1.2.0.2
+---------------
+
+|
+|
+
+NOte: this version release has been removed from distribution, as it was built with the wrong version number in version.txt
+
+
+**RESOLVED**
+  
+
+BUG Init role acquisition for TRAColeccionCadenas fails
+
+ETTY13 TRAColeccionSolicitudesCadenas
+
+ETTY14 TRASolicitudCadena
+
+
+|
+|
+
+------------------------------
+
+|
+|
+
+
+version 1.2.0.1
+---------------
+
+|
+|
+
+
+**RESOLVED**
+  
+
+SECU03 Add Developer Role
+
+|
+|
+
+------------------------------
+
+|
+|
+
+
+version 1.2
+---------------
+
+|
+|
+
+
+**RESOLVED**
+  
+BUG ADMI05 Complete elimination of TRACatalogo instances
+
+BUG ADMI06 Avoid re-catalogging TRACadena and TRATraduccion
+
+UITR01 Label of Reference Language selector menu
+
+UITR02 Do not color-shade translation rows in reference languages
+
+UITR03 Remove go-to-translation in language action on ....
+
+UITR04 Blink when clicking on Save button  and there is no translation change
+
+UITR05 Remove &amp;quot orange&amp;quot  error shading for translations sent with changes consisting in leading or trailing spaces
+
+UITR06 Show es  en as reference languages  by default  when opening translations page
+
+UITR12 Add cursor buttons at the bottom of the translations page
+
+ZMNG02 Meeting to evaluate v 1.2 and plan for next iterations
+
+ZMNG03 Edit Iteration Progress Report
+
+ZMNG04 Edit Iteration plans for versions 1.2.1  1.2.2  1.3
+ 
+
+|
+|
+
+------------------------------
+
+|
+|
+
+
+version 1.1
+---------------
+
+|
+|
+
+
+**RESOLVED**
+  
+
+PERF06 Do not add any index to portal_catalog
+
+PERF02 Move TRACadena and TRATraduccion instances out of portal_catalog
+
+PERF01 Detailed Deterministic Time Profiling
+
+PERF04 Search TRATraduccion instances in language-specific performance-tuned catalogs
+
+PERF03 Search TRACadena instances in their own performance-tuned catalogs
+
+PERF05 Scale to 70 languages and 7000 strings per language with sub-second translation interactions
+
+UITR17 Time profiling inspector
+
+ZMNG01 Meeting to evaluate v 1.1 and plan for next iterations
+
+
+|
+|
+
+------------------------------
+
+|
+|
+
+
+version 1.0
+---------------
+
+|
+|
+
+
+**RESOLVED**
+  
+UITR16 Translate with Asynchronous interactions  without page refresh
+
+SECU01 Use Case driven Security assessment for connected Users
+
+UC17-2 Use Case extension Export with encodings
+
+UITR18 Change the translations screen layout to ressemble that of famous desktop translation tools. 
+
+
+|
+|
+
+------------------------------
+
+|
+|
+
+
+version 0.9
+---------------
+
+|
+|
+
+
+**RESOLVED**
+  
+ETTY00 TRACatalogo
+
+ETTY01 TRAColeccionIdiomas
+
+ETTY02 TRAIdioma
+
+ETTY03 TRAColeccionModulos
+
+ETTY04 TRAModulo
+
+ETTY05 TRAColeccionCadenas
+
+ETTY06 TRACadena
+
+ETTY07 TRATraduccion
+
+ETTY08 TRAColeccionInformes
+
+ETTY09 TRAInforme
+
+ETTY10 TRAColeccionImportaciones
+
+ETTY11 TRAImportacion
+
+ETTY12 TRAContenidoIntercambio
+
+INFO01 Information structure: Catalog  Language  Module  ...
+
+SECU02 Actor Roles Manager  Coordinator  ...
+
+UC01 Use Case Verify Translations Catalog Initialization
+
+UC02 Use Case Initialize Translations Catalog
+
+UC03 Use Case Configure Translations Catalog
+
+UC04 Use Case View the properties of an Element
+
+UC05 Use Case Advanced View on an Element...
+
+UC06 Use Case Create Import Batch
+
+UC07 Add content to Import Batch
+
+UC08 Use Case Delete content from Import Batch
+
+UC09 Use Case Verify Impoty Batch content and Import parameters
+
+UC10 Use Case Import
+
+UC11 Use Case Show list of Languages in translations catalog
+
+UC12 Use Case Create missing Translations
+
+UC13 Use Case Generate Status Report by Languages
+
+UC14 Use Case Browse Translations
+
+UC15 Use Case Change Translation and/or Translation Status
+
+UC16 Use Case Comment on Translation
+
+UC17 Use Case Export
+
+UC20 Use Case Delete Import Batch
+
+
+|
+|
+
+------------------------------
+
+
  

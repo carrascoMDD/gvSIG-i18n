@@ -37,12 +37,6 @@ from AccessControl                  import ClassSecurityInfo
 from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.config import *
 
-#schema = Schema((
-
-#),
-#)
-
-#TRAElemento_TraversalConfig_schema = BaseSchema.copy() +     #schema.copy()
 
 
 class TRAElemento_TraversalConfig:            
@@ -50,14 +44,6 @@ class TRAElemento_TraversalConfig:
     """
     """
     security = ClassSecurityInfo()
-
-    # This name appears in the 'add' box
-    archetype_name = 'TRAElemento_TraversalConfig'
-    
-    meta_type = 'TRAElemento_TraversalConfig'
-    portal_type = 'TRAElemento_TraversalConfig'
-
-    #schema = TRAElemento_TraversalConfig_schema
 
     security.declarePublic('traversalConfig')
     def traversalConfig( self):
@@ -304,62 +290,68 @@ class TRAElemento_TraversalConfig:
             },
         ],
         'traversals':   [
-            {   'aggregation_name': 'coleccionIdiomas',
-                'columns':          [ 'title', 'description', ],
-                'tabular_tree':     True,
-                'read_only':        True,
-                'subitems':         [
+            {   'aggregation_name':     'coleccionIdiomas',
+                'columns':              [ 'title', 'description', ],
+                'contains_collections': True,
+                'tabular_tree':         True,
+                'read_only':            True,
+                'subitems':             [
                     {   'portal_types': [ 'TRAColeccionIdiomas', ],
                         'reuse_config': 'Default',
                     },
                 ],
             },
-            {   'aggregation_name': 'coleccionModulos',
-                'columns':          [ 'title', 'description', ],
-                'tabular_tree':     True,
-                'read_only':        True,
-                'subitems':         [
+            {   'aggregation_name':     'coleccionModulos',
+                'columns':              [ 'title', 'description', ],
+                'contains_collections': True,
+                'tabular_tree':         True,
+                'read_only':            True,
+                'subitems':             [
                     {   'portal_types': [ 'TRAColeccionModulos', ],
                         'reuse_config': 'Default',
                     },
                 ],
             },
-            {   'aggregation_name': 'coleccionImportaciones',
-                'columns':          [ 'title', 'description', ],
-                'tabular_tree':     True,
-                'read_only':        True,
-                'subitems':         [
+            {   'aggregation_name':     'coleccionImportaciones',
+                'columns':              [ 'title', 'description', ],
+                'contains_collections': True,
+                'tabular_tree':         True,
+                'read_only':            True,
+                'subitems':             [
                     {   'portal_types': [ 'TRAColeccionImportaciones', ],
                         'reuse_config': 'Default',
                     },
                 ],
             },
-            {   'aggregation_name':   'coleccionCadenas',
-                'columns':            [ 'title', 'description', ],
-                'tabular_tree':       True,
-                'exclude_from_views': [ 'Textual', 'Tabular', 'General', ],
-                'read_only':          True,
-                'subitems':           [
+            {   'aggregation_name':     'coleccionCadenas',
+                'columns':              [ 'title', 'description', ],
+                'contains_collections': True,
+                'tabular_tree':         True,
+                'exclude_from_views':   [ 'Textual', 'Tabular', 'General', ],
+                'read_only':            True,
+                'subitems':             [
                     {   'portal_types': [ 'TRAColeccionCadenas', ],
                         'reuse_config': 'Default',
                     },
                 ],
             },
-            {   'aggregation_name': 'coleccionInformes',
-                'columns':          [ 'title', 'description', ],
-                'tabular_tree':     True,
-                'read_only':        True,
-                'subitems':         [
+            {   'aggregation_name':     'coleccionInformes',
+                'columns':              [ 'title', 'description', ],
+                'contains_collections': True,
+                'tabular_tree':         True,
+                'read_only':            True,
+                'subitems':             [
                     {   'portal_types': [ 'TRAColeccionInformes', ],
                         'reuse_config': 'Default',
                     },
                 ],
             },
-            {   'aggregation_name': 'coleccionSolicitudesCadenas',
-                'columns':          [ 'title', 'description', ],
-                'tabular_tree':     True,
-                'read_only':        True,
-                'subitems':         [
+            {   'aggregation_name':     'coleccionSolicitudesCadenas',
+                'columns':              [ 'title', 'description', ],
+                'contains_collections': True,
+                'tabular_tree':         True,
+                'read_only':            True,
+                'subitems':             [
                     {   'portal_types': [ 'TRAColeccionSolicitudesCadenas', ],
                         'reuse_config': 'Default',
                     },
@@ -1016,40 +1008,6 @@ class TRAElemento_TraversalConfig:
                 'kind':     'Data',
                 'type':     'Boolean',
                 'optional': True,
-            },
-        ],
-        'traversals':   [
-            {   'relation_name': 'idiomasReferencia',
-                'columns':       [ 'title', 'description', 'codigoIdiomaEnGvSIG', 'codigoInternacionalDeIdioma', 'nombreNativoDelIdioma', 'esIdiomaDePais', 'esVariacionDeIdiomaDePais', ],
-                'related_types': [
-                    {   'portal_types': [ 'TRAIdioma', ],
-                        'reuse_config': 'Default',
-                    },
-                ],
-            },
-            {   'relation_name': 'referenciaDeIdiomas',
-                'columns':       [ 'title', 'description', 'codigoIdiomaEnGvSIG', 'codigoInternacionalDeIdioma', 'nombreNativoDelIdioma', 'esIdiomaDePais', 'esVariacionDeIdiomaDePais', ],
-                'related_types': [
-                    {   'portal_types': [ 'TRAIdioma', ],
-                        'reuse_config': 'Default',
-                    },
-                ],
-            },
-            {   'relation_name': 'idiomaBase',
-                'columns':       [ 'title', 'description', 'codigoIdiomaEnGvSIG', 'codigoInternacionalDeIdioma', 'nombreNativoDelIdioma', 'esIdiomaDePais', ],
-                'related_types': [
-                    {   'portal_types': [ 'TRAIdioma', ],
-                        'reuse_config': 'Default',
-                    },
-                ],
-            },
-            {   'relation_name': 'baseDeIdiomas',
-                'columns':       [ 'title', 'description', 'codigoIdiomaEnGvSIG', 'codigoInternacionalDeIdioma', 'nombreNativoDelIdioma', 'esIdiomaDePais', ],
-                'related_types': [
-                    {   'portal_types': [ 'TRAIdioma', ],
-                        'reuse_config': 'Default',
-                    },
-                ],
             },
         ],
     },

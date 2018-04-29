@@ -54,12 +54,13 @@ schema = Schema((
         label2='Reports',
         additional_columns=['esAutoActualizable', 'estadoProceso', 'fechaFinProceso', 'haCompletadoConExito'],
         label='Informes',
+        represents_aggregation=True,
         description2='Status Reports of Translations to  Languages and Modules',
         multiValued=1,
         owner_class_name="TRAColeccionInformes",
         expression="context.objectValues(['TRAInforme'])",
         computed_types=['TRAInforme'],
-        represents_aggregation=True,
+        non_framework_elements=False,
         description='Informes del estado de Traducciones a Idiomas y Modulos'
     ),
 
@@ -109,11 +110,38 @@ class TRAColeccionInformes(OrderedBaseFolder, TRAColeccionArquetipos):
     actions =  (
 
 
+       {'action': "string:$object_url/content_status_history",
+        'category': "object",
+        'id': 'content_status_history',
+        'name': 'State',
+        'permissions': ("View",),
+        'condition': 'python:0'
+       },
+
+
+       {'action': "string:$object_url/Editar",
+        'category': "object",
+        'id': 'edit',
+        'name': 'Edit',
+        'permissions': ("Modify portal content",),
+        'condition': 'python:0'
+       },
+
+
        {'action': "string:${object_url}/folder_listing",
         'category': "folder",
         'id': 'folderlisting',
         'name': 'Folder Listing',
         'permissions': ("View",),
+        'condition': 'python:0'
+       },
+
+
+       {'action': "string:${object_url}/sharing",
+        'category': "object",
+        'id': 'local_roles',
+        'name': 'Sharing',
+        'permissions': ("Manage properties",),
         'condition': 'python:0'
        },
 
@@ -136,42 +164,6 @@ class TRAColeccionInformes(OrderedBaseFolder, TRAColeccionArquetipos):
        },
 
 
-       {'action': "string:$object_url/Editar",
-        'category': "object",
-        'id': 'edit',
-        'name': 'Edit',
-        'permissions': ("Modify portal content",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:${object_url}/sharing",
-        'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:$object_url/content_status_history",
-        'category': "object",
-        'id': 'content_status_history',
-        'name': 'State',
-        'permissions': ("View",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:${object_url}/sharing",
-        'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
-        'condition': 'python:0'
-       },
-
-
     )
 
     _at_rename_after_creation = True
@@ -183,12 +175,12 @@ class TRAColeccionInformes(OrderedBaseFolder, TRAColeccionArquetipos):
 
     # Methods
 
-    security.declarePublic('manage_beforeDelete')
-    def manage_beforeDelete(self,item,container):
+    security.declarePublic('cb_isCopyable')
+    def cb_isCopyable(self):
         """
         """
         
-        return TRAColeccionArquetipos.manage_beforeDelete( self, item, container)
+        return False
 
     security.declarePublic('manage_afterAdd')
     def manage_afterAdd(self,item,container):
@@ -196,6 +188,20 @@ class TRAColeccionInformes(OrderedBaseFolder, TRAColeccionArquetipos):
         """
         
         return TRAColeccionArquetipos.manage_afterAdd( self, item, container)
+
+    security.declarePublic('manage_beforeDelete')
+    def manage_beforeDelete(self,item,container):
+        """
+        """
+        
+        return TRAColeccionArquetipos.manage_beforeDelete( self, item, container)
+
+    security.declarePublic('manage_pasteObjects')
+    def manage_pasteObjects(self,cb_copy_data,REQUEST):
+        """
+        """
+        
+        return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

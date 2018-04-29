@@ -1011,7 +1011,7 @@ class TRAElemento_Permissions:
             
         todosRolesPoseidos = set( self.fGetRequestingUserRoles())
         
-        unosRoles = set( theRolesUsuario).intersection(  todosRolesPoseidos)
+        unosRoles = set( unosRolesUsuario).intersection(  todosRolesPoseidos)
         
         return unosRoles
     

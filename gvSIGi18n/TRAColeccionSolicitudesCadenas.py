@@ -55,13 +55,14 @@ schema = Schema((
         label2='String creation Requests',
         additional_columns=['simbolo', 'estadoSolicitudCadena', 'codigoIdiomaPrincipal', 'cadenaTraducidaAIdiomaPrincipal', 'codigoIdiomaReferencia', 'cadenaTraducidaAIdiomaReferencia'],
         label='Solicitudes de creacion de Cadenas',
+        represents_aggregation=True,
         description2='Requests by developers to create new strings.',
         multiValued=1,
         factory_views={ 'TRASolicitudCadena' : 'TRACrear_SolicitudCadena',},
         owner_class_name="TRAColeccionSolicitudesCadenas",
         expression="context.objectValues(['TRASolicitudCadena'])",
         computed_types=['TRASolicitudCadena'],
-        represents_aggregation=True,
+        non_framework_elements=False,
         description='Solicitudes realizadas por los desarrolladores, para crear nuevas cadenas.'
     ),
 
@@ -110,11 +111,38 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
     actions =  (
 
 
+       {'action': "string:$object_url/content_status_history",
+        'category': "object",
+        'id': 'content_status_history',
+        'name': 'State',
+        'permissions': ("View",),
+        'condition': 'python:0'
+       },
+
+
+       {'action': "string:$object_url/Editar",
+        'category': "object",
+        'id': 'edit',
+        'name': 'Edit',
+        'permissions': ("Modify portal content",),
+        'condition': 'python:0'
+       },
+
+
        {'action': "string:${object_url}/folder_listing",
         'category': "folder",
         'id': 'folderlisting',
         'name': 'Folder Listing',
         'permissions': ("View",),
+        'condition': 'python:0'
+       },
+
+
+       {'action': "string:${object_url}/sharing",
+        'category': "object",
+        'id': 'local_roles',
+        'name': 'Sharing',
+        'permissions': ("Manage properties",),
         'condition': 'python:0'
        },
 
@@ -134,42 +162,6 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
         'name': 'View',
         'permissions': ("View",),
         'condition': 'python:1'
-       },
-
-
-       {'action': "string:$object_url/Editar",
-        'category': "object",
-        'id': 'edit',
-        'name': 'Edit',
-        'permissions': ("Modify portal content",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:${object_url}/sharing",
-        'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:$object_url/content_status_history",
-        'category': "object",
-        'id': 'content_status_history',
-        'name': 'State',
-        'permissions': ("View",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:${object_url}/sharing",
-        'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
-        'condition': 'python:0'
        },
 
 
@@ -202,12 +194,12 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
 
     # Methods
 
-    security.declarePublic('manage_beforeDelete')
-    def manage_beforeDelete(self,item,container):
+    security.declarePublic('cb_isCopyable')
+    def cb_isCopyable(self):
         """
         """
         
-        return TRAColeccionArquetipos.manage_beforeDelete( self, item, container)
+        return False
 
     security.declarePublic('manage_afterAdd')
     def manage_afterAdd(self,item,container):
@@ -215,6 +207,20 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
         """
         
         return TRAColeccionArquetipos.manage_afterAdd( self, item, container)
+
+    security.declarePublic('manage_beforeDelete')
+    def manage_beforeDelete(self,item,container):
+        """
+        """
+        
+        return TRAColeccionArquetipos.manage_beforeDelete( self, item, container)
+
+    security.declarePublic('manage_pasteObjects')
+    def manage_pasteObjects(self,cb_copy_data,REQUEST):
+        """
+        """
+        
+        return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

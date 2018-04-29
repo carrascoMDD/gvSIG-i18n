@@ -54,12 +54,13 @@ schema = Schema((
         label2='Import processes',
         additional_columns=['versionDelProducto', 'buildDelProducto', 'codigoIdiomaPorDefecto', 'nombreModuloPorDefecto', 'maximoLineasAImportarGNUgettextPO', 'maximoLineasAImportarJavaProperties', 'estadoProceso', 'haCompletadoConExito', 'fechaFinProceso'],
         label='Importaciones',
+        represents_aggregation=True,
         description2='Import operations to load modules, languages,  strings and translations.',
         multiValued=1,
         owner_class_name="TRAColeccionImportaciones",
         expression="context.objectValues(['TRAImportacion'])",
         computed_types=['TRAImportacion'],
-        represents_aggregation=True,
+        non_framework_elements=False,
         description='Operaciones de importacion de modulos,  idiomas,  cadenas y traducciones.'
     ),
 
@@ -107,11 +108,38 @@ class TRAColeccionImportaciones(OrderedBaseFolder, TRAColeccionArquetipos):
     actions =  (
 
 
+       {'action': "string:$object_url/content_status_history",
+        'category': "object",
+        'id': 'content_status_history',
+        'name': 'State',
+        'permissions': ("View",),
+        'condition': 'python:0'
+       },
+
+
+       {'action': "string:$object_url/Editar",
+        'category': "object",
+        'id': 'edit',
+        'name': 'Edit',
+        'permissions': ("Modify portal content",),
+        'condition': 'python:0'
+       },
+
+
        {'action': "string:${object_url}/folder_listing",
         'category': "folder",
         'id': 'folderlisting',
         'name': 'Folder Listing',
         'permissions': ("View",),
+        'condition': 'python:0'
+       },
+
+
+       {'action': "string:${object_url}/sharing",
+        'category': "object",
+        'id': 'local_roles',
+        'name': 'Sharing',
+        'permissions': ("Manage properties",),
         'condition': 'python:0'
        },
 
@@ -134,42 +162,6 @@ class TRAColeccionImportaciones(OrderedBaseFolder, TRAColeccionArquetipos):
        },
 
 
-       {'action': "string:$object_url/Editar",
-        'category': "object",
-        'id': 'edit',
-        'name': 'Edit',
-        'permissions': ("Modify portal content",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:${object_url}/sharing",
-        'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:$object_url/content_status_history",
-        'category': "object",
-        'id': 'content_status_history',
-        'name': 'State',
-        'permissions': ("View",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:${object_url}/sharing",
-        'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
-        'condition': 'python:1'
-       },
-
-
     )
 
     _at_rename_after_creation = True
@@ -181,12 +173,12 @@ class TRAColeccionImportaciones(OrderedBaseFolder, TRAColeccionArquetipos):
 
     # Methods
 
-    security.declarePublic('manage_beforeDelete')
-    def manage_beforeDelete(self,item,container):
+    security.declarePublic('cb_isCopyable')
+    def cb_isCopyable(self):
         """
         """
         
-        return TRAColeccionArquetipos.manage_beforeDelete( self, item, container)
+        return False
 
     security.declarePublic('manage_afterAdd')
     def manage_afterAdd(self,item,container):
@@ -194,6 +186,20 @@ class TRAColeccionImportaciones(OrderedBaseFolder, TRAColeccionArquetipos):
         """
         
         return TRAColeccionArquetipos.manage_afterAdd( self, item, container)
+
+    security.declarePublic('manage_beforeDelete')
+    def manage_beforeDelete(self,item,container):
+        """
+        """
+        
+        return TRAColeccionArquetipos.manage_beforeDelete( self, item, container)
+
+    security.declarePublic('manage_pasteObjects')
+    def manage_pasteObjects(self,cb_copy_data,REQUEST):
+        """
+        """
+        
+        return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

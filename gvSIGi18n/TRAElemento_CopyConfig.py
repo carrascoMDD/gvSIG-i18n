@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# File: TRAElemento_ExportConfig.py
+# File: TRAElemento_CopyConfig.py
 #
 # Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
 # Generalidad Valenciana
@@ -40,15 +40,15 @@ from Products.gvSIGi18n.config import *
 
 
 
-class TRAElemento_ExportConfig:            
+class TRAElemento_CopyConfig:            
 
     """
     """
     security = ClassSecurityInfo()
     
     
-    security.declarePublic('exportConfig')
-    def exportConfig( self):
+    security.declarePublic('copyConfig')
+    def copyConfig( self):
         return [
     {   'portal_types': [ 'TRACadena', ],
         'attrs':        [
@@ -86,7 +86,7 @@ class TRAElemento_ExportConfig:
         'traversals':   [
             {   'aggregation_name':     'traducciones',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'TRATraduccion', ],
                         'reuse_config': 'Default',
@@ -95,7 +95,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'archivos',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'File', ],
                         'reuse_config': 'Default',
@@ -104,7 +104,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'documentos',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Document', ],
                         'reuse_config': 'Default',
@@ -113,7 +113,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'enlaces',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Link', ],
                         'reuse_config': 'Default',
@@ -122,7 +122,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'imagenes',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Image', ],
                         'reuse_config': 'Default',
@@ -131,7 +131,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'noticias',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'News_Item', ],
                         'reuse_config': 'Default',
@@ -236,7 +236,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'archivos',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'File', ],
                         'reuse_config': 'Default',
@@ -272,7 +272,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'documentos',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Document', ],
                         'reuse_config': 'Default',
@@ -281,7 +281,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'enlaces',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Link', ],
                         'reuse_config': 'Default',
@@ -290,7 +290,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'imagenes',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Image', ],
                         'reuse_config': 'Default',
@@ -299,7 +299,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'noticias',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'News_Item', ],
                         'reuse_config': 'Default',
@@ -335,7 +335,7 @@ class TRAElemento_ExportConfig:
         'traversals':   [
             {   'aggregation_name':     'archivos',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'File', ],
                         'reuse_config': 'Default',
@@ -344,7 +344,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'cadenas',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'TRACadena', ],
                         'reuse_config': 'Default',
@@ -353,7 +353,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'documentos',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Document', ],
                         'reuse_config': 'Default',
@@ -362,7 +362,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'enlaces',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Link', ],
                         'reuse_config': 'Default',
@@ -371,7 +371,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'imagenes',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Image', ],
                         'reuse_config': 'Default',
@@ -380,7 +380,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'noticias',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'News_Item', ],
                         'reuse_config': 'Default',
@@ -404,7 +404,7 @@ class TRAElemento_ExportConfig:
         'traversals':   [
             {   'aggregation_name':     'archivos',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'File', ],
                         'reuse_config': 'Default',
@@ -413,7 +413,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'documentos',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Document', ],
                         'reuse_config': 'Default',
@@ -422,7 +422,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'enlaces',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Link', ],
                         'reuse_config': 'Default',
@@ -431,7 +431,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'idiomas',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'factory_views':                        {   'TRAIdioma': 'TRACrear_Idioma',
                 },
                 'subitems':             [
@@ -442,7 +442,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'imagenes',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Image', ],
                         'reuse_config': 'Default',
@@ -451,7 +451,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'noticias',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'News_Item', ],
                         'reuse_config': 'Default',
@@ -488,7 +488,7 @@ class TRAElemento_ExportConfig:
         'traversals':   [
             {   'aggregation_name':     'archivos',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'File', ],
                         'reuse_config': 'Default',
@@ -497,7 +497,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'documentos',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Document', ],
                         'reuse_config': 'Default',
@@ -506,7 +506,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'enlaces',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Link', ],
                         'reuse_config': 'Default',
@@ -515,7 +515,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'imagenes',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Image', ],
                         'reuse_config': 'Default',
@@ -524,7 +524,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'importaciones',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'TRAImportacion', ],
                         'reuse_config': 'Default',
@@ -533,7 +533,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'noticias',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'News_Item', ],
                         'reuse_config': 'Default',
@@ -557,7 +557,7 @@ class TRAElemento_ExportConfig:
         'traversals':   [
             {   'aggregation_name':     'archivos',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'File', ],
                         'reuse_config': 'Default',
@@ -566,7 +566,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'documentos',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Document', ],
                         'reuse_config': 'Default',
@@ -575,7 +575,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'enlaces',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Link', ],
                         'reuse_config': 'Default',
@@ -584,7 +584,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'imagenes',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Image', ],
                         'reuse_config': 'Default',
@@ -593,7 +593,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'informes',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'TRAInforme', ],
                         'reuse_config': 'Default',
@@ -602,7 +602,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'noticias',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'News_Item', ],
                         'reuse_config': 'Default',
@@ -626,7 +626,7 @@ class TRAElemento_ExportConfig:
         'traversals':   [
             {   'aggregation_name':     'archivos',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'File', ],
                         'reuse_config': 'Default',
@@ -635,7 +635,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'documentos',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Document', ],
                         'reuse_config': 'Default',
@@ -644,7 +644,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'enlaces',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Link', ],
                         'reuse_config': 'Default',
@@ -653,7 +653,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'imagenes',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Image', ],
                         'reuse_config': 'Default',
@@ -662,7 +662,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'modulos',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'TRAModulo', ],
                         'reuse_config': 'Default',
@@ -671,7 +671,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'noticias',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'News_Item', ],
                         'reuse_config': 'Default',
@@ -695,7 +695,7 @@ class TRAElemento_ExportConfig:
         'traversals':   [
             {   'aggregation_name':     'archivos',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'File', ],
                         'reuse_config': 'Default',
@@ -704,7 +704,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'documentos',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Document', ],
                         'reuse_config': 'Default',
@@ -713,7 +713,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'enlaces',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Link', ],
                         'reuse_config': 'Default',
@@ -722,7 +722,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'imagenes',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Image', ],
                         'reuse_config': 'Default',
@@ -731,7 +731,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'noticias',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'News_Item', ],
                         'reuse_config': 'Default',
@@ -740,7 +740,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'solicitudesCadenas',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'factory_views':                        {   'TRASolicitudCadena': 'TRACrear_SolicitudCadena',
                 },
                 'subitems':             [
@@ -794,7 +794,7 @@ class TRAElemento_ExportConfig:
         'traversals':   [
             {   'aggregation_name':     'archivos',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'File', ],
                         'reuse_config': 'Default',
@@ -803,7 +803,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'documentos',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Document', ],
                         'reuse_config': 'Default',
@@ -812,7 +812,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'enlaces',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Link', ],
                         'reuse_config': 'Default',
@@ -821,7 +821,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'imagenes',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Image', ],
                         'reuse_config': 'Default',
@@ -830,7 +830,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'noticias',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'News_Item', ],
                         'reuse_config': 'Default',
@@ -896,7 +896,7 @@ class TRAElemento_ExportConfig:
         'traversals':   [
             {   'aggregation_name':     'archivos',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'File', ],
                         'reuse_config': 'Default',
@@ -905,7 +905,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'documentos',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Document', ],
                         'reuse_config': 'Default',
@@ -914,7 +914,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'enlaces',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Link', ],
                         'reuse_config': 'Default',
@@ -923,7 +923,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'imagenes',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Image', ],
                         'reuse_config': 'Default',
@@ -932,7 +932,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'noticias',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'News_Item', ],
                         'reuse_config': 'Default',
@@ -1013,7 +1013,7 @@ class TRAElemento_ExportConfig:
         'traversals':   [
             {   'aggregation_name':     'archivos',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'File', ],
                         'reuse_config': 'Default',
@@ -1022,7 +1022,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'contenido',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'factory_views':                        {   'TRAContenidoIntercambio': 'TRACrear_ContenidoIntercambio',
                 },
                 'subitems':             [
@@ -1033,7 +1033,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'documentos',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Document', ],
                         'reuse_config': 'Default',
@@ -1042,7 +1042,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'enlaces',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Link', ],
                         'reuse_config': 'Default',
@@ -1051,7 +1051,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'imagenes',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Image', ],
                         'reuse_config': 'Default',
@@ -1060,7 +1060,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'informesEstado',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'TRAInforme', ],
                         'reuse_config': 'Default',
@@ -1069,7 +1069,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'noticias',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'News_Item', ],
                         'reuse_config': 'Default',
@@ -1132,7 +1132,7 @@ class TRAElemento_ExportConfig:
         'traversals':   [
             {   'aggregation_name':     'archivos',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'File', ],
                         'reuse_config': 'Default',
@@ -1141,7 +1141,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'documentos',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Document', ],
                         'reuse_config': 'Default',
@@ -1150,7 +1150,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'enlaces',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Link', ],
                         'reuse_config': 'Default',
@@ -1159,7 +1159,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'imagenes',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Image', ],
                         'reuse_config': 'Default',
@@ -1168,7 +1168,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'noticias',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'News_Item', ],
                         'reuse_config': 'Default',
@@ -1198,7 +1198,7 @@ class TRAElemento_ExportConfig:
         'traversals':   [
             {   'aggregation_name':     'archivos',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'File', ],
                         'reuse_config': 'Default',
@@ -1207,7 +1207,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'documentos',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Document', ],
                         'reuse_config': 'Default',
@@ -1216,7 +1216,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'enlaces',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Link', ],
                         'reuse_config': 'Default',
@@ -1225,7 +1225,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'imagenes',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Image', ],
                         'reuse_config': 'Default',
@@ -1234,7 +1234,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'noticias',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'News_Item', ],
                         'reuse_config': 'Default',
@@ -1291,7 +1291,7 @@ class TRAElemento_ExportConfig:
         'traversals':   [
             {   'aggregation_name':     'archivos',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'File', ],
                         'reuse_config': 'Default',
@@ -1300,7 +1300,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'documentos',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Document', ],
                         'reuse_config': 'Default',
@@ -1309,7 +1309,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'enlaces',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Link', ],
                         'reuse_config': 'Default',
@@ -1318,7 +1318,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'imagenes',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Image', ],
                         'reuse_config': 'Default',
@@ -1327,7 +1327,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'noticias',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'News_Item', ],
                         'reuse_config': 'Default',
@@ -1405,7 +1405,7 @@ class TRAElemento_ExportConfig:
         'traversals':   [
             {   'aggregation_name':     'archivos',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'File', ],
                         'reuse_config': 'Default',
@@ -1414,7 +1414,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'documentos',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Document', ],
                         'reuse_config': 'Default',
@@ -1423,7 +1423,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'enlaces',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Link', ],
                         'reuse_config': 'Default',
@@ -1432,7 +1432,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'imagenes',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'Image', ],
                         'reuse_config': 'Default',
@@ -1441,7 +1441,7 @@ class TRAElemento_ExportConfig:
             },
             {   'aggregation_name':     'noticias',
                 'contains_collections': False,
-                'tabular_tree':         True,
+                'tabular_tree':         False,
                 'subitems':             [
                     {   'portal_types': [ 'News_Item', ],
                         'reuse_config': 'Default',

@@ -151,11 +151,11 @@
 							<br/>			    
 		
 							<p><strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearSolicitudCadena_NewRequestedStringSymbol_label">New Requested String Symbol-</strong></p>
-							<p  class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearSolicitudCadena_NewRequestedStringSymbol_help">Symbol for the requested new string. It must be unique and not already existing in the translations catalog, and not recently requested to be added.-</p>
+							<p  class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearSolicitudCadena_NewRequestedStringSymbol_help">The Symbol for the requested new string must be unique and not already existing in the translations catalog, and not recently requested to be added.-</p>
 							<tal:block tal:condition="not: pNewSymbol">
 								<p>
 									<font color="Red">
-										<span i18n:domain="ModelDDvlPlone"  i18n:translate="ModelDDvlPlone_crearSolicitudCadena_RequestedStringSymbol_IsRequired_error_message" >You must enter a symbol for the new requested string.-</span>
+										<span i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_crearSolicitudCadena_RequestedStringSymbol_IsRequired_error_message" >You must enter a symbol for the new requested string.-</span>
 									</font>
 								</p>
 							</tal:block>
@@ -173,7 +173,7 @@
 							<tal:block tal:condition="not: pTranslationIntoMainLanguage">
 								<p>
 									<font color="Red">
-										<span i18n:domain="ModelDDvlPlone"  i18n:translate="ModelDDvlPlone_crearSolicitudCadena_TranslationIntoMainLanguage_IsRequired_error_message" >You must enter a translation into the default language.-</span>
+										<span i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_crearSolicitudCadena_TranslationIntoMainLanguage_IsRequired_error_message" >You must enter a translation into the default language.-</span>
 									</font>
 								</p>
 							</tal:block>

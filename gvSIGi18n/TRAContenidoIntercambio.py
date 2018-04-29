@@ -307,12 +307,12 @@ class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAContenidoInter
     actions =  (
 
 
-       {'action': "string:${object_url}/sharing",
+       {'action': "string:$object_url/content_status_history",
         'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
-        'condition': 'python:1'
+        'id': 'content_status_history',
+        'name': 'State',
+        'permissions': ("View",),
+        'condition': 'python:0'
        },
 
 
@@ -321,6 +321,15 @@ class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAContenidoInter
         'id': 'folderlisting',
         'name': 'Folder Listing',
         'permissions': ("View",),
+        'condition': 'python:0'
+       },
+
+
+       {'action': "string:${object_url}/sharing",
+        'category': "object",
+        'id': 'local_roles',
+        'name': 'Sharing',
+        'permissions': ("Manage properties",),
         'condition': 'python:0'
        },
 
@@ -334,15 +343,6 @@ class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAContenidoInter
        },
 
 
-       {'action': "string:$object_url/content_status_history",
-        'category': "object",
-        'id': 'content_status_history',
-        'name': 'State',
-        'permissions': ("View",),
-        'condition': 'python:0'
-       },
-
-
        {'action': "string:$object_url/Editar",
         'category': "object",
         'id': 'edit',
@@ -352,12 +352,12 @@ class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAContenidoInter
        },
 
 
-       {'action': "string:${object_url}/sharing",
+       {'action': "string:${object_url}/TRAInformeContenidoIntercambio_action",
         'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
-        'condition': 'python:0'
+        'id': 'ContenidoIntercambio',
+        'name': 'Data',
+        'permissions': ("View",),
+        'condition': 'python:1'
        },
 
 
@@ -365,15 +365,6 @@ class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAContenidoInter
         'category': "object",
         'id': 'view',
         'name': 'View',
-        'permissions': ("View",),
-        'condition': 'python:1'
-       },
-
-
-       {'action': "string:${object_url}/TRAInformeContenidoIntercambio_action",
-        'category': "object",
-        'id': 'ContenidoIntercambio',
-        'name': 'Data',
         'permissions': ("View",),
         'condition': 'python:1'
        },
@@ -390,12 +381,12 @@ class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAContenidoInter
 
     # Methods
 
-    security.declarePublic('manage_beforeDelete')
-    def manage_beforeDelete(self,item,container):
+    security.declarePublic('cb_isCopyable')
+    def cb_isCopyable(self):
         """
         """
         
-        return TRAArquetipo.manage_beforeDelete( self, item, container)
+        return False
 
     security.declarePublic('manage_afterAdd')
     def manage_afterAdd(self,item,container):
@@ -403,6 +394,20 @@ class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAContenidoInter
         """
         
         return TRAArquetipo.manage_afterAdd( self, item, container)
+
+    security.declarePublic('manage_beforeDelete')
+    def manage_beforeDelete(self,item,container):
+        """
+        """
+        
+        return TRAArquetipo.manage_beforeDelete( self, item, container)
+
+    security.declarePublic('manage_pasteObjects')
+    def manage_pasteObjects(self,cb_copy_data,REQUEST):
+        """
+        """
+        
+        return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:
