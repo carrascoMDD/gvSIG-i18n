@@ -79,11 +79,13 @@ class TRAElemento_Meta:
             'TRAColeccionImportaciones',
             'TRAColeccionInformes',
             'TRAColeccionModulos',
+            'TRAColeccionSolicitudesCadenas',
             'TRAContenidoIntercambio',
             'TRAIdioma',
             'TRAImportacion',
             'TRAInforme',
             'TRAModulo',
+            'TRASolicitudCadena',
             'TRATraduccion',
  
         ]
@@ -125,6 +127,10 @@ class TRAElemento_Meta:
                 from Products.gvSIGi18n.TRAColeccionModulos         import TRAColeccionModulos
                 return TRAColeccionModulos            
 
+            if theMetaTypeName == 'TRAColeccionSolicitudesCadenas':
+                from Products.gvSIGi18n.TRAColeccionSolicitudesCadenas         import TRAColeccionSolicitudesCadenas
+                return TRAColeccionSolicitudesCadenas            
+
             if theMetaTypeName == 'TRAContenidoIntercambio':
                 from Products.gvSIGi18n.TRAContenidoIntercambio         import TRAContenidoIntercambio
                 return TRAContenidoIntercambio            
@@ -144,6 +150,10 @@ class TRAElemento_Meta:
             if theMetaTypeName == 'TRAModulo':
                 from Products.gvSIGi18n.TRAModulo         import TRAModulo
                 return TRAModulo            
+
+            if theMetaTypeName == 'TRASolicitudCadena':
+                from Products.gvSIGi18n.TRASolicitudCadena         import TRASolicitudCadena
+                return TRASolicitudCadena            
 
             if theMetaTypeName == 'TRATraduccion':
                 from Products.gvSIGi18n.TRATraduccion         import TRATraduccion

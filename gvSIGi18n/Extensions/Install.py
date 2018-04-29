@@ -108,6 +108,7 @@ def install(self, reinstall=False):
         "TRAInforme",
         "TRAColeccionImportaciones",
         "TRACadena",
+        "TRAColeccionSolicitudesCadenas",
         "TRACatalogo",
         "TRAColeccionIdiomas",
         "TRAContenidoIntercambio",
@@ -115,6 +116,7 @@ def install(self, reinstall=False):
         "TRAIdioma",
         "TRAColeccionModulos",
         "TRATraduccion",
+        "TRASolicitudCadena",
         ] + factory_tool.getFactoryTypes().keys()
     factory_tool.manage_setPortalFactoryTypes(listOfTypeIds=factory_types)
 

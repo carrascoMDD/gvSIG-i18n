@@ -92,6 +92,7 @@ def initialize(context):
     import TRAColeccionArquetipos
     import TRAColeccionImportaciones
     import TRACadena
+    import TRAColeccionSolicitudesCadenas
     import TRAElemento
     import TRAElemento_Constants
     import TRAElemento_Operaciones
@@ -114,6 +115,7 @@ def initialize(context):
     import TRATraduccion
     import TRAInforme_Operaciones
     import TRACadena_Operaciones
+    import TRASolicitudCadena
 
     # Initialize portal content
     all_content_types, all_constructors, all_ftis = process_types(

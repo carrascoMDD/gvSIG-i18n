@@ -285,11 +285,13 @@ cNombreTipoTRATraduccion                = "TRATraduccion"
 cNombreTipoTRAImportacion               = "TRAImportacion"
 cNombreTipoTRAContenidoIntercambio      = "TRAContenidoIntercambio"
 cNombreTipoTRAInforme                   = "TRAInforme"
+cNombreTipoTRASolicitudCadena           = "TRASolicitudCadena"
 cNombreTipoTRAColeccionIdiomas          = "TRAColeccionIdiomas"
 cNombreTipoTRAColeccionModulos          = "TRAColeccionModulos"
 cNombreTipoTRAColeccionCadenas          = "TRAColeccionCadenas"
 cNombreTipoTRAColeccionInformes         = "TRAColeccionInformes"
 cNombreTipoTRAColeccionImportaciones    = "TRAColeccionImportaciones"
+cNombreTipoTRAColeccionSolicitudesCadenas    = "TRAColeccionSolicitudesCadenas"
 
 # cNombreTipo_cualquiera   = '--AnyType--'
 
@@ -306,7 +308,9 @@ cPreferredTypesOrder = [
     cNombreTipoTRAImportacion, 
     cNombreTipoTRAContenidoIntercambio,   
     cNombreTipoTRAColeccionInformes,      
-    cNombreTipoTRAInforme,                
+    cNombreTipoTRAInforme,      
+    cNombreTipoTRAColeccionSolicitudesCadenas,
+    cNombreTipoTRASolicitudCadena,
 ]
 
 
@@ -317,6 +321,7 @@ cTodosNombresTiposColecciones = [
     cNombreTipoTRAColeccionCadenas,       
     cNombreTipoTRAColeccionInformes,      
     cNombreTipoTRAColeccionImportaciones, 
+    cNombreTipoTRAColeccionSolicitudesCadenas,
 ]
 
 
@@ -333,7 +338,8 @@ cTodosNombresTiposWithChildren = cTodosNombresTiposColecciones + cTodosNombresTi
 cTodosNombresTiposWithoutChildren = [
     cNombreTipoTRATraduccion,             
     cNombreTipoTRAContenidoIntercambio,   
-    cNombreTipoTRAInforme,                
+    cNombreTipoTRAInforme,    
+    cNombreTipoTRASolicitudCadena,
  ]
 
 
@@ -343,9 +349,12 @@ cTodosNombresTipos = cPreferredTypesOrder
 cCadenaIdPrefix = 'ca-'
 cIdiomaIdPrefix = 'la-'
 cModuloIdPrefix = 'mo-'
+cSolicitudCadenaIdPrefix = 'sc-'
 
 cEstadoCadenaActiva         = 'Activa'
 cEstadoCadenaInactiva       = 'Inactiva'
+
+cTodosEstadosCadena = [ cEstadoCadenaActiva, cEstadoCadenaInactiva, ]
 
 
 cEstadoTraduccionPendiente  = 'Pendiente'
@@ -353,8 +362,19 @@ cEstadoTraduccionTraducida  = 'Traducida'
 cEstadoTraduccionRevisada   = 'Revisada'
 cEstadoTraduccionDefinitiva = 'Definitiva'
 
-
 cTodosEstados = [ cEstadoTraduccionPendiente, cEstadoTraduccionTraducida, cEstadoTraduccionRevisada, cEstadoTraduccionDefinitiva, ]
+
+
+
+
+cEstadoSolicitudCadenaPendiente   = 'Pendiente'
+cEstadoSolicitudCadenaDescartada  = 'Descartada'
+cEstadoSolicitudCadenaCreada      = 'Creada'
+
+cTodosEstadosSolicitudCadena = [ cEstadoSolicitudCadenaPendiente, cEstadoSolicitudCadenaDescartada, cEstadoSolicitudCadenaCreada, ]
+
+
+
 
 
 cNombreModuloNoEspecificadoLabel_MsgId  = 'gvSIGi18n_ModuloNoEspecificado_msgid'

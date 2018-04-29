@@ -186,7 +186,7 @@ schema = Schema((
         description2="Date when the String was translated to the Language.",
         containment="Not Specified",
         ea_guid="{B62B3CB4-0EAC-4e31-8FA4-E06046DEDB9E}",
-        position="9",
+        position="10",
         owner_class_name="TRATraduccion",
         label="Fecha de Traduccion"
     ),
@@ -215,7 +215,7 @@ schema = Schema((
         description2="User who translated this string into this language.",
         containment="Not Specified",
         ea_guid="{E6E7E23E-C722-4324-A8B1-0DC4DA6B6EB6}",
-        position="10",
+        position="12",
         owner_class_name="TRATraduccion",
         label="Traductor"
     ),
@@ -244,7 +244,7 @@ schema = Schema((
         description2="The date when the String Translation to the Language was reviewed.",
         containment="Not Specified",
         ea_guid="{F3E84661-ADAA-427f-B5CD-729A33244458}",
-        position="11",
+        position="13",
         owner_class_name="TRATraduccion",
         label="Fecha de Revision"
     ),
@@ -273,7 +273,7 @@ schema = Schema((
         description2="User who reviewd the String Translation to the Language.",
         containment="Not Specified",
         ea_guid="{6BFF5745-AFFD-468a-A2DC-6520395136A8}",
-        position="12",
+        position="14",
         owner_class_name="TRATraduccion",
         label="Revisor"
     ),
@@ -302,7 +302,7 @@ schema = Schema((
         length="0",
         containment="Not Specified",
         ea_guid="{140F4C12-633E-499d-BAF7-6AC9AE8791EB}",
-        position="13",
+        position="15",
         owner_class_name="TRATraduccion",
         label="Fecha Definitiva"
     ),
@@ -331,7 +331,7 @@ schema = Schema((
         description2="User with Coordinator capabilities, who made Definitive the string translation into the language.",
         containment="Not Specified",
         ea_guid="{075407C5-F759-47ec-AA8C-FFDB360AF510}",
-        position="15",
+        position="17",
         owner_class_name="TRATraduccion",
         label="Coordinador"
     ),
@@ -360,7 +360,7 @@ schema = Schema((
         description2="The (internal) identifier of the String to translate.",
         containment="Not Specified",
         ea_guid="{0039F177-5DA5-4244-91D1-4C9899F8C166}",
-        position="17",
+        position="19",
         owner_class_name="TRATraduccion",
         label="Id Cadena"
     ),
@@ -450,7 +450,7 @@ schema = Schema((
         description2="Comments to this translation.",
         containment="Not Specified",
         ea_guid="{49F28A8C-A23F-4328-AAD5-494C2832C49A}",
-        position="14",
+        position="16",
         owner_class_name="TRATraduccion",
         label="Comentario"
     ),
@@ -479,7 +479,7 @@ schema = Schema((
         description2="Flags used by GNU gettext PO, like fuzzy and indicators that the string is a formatting string in a specific programming language.",
         containment="Not Specified",
         ea_guid="{7836B327-05EE-4df9-8F0C-EF4CBE063312}",
-        position="9",
+        position="11",
         owner_class_name="TRATraduccion",
         label="Indicadores para GNU gettext PO"
     ),
@@ -508,7 +508,7 @@ schema = Schema((
         description2="History of changes to the string's translation into the Language.",
         containment="Not Specified",
         ea_guid="{A6F66985-751D-423f-98CF-635384D8ABD4}",
-        position="16",
+        position="18",
         owner_class_name="TRATraduccion",
         label="Historia"
     ),
@@ -537,7 +537,7 @@ schema = Schema((
         description2="Date when the translation into the Language was created, either in Translated or Pending state.",
         containment="Not Specified",
         ea_guid="{38A791EF-7F1A-4824-86D9-4C670C7643C9}",
-        position="7",
+        position="8",
         owner_class_name="TRATraduccion",
         label="Fecha de Creacion"
     ),
@@ -597,7 +597,7 @@ schema = Schema((
         description2="User who created the translation into the language in Translated or Pending state, during an import or language creation process.",
         containment="Not Specified",
         ea_guid="{E2D4ACFF-A4BB-4dc9-A8B8-149E7033FB14}",
-        position="8",
+        position="9",
         owner_class_name="TRATraduccion",
         label="Creador"
     ),

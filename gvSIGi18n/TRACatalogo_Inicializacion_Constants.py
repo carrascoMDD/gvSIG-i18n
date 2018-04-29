@@ -83,6 +83,8 @@ cColeccionInformes_Id   = "informes"
 cColeccionInformes_Title= "Reports"
 cColeccionImportaciones_Id    = "importaciones"
 cColeccionImportaciones_Title = "Imports"
+cColeccionSolicitudesCadenas_Id    = "solicitudescadenas"
+cColeccionSolicitudesCadenas_Title = "String Requests"
 
 
 cEspecificacionesColecciones = [ 
@@ -91,6 +93,7 @@ cEspecificacionesColecciones = [
     [ cNombreTipoTRAColeccionCadenas,        cColeccionCadenas_Id,       cColeccionCadenas_Title, ],
     [ cNombreTipoTRAColeccionImportaciones,  cColeccionImportaciones_Id, cColeccionImportaciones_Title, ],
     [ cNombreTipoTRAColeccionInformes,       cColeccionInformes_Id,      cColeccionInformes_Title, ],
+    [ cNombreTipoTRAColeccionSolicitudesCadenas,       cColeccionSolicitudesCadenas_Id,      cColeccionSolicitudesCadenas_Title, ],
 ]
 
 

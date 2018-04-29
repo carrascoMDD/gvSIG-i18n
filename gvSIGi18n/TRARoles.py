@@ -50,6 +50,7 @@ security.declarePublic('TRARoles_list')
 
 cTRAManager_role        = 'TRAManager'
 cTRACoordinator_role    = 'TRACoordinator'
+cTRADeveloper_role      = 'TRADeveloper'
 cTRAReviewer_role       = 'TRAReviewer'
 cTRATranslator_role     = 'TRATranslator'
 cTRAVisitor_role        = 'TRAVisitor'
@@ -58,7 +59,8 @@ cTRAVisitor_role        = 'TRAVisitor'
 
 TRARoles_list = [
     cTRAManager_role,
-    cTRACoordinator_role,
+    cTRACoordinator_role,    
+    cTRADeveloper_role,
     cTRAReviewer_role,
     cTRATranslator_role,
     cTRAVisitor_role,

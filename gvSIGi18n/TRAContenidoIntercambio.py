@@ -433,7 +433,7 @@ class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAContenidoInter
         """
         """
         
-        return TRAArquetipo.manage_beforeDelete( self, item, container)
+        return TRAArquetipo.manage_afterAdd( self, item, container)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

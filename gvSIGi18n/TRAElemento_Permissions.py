@@ -816,6 +816,16 @@ class TRAElemento_Permissions:
     def fRoleQuery_IsCoordinator(self, theElement=None):
         return self.fRoleQuery_IsAnyRol( cTRACoordinator_role, theElement)
       
+    security.declareProtected( permissions.View, 'fRoleQuery_IsCoordinatorOrDeveloper')
+    def fRoleQuery_IsCoordinatorOrDeveloper(self, theElement=None):
+        return self.fRoleQuery_IsAnyRol( [ cTRACoordinator_role , cTRADeveloper_role, ], theElement)
+      
+    security.declareProtected( permissions.View, 'fRoleQuery_IsDeveloper')
+    def fRoleQuery_IsDeveloper(self, theElement=None):
+        return self.fRoleQuery_IsAnyRol( cTRADeveloper_role, theElement)
+      
+        
+        
     security.declareProtected( permissions.View, 'fRoleQuery_IsManagerOrCoordinator')
     def fRoleQuery_IsManagerOrCoordinator(self, theElement=None):
         return self.fRoleQuery_IsAnyRol( cManagerRoles + [ cTRACoordinator_role, ], theElement)

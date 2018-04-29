@@ -729,6 +729,29 @@ schema = Schema((
         represents_aggregation=True
     ),
 
+    ComputedField(
+        name='coleccionSolicitudesCadenas',
+        widget=ComputedWidget(
+            label="Coleccion de Solicitudes de Cadenas",
+            label2="String Requests Collection",
+            description="Coleccion de solicitudes realizadas por los desarrolladores, para crear nuevas cadenas.",
+            description2="Collection of requests by developers to create new strings.",
+            label_msgid='gvSIGi18n_TRACatalogo_contents_coleccionSolicitudesCadenas_label',
+            description_msgid='gvSIGi18n_TRACatalogo_contents_coleccionSolicitudesCadenas_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description='Coleccion de solicitudes realizadas por los desarrolladores, para crear nuevas cadenas.',
+        label2='String Requests Collection',
+        label='Coleccion de Solicitudes de Cadenas',
+        description2='Collection of requests by developers to create new strings.',
+        multiValued=1,
+        owner_class_name="TRACatalogo",
+        multiplicity_higher=1,
+        expression="context.objectValues(['TRAColeccionSolicitudesCadenas'])",
+        computed_types=['TRAColeccionSolicitudesCadenas'],
+        represents_aggregation=True
+    ),
+
     TextField(
         name='modulosYSimbolosCadenasOrdenados',
         widget=TextAreaWidget(
@@ -920,7 +943,7 @@ class TRACatalogo(OrderedBaseFolder, TRACatalogo_Autorizaciones, TRAArquetipo, T
 
     meta_type = 'TRACatalogo'
     portal_type = 'TRACatalogo'
-    allowed_content_types = ['TRAColeccionInformes', 'TRAColeccionCadenas', 'TRAColeccionImportaciones', 'TRAColeccionIdiomas', 'TRAColeccionModulos'] + list(getattr(TRACatalogo_Autorizaciones, 'allowed_content_types', [])) + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Inicializacion, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Informes, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Operaciones, 'allowed_content_types', [])) + list(getattr(TRACatalogo_CursorTraducciones, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Eliminacion, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Exportacion, 'allowed_content_types', []))
+    allowed_content_types = ['TRAColeccionInformes', 'TRAColeccionCadenas', 'TRAColeccionImportaciones', 'TRAColeccionSolicitudesCadenas', 'TRAColeccionIdiomas', 'TRAColeccionModulos'] + list(getattr(TRACatalogo_Autorizaciones, 'allowed_content_types', [])) + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Inicializacion, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Informes, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Operaciones, 'allowed_content_types', [])) + list(getattr(TRACatalogo_CursorTraducciones, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Eliminacion, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Exportacion, 'allowed_content_types', []))
     filter_content_types = 1
     global_allow = 1
     content_icon = 'tracatalogo.gif'

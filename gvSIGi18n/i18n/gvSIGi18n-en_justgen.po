@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gvSIGi18n\n"
-"POT-Creation-Date: Sun Jun 21 05:57:04 2009\n"
-"PO-Revision-Date: Sun Jun 21 05:57:04 2009\n"
+"POT-Creation-Date: Wed Jul 15 03:18:18 2009\n"
+"PO-Revision-Date: Wed Jul 15 03:18:18 2009\n"
 "Last-Translator: Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>\n"
 "Language-Team: Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>\n"
 "MIME-Version: 1.0\n"
@@ -536,6 +536,16 @@ msgstr "Modules collection"
 msgid "gvSIGi18n_TRACatalogo_contents_coleccionModulos_help"
 msgstr "Collection of Modules in the Product to Translate"
 
+#. Default: "Coleccion de Solicitudes de Cadenas"
+#: TRACatalogo coleccionSolicitudesCadenas
+msgid "gvSIGi18n_TRACatalogo_contents_coleccionSolicitudesCadenas_label"
+msgstr "String Requests Collection"
+
+#. Default: "Coleccion de solicitudes realizadas por los desarrolladores, para crear nuevas cadenas."
+#: TRACatalogo coleccionSolicitudesCadenas
+msgid "gvSIGi18n_TRACatalogo_contents_coleccionSolicitudesCadenas_help"
+msgstr "Collection of requests by developers to create new strings."
+
 #. Default: "TRACatalogo_Autorizaciones"
 #: TRACatalogo_Autorizaciones
 msgid "gvSIGi18n_TRACatalogo_Autorizaciones_label"
@@ -725,6 +735,26 @@ msgstr "Modules"
 #: TRAColeccionModulos modulos
 msgid "gvSIGi18n_TRAColeccionModulos_contents_modulos_help"
 msgstr "Modules in the Product to translate."
+
+#. Default: "Coleccion de Solicitudes de creacion de Cadenas"
+#: TRAColeccionSolicitudesCadenas
+msgid "gvSIGi18n_TRAColeccionSolicitudesCadenas_label"
+msgstr "Strings creation request collection"
+
+#. Default: "Coleccion de solicitudes realizadas por los desarrolladores, para crear nuevas cadenas."
+#: TRAColeccionSolicitudesCadenas
+msgid "gvSIGi18n_TRAColeccionSolicitudesCadenas_help"
+msgstr "Collection of requests by developers to create new strings."
+
+#. Default: "Solicitudes de creacion de Cadenas"
+#: TRAColeccionSolicitudesCadenas solicitudesCadenas
+msgid "gvSIGi18n_TRAColeccionSolicitudesCadenas_contents_solicitudesCadenas_label"
+msgstr "String creation Requests"
+
+#. Default: "Solicitudes realizadas por los desarrolladores, para crear nuevas cadenas."
+#: TRAColeccionSolicitudesCadenas solicitudesCadenas
+msgid "gvSIGi18n_TRAColeccionSolicitudesCadenas_contents_solicitudesCadenas_help"
+msgstr "Requests by developers to create new strings."
 
 #. Default: "Contenido de Intercambio"
 #: TRAContenidoIntercambio
@@ -1680,6 +1710,151 @@ msgstr "TRAModulo_Operaciones"
 #: TRAModulo_Operaciones
 msgid "gvSIGi18n_TRAModulo_Operaciones_help"
 msgstr "TRAModulo_Operaciones"
+
+#. Default: "Solicitud Creacion Cadena"
+#: TRASolicitudCadena
+msgid "gvSIGi18n_TRASolicitudCadena_label"
+msgstr "String creation request"
+
+#. Default: "Una solicitud para crear una nueva cadena del producto a traducir, identificada por su simbolo, y opcionalmente con traducciones al idioma principal e idioma de referencia."
+#: TRASolicitudCadena
+msgid "gvSIGi18n_TRASolicitudCadena_help"
+msgstr "A request to create a new string to translate, identified by a string symbol, and optionally with translations into the main and reference language"
+
+#. Default: "Traduccion al Idioma Principal"
+#: TRASolicitudCadena cadenaTraducidaAIdiomaPrincipal
+msgid "gvSIGi18n_TRASolicitudCadena_attr_cadenaTraducidaAIdiomaPrincipal_label"
+msgstr "Translation into the main language"
+
+#. Default: "Cadena traducida al Idioma principal, suministrada por el desarrollador."
+#: TRASolicitudCadena cadenaTraducidaAIdiomaPrincipal
+msgid "gvSIGi18n_TRASolicitudCadena_attr_cadenaTraducidaAIdiomaPrincipal_help"
+msgstr "String translated to the main Language, supplied by the developer."
+
+#. Default: "Traduccion al idioma de referencia"
+#: TRASolicitudCadena cadenaTraducidaAIdiomaReferencia
+msgid "gvSIGi18n_TRASolicitudCadena_attr_cadenaTraducidaAIdiomaReferencia_label"
+msgstr "Translation into the reference language"
+
+#. Default: "Cadena traducida al Idioma de referencia, suministrada por el desarrollador."
+#: TRASolicitudCadena cadenaTraducidaAIdiomaReferencia
+msgid "gvSIGi18n_TRASolicitudCadena_attr_cadenaTraducidaAIdiomaReferencia_help"
+msgstr "String translated to the reference Language, supplied by the developer."
+
+#. Default: "Codigo de Idioma Principal"
+#: TRASolicitudCadena codigoIdiomaPrincipal
+msgid "gvSIGi18n_TRASolicitudCadena_attr_codigoIdiomaPrincipal_label"
+msgstr "Main Language code"
+
+#. Default: "Codigo de Idioma Principal para el que el desarrollador proporciona una traducción."
+#: TRASolicitudCadena codigoIdiomaPrincipal
+msgid "gvSIGi18n_TRASolicitudCadena_attr_codigoIdiomaPrincipal_help"
+msgstr "Main Language code for which the developer supplies a translation."
+
+#. Default: "Codigo de Idioma de referencia"
+#: TRASolicitudCadena codigoIdiomaReferencia
+msgid "gvSIGi18n_TRASolicitudCadena_attr_codigoIdiomaReferencia_label"
+msgstr "Reference Language code"
+
+#. Default: "Codigo de Idioma de referencia para el que el desarrollador proporciona una traducción."
+#: TRASolicitudCadena codigoIdiomaReferencia
+msgid "gvSIGi18n_TRASolicitudCadena_attr_codigoIdiomaReferencia_help"
+msgstr "Reference Language code for which the developer supplies a translation."
+
+#. Default: "Estado de la Solicitud de Cadena"
+#: TRASolicitudCadena estadoSolicitudCadena
+msgid "gvSIGi18n_TRASolicitudCadena_attr_estadoSolicitudCadena_label"
+msgstr "String Request Status"
+
+#. Default: "Estado de la Solicitud de Cadena, como Dendiente, Descartada o Creada."
+#: TRASolicitudCadena estadoSolicitudCadena
+msgid "gvSIGi18n_TRASolicitudCadena_attr_estadoSolicitudCadena_help"
+msgstr "String Request Status as Pending, Discarded, or Created."
+
+#. Default: "Pendiente"
+#: TRASolicitudCadena estadoSolicitudCadena
+msgid "gvSIGi18n_TRASolicitudCadena_attr_estadoSolicitudCadena_option_Pendiente"
+msgstr "Pending"
+
+#. Default: "Descartada"
+#: TRASolicitudCadena estadoSolicitudCadena
+msgid "gvSIGi18n_TRASolicitudCadena_attr_estadoSolicitudCadena_option_Descartada"
+msgstr "Discarded"
+
+#. Default: "Creada"
+#: TRASolicitudCadena estadoSolicitudCadena
+msgid "gvSIGi18n_TRASolicitudCadena_attr_estadoSolicitudCadena_option_Creada"
+msgstr "Created"
+
+#. Default: "Fecha de Cancelacion"
+#: TRASolicitudCadena fechaCancelacionTextual
+msgid "gvSIGi18n_TRASolicitudCadena_attr_fechaCancelacionTextual_label"
+msgstr "Cancelation Date"
+
+#. Default: "La fecha en que la cadena fue cancelada, de forma que no vuelva a ser considerada para su traduccion."
+#: TRASolicitudCadena fechaCancelacionTextual
+msgid "gvSIGi18n_TRASolicitudCadena_attr_fechaCancelacionTextual_help"
+msgstr "The date when the String was cancelled, such that the string won't be considered again for translation."
+
+#. Default: "Fecha de Creacion como texto"
+#: TRASolicitudCadena fechaCreacionTextual
+msgid "gvSIGi18n_TRASolicitudCadena_attr_fechaCreacionTextual_label"
+msgstr "Creation Date as text"
+
+#. Default: "Representacion textual de la fecha en que se creo la cadena a traducir."
+#: TRASolicitudCadena fechaCreacionTextual
+msgid "gvSIGi18n_TRASolicitudCadena_attr_fechaCreacionTextual_help"
+msgstr "Textual representation of the date when the String was first created."
+
+#. Default: "Modulos"
+#: TRASolicitudCadena nombresModulos
+msgid "gvSIGi18n_TRASolicitudCadena_attr_nombresModulos_label"
+msgstr "Modules"
+
+#. Default: "Nombres de los Modulos en los que se usa esta cadena."
+#: TRASolicitudCadena nombresModulos
+msgid "gvSIGi18n_TRASolicitudCadena_attr_nombresModulos_help"
+msgstr "Names of the Modules using this String."
+
+#. Default: "Path del Raiz"
+#: TRASolicitudCadena pathDelRaiz
+msgid "gvSIGi18n_TRASolicitudCadena_attr_pathDelRaiz_label"
+msgstr "Root's Path"
+
+#. Default: "Path del Catalogo raiz de este elemento."
+#: TRASolicitudCadena pathDelRaiz
+msgid "gvSIGi18n_TRASolicitudCadena_attr_pathDelRaiz_help"
+msgstr "This element's root Catalog path."
+
+#. Default: "Referencias a fuentes"
+#: TRASolicitudCadena referenciasFuentes
+msgid "gvSIGi18n_TRASolicitudCadena_attr_referenciasFuentes_label"
+msgstr "Source references"
+
+#. Default: "Referencias a codigo fuente donde aparece esta cadena."
+#: TRASolicitudCadena referenciasFuentes
+msgid "gvSIGi18n_TRASolicitudCadena_attr_referenciasFuentes_help"
+msgstr "References to source code where the string is used."
+
+#. Default: "Simbolo"
+#: TRASolicitudCadena simbolo
+msgid "gvSIGi18n_TRASolicitudCadena_attr_simbolo_label"
+msgstr "Symbol"
+
+#. Default: "El simbolo que identifica la Cadena que se solicita crear."
+#: TRASolicitudCadena simbolo
+msgid "gvSIGi18n_TRASolicitudCadena_attr_simbolo_help"
+msgstr "The symbol identifying the string requested to be created,"
+
+#. Default: "Usuario Creador"
+#: TRASolicitudCadena usuarioCreador
+msgid "gvSIGi18n_TRASolicitudCadena_attr_usuarioCreador_label"
+msgstr "Creator user"
+
+#. Default: "Usuario que creo o importo la cadena a traducir."
+#: TRASolicitudCadena usuarioCreador
+msgid "gvSIGi18n_TRASolicitudCadena_attr_usuarioCreador_help"
+msgstr "User who created or imported the string to be translated."
 
 #. Default: "Traduccion"
 #: TRATraduccion

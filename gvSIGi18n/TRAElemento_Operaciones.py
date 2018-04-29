@@ -1117,12 +1117,12 @@ class TRAElemento_Operaciones( TRAElemento_Permissions):
     def pHandle_manage_afterAdd(self, theItem, theContainer):   
         
         if self.__class__.__name__ == 'TRACadena':
-            a = 1
+            pass
         
-        if self.__class__.__name__ == 'TRATraduccion':
-            b = 2
+        elif self.__class__.__name__ == 'TRATraduccion':
+            pass
         
-        if self.__class__.__name__ == 'TRAColeccionCadenas':
+        elif self.__class__.__name__ in [ 'TRAColeccionCadenas', 'TRAColeccionSolicitudesCadenas', ]:
             BaseBTreeFolder.manage_afterAdd(  self, theItem, theContainer)
         
         else:
