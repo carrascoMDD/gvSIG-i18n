@@ -2013,15 +2013,15 @@ function fTRAEvtHlr_Editor_Button_StatusChange_OnMouseUp( theEditorIndex, theNew
                 }
                 
 
-                if ( fAsynchronousTranslationMode()) {                
-                    fTRA_SetBGColorEnCadenaTraducidaFilaNumero( unEditorIndex, cTRABGColor_Translation_ChangedStatus);  
-                    fTRA_SetBGColorEnBotonEstadoFilaNumero(     unEditorIndex, theNewTranslationStatus, cTRABGColor_Translation_ChangedStatus);  
-        
-                    fTRASubmitStatusChange_Async( unEditorIndex, theNewTranslationStatus);
+                if ( fTRABatchStatusChanges()) {
+                    fTRARecordBatchStatusChange( unEditorIndex, theNewTranslationStatus)
                 }
                 else {
-                    if ( fTRABatchStatusChanges()) {
-                        fTRARecordBatchStatusChange( unEditorIndex, theNewTranslationStatus)
+                    if ( fAsynchronousTranslationMode()) {                
+                        fTRA_SetBGColorEnCadenaTraducidaFilaNumero( unEditorIndex, cTRABGColor_Translation_ChangedStatus);  
+                        fTRA_SetBGColorEnBotonEstadoFilaNumero(     unEditorIndex, theNewTranslationStatus, cTRABGColor_Translation_ChangedStatus);  
+            
+                        fTRASubmitStatusChange_Async( unEditorIndex, theNewTranslationStatus);
                     }
                     else {
                         pTRASetSimboloCadenaATraducirYEditorIndexAFilaNumero( unEditorIndex)

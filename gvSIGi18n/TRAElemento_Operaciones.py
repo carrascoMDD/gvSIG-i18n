@@ -77,7 +77,11 @@ from TRAElemento_Permission_Definitions import cTRAUsersGroup_AllLanguages_postf
     
 from TRAImportarExportar_Constants      import cUTFEncodingsForAllLanguages, cDefaultEncodingsSourceMap, cWesternLanguageMarkInSourceMap, cEncodingSeparatorSentinelName
         
-from Products.gvSIGi18n.TRAElemento_Permissions import TRAElemento_Permissions
+
+
+from TRAElemento_Permissions import TRAElemento_Permissions
+from TRAElemento_Credits     import TRAElemento_Credits
+
 
 
 
@@ -639,7 +643,7 @@ class TRAExecutionRecord:
             
 # ########################################################################################################
     
-class TRAElemento_Operaciones( TRAElemento_Permissions):
+class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
     """CLASS: base class for all application elements, with commonly used behaviours aand service access points
         
     """
@@ -2214,11 +2218,28 @@ class TRAElemento_Operaciones( TRAElemento_Permissions):
             
 
     
+    security.declarePrivate( 'fTranslationI18NDomain')
+    def fTranslationI18NDomain( self, theI18NDomain):
+
+        aI18NDomain = theI18NDomain
+        if not aI18NDomain:
+            try:
+                aI18NDomain = self.getNombreProyecto()
+            except:
+                None
+            if not aI18NDomain:
+                aI18NDomain = 'ModelDDvlPlone'
+                
+        if not aI18NDomain:
+            aI18NDomain = "plone"
+            
+        return aI18NDomain
+
     
 
 
     security.declarePublic( 'fTranslateI18N')
-    def fTranslateI18N( self, theI18NDomain, theString, theDefault):
+    def fTranslateI18N( self, theI18NDomain, theString, theDefault, theTranslationService=None):
         """Internationalization: return the translated string from the specific domain into the language preferred by the connected user, or return the supplied default.
         
         """
@@ -2233,12 +2254,17 @@ class TRAElemento_Operaciones( TRAElemento_Permissions):
             except:
                 None
                 
+        aI18NDomain = self.fTranslationI18NDomain( theI18NDomain)
         if not aI18NDomain:
-            aI18NDomain = "plone"
-             
-             
+            return unicode( theDefault)
+                
+
+        
+        aTranslationService = theTranslationService
+        if not aTranslationService:
+            aTranslationService = getToolByName( self, 'translation_service', None)
+            
         aTranslation = theDefault
-        aTranslationService = getToolByName( self, 'translation_service', None)
         if aTranslationService:
             aTranslation = aTranslationService.utranslate( aI18NDomain, theString, mapping=None, context=self , target_language= None, default=theDefault)            
            

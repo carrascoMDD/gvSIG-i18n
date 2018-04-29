@@ -1062,7 +1062,8 @@ class TRACatalogo_CursorTraducciones:
                     
                     """
                     if set( cInvalidateStringTranslationsRoles).intersection( unosRolesEnCatalogo):
-                        theReport[ 'allow_invalidate_string_translations']  = True      
+                        if unIdiomaCursorModifiable:
+                            theReport[ 'allow_invalidate_string_translations']  = True      
                      
                      
                     # #################################################################

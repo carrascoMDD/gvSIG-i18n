@@ -4708,7 +4708,9 @@ def pRenderList(
         unPermiteBotones = ( len( unosAllowedTargetStates) > 0 and 1) or pAllowInvalidateStringTranslations or 0
 
         unEntrarEnEdicionEventHandler = ''
-        if unPuedeEntrarEnEdicion or unPermiteBotones:
+        # ACV 20091027 fix 
+        # BUG UITR Translation details are not shown in editor, if the translations catalog is not modifiable (i.e. during an import process)
+        if True or unPuedeEntrarEnEdicion or unPermiteBotones:
             unEntrarEnEdicionEventHandler = """
                 onclick="fTRAEvtHlr_Row_OnClick( %(symbol_cell_counter)d); return true;"
                 \n""" % { 

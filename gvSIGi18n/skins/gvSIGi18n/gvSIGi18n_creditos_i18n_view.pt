@@ -161,10 +161,11 @@
 </style>
 
 <!-- ######### Start collapsible  section ######### --> 
-<dl id="id_TRACreditosTable" class="collapsible inline collapsedInlineCollapsible">
+<dl id="id_TRACreditosTable" class="collapsible inline collapsedInlineCollapsible"
+    tal:define="pCredits python: here.fCredits()" >
     <dt class="collapsibleHeader">
         <strong>
-            <tal:block tal:content="python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_Title', 'Credits-')" />                        
+            <tal:block tal:content="python: '%s: %s %s %s & %s & %s' % ( pCredits.get( 'gvSIGi18n_credits_Title', ), pCredits.get( 'gvSIGi18n_credits_ProjectTitle_PropertyValue', ), pCredits.get( 'gvSIGi18n_credits_por', ), pCredits.get( 'gvSIGi18n_credits_AuthorCITAbbreviated_PropertyValue', ), pCredits.get( 'gvSIGi18n_credits_Author_ModelDrivenDevelopmentSL_PropertyValue', ), pCredits.get( 'gvSIGi18n_credits_Author_AntonioCarrascoValero_PropertyValue', ))" />                        
         </strong>
     </dt>
     <dd class="collapsibleContent">    
@@ -175,18 +176,18 @@
                 <tr class="TRAsytle_Credits_Row">
                     <td class="TRAsytle_Credits_PropertyName_Cell">
                         <span class="TRAsytle_Credits_PropertyName_Main_Span">
-                            <tal:block tal:content="python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_ProjectTitle_PropertyName', 'Project-')" />                
+                            <tal:block tal:content="python: pCredits.get( 'gvSIGi18n_credits_ProjectTitle_PropertyName')" />                
                         </span>
                     </td>
                    <td class="TRAsytle_Credits_PropertyValue_Cell">
                         <p class="TRAsytle_Credits_PropertyName_Paragraph">
                             <span class="TRAsytle_Credits_PropertyValue_Main_Span">
-                                <tal:block tal:content="python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_ProjectTitle_PropertyValue', 'gvSIGi18n-')" />                
+                                <tal:block tal:content="python: pCredits.get( 'gvSIGi18n_credits_ProjectTitle_PropertyValue')" />                
                             </span>
                         </p>
                         <p class="TRAsytle_Credits_PropertyName_Paragraph">
                             <span class="TRAsytle_Credits_PropertyValue_Main_Description_Span">
-                                <tal:block tal:content="python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_ProjectTitle_Description_PropertyValue', 'Collaborative application for the translation of user interface texts in the gvSIG application, its extensions, and collaborative applications used by gvSIG, like this very same one.-')" />                
+                                <tal:block tal:content="python: pCredits.get( 'gvSIGi18n_credits_ProjectTitle_Description_PropertyValue')" />                
                             </span>
                         </p>
                     </td>
@@ -194,44 +195,93 @@
                 <tr class="TRAsytle_Credits_Row">
                     <td class="TRAsytle_Credits_PropertyName_Cell">
                         <span class="TRAsytle_Credits_PropertyName_Main_Span">
-                            <tal:block tal:content="python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_SponsorProjectTitle_PropertyName', 'Sponsor-')" />                
+                            <tal:block tal:content="python: pCredits.get( 'gvSIGi18n_credits_DevelopedBy_PropertyName', )" />                
                         </span>
                     </td>
-                   <td class="TRAsytle_Credits_PropertyValue_Cell">
+                   <td class="TRAsytle_Credits_PropertyValue_Cell" valign="top">
+                        <p class="TRAsytle_Credits_PropertyName_Paragraph">
+                            <span class="TRAsytle_Credits_PropertyValue_Main_Span">
+                                <a title="#" href="#" 
+                                    tal:attributes="title pTitle; href python: 'http://%s' % pURL" 
+                                    tal:define="
+                                        pTitle python: pCredits.get( 'gvSIGi18n_credits_Author_ModelDrivenDevelopmentSL_PropertyValue');
+                                        pURL   python: pCredits.get( 'gvSIGi18n_credits_Author_ModelDrivenDevelopmentSL_URL_PropertyValue')">
+                                    <span tal:content="pTitle" />
+                                    <br/>                                                              
+                                    <img  alt="#" src="#" 
+                                        tal:attributes="src  python: '%s/%s' % ( here.portal_url(), pCredits.get( 'gvSIGi18n_credits_Author_ModelDrivenDevelopmentSL_Logo_PropertyValue'), );
+                                                        alt python: pCredits.get( 'gvSIGi18n_credits_Author_ModelDrivenDevelopmentSL_PropertyValue');"/>
+                                </a>
+                            </span>
+                            <br/>                          
+                            <span class="TRAsytle_Credits_PropertyValue_Main_Span">
+                                <a title="#" href="#" 
+                                    tal:attributes="title pTitle; href python: 'http://%s' % pURL" 
+                                    tal:define="
+                                        pTitle python: pCredits.get( 'gvSIGi18n_credits_Author_AntonioCarrascoValero_PropertyValue');
+                                        pURL   python: pCredits.get( 'gvSIGi18n_credits_Author_AntonioCarrascoValero_URL_PropertyValue')">
+                                    <span tal:content="pTitle" />
+                                    <br/>  
+                                    <tal:block tal:replace="nothing">
+                                        <img alt="#"  src="#" 
+                                            tal:attributes="src  python: '%s/%s' % ( here.portal_url(), pCredits.get( 'gvSIGi18n_credits_Author_AntonioCarrascoValero_Photo_PropertyValue'), );
+                                                            alt python: pCredits.get( 'gvSIGi18n_credits_Author_AntonioCarrascoValero_PropertyValue');"/>
+                                    </tal:block>
+                                </a>
+                            </span>
+                        </p>
+                    </td>
+                </tr>
+                <tr class="TRAsytle_Credits_Row">
+                    <td class="TRAsytle_Credits_PropertyName_Cell">
+                        <span class="TRAsytle_Credits_PropertyName_Main_Span">
+                            <tal:block tal:content="python: pCredits.get( 'gvSIGi18n_credits_SponsorProjectTitle_PropertyName', )" />                
+                        </span>
+                    </td>
+                   <td class="TRAsytle_Credits_PropertyValue_Cell" valign="top">
                         <p class="TRAsytle_Credits_PropertyName_Paragraph">
                             <span class="TRAsytle_Credits_PropertyValue_Main_Span">
                                  <a title="#" href="#" 
                                     tal:attributes="title pTitle; href python: 'http://%s' % pURL" 
                                     tal:define="
-                                        pTitle python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_SponsorProjectTitle_PropertyValue', 'gvSIG proyect by Conselleria de Infraestructuras y Transporte (CIT) de la Generalitat Valenciana (GVA)');
-                                        pURL   python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_SponsorProjectTitle_URL_PropertyValue', 'gvSIG.org')"
-                                   tal:content="pTitle" />                
+                                        pTitle python: pCredits.get( 'gvSIGi18n_credits_SponsorProjectTitle_PropertyValue');
+                                        pURL   python: pCredits.get( 'gvSIGi18n_credits_SponsorProjectTitle_URL_PropertyValue')" >
+                                    <span tal:content="pTitle" />
+                                    <br/>                                                              
+                                    <img  alt="#" src="#" 
+                                        tal:attributes="src  python: '%s/%s' % ( here.portal_url(), pCredits.get( 'gvSIGi18n_credits_SponsorProjectTitle_Logo_PropertyValue'), );
+                                                        alt python:  pCredits.get( 'gvSIGi18n_credits_SponsorProjectTitle_PropertyValue');"/>
+                                    <br/>                                                              
+                                    <img  alt="#" src="#" 
+                                        tal:attributes="src  python: '%s/%s' % ( here.portal_url(), pCredits.get( 'gvSIGi18n_credits_Author_Conselleria_Logo_PropertyValue'), );
+                                                        alt python:  pCredits.get( 'gvSIGi18n_credits_Author_Conselleria_PropertyValue');"/>
+                                </a>
                             </span>
                         </p>
                         <p class="TRAsytle_Credits_PropertyName_Paragraph" tal:define="
-                            pTitle python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_SponsorProjectTitle_Jefe_Title', 'Chief Organization and Information Officer at CIT-');
-                            pName  python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_SponsorProjectTitle_Jefe_Name', 'Martin Garcia-')">
+                            pTitle python: pCredits.get( 'gvSIGi18n_credits_SponsorProjectTitle_Jefe_Title');
+                            pName  python: pCredits.get( 'gvSIGi18n_credits_SponsorProjectTitle_Jefe_Name')">
                             <span class="TRAsytle_Credits_PropertyValue_Span" tal:content="pTitle" />                
                             &ensp;
                             <span class="TRAsytle_Credits_PropertyValue_Highlight_Span" tal:content="pName" />                
                         </p>
                         <p class="TRAsytle_Credits_PropertyName_Paragraph" tal:define="
-                            pTitle python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_SponsorProjectTitle_CoordinadorGeneral_Title', 'gvSIG General Coordinator-');
-                            pName  python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_SponsorProjectTitle_CoordinadorGeneral_Name', 'Gabriel Carrion-')">
+                            pTitle python: pCredits.get( 'gvSIGi18n_credits_SponsorProjectTitle_CoordinadorGeneral_Title');
+                            pName  python: pCredits.get( 'gvSIGi18n_credits_SponsorProjectTitle_CoordinadorGeneral_Name')">
                             <span class="TRAsytle_Credits_PropertyValue_Span" tal:content="pTitle" />                
                             &ensp;
                             <span class="TRAsytle_Credits_PropertyValue_Highlight_Span" tal:content="pName" />                
                         </p>
                         <p class="TRAsytle_Credits_PropertyName_Paragraph" tal:define="
-                            pTitle python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_SponsorProjectTitle_CoordinadorTecnico_Title', 'gvSIG Technical Coordinator-');
-                            pName  python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_SponsorProjectTitle_CoordinadorTecnico_Name', 'Luis W. Sevilla-')">
+                            pTitle python: pCredits.get( 'gvSIGi18n_credits_SponsorProjectTitle_CoordinadorTecnico_Title');
+                            pName  python: pCredits.get( 'gvSIGi18n_credits_SponsorProjectTitle_CoordinadorTecnico_Name')">
                             <span class="TRAsytle_Credits_PropertyValue_Span" tal:content="pTitle" />                
                             &ensp;
                             <span class="TRAsytle_Credits_PropertyValue_Highlight_Span" tal:content="pName" />                
                         </p>
                         <p class="TRAsytle_Credits_PropertyName_Paragraph">
                             <span class="TRAsytle_Credits_PropertyValue_Description_Span">
-                                <tal:block tal:content="python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_SponsorProjectTitle_Description_PropertyValue', 'gvSIG is a software application for the management of geospatial information. Released as Free Libre Open Source Software (FLOSS). Developed as a dektop application programmed in Java. Available in the free libre operating system GNU/Linux, and the proprietary Apple Macintosh(R) and Windows(R). Localized to many languages and countries, an effort that gvSIG facilitates now even more with this gvSIGi18n application for collaborative translations.-')" />                
+                                <tal:block tal:content="python: pCredits.get( 'gvSIGi18n_credits_SponsorProjectTitle_Description_PropertyValue')" />                
                             </span>
                         </p>
                     </td>
@@ -239,7 +289,7 @@
                 <tr class="TRAsytle_Credits_Row">
                     <td class="TRAsytle_Credits_PropertyName_Cell">
                         <span class="TRAsytle_Credits_PropertyName_Span">
-                            <tal:block tal:content="python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_Autores_PropertyName', 'Authors-')" />                
+                            <tal:block tal:content="python: pCredits.get( 'gvSIGi18n_credits_Autores_PropertyName')" />                
                         </span>
                     </td>
                     <td class="TRAsytle_Credits_PropertyValue_Cell">
@@ -248,13 +298,13 @@
                                 <a title="#" href="#" 
                                     tal:attributes="title pTitle; href python: 'http://%s' % pURL" 
                                     tal:define="
-                                        pTitle python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_Author_Conselleria_PropertyValue', 'Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana');
-                                        pURL   python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_Author_Conselleria_URL_PropertyValue', 'www.cit.gva.es')"
+                                        pTitle python: pCredits.get( 'gvSIGi18n_credits_Author_Conselleria_PropertyValue');
+                                        pURL   python: pCredits.get( 'gvSIGi18n_credits_Author_Conselleria_URL_PropertyValue')"
                                    tal:content="pTitle" />                
                             </span>
                             <span class="TRAsytle_Credits_PropertyValue_Detail_Span">
                                 (
-                                <tal:block tal:content="python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_Author_Conselleria_Institucion_PropertyValue', 'institucion del gobierno autonomico de la Comunidad Valenciana-')" />                
+                                <tal:block tal:content="python: pCredits.get( 'gvSIGi18n_credits_Author_Conselleria_Institucion_PropertyValue')" />                
                                 )
                             </span>
                         </p>
@@ -263,13 +313,13 @@
                                 <a title="#" href="#" 
                                     tal:attributes="title pTitle; href python: 'http://%s' % pURL" 
                                     tal:define="
-                                        pTitle python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_Author_ModelDrivenDevelopmentSL_PropertyValue', 'Model Driven Development, sl');
-                                        pURL   python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_Author_ModelDrivenDevelopmentSL_URL_PropertyValue', 'www.ModelDD.org')"
+                                        pTitle python: pCredits.get( 'gvSIGi18n_credits_Author_ModelDrivenDevelopmentSL_PropertyValue');
+                                        pURL   python: pCredits.get( 'gvSIGi18n_credits_Author_ModelDrivenDevelopmentSL_URL_PropertyValue')"
                                    tal:content="pTitle" />                
                             </span>
                             <span class="TRAsytle_Credits_PropertyValue_Detail_Span">
                                 (
-                                <tal:block tal:content="python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_Author_ModelDrivenDevelopmentSL_Empresa_PropertyValue', 'empresa-')" />                
+                                <tal:block tal:content="python: pCredits.get( 'gvSIGi18n_credits_Author_ModelDrivenDevelopmentSL_Empresa_PropertyValue')" />                
                                 )                
                             </span>
                         </p>
@@ -278,12 +328,12 @@
                                 <a title="#" href="#" 
                                     tal:attributes="title pTitle; href python: 'http://%s' % pURL" 
                                     tal:define="
-                                        pTitle python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_Author_AntonioCarrascoValero_PropertyValue', 'Antonio Carrasco Valero');
-                                        pURL   python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_Author_AntonioCarrascoValero_URL_PropertyValue', 'gvsig.org/web/author/tcarrasco')"
+                                        pTitle python: pCredits.get( 'gvSIGi18n_credits_Author_AntonioCarrascoValero_PropertyValue');
+                                        pURL   python: pCredits.get( 'gvSIGi18n_credits_Author_AntonioCarrascoValero_URL_PropertyValue')"
                                    tal:content="pTitle" />                
                                 <span class="TRAsytle_Credits_PropertyValue_Detail_Span">
                                     (
-                                    <tal:block tal:content="python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_Author_AntonioCarrascoValero_Desarrollador_PropertyValue', 'developer')" />                
+                                    <tal:block tal:content="python: pCredits.get( 'gvSIGi18n_credits_Author_AntonioCarrascoValero_Desarrollador_PropertyValue')" />                
                                     )
                                 </span>
                             </span>
@@ -293,14 +343,14 @@
                 <tr class="TRAsytle_Credits_Row">
                     <td class="TRAsytle_Credits_PropertyName_Cell">
                         <span class="TRAsytle_Credits_PropertyName_Span">
-                            <tal:block tal:content="python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_RequirementsCoordination_PropertyName', 'Requirements Coordination-')" />                
+                            <tal:block tal:content="python: pCredits.get( 'gvSIGi18n_credits_RequirementsCoordination_PropertyName')" />                
                         </span>
                     </td>
                    <td class="TRAsytle_Credits_PropertyValue_Cell">
                         <p class="TRAsytle_Credits_PropertyName_Paragraph" tal:define="
-                            pTitle python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_RequirementsCoordination_Organization_Title', 'Organization Requirements-');
-                            pName  python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_RequirementsCoordination_Organization_Name', 'Manuel Madrid-');
-                            pURL   python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_RequirementsCoordination_Organization_URL', 'gvsig.org/web/author/mmadrid')">
+                            pTitle python: pCredits.get( 'gvSIGi18n_credits_RequirementsCoordination_Organization_Title');
+                            pName  python: pCredits.get( 'gvSIGi18n_credits_RequirementsCoordination_Organization_Name');
+                            pURL   python: pCredits.get( 'gvSIGi18n_credits_RequirementsCoordination_Organization_URL')">
                             <span class="TRAsytle_Credits_PropertyValue_Span" tal:content="pTitle" />                
                             &ensp;
                             <span class="TRAsytle_Credits_PropertyValue_Description_Span">
@@ -310,9 +360,9 @@
                             </span>
                         </p>
                         <p class="TRAsytle_Credits_PropertyName_Paragraph" tal:define="
-                            pTitle python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_RequirementsCoordination_Business_Title', 'Translation Domain Requirements-');
-                            pName  python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_RequirementsCoordination_Business_Name', 'Mario Carrera-');
-                            pURL   python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_RequirementsCoordination_Business_URL', 'gvsig.org/web/author/mcarrera')">
+                            pTitle python: pCredits.get( 'gvSIGi18n_credits_RequirementsCoordination_Business_Title');
+                            pName  python: pCredits.get( 'gvSIGi18n_credits_RequirementsCoordination_Business_Name');
+                            pURL   python: pCredits.get( 'gvSIGi18n_credits_RequirementsCoordination_Business_URL')">
                             <span class="TRAsytle_Credits_PropertyValue_Span" tal:content="pTitle" />                
                             &ensp;
                             <span class="TRAsytle_Credits_PropertyValue_Description_Span">
@@ -322,9 +372,9 @@
                             </span>
                         </p>
                         <p class="TRAsytle_Credits_PropertyName_Paragraph" tal:define="
-                            pTitle python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_RequirementsCoordination_Platform_Title', 'Platform Requirements-');
-                            pName  python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_RequirementsCoordination_Platform_Name', 'Joaquin del Cerro-');
-                            pURL   python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_RequirementsCoordination_Platform_URL', 'gvsig.org/web/author/jjdelcerro')" >
+                            pTitle python: pCredits.get( 'gvSIGi18n_credits_RequirementsCoordination_Platform_Title');
+                            pName  python: pCredits.get( 'gvSIGi18n_credits_RequirementsCoordination_Platform_Name');
+                            pURL   python: pCredits.get( 'gvSIGi18n_credits_RequirementsCoordination_Platform_URL')" >
                             <span class="TRAsytle_Credits_PropertyValue_Span" tal:content="pTitle" />                
                             &ensp;
                             <span class="TRAsytle_Credits_PropertyValue_Description_Span">
@@ -334,9 +384,9 @@
                             </span>
                         </p>
                         <p class="TRAsytle_Credits_PropertyName_Paragraph" tal:define="
-                            pTitle python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_RequirementsCoordination_Administration_Title', 'Administration Requirements-');
-                            pName  python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_RequirementsCoordination_Administration_Name', 'Victor Acevedo-');
-                            pURL   python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_RequirementsCoordination_Administration_URL', 'gvsig.org/web/author/vacevedo')" >
+                            pTitle python: pCredits.get( 'gvSIGi18n_credits_RequirementsCoordination_Administration_Title');
+                            pName  python: pCredits.get( 'gvSIGi18n_credits_RequirementsCoordination_Administration_Name');
+                            pURL   python: pCredits.get( 'gvSIGi18n_credits_RequirementsCoordination_Administration_URL')" >
                             <span class="TRAsytle_Credits_PropertyValue_Span" tal:content="pTitle" />                
                             &ensp;
                             <span class="TRAsytle_Credits_PropertyValue_Description_Span">
@@ -350,19 +400,19 @@
                 <tr class="TRAsytle_Credits_Row">
                     <td class="TRAsytle_Credits_PropertyName_Cell">
                         <span class="TRAsytle_Credits_PropertyName_Span">
-                            <tal:block tal:content="python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_Copyright_PropertyName', 'Copyright-')" />                
+                            <tal:block tal:content="python: pCredits.get( 'gvSIGi18n_credits_Copyright_PropertyName')" />                
                         </span>
                     </td>
                     <td class="TRAsytle_Credits_PropertyValue_Cell">
                         <span class="TRAsytle_Credits_PropertyValue_Span">
-                            <tal:block tal:content="python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_Copyright_PropertyValue', '(C) 2008, 2009 Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana')" />                
+                            <tal:block tal:content="python: pCredits.get( 'gvSIGi18n_credits_Copyright_PropertyValue')" />                
                         </span>
                     </td>
                 </tr>
                 <tr class="TRAsytle_Credits_Row">
                     <td class="TRAsytle_Credits_PropertyName_Cell">
                         <span class="TRAsytle_Credits_PropertyName_Span">
-                            <tal:block tal:content="python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_License_PropertyName', 'License-')" />                
+                            <tal:block tal:content="python: pCredits.get( 'gvSIGi18n_credits_License_PropertyName')" />                
                         </span>
                     </td>
                    <td class="TRAsytle_Credits_PropertyValue_Cell">
@@ -370,21 +420,21 @@
                             <a title="#" href="#" 
                                 tal:attributes="title pTitle; href python: 'http://%s' % pURL" 
                                 tal:define="
-                                    pTitle python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_License_PropertyValue', 'GNU General Public License (GPL)');
-                                    pURL   python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_License_URL_PropertyValue', 'www.fsf.org/licensing/licenses/gpl.html')"
+                                    pTitle python: pCredits.get( 'gvSIGi18n_credits_License_PropertyValue');
+                                    pURL   python: pCredits.get( 'gvSIGi18n_credits_License_URL_PropertyValue')"
                                tal:content="pTitle" />                             
                         </span>
                         &ensp;
                         <span class="TRAsytle_Credits_PropertyValue_Span">
-                            <tal:block tal:content="python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_PorLa', 'by the')" />                
+                            <tal:block tal:content="python: pCredits.get( 'gvSIGi18n_credits_PorLa')" />                
                         </span>
                         &ensp;
                         <span class="TRAsytle_Credits_PropertyValue_Span">
                             <a title="#" href="#" 
                                 tal:attributes="title pTitle; href python: 'http://%s' % pURL" 
                                 tal:define="
-                                    pTitle python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_License_FreeSoftwareFoundation_PropertyValue', 'Free Software Foundation, inc.');
-                                    pURL   python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_License_FreeSoftwareFoundation_URL_PropertyValue', 'www.fsf.org')"
+                                    pTitle python: pCredits.get( 'gvSIGi18n_credits_License_FreeSoftwareFoundation_PropertyValue', );
+                                    pURL   python: pCredits.get( 'gvSIGi18n_credits_License_FreeSoftwareFoundation_URL_PropertyValue',)"
                                tal:content="pTitle" />                             
                         </span>
                     </td>
@@ -392,48 +442,209 @@
                 <tr class="TRAsytle_Credits_Row">
                     <td class="TRAsytle_Credits_PropertyName_Cell">
                         <span class="TRAsytle_Credits_PropertyName_Span">
-                            <tal:block tal:content="python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_Warranty_PropertyName', 'Warranty-')" />                
+                            <tal:block tal:content="python: pCredits.get( 'gvSIGi18n_credits_Warranty_PropertyName', )" />                
                         </span>
                     </td>
                     <td class="TRAsytle_Credits_PropertyValue_Cell">
                         <span class="TRAsytle_Credits_PropertyValue_Description_Span">
-                            <tal:block tal:content="python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_Warranty_PropertyValue', 'This program is distributed in the hope that it will be useful, but without any warraty; without even the implied warranty of merchantability or fitness for a particular purpose. See theGNU General Public License for more details.-')" />                
+                            <tal:block tal:content="python: pCredits.get( 'gvSIGi18n_credits_Warranty_PropertyValue',)" />                
                         </span>
                     </td>
                 </tr>
                 <tr class="TRAsytle_Credits_Row">
                     <td class="TRAsytle_Credits_PropertyName_Cell">
                         <span class="TRAsytle_Credits_PropertyName_Span">
-                            <tal:block tal:content="python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_Standards_PropertyName', 'Standards-')" />                
+                            <tal:block tal:content="python: pCredits.get( 'gvSIGi18n_credits_Standards_PropertyName', )" />                
                         </span>
                     </td>
-                   <td class="TRAsytle_Credits_PropertyValue_Cell">
+                    <td class="TRAsytle_Credits_PropertyValue_Cell">
                         <span class="TRAsytle_Credits_PropertyValue_Span">
-                            <tal:block tal:content="python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_Standards_Intro_PropertyName', 'Developed following the recommendations in the-')" />                
+                            <tal:block tal:content="python: pCredits.get( 'gvSIGi18n_credits_Standards_Intro_PropertyName', )" />                
+                        </span>
+                        &ensp;
+                        <span class="TRAsytle_Credits_PropertyValue_Span">
+                            <a title="#" href="#" 
+                                tal:attributes="title pTitle; href python: 'http://%s' % pURL" 
+                                tal:define="
+                                    pTitle python: pCredits.get( 'gvSIGi18n_credits_Standards_MDA_PropertyValue', );
+                                    pURL   python: pCredits.get( 'gvSIGi18n_credits_Standards_MDA_URL_PropertyValue',)"
+                               tal:content="pTitle" />                
+                        </span>
+                        &ensp;
+                        <span class="TRAsytle_Credits_PropertyValue_Span">
+                             <a title="#" href="#" 
+                                tal:attributes="title pTitle; href python: 'http://%s' % pURL" 
+                                tal:define="
+                                    pTitle python: pCredits.get( 'gvSIGi18n_credits_Standards_UML_PropertyValue', );
+                                    pURL   python: pCredits.get( 'gvSIGi18n_credits_Standards_UML_URL_PropertyValue',)"
+                               tal:content="pTitle" />                
+                        </span>
+                        &ensp;
+                        <span class="TRAsytle_Credits_PropertyValue_Span">
+                             <a title="#" href="#" 
+                                tal:attributes="title pTitle; href python: 'http://%s' % pURL" 
+                                tal:define="
+                                    pTitle python: pCredits.get( 'gvSIGi18n_credits_Standards_MOF_PropertyValue', );
+                                    pURL   python: pCredits.get( 'gvSIGi18n_credits_Standards_MOF_URL_PropertyValue',)"
+                               tal:content="pTitle" />                
+                        </span>
+                        &ensp;
+                        <span class="TRAsytle_Credits_PropertyValue_Span">
+                             <a title="#" href="#" 
+                                tal:attributes="title pTitle; href python: 'http://%s' % pURL" 
+                                tal:define="
+                                    pTitle python: pCredits.get( 'gvSIGi18n_credits_Standards_XMI_PropertyValue', );
+                                    pURL   python: pCredits.get( 'gvSIGi18n_credits_Standards_XMI_URL_PropertyValue',)"
+                               tal:content="pTitle" />                
+                        </span>
+                        &ensp;
+                        <span class="TRAsytle_Credits_PropertyValue_Span">
+                            <tal:block tal:content="python: pCredits.get( 'gvSIGi18n_credits_PorLa',)" />                
+                        </span>
+                        &ensp;
+                        <span class="TRAsytle_Credits_PropertyValue_Span">
+                             <a title="#" href="#" 
+                                tal:attributes="title pTitle; href python: 'http://%s' % pURL" 
+                                tal:define="
+                                    pTitle python: pCredits.get( 'gvSIGi18n_credits_Standards_OMG_PropertyValue', );
+                                    pURL   python: pCredits.get( 'gvSIGi18n_credits_Standards_OMG_URL_PropertyValue', )"
+                               tal:content="pTitle" />                
+                        </span>
+                        <br/>
+                        <span class="TRAsytle_Credits_PropertyValue_Span">
+                            <tal:block tal:content="python: pCredits.get( 'gvSIGi18n_credits_Standards_Interchange_Intro_PropertyName', )" />                
                         </span>
                         &ensp;
                          <span class="TRAsytle_Credits_PropertyValue_Span">
                              <a title="#" href="#" 
                                 tal:attributes="title pTitle; href python: 'http://%s' % pURL" 
                                 tal:define="
-                                    pTitle python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_Standards_MDA_PropertyValue', 'Model Driven Architecture (MDA)');
-                                    pURL   python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_Standards_MDA_URL_PropertyValue', 'www.omg.org/mda')"
+                                    pTitle python: pCredits.get( 'gvSIGi18n_credits_Standards_GNUgettextPO_PropertyValue', );
+                                    pURL   python: pCredits.get( 'gvSIGi18n_credits_Standards_GNUgettextPO_URL_PropertyValue',)"
                                tal:content="pTitle" />                
-                        </span>
-                        &ensp;
-                        <span class="TRAsytle_Credits_PropertyValue_Span">
-                            <tal:block tal:content="python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_PorLa', 'by the')" />                
                         </span>
                         &ensp;
                         <span class="TRAsytle_Credits_PropertyValue_Span">
                              <a title="#" href="#" 
                                 tal:attributes="title pTitle; href python: 'http://%s' % pURL" 
                                 tal:define="
-                                    pTitle python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_Standards_OMG_PropertyValue', 'Object Management Group, inc');
-                                    pURL   python: here.fTranslateI18N( 'gvSIGi18n_credits', 'gvSIGi18n_credits_Standards_OMG_URL_PropertyValue', 'www.omg.org')"
+                                    pTitle python: pCredits.get( 'gvSIGi18n_credits_Standards_JavaProperties_PropertyValue', );
+                                    pURL   python: pCredits.get( 'gvSIGi18n_credits_Standards_JavaProperties_URL_PropertyValue',)"
                                tal:content="pTitle" />                
                         </span>
                     </td>
+                </tr>
+                <tr class="TRAsytle_Credits_Row">
+                    <td class="TRAsytle_Credits_PropertyName_Cell">
+                        <span class="TRAsytle_Credits_PropertyName_Span">
+                            <tal:block tal:content="python: pCredits.get( 'gvSIGi18n_credits_Platform_PropertyName', )" />                
+                        </span>
+                    </td>
+                   <td class="TRAsytle_Credits_PropertyValue_Cell">
+                        <span class="TRAsytle_Credits_PropertyValue_Span">
+                            <tal:block tal:content="python: pCredits.get( 'gvSIGi18n_credits_Platform_Intro_PropertyName', )" />                
+                        </span>
+                        &ensp;
+                         <span class="TRAsytle_Credits_PropertyValue_Span">
+                             <a title="#" href="#" 
+                                tal:attributes="title pTitle; href python: 'http://%s' % pURL" 
+                                tal:define="
+                                    pTitle python: pCredits.get( 'gvSIGi18n_credits_Platform_Zope_PropertyValue', );
+                                    pURL   python: pCredits.get( 'gvSIGi18n_credits_Platform_Zope_URL_PropertyValue',)"
+                               tal:content="pTitle" />                
+                        </span>
+                        &ensp;
+                        <span class="TRAsytle_Credits_PropertyValue_Span">
+                             <a title="#" href="#" 
+                                tal:attributes="title pTitle; href python: 'http://%s' % pURL" 
+                                tal:define="
+                                    pTitle python: pCredits.get( 'gvSIGi18n_credits_Platform_Plone_PropertyValue', );
+                                    pURL   python: pCredits.get( 'gvSIGi18n_credits_Platform_Plone_URL_PropertyValue',)"
+                               tal:content="pTitle" />                
+                        </span>
+                        &ensp;
+                        <span class="TRAsytle_Credits_PropertyValue_Span">
+                             <a title="#" href="#" 
+                                tal:attributes="title pTitle; href python: 'http://%s' % pURL" 
+                                tal:define="
+                                    pTitle python: pCredits.get( 'gvSIGi18n_credits_Platform_Python_PropertyValue', );
+                                    pURL   python: pCredits.get( 'gvSIGi18n_credits_Platform_Python_URL_PropertyValue',)"
+                               tal:content="pTitle" />                
+                        </span>
+                   </td>
+                </tr>
+                <tr class="TRAsytle_Credits_Row">
+                    
+                    <td class="TRAsytle_Credits_PropertyName_Cell">
+                        <span class="TRAsytle_Credits_PropertyName_Span">
+                            <tal:block tal:content="python: pCredits.get( 'gvSIGi18n_credits_Components_PropertyName', )" />                
+                        </span>
+                    </td>
+                    <td class="TRAsytle_Credits_PropertyValue_Cell">
+                        <p class="TRAsytle_Credits_PropertyValue_Span" 
+                            tal:define="
+                                unosArgs python: { 
+                                    'theContextualObject'         :here,
+                                    'theProductNames'             :[ 'ModelDDvlPlone',  'gvSIGi18n',],
+                                    'theProductNamesNotInQuickInstaller'  :[ 'ModelDDvlPloneTool',],
+                                    'theAdditionalParams'         :None, };    
+                                pProductsInfos python: here.ModelDDvlPlone_tool.fProductsInfo( **unosArgs)"
+                            tal:condition="pProductsInfos" >
+                            <strong tal:content="python: u'%s %s' % ( pCredits.get( 'gvSIGi18n_credits_Components_DevelopedBy_PropertyName', ),  pCredits.get( 'gvSIGi18n_credits_Author_ModelDrivenDevelopmentSL_PropertyValue', ))" />                
+                            <tal:block tal:define="pInstalledProducts python: [ aProduct for aProduct in pProductsInfos if aProduct.get( 'installed', False)]" 
+                                tal:condition="pInstalledProducts" > 
+                                <strong tal:content="python: pCredits.get( 'gvSIGi18n_credits_Components_Installed_PropertyName', )" />                
+                                <span tal:repeat="pProductInfo pInstalledProducts">
+                                    <tal:block tal:condition="not: repeat/pProductInfo/start">, </tal:block>
+                                    <tal:block tal:content="python: '%s %s' % ( pProductInfo.get( 'id', '?'), pProductInfo.get( 'installedVersion', '?'))" />
+                                </span>
+                                .
+                                &ensp;
+                            </tal:block>
+                            <tal:block tal:define="pNotInstalledProducts python: [ aProduct for aProduct in pProductsInfos if not aProduct.get( 'installed', False)]" 
+                                tal:condition="pNotInstalledProducts" > 
+                                <strong tal:content="python: pCredits.get( 'gvSIGi18n_credits_Components_NotInstalled_PropertyName', )" />                
+                                <span tal:repeat="pProductInfo pNotInstalledProducts">
+                                    <tal:block tal:condition="not: repeat/pProductInfo/start">, </tal:block>
+                                    <tal:block tal:content="python: '%s %s' % ( pProductInfo.get( 'id', '?'), pProductInfo.get( 'installedVersion', '?'))" />
+                                </span>
+                                .
+                                &ensp;
+                            </tal:block>
+                        </p>
+                        <p class="TRAsytle_Credits_PropertyValue_Span" 
+                            tal:define="
+                                unosArgs python: { 
+                                    'theContextualObject'         :here,
+                                    'theProductNames'             :['Archetypes', 'Relations', 'PloneLanguageTool',],
+                                    'theProductNamesNotInQuickInstaller'  :[ 'CJKSplitter', 'ZopeChinaPak',],
+                                    'theAdditionalParams'         :None, };    
+                                pProductsInfos python: here.ModelDDvlPlone_tool.fProductsInfo( **unosArgs)"
+                            tal:condition="pProductsInfos" >
+                            <strong tal:content="python: pCredits.get( 'gvSIGi18n_credits_Components_ThirdParty_PropertyName', )" />                
+                            <tal:block tal:define="pInstalledProducts python: [ aProduct for aProduct in pProductsInfos if aProduct.get( 'installed', False)]" 
+                                tal:condition="pInstalledProducts" > 
+                                <strong tal:content="python: pCredits.get( 'gvSIGi18n_credits_Components_Installed_PropertyName', )" />                
+                                <span tal:repeat="pProductInfo pInstalledProducts">
+                                    <tal:block tal:condition="not: repeat/pProductInfo/start">, </tal:block>
+                                    <tal:block tal:content="python: '%s %s' % ( pProductInfo.get( 'id', '?'), pProductInfo.get( 'installedVersion', '?'))" />
+                                </span>
+                                .
+                                &ensp;
+                            </tal:block>
+                            <tal:block tal:define="pNotInstalledProducts python: [ aProduct for aProduct in pProductsInfos if not aProduct.get( 'installed', False)]" 
+                                tal:condition="pNotInstalledProducts" > 
+                                <strong tal:content="python: pCredits.get( 'gvSIGi18n_credits_Components_NotInstalled_PropertyName', )" />                
+                                <span tal:repeat="pProductInfo pNotInstalledProducts">
+                                    <tal:block tal:condition="not: repeat/pProductInfo/start">, </tal:block>
+                                    <tal:block tal:content="python: '%s %s' % ( pProductInfo.get( 'id', '?'), pProductInfo.get( 'installedVersion', '?'))" />
+                                </span>
+                                .
+                                &ensp;
+                            </tal:block>
+                        </p>
+
+                   </td>
                 </tr>
             </tbody>
         </table>

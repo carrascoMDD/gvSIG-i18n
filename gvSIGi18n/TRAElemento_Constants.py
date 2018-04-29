@@ -92,7 +92,7 @@ When true, some restrictions are not enforced, to facilitate the developpers or 
        (while import is not allowed when not in develoment of debug, for import processes that started already).
 
 """
-cUnderDevelopmentOrDebug = True
+cUnderDevelopmentOrDebug = False
 
 
 

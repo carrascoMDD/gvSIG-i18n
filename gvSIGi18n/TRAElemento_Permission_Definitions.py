@@ -311,19 +311,19 @@ cPermissionsToDenyEverywhereToEverybody = [ perm_CopyOrMove,]
 cStateChangeActionRoles = {
     cEstadoTraduccionPendiente: {
         cEstadoTraduccionPendiente:  None,
-        cEstadoTraduccionTraducida:  [ cTRATranslator_role, cTRAReviewer_role, ] +  cUbiquitousWriterRoles,
+        cEstadoTraduccionTraducida:  [ cTRATranslator_role, cTRAReviewer_role,  cTRACoordinator_role,] +  cUbiquitousWriterRoles,
         cEstadoTraduccionRevisada:   None,
         cEstadoTraduccionDefinitiva: None,
     },
     cEstadoTraduccionTraducida: {
-        cEstadoTraduccionPendiente:  [ cTRATranslator_role, cTRAReviewer_role, ] +  cUbiquitousWriterRoles,
-        cEstadoTraduccionTraducida:  [ cTRATranslator_role, cTRAReviewer_role, ] +  cUbiquitousWriterRoles,
-        cEstadoTraduccionRevisada:   [ cTRAReviewer_role,    ] +  cUbiquitousWriterRoles,
+        cEstadoTraduccionPendiente:  [ cTRATranslator_role, cTRAReviewer_role,  cTRACoordinator_role,] +  cUbiquitousWriterRoles,
+        cEstadoTraduccionTraducida:  [ cTRATranslator_role, cTRAReviewer_role,  cTRACoordinator_role,] +  cUbiquitousWriterRoles,
+        cEstadoTraduccionRevisada:   [ cTRAReviewer_role,  cTRACoordinator_role,   ] +  cUbiquitousWriterRoles,
         cEstadoTraduccionDefinitiva: None,
     },
     cEstadoTraduccionRevisada: {
-        cEstadoTraduccionPendiente:  [ cTRAReviewer_role,    ] +  cUbiquitousWriterRoles,
-        cEstadoTraduccionTraducida:  [ cTRAReviewer_role,    ] +  cUbiquitousWriterRoles,
+        cEstadoTraduccionPendiente:  [ cTRAReviewer_role,  cTRACoordinator_role, ] +  cUbiquitousWriterRoles,
+        cEstadoTraduccionTraducida:  [ cTRAReviewer_role,  cTRACoordinator_role, ] +  cUbiquitousWriterRoles,
         cEstadoTraduccionRevisada:   None,
         cEstadoTraduccionDefinitiva: [ cTRACoordinator_role, ] +  cUbiquitousWriterRoles,
     },
