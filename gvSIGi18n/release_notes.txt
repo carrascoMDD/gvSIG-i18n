@@ -1,5 +1,13 @@
-gvSIG-i18n RELEASE NOTES
+﻿gvSIG-i18n RELEASE NOTES
 ========================
+
+Patch 20101111
+
+Fix TRATraduccion_Operaciones::fIntentarTraducir 
+to avoid exception because of wrong signature of invocation to fResultForChangeCounterDetectedOverwrite, problem posted by Victor Acevedo on 20101028
+
+
+ 
 
 Patch 20100915
 
