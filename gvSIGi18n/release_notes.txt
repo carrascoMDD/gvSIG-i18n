@@ -1,6 +1,16 @@
 ﻿gvSIG-i18n RELEASE NOTES
 ========================
 
+Patch 20110128 cumulative on v 1.2.1
+------------------------------------------------
+Added TRAUncatalog.py ExternalMethod and TRAUncatalogLauncher.pt view,
+in support of the unistall needed to migrate to version 2.x
+
+
+
+|
+|
+
 Patch 20110127 cumulative on v 1.2.1
 ------------------------------------------------
 Changed TRACAtalogo_Exportacion.py to fix bug that was fixed in 1.2.4:
