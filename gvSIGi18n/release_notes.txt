@@ -1,6 +1,13 @@
-﻿gvSIG-i18n RELEASE NOTES
+gvSIG-i18n RELEASE NOTES
 ========================
 
+Patch 20100915
+
+Fix TRAElemento_Operaciones::pFlushCachedTemplates_All 
+to avoid using damaged Plone portal_catalog ZCatalog instance, by problem posted by Mario Carrera on 20100907
+
+
+ 
 |
 |
 
