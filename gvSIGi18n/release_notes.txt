@@ -1,10 +1,17 @@
 gvSIG-i18n RELEASE NOTES
 ========================
+version 2.1.9
+
+Bug fix: Do not export for gvSIG the contributions dates and users when the export for gvSIG configuration excludes them from exporting.
+
+|
+|
+
+------------------------------------------------
+
 version 2.1.8
 
 Extension: Added support for language Cambodian Khmer km to UI application gvSIGi18nUI, to ExtMethod TRASizesIdioma in  TRAChangeAndBrowseTranslations.py, constant values to support special font sizes .
-
-Known Bug (not fixed yet): Export translations fails because the exported file can not be written to disk, because of permissions of the containing folder.
 
 
 |
