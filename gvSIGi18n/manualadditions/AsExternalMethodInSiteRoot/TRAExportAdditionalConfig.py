@@ -55,6 +55,9 @@ def TRAExportAdditionalConfig( theContextualElement=None):
         return None
     
     anExportAdditionalConfig = {
+        'export_status':         True,
+        'export_modules':        True,
+        'export_contributions':  True,
         'module_replacements': {
             'base':           'gvSIGdesktop',
             'gvSIG':          'gvSIGdesktop',

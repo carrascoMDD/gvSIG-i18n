@@ -1,6 +1,17 @@
 ﻿gvSIG-i18n RELEASE NOTES
 ========================
 
+Patch 20110129 cumulative on v 1.2.1
+------------------------------------------------
+Fixed error on export for gvSIG, to include in the file name the code of the main language exported (and not the first in the alphabetically ordered list of the exported language and its reference language, such that all languages exported with code after 'en', no longer yield a file name with 'en', but with the right exported language code.
+
+Added to TRAUncatalog utility the capability to export or not the module names, status and contributions, by editing configuration in the ExternalMethod named TRAExportAdditionalConfig.py
+
+
+
+|
+|
+
 Patch 20110128 cumulative on v 1.2.1
 ------------------------------------------------
 Added TRAUncatalog.py ExternalMethod and TRAUncatalogLauncher.pt view,

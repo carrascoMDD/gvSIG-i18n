@@ -337,10 +337,13 @@ class TRACatalogo_Exportacion:
                 unosCodigosIdiomas           = [ unCodigoIdioma,]
                 unosCodigosIdiomasReferencia = dict( [ ( unCodigoIdioma, (( unCodigoIdioma == 'en') and 'es') or 'en',)])
                 
+                todosCodigosIdiomasSet = set( unosCodigosIdiomas[:])
+                todosCodigosIdiomasSet.update( unosCodigosIdiomasReferencia.values())
+                
                 someExportParameters = {
                     'theLanguagesToExport':         unosCodigosIdiomas,
                     'theCodigosIdiomaReferencia':   unosCodigosIdiomasReferencia, 
-                    'theCodificacionesCaracteres':  dict( [ ( unCodigo, cEncodingUnicodeEscape,) for unCodigo in unosCodigosIdiomas]),  # ACV patch 20110127 was cUnicodeEscapeEncoding  = 'raw_unicode_escape'
+                    'theCodificacionesCaracteres':  dict( [ ( unCodigo, cEncodingUnicodeEscape,) for unCodigo in todosCodigosIdiomasSet]),  # ACV patch 20110127 was cUnicodeEscapeEncoding  = 'raw_unicode_escape'
                     'theModulesToExport':           [ unModulo.Title() for unModulo in self.fObtenerTodosModulos()] + [ cModuloNoEspecificado_ValorNombre,],
                     'theExportFormat':              cExportFormatOption_JavaProperties,
                     'theIncludeManifest':           'No',
@@ -1217,7 +1220,7 @@ class TRACatalogo_Exportacion:
                 if theSpecificFilename:
                     unNombreArchivoDescarga = theSpecificFilename
                 elif theFilenameForGvSIG:
-                    unNombreArchivoDescarga = self.fNombreArchivoExportacion_ForGvSIG( unosCodigosEIdiomasOrdenados[ 0][ 0], theProductName, theProductVersion, theL10NVersion, theTipoArchivo)
+                    unNombreArchivoDescarga = self.fNombreArchivoExportacion_ForGvSIG( sorted( unosCodigosIdiomasAExportar)[ 0], theProductName, theProductVersion, theL10NVersion, theTipoArchivo) # ACV 20110128 Was unosCodigosEIdiomasOrdenados[ 0][ 0], theProductName, theProductVersion, theL10NVersion, theTipoArchivo)
                 else:
                     unNombreArchivoDescarga = self.fNombreArchivoExportacion( [ unCodigoEIdioma[ 0] for unCodigoEIdioma in unosCodigosEIdiomasOrdenados], unosNombresModulosOrdenados, theIncluirModuloNoEspecificado, theTipoArchivo)
                 
@@ -1806,13 +1809,20 @@ class TRACatalogo_Exportacion:
 
         someModuleReplacements = {}
         someUserReplacements   = {}
+        anExportStatus         = False
+        anExportModules        = False
+        anExportContributions  = False
         
         anExportAdditionalConfig = fgExportAdditionalConfig( self)
         if anExportAdditionalConfig:
-            someModuleReplacements = anExportAdditionalConfig.get( 'module_replacements', {})
-            someUserReplacements   = anExportAdditionalConfig.get( 'user_replacements', {})
+            someModuleReplacements = anExportAdditionalConfig.get( 'module_replacements',  {})
+            someUserReplacements   = anExportAdditionalConfig.get( 'user_replacements',    {})
+            anExportModules        = anExportAdditionalConfig.get( 'export_status',        False)
+            anExportModules        = anExportAdditionalConfig.get( 'export_modules',       False)
+            anExportContributions  = anExportAdditionalConfig.get( 'export_contributions', False)
             
-        
+
+
         
         unHayError = False
         
@@ -1933,37 +1943,37 @@ class TRACatalogo_Exportacion:
                 Export string modules, translation status, and contributing users and dates.
                 """
                 
-                    
-                unosModulosCadena = unResultadoTraduccion[ 'getNombresModulos'] or ''
-                if unosModulosCadena:
-                    unosNombresModulosCadena = unosModulosCadena.strip().split( ' ')
-                    if unosNombresModulosCadena:
-                        unosNuevosNombresModulosCadena = []
-                        for unNombreModuloCadena in unosNombresModulosCadena:
-                            unNuevoNombreModuloCadena = someModuleReplacements.get( unNombreModuloCadena, unNombreModuloCadena)
-                            if unNuevoNombreModuloCadena and not ( unNuevoNombreModuloCadena in unosNuevosNombresModulosCadena):
-                                unosNuevosNombresModulosCadena.append( unNuevoNombreModuloCadena)
-                                
-                        unosNuevosNombresModulosCadenaString = ''
-                        if unosNuevosNombresModulosCadena:
-                            unosNuevosNombresModulosCadenaString = ' '.join( unosNuevosNombresModulosCadena)
+                if anExportModules:
+                    unosModulosCadena = unResultadoTraduccion[ 'getNombresModulos'] or ''
+                    if unosModulosCadena:
+                        unosNombresModulosCadena = unosModulosCadena.strip().split( ' ')
+                        if unosNombresModulosCadena:
+                            unosNuevosNombresModulosCadena = []
+                            for unNombreModuloCadena in unosNombresModulosCadena:
+                                unNuevoNombreModuloCadena = someModuleReplacements.get( unNombreModuloCadena, unNombreModuloCadena)
+                                if unNuevoNombreModuloCadena and not ( unNuevoNombreModuloCadena in unosNuevosNombresModulosCadena):
+                                    unosNuevosNombresModulosCadena.append( unNuevoNombreModuloCadena)
+                                    
+                            unosNuevosNombresModulosCadenaString = ''
+                            if unosNuevosNombresModulosCadena:
+                                unosNuevosNombresModulosCadenaString = ' '.join( unosNuevosNombresModulosCadena)
+                            
+                            if unosNuevosNombresModulosCadenaString:
+                                theBuffer.write( '#Modules %s=%s\n' % ( unSimboloCadenaEncoded, unosNuevosNombresModulosCadenaString,))
                         
-                        if unosNuevosNombresModulosCadenaString:
-                            theBuffer.write( '#Modules %s=%s\n' % ( unSimboloCadenaEncoded, unosNuevosNombresModulosCadenaString,))
+                            
+                            
+                if anExportContributions:      
+                    unaFechaCreacion = unResultadoTraduccion[ 'getFechaCreacionTextual'] or ''
+                    if unaFechaCreacion:
+                        theBuffer.write( '#CreationDate %s=%s\n' % ( unSimboloCadenaEncoded, unaFechaCreacion,))
                         
-                            
-                            
-                            
-                unaFechaCreacion = unResultadoTraduccion[ 'getFechaCreacionTextual'] or ''
-                if unaFechaCreacion:
-                    theBuffer.write( '#CreationDate %s=%s\n' % ( unSimboloCadenaEncoded, unaFechaCreacion,))
-                    
-                unUsuarioCreador = unResultadoTraduccion[ 'getUsuarioCreador']       or ''
-                if unUsuarioCreador:
-                    unUsuarioCreador = someUserReplacements.get( unUsuarioCreador, unUsuarioCreador)
+                    unUsuarioCreador = unResultadoTraduccion[ 'getUsuarioCreador']       or ''
                     if unUsuarioCreador:
-                        theBuffer.write( '#Creator %s=%s\n' % ( unSimboloCadenaEncoded, unUsuarioCreador,))
-                           
+                        unUsuarioCreador = someUserReplacements.get( unUsuarioCreador, unUsuarioCreador)
+                        if unUsuarioCreador:
+                            theBuffer.write( '#Creator %s=%s\n' % ( unSimboloCadenaEncoded, unUsuarioCreador,))
+                               
                     
                     
                 if unaCadenaTraducida:
@@ -1971,41 +1981,46 @@ class TRACatalogo_Exportacion:
                     unEstadoTraduccion = unResultadoTraduccion[ 'getEstadoTraduccion']
                     if unEstadoTraduccion in [ cEstadoTraduccionTraducida, cEstadoTraduccionRevisada, cEstadoTraduccionDefinitiva,]:
                         
-                        unaFechaTraduccion = unResultadoTraduccion[ 'getFechaTraduccionTextual'] or ''
-                        if unaFechaTraduccion:
-                            theBuffer.write( '#TranslationDate %s=%s\n' % ( unSimboloCadenaEncoded, unaFechaTraduccion,))
-                            
-                        unUsuarioTraductor = unResultadoTraduccion[ 'getUsuarioTraductor']       or ''
-                        if unUsuarioTraductor:
-                            unUsuarioTraductor = someUserReplacements.get( unUsuarioTraductor, unUsuarioTraductor)
-                            if unUsuarioTraductor:
-                                theBuffer.write( '#Translator %s=%s\n' % ( unSimboloCadenaEncoded, unUsuarioTraductor,))
-                       
+                        if anExportStatus:      
+                            if unEstadoTraduccion in [ cEstadoTraduccionRevisada, cEstadoTraduccionDefinitiva,]:
+                                theBuffer.write( '#Status %s=%s\n' % ( unSimboloCadenaEncoded, unEstadoTraduccion,))
                         
-                        if unEstadoTraduccion in [ cEstadoTraduccionRevisada, cEstadoTraduccionDefinitiva,]:
-                    
-                            unaFechaRevision = unResultadoRevision[ 'getFechaRevisionTextual'] or ''
-                            if unaFechaRevision:
-                                theBuffer.write( '#ReviewDate %s=%s\n' % ( unSimboloCadenaEncoded, unaFechaRevision,))
+                        if anExportContributions:      
+                            unaFechaTraduccion = unResultadoTraduccion[ 'getFechaTraduccionTextual'] or ''
+                            if unaFechaTraduccion:
+                                theBuffer.write( '#TranslationDate %s=%s\n' % ( unSimboloCadenaEncoded, unaFechaTraduccion,))
                                 
-                            unUsuarioRevisor = unResultadoRevision[ 'getUsuarioRevisor']       or ''
-                            if unUsuarioRevisor:
-                                unUsuarioRevisor = someUserReplacements.get( unUsuarioRevisor, unUsuarioRevisor)
-                                if unUsuarioRevisor:
-                                    theBuffer.write( '#Reviewer %s=%s\n' % ( unSimboloCadenaEncoded, unUsuarioRevisor,))
+                            unUsuarioTraductor = unResultadoTraduccion[ 'getUsuarioTraductor']       or ''
+                            if unUsuarioTraductor:
+                                unUsuarioTraductor = someUserReplacements.get( unUsuarioTraductor, unUsuarioTraductor)
+                                if unUsuarioTraductor:
+                                    theBuffer.write( '#Translator %s=%s\n' % ( unSimboloCadenaEncoded, unUsuarioTraductor,))
+                           
                             
-     
-                            if unEstadoTraduccion in [ cEstadoTraduccionDefinitiva,]:
+                            if unEstadoTraduccion in [ cEstadoTraduccionRevisada, cEstadoTraduccionDefinitiva,]:
                         
-                                unaFechaDefinitivo = unResultadoRevision[ 'getFechaDefinitivoTextual'] or ''
-                                if unaFechaDefinitivo:
-                                    theBuffer.write( '#DefinitiveDate %s=%s\n' % ( unaFechaDefinitivo, unaFechaRevision,))
+                                unaFechaRevision = unResultadoRevision[ 'getFechaRevisionTextual'] or ''
+                                if unaFechaRevision:
+                                    theBuffer.write( '#ReviewDate %s=%s\n' % ( unSimboloCadenaEncoded, unaFechaRevision,))
                                     
-                                unUsuarioCoordinador = unResultadoRevision[ 'getUsuarioCoordinador']       or ''
-                                if unUsuarioCoordinador:
-                                    unUsuarioCoordinador = someUserReplacements.get( unUsuarioCoordinador, unUsuarioCoordinador)
+                                unUsuarioRevisor = unResultadoRevision[ 'getUsuarioRevisor']       or ''
+                                if unUsuarioRevisor:
+                                    unUsuarioRevisor = someUserReplacements.get( unUsuarioRevisor, unUsuarioRevisor)
+                                    if unUsuarioRevisor:
+                                        theBuffer.write( '#Reviewer %s=%s\n' % ( unSimboloCadenaEncoded, unUsuarioRevisor,))
+                                
+         
+                                if unEstadoTraduccion in [ cEstadoTraduccionDefinitiva,]:
+                            
+                                    unaFechaDefinitivo = unResultadoRevision[ 'getFechaDefinitivoTextual'] or ''
+                                    if unaFechaDefinitivo:
+                                        theBuffer.write( '#DefinitiveDate %s=%s\n' % ( unaFechaDefinitivo, unaFechaRevision,))
+                                        
+                                    unUsuarioCoordinador = unResultadoRevision[ 'getUsuarioCoordinador']       or ''
                                     if unUsuarioCoordinador:
-                                        theBuffer.write( '#Coordinator %s=%s\n' % ( unSimboloCadenaEncoded, unUsuarioCoordinador,))
+                                        unUsuarioCoordinador = someUserReplacements.get( unUsuarioCoordinador, unUsuarioCoordinador)
+                                        if unUsuarioCoordinador:
+                                            theBuffer.write( '#Coordinator %s=%s\n' % ( unSimboloCadenaEncoded, unUsuarioCoordinador,))
                                              
                                     
                                     

@@ -88,12 +88,24 @@ _cTRATodosNombresTiposNODesCatalogables_DeUIDCatalog = [ 'ZCatalog',]
 
 
 
+def _fNewVoidTypesToUncatalogReport():
+    aReport = {
+        'types_to_uncatalog_from_portal_catalog':  [],
+        'types_to_uncatalog_children_excluded':    [],
+        'types_not_to_uncatalog_from_uid_catalog': [],
+     }
+    return aReport
+    
+
+
 def _fNewVoidUncatalogReport():
     aReport = {
         'success':     False,
         'status':      '',
         'condition':   '',
         'initial_id':  '',
+        
+        'types_to_uncatalog': {},
         
         'total_num_elements':      0,
         'types_and_num_elements':  [],
@@ -118,16 +130,39 @@ def _fNewVoidUncatalogReport():
 
 
 
+    
+    
+    
+
 def TRAUncatalog( 
     theContextualElement     =None, 
-    theInitialId             ='',):
+    theInitialId             ='',
+    theJustReportTypes       =False):
     """Exposed as an ExternalMethod.
     
     """
     
     aUncatalogReport = _fNewVoidUncatalogReport()
     
-
+    aTypesToUncatalogReport = _fNewVoidTypesToUncatalogReport()
+    aTypesToUncatalogReport.update( {
+        'types_to_uncatalog_from_portal_catalog':  sorted( ( _cTRATodosNombresTiposDesCatalogables_DePortalCatalog               and _cTRATodosNombresTiposDesCatalogables_DePortalCatalog[:])               or []),
+        'types_to_uncatalog_children_excluded':    sorted( ( _cTRATodosNombresTiposCatalogables_ChildrenExcluidosDePortalCatalog and _cTRATodosNombresTiposCatalogables_ChildrenExcluidosDePortalCatalog[:]) or []),
+        'types_not_to_uncatalog_from_uid_catalog': sorted( ( _cTRATodosNombresTiposNODesCatalogables_DeUIDCatalog                and _cTRATodosNombresTiposNODesCatalogables_DeUIDCatalog[:])                or []),     
+    })
+    aUncatalogReport[ 'types_to_uncatalog'] = aTypesToUncatalogReport
+    
+    if theJustReportTypes:
+        aUncatalogReport.update( {
+            'success':     True,
+            'status':      'JustReportTypes',
+            'condition':   '',
+        })
+        return aUncatalogReport
+        
+    
+    
+    
     if theContextualElement == None:
         aUncatalogReport.update( {
             'success':     False,
@@ -137,16 +172,21 @@ def TRAUncatalog(
         return aUncatalogReport
 
     
+    anInitialId = theInitialId
+    if anInitialId:
+        anInitialId = anInitialId.strip()
+        
+   
     
-    if not theInitialId:
+    if not anInitialId:
         aUncatalogReport.update( {
             'success':     False,
             'status':      'MissingParameter',
-            'condition':   'theInitialId',
+            'condition':   'anInitialId',
         })
         return aUncatalogReport
     
-    aUncatalogReport[ 'initial_id'] = theInitialId
+    aUncatalogReport[ 'initial_id'] = anInitialId
 
    
     if not _fCheckHasRole( theContextualElement, 'Manager'):
@@ -158,6 +198,8 @@ def TRAUncatalog(
         return aUncatalogReport
 
 
+    
+    
     aInitialElementToUncatalog = None
     
     someContentElements = theContextualElement.objectValues()
@@ -165,7 +207,7 @@ def TRAUncatalog(
         for aContentElement in someContentElements:
             anElementId = aContentElement.getId()
             if anElementId:
-                if anElementId == theInitialId:
+                if anElementId == anInitialId:
                     aInitialElementToUncatalog = aContentElement
                     break
                 
