@@ -347,12 +347,15 @@ cTypesAcquiringRoleAssignments =  [
     cNombreTipoTRAColeccionImportaciones, 
     cNombreTipoTRAImportacion, 
     cNombreTipoTRAContenidoIntercambio,   
+    cNombreTipoTRAContenidoXML,
     cNombreTipoTRAColeccionInformes,      
     cNombreTipoTRAInforme,      
     cNombreTipoTRAColeccionSolicitudesCadenas,
     cNombreTipoTRASolicitudCadena,
     cNombreTipoTRAColeccionProgresos,      
     cNombreTipoTRAProgreso,   
+    cNombreTipoTRAColeccionContribuciones,
+    cNombreTipoTRAContribuciones,
     cNombreTipoTRAParametrosControlProgreso,
     cNombreTipoTRAConfiguracionImportacion,
     cNombreTipoTRAConfiguracionExportacion,
@@ -361,6 +364,7 @@ cTypesAcquiringRoleAssignments =  [
     cNombreTipoTRAConfiguracionPaginaTraducciones,
     cNombreTipoTRAConfiguracionPerfilEjecucion,
     cNombreTipoTRAConfiguracionVarios,
+    cNombreTipoTRAConfiguracionPermisos,
     cNombreTipoTRASimbolosOrdenados,    
 ]
 

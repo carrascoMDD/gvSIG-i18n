@@ -261,6 +261,11 @@ class TRACatalogo_Operaciones( TRACatalogo_Mutators, TRACatalogo_Retrieval, TRAC
             for unElemento in unosElementos:
                 unElemento.pForAllElementsDo_recursive( theLambda, thePloneLambda)
                 
+        unosElementos = self.fObtenerTodasColeccionesContribuciones()
+        if unosElementos:
+            for unElemento in unosElementos:
+                unElemento.pForAllElementsDo_recursive( theLambda, thePloneLambda)
+                
         unosElementos = self.fObtenerTodasColeccionesProgresos()
         if unosElementos:
             for unElemento in unosElementos:

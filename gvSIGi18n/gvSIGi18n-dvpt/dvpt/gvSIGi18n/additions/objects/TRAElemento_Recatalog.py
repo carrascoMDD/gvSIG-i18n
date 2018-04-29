@@ -119,6 +119,7 @@ class TRAElemento_Recatalog:
             unCatalogoRaiz  = theContextualElement.getCatalogo()
             
             unPortalCatalog = theContextualElement.getPortalCatalogTool()
+            unUIDCatalog    = theContextualElement.getUIDCatalogTool()
     
             unCatalogBusquedaCadenas       = unCatalogoRaiz.fCatalogBusquedaCadenas() 
             unCatalogFiltroCadenas         = unCatalogoRaiz.fCatalogFiltroCadenas() 
@@ -146,6 +147,7 @@ class TRAElemento_Recatalog:
             unosInitializedObjects = {
                 'catalogs': {
                     'PortalCatalog':        unPortalCatalog,
+                    'UIDCatalog':           unUIDCatalog,
                     'BusquedaCadenas':      unCatalogBusquedaCadenas,
                     'FiltroCadenas':        unCatalogFiltroCadenas,
                     'TextoCadenas':         unCatalogTextoCadenas,
@@ -222,13 +224,28 @@ class TRAElemento_Recatalog:
             
             if aMetaType == cNombreTipoTRATraduccion:
                 unCodigoIdioma = theElement.getCodigoIdiomaEnGvSIG()
-                theElement.pAddToCatalogs( someCatalogs.get( 'BusquedaTraducciones', {}).get( unCodigoIdioma),  someCatalogs.get( 'FiltroTraducciones', {}).get( unCodigoIdioma),  someCatalogs.get( 'TextoTraducciones', {}).get( unCodigoIdioma), None)
-                
+                try:
+                    theElement.pAddToCatalogs( someCatalogs.get( 'BusquedaTraducciones', {}).get( unCodigoIdioma),  someCatalogs.get( 'FiltroTraducciones', {}).get( unCodigoIdioma),  someCatalogs.get( 'TextoTraducciones', {}).get( unCodigoIdioma), None)
+                except:
+                    None    
+                    
             elif aMetaType == cNombreTipoTRACadena:
-                theElement.pAddToCatalogs( someCatalogs.get( 'BusquedaCadenas', None),  someCatalogs.get( 'FiltroCadenas', None),  someCatalogs.get( 'TextoCadenas', None),)
-                
+                try:
+                    theElement.pAddToCatalogs( someCatalogs.get( 'BusquedaCadenas', None),  someCatalogs.get( 'FiltroCadenas', None),  someCatalogs.get( 'TextoCadenas', None),)
+                except:
+                            None
             else:
                 theElement.reindexObject()
+                
+                anUIDCatalog = someCatalogs.get( 'UIDCatalog', None)
+                if not ( anUIDCatalog == None):
+                    anElementURL = theElement._getURL()
+                    if anElementURL:
+                        try:
+                            anUIDCatalog.catalog_object( theElement, anElementURL)
+                        except:
+                            None
+                    
             
             anElementsByType = { aMetaType: 1,}
             
@@ -247,6 +264,7 @@ class TRAElemento_Recatalog:
             if not theProcessControlManager:
                 return None
             
+            someCatalogs = theProcessControlManager.fGetInitializedObjects( 'catalogs')
 
             aMetaType = 'UnknownType'
             try:
@@ -259,8 +277,20 @@ class TRAElemento_Recatalog:
             if not( aMetaType in cTRAPloneTypeNames):
                 return None
             
-            theElement.reindexObject()
-            
+            try:
+                theElement.reindexObject()
+            except:
+                None
+        
+            anUIDCatalog = someCatalogs.get( 'UIDCatalog', None)
+            if not ( anUIDCatalog == None):
+                anElementURL = theElement._getURL()
+                if anElementURL:
+                    try:
+                        anUIDCatalog.catalog_object( theElement, anElementURL)
+                    except:
+                        None
+                                
             anElementsByType = { aMetaType: 1,}
             
             theProcessControlManager.pProcessStep( theElement, anElementsByType, anElementsByType)
