@@ -75,7 +75,7 @@ cLocalesCSVIsReferenceFile    = 'true'
 cTRADefaultReferenceLanguageCode  = cTRALanguageCode_English
 
 cTRAReferenceLanguageCodesForLanguages = {
-   cTRALanguageCode_English:     'es',
+   cTRALanguageCode_English:     cTRALanguageCode_Spanish,
 }
 
 

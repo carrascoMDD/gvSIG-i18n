@@ -219,6 +219,12 @@ msgid "Export for gvSIG"
 msgstr "Export for gvSIG"
 
 
+#. Default: "Exportar TODOS para gvSIG"
+#: TRACatalogo
+msgid "Export ALL for gvSIG"
+msgstr "Export ALL for gvSIG"
+
+
 
 #. Default: "Bloquear Idioma"
 #: TRAIdioma

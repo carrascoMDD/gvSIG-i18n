@@ -3,6 +3,25 @@
 
 
 
+versions 2.3
+------------------------------------------------
+Added use case to export for gvSIG the translations into all languages, with a single long-lived process execution.
+
+
+
+versions 2.x
+------------------------------------------------
+
+
+New architecture as 3 products for presentation, service and object layers, for better separation of concern.
+Controller for long lived process, allowing pause, resume and terminate, review of intermediate results, and storage of results.
+Persistent elements reflecting all performed long-lived processes.
+Persistent configuration elements to control numerous aspects of the application, including the defaults for long-lived process scheduling.
+Export of translations status, modules, contributing users and dates.
+Full backup of all configuration elements, along with translations.
+Bug fixes and UI improvements.
+
+
 
 |
 |

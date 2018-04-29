@@ -221,6 +221,13 @@ msgstr "Informe"
 msgid "Export for gvSIG"
 msgstr "Exportar para gvSIG"
 
+#. Default: "Export ALL for gvSIG"
+#: TRACatalogo
+msgid "Export ALL for gvSIG"
+msgstr "Exportar TODOS para gvSIG"
+
+
+
 #. Default: "Lock Language"
 #: TRAIdioma
 msgid "Lock Language"

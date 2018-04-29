@@ -602,6 +602,15 @@ class TRACatalogo(OrderedBaseFolder, TRAArquetipo, TRACatalogo_Inicializacion, T
        },
 
 
+       {'action': "string:${object_url}/TRAExportarGvSIGTodos_action",
+        'category': "object_buttons",
+        'id': 'TRA_export_all_languages_for_gvSIG',
+        'name': 'Export ALL for gvSIG',
+        'permissions': ("View",),
+        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'ExportGvSIG_All_TRAIdioma')"""
+       },
+
+
        {'action': "string:${object_url}/TRACatalogoInforme",
         'category': "object",
         'id': 'TRA_informe',

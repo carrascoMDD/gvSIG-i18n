@@ -3667,6 +3667,9 @@ msgstr "Backup"
 msgid "gvSIGi18n_ProcessType_Exportar_para_gvSIG_msgid"
 msgstr "Export for gvSIG"
 
+
+
+
 #. Default: "Exportar"
 #: TRAProgressResults_inner.pt
 msgid "gvSIGi18n_ProcessType_Exportar_msgid"
@@ -4417,4 +4420,14 @@ msgstr "Node name"
 msgid "gvSIGi18n_XMLContentsReport_NumberOfNodes_Column_label"
 msgstr "# nodes"
 
+#. Default: "Exportar el Idioma a un fichero para gvSIG con todas las cadenas y sus traducciones"
+#: TRAExportarGvSIG_action.pt
+msgid "gvSIGi18n_ExportGvSIGOfAllElements"
+msgstr "Export the Language as a ExportGvSIG file with all Strings and Translations elements"
 
+
+
+#. Default: "Exportar todos los Idiomas a un fichero para gvSIG con todas las cadenas y sus traducciones"
+#: TRAExportarTodosGvSIG_action.pt
+msgid "gvSIGi18n_ExportGvSIGAllLanguagesOfAllElements"
+msgstr "Export all Languages as a ExportGvSIG file with all Strings and Translations elements"

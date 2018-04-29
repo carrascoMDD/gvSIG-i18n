@@ -4523,3 +4523,18 @@ msgstr "# nodos"
 
 
 
+
+#. Default: "Export the Language as a ExportGvSIG file with all Strings and Translations elements"
+#: TRAExportarGvSIG_action.pt
+msgid "gvSIGi18n_ExportGvSIGOfAllElements"
+msgstr "Exportar el Idioma a un fichero para gvSIG con todas las cadenas y sus traducciones"
+
+
+
+#. Default: "Export all Languages as a ExportGvSIG file with all Strings and Translations elements"
+#: TRAExportarTodosGvSIG_action.pt
+msgid "gvSIGi18n_ExportGvSIGAllLanguagesOfAllElements"
+msgstr "Exportar todos los Idiomas a un fichero para gvSIG con todas las cadenas y sus traducciones"
+
+
+

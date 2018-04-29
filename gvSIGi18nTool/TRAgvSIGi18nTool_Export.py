@@ -181,6 +181,46 @@ class TRAgvSIGi18nTool_Export:
     
     
     
+      
+    
+    
+    
+
+    security.declareProtected( permissions.View, 'fCreateProgressHandlerFor_ExportGvSIG_All')
+    def fCreateProgressHandlerFor_ExportGvSIG_All( self, 
+        theContextualElement    =None,
+        theAdditionalParams     =None,  
+        thePermissionsCache     =None, 
+        theRolesCache           =None, 
+        theParentExecutionRecord=None):
+        """Request creation of a Export for gvSIG long-lived process control handler, to be executed later.
+        
+        """
+    
+        if theContextualElement == None:
+            return {
+                'success':   False,
+                'condition': cTRAToolCondition_NoContextualElement,
+            }
+        
+        unCatalogo = theContextualElement.getCatalogo()
+        if unCatalogo == None:
+            return {
+                'success':   False,
+                'condition': cTRAToolCondition_NoCatalogElement,
+            }
+        
+        return unCatalogo.fCreateProgressHandlerFor_ExportGvSIG_All(
+            theAdditionalParams     =theAdditionalParams,  
+            thePermissionsCache     =thePermissionsCache, 
+            theRolesCache           =theRolesCache, 
+            theParentExecutionRecord=theParentExecutionRecord,
+        )
+    
+    
+        
+    
+    
     
     security.declareProtected( permissions.View, 'fCreateProgressHandlerFor_Backup')
     def fCreateProgressHandlerFor_Backup( self, 

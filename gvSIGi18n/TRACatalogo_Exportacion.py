@@ -78,7 +78,7 @@ from TRAImportarExportar_Constants_JavaProperties import *
 
 from TRAElemento_Permission_Definitions import cBoundObject
 
-from TRAElemento_Permission_Definitions_UseCaseNames import cUseCase_ImportTRAImportacion, cUseCase_Export, cUseCase_Backup_TRACatalogo, cUseCase_ExportGvSIG_TRAIdioma
+from TRAElemento_Permission_Definitions_UseCaseNames import cUseCase_ImportTRAImportacion, cUseCase_Export, cUseCase_Backup_TRACatalogo, cUseCase_ExportGvSIG_TRAIdioma, cUseCase_ExportGvSIG_All_TRAIdioma
 
 
 from TRACatalogo_Exportacion_GNUgettextPO   import TRACatalogo_Exportacion_GNUgettextPO
@@ -2180,8 +2180,8 @@ class TRACatalogo_Exportacion( TRACatalogo_Exportacion_GNUgettextPO, TRACatalogo
                     'theExportModuleNames_vocabulary' : cTRABooleanVocabulary,
                     'theExportModuleNames_vocabulary_msgids' : cTRABooleanVocabulary_msgids,
                     'theExportContributions'            : theAdditionalParams.get( 'theExportContributions', cTRABooleanSi),
-                    'theExportContributions_vocabulary' : theAdditionalParams.get( 'theExportContributions_vocabulary', [])[:],
-                    'theExportContributions_vocabulary_msgids' : theAdditionalParams.get( 'theExportContributions_vocabulary_msgids', [])[:],
+                    'theExportContributions_vocabulary' : cTRABooleanVocabulary,
+                    'theExportContributions_vocabulary_msgids' : cTRABooleanVocabulary_msgids,
                     'theExportStringSources'          : unaConfigurationDict.get( 'exportarFuentesPorDefecto', cTRABooleanSi),
                     'theExportStringSources_vocabulary': cTRABooleanVocabulary,
                     'theExportStringSources_vocabulary_msgids': cTRABooleanVocabulary_msgids,
@@ -2372,6 +2372,424 @@ class TRACatalogo_Exportacion( TRACatalogo_Exportacion_GNUgettextPO, TRACatalogo
             
             
     
+            
+            
+
+ 
+
+    security.declareProtected( permissions.View, 'fCreateProgressHandlerFor_ExportGvSIG_All')
+    def fCreateProgressHandlerFor_ExportGvSIG_All( self, 
+        theAdditionalParams      =None,  
+        thePermissionsCache     =None, 
+        theRolesCache           =None, 
+        theParentExecutionRecord=None):
+        """Request creation of a Export for gvSIG long-lived process control handler, to be executed later.
+        
+        """
+
+         
+        unExecutionRecord = self.fStartExecution( 'method',  'fCreateProgressHandlerFor_ExportGvSIG', theParentExecutionRecord,  True, { 'log_what': 'details', 'log_when': True, }, ) 
+        
+        aThereWasException = False
+        
+        try:
+                
+            unPermissionsCache = fDictOrNew( thePermissionsCache)
+            unRolesCache       = fDictOrNew( theRolesCache)
+ 
+            aResult = self.fNewVoidCreateProgressHandlerResult()
+            
+            try:
+                
+                
+                anExportResult = self.fNewVoidProgressResult_Export()
+                               
+                
+                aProgressElement = None
+                aProgressHandler = None
+                
+                
+                unCatalogoRaiz = self
+                
+                unaColeccionProgresos = unCatalogoRaiz.fObtenerColeccionProgresos()
+                if unaColeccionProgresos == None:
+                    aResult.update( {
+                        'success':     False,
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_error_internal_Missing_progresses_collection', "Internal error: missing progresses collection-."),
+                    })
+                    return aResult
+
+                
+
+                
+
+                unMemberId = self.fGetMemberId()
+                unaFechaYHora = self.fDateTimeNowTextual()     
+                  
+                unProductName  = theAdditionalParams.get( 'theProductName', '')
+                if not unProductName:
+                    aResult.update( {
+                        'success':     False,
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_error_RequiredParameter_theProductName', "Required Parameter missing: you must specify  a Product Name-."),
+                    })
+                    return aResult
+                
+                unProductVersion  = theAdditionalParams.get( 'theProductVersion', '')
+                if not unProductVersion:
+                    aResult.update( {
+                        'success':     False,
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_error_RequiredParameter_theProductVersion', "Required Parameter missing: you must specify  a Product Version-."),
+                    })
+                    return aResult
+                
+                unL10NVersion  = theAdditionalParams.get( 'theL10NVersion', '')
+                if not unL10NVersion:
+                    aResult.update( {
+                        'success':     False,
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_error_RequiredParameter_theL10NVersion', "Required Parameter missing: you must specify  a Localization Version-."),
+                    })
+                    return aResult
+
+                
+                
+                aMetaType = 'UnknownType'
+                try:
+                    aMetaType = unCatalogoRaiz.meta_type
+                except:
+                    aMetaType = unCatalogoRaiz.__class__.__name
+                if not aMetaType:
+                    aMetaType = 'UnknownType'
+                
+                aStartDateTimeNowTextual = self.fDateTimeNowTextual()
+                anExportResult[ 'process_type']           = cTRAProgress_ProcessType_ExportGvSIG
+                anExportResult[ 'start_date_time_string'] = aStartDateTimeNowTextual
+                anExportResult[ 'date_time_now_string']   = aStartDateTimeNowTextual
+                anExportResult[ 'element_type']           = aMetaType
+                anExportResult[ 'element_title']          = unCatalogoRaiz.Title()
+                anExportResult[ 'element_path' ]          = unCatalogoRaiz.fPhysicalPathString()
+                anExportResult[ 'element_UID' ]           = unCatalogoRaiz.UID()
+                anExportResult[ 'last_element_type']      = ''
+                anExportResult[ 'last_element_title']     = ''
+                anExportResult[ 'last_element_path']      = ''
+                anExportResult[ 'last_element_UID']       = ''
+                
+                aMemberId = self.fGetMemberId()
+                anExportResult[ 'member_id'] = aMemberId
+                
+                unCatalogoRaiz = self          
+                anExportResult[ 'TRACatalogo_title']      = unCatalogoRaiz.Title()
+                anExportResult[ 'TRACatalogo_path' ]      = unCatalogoRaiz.fPathDelRaiz()
+                anExportResult[ 'TRACatalogo_UID' ]       = unCatalogoRaiz.UID()
+                
+                    
+                unUseCaseQueryResult = self.fUseCaseAssessment(  
+                    theUseCaseName          = cUseCase_ExportGvSIG_All_TRAIdioma, 
+                    theElementsBindings     = { cBoundObject: unCatalogoRaiz,},
+                    theRulesToCollect       = [ ], 
+                    thePermissionsCache     = unPermissionsCache, 
+                    theRolesCache           = unRolesCache, 
+                    theParentExecutionRecord= unExecutionRecord
+                )
+                if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
+                    aResult.update( {
+                        'success':     False,
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_no_permission_ToExportForGvSIG', "You do not have permission to Export for GvSIG-."),
+                    })
+                    return aResult
+                
+                aUseCaseAssessmentResultsCache = {
+                    cUseCase_ExportGvSIG_TRAIdioma: unUseCaseQueryResult,
+                }
+                
+                
+  
+                
+                
+                
+                unaConfiguracion = self.fObtenerConfiguracion( cTRAConfiguracionAspecto_ExportarParaGvSIG)
+                if unaConfiguracion == None:
+                    aResult.update( {
+                        'success':     False,
+                        'condition':   self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_error_internal_Missing_ExportForGvSIG_configuration', "Internal error: Export for GvSIG configuration missing-."),
+                    })
+                    return aResult
+                  
+                
+                
+                unosModulesToExport = theAdditionalParams.get( 'theModulesToExport', [])[:]
+                if not unosModulesToExport:
+                    unosModulesToExport = [ unModulo.Title() for unModulo in unCatalogoRaiz.fObtenerTodosModulos()] + [ cModuloNoEspecificado_ValorNombre,]
+ 
+                
+                unosIdiomasAccesibles = self.getCatalogo().fObtenerTodosIdiomas()
+                if not unosIdiomasAccesibles:
+                    aResult.update( {
+                        'success':     False,
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_error_No_Available_Languages_To_Export_All_For_GvSIG', "There are no available Languages To Export All of them for GvSIG-."),
+                    })
+                    return aResult
+                
+                unosCodigosIdiomas            = [ ]
+                unosCodigosIdiomasReferencia  = { }
+                unosCodigosIdiomasYReferencia = [ ]
+                
+                for unIdioma in unosIdiomasAccesibles:
+                    unCodigoIdioma =  unIdioma.getCodigoIdiomaEnGvSIG() 
+                    if unCodigoIdioma:
+                        unosCodigosIdiomas.append( unCodigoIdioma)
+                        if not ( unCodigoIdioma in unosCodigosIdiomasYReferencia):
+                            unosCodigosIdiomasYReferencia.append( unCodigoIdioma)
+                        
+                        unCodigoIdiomaReferencia     = unIdioma.getCodigoIdiomaReferencia()
+                        if not unCodigoIdiomaReferencia:
+                            unCodigoIdiomaReferencia = cTRAReferenceLanguageCodesForLanguages.get( unCodigoIdioma, cTRADefaultReferenceLanguageCode)
+                        if unCodigoIdiomaReferencia:
+                            unosCodigosIdiomasReferencia[ unCodigoIdioma] = unCodigoIdiomaReferencia
+                            
+                            if not ( unCodigoIdiomaReferencia in unosCodigosIdiomasYReferencia):
+                                unosCodigosIdiomasYReferencia.append( unCodigoIdiomaReferencia)
+                                
+                
+
+                unaConfigurationDict = unaConfiguracion.fConfigurationDict()
+                
+                someConfiguracionMetaAndValues = unaConfiguracion.fConfigurationMetaAndValues( )
+                
+                someConfiguracionMetaAndValuesDict = { }
+                for aMetaAndValue in someConfiguracionMetaAndValues:
+                    if len( aMetaAndValue) > 1:
+                        anAttributeName  = aMetaAndValue[ 0]
+                        if anAttributeName:
+                            someConfiguracionMetaAndValuesDict[ anAttributeName] = aMetaAndValue
+            
+                 
+                unInformeIdiomasYModulos = self.fInformeTitulosIdiomasConIdiomaReferenciaYModulosPermitidos( 
+                    theUseCaseName           =cUseCase_Export, 
+                    thePermissionsCache      =unPermissionsCache, 
+                    theRolesCache            =unRolesCache, 
+                    theParentExecutionRecord =unExecutionRecord,
+                )
+                if unInformeIdiomasYModulos:
+                    if unInformeIdiomasYModulos.has_key( 'use_case_query_results'):
+                        unInformeIdiomasYModulos.pop( 'use_case_query_results')
+         
+
+                                    
+                someInputParameters = {
+                    'process_type'                    : cTRAProgress_ProcessType_ExportGvSIG,
+                    'informe_idiomas_y_modulos'       : unInformeIdiomasYModulos,
+
+                    'theLanguagesToExport'            : unosCodigosIdiomas,
+                    'theCodigosIdiomaReferencia'      : unosCodigosIdiomasReferencia, 
+                    'theCodificacionesCaracteres'     : dict( [ ( unCodigo, cTRAEncodingUnicodeEscape,) for unCodigo in unosCodigosIdiomasYReferencia]), 
+                    'theModulesToExport'              : unosModulesToExport,
+                    'theExportFormat'                 : unaConfigurationDict.get( 'formatoExportacionPorDefecto', cExportFormatOption_JavaProperties),
+                    'theExportFormat_vocabulary'      : someConfiguracionMetaAndValuesDict.get( 'formatoExportacionPorDefecto', [ '',] * 9)[ 7],
+                    'theExportFormat_vocabulary_msgids': someConfiguracionMetaAndValuesDict.get( 'formatoExportacionPorDefecto', [ '',] * 9)[ 8],
+                    'theIncludeManifest'              : unaConfigurationDict.get( 'incluirManifestPorDefecto', cTRABooleanNo),
+                    'theIncludeManifest_vocabulary'   : cTRABooleanVocabulary,
+                    'theIncludeManifest_vocabulary_msgids'   : cTRABooleanVocabulary_msgids,
+                    'theIncludeLocalesCSV'            : unaConfigurationDict.get( 'incluirLocalesCSVPorDefecto', cTRABooleanSi),
+                    'theIncludeLocalesCSV_vocabulary' : cTRABooleanVocabulary,
+                    'theIncludeLocalesCSV_vocabulary_msgids' : cTRABooleanVocabulary_msgids,
+                    'theSeparatedModules'             : unaConfigurationDict.get( 'modulosPorSeparadoPorDefecto', cTRABooleanNo),
+                    'theSeparatedModules_vocabulary'  : cTRABooleanVocabulary,
+                    'theSeparatedModules_vocabulary_msgids'  : cTRABooleanVocabulary_msgids,
+                    'theExportModuleNames'            : unaConfigurationDict.get( 'exportarNombresModulosPorDefecto', cTRABooleanSi),
+                    'theExportModuleNames_vocabulary' : cTRABooleanVocabulary,
+                    'theExportModuleNames_vocabulary_msgids' : cTRABooleanVocabulary_msgids,
+                    'theExportContributions'            : theAdditionalParams.get( 'theExportContributions', cTRABooleanSi),
+                    'theExportContributions_vocabulary' : cTRABooleanVocabulary,
+                    'theExportContributions_vocabulary_msgids' : cTRABooleanVocabulary_msgids,
+                    'theExportStringSources'          : unaConfigurationDict.get( 'exportarFuentesPorDefecto', cTRABooleanSi),
+                    'theExportStringSources_vocabulary': cTRABooleanVocabulary,
+                    'theExportStringSources_vocabulary_msgids': cTRABooleanVocabulary_msgids,
+                    'theExportTranslationsStatus'     : unaConfigurationDict.get( 'exportarEstadoTraduccionesPorDefecto', cTRABooleanSi),
+                    'theExportTranslationsStatus_vocabulary' : cTRABooleanVocabulary,
+                    'theExportTranslationsStatus_vocabulary_msgids' : cTRABooleanVocabulary_msgids,
+                    'theTipoArchivo'                  : unaConfigurationDict.get( 'tipoArchivoExportacionPorDefecto', cZipFilePostfix),
+                    'theTipoArchivo_vocabulary':        someConfiguracionMetaAndValuesDict.get( 'tipoArchivoExportacionPorDefecto', [ '',] * 9)[ 7],
+                    'theTipoArchivo_vocabulary_msgids': someConfiguracionMetaAndValuesDict.get( 'tipoArchivoExportacionPorDefecto', [ '',] * 9)[ 8],
+                    'theEncodingErrorHandleMode'      : unaConfigurationDict.get( 'modoGestionErrorCodificacionExportacionPorDefecto', cTRAEncodingErrorHandleMode_BackslashReplaceAndContinue),
+                    'theEncodingErrorHandleMode_vocabulary': someConfiguracionMetaAndValuesDict.get( 'modoGestionErrorCodificacionExportacionPorDefecto', [ '',] * 9)[ 7],
+                    'theEncodingErrorHandleMode_vocabulary_msgids': someConfiguracionMetaAndValuesDict.get( 'modoGestionErrorCodificacionExportacionPorDefecto', [ '',] * 9)[ 8],
+                    'theFilenameForGvSIG'             : cTRABooleanSi,
+                    'theFilenameForGvSIG_vocabulary'  : cTRABooleanVocabulary,
+                    'theFilenameForGvSIG_vocabulary_msgids'  : cTRABooleanVocabulary_msgids,
+                    'theDefaultLanguageCode'          : unaConfigurationDict.get( 'codigoIdiomaPorDefecto', ''),
+                    'theDefaultModuleName'            : '',
+                    'theDefaultDomain'                : unaConfigurationDict.get( 'dominioPorDefecto', ''),
+                    'theProductName'                  : unProductName,
+                    'theProductVersion'               : unProductVersion,
+                    'theL10NVersion'                  : unL10NVersion,
+                    'theSpecificFilename'             : '',
+                    'theConfiguration'                : unaConfigurationDict,
+                    
+
+                    'theExportarTRACatalogo':         cTRABooleanNo,
+                    'theExportarTRACatalogo_vocabulary': cTRABooleanVocabulary,
+                    'theExportarTRACatalogo_vocabulary_msgids': cTRABooleanVocabulary_msgids,
+                    
+                    'theExportarTRAConfiguraciones':         cTRABooleanNo,
+                    'theExportarTRAConfiguraciones_vocabulary': cTRABooleanVocabulary,
+                    'theExportarTRAConfiguraciones_vocabulary_msgids': cTRABooleanVocabulary_msgids,
+                    
+                    'theExportarTRAParametrosControlProgreso':         cTRABooleanNo,
+                    'theExportarTRAParametrosControlProgreso_vocabulary': cTRABooleanVocabulary,
+                    'theExportarTRAParametrosControlProgreso_vocabulary_msgids': cTRABooleanVocabulary_msgids,
+                    
+                    'theExportarTRAIdiomas':         cTRABooleanNo,
+                    'theExportarTRAIdiomas_vocabulary': cTRABooleanVocabulary,
+                    'theExportarTRAIdiomas_vocabulary_msgids': cTRABooleanVocabulary_msgids,
+                    
+                    'theExportarTRASolicitudesCadenas':         cTRABooleanNo,
+                    'theExportarTRASolicitudesCadenas_vocabulary': cTRABooleanVocabulary,
+                    'theExportarTRASolicitudesCadenas_vocabulary_msgids': cTRABooleanVocabulary_msgids,                    
+
+                    'theExportarTRAModulos':         cTRABooleanNo,
+                    'theExportarTRAModulos_vocabulary': cTRABooleanVocabulary,
+                    'theExportarTRAModulos_vocabulary_msgids': cTRABooleanVocabulary_msgids,
+                    
+                    'theExportarTRAInformes':         cTRABooleanNo,
+                    'theExportarTRAInformes_vocabulary': cTRABooleanVocabulary,
+                    'theExportarTRAInformes_vocabulary_msgids': cTRABooleanVocabulary_msgids,
+                    
+                }
+                
+                
+                anExportEstimationResult = self.fEstimarContenidoExportacion(
+                    theParametersInput               = someInputParameters,
+                    thePermissionsCache              = unPermissionsCache,
+                    theRolesCache                    = unRolesCache,
+                    theUseCaseAssessmentResultsCache = aUseCaseAssessmentResultsCache,
+                    theParentExecutionRecord         = unExecutionRecord,
+                )
+                
+                someInputParameters.update( {
+                    'export_estimation_result'        : anExportEstimationResult,
+                })
+             
+                
+                aProgressHandlerCreationResult = unaColeccionProgresos.fCreateNewProgressAndHandlerForElement(  
+                    theInitialElement       =unCatalogoRaiz, 
+                    theProcessType          =cTRAProgress_ProcessType_ExportGvSIG, 
+                    theInputParameters      =someInputParameters,
+                    theTimestamp            =aStartDateTimeNowTextual,
+                    theResult               =anExportResult, 
+                    theInitializeLambda     =fExportInitialize_lambda,
+                    theElementLambda        =None, # fExportElement_lambda,
+                    theLoopLambda           =fExportLoop_lambda,
+                    theFinalizeLambda       =None,
+                    theLockCatalog          =True,
+                    thePermissionsCache     =unPermissionsCache, 
+                    theRolesCache           =unRolesCache, 
+                    theParentExecutionRecord=unExecutionRecord,)
+                if ( not aProgressHandlerCreationResult) or not aProgressHandlerCreationResult.get( 'success', False):
+                    aResult.update( {
+                        'success':    False,
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_error_TRAProgress_not_created_for_TRAImportacion_msgid', "Error creating Progress element for Import element-."),
+                    })
+                    return aResult     
+                
+                
+                aProgressElement = aProgressHandlerCreationResult.get( 'progress_element', None)
+                if ( aProgressElement == None):
+                    aResult = { 
+                        'success':   False, 
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorProgressElementNotKnownByImportProcessElement', "Progress element is not known by import process element-"),
+                    }
+                    return aResult
+                
+                aProgressHandler = aProgressHandlerCreationResult.get( 'progress_handler', None)
+                if not aProgressHandler:
+                    aResult = { 
+                        'success':   False, 
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorImportProgressHandlerNotFound', "Import Progress Handler has not been found-"),
+                    }
+                    return aResult
+
+                aProgressHandlerKey = aProgressHandlerCreationResult.get( 'progress_handler_key', None)
+                if not aProgressHandlerKey:
+                    aResult = { 
+                        'success':   False, 
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorImport_NoProgressHandlerKey', "Import has no Progress Handler Key-"),
+                    }
+                    return aResult
+
+                
+                aResult.update( {
+                    'success':               True,
+                    'condition':             '',
+                    'progress_element':      aProgressElement,
+                    'progress_handler':      aProgressHandler,
+                    'progress_handler_key':  aProgressHandlerKey,
+                })
+                
+                return aResult
+            
+            except:
+                unaExceptionInfo = sys.exc_info()
+                unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
+                
+                aThereWasException = True
+                unInformeExcepcion = ''
+                try:
+                    unInformeExcepcion += 'Exception during fCreateProgressHandlerFor_ExportGvSIG of element %s %s at %s\n'  % (  self.meta_type(), self.Title(), self.fPhysicalPathString())
+                except:
+                    None
+                try:
+                    unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
+                except:
+                    None
+                try:
+                    unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                except:
+                    None
+                try:
+                    unInformeExcepcion += unaExceptionFormattedTraceback   
+                except:
+                    None
+                
+                unInformeExcepcionWOResult = unInformeExcepcion[:]
+                
+                anExportResult[ 'success'] = False
+                anExportResult[ 'exception_date_time_string'] = self.fDateTimeNowTextual()
+                aExportGvSIGResultDump = ''
+                try:
+                    aExportGvSIGResultDump = self.fProgressResult_dump( anExportResult)
+                except:
+                    None
+                if aExportGvSIGResultDump:
+                    unInformeExcepcion += aExportGvSIGResultDump
+                
+                anExportResult[ 'exception_report'] = unInformeExcepcionWOResult
+
+                
+                unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
+    
+                if cLogExceptions:
+                    logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
+                
+                aResult = { 
+                    'success':    False, 
+                    'condition':  '%s\n%s' % (   self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Exception_msgid', "Exception.-"), unInformeExcepcion, ),
+                }
+                return aResult
+        
+        finally:
+            unExecutionRecord and unExecutionRecord.pEndExecution()
+            unExecutionRecord and unExecutionRecord.pClearLoggedAll()
+           
+                
+            
+                    
+            
+            
+            
+            
+            
+                        
+            
             
             
             
@@ -2803,7 +3221,7 @@ def fExportLoop_lambda( theInitialElement, theProcessControlManager, theAddition
         theIncludeLocalesCSV            = someExportParameters.get( 'theIncludeLocalesCSV', '')          == ( someExportParameters.get( 'theIncludeLocalesCSV_vocabulary',  ['xXxXxXx',])[ 0])
         theSeparatedModules             = someExportParameters.get( 'theSeparatedModules', '')           == ( someExportParameters.get( 'theSeparatedModules_vocabulary', ['xXxXxXx',])[ 0])
         theExportModuleNames            = someExportParameters.get( 'theExportModuleNames', '')          == ( someExportParameters.get( 'theExportModuleNames_vocabulary', ['xXxXxXx',])[ 0])
-        theExportContributions          = someExportParameters.get( 'theExportContributions', '')          == ( someExportParameters.get( 'theExportContributions_vocabulary', ['xXxXxXx',])[ 0])
+        theExportContributions          = someExportParameters.get( 'theExportContributions', '')        == ( someExportParameters.get( 'theExportContributions_vocabulary', ['xXxXxXx',])[ 0])
         theExportStringSources          = someExportParameters.get( 'theExportStringSources', '')        == ( someExportParameters.get( 'theExportStringSources_vocabulary', ['xXxXxXx',])[ 0])
         theExportTranslationsStatus     = someExportParameters.get( 'theExportTranslationsStatus', '')   == ( someExportParameters.get( 'theExportTranslationsStatus_vocabulary', ['xXxXxXx',])[ 0])
         theTipoArchivo                  = someExportParameters.get( 'theTipoArchivo', '')

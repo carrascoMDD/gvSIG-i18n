@@ -78,6 +78,7 @@ cUseCase_ImportTRAImportacion_ToCreateCadenas = 'Import_TRAImportacion_ToCreateC
 cUseCase_Restore_TRACatalogo            = 'Restore_TRACatalogo'
 cUseCase_Export                         = 'Export'
 cUseCase_ExportGvSIG_TRAIdioma          = 'ExportGvSIG_TRAIdioma'
+cUseCase_ExportGvSIG_All_TRAIdioma      = 'ExportGvSIG_All_TRAIdioma'
 cUseCase_Backup_TRACatalogo             = 'Backup_TRACatalogo'
 cUseCase_EllaborateInformeActividad     = 'EllaborateInformeActividad'
 cUseCase_EllaborateInformeLanguages     = 'EllaborateInformeLanguages'
@@ -142,6 +143,7 @@ cTRAUseCaseNames = [
     cUseCase_Restore_TRACatalogo,
     cUseCase_Export, 
     cUseCase_ExportGvSIG_TRAIdioma,
+    cUseCase_ExportGvSIG_All_TRAIdioma,
     cUseCase_Backup_TRACatalogo,
     cUseCase_EllaborateInformeActividad,
     cUseCase_EllaborateInformeLanguages,   

@@ -155,7 +155,7 @@ def TRAExport_ParametersCandidateValues(
                 if not ( unIncludeManifest in unIncludeManifestVocabulary):
                     unIncludeManifest = unIncludeManifestMetaAndValue[ 1]
                 if not ( unIncludeManifest in unIncludeManifestVocabulary):
-                    unIncludeManifest = unIncludeManifestVocabulary[ 0]
+                    unIncludeManifest = unIncludeManifestVocabulary[ 1]
                 unInforme[ 'theIncludeManifest']                    = unIncludeManifest
                 unInforme[ 'theIncludeManifest_vocabulary']         = unIncludeManifestVocabulary
                 unInforme[ 'theIncludeManifest_vocabulary_msgids']  = unIncludeManifestMetaAndValue[ 8]
@@ -169,7 +169,7 @@ def TRAExport_ParametersCandidateValues(
                 if not ( unIncludeLocalesCSV in unIncludeLocalesCSVVocabulary):
                     unIncludeLocalesCSV = unIncludeLocalesCSVMetaAndValue[ 1]
                 if not ( unIncludeLocalesCSV in unIncludeLocalesCSVVocabulary):
-                    unIncludeLocalesCSV = unIncludeLocalesCSVVocabulary[ 0]
+                    unIncludeLocalesCSV = unIncludeLocalesCSVVocabulary[ 1]
                 unInforme[ 'theIncludeLocalesCSV']                    = unIncludeLocalesCSV
                 unInforme[ 'theIncludeLocalesCSV_vocabulary']         = unIncludeLocalesCSVVocabulary
                 unInforme[ 'theIncludeLocalesCSV_vocabulary_msgids']  = unIncludeLocalesCSVMetaAndValue[ 8]
@@ -183,7 +183,7 @@ def TRAExport_ParametersCandidateValues(
                 if not ( unSeparatedModules in unSeparatedModulesVocabulary):
                     unSeparatedModules = unSeparatedModulesMetaAndValue[ 1]
                 if not ( unSeparatedModules in unSeparatedModulesVocabulary):
-                    unSeparatedModules = unSeparatedModulesVocabulary[ 0]
+                    unSeparatedModules = unSeparatedModulesVocabulary[ 1]
                 unInforme[ 'theSeparatedModules']                   = unSeparatedModules
                 unInforme[ 'theSeparatedModules_vocabulary']        = unSeparatedModulesVocabulary
                 unInforme[ 'theSeparatedModules_vocabulary_msgids'] = unSeparatedModulesMetaAndValue[ 8]
@@ -197,7 +197,7 @@ def TRAExport_ParametersCandidateValues(
                 if not ( unExportModuleNames in unExportModuleNamesVocabulary):
                     unExportModuleNames = unExportModuleNamesMetaAndValue[ 1]
                 if not ( unExportModuleNames in unExportModuleNamesVocabulary):
-                    unExportModuleNames = unExportModuleNamesVocabulary[ 0]
+                    unExportModuleNames = unExportModuleNamesVocabulary[ 1]
                 unInforme[ 'theExportModuleNames']                   = unExportModuleNames
                 unInforme[ 'theExportModuleNames_vocabulary']        = unExportModuleNamesVocabulary
                 unInforme[ 'theExportModuleNames_vocabulary_msgids'] = unExportModuleNamesMetaAndValue[ 8]
@@ -212,7 +212,7 @@ def TRAExport_ParametersCandidateValues(
                 if not ( unExportContributions in unExportContributionsVocabulary):
                     unExportContributions = unExportContributionsMetaAndValue[ 1]
                 if not ( unExportContributions in unExportContributionsVocabulary):
-                    unExportContributions = unExportContributionsVocabulary[ 0]
+                    unExportContributions = unExportContributionsVocabulary[ 1]
                 unInforme[ 'theExportContributions']                   = unExportContributions
                 unInforme[ 'theExportContributions_vocabulary']        = unExportContributionsVocabulary
                 unInforme[ 'theExportContributions_vocabulary_msgids'] = unExportContributionsMetaAndValue[ 8]
@@ -225,7 +225,7 @@ def TRAExport_ParametersCandidateValues(
                 if not ( unExportStringSources in unExportStringSourcesVocabulary):
                     unExportStringSources = unExportStringSourcesMetaAndValue[ 1]
                 if not ( unExportStringSources in unExportStringSourcesVocabulary):
-                    unExportStringSources = unExportStringSourcesVocabulary[ 0]
+                    unExportStringSources = unExportStringSourcesVocabulary[ 1]
                 unInforme[ 'theExportStringSources']                   = unExportStringSources
                 unInforme[ 'theExportStringSources_vocabulary']        = unExportStringSourcesVocabulary
                 unInforme[ 'theExportStringSources_vocabulary_msgids'] = unExportStringSourcesMetaAndValue[ 8]
@@ -239,7 +239,7 @@ def TRAExport_ParametersCandidateValues(
                 if not ( unExportTranslationsStatus in unExportTranslationsStatusVocabulary):
                     unExportTranslationsStatus = unExportTranslationsStatusMetaAndValue[ 1]
                 if not ( unExportTranslationsStatus in unExportTranslationsStatusVocabulary):
-                    unExportTranslationsStatus = unExportTranslationsStatusVocabulary[ 0]
+                    unExportTranslationsStatus = unExportTranslationsStatusVocabulary[ 1]
                 unInforme[ 'theExportTranslationsStatus']                   = unExportTranslationsStatus
                 unInforme[ 'theExportTranslationsStatus_vocabulary']        = unExportTranslationsStatusVocabulary
                 unInforme[ 'theExportTranslationsStatus_vocabulary_msgids'] = unExportTranslationsStatusMetaAndValue[ 8]
@@ -306,7 +306,7 @@ def TRAExport_ParametersCandidateValues(
                 if not ( unExportFilenameForGvSIG in unExportFilenameForGvSIGVocabulary):
                     unExportFilenameForGvSIG = unExportFilenameForGvSIGMetaAndValue[ 1]
                 if not ( unExportFilenameForGvSIG in unExportFilenameForGvSIGVocabulary):
-                    unExportFilenameForGvSIG = unExportFilenameForGvSIGVocabulary[ 0]
+                    unExportFilenameForGvSIG = unExportFilenameForGvSIGVocabulary[ 1]
                 unInforme[ 'theFilenameForGvSIG']                    = unExportFilenameForGvSIG
                 unInforme[ 'theFilenameForGvSIG_vocabulary']         = unExportFilenameForGvSIGVocabulary
                 unInforme[ 'theFilenameForGvSIG_vocabulary_msgids']  = unExportFilenameForGvSIGMetaAndValue[ 8]
@@ -322,7 +322,7 @@ def TRAExport_ParametersCandidateValues(
                 if not ( unExportarTRACatalogoPorDefecto in unExportarTRACatalogoPorDefectoVocabulary):
                     unExportarTRACatalogoPorDefecto = unExportarTRACatalogoPorDefectoMetaAndValue[ 1]
                 if not ( unExportarTRACatalogoPorDefecto in unExportarTRACatalogoPorDefectoVocabulary):
-                    unExportarTRACatalogoPorDefecto = unExportarTRACatalogoPorDefectoVocabulary[ 0]
+                    unExportarTRACatalogoPorDefecto = unExportarTRACatalogoPorDefectoVocabulary[ 1]
                 unInforme[ 'theExportarTRACatalogo']                    = unExportarTRACatalogoPorDefecto
                 unInforme[ 'theExportarTRACatalogo_vocabulary']         = unExportarTRACatalogoPorDefectoVocabulary
                 unInforme[ 'theExportarTRACatalogo_vocabulary_msgids']  = unExportarTRACatalogoPorDefectoMetaAndValue[ 8]
@@ -335,7 +335,7 @@ def TRAExport_ParametersCandidateValues(
                 if not ( unExportarTRAConfiguracionesPorDefecto in unExportarTRAConfiguracionesPorDefectoVocabulary):
                     unExportarTRAConfiguracionesPorDefecto = unExportarTRAConfiguracionesPorDefectoMetaAndValue[ 1]
                 if not ( unExportarTRAConfiguracionesPorDefecto in unExportarTRAConfiguracionesPorDefectoVocabulary):
-                    unExportarTRAConfiguracionesPorDefecto = unExportarTRAConfiguracionesPorDefectoVocabulary[ 0]
+                    unExportarTRAConfiguracionesPorDefecto = unExportarTRAConfiguracionesPorDefectoVocabulary[ 1]
                 unInforme[ 'theExportarTRAConfiguraciones']                    = unExportarTRAConfiguracionesPorDefecto
                 unInforme[ 'theExportarTRAConfiguraciones_vocabulary']         = unExportarTRAConfiguracionesPorDefectoVocabulary
                 unInforme[ 'theExportarTRAConfiguraciones_vocabulary_msgids']  = unExportarTRAConfiguracionesPorDefectoMetaAndValue[ 8]
@@ -347,7 +347,7 @@ def TRAExport_ParametersCandidateValues(
                 if not ( unExportarTRAParametrosControlProgresoPorDefecto in unExportarTRAParametrosControlProgresoPorDefectoVocabulary):
                     unExportarTRAParametrosControlProgresoPorDefecto = unExportarTRAParametrosControlProgresoPorDefectoMetaAndValue[ 1]
                 if not ( unExportarTRAParametrosControlProgresoPorDefecto in unExportarTRAParametrosControlProgresoPorDefectoVocabulary):
-                    unExportarTRAParametrosControlProgresoPorDefecto = unExportarTRAParametrosControlProgresoPorDefectoVocabulary[ 0]
+                    unExportarTRAParametrosControlProgresoPorDefecto = unExportarTRAParametrosControlProgresoPorDefectoVocabulary[ 1]
                 unInforme[ 'theExportarTRAParametrosControlProgreso']                    = unExportarTRAParametrosControlProgresoPorDefecto
                 unInforme[ 'theExportarTRAParametrosControlProgreso_vocabulary']         = unExportarTRAParametrosControlProgresoPorDefectoVocabulary
                 unInforme[ 'theExportarTRAParametrosControlProgreso_vocabulary_msgids']  = unExportarTRAParametrosControlProgresoPorDefectoMetaAndValue[ 8]
@@ -373,7 +373,7 @@ def TRAExport_ParametersCandidateValues(
                 if not ( unExportarTRASolicitudesCadenasPorDefecto in unExportarTRASolicitudesCadenasPorDefectoVocabulary):
                     unExportarTRASolicitudesCadenasPorDefecto = unExportarTRASolicitudesCadenasPorDefectoMetaAndValue[ 1]
                 if not ( unExportarTRASolicitudesCadenasPorDefecto in unExportarTRASolicitudesCadenasPorDefectoVocabulary):
-                    unExportarTRASolicitudesCadenasPorDefecto = unExportarTRASolicitudesCadenasPorDefectoVocabulary[ 0]
+                    unExportarTRASolicitudesCadenasPorDefecto = unExportarTRASolicitudesCadenasPorDefectoVocabulary[ 1]
                 unInforme[ 'theExportarTRASolicitudesCadenas']                    = unExportarTRASolicitudesCadenasPorDefecto
                 unInforme[ 'theExportarTRASolicitudesCadenas_vocabulary']         = unExportarTRASolicitudesCadenasPorDefectoVocabulary
                 unInforme[ 'theExportarTRASolicitudesCadenas_vocabulary_msgids']  = unExportarTRASolicitudesCadenasPorDefectoMetaAndValue[ 8]
@@ -386,7 +386,7 @@ def TRAExport_ParametersCandidateValues(
                 if not ( unExportarTRAModulosPorDefecto in unExportarTRAModulosPorDefectoVocabulary):
                     unExportarTRAModulosPorDefecto = unExportarTRAModulosPorDefectoMetaAndValue[ 1]
                 if not ( unExportarTRAModulosPorDefecto in unExportarTRAModulosPorDefectoVocabulary):
-                    unExportarTRAModulosPorDefecto = unExportarTRAModulosPorDefectoVocabulary[ 0]
+                    unExportarTRAModulosPorDefecto = unExportarTRAModulosPorDefectoVocabulary[ 1]
                 unInforme[ 'theExportarTRAModulos']                    = unExportarTRAModulosPorDefecto
                 unInforme[ 'theExportarTRAModulos_vocabulary']         = unExportarTRAModulosPorDefectoVocabulary
                 unInforme[ 'theExportarTRAModulos_vocabulary_msgids']  = unExportarTRAModulosPorDefectoMetaAndValue[ 8]
@@ -399,7 +399,7 @@ def TRAExport_ParametersCandidateValues(
                 if not ( unExportarTRAInformesPorDefecto in unExportarTRAInformesPorDefectoVocabulary):
                     unExportarTRAInformesPorDefecto = unExportarTRAInformesPorDefectoMetaAndValue[ 1]
                 if not ( unExportarTRAInformesPorDefecto in unExportarTRAInformesPorDefectoVocabulary):
-                    unExportarTRAInformesPorDefecto = unExportarTRAInformesPorDefectoVocabulary[ 0]
+                    unExportarTRAInformesPorDefecto = unExportarTRAInformesPorDefectoVocabulary[ 1]
                 unInforme[ 'theExportarTRAInformes']                    = unExportarTRAInformesPorDefecto
                 unInforme[ 'theExportarTRAInformes_vocabulary']         = unExportarTRAInformesPorDefectoVocabulary
                 unInforme[ 'theExportarTRAInformes_vocabulary_msgids']  = unExportarTRAInformesPorDefectoMetaAndValue[ 8]

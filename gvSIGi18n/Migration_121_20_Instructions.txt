@@ -47,6 +47,11 @@ The migration strategy consists in:
 
 The migration is performed by executing the following steps:
 
+0) Install the patch for v.1.2.1 dated 20110125,
+   containing a new version of TRACatalogo_Exportacion.py.
+   Create the external method TRAExportAdditionalConfig
+
+
 1) Exporting all strings and translations to all languages from the instance to migrate.
    Export can be done as "Export for gvSIG" from each language,
    i.e. using an automated script with wget commands, or by hand.
@@ -105,6 +110,20 @@ inspect the portal_catalog and uid_catalog
 and verify that no element exist in the catalogs
 from the gvSIGi18n application, 
 that can be recognized with type names starting with TRA... .
+
+
+
+
+-------------------------
+
+NOTE: 
+BY NOT REMOVING THE USER GROUPS ASSOCIATED WITH THE DELETED INSTANCES OF THE APPLICATION,
+WHEN THE NEW INSTANCES ARE CREATED WITH SAME PATHS AND IDS,
+THE EXISTING GROUPS WILL BE USED AND ROLES ASSIGNED TO THEM IN EACH CORRESPONDING ELEMENT.
+(hopefully...!)
+
+
+-------------------------
 
 
 
