@@ -91,7 +91,9 @@ function pTRAResetCachedGlobals() {
     
     gTRAMustRenderUserInterfaceEvents   = 999;
     
-    
+    gTRANoConfirmTranslationChanges     = 999;
+    gTRANoConfirmStatusChanges          = 999;
+    gTRANoConfirmTranslationDelete      = 999;
 }
 
 
@@ -1513,6 +1515,20 @@ function fTRAEvtHlr_Editor_TextArea_OnKeyPress( event) {
                                     
                     if (( unKeyActionTab == cKeyAction_Traducir) || ( unKeyActionTab == cKeyAction_TraducirYAvanzar))  {
                     
+                        if ( ! fTRANoConfirmTranslationChanges()) {
+                            var unConfirmTranslateMsg = fTRA_GetConstantValue( 'cTRAId_ConfirmTranslateMsg');
+                            var unConfirmed = window.confirm( unConfirmTranslateMsg + '?');
+                            if (! unConfirmed) {
+                                return false;
+                            }
+                        
+                            var unReallyConfirmTranslateMsg = fTRA_GetConstantValue( 'cTRAId_ReallyConfirmTranslateMsg');
+                            unConfirmed = window.confirm( unReallyConfirmTranslateMsg + '?');
+                            if (! unConfirmed) {
+                                return false;
+                            }   
+                        }
+                    
                         pLogUserInterfaceEvent( 'fTRAEvtHlr_Editor_TextArea_OnKeyPress', 'action: ' + unKeyActionTab + ' phase: traducir');
                                 
                         /* pTRADisableElementWithId( 'theCadenaTraducida'); */
@@ -1537,7 +1553,7 @@ function fTRAEvtHlr_Editor_TextArea_OnKeyPress( event) {
                         else {                    
                             pLogUserInterfaceEvent( '      fTRAEvtHlr_Editor_TextArea_OnKeyPress', 'action: ' + unKeyActionTab + 'ignored: same_value');
                         }
-                         if (  unKeyActionTab == cKeyAction_Traducir) {
+                        if (  unKeyActionTab == cKeyAction_Traducir) {
                             fSetFocusToEditorTextArea();
                             return false;
                         }
@@ -1605,6 +1621,20 @@ function fTRAEvtHlr_Editor_TextArea_OnKeyPress( event) {
                     if (( unKeyActionCR == cKeyAction_Traducir) || ( unKeyActionCR == cKeyAction_TraducirYAvanzar))  {
                                 
                         pLogUserInterfaceEvent( 'fTRAEvtHlr_Editor_TextArea_OnKeyPress', 'action: ' + unKeyActionCR + ' phase: traducir');
+                        
+                        if ( ! fTRANoConfirmTranslationChanges()) {
+                            var unConfirmTranslateMsg = fTRA_GetConstantValue( 'cTRAId_ConfirmTranslateMsg');
+                            var unConfirmed = window.confirm( unConfirmTranslateMsg + '?');
+                            if (! unConfirmed) {
+                                return false;
+                            }
+                        
+                            var unReallyConfirmTranslateMsg = fTRA_GetConstantValue( 'cTRAId_ReallyConfirmTranslateMsg');
+                            unConfirmed = window.confirm( unReallyConfirmTranslateMsg + '?');
+                            if (! unConfirmed) {
+                                return false;
+                            }  
+                        }
                         
                         /* pTRADisableElementWithId( 'theCadenaTraducida'); */
                         
@@ -1745,8 +1775,23 @@ function fTRAEvtHlr_Editor_Button_Traducir_OnMouseUp() {
                 
             pTRADisableElementWithId( 'TRAStatusChangeButton_Traducir');
 
+
             try {
-                            
+                  
+                if ( ! fTRANoConfirmTranslationChanges()) {
+                    var unConfirmTranslateMsg = fTRA_GetConstantValue( 'cTRAId_ConfirmTranslateMsg');
+                    var unConfirmed = window.confirm( unConfirmTranslateMsg + '?');
+                    if (! unConfirmed) {
+                        return false;
+                    }
+                
+                    var unReallyConfirmTranslateMsg = fTRA_GetConstantValue( 'cTRAId_ReallyConfirmTranslateMsg');
+                    unConfirmed = window.confirm( unReallyConfirmTranslateMsg + '?');
+                    if (! unConfirmed) {
+                        return false;
+                    }    
+                }
+                        
                 var unDatosAceptados = fTRA_FromEditorToDatosEnFila();
             
                 var unEditorRowIndex =  fTRACadenaTraducidaIndexNumber();
@@ -1810,12 +1855,26 @@ function fTRAEvtHlr_Editor_Button_Traducir_OnKeyPress( event) {
             pTRADisableElementWithId( 'TRAStatusChangeButton_Traducir');
 
             try {            
-                
+                            
                 var unKeyNumber = fTRAKeyNumberFromEvent( event);
                 
                 pLogUserInterfaceEvent( 'fTRAEvtHlr_Editor_Button_Traducir_OnKeyPress', 'keyNumber: ' + unKeyNumber);
                 
                 if ( unKeyNumber == cKeyNumberCR) {
+                
+                    if ( ! fTRANoConfirmTranslationChanges()) {
+                        var unConfirmTranslateMsg = fTRA_GetConstantValue( 'cTRAId_ConfirmTranslateMsg');
+                        var unConfirmed = window.confirm( unConfirmTranslateMsg + '?');
+                        if (! unConfirmed) {
+                            return false;
+                        }
+                    
+                        var unReallyConfirmTranslateMsg = fTRA_GetConstantValue( 'cTRAId_ReallyConfirmTranslateMsg');
+                        unConfirmed = window.confirm( unReallyConfirmTranslateMsg + '?');
+                        if (! unConfirmed) {
+                            return false;
+                        } 
+                    }
                 
                     fTRA_FromEditorToDatosEnFila();
                 
@@ -1878,6 +1937,19 @@ function fTRAEvtHlr_Editor_Button_Pendiente_OnMouseUp() {
             pTRADisableElementWithId( 'TRAStatusChangeButton_Pendiente_Icon');
 
             try {
+                if ( ! fTRANoConfirmTranslationDelete()) {
+                    var unConfirmDeleteMsg = fTRA_GetConstantValue( 'cTRAId_ConfirmDeleteMsg');
+                    var unConfirmed = window.confirm( unConfirmDeleteMsg + '?');
+                    if (! unConfirmed) {
+                        return false;
+                    }
+                
+                    var unReallyConfirmDeleteMsg = fTRA_GetConstantValue( 'cTRAId_ReallyConfirmDeleteMsg');
+                    unConfirmed = window.confirm( unReallyConfirmDeleteMsg + '?');
+                    if (! unConfirmed) {
+                        return false;
+                    } 
+                }
                             
                 var unEditorRowIndex =  fTRACadenaTraducidaIndexNumber();
                 if ( unEditorRowIndex) {
@@ -1929,6 +2001,20 @@ function fTRAEvtHlr_Editor_Button_Pendiente_OnKeyPress( event) {
         }
         try {
     
+            if ( ! fTRANoConfirmTranslationDelete()) {
+                var unConfirmDeleteMsg = fTRA_GetConstantValue( 'cTRAId_ConfirmDeleteMsg');
+                var unConfirmed = window.confirm( unConfirmDeleteMsg + '?');
+                if (! unConfirmed) {
+                    return false;
+                }
+            
+                var unReallyConfirmDeleteMsg = fTRA_GetConstantValue( 'cTRAId_ReallyConfirmDeleteMsg');
+                unConfirmed = window.confirm( unReallyConfirmDeleteMsg + '?');
+                if (! unConfirmed) {
+                    return false;
+                } 
+            }        
+            
             pTRADisableElementWithId( 'TRAStatusChangeButton_Pendiente');
             pTRADisableElementWithId( 'TRAStatusChangeButton_Pendiente_Icon');
 
@@ -2432,6 +2518,23 @@ function fTRAEvtHlr_Editor_Button_StatusChange_OnMouseUp( theEditorIndex, theNew
         }
         
         try {
+        
+        
+            if ( ! fTRANoConfirmStatusChanges()) {
+                var unConfirmStatusMsg = fTRA_GetConstantValue( 'cTRAId_ConfirmStatusChangeMsg');
+                var unConfirmed = window.confirm( unConfirmStatusMsg + '?');
+                if (! unConfirmed) {
+                    return false;
+                }
+            
+                var unReallyConfirmStatusMsg = fTRA_GetConstantValue( 'cTRAId_ReallyConfirmStatusChangeMsg');
+                unConfirmed = window.confirm( unReallyConfirmStatusMsg + '?');
+                if (! unConfirmed) {
+                    return false;
+                }   
+            }
+        
+        
             pTRADisableElementWithId( 'TRAStatusChangeButton_' + unEditorIndex + '_' + theNewTranslationStatus);
             try {
             
@@ -2490,6 +2593,19 @@ function fTRAEvtHlr_BatchStatusChange_Apply_Button_OnMouseUp() {
             pLogUserInterfaceEvent_IGNORED( 'fTRAEvtHlr_BatchStatusChange_Apply_Button_OnMouseUp',  '');
             return false;
         }
+
+        var unConfirmBatchMsg = fTRA_GetConstantValue( 'cTRAId_ConfirmBatchMsg');
+        var unConfirmed = window.confirm( unConfirmBatchMsg + '?');
+        if (! unConfirmed) {
+            return false;
+        }
+    
+        var unReallyConfirmBatchMsg = fTRA_GetConstantValue( 'cTRAId_ReallyConfirmBatchMsg');
+        unConfirmed = window.confirm( unReallyConfirmBatchMsg + '?');
+        if (! unConfirmed) {
+            return false;
+        }           
+        
         gUserInterfaceInTransition = true;
 
         
@@ -4175,6 +4291,103 @@ function fTRAKeyNumberFromEvent( theEvent) {
     catch( anException) {
     }
     return unKeyNumber;
+}
+
+
+
+
+function fTRAEvtHlr_NoConfirmTranslationChanges_OnMouseUp() {
+    gTRANoConfirmTranslationChanges = 999;
+    return true;
+}
+
+
+function fTRAEvtHlr_NoConfirmStatusChanges_OnMouseUp() {
+    gTRANoConfirmStatusChanges = 999;
+    return true;
+}
+
+
+function fTRAEvtHlr_NoConfirmTranslationDelete_OnMouseUp() {
+    gTRANoConfirmTranslationDelete = 999;
+    return true;
+}
+
+
+
+function fTRANoConfirmTranslationChanges() {
+    if ( !( gTRANoConfirmTranslationChanges == 999)) {
+        return gTRANoConfirmTranslationChanges;
+    }
+    
+    var unElementoConfirmTranslationChanges = document.getElementById( 'theNoConfirmTranslationChanges')
+    if ( !unElementoConfirmTranslationChanges) {
+    
+        gTRANoConfirmTranslationChanges = false;
+        return gTRANoConfirmTranslationChanges;
+    }
+    
+    if ( unElementoConfirmTranslationChanges.checked) {
+    
+        gTRANoConfirmTranslationChanges = true;
+    }
+    else {
+        gTRANoConfirmTranslationChanges = false;
+    }
+    return gTRANoConfirmTranslationChanges;
+}
+
+
+
+
+
+function fTRANoConfirmStatusChanges() {
+    if ( !( gTRANoConfirmStatusChanges == 999)) {
+        return gTRANoConfirmStatusChanges;
+    }
+    
+    var unElementoConfirmStatusChanges = document.getElementById( 'theNoConfirmStatusChanges')
+    if ( !unElementoConfirmStatusChanges) {
+    
+        gTRANoConfirmStatusChanges = false;
+        return gTRANoConfirmStatusChanges;
+    }
+    
+    if ( unElementoConfirmStatusChanges.checked) {
+    
+        gTRANoConfirmStatusChanges = true;
+    }
+    else {
+        gTRANoConfirmStatusChanges = false;
+    }
+    return gTRANoConfirmStatusChanges;
+}
+
+
+
+
+
+
+function fTRANoConfirmTranslationDelete() {
+    if ( !( gTRANoConfirmTranslationDelete == 999)) {
+        return gTRANoConfirmTranslationDelete;
+    }
+    
+    var unElementoConfirmTranslationDelete = document.getElementById( 'theNoConfirmTranslationDelete')
+    if ( !unElementoConfirmTranslationDelete) {
+    
+        gTRANoConfirmTranslationDelete = false;
+        return gTRANoConfirmTranslationDelete;
+    }
+    
+    if ( unElementoConfirmTranslationDelete.checked) {
+    
+        gTRANoConfirmTranslationDelete = true;
+    }
+    else {
+        gTRANoConfirmTranslationDelete = false;
+    }
+    return gTRANoConfirmTranslationDelete;
 }
 
 

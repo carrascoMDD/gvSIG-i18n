@@ -1,13 +1,42 @@
 gvSIG-i18n RELEASE NOTES
 ========================
 
-version 2.1RC
+version 2.1.1 in progress
+
+Addition: Translations Page.Options: added options to control whether actions should be protected by confirmation dialogs for translation changes, status changes and translation deletions.
+
+Addition: Translations Page.Options: added headers to highlight the two distinct sections of the options: the ones that do not require refreshing the page for them to take effect, and the ones that require refreshing the page.
+
+Addition: Translations Page.Options: moved the option to control Asynchronous or asynchronous mode to the bottoms of the sub-section of options that do not require refeshing the page to take effect. This options is less relevant to normal users than other options ofo the sub-section.
+
+Addition: Translations Page.History: display for each translation, all its history records, in a collapsible section, most recent first.
+
+Optimization: Translations Page: localizations of all internationalized strings are retreived with a single framework invocation.
+
+Fixed bug: Contributions Progress Results page: added 'Tabular/' at the end of the URL of the link to the resulting Contributions Report.
+
+Fixed bug: The history records did record the actor user id in place of the the translated string. Now the translations correcly record the translated string.
+
+
 ------------------------------------------------
+
+|
+|
+
+
+version 2.1RC
+
 Added year 2011 to Copyright notice.
+
+------------------------------------------------
+
+
+|
+|
 
 
 version 2.0.6
-------------------------------------------------
+
 Fixed bug preventing to add interchange content files to an import.
 
 Added element type to store Contribution reports, a process to generate the report, and a view to present various slices of the contributions report.
@@ -33,26 +62,45 @@ Translation history records show the actor user rather than the translation.
 Known bug:
 When exporting in GNU gettext .PO format, the default entries for each translation is exported as empty, and does not include the translation in the reference language selected in the export configuration form.
 
+------------------------------------------------
+
+|
+|
 
 
 version 2.0.5
-------------------------------------------------
+
 Extend the presentation of the TRAUncatalog utility to display the types to uncatalog.
 
 
-version 2.0.4
 ------------------------------------------------
+
+
+|
+|
+
+version 2.0.4
+
 Added handling of plone elements while traversing the elements tree, i.e. when performing inventory, reset permissions, recatalog.
+
+------------------------------------------------
+
+|
+|
+
 
 
 version 2.0.3
-------------------------------------------------
+
 Added use case to export for gvSIG the translations into all languages, with a single long-lived process execution.
 
 
+------------------------------------------------
+
+|
+|
 
 versions 2.x
-------------------------------------------------
 
 
 New architecture as 3 products for presentation, service and object layers, for better separation of concern.
@@ -63,6 +111,7 @@ Export of translations status, modules, contributing users and dates.
 Full backup of all configuration elements, along with translations.
 Bug fixes and UI improvements.
 
+------------------------------------------------
 
 
 |

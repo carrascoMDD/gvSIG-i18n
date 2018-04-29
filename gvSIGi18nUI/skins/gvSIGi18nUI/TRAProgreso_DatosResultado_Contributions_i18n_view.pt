@@ -69,7 +69,7 @@
 						<strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_ContributionsReport_label',  'Report for Contributions to the Translations Catalog-' )" />
 					</h3>
 					<p>
-						<a href="#" tal:attributes="href pElementoContribucionesURL" >
+						<a href="#" tal:attributes="href python: '%sTabular/' % pElementoContribucionesURL" >
 							<font size="3" color="green">
 								<strong  tal:content="pElementoContribucionesTitle" />
 							</font>

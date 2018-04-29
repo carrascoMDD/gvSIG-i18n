@@ -678,7 +678,6 @@ class TRATraduccion_Operaciones:
                  
             unaCadenaTraducida          = self.getCadenaTraducida()            
             unComentarioTraduccion      = self.getComentario() 
-            unaHistoriaTraduccion       = self.getHistoria()
             unEstadoTraduccion          = self.getEstadoTraduccion()  
             unaFechaTraduccionTextual   = self.getFechaTraduccionTextual()  
             unUsuarioTraductor          = self.getUsuarioTraductor()  
@@ -874,13 +873,7 @@ class TRATraduccion_Operaciones:
                             theFechaAccionTextual       = unAhoraStoreString, 
                             theUsuarioActor             = unMemberId, 
                             theEstadoTraduccion         = cEstadoTraduccionTraducida, 
-                            theFechaTraduccionTextual   = unAhoraStoreString, 
-                            theUsuarioTraductor         = unMemberId, 
                             theCadenaTraducida          = unaEncodedNuevaCadenaTraducida, 
-                            theFechaRevisionTextual     = None, 
-                            theUsuarioRevisor           = None, 
-                            theFechaDefinitivoTextual   = None, 
-                            theUsuarioCoordinador       = None, 
                             theComentario               = unComentarioParaHistoria,                            
                         )
                     
@@ -898,13 +891,7 @@ class TRATraduccion_Operaciones:
                             theFechaAccionTextual       = unAhoraStoreString, 
                             theUsuarioActor             = unMemberId, 
                             theEstadoTraduccion         = None, 
-                            theFechaTraduccionTextual   = None, 
-                            theUsuarioTraductor         = None, 
                             theCadenaTraducida          = None, 
-                            theFechaRevisionTextual     = None, 
-                            theUsuarioRevisor           = None, 
-                            theFechaDefinitivoTextual   = None, 
-                            theUsuarioCoordinador       = None, 
                             theComentario               = unComentarioParaHistoria,                            
                         )
                     aResult.update({
@@ -978,7 +965,6 @@ class TRATraduccion_Operaciones:
 
             unaCadenaTraducida          = self.getCadenaTraducida()            
             unComentarioTraduccion      = self.getComentario() 
-            unaHistoriaTraduccion       = self.getHistoria()
             unEstadoTraduccion          = self.getEstadoTraduccion()  
             unaFechaTraduccionTextual   = self.getFechaTraduccionTextual()  
             unUsuarioTraductor          = self.getUsuarioTraductor()  
@@ -1164,13 +1150,7 @@ class TRATraduccion_Operaciones:
                         theFechaAccionTextual       = unAhoraStoreString, 
                         theUsuarioActor             = unMemberId, 
                         theEstadoTraduccion         = None, 
-                        theFechaTraduccionTextual   = None, 
-                        theUsuarioTraductor         = None, 
                         theCadenaTraducida          = None, 
-                        theFechaRevisionTextual     = None, 
-                        theUsuarioRevisor           = None, 
-                        theFechaDefinitivoTextual   = None, 
-                        theUsuarioCoordinador       = None, 
                         theComentario               = unNuevoComentario, 
                     )
                 
@@ -1263,7 +1243,6 @@ class TRATraduccion_Operaciones:
                 
             unaCadenaTraducida          = self.getCadenaTraducida()            
             unComentarioTraduccion      = self.getComentario() 
-            unaHistoriaTraduccion       = self.getHistoria()
             unEstadoTraduccion          = self.getEstadoTraduccion()  
             unaFechaTraduccionTextual   = self.getFechaTraduccionTextual()  
             unUsuarioTraductor          = self.getUsuarioTraductor()  
@@ -1377,13 +1356,7 @@ class TRATraduccion_Operaciones:
                         theFechaAccionTextual       = unAhoraStoreString, 
                         theUsuarioActor             = unMemberId, 
                         theEstadoTraduccion         = cEstadoTraduccionPendiente, 
-                        theFechaTraduccionTextual   = None, 
-                        theUsuarioTraductor         = None, 
-                        theCadenaTraducida          = unaCadenaTraducida, 
-                        theFechaRevisionTextual     = None, 
-                        theUsuarioRevisor           = None, 
-                        theFechaDefinitivoTextual   = None, 
-                        theUsuarioCoordinador       = None, 
+                        theCadenaTraducida          = None, 
                         theComentario               = unComentarioParaHistoria,                   
                     )
                                        
@@ -1471,7 +1444,6 @@ class TRATraduccion_Operaciones:
                 
             unaCadenaTraducida          = self.getCadenaTraducida()            
             unComentarioTraduccion      = self.getComentario() 
-            unaHistoriaTraduccion       = self.getHistoria()
             unEstadoTraduccion          = self.getEstadoTraduccion()  
             unaFechaTraduccionTextual   = self.getFechaTraduccionTextual()  
             unUsuarioTraductor          = self.getUsuarioTraductor()  
@@ -1608,13 +1580,7 @@ class TRATraduccion_Operaciones:
                         theFechaAccionTextual       = unAhoraStoreString, 
                         theUsuarioActor             = unMemberId, 
                         theEstadoTraduccion         = cEstadoTraduccionPendiente, 
-                        theFechaTraduccionTextual   = None, 
-                        theUsuarioTraductor         = None, 
-                        theCadenaTraducida          = unaCadenaTraducida, 
-                        theFechaRevisionTextual     = None, 
-                        theUsuarioRevisor           = None, 
-                        theFechaDefinitivoTextual   = None, 
-                        theUsuarioCoordinador       = None, 
+                        theCadenaTraducida          = None, 
                         theComentario               = unComentarioParaHistoria,                   
                     )
                                        
@@ -1703,7 +1669,6 @@ class TRATraduccion_Operaciones:
 
             unaCadenaTraducida          = self.getCadenaTraducida()            
             unComentarioTraduccion      = self.getComentario() 
-            unaHistoriaTraduccion       = self.getHistoria()
             unEstadoTraduccion          = self.getEstadoTraduccion()  
             unaFechaTraduccionTextual   = self.getFechaTraduccionTextual()  
             unUsuarioTraductor          = self.getUsuarioTraductor()  
@@ -1843,13 +1808,7 @@ class TRATraduccion_Operaciones:
                         theFechaAccionTextual       = unAhoraStoreString,         
                         theUsuarioActor             = unMemberId,                 
                         theEstadoTraduccion         = cEstadoTraduccionTraducida,  
-                        theFechaTraduccionTextual   = unaFechaTraduccionTextual,  
-                        theUsuarioTraductor         = unUsuarioTraductor,         
                         theCadenaTraducida          = unaCadenaTraducida ,        
-                        theFechaRevisionTextual     = None,                       
-                        theUsuarioRevisor           = None,                       
-                        theFechaDefinitivoTextual   = None,                       
-                        theUsuarioCoordinador       = None,                       
                         theComentario               = unComentarioParaHistoria,                   
                     )
                                        
@@ -1938,7 +1897,6 @@ class TRATraduccion_Operaciones:
                  
             unaCadenaTraducida          = self.getCadenaTraducida()            
             unComentarioTraduccion      = self.getComentario() 
-            unaHistoriaTraduccion       = self.getHistoria()
             unEstadoTraduccion          = self.getEstadoTraduccion()  
             unaFechaTraduccionTextual   = self.getFechaTraduccionTextual()  
             unUsuarioTraductor          = self.getUsuarioTraductor()  
@@ -2071,13 +2029,7 @@ class TRATraduccion_Operaciones:
                         theFechaAccionTextual       = unAhoraStoreString, 
                         theUsuarioActor             = unMemberId, 
                         theEstadoTraduccion         = cEstadoTraduccionRevisada, 
-                        theFechaTraduccionTextual   = unaFechaTraduccionTextual, 
-                        theUsuarioTraductor         = unUsuarioTraductor, 
                         theCadenaTraducida          = unaCadenaTraducida, 
-                        theFechaRevisionTextual     = unAhoraStoreString, 
-                        theUsuarioRevisor           = unMemberId, 
-                        theFechaDefinitivoTextual   = None, 
-                        theUsuarioCoordinador       = None, 
                         theComentario               = unComentarioParaHistoria,
                     )
                     
@@ -2165,7 +2117,6 @@ class TRATraduccion_Operaciones:
                  
             unaCadenaTraducida          = self.getCadenaTraducida()            
             unComentarioTraduccion      = self.getComentario() 
-            unaHistoriaTraduccion       = self.getHistoria()
             unEstadoTraduccion          = self.getEstadoTraduccion()  
             unaFechaTraduccionTextual   = self.getFechaTraduccionTextual()  
             unUsuarioTraductor          = self.getUsuarioTraductor()  
@@ -2294,13 +2245,7 @@ class TRATraduccion_Operaciones:
                         theFechaAccionTextual       = unAhoraStoreString, 
                         theUsuarioActor             = unMemberId, 
                         theEstadoTraduccion         = cEstadoTraduccionDefinitiva, 
-                        theFechaTraduccionTextual   = unaFechaTraduccionTextual, 
-                        theUsuarioTraductor         = unUsuarioTraductor, 
                         theCadenaTraducida          = unaCadenaTraducida, 
-                        theFechaRevisionTextual     = unaFechaRevisionTextual, 
-                        theUsuarioRevisor           = unUsuarioRevisor, 
-                        theFechaDefinitivoTextual   = unAhoraStoreString, 
-                        theUsuarioCoordinador       = unMemberId, 
                         theComentario               = unComentarioParaHistoria               
                     )
                
@@ -2564,11 +2509,9 @@ class TRATraduccion_Operaciones:
             unExecutionRecord and unExecutionRecord.pEndExecution()
         
 
-           
-    
+
   
 
-    
         
  
     security.declarePrivate( "pRegistrarHistoria")
@@ -2577,56 +2520,32 @@ class TRATraduccion_Operaciones:
         theFechaAccionTextual      =None, 
         theUsuarioActor            =None, 
         theEstadoTraduccion        =None, 
-        theFechaTraduccionTextual  =None, 
-        theUsuarioTraductor        =None, 
         theCadenaTraducida         =None, 
-        theFechaRevisionTextual    =None, 
-        theUsuarioRevisor          =None, 
-        theFechaDefinitivoTextual  =None, 
-        theUsuarioCoordinador      =None, 
         theComentario              =None):
         """Append a new translation change history record.
         
         """
 
        
-        unRegistroHistoria = { } # use an empty dict, and populate it minimally, to save storage space self.fNewVoidRegistroHistoria()
+        unRegistroHistoria = self.fNewVoidRegistroHistoria() # an empty dict, to be populated minimally, to save storage space
         
         if theAccion:
-            unRegistroHistoria[ cTRAHistory_ActionKind] = theAccion
+            unRegistroHistoria[ cTRAHistory_ActionKind]      = theAccion
             
         if theFechaAccionTextual:
-            unRegistroHistoria[ cTRAHistory_ActionDate] = theFechaAccionTextual
+            unRegistroHistoria[ cTRAHistory_ActionDate]      = theFechaAccionTextual
             
         if theUsuarioActor:
-            unRegistroHistoria[ cTRAHistory_User] = theUsuarioActor
+            unRegistroHistoria[ cTRAHistory_User]            = theUsuarioActor
             
         if theEstadoTraduccion:
-            unRegistroHistoria[ cTRAHistory_Status] = theEstadoTraduccion
+            unRegistroHistoria[ cTRAHistory_Status]          = theEstadoTraduccion
             
         if theCadenaTraducida:
-            unRegistroHistoria[ cTRAHistory_Translation] = theCadenaTraducida
-            
-        if theFechaTraduccionTextual:
-            unRegistroHistoria[ cTRAHistory_TranslationDate] = theFechaTraduccionTextual
-            
-        if theUsuarioTraductor:
-            unRegistroHistoria[ cTRAHistory_Translator] = theUsuarioTraductor
-            
-        if theFechaRevisionTextual:
-            unRegistroHistoria[ cTRAHistory_RevisionDate] = theFechaRevisionTextual
-            
-        if theUsuarioRevisor:
-            unRegistroHistoria[ cTRAHistory_Reviewer] = theUsuarioRevisor
-            
-        if theFechaDefinitivoTextual:
-            unRegistroHistoria[ cTRAHistory_DefinitiveDate] = theFechaDefinitivoTextual
-            
-        if theUsuarioCoordinador:
-            unRegistroHistoria[ cTRAHistory_Coordinator] = theUsuarioCoordinador
-            
+            unRegistroHistoria[ cTRAHistory_Translation]     = theCadenaTraducida
+           
         if theComentario:
-            unRegistroHistoria[ cTRAHistory_Comment] = theComentario
+            unRegistroHistoria[ cTRAHistory_Comment]         = theComentario
             
             
         if not unRegistroHistoria:

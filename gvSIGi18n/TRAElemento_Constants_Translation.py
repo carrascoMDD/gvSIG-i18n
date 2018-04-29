@@ -75,6 +75,7 @@ cTranslationHistoryAction_HacerRevisada  = 'HacerRevisada'
 cTranslationHistoryAction_HacerDefinitiva= 'HacerDefinitiva'
 cTranslationHistoryAction_Invalidar      = 'Invalidar'
 cTranslationHistoryAction_IntentarTraducirDifferentCounter       = 'IntentarTraducirDifferentCounter'
+cTranslationHistoryAction_Desconocida    = 'Desconocida'
 
 cTranslationHistoryActions = [
     cTranslationHistoryAction_Importar,       
@@ -100,13 +101,13 @@ cTRAHistory_ActionDate      = 'acd'
 cTRAHistory_User            = 'use'
 cTRAHistory_Status          = 'sta'
 cTRAHistory_Translation     = 'tra'
-cTRAHistory_TranslationDate = 'trd'
-cTRAHistory_Translator      = 'tra'
-cTRAHistory_RevisionDate    = 'red'
-cTRAHistory_Reviewer        = 'rev'
-cTRAHistory_DefinitiveDate  = 'ded'
-cTRAHistory_Coordinator     = 'coo'
 cTRAHistory_Comment         = 'cmt'
+#cTRAHistory_TranslationDate = 'trd'
+#cTRAHistory_Translator      = 'tru'
+#cTRAHistory_RevisionDate    = 'red'
+#cTRAHistory_Reviewer        = 'reu'
+#cTRAHistory_DefinitiveDate  = 'ded'
+#cTRAHistory_Coordinator     = 'cou'
 
 
 

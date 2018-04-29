@@ -1,4 +1,4 @@
 call gendep.bat
-call overUI.bat
-#call tool.bat
+call gendepui.bat
+call gendeptool.bat
 TIME /T

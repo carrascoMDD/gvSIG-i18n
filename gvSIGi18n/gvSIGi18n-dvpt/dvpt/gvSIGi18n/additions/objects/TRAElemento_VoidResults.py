@@ -766,25 +766,19 @@ class TRAElemento_VoidResults:
 
 
     
-     
+    security.declarePrivate( "fNewVoidRegistroHistoria")
     def fNewVoidRegistroHistoria( self,):
-        """Fields to pack into a translation change history record string.
+        """Void and EMPTY declaration of ields to pack into a translation change history record string. Return an empty dict, to be populated minimally, to save storage space. 
         
         """
-        unRegistro = {
-            cTRAHistory_ActionKind:      '',
-            cTRAHistory_ActionDate:      '',
-            cTRAHistory_User:            '',
-            cTRAHistory_Status:          '',
-            cTRAHistory_Translation:     '',
-            cTRAHistory_TranslationDate: '',
-            cTRAHistory_Translator:      '',
-            cTRAHistory_RevisionDate:    '',
-            cTRAHistory_Reviewer:        '',
-            cTRAHistory_DefinitiveDate:  '',
-            cTRAHistory_Coordinator:     '',
+        unRegistroHistoria = {
+            #cTRAHistory_ActionKind      : None,
+            #cTRAHistory_ActionDate      : None,
+            #cTRAHistory_User            : None,
+            #cTRAHistory_Status          : None,
+            #cTRAHistory_Translation     : None,
+            #cTRAHistory_Comment         : None,
         }
-        return unRegistro
+        return unRegistroHistoria
     
-        
-        
+            

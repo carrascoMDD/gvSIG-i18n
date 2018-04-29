@@ -391,6 +391,11 @@ msgstr "Report date"
 msgid "gvSIGi18n_HideStateTransitionColumns_label"
 msgstr "Hide columns with Status change Buttons"
 
+#. Default: "Show columns with Status change Buttons"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ShowStateTransitionColumns_label"
+msgstr "Show columns with Status change Buttons"
+
 #. Default: "Reporting the Modules and Languages Status is an intensive process. It is not performed at each user request, but rather after some lapsed time, or changes made, since it was last generated."
 #: TRAInformeModulos_i18n_view.pt
 msgid "gvSIGi18n_InformeModulosIntensiveWarning_msgid"
@@ -4674,38 +4679,185 @@ msgstr "Details legend: Cr=Created, Tr=Translated, Re=Reviewed, De=Definitive(lo
 
 
 #. Default: "Activity Report only reflects changes to the translations catalog performed since the time the web servers were last started, on:"
-#: TRACAtalogoActividad:inner.pt
+#: TRACatalogoActividad_inner.pt
 msgid "gvSIGi18n_InformeActividadDesdeArranque_help"
 msgstr "Activity Report only reflects changes to the translations catalog performed since the time the web servers were last started, on:"
 
 
 #. Default: "Activity Report reflects the most recent changes, and is refreshed after just a short period of time, or a low number of changes."
-#: TRACAtalogoActividad:inner.pt
+#: TRACatalogoActividad_inner.pt
 msgid "gvSIGi18n_InformeActividadHastaMasReciente_help"
 msgstr "Activity Report reflects the most recent changes, and is refreshed after just a short period of time, or a low number of changes."
 
 #. Default: "To review a more complete report of changes to the translations catalog, including changes made before the servers were started, please visit the last Contributions report."
-#: TRACAtalogoActividad:inner.pt
+#: TRACatalogoActividad_inner.pt
 msgid "gvSIGi18n_InformeContribucionesMasCompleto_help"
 msgstr "To review a more complete report of changes to the translations catalog, including changes made before the servers were started, please visit the last Contributions report."
 
 #. Default: "The last Contributions report may not include the most recent changes, because it is generated on demand by translations Coordinators or authorized Users."
-#: TRACAtalogoActividad:inner.pt
+#: TRACatalogoActividad_inner.pt
 msgid "gvSIGi18n_InformeContribucionesPuedeNoEstarAlDia_help"
 msgstr "The last Contributions report may not include the most recent changes, because it is generated on demand by translations Coordinators or authorized Users."
                       
 #. Default: "For a recently updated Contributions report, please ask your translations Coordinator, or generate a new one yourself, if you have permission, by clicking on the create contributions report action on the actions menu."
-#: TRACAtalogoActividad:inner.pt
+#: TRACatalogoActividad_inner.pt
 msgid "gvSIGi18n_InformeContribucionesSolicitarACoordinadorOGenerar_help"
 msgstr "For a recently updated Contributions report, please ask your translations Coordinator, or generate a new one yourself, if you have permission, by clicking on the create contributions report action on the actions menu."
 
 #. Default: "No Contributions Report Available for review."
-#: TRACAtalogoActividad:inner.pt
+#: TRACatalogoActividad_inner.pt
 msgid "gvSIGi18n_InformeContribucionesNotAvailable_msgid"
 msgstr "No Contributions Report Available for review."
 
 #. Default: "Last Contributions Report"
-#: TRACAtalogoActividad:inner.pt
+#: TRACatalogoActividad_inner.pt
 msgid "gvSIGi18n_LastContributionsReport_msgid"
 msgstr "Last Contributions Report"
+
+
+
+
+
+#. Default: "Options that do not require refreshing the page"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_PresentationOptions_NoNeedToRefresh_label"
+msgstr "Options that do not require refreshing the page"
+
+
+#. Default: "Options that require refreshing the page"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_PresentationOptions_MustRefresh_label"
+msgstr "Options that require refreshing the page"
+
+
+
+#. Default: "Import"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationHistoryAction_Importar"
+msgstr "Import"
+
+#. Default: "Ignore"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationHistoryAction_Ignorar"
+msgstr "Ignore"
+
+#. Default: "Translate"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationHistoryAction_Traducir"
+msgstr "Translate"
+
+#. Default: "Comment"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationHistoryAction_Comentar"
+msgstr "Comment"
+
+#. Default: "Change to Pending"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationHistoryAction_HacerPendiente"
+msgstr "Change to Pending"
+
+#. Default: "Change to Translated"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationHistoryAction_HacerTraducida"
+msgstr "Change to Translated"
+
+#. Default: "Change to Reviewed"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationHistoryAction_HacerRevisada"
+msgstr "Change to Reviewed"
+
+#. Default: "Change to Definitive (locked)"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationHistoryAction_HacerDefinitiva"
+msgstr "Change to Definitive (locked)"
+
+#. Default: "Invalidate"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationHistoryAction_Invalidar"
+msgstr "Invalidate"
+
+#. Default: "Collision with other simultaneus translation"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationHistoryAction_IntentarTraducirDifferentCounter"
+msgstr "Collision with other simultaneus translation"
+
+#. Default: "Unknown"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationHistoryAction_Desconocida"
+msgstr "Unknown"
+
+#. Default: "No History"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_NoTranslationsHistory"
+msgstr "No History"
+
+
+#. Default: "Do Not Confirm Translation Changes"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_NoConfirmTranslationChanges_label"
+msgstr "Do Not Confirm Translation Changes"
+
+#. Default: "Do Not Confirm Status Changes"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_NoConfirmStatusChanges_label"
+msgstr "Do Not Confirm Status Changes"
+
+#. Default: "Do Not Confirm Translation Delete"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_NoConfirmTranslationDelete_label"
+msgstr "Do Not Confirm Translation Delete"
+
+#. Default: "Changes Confirmation options"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_controlConfirmations_title"
+msgstr "Changes Confirmation options"
+
+#. Default: "You may optionally disable user interface dialog requests to confirm changes of translations or status."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_controlConfirmations_help"
+msgstr "You may optionally disable user interface dialog requests to confirm changes of translations or status."
+
+
+#. Default: "Do you want to CHANGE the string TRANSLATION ?"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ConfirmTranslateMsg"
+msgstr "Do you want to CHANGE the string TRANSLATION ?"
+
+#. Default: "Do you REALLY want to CHANGE the string Translation ?"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ReallyConfirmTranslateMsg"
+msgstr "Do you REALLY want to CHANGE the string Translation ?"
+
+
+
+#. Default: "Do you want to CHANGE STATUS ?"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ConfirmChangeStatusMsg"
+msgstr "Do you want to CHANGE STATUS ?"
+
+#. Default: "Do you REALLY want to CHANGE STATUS ?"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ReallyConfirmChangeStatusMsg"
+msgstr "Do you REALLY want to CHANGE STATUS ?"
+
+
+#. Default: "Do you want to DELETE the string Translation ?"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ConfirmDeleteMsg"
+msgstr "Do you want to DELETE the string Translation ?"
+
+#. Default: "Do you REALLY want to DELETE the string Translation ?"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ReallyConfirmDeleteMsg"
+msgstr "Do you REALLY want to DELETE the string Translation ?"
+
+#. Default: "Do you want to apply BATCH to ALL the SELECTED translations ?"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ConfirmBatchMsg"
+msgstr "Do you want to apply BATCH to ALL the SELECTED translations ?"
+
+#. Default: "Do you REALLY want to apply BATCH to ALL the SELECTED translations ?"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ReallyConfirmBatchMsg"
+msgstr "Do you REALLY want to apply BATCH to ALL the SELECTED translations ?"
 
