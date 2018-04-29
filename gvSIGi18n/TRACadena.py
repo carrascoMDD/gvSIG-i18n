@@ -159,7 +159,7 @@ schema = Schema((
         description2="User who created or imported the string to be translated.",
         containment="Not Specified",
         ea_guid="{419A6822-511F-48d5-9D48-A75E8E596478}",
-        position="7",
+        position="6",
         owner_class_name="TRACadena",
         label="Usuario Creador"
     ),

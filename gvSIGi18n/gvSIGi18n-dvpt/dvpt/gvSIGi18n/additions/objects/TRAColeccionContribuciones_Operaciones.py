@@ -427,8 +427,8 @@ class TRAColeccionContribuciones_Operaciones:
         
         try:
             
-            unImportResult = theProcessControlManager.vResult
-            if not unImportResult:
+            unContribucionesResult = theProcessControlManager.vResult
+            if not unContribucionesResult:
                 return None
             
             
@@ -439,6 +439,10 @@ class TRAColeccionContribuciones_Operaciones:
                 return None
                                     
         
+            unCatalogo.pFlushCachedTemplates( [ 'TRACatalogo',          'TRACatalogo_NoHeaderNoFooter',])
+            unCatalogo.pFlushCachedTemplates( [ 'TRACatalogoActividad', 'TRACatalogoActividad_NoHeaderNoFooter',])
+            
+            
             unPermissionsCache = fDictOrNew( thePermissionsCache)
             unRolesCache       = fDictOrNew( theRolesCache)
             
@@ -569,12 +573,12 @@ class TRAColeccionContribuciones_Operaciones:
                     raise TRAProcessErrorException( 'new_element_retrieval_failed', unaIdNuevoContribuciones,)
                 return None
 
-            unImportResult[ 'elemento_contribuciones_meta_type']   = unResultadoNuevoContribuciones.get( 'meta_type', '')
-            unImportResult[ 'elemento_contribuciones_title']       = unResultadoNuevoContribuciones.get( 'title', '')
-            unImportResult[ 'elemento_contribuciones_description'] = unResultadoNuevoContribuciones.get( 'description', '')
-            unImportResult[ 'elemento_contribuciones_path']        = unResultadoNuevoContribuciones.get( 'path', '')
-            unImportResult[ 'elemento_contribuciones_URL']         = unResultadoNuevoContribuciones.get( 'url', '')
-            unImportResult[ 'elemento_contribuciones_UID']         = unResultadoNuevoContribuciones.get( 'UID', '')
+            unContribucionesResult[ 'elemento_contribuciones_meta_type']   = unResultadoNuevoContribuciones.get( 'meta_type', '')
+            unContribucionesResult[ 'elemento_contribuciones_title']       = unResultadoNuevoContribuciones.get( 'title', '')
+            unContribucionesResult[ 'elemento_contribuciones_description'] = unResultadoNuevoContribuciones.get( 'description', '')
+            unContribucionesResult[ 'elemento_contribuciones_path']        = unResultadoNuevoContribuciones.get( 'path', '')
+            unContribucionesResult[ 'elemento_contribuciones_URL']         = unResultadoNuevoContribuciones.get( 'url', '')
+            unContribucionesResult[ 'elemento_contribuciones_UID']         = unResultadoNuevoContribuciones.get( 'UID', '')
             
             
             

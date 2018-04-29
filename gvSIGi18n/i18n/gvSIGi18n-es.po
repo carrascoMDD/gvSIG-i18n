@@ -4089,6 +4089,16 @@ msgstr "Modulos"
 msgid "gvSIGi18n_TRATraduccion_attr_nombresModulos_help"
 msgstr "Nombres de los Modulos en los que se usa esta cadena."
 
+#. Default: "Referencias a fuentes"
+#: TRATraduccion referenciasFuentes
+msgid "gvSIGi18n_TRATraduccion_attr_referenciasFuentes_label"
+msgstr "Referencias a fuentes"
+
+#. Default: "Referencias a codigo fuente donde aparece esta cadena."
+#: TRATraduccion referenciasFuentes
+msgid "gvSIGi18n_TRATraduccion_attr_referenciasFuentes_help"
+msgstr "Referencias a codigo fuente donde aparece esta cadena."
+
 #. Default: "Simbolo"
 #: TRATraduccion simbolo
 msgid "gvSIGi18n_TRATraduccion_attr_simbolo_label"

@@ -134,7 +134,7 @@ msgstr "Filter by words in the symbol or the translation"
 msgid "gvSIGi18n_ColumnaSimboloColapsable_Action_Hide_help"
 msgstr "Click to hide this column."
 
-#. Default: "Click here to hide show the column with symbols."
+#. Default: "Click here to show the column with symbols."
 #: TRAChangeAndBrowseTranslations.py
 msgid "gvSIGi18n_ColumnaSimboloColapsable_Action_Show_help"
 msgstr "Click here to hide show the column with symbols."
@@ -4873,5 +4873,104 @@ msgstr "Error refreshing Activity Report"
 #: TRACatalogoActividad.pt
 msgid "gvSIGi18n_ActivityReport_WillNotBeRegeneratedForUsersWithoutPermission"
 msgstr "Shall Not be refreshed because you have no permission to ellaborate it."
+
+
+
+
+#. Default: "Fuentes"
+#: TRAChangeAndBrowseTranslations.pt
+msgid "gvSIGi18n_Fuentes_title"
+msgstr "Sources"
+
+
+
+#. Default: "Por favor, visite"
+#: TRAInformeIdiomas_CustomView.pt
+msgid "gvSIGi18n_PleaseVisit_msgid"
+msgstr "Please visit"
+
+
+
+
+
+#. Default: "Usted no esta autorizado para generar un Informe de Estado por Idiomas."
+#: TRACatalogoInforme.pt
+msgid "gvSIGi18n_CanNot_Generate_ReportByLanguages"
+msgstr "You are not authorized to produce a Status Report by Languages."
+
+
+#. Default: "Usted no esta autorizado para generar un Informe de Estado por Modulos."
+#: TRACatalogoDetalle.pt
+msgid "gvSIGi18n_CanNot_Generate_ReportByModules"
+msgstr "You are not authorized to produce a Status Report by Modules."
+
+
+#. Default: "Usted no esta autorizado para generar un Informe de Contribuciones por Usuarios."
+#: TRACatalogoActividad.pt
+msgid "gvSIGi18n_CanNot_Generate_ActivityReport"
+msgstr "You are not authorized to produce a Activity Report"
+
+
+#. Default: "Error refrescando Informe"
+#: TRACatalogoInforme.pt TRACatalogoDetalle.pt
+msgid "gvSIGi18n_StatusReport_ErrorRefreshing"
+msgstr "Error refreshing Report"
+
+
+
+#. Default: "Puede visitar el ultimo informe por Idiomas"
+#: TRACatalogoDetalle.pt
+msgid "gvSIGi18n_YouMayVisitLastReportByLanguages_label"
+msgstr "You may visit the last Report by Languages"
+
+
+
+#. Default: "Puede visitar el ultimo informe por Modulos"
+#: TRACatalogoInforme.pt 
+msgid "gvSIGi18n_YouMayVisitLastReportByModules_label"
+msgstr "You may visit the last Report by Modules"
+
+
+#. Default: "Puede visitar el ultimo informe de Contribuciones por Usuarios"
+#: TRACatalogoActividad.pt 
+msgid "gvSIGi18n_YouMayVisitLastContributionsByUsers_label"
+msgstr "You may visit the last Report of Contributions by Users"
+
+
+#. Default: "Informe de Actividad reciente por Usuarios Contribuidores"
+#: TRACatalogoActividad.pt 
+msgid "gvSIGi18n_ActivityReport_label"
+msgstr "Report the recent Activity by Contributor Users"
+
+
+
+#. Default: "Informe de Contribuciones desde"
+#: TRACatalogoActividad_inner.pt 
+msgid "gvSIGi18n_ActivityReportingContributionsSince_help"
+msgstr "Reporting contributions since"
+
+#. Default: "Puede visitar el ultimo Informe de Contribuciones por Usuarios"
+#: TRACatalogoActividad_inner.pt 
+msgid "gvSIGi18n_YouMayVisitReportWithHistoricContributionsByUsers_label"
+msgstr "You may visit the last Report of Contributions by Users"
+
+#. Default: "Usuarios Contribuidores"
+#: TRACatalogo_inner.pt 
+msgid "gvSIGi18n_ContributingUsers_label"
+msgstr "Contributing Users"
+
+#. Default: "Administradores"
+#: TRACatalogo_inner.pt 
+msgid "gvSIGi18n_AdminUsers_label"
+msgstr "Administrators"
+
+
+
+
+#. Default: "Idiomas y Modulos"
+#: TRACatalogo_inner.pt 
+msgid "gvSIGi18n_LanguagesAndModules_label"
+msgstr "Languages and Modules"
+
 
 

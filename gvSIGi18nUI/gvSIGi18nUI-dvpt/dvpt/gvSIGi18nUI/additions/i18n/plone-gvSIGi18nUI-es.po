@@ -369,3 +369,17 @@ msgstr "Crear Informe de Contribuciones"
 msgid "Create Import to Restore Backup"
 msgstr "Crear Importacion para Recuperar"
 
+
+
+#. Default: "By Languages"
+#: TRAInforme.py
+msgid "By Languages"
+msgstr "Por Idiomas"
+
+
+#. Default: "By Modules"
+#: TRAInforme.py
+msgid "By Modules"
+msgstr "Por Modulos"
+
+

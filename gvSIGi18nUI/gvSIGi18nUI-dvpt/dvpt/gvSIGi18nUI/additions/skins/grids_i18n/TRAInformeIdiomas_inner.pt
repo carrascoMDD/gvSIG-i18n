@@ -304,6 +304,8 @@
                         <span tal:content="pNombreModulo" />
                         &emsp;
                     </tal:block>
+                    <br/>
+                    <br/>
                 </tal:block>
                 
                 

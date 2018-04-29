@@ -27,10 +27,33 @@
 #
 </tal:block>
 
-<tal:block tal:define="
-    pPermiteCrearElementos python: True;
-    pInformeIdiomas        python: here.TRAgvSIGi18n_tool.fInformeIdiomas( here,)" >
-    
-     
-     <metal:block metal:use-macro="here/TRAInformeIdiomas_inner/macros/tInformeIdiomas_inner" />
+
+  
+            
+<h2>
+    <a id="cTRAid_InformeIdiomas_link" href="#" tal:attributes="href python: '%s/TRAInforme_Idiomas' % here.absolute_url()" >
+        <font color="green" >
+            <strong>
+                <span i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_PleaseVisit_msgid">Please visit-</span>
+                &ensp;
+                <span i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAInforme_attr_informeIdiomas_label">Report by Languages-</span>
+            </strong>   
+        </font>
+    </a>    
+</h2>
+
+<p class="formHelp" i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_TRAInforme_attr_informeIdiomas_help" >Report the translation status, summarized by languages.-</p>
+<br/>
+<br/>
+
+
+
+<tal:block tal:replace="nothing" >
+    <tal:block tal:define="
+        pPermiteCrearElementos python: True;
+        pInformeIdiomas        python: here.TRAgvSIGi18n_tool.fInformeIdiomas( here,)" >
+        
+         
+         <metal:block metal:use-macro="here/TRAInformeIdiomas_inner/macros/tInformeIdiomas_inner" />
+    </tal:block>
 </tal:block>

@@ -155,7 +155,23 @@ class TRAgvSIGi18nTool_Status:
         
         
         
-    
+    security.declareProtected( permissions.View, 'fCanGenerateStatusReportByLanguages')
+    def fCanGenerateStatusReportByLanguages(self,
+        theContextualElement        =None,):
+        """Return whether the connected user can generate a Status Report by Languages.
+        
+        """
+        if theContextualElement == None:
+            return False
+            
+        unCatalogo = theContextualElement.getCatalogo()
+        if unCatalogo == None:
+            return False
+        
+        return unCatalogo.fCanGenerateStatusReportByLanguages()
+        
+        
+                
     
     security.declareProtected( permissions.View, 'fInvalidateObsoleteStatusReportByLanguages')
     def fInvalidateObsoleteStatusReportByLanguages(self,
@@ -176,41 +192,48 @@ class TRAgvSIGi18nTool_Status:
         
         
     
-        
     
-    
-
-    
-    security.declareProtected( permissions.View, 'fElaborarInformeModulos')
-    def fElaborarInformeModulos(self, 
-        theContextualElement    =None,
-        theCheckPermissions         =True, 
-        thePermissionsCache         =None, 
-        theRolesCache               =None, 
-        theParentExecutionRecord    =None):
-        """Generate Report By Languages
-
-        """        
+    security.declareProtected( permissions.View, 'fInvalidateObsoleteStatusReportByLanguages')
+    def fInvalidateObsoleteStatusReportByLanguages(self,
+        theContextualElement        =None,):
         
         if theContextualElement == None:
             return {
-                'error':    cTRAToolCondition_NoContextualElement,   
+                'invalidated':    False,   
             } 
             
         unCatalogo = theContextualElement.getCatalogo()
         if unCatalogo == None:
             return {
-                'error':    cTRAToolCondition_NoCatalogElement,   
+                'invalidated':    False,   
             }
         
-        return unCatalogo.fElaborarInformeModulos( 
-            theCheckPermissions         =theCheckPermissions, 
-            thePermissionsCache         =thePermissionsCache, 
-            theRolesCache               =theRolesCache, 
-            theParentExecutionRecord    =theParentExecutionRecord,
-        )
+        return unCatalogo.fInvalidateObsoleteStatusReportByLanguages()
+                
     
     
+
+    
+    security.declareProtected( permissions.View, 'fCanGenerateActivityReport')
+    def fCanGenerateActivityReport(self, 
+        theContextualElement    =None,
+        theCheckPermissions         =True, 
+        thePermissionsCache         =None, 
+        theRolesCache               =None, 
+        theParentExecutionRecord    =None):
+        """Return whether the connected user can generate an Activity Report.
+
+        """        
+        
+        if theContextualElement == None:
+            return False
+            
+        unCatalogo = theContextualElement.getCatalogo()
+        if unCatalogo == None:
+            return False
+        
+        return unCatalogo.fCanGenerateActivityReport()
+            
     
 
 
@@ -236,10 +259,57 @@ class TRAgvSIGi18nTool_Status:
     
     
     
-    
+
+    security.declareProtected( permissions.View, 'fCanGenerateStatusReportByModules')
+    def fCanGenerateStatusReportByModules(self,
+        theContextualElement        =None,):
+        """Return whether the connected user can generate a Status Report by Modules and Languages.
+        
+        """
+        
+        if theContextualElement == None:
+            return False
+            
+        unCatalogo = theContextualElement.getCatalogo()
+        if unCatalogo == None:
+            return False
+        
+        return unCatalogo.fCanGenerateStatusReportByModules()
+            
     
 
 
+    security.declareProtected( permissions.View, 'fElaborarInformeUsuariosActivos')
+    def fElaborarInformeUsuariosActivos(self, 
+        theContextualElement        =None,
+        thePermissionsCache         =None, 
+        theRolesCache               =None, 
+        theParentExecutionRecord    =None):
+        """Generate Report of recently active users.
+
+        """       
+        if theContextualElement == None:
+            return {  
+                'success':    False,
+                'error':  cTRAToolCondition_NoContextualElement, 
+            }
+        
+        
+        unCatalogo = theContextualElement.getCatalogo()
+        if unCatalogo == None:
+            return {
+                'success':    False,   
+            }     
+        
+        return unCatalogo.fElaborarInformeUsuariosActivos( 
+            thePermissionsCache         =thePermissionsCache, 
+            theRolesCache               =theRolesCache, 
+            theParentExecutionRecord    =theParentExecutionRecord,
+        )
+    
+                
+    
+    
     
     security.declareProtected( permissions.View, 'fElaborarInformeActividad')
     def fElaborarInformeActividad(self, 
@@ -293,6 +363,24 @@ class TRAgvSIGi18nTool_Status:
         
     
         
-
+    security.declareProtected( permissions.View, 'fInvalidateCatalogReportByObsoleteActivity')
+    def fInvalidateCatalogReportByObsoleteActivity(self, 
+       theContextualElement    =None,):
+        
+        if theContextualElement == None:
+            return {
+                'invalidated':    False,   
+            }
+        
+        unCatalogo = theContextualElement.getCatalogo()
+        if unCatalogo == None:
+            return {
+                'invalidated':    False,   
+            }
+        
+        return unCatalogo.fInvalidateCatalogReportByObsoleteActivity()
+        
+        
+    
     
     

@@ -1,7 +1,36 @@
 gvSIG-i18n RELEASE NOTES
 ========================
 
-version 2.1.1 in progress
+version 2.1.3
+
+Fixed bug: In the translations page, when enabled the option to show the status change buttons, for batch mode, when hiding or dusplaying the symbols column, and displaying or hiding the columns in a row over the translations, the grid looses its proper arrangement, because some cells are not properly hidden or shown. 
+Addition: Translations page now show the string sources (files where the string is used) in the editor details. String sources field now added to TRATraduccion, and to the metadata held in indexes to search for TRATraduccion.
+Addition: When unauthorized users request the rendering of a Status Report (Summary by Languages, or by Modules and Languages) or Activity Report, ths system informe the user that he/she has no permission to generate the report.
+Addition: The rendering of a Status Report (Summary by Languages, or by Modules and Languages) or Activity Report, now includes a hyperlink to the last Status (or Contributions) Report.
+Addition: Status Reports now present two distinct views, to display the Summary Report by Languages and other for the Report by Modules and Languages. The Tabular view of the Report no longer embeds the presentatios of these two reports, but rather ender a hyperlink to visit the specific report view.
+Addition: Initial page of translations catalog now presents the contributing users and administrators of the catalog.
+
+|
+|
+
+------------------------------------------------
+
+version 2.1.2
+
+Fixed bug: No Activity Report is presented to Users, like Anonymous, that are not permitted to ellaborate an up-to-date Activity Report, when the existing Activity Report is obsolete or none exists.
+Addition: In the translations page, when the user requests to hide the left-side column with symbols, then rows with the symbol are added on top of each translation.
+
+
+|
+|
+
+
+------------------------------------------------
+
+|
+|
+
+version 2.1.1
 
 Addition: Translations Page.Options: added options to control whether actions should be protected by confirmation dialogs for translation changes, status changes and translation deletions.
 

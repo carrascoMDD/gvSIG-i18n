@@ -102,389 +102,6 @@ class TRACatalogo_Informes:
 
 
 
-
-
-    security.declarePrivate( 'fNewVoidInformeModulos')
-    def fNewVoidInformeModulos(self):
-        """Instantiate Results  for Modules report.
-
-        """
-
-        unNuevoInforme = {
-            'report_date':        None,
-            'estados':              cTodosEstados[:],
-            'cabeceras_idiomas':    [],
-            'numero_cadenas':       0,
-            'informes_modulos':     [],
-            'totales_estados':      self.fNewVoidInformeTodosEstados(),
-            'total_traducciones':   0,
-            'error':                '',
-            'exception':            '',
-        }
-        return  unNuevoInforme
-
-
-
-    security.declarePrivate( 'fNewVoidInformeModulo')
-    def fNewVoidInformeModulo(self):
-        """Instantiate Results  for one module in a Modules report.
-
-        """
-
-        unNuevoInforme = {
-            'nombre_modulo':       0,
-            'numero_cadenas':      0,
-            'total_traducciones':  0,
-            'informes_idiomas':    [],
-            'totales_estados':      self.fNewVoidInformeTodosEstados(),
-        }
-        return  unNuevoInforme
-
-
-
-    security.declarePrivate( 'fNewVoidCabeceraIdioma')
-    def fNewVoidCabeceraIdioma(self):
-        """Instantiate language results for language header in Modules report.
-
-        """
-
-        unNuevoInforme = {
-            'codigo_idioma_en_gvsig':           '',
-            'codigo_internacional_idioma':      '',
-            'nombre_idioma':                    '',
-            'nombre_nativo_idioma':             '',
-            'flag':                             '',
-            'url_idioma':                       '',
-            'list_contents_permission':         False,
-            'numero_cadenas':                   0,
-            'totales_estados':                  self.fNewVoidInformeTodosEstados(),       
-            'modifiable':                       False,
-        }
-        return  unNuevoInforme
-
-
-
-
-
-
-
-
-
-    
-
-    security.declarePrivate( 'fNewVoidInformeIdiomas')
-    def fNewVoidInformeIdiomas(self):
-        """Instantiate Results  for Languages report.
-
-        """
-
-        unNuevoInforme = {
-            'success':                          False,
-            'report_date':                '',
-            'numero_cadenas':       0,
-            'estados':              cTodosEstados[:],
-            'informes_idiomas':     [],
-            'modules':              [],
-            'error':                '',
-            'exception':            '',
-        }
-        return  unNuevoInforme
-
-
-
-    security.declarePrivate( 'fNewVoidInformeIdioma')
-    def fNewVoidInformeIdioma(self):
-        """Instantiate Result for one language in Languages report.
-
-        """
-
-        unNuevoInforme = {
-            'nombre_idioma':                    '',
-            'nombre_nativo_idioma':             '',
-            'codigo_idioma_en_gvsig':           '',
-            'codigo_internacional_idioma':      '',
-            'flag':                             '',
-            'flag_url':                         '',
-            'url_idioma':                       '',
-            'informes_estados':                 self.fNewVoidInformeTodosEstados(),
-            'total_traducciones':               0,  # only used with modules report
-            'list_contents_permission':         False,
-            'modifiable':                       False,
-        }
-        return  unNuevoInforme
-
-
-
-    security.declarePrivate( 'fNewVoidInformeEstado')
-    def fNewVoidInformeEstado(self):
-        """Instantiate Result for one translation status.
-
-        """
-
-        unNuevoInforme = {
-            'nombre_estado':    '',
-            'cantidad':         0,
-            'porcentaje':       0,
-        }
-        return  unNuevoInforme
-
-
-    security.declarePrivate( 'fNewVoidInformeTodosEstados')
-    def fNewVoidInformeTodosEstados(self):
-        """Instantiate Result for all translation statuses.
-
-        """
-
-        unNuevoInforme = [ ]
-        for unEstado in cTodosEstados:
-            unInformeEstado = self.fNewVoidInformeEstado()
-            unInformeEstado[ 'nombre_estado'] = unEstado
-            unNuevoInforme.append( unInformeEstado)
-        return  unNuevoInforme
-
-
-
-
-
-
-
-    security.declarePrivate( 'fNewVoidInformeTitulosIdiomasYModulosPermitidos')
-    def fNewVoidInformeTitulosIdiomasYModulosPermitidos(self,):
-        """Instantiate Result for Report of titles of allowed languages and modules.
-
-        """
-        unInforme = {
-            'success':                  False,
-            'idiomas':                  [], 
-            'modulos':                  [], 
-            'numero_cadenas':           0,
-            'use_case_query_results':   [],
-            'display_country_flags':    False,
-        }
-        return unInforme
-
-
-
-    security.declarePrivate( 'fNewVoidInformeTitulosIdioma')
-    def fNewVoidInformeTitulosIdioma(self,):
-        unInforme = {
-            'codigo_idioma_en_gvsig':           '', 
-            'codigo_internacional_de_idioma':   '',
-            'nombre':                           '',
-            'nombre_nativo':                    '',
-            'flag':                             '',
-            'codigo_idioma_referencia':         '',
-            'juego_caracteres_javaproperties':  '',
-            'juego_caracteres_po':              '',
-        }
-        return unInforme
-
-    
-    
-    
-    
-    
-    
-    
-
-    security.declarePrivate( 'fNewVoidInformeContribuciones')
-    def fNewVoidInformeContribuciones(self):
-        """Instantiate Results  for Contributions report.
-
-        """
-
-        unNuevoInforme = {
-            'success':                    False,
-            'report_date':                '',
-            'reporting_user':             '',
-            'error':                      '',
-            'exception':                  '',
-            
-            'period_keys':                cTRAContribucionesReport_Periods[:],
-            'modes_keys':                 cTRAContribucion_Modos[:],
-
-            'periods_dates':              dict( [ [ aPeriodKey, [ '', '',] ] for  aPeriodKey in cTRAContribucionesReport_Periods]),
-            'periods_totals':             dict( [ [ aPeriodKey, self.fNewVoidInformeContribucionesYModos(), ] for  aPeriodKey in cTRAContribucionesReport_Periods]),
-            
-            'sorted_language_codes':      [ ],
-
-            'total_contributions':        0,
-            
-            'total_contributions_by_mode': dict( [ [ aModeKey, 0 ] for  aModeKey in cTRAContribucion_Modos]),
-           
-            'contributions_by_language':  { },
-
-            'contributions_by_user':      { },
-            
-            'alphabetical_user_ids':      [ ],
-            
-            'rank_user_ids_total':        [ ],
-            'rank_user_ids_by_periods':   dict( [ [ aPeriodKey, [ ], ] for  aPeriodKey in cTRAContribucionesReport_Periods]),
-            'rank_admin_user_ids_total':  [ ],
-            'rank_admin_user_ids_by_periods': dict( [ [ aPeriodKey, [ ], ] for  aPeriodKey in cTRAContribucionesReport_Periods]),
-            
-            'admin_user_ids':             [ ],
-            
-            # to do
-            'users_member_info':          { },
-            
-        }
-        return  unNuevoInforme
-
-
-
-    
-    
-    security.declarePrivate( 'fNewVoidInformeContribucionesIdioma')
-    def fNewVoidInformeContribucionesIdioma(self):
-        """Instantiate Results  for Contributions report for a specific Language.
-
-        """
-
-        unNuevoInforme = {
-            'nombre_idioma':                    '',
-            'nombre_nativo_idioma':             '',
-            'codigo_idioma_en_gvsig':           '',
-            'codigo_internacional_idioma':      '',
-            'url_idioma':                       '',
-            'flag':                             '',
-            'flag_url':                         '',
-
-            'total_contributions':              0,         
-            'total_contributions_by_mode':      dict( [ [ aModeKey, 0 ] for  aModeKey in cTRAContribucion_Modos]),
-            
-            'periods_totals':                   dict( [ [ aPeriodKey, self.fNewVoidInformeContribucionesYModos(), ] for  aPeriodKey in cTRAContribucionesReport_Periods]),
-            'contributions_by_periods':         dict( [ [ aPeriodKey, { }, ] for  aPeriodKey in cTRAContribucionesReport_Periods]),
-
-            'contributions_by_user':            { },
-            
-            'rank_user_ids_total':              [ ],
-            'rank_user_ids_by_periods':         dict( [ [ aPeriodKey, [ ], ] for  aPeriodKey in cTRAContribucionesReport_Periods]),
-            'rank_admin_user_ids_total':        [ ],
-            'rank_admin_user_ids_by_periods':   dict( [ [ aPeriodKey, [ ], ] for  aPeriodKey in cTRAContribucionesReport_Periods]),
-        
-        }
-        return  unNuevoInforme
-
-    
- 
-    security.declarePrivate( 'fNewVoidInformeContribucionesYModos')
-    def fNewVoidInformeContribucionesYModos(self,):
-        """Instantiate Result for the report of Contributions accumulated by contribution mode.
-
-        """
-        unNuevoInforme = { 
-            'total_contributions':    0,
-            'contributions_by_mode':  dict( [ [ aModeKey, 0 ] for  aModeKey in cTRAContribucion_Modos]),
-        }  
-        return  unNuevoInforme
-
-    
- 
-    security.declarePrivate( 'fNewVoidInformeContribucionesTotalesUsuario')
-    def fNewVoidInformeContribucionesUsuario(self, ):
-        """Instantiate Result for the report of Contributions by one User.
-
-        """
-        unNuevoInforme = { 
-            'total_contributions':        0,
-            'contributions_by_mode':      dict( [ [ aModeKey, 0 ] for  aModeKey in cTRAContribucion_Modos]),
-            'contributions_by_periods':   dict( [ [ aPeriodKey, self.fNewVoidInformeContribucionesUsuarioEnPeriodo(), ] for  aPeriodKey in cTRAContribucionesReport_Periods]),
-            'contributed_language_codes': [ ],
-        }  
-        return  unNuevoInforme
-
-    
-    
-    
-    security.declarePrivate( 'fNewVoidInformeContribucionesUsuarioEnIdioma')
-    def fNewVoidInformeContribucionesUsuarioEnIdioma(self, ):
-        """Instantiate Result for the report of Contributions by one User in one language.
-
-        """
-        unNuevoInforme = { 
-            'total_contributions':        0,
-            'contributions_by_mode':      dict( [ [ aModeKey, 0 ] for  aModeKey in cTRAContribucion_Modos]),
-            'contributions_by_periods':   dict( [ [ aPeriodKey, self.fNewVoidInformeContribucionesUsuarioEnPeriodo(), ] for  aPeriodKey in cTRAContribucionesReport_Periods]),
-        }  
-        return  unNuevoInforme
-    
-
-    
-    
-    
-    security.declarePrivate( 'fNewVoidInformeContribucionesUsuarioEnPeriodo')
-    def fNewVoidInformeContribucionesUsuarioEnPeriodo(self,):
-        """Instantiate Result for the report of Contributions by one User.
-
-        """
-        unNuevoInforme = { 
-            'total_contributions':    0,
-            'contributions_by_mode':  dict( [ [ aModeKey, 0 ] for  aModeKey in cTRAContribucion_Modos]),
-        }  
-        return  unNuevoInforme
-
-    
-    
-
-
-    
-    
-
-
-    security.declarePrivate( 'fNewVoidInformeActividad')
-    def fNewVoidInformeActividad(self):
-        """Instantiate Result for an Activity report.
-
-        """
-        unNuevoInforme = {
-            'success':                         False,
-            'startup_date':                    None,
-            'report_date':                     None,
-            'totals':                          self.fNewVoidInformeActividad_TodosPeriodos( 'total'),
-            'activity_reports_by_language':    { },
-            'period_keys':                     [ ],
-            'last_contributions_report_title': '',
-            'last_contributions_report_URL':   '',
-        }
-        return  unNuevoInforme
-
-
-    
-    
-    security.declarePrivate( 'fNewVoidInformeActividad_TodosPeriodos')
-    def fNewVoidInformeActividad_TodosPeriodos(self, theLanguage=''):
-        """Instantiate Result for an Activity report for all periods, used for each language, and for total of all languages.
-
-        """
-        unNuevoInforme = { } 
-        unNuevoInforme[ 'periods'] = dict( [ [ aPeriodKey, self.fNewVoidInformeActividad_Periodo( aPeriodKey) ] for  aPeriodKey in cActivityReport_Periods])
-        unNuevoInforme[ 'language'] = theLanguage
-        unNuevoInforme[ 'num_activities'] = 0
-            
-        return  unNuevoInforme
-
-
-    
-    
-    security.declarePrivate( 'fNewVoidInformeActividad_Periodo')
-    def fNewVoidInformeActividad_Periodo(self, thePeriod=''):
-        """Instantiate Result for an Activity report for a single period, used for each period, for each language, and for total of all languages.
-
-        """
-        unNuevoInforme = {
-            'period':                    thePeriod,
-            'num_activities':            0,
-            'users_and_num_activities':  { }, # dict with kwy userid and value number of activities, to be later post-processed as a list with elements [ userid, number of activities], sorted descending by number of activities (most active users first)
-        }
-        return  unNuevoInforme
-
-
-
-
-
-
-
     security.declarePublic( 'fInformeTitulosIdiomasConIdiomaReferenciaYModulosPermitidos')
     def fInformeTitulosIdiomasConIdiomaReferenciaYModulosPermitidos( self, 
         theUseCaseName          =None, 
@@ -677,8 +294,9 @@ class TRACatalogo_Informes:
         unExecutionRecord = self.fStartExecution( 'method',  'fElaborarInformeContribuciones', theParentExecutionRecord, False) 
 
         try:
+            unInforme = self.fNewVoidInformeContribuciones()
+            
             try:   
-                unInforme = self.fNewVoidInformeContribuciones()
                 unInforme[ 'report_date']    = self.fDateTimeNowString()
                 unInforme[ 'reporting_user'] = self.fGetMemberId()
 
@@ -1395,8 +1013,7 @@ class TRACatalogo_Informes:
     
     
     
-    
-    
+   
     
     
 
@@ -1423,6 +1040,7 @@ class TRACatalogo_Informes:
 
 
                 if theCheckPermissions :
+                    
                     unUseCaseQueryResult = self.fUseCaseAssessment(  
                         theUseCaseName                  = cUseCase_EllaborateInformeLanguages, 
                         theElementsBindings             = { cBoundObject: self,}, 
@@ -1432,14 +1050,32 @@ class TRACatalogo_Informes:
                         theParentExecutionRecord        = unExecutionRecord,
                     )
                     if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
+                        
+                        unUltimoInforme = self.fObtenerUltimoInforme()
+                        if not ( unUltimoInforme == None):
+                            unInformeIdiomas = unUltimoInforme.fInformeIdiomas()
+                            if unInformeIdiomas:
+                                unInforme.update( unInformeIdiomas)
+                                unInforme.update( {
+                                    'success':    True,
+                                    'generated': False,
+                                })
+                        
                         return unInforme
+                    
+                    
+                    
 
                 unosLanguagesNamesAndFlagsPorCodigo = self.fLanguagesNamesAndFlagsPorCodigo()
 
 
                 unosIdiomasAccesibles = self.getCatalogo().fObtenerTodosIdiomas()
-                if not unosIdiomasAccesibles:
-                    return unInforme
+                #if not unosIdiomasAccesibles:
+                    #unInforme.update( {
+                        #'success':    True,
+                        #'generated':  True,
+                    #})
+                    #return unInforme
                 
                 unInforme[ 'modules'] = self.fTodosNombresModulos()
 
@@ -1472,7 +1108,11 @@ class TRACatalogo_Informes:
                 # ####
                 # ACV 20091217 Should work and report languages even if no strings, but it is already propery filled with zeroes by the void result factory method
                 if not unNumeroCadenas:
+                    unInforme[ 'report_date'] = self.fDateTimeNowString()   
                     unInforme[ 'success'] = True
+                    
+                    self.pStatusReportByLanguagesJustGenerated()
+                    
                     return unInforme        
 
 
@@ -1841,10 +1481,174 @@ class TRACatalogo_Informes:
 
 
     # #############################################################
-    """Ellaboration of activity report
+    """Reports of Activity by contributing users
 
     """  
 
+    
+
+    security.declareProtected( permissions.View, 'fElaborarInformeUsuariosActivos')
+    def fElaborarInformeUsuariosActivos(self, 
+        thePermissionsCache         =None, 
+        theRolesCache               =None, 
+        theParentExecutionRecord    =None):
+        """Generate Report of recently active users.
+
+        """        
+
+        unExecutionRecord = self.fStartExecution( 'method',  'fElaborarInformeUsuariosActivos', theParentExecutionRecord, False) 
+        
+        try:
+            try:   
+                unInforme = self.fNewVoidInformeActiveUsers()
+                
+                unInforme[ 'report_date']   = self.fDateTimeNowString()
+
+                    
+                
+                # #######################################
+                """Retrieve from configuration the names of users that administer the translations catalog, and thus shall appear at the bottom of contributing users, even if they have performed a higher number of changes into the translations catalog.
+                
+                """
+                unosUsuariosAdministradores = [ ]
+                unaConfiguracionVarios = self.fObtenerConfiguracion( cTRAConfiguracionAspecto_Varios)
+                if unaConfiguracionVarios:        
+                    unosUsuariosAdministradoresString = unaConfiguracionVarios.getUsuariosAdministradores()
+                    if unosUsuariosAdministradoresString:
+                        unosUsuariosAdministradores = unosUsuariosAdministradoresString.split()
+                        
+                        
+                someMemberIds  = set( )
+                someAdminIds   = set( )
+                                                    
+                # #############################################################
+                """Retrieve recent activities for this Translations Catalog
+            
+                """  
+                someActivities = self.fRecentActivitiesForRoot()
+                if someActivities:
+                    
+                        
+                    # #############################################################
+                    """Gather contributing user member Ids from recent activity.
+                
+                    """  
+                    for anActivity in someActivities:
+                    
+                        if anActivity:
+                            anActivityUser     = anActivity.get( cRecentActivity_User, None)
+                            
+                            if anActivityUser:
+                                if anActivityUser in unosUsuariosAdministradores:
+                                    someAdminIds.add(  anActivityUser)
+                                else:
+                                    someMemberIds.add( anActivityUser)
+                                
+                                    
+                                    
+                             
+                # #############################################################
+                """Retrieve last contributions report.
+            
+                """  
+                  
+                unaContribuciones = self.fObtenerUltimoContribuciones()
+                if not ( unaContribuciones == None):
+                    unInforme.update( {
+                        'last_contributions_report_title': unaContribuciones.Title(),
+                        'last_contributions_report_URL':   unaContribuciones.absolute_url(),
+                    })     
+                                         
+                                        
+                    # #############################################################
+                    """Gather contributing user member Ids from historic contributions.
+                
+                    """  
+                    unInformeContribuciones = unaContribuciones.fInformeContribuciones()
+                    if unInformeContribuciones:
+                        unosUserIds = unInformeContribuciones.get( 'alphabetical_user_ids', [])
+                        
+                        if unosUserIds:
+                            
+                            for unUserId in unosUserIds:
+                                if unUserId in unosUsuariosAdministradores:
+                                    someAdminIds.add(  unUserId)
+                                else:
+                                    someMemberIds.add( unUserId)
+                         
+                    
+       
+                
+                # #############################################################
+                """Retrieve member info for contributing and admin users.
+            
+                """                 
+                
+                aModelDDvlPloneTool = self.fModelDDvlPloneTool()
+                
+                someSortedMemberIds = sorted( someMemberIds)
+                someMemberInfos = aModelDDvlPloneTool.fGetMemberInfosForUserIds( self, someSortedMemberIds)
+                if someMemberInfos:        
+                    someSortedMemberInfos = sorted( someMemberInfos, lambda aUI, otherUI: cmp( aUI.get( 'member_name', ''), otherUI.get( 'member_name', '')))
+                    unInforme.update( {
+                        'member_infos': someSortedMemberInfos,
+                    })
+                
+                someSortedAdminIds = sorted( someAdminIds)
+                someAdminInfos = aModelDDvlPloneTool.fGetMemberInfosForUserIds( self, someSortedAdminIds)
+                if someAdminInfos:        
+                    someSortedAdminInfos = sorted( someAdminInfos, lambda aUI, otherUI: cmp( aUI.get( 'member_name', ''), otherUI.get( 'member_name', '')))
+                    unInforme.update( {
+                        'admin_infos': someSortedAdminInfos,
+                    })
+                        
+                                                            
+                unInforme[ 'report_date'] = self.fDateTimeNowString()   
+                unInforme[ 'success'] = True
+                                                
+                return unInforme
+
+            except:
+                unaExceptionInfo = sys.exc_info()
+                unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
+
+                unInformeExcepcion = 'Exception during fElaborarInformeUsuariosActivos\n' 
+                unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
+                try:
+                    unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                except:
+                    None
+                unInformeExcepcion += unaExceptionFormattedTraceback   
+
+                unInforme[ 'success'] = False
+                unInforme[ 'condition'] = 'exception'
+                unInforme[ 'exception'] = unInformeExcepcion
+
+                unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
+
+                if cLogExceptions:
+                    logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
+
+                return unInforme
+
+        finally:
+            unExecutionRecord and unExecutionRecord.pEndExecution()
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 
     security.declareProtected( permissions.View, 'fElaborarInformeActividad')
@@ -1902,7 +1706,9 @@ class TRACatalogo_Informes:
                         return unInforme
 
                     
-                    
+                someMemberIds  = set( )   
+                
+                
                 unosLanguagesNamesAndFlagsPorCodigo = self.fLanguagesNamesAndFlagsPorCodigo()
 
 
@@ -1959,6 +1765,9 @@ class TRACatalogo_Informes:
                                 anActivityDate     = anActivity.get( cRecentActivity_Date, None)
                                 anActivityLanguage = anActivity.get( cRecentActivity_Language, None)
                                 anActivityUser     = anActivity.get( cRecentActivity_User, None)
+                                
+                                someMemberIds.add( anActivityUser)
+                                
                                 
                                 if anActivityDate and anActivityLanguage and anActivityUser:
                                     if anActivityLanguage in unosCodigosIdiomasAccesibles:
@@ -2075,7 +1884,33 @@ class TRACatalogo_Informes:
                                             unInforme_Language_Periodo_ByUsers_Sorted = sorted( unInforme_Language_Periodo_ByUsers_ToSort, lambda aOne, anOther: cmp( aOne[ 1], anOther[ 1]), reverse=True)
                                             unInforme_Language_Periodo[ 'users_and_num_activities'] = unInforme_Language_Periodo_ByUsers_Sorted
 
+                                            
+                      
+                                            
+                                            
                         
+                # #############################################################
+                """Retrieve member infos for active users.
+            
+                """  
+                                
+                someSortedMemberIds = sorted( someMemberIds)
+                
+                aModelDDvlPloneTool = self.fModelDDvlPloneTool()
+                
+                someMemberInfos = aModelDDvlPloneTool.fGetMemberInfosForUserIds( self, someSortedMemberIds)
+                if someMemberInfos:        
+                
+                    someSortedMemberInfos = sorted( someMemberInfos, lambda aUI, otherUI: cmp( aUI.get( 'member_name', ''), otherUI.get( 'member_name', '')))
+
+                    someMemberInfosByUserId = dict( [ [ aMemberInfo.get( 'user_id', '?'), aMemberInfo,] for aMemberInfo in someMemberInfos])
+                    
+                    unInforme.update( {
+                        'member_infos':            someSortedMemberInfos,
+                        'member_infos_by_user_id': someMemberInfosByUserId,
+                    })                  
+                        
+                    
                         
                 # #############################################################
                 """Retrieve last contributions report.
@@ -2206,6 +2041,7 @@ class TRACatalogo_Informes:
     security.declareProtected( permissions.View, 'fNewVoidReportInvalidateObsoleteStatusReports')
     def fNewVoidReportInvalidateObsoleteStatusReports( self,):
         aReport = {
+            'success':            False,
             'invalidated':        False,
             'can_ellaborate':     False,
             'path_del_raiz':      '',
@@ -2218,6 +2054,53 @@ class TRACatalogo_Informes:
         
             
        
+    
+    security.declarePrivate( 'fCanGenerateStatusReportByLanguages')
+    def fCanGenerateStatusReportByLanguages(self, ):
+        """Return whether the user is authorized to generate the Status Report by Languages.
+        
+        """
+        unPermissionsCache = { }
+        unRolesCache       = { }
+
+        unUseCaseQueryResult = self.fUseCaseAssessment(  
+            theUseCaseName                  = cUseCase_EllaborateInformeLanguages, 
+            theElementsBindings             = { cBoundObject: self,}, 
+            thePermissionsCache             = unPermissionsCache, 
+            theRolesCache                   = unRolesCache, 
+            theParentExecutionRecord        = None,
+        )
+        if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
+            return False
+        
+        return True
+    
+    
+    
+
+    security.declarePrivate( 'fCanGenerateActivityReport')
+    def fCanGenerateActivityReport(self, ):
+        """Return whether the user is authorized to generate the Activity Report.
+        
+        """
+        unPermissionsCache = { }
+        unRolesCache       = { }
+
+        unUseCaseQueryResult = self.fUseCaseAssessment(  
+            theUseCaseName                  = cUseCase_EllaborateInformeActividad, 
+            theElementsBindings             = { cBoundObject: self,}, 
+            thePermissionsCache             = unPermissionsCache, 
+            theRolesCache                   = unRolesCache, 
+            theParentExecutionRecord        = None,
+        )
+        if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
+            return False
+        
+        return True
+    
+                                    
+                                 
+    
     
     security.declarePrivate( 'fInvalidateObsoleteStatusReportByLanguages')
     def fInvalidateObsoleteStatusReportByLanguages(self, ):
@@ -2284,7 +2167,7 @@ class TRACatalogo_Informes:
                 """
                 unSegundosMinimosRetencionInformeIdiomas = 0
                 if not ( unaConfiguracion == None):
-                    unaConfiguracion.getSegundosMinimosRetencionInformeIdiomas()
+                    unSegundosMinimosRetencionInformeIdiomas = unaConfiguracion.getSegundosMinimosRetencionInformeIdiomas()
                 if not unSegundosMinimosRetencionInformeIdiomas:
                     unSegundosMinimosRetencionInformeIdiomas = 0
                     
@@ -2313,8 +2196,7 @@ class TRACatalogo_Informes:
                     if unVoteMustInvalidateByTime and unNumTranslationsStatusChangesForRoot:
                         unMustInvalidate = True
                         
-                    
-                    
+                     
                     
             finally:
                 # #################
@@ -2341,12 +2223,18 @@ class TRACatalogo_Informes:
                     aReport.update( {
                         'can_ellaborate':  False,
                     })
+                else:
+                    aReport.update( {
+                        'can_ellaborate':  True,
+                    })
+                    
                                 
-                
                 
             if unMustInvalidate:
                 self.pFlushCachedTemplates( [ 'TRACatalogoInforme', 'TRACatalogoInforme_NoHeaderNoFooter',])
                 aReport[ 'invalidated'] = True
+                
+            aReport[ 'success'] = True
                 
             return aReport
                 
@@ -2420,7 +2308,30 @@ class TRACatalogo_Informes:
     
     
     
+     
+    
+    security.declarePrivate( 'fCanGenerateStatusReportByModules')
+    def fCanGenerateStatusReportByModules(self, ):
+        """Return whether the user is authorized to generate the Status Report by Modules.
+        
+        """
+        unPermissionsCache = { }
+        unRolesCache       = { }
 
+        unUseCaseQueryResult = self.fUseCaseAssessment(  
+            theUseCaseName                  = cUseCase_EllaborateInformeModulesAndLanguages, 
+            theElementsBindings             = { cBoundObject: self,}, 
+            thePermissionsCache             = unPermissionsCache, 
+            theRolesCache                   = unRolesCache, 
+            theParentExecutionRecord        = None,
+        )
+        if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
+            return False
+        
+        return True
+    
+    
+    
     
     security.declarePrivate( 'fInvalidateObsoleteStatusReportByModulesAndLanguages')
     def fInvalidateObsoleteStatusReportByModulesAndLanguages(self, ):
@@ -2544,12 +2455,19 @@ class TRACatalogo_Informes:
                     aReport.update( {
                         'can_ellaborate':  False,
                     })
+                else:
+                    aReport.update( {
+                        'can_ellaborate':  True,
+                    })
                         
                 
             if unMustInvalidate:
                 self.pFlushCachedTemplates( [ 'TRACatalogoDetalle', 'TRACatalogoDetalle_NoHeaderNoFooter',])
                 aReport[ 'invalidated'] = True
                 
+                
+            aReport[ 'success'] = True
+            
             return aReport
         finally:
             unExecutionRecord and unExecutionRecord.pEndExecution()
@@ -2635,6 +2553,132 @@ class TRACatalogo_Informes:
         return aReport
         
 
+    
+    
+    
+    
+    security.declarePrivate( 'fInvalidateCatalogReportByObsoleteActivity')
+    def fInvalidateCatalogReportByObsoleteActivity(self, ):
+        """If there has been enough activity, invalidate the Catalog home page, to reflect recent contributing users.
+        
+        """        
+        unExecutionRecord = self.fStartExecution( 'method',  'fInvalidateObsoleteActivityReport', None, False) 
+        
+        try:
+            aReport = self.fNewVoidReportInvalidateObsoleteActivityReport()
+            
+            unPathDelRaiz = self.fPathDelRaiz()
+            if not unPathDelRaiz:
+                return aReport        
+            aReport[ 'path_del_raiz'] = unPathDelRaiz
+            
+            
+            unMustInvalidate              = False
+            unVoteMustInvalidateByNumbers = False
+            unVoteMustInvalidateByTime    = False
+                
+            try:
+                # #################
+                """MUTEX LOCK. 
+                
+                """
+                # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                self.pAcquireGlobalsLock( )
+                # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                
+                    
+                           
+                # ####################################################################
+                """Check if the counter of changes since the last time the activity report was generated, is bigger than the maximum configured for the catalog. 
+                
+                """
+                unaConfiguracion = self.fObtenerConfiguracion( cTRAConfiguracionAspecto_InvalidacionInformes)
+                
+                unNumeroDeActividadesAnularInformeActividad = 0
+                if not ( unaConfiguracion == None):
+                    unNumeroDeActividadesAnularInformeActividad = unaConfiguracion.fObtenerConfiguracion( cTRAConfiguracionAspecto_InvalidacionInformes).getNumeroDeActividadesAnularInformeActividad()
+                if not unNumeroDeActividadesAnularInformeActividad:
+                    unNumeroDeActividadesAnularInformeActividad = 0
+                    
+                aReport[ 'changes_threshold'] = unNumeroDeActividadesAnularInformeActividad
+    
+                if TRACatalogo_Globales.gNumActivitiesSinceActivityReport == None:
+                    TRACatalogo_Globales.gNumActivitiesSinceActivityReport = { }
+                    
+                unNumActivitiesForRoot = TRACatalogo_Globales.gNumActivitiesSinceActivityReport.get( unPathDelRaiz, None)
+                if unNumActivitiesForRoot == None:
+                    unNumActivitiesForRoot = 0
+                    
+                aReport[ 'changes_recorded'] = unNumActivitiesForRoot
+                    
+                if unNumActivitiesForRoot >= unNumeroDeActividadesAnularInformeActividad:
+                    unVoteMustInvalidateByNumbers = True
+                
+                            
+                # ####################################################################
+                """If not already decided to invalidate, and there was any change, Check if enough time has lapsed since the last time the status report by languages was generated. 
+                
+                """
+                unSegundosMinimosRetencionInformeActividad = 0           
+                if not ( unaConfiguracion == None):
+                    unSegundosMinimosRetencionInformeActividad = unaConfiguracion.getSegundosMinimosRetencionInformeActividad()
+                if not unSegundosMinimosRetencionInformeActividad:
+                    unSegundosMinimosRetencionInformeActividad = 0
+                    
+                aReport[ 'seconds_threshold'] = unSegundosMinimosRetencionInformeActividad
+                    
+    
+                if TRACatalogo_Globales.gActivityReportTimeMillis == None:
+                    TRACatalogo_Globales.gActivityReportTimeMillis = { }
+                    
+                unActivityReportTimeMillis = TRACatalogo_Globales.gActivityReportTimeMillis.get( unPathDelRaiz, None)
+                if unActivityReportTimeMillis == None:
+                    unActivityReportTimeMillis = 0
+                    
+                unosMillisecondsNow = self.fMillisecondsNow()
+                
+                unosSecondsLapsed =  int(( unosMillisecondsNow - unActivityReportTimeMillis) / 1000)
+                aReport[ 'seconds_lapsed'] = unosSecondsLapsed
+    
+                if unosSecondsLapsed >= unSegundosMinimosRetencionInformeActividad:
+                    unVoteMustInvalidateByTime = True
+                    
+                
+                if unVoteMustInvalidateByNumbers:
+                    unMustInvalidate = True
+                else:
+                    if unVoteMustInvalidateByTime and unNumActivitiesForRoot:
+                        unMustInvalidate = True
+                        
+                    
+            finally:
+                # #################
+                """MUTEX UNLOCK. 
+                
+                """
+                # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                self.pReleaseGlobalsLock( )
+                # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    
+                
+                
+            if unMustInvalidate:
+                self.pFlushCachedTemplates( [ 'TRACatalogo', 'TRACatalogo_NoHeaderNoFooter',])
+                aReport[ 'invalidated'] = True
+                
+            aReport[ 'success'] = True
+            
+            return aReport
+        
+        finally:
+            unExecutionRecord and unExecutionRecord.pEndExecution()
+
+
+            
+    
+
+    
+    
     
     security.declarePrivate( 'fInvalidateObsoleteActivityReport')
     def fInvalidateObsoleteActivityReport(self, ):
@@ -2740,6 +2784,11 @@ class TRACatalogo_Informes:
                 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     
                 
+                
+            if unMustInvalidate:
+                self.pFlushCachedTemplates( [ 'TRACatalogo', 'TRACatalogo_NoHeaderNoFooter',])
+                
+                
             unPermissionsCache = { }
             unRolesCache       = { }
     
@@ -2752,6 +2801,10 @@ class TRACatalogo_Informes:
             )
             if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
                 unMustInvalidate = False
+                aReport.update( {
+                    'can_ellaborate':  False,
+                })
+            else:
                 aReport.update( {
                     'can_ellaborate':  False,
                 })

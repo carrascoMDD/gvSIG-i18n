@@ -55,52 +55,87 @@
 		  Get the byline - contains details about author and modification date.
 		</div>
             
+		
+		
 		<tal:block tal:define="
-			pFlushCacheCode python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theFlushCacheCode', '');pNoCacheCode python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theNoCacheCode', '');
+			pFlushCacheCode          python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theFlushCacheCode', '');pNoCacheCode python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theNoCacheCode', '');
 			pFlushDiskCache          python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theFlushDiskCache', '');
-			pNoCache                 python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theNoCache', '');pNoCacheAllowed  python: pNoCache and pNoCacheCode and here.MDDModelDDvlPlone_tool.fNoCacheIdAllowsRender( here, pNoCacheCode, 'TRACatalogoInforme_NoHeaderNoFooter',);" >
+			pNoCache                 python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theNoCache', '');
+			pNoCacheAllowed          python: pNoCache and pNoCacheCode and here.MDDModelDDvlPlone_tool.fNoCacheIdAllowsRender( here, pNoCacheCode, 'TRACatalogoInforme_NoHeaderNoFooter',);
+			pCanGenerate             python: here.TRAgvSIGi18n_tool.fCanGenerateStatusReportByLanguages( here, )" >
 			
 			
 		    <tal:block tal:condition="pFlushCacheCode">
-				<tal:block tal:define="dummy python: here.MDDModelDDvlPlone_tool.fFlushCachedTemplateForElement( here, pFlushCacheCode,  'TRACatalogoInforme_NoHeaderNoFooter', pFlushDiskCache)" />
+				<tal:block tal:condition="pCanGenerate" >
+					<tal:block tal:define="dummy python: here.MDDModelDDvlPlone_tool.fFlushCachedTemplateForElement( here, pFlushCacheCode,  'TRACatalogoInforme_NoHeaderNoFooter', pFlushDiskCache)" />
+				</tal:block>
 			</tal:block>
 			
 			
 			
-			<tal:block tal:condition="pNoCacheAllowed" >
-			
+			<tal:block tal:condition="python: pNoCacheAllowed and pCanGenerate" >
 				<tal:block tal:condition="python: not here.TRAgvSIGi18n_tool.fAllowWrite( here,)" >
 					<div class="portalMessage" >
 						<span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TranslationsCatalogIsLockedAgainstModifications', 'The Translations Catalog Is Locked Against Modifications')" />
 					</div>
 				</tal:block>
-                
-			
 				<metal:block metal:use-macro="here/TRACatalogoInforme_inner/macros/tTRACatalogoInformeInner" />
 			</tal:block>
 			
 			
-			<tal:block tal:condition="not: pNoCacheAllowed">
 
-			    <tal:block tal:define="pInvalidateObsoleteReport python: here.TRAgvSIGi18n_tool.fInvalidateObsoleteStatusReportByLanguages( here, )">
+			
 					
+			
+			
+			<tal:block tal:condition="python: not ( pNoCacheAllowed and pCanGenerate)" >
+			
+				<tal:block tal:condition="not: pCanGenerate" >	
+				
+					<br/>
+					<h2>
+						<span i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAInforme_attr_informeIdiomas_label">Report by Languages-</span>
+					</h2>
+					<p class="formHelp" i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_TRAInforme_attr_informeIdiomas_help" >Report the translation status, summarized by languages.-</p>
+					<br/>
+
+			
+					<tal:block tal:define="pUltimoInforme python: here.TRAgvSIGi18n_tool.fRetrieveUltimoInformeResult( here, )">
 					
-					<tal:block tal:condition="python: not ( pInvalidateObsoleteReport and pInvalidateObsoleteReport.get( 'success', False))"  >
 						<p>
-							<font size="2" color="red"
-								tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_StatusReport_ErrorRefreshing', 'Error refreshing Report by Languages-')" />
+							<font size="2" color="green" >
+								<strong >
+									<a href="#" title="#"
+										tal:define="aLinkTitle python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_YouMayVisitLastReportByLanguages_label',   'You may visit the last Report by Languages-' )"
+										tal:attributes="
+											title aLinkTitle;
+											href python: '%sTRAInforme_Idiomas' % pUltimoInforme.get( 'url', '')">
+										<img src="#" alt="#" title="#" 
+											 tal:attributes="src  python: '%s/trainforme.gif' % here.TRAgvSIGi18n_tool.fPortalURL(); alt aLinkTitle; title aLinkTitle" 
+											 id="icon-informe" />
+										<span tal:content="aLinkTitle" />
+									</a>
+								</strong>
+							</font>
 						</p>
+						<br/>
 					</tal:block>
+				</tal:block>
+				
+			
+				<tal:block tal:condition="python: ( not pNoCacheAllowed) and pCanGenerate">
 					
-					<tal:block tal:condition="python: pInvalidateObsoleteReport and pInvalidateObsoleteReport.get( 'sucess', False)"  >
-					
-						<tal:block tal:condition="python: not pInvalidateObsoleteReport.get( 'can_ellaborate', False)"  >
-							<br/>
-							<span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_StatusReport_WillNotBeRegeneratedForUsersWithoutPermission', 'Shall Not be refreshed because you have no permission to ellaborate it.-')" /> 
+					<tal:block tal:define="pInvalidateObsoleteReport python: here.TRAgvSIGi18n_tool.fInvalidateObsoleteStatusReportByLanguages( here, )">
+						
+						<tal:block tal:condition="python: not ( pInvalidateObsoleteReport and pInvalidateObsoleteReport.get( 'success', False))"  >
+							<p>
+								<font size="2" color="red"
+									tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_StatusReport_ErrorRefreshing', 'Error refreshing Report-')" />
+							</p>
 						</tal:block>
 						
-						<tal:block tal:condition="python: pInvalidateObsoleteReport.get( 'can_ellaborate', False)"  >
-					
+						<tal:block tal:condition="python: pInvalidateObsoleteReport and pInvalidateObsoleteReport.get( 'success', False)"  >
+						
 							<div class="portalMessage" tal:condition="python: (not pInvalidateObsoleteReport.get( 'invalidated', False)) and pInvalidateObsoleteReport.get( 'changes_recorded', 0)">					
 								<span tal:content="python: '%s %s.' % ( here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_StatusReport_SlightlyObsoleteAfterChanges', 'Status Report slightly obsolete after changes to translations:-'), pInvalidateObsoleteReport.get( 'changes_recorded', 0),)" />
 								<br/>
@@ -116,20 +151,44 @@
 							</div>
 							<br/>
 						</tal:block>
-					</tal:block>
+					</tal:block>					
 				</tal:block>
-				
-				
+					
 				<tal:block tal:condition="python: not here.TRAgvSIGi18n_tool.fAllowWrite( here,)" >
 					<div class="portalMessage" >
 						<span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TranslationsCatalogIsLockedAgainstModifications', 'The Translations Catalog Is Locked Against Modifications')" />
 					</div>
 				</tal:block>
-                
 				
-				<div tal:replace="structure python: here.MDDModelDDvlPlone_tool.fRenderTemplateOrCachedForElement( here, 'TRACatalogoInforme_NoHeaderNoFooter' )" />
-			
-		     </tal:block>
+				<tal:block tal:condition="pCanGenerate" >				
+					<div tal:replace="structure python: here.MDDModelDDvlPlone_tool.fRenderTemplateOrCachedForElement( here, 'TRACatalogoInforme_NoHeaderNoFooter' )" />			
+				</tal:block>
+					
+				<tal:block tal:condition="not: pCanGenerate" >					
+									
+					<div class="portalMessage" >
+						<span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_CanNot_Generate_ReportByLanguages', 'You are not authorized to produce an Status Report by Languages.-')" />
+					</div>
+					<br/>
+					<strong  >
+						<a href="#" title="#"
+							tal:define="aLinkTitle python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_catalogo_action_label',   'Catalog-' )"
+							tal:attributes="
+								title aLinkTitle;
+								href python: '%s/TRACatalogo' % here.TRAgvSIGi18n_tool.fCatalogoAbsoluteURL( here,)">
+							<img src="#" alt="#" title="#" 
+								 tal:attributes="src  python: '%s/tra_root.gif' % here.MDDModelDDvlPlone_tool.fPortalURL(); alt aLinkTitle; title aLinkTitle" 
+								 id="icon-catalogo" />
+							<span tal:content="aLinkTitle" />
+						</a>
+					</strong>
+					<br/>
+					<br/>
+					
+				</tal:block>
+			</tal:block>
+
+
 		</tal:block>
 		
 		<br/>        

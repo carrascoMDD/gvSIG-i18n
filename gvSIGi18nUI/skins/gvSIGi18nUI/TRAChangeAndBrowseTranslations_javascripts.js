@@ -425,6 +425,7 @@ function fTRA_NewVoidDatosEnFila( ) {
         new Array( 'estadoTraduccion',		'',		'',		'string'),	
         new Array( 'targetStatusChanges',	'',	    '',		'string'),	
         new Array( 'nombresModulos',		'',		'',		'string'),	
+        new Array( 'referenciasFuentes',	'',		'',		'string'),	
         new Array( 'contadorCambios',		'',		'',		'numberstring'),	
         new Array( 'usuarioCreador',		'',		'',		'string'),	
         new Array( 'fechaCreacion',		    '',		'',		'string'),	
@@ -721,6 +722,7 @@ function pTRAAsyncRequest_Response_Display( theResponseText, theParameter) {
     var unContadorCambios             	= fTRAAsynchResponse_Content( 'theChangesCounter');   
        
     var unosNombresModulos             	= fTRAAsynchResponse_Content( 'theModuleNames');   
+    var unasReferenciasFuentes        	= fTRAAsynchResponse_Content( 'theSourceReferences');   
        
     var unaFechaTraduccion             	= fTRAAsynchResponse_Content( 'theFechaTraduccion');   
     var unUsuarioTraductor             	= fTRAAsynchResponse_Content( 'theUsuarioTraductor');   
@@ -749,6 +751,7 @@ function pTRAAsyncRequest_Response_Display( theResponseText, theParameter) {
             fTRA_SetPropiedadEnFilaNumero( unIndexTraduccion, 'targetStatusChanges',  unosTargetStatusChangesString);
             
             fTRA_SetPropiedadEnFilaNumero( unIndexTraduccion, 'nombresModulos',       unosNombresModulos);
+            fTRA_SetPropiedadEnFilaNumero( unIndexTraduccion, 'referenciasFuentes',   unasReferenciasFuentes);
             
             fTRA_SetPropiedadEnFilaNumero( unIndexTraduccion, 'fechaTraduccion',      unaFechaTraduccion);
             fTRA_SetPropiedadEnFilaNumero( unIndexTraduccion, 'usuarioTraductor',     unUsuarioTraductor);
@@ -779,6 +782,7 @@ function pTRAAsyncRequest_Response_Display( theResponseText, theParameter) {
     fTRA_SetPropiedadEnFilaNumero( unIndexTraduccion, 'targetStatusChanges',  unosTargetStatusChangesString);
     
     fTRA_SetPropiedadEnFilaNumero( unIndexTraduccion, 'nombresModulos',       unosNombresModulos);
+    fTRA_SetPropiedadEnFilaNumero( unIndexTraduccion, 'referenciasFuentes',   unasReferenciasFuentes);
     
     fTRA_SetPropiedadEnFilaNumero( unIndexTraduccion, 'fechaTraduccion',      unaFechaTraduccion);
     fTRA_SetPropiedadEnFilaNumero( unIndexTraduccion, 'usuarioTraductor',     unUsuarioTraductor);
@@ -896,6 +900,47 @@ function fTRAIsVisibleElementWithId( theElementId) {
     return fTRAIsVisibleElement( unElement);
 }
 
+
+
+
+
+
+
+
+
+function fTRAHideElementWithId( theElementId) {
+    if ( !theElementId) {
+        return false;
+    } 
+
+    var unElement = document.getElementById( theElementId);
+    if ( !unElement) {
+        return false;
+    } 
+
+    pTRAHideElement( unElement);
+    
+    return true;
+}
+
+
+
+
+function fTRAShowElementWithId( theElementId) {
+    if ( !theElementId) {
+        return false;
+    } 
+
+    var unElement = document.getElementById( theElementId);
+    if ( !unElement) {
+        return false;
+    } 
+
+    pTRAShowElement( unElement);
+    
+    return true;
+    
+}
 
 
 
@@ -1091,158 +1136,43 @@ function pTRAShowElement( theElement) {
 
 function pTRAHideSymbolColumn( ) {
     
-    var unElement = document.getElementById( 'cid_ColumnaSimbolos');
-    if ( unElement && hasClassName( unElement, 'TRAstyle_Display')) {
-        replaceClassName( unElement, 'TRAstyle_Display', 'TRAstyle_NoDisplay');
-    }   
-    
-    var unElement = document.getElementById( 'cid_ColumnaSimbolos_show_help');
-    if ( unElement && hasClassName( unElement, 'TRAstyle_NoDisplay')) {
-        replaceClassName( unElement, 'TRAstyle_NoDisplay', 'TRAstyle_Display');
-    }         
-                         
+    fTRAHideElementWithId( 'TRABatchStatusChange_fillerForSymbolColumn1');
+    fTRAHideElementWithId( 'TRABatchStatusChange_fillerForSymbolColumn2');
+    fTRAHideElementWithId( 'cid_ColumnaSimbolos_header');
+    fTRAShowElementWithId( 'cid_ColumnaSimbolos_show_help');
 
     for( var unIdCounter=1; unIdCounter <= cTRAMaxRowsToLoopForRowElements; unIdCounter++) {
      
-        var unCellElement = document.getElementById( 'cid_FilaParaSimboloSobreTraducciones_' + unIdCounter );
-        if ( !unCellElement) {
-            break;
-        }
-        if ( hasClassName( unCellElement, 'TRAstyle_NoDisplay')) {
-            replaceClassName( unCellElement, 'TRAstyle_NoDisplay', 'TRAstyle_Display');
-        }
-        
-        /*        
-        var unCellElement = document.getElementById( 'cid_ColumnaSimbolos_' + unIdCounter );
-        if ( !unCellElement) {
-            break;
-        }
-        if ( hasClassName( unCellElement, 'TRAstyle_NoDisplay')) {
-            replaceClassName( unCellElement, 'TRAstyle_NoDisplay', 'TRAstyle_Display');
-        }
-        */
-        
-        /*
-        var unCellElement = document.getElementById( 'cid_ColumnaSimbolos_' + unIdCounter + '_fillerForSymbol');
-        if ( !unCellElement) {
-            break;
-        }
-        if ( hasClassName( unCellElement, 'TRAstyle_Display')) {
-            replaceClassName( unCellElement, 'TRAstyle_Display', 'TRAstyle_NoDisplay');
-        }        
-        */        
-        
-        /*
-        var unCellElement = document.getElementById( 'cid_ColumnaSimbolos_' + unIdCounter + '_fillerForLanguageAndStatusColumns');
-        if ( !unCellElement) {
-            break;
-        }
-        if ( hasClassName( unCellElement, 'TRAstyle_Display')) {
-            replaceClassName( unCellElement, 'TRAstyle_Display', 'TRAstyle_NoDisplay');
-        }        
+        if ( ! fTRAHideElementWithId( 'cid_FilaParaSimboloSobreTraducciones_' + unIdCounter + '_fillerForSymbol'))                    { break; };
+        if ( ! fTRAHideElementWithId( 'cid_ColumnaSimbolos_' + unIdCounter))                                                          { break; };
 
-        var unCellElement = document.getElementById( 'cid_ColumnaSimbolos_' + unIdCounter + '_simboloCadena_SobreTraducciones');
-        if ( !unCellElement) {
-            break;
-        }
-        if ( hasClassName( unCellElement, 'TRAstyle_Display')) {
-            replaceClassName( unCellElement, 'TRAstyle_Display', 'TRAstyle_DNoisplay');
-        }    
-        */        
-        var unCellElement = document.getElementById( 'cid_ColumnaSimbolos_' + unIdCounter + '_simboloCadena_SobreTraducciones_Display');
-        if ( !unCellElement) {
-            break;
-        }
-        if ( hasClassName( unCellElement, 'TRAstyle_Display')) {
-            replaceClassName( unCellElement, 'TRAstyle_Display', 'TRAstyle_DNoisplay');
-        }    
-               
-
-        
-        
-        var unLabelElement = document.getElementById( 'cid_ColumnaSimbolos_' + unIdCounter + '_SymbolDisplay');
-        if ( !unLabelElement) {
-            break;
-        }
-        if ( hasClassName( unLabelElement, 'TRAstyle_Display')) {
-            replaceClassName( unLabelElement, 'TRAstyle_Display', 'TRAstyle_NoDisplay');
-        }                
-
-    }  
+        if ( ! fTRAShowElementWithId( 'cid_FilaParaSimboloSobreTraducciones_' + unIdCounter ))                                        { break; };
+        if ( ! fTRAShowElementWithId( 'cid_FilaParaSimboloSobreTraducciones_' + unIdCounter + '_fillerForLanguageAndStatusColumns'))  { break; };
+        if ( ! fTRAShowElementWithId( 'cid_FilaParaSimboloSobreTraducciones_' + unIdCounter + '_simboloCadena_SobreTraducciones'))    { break; };      
+     }  
     return true;
 }
 
 
 
-
-
 function pTRAShowSymbolColumn( ) {
     
-    var unElement = document.getElementById( 'cid_ColumnaSimbolos');
-    if ( unElement && hasClassName( unElement, 'TRAstyle_NoDisplay')) {
-        replaceClassName( unElement, 'TRAstyle_NoDisplay', 'TRAstyle_Display');
-    }        
-    
-    var unElement = document.getElementById( 'cid_ColumnaSimbolos_show_help');
-    if ( unElement &&  hasClassName( unElement, 'TRAstyle_Display')) {
-        replaceClassName( unElement, 'TRAstyle_Display', 'TRAstyle_NoDisplay');
-    }            
-                    
-  
+    fTRAShowElementWithId( 'TRABatchStatusChange_fillerForSymbolColumn1');
+    fTRAShowElementWithId( 'TRABatchStatusChange_fillerForSymbolColumn2');
+    fTRAShowElementWithId( 'cid_ColumnaSimbolos_header');
+    fTRAHideElementWithId( 'cid_ColumnaSimbolos_show_help');
+
+
     for( var unIdCounter=1; unIdCounter <= cTRAMaxRowsToLoopForRowElements; unIdCounter++) {
+     
+        if ( ! fTRAShowElementWithId( 'cid_FilaParaSimboloSobreTraducciones_' + unIdCounter + '_fillerForSymbol'))                    { break; };
+        if ( ! fTRAShowElementWithId( 'cid_ColumnaSimbolos_' + unIdCounter))                                                          { break; };
 
-        var unCellElement = document.getElementById( 'cid_ColumnaSimbolos_' + unIdCounter + '_fillerForSymbol');
-        if ( !unCellElement) {
-            break;
-        }
-        if ( hasClassName( unCellElement, 'TRAstyle_NoDisplay')) {
-            replaceClassName( unCellElement, 'TRAstyle_NoDisplay', 'TRAstyle_Display');
-        }        
-        
-            
-        var unCellElement = document.getElementById( 'cid_ColumnaSimbolos_' + unIdCounter + '_fillerForLanguageAndStatusColumns');
-        if ( !unCellElement) {
-            break;
-        }
-        if ( hasClassName( unCellElement, 'TRAstyle_NoDisplay')) {
-            replaceClassName( unCellElement, 'TRAstyle_NoDisplay', 'TRAstyle_Display');
-        }        
-        
-        var unCellElement = document.getElementById( 'cid_ColumnaSimbolos_' + unIdCounter + '_simboloCadena_SobreTraducciones');
-        if ( !unCellElement) {
-            break;
-        }
-        if ( hasClassName( unCellElement, 'TRAstyle_NoDisplay')) {
-            replaceClassName( unCellElement, 'TRAstyle_NoDisplay', 'TRAstyle_Display');
-        }        
-         
-        
-        var unCellElement = document.getElementById( 'cid_ColumnaSimbolos_' + unIdCounter + '_simboloCadena_SobreTraducciones_Display');
-        if ( !unCellElement) {
-            break;
-        }
-        if ( hasClassName( unCellElement, 'TRAstyle_NoDisplay')) {
-            replaceClassName( unCellElement, 'TRAstyle_NoDisplay', 'TRAstyle_Display');
-        }   
-               
-        var unCellElement = document.getElementById( 'cid_ColumnaSimbolos_' + unIdCounter );
-        if ( !unCellElement) {
-            break;
-        }
-        if ( hasClassName( unCellElement, 'TRAstyle_Display')) {
-            replaceClassName( unCellElement, 'TRAstyle_Display', 'TRAstyle_NoDisplay');
-        }
- 
-        
-        var unLabelElement = document.getElementById( 'cid_ColumnaSimbolos_' + unIdCounter + '_SymbolDisplay');
-        if ( !unLabelElement) {
-            break;
-        }
-        if ( hasClassName( unCellElement, 'TRAstyle_Display')) {
-            replaceClassName( unCellElement, 'TRAstyle_Display', 'TRAstyle_NoDisplay');
-        }
-
-    }  
+        if ( ! fTRAHideElementWithId( 'cid_FilaParaSimboloSobreTraducciones_' + unIdCounter ))                                        { break; };
+        if ( ! fTRAHideElementWithId( 'cid_FilaParaSimboloSobreTraducciones_' + unIdCounter + '_fillerForLanguageAndStatusColumns'))  { break; };
+        if ( ! fTRAHideElementWithId( 'cid_FilaParaSimboloSobreTraducciones_' + unIdCounter + '_simboloCadena_SobreTraducciones'))    { break; };      
+     }  
+    return true;
 }
 
 
@@ -5086,15 +5016,17 @@ function pTRAMostrarDetallesTraduccionEnFilaNumero( theNewParentRowIndex) {
     unElementEditorDetalleContainerEnFila.appendChild( unElementEditorDetalle);
 
 
-    fTRA_SetContenidoTextoElementoWithId( 'cid_TRAEditorDetalle_simboloCadena',  fTRA_FieldDatosEnFila( unosDatosEnFila, 'simboloCadena')[ 1]);
-    fTRA_SetContenidoTextoElementoWithId( 'cid_TRAEditorDetalle_nombresModulos', fTRA_FieldDatosEnFila( unosDatosEnFila, 'nombresModulos')[ 1]);
-    fTRA_SetContenidoTextoElementoWithId( 'cid_TRAEditorDetalle_idCadena',		 fTRA_FieldDatosEnFila( unosDatosEnFila, 'idCadena')[ 1]);
-    fTRA_SetContenidoTextoElementoWithId( 'cid_TRAEditorDetalle_contadorCambios',fTRA_FieldDatosEnFila( unosDatosEnFila, 'contadorCambios')[ 1]);
+    fTRA_SetContenidoTextoElementoWithId( 'cid_TRAEditorDetalle_simboloCadena',      fTRA_FieldDatosEnFila( unosDatosEnFila, 'simboloCadena')[ 1]);
+    fTRA_SetContenidoTextoElementoWithId( 'cid_TRAEditorDetalle_nombresModulos',     fTRA_FieldDatosEnFila( unosDatosEnFila, 'nombresModulos')[ 1]);
+    fTRA_SetContenidoTextoElementoWithId( 'cid_TRAEditorDetalle_referenciasFuentes', fTRA_FieldDatosEnFila( unosDatosEnFila, 'referenciasFuentes')[ 1]);
+    fTRA_SetContenidoTextoElementoWithId( 'cid_TRAEditorDetalle_idCadena',		     fTRA_FieldDatosEnFila( unosDatosEnFila, 'idCadena')[ 1]);
+    fTRA_SetContenidoTextoElementoWithId( 'cid_TRAEditorDetalle_contadorCambios',    fTRA_FieldDatosEnFila( unosDatosEnFila, 'contadorCambios')[ 1]);
 
     pTRAShowElementWithId( 'cid_TRAEditorDetalle_simboloCadena_row');
     pTRAShowElementWithId( 'cid_TRAEditorDetalle_idCadena_row');
     pTRAShowElementWithId( 'cid_TRAEditorDetalle_contadorCambios_row');
     pTRAShowElementWithId( 'cid_TRAEditorDetalle_nombresModulos_row');
+    pTRAShowElementWithId( 'cid_TRAEditorDetalle_referenciasFuentes_row');
 
     unEstadoTraduccionFila = fTRA_FieldDatosEnFila( unosDatosEnFila, 'estadoTraduccion')[ 1];
 

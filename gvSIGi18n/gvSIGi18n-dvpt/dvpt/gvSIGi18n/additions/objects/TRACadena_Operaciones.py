@@ -381,13 +381,20 @@ class TRACadena_Operaciones:
             return False
         
         unasReferenciasFuentes = self.getReferenciasFuentes()
-        if not ( unasReferenciasFuentes.find( theSources) >=0):
+            
+        if unasReferenciasFuentes:
+            if  unasReferenciasFuentes.find( theSources) >=0:
+                return False
             unasReferenciasFuentes = '%s %s' % ( unasReferenciasFuentes, theSources,)
-            if unasReferenciasFuentes:
-                self.setReferenciasFuentes( unasReferenciasFuentes)
-                return True
-    
-        return False
+        else:
+            unasReferenciasFuentes = theSources
+            
+        self.setReferenciasFuentes( unasReferenciasFuentes)
+        
+        self.fPropagarCambioReferenciasFuentesATraducciones()
+        
+        return True
+
     
 
     
@@ -688,7 +695,19 @@ class TRACadena_Operaciones:
     
     
     
+
+    security.declarePrivate('fPropagarCambioReferenciasFuentesATraducciones')
+    def fPropagarCambioReferenciasFuentesATraducciones( self):
+        unasReferenciasFuentes = self.getReferenciasFuentes()
+        
+        unasTraducciones = self.fObtenerTodasTraducciones()
+        for unaTraduccion in unasTraducciones:
+            unaTraduccion.setReferenciasFuentes( unasReferenciasFuentes)
+            unaTraduccion.pRecatalogTraduccion()
+        return len( unasTraducciones)
+      
     
+        
     
     
     

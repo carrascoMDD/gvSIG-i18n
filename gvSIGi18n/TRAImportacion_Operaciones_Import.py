@@ -1427,6 +1427,8 @@ class TRAImportacion_Operaciones_Import:
                     unaIdCadena = unaCadena.getId()
                     unosNombresModulosCadena = unaCadena.getNombresModulos()
     
+                    unasReferenciasFuentesCadena = unaCadena.getReferenciasFuentes()
+                    
                     theProcessControlManager.pProcessStep( unaCadena, { unaCadena.meta_type: 1,}, {},)
                     
                     
@@ -1494,6 +1496,7 @@ class TRAImportacion_Operaciones_Import:
                                             theIdCadena                         =unaIdCadena, 
                                             theTraduccionEncoded                =unaTraduccionEncoded, 
                                             theNombresModulos                   =unosNombresModulosCadena,
+                                            theReferenciasFuentes               =unasReferenciasFuentesCadena,
                                             theEstadoTraduccion                 =unEstadoTraduccionScanned,
                                             theComment                          =unComentarioTraduccionScanned,
                                             theCreationDate                     =unCreationDateScanned,
@@ -2740,6 +2743,7 @@ class TRAImportacion_Operaciones_Import:
         theIdCadena, 
         theTraduccionEncoded, 
         theNombresModulos, 
+        theReferenciasFuentes,
         theEstadoTraduccion,
         theComment,
         theCreationDate,    
@@ -2845,6 +2849,7 @@ class TRAImportacion_Operaciones_Import:
             'estadoCadena':         cEstadoCadenaActiva,
             'idCadena':             theIdCadena,
             'nombresModulos':       theNombresModulos,
+            'referenciasFuentes':   theReferenciasFuentes,
             'estadoTraduccion'   :  unEstadoTraduccion,
             'cadenaTraducida'    :  theTraduccionEncoded,
             'usuarioCreador':       unUsuarioCreador, 

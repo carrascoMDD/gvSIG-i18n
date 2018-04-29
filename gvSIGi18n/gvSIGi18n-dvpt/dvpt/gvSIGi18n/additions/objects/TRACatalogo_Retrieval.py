@@ -699,16 +699,24 @@ class TRACatalogo_Retrieval:
             
 
     
+
+    security.declareProtected( permissions.View, 'fObtenerTodosContribuciones')
+    def fObtenerTodosContribuciones( self, ):
+   
+        unaColeccion = self.fObtenerColeccionContribuciones()
+        if not unaColeccion:
+            return []
+        
+        unosElementos = unaColeccion.fObjectValues( cNombreTipoTRAContribuciones) #
+        return unosElementos
+           
+    
     
 
     security.declareProtected( permissions.View, 'fObtenerUltimoContribuciones')
     def fObtenerUltimoContribuciones( self, ):
-   
-        unaColeccionContribuciones = self.fObtenerColeccionContribuciones( )
-        if unaColeccionContribuciones == None:
-            return None
-        
-        unasContribuciones = unaColeccionContribuciones.fObjectValues( cNombreTipoTRAContribuciones) 
+
+        unasContribuciones = self.fObtenerTodosContribuciones() 
         
         if not unasContribuciones:
             return None
@@ -716,6 +724,7 @@ class TRACatalogo_Retrieval:
         return unasContribuciones[ len( unasContribuciones) - 1]
             
     
+
     
     
     
@@ -738,6 +747,10 @@ class TRACatalogo_Retrieval:
             return []
         return unasColecciones
             
+    
+
+    
+        
 
     security.declareProtected( permissions.View, 'fObtenerTodosInformes')
     def fObtenerTodosInformes( self, ):
@@ -751,7 +764,86 @@ class TRACatalogo_Retrieval:
            
      
     
-   
+
+    
+    security.declareProtected( permissions.View, 'fObtenerUltimoInforme')
+    def fObtenerUltimoInforme( self, ):
+
+        unosInformes = self.fObtenerTodosInformes()
+        
+        if not unosInformes:
+            return None
+        
+        return unosInformes[ len( unosInformes) - 1]
+            
+    
+    
+    
+    
+    
+    security.declareProtected( permissions.View, 'fRetrieveUltimoInformeResult')
+    def fRetrieveUltimoInformeResult( self, ):
+        
+        unUltimoInforme = self.fObtenerUltimoInforme()
+        
+        if unUltimoInforme == None:
+            return {}
+        
+        unResultadoUltimoInforme = self.fModelDDvlPloneTool().fRetrieveTypeConfig( 
+            theTimeProfilingResults     =None,
+            theElement                  =unUltimoInforme, 
+            theParent                   =None,
+            theParentTraversalName      ='',
+            theTypeConfig               =None, 
+            theAllTypeConfigs           =None, 
+            theViewName                 ='', 
+            theRetrievalExtents         =[ 'traversals', ],
+            theWritePermissions         =None,
+            theFeatureFilters           ={ 'attrs': [ 'title', 'Description',], 'relations': [], 'do_not_recurse_collections': True,}, 
+            theInstanceFilters          =None,
+            theTranslationsCaches       =None,
+            theCheckedPermissionsCache  =None,
+            theAdditionalParams         =None                
+        )
+        
+        return unResultadoUltimoInforme        
+    
+        
+           
+    
+    
+    security.declareProtected( permissions.View, 'fRetrieveUltimoContribucionesResult')
+    def fRetrieveUltimoContribucionesResult( self, ):
+        
+        unUltimoContribuciones = self.fObtenerUltimoContribuciones()
+        
+        if unUltimoContribuciones == None:
+            return {}
+        
+        unResultadoUltimoContribuciones = self.fModelDDvlPloneTool().fRetrieveTypeConfig( 
+            theTimeProfilingResults     =None,
+            theElement                  =unUltimoContribuciones, 
+            theParent                   =None,
+            theParentTraversalName      ='',
+            theTypeConfig               =None, 
+            theAllTypeConfigs           =None, 
+            theViewName                 ='', 
+            theRetrievalExtents         =[ 'traversals', ],
+            theWritePermissions         =None,
+            theFeatureFilters           ={ 'attrs': [ 'title', 'Description',], 'relations': [], 'do_not_recurse_collections': True,}, 
+            theInstanceFilters          =None,
+            theTranslationsCaches       =None,
+            theCheckedPermissionsCache  =None,
+            theAdditionalParams         =None                
+        )
+        
+        return unResultadoUltimoContribuciones        
+    
+        
+               
+    
+    
+    
            
     # ####################################
     """TRAProgreso accessors

@@ -867,7 +867,7 @@ cIndexesCatalogoFiltroCadenas  = cIndexesCatalogoBusquedaCadenas + [
 
 
 cSchemaFieldsCatalogoFiltroCadenas  = [ aIdxSpec[ 0] for aIdxSpec in cIndexesCatalogoFiltroCadenas] + \
-                                    [ 'getNombresModulos',]
+                                    [ 'getNombresModulos', 'getReferenciasFuentes', ]
 
 
 
@@ -952,7 +952,7 @@ cIndexesCatalogoFiltroTraducciones  = cIndexesCatalogoBusquedaTraducciones + [
 ]
 cSchemaFieldsCatalogoFiltroTraducciones  = [ 'Type', 'getCodigoIdiomaEnGvSIG', ] + \
                                          [ aIdxSpec[ 0] for aIdxSpec in cIndexesCatalogoFiltroTraducciones] + \
-                                         [ 'getCadenaTraducida', 'getComentario', 'getNombresModulos', 'getContadorCambios',]
+                                         [ 'getCadenaTraducida', 'getComentario', 'getNombresModulos', 'getReferenciasFuentes', 'getContadorCambios',]
 
 
 

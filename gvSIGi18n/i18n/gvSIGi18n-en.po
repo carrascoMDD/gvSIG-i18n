@@ -3157,7 +3157,7 @@ msgstr "When the ellaboration of the status report by Modules and Lanaguages ter
 #. Default: "Informe por Idiomas"
 #: TRAInforme informeIdiomas
 msgid "gvSIGi18n_TRAInforme_attr_informeIdiomas_label"
-msgstr "Languages Report"
+msgstr "Report by Languages"
 
 #. Default: "Informe del estado de traduccion por idiomas."
 #: TRAInforme informeIdiomas
@@ -3167,12 +3167,12 @@ msgstr "Report or the translation status, summarized by languages."
 #. Default: "Informe por Modulos e Idiomas"
 #: TRAInforme informeModulos
 msgid "gvSIGi18n_TRAInforme_attr_informeModulos_label"
-msgstr "Modules and Languages Report"
+msgstr "Report by Modules"
 
 #. Default: "Informe del estado de traduccion por modulos y detallado por  idiomas."
 #: TRAInforme informeModulos
 msgid "gvSIGi18n_TRAInforme_attr_informeModulos_help"
-msgstr "Report or the translation status, summarized by modules and detailed by languages."
+msgstr "Report or the translation status, detailed by modules and languages."
 
 #. Default: "Usuario Informador"
 #: TRAInforme usuarioInformador
@@ -4088,6 +4088,16 @@ msgstr "Modules"
 #: TRATraduccion nombresModulos
 msgid "gvSIGi18n_TRATraduccion_attr_nombresModulos_help"
 msgstr "Names of the Modules using this String."
+
+#. Default: "Referencias a fuentes"
+#: TRATraduccion referenciasFuentes
+msgid "gvSIGi18n_TRATraduccion_attr_referenciasFuentes_label"
+msgstr "Source references"
+
+#. Default: "Referencias a codigo fuente donde aparece esta cadena."
+#: TRATraduccion referenciasFuentes
+msgid "gvSIGi18n_TRATraduccion_attr_referenciasFuentes_help"
+msgstr "References to source code where the string is used."
 
 #. Default: "Simbolo"
 #: TRATraduccion simbolo

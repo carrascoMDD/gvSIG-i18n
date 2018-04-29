@@ -1970,6 +1970,7 @@ def _pInitTranslationsCache(
             [ 'gvSIGi18n_informe_section_label',                                   'Summary-',],
             [ 'gvSIGi18n_total_label',                                             'Total-',],
             [ 'gvSIGi18n_Modulos_title',                                           'Modules-',],
+            [ 'gvSIGi18n_Fuentes_title',                                           'Sources-',],            
             [ 'gvSIGi18n_seccionHistory_title',                                    'History-',],
         
         ]],
@@ -5252,7 +5253,27 @@ def _pRenderEditorDetail(
         
 
                 
-
+    anOutput.write( u"""
+        <!-- #####
+        ## Fields: display TRATraduccion referenciasFuentes 
+        ##########-->  
+            <tr class="TRAstyle_NoDisplay" id="cid_TRAEditorDetalle_referenciasFuentes_row">
+                <td align="left" valign="baseline" >                
+                    <font size="1" ><strong>%(gvSIGi18n_Fuentes_title)s</strong></font>                        
+                </td>
+                <td  align="left" valign="baseline"  colspan="2">                
+                    <font size="1" ><span id="cid_TRAEditorDetalle_referenciasFuentes" ></span></font>
+                </td>
+            </tr>
+        \n""" % { 
+        'gvSIGi18n_Fuentes_title':              aTranslationsCache[ 'gvSIGi18n_Fuentes_title'], 
+        'pClassFila':                           cClasesFilas [pIndex %2],
+    })
+        
+        
+    
+    pIndex  += 1
+        
                 
                 
                                         
@@ -6228,7 +6249,7 @@ def _pRenderList(
             <thead>
                 <tr>
                     <th width="25%%"  valign="bottom" align="left" class="TRAstyle_Display TRAstyle_Clickable" 
-                        id="cid_ColumnaSimbolos" 
+                        id="cid_ColumnaSimbolos_header" 
                         onclick="pTRAHideSymbolColumn(); return true;" >
                         <font size="1">%(gvSIGi18n_TRATraduccion_attr_simbolo_label)s</font>
                         <br/>
@@ -6244,12 +6265,10 @@ def _pRenderList(
                     <th width="72%%" valign="bottom"  align="left"  class="TRAstyle_Clickable" onclick="pTRAShowSymbolColumn(); return true;" >
                         <font size="1">%(gvSIGi18n_TRATraduccion_attr_cadenaTraducida_label)s</font>
                         <br>
-                        <span class="TRAstyle_NoDisplay"  id="cid_ColumnaSimbolos_show_help">
-                            <span class="formHelp">
-                                <font size="1" style="font-weight=200">
-                                    %(gvSIGi18n_ColumnaSimboloColapsable_Action_Show_help)s
-                                </font>
-                            </span>
+                        <span class="TRAstyle_NoDisplay formHelp"  id="cid_ColumnaSimbolos_show_help">
+                            <font size="1" style="font-weight=200">
+                                %(gvSIGi18n_ColumnaSimboloColapsable_Action_Show_help)s
+                            </font>
                         </span>
                     </th>
         \n""" % aDictRenderValues
@@ -6288,7 +6307,8 @@ def _pRenderList(
     if pShowStateTransitionColumns and ( len( someEstadosConBotonesEnColumnas) > 0) and pBatchStatusChanges:
         anOutput.write( u"""  
             <tr>
-                <th colspan="5" />
+                <th id="TRABatchStatusChange_fillerForSymbolColumn1" class="TRAstyle_Display" />
+                <th colspan="4" />
                 <th colspan="%(colspan)s" valign="bottom"  />
                     <input  
                         onmouseup="fTRAEvtHlr_BatchStatusChange_Apply_Button_OnMouseUp( )"
@@ -6310,7 +6330,8 @@ def _pRenderList(
         
         anOutput.write( u"""  
             <tr>
-                <th colspan="5" />
+                <th id="TRABatchStatusChange_fillerForSymbolColumn2" class="TRAstyle_Display" />
+                <th colspan="4" />
             \n""" 
         )
         for unEstadoConBotonEnColumna in someEstadosConBotonesEnColumnas:
@@ -6380,6 +6401,7 @@ def _pRenderList(
         pTradRow_getEstadoTraduccion    = unosDatosTraduccion[ 'getEstadoTraduccion']   or cEstadoTraduccionPendiente 
         pTradRow_getCadenaTraducida     = unosDatosTraduccion[ 'getCadenaTraducida']    or ''
         pTradRow_getNombresModulos      = unosDatosTraduccion[ 'getNombresModulos']     or '' 
+        pTradRow_getReferenciasFuentes  = unosDatosTraduccion[ 'getReferenciasFuentes']     or '' 
         pTradRow_getContadorCambios     = unosDatosTraduccion[ 'getContadorCambios']    or 0
         pTradRow_getFechaDefinitivo     = unosDatosTraduccion[ 'getFechaDefinitivoTextual']    or ''
         pTradRow_getUsuarioCoordinador  = unosDatosTraduccion[ 'getUsuarioCoordinador']     or ''
@@ -6455,6 +6477,7 @@ def _pRenderList(
             'pFGColor':                                             cFGColorsDict.get( pTradRow_getEstadoTraduccion,  cBGColorsDict[ cEstadoTraduccionPendiente]),
             'estado-icon':                                          cIconsDict.get( pTradRow_getEstadoTraduccion, 'tra_pendiente.gif'), 
             'pTradRow_getNombresModulos':                           fCGIE( mfAsUnicode( pTradRow_getNombresModulos)),
+            'pTradRow_getReferenciasFuentes':                       fCGIE( mfAsUnicode( pTradRow_getReferenciasFuentes)),            
             'pTradRow_getContadorCambios':                          pTradRow_getContadorCambios,
             'pTradRow_getFechaDefinitivo':                          pTradRow_getFechaDefinitivo,
             'pTradRow_getUsuarioCoordinador':                       fCGIE(mfAsUnicode(pTradRow_getUsuarioCoordinador)),
@@ -6493,15 +6516,17 @@ def _pRenderList(
                 
         anOutput.write( u"""  
             <tr class="%(pClassFila)s TRAstyle_NoDisplay"  id="cid_FilaParaSimboloSobreTraducciones_%(symbol_cell_counter)d">
-                <td class="xxTRAstyle_NoDisplay" id="cid_ColumnaSimbolos_%(symbol_cell_counter)d_fillerForSymbol" />
-                <td colspan="3" class="xxTRAstyle_NoDisplay" id="cid_ColumnaSimbolos_%(symbol_cell_counter)d_fillerForLanguageAndStatusColumns" >
-                     %(gvSIGi18n_TRATraduccion_attr_simbolo_label)s
-                <td/>
-                <td colspan="%(colspan_SimboloEnColumnaTraducciones)d" 
-                    id="cid_ColumnaCadenasTraducidas_%(symbol_cell_counter)d_simboloCadena_SobreTraducciones"                    
-                    class="TRAstyle_Clickable xxTRAstyle_NoDisplay"  valign="top" %(entrar_en_edicion)s >
+                <td class="TRAstyle_NoDisplay" id="cid_FilaParaSimboloSobreTraducciones_%(symbol_cell_counter)d_fillerForSymbol" />
+                <td colspan="3" class="TRAstyle_NoDisplay" id="cid_FilaParaSimboloSobreTraducciones_%(symbol_cell_counter)d_fillerForLanguageAndStatusColumns" >
                     <font size="1">
-                        <span id="cid_ColumnaCadenasTraducidas_%(symbol_cell_counter)d_simboloCadena_SobreTraducciones_Display" >%(simbolo-cadena-forWrapLines)s</span>
+                        <strong>%(gvSIGi18n_TRATraduccion_attr_simbolo_label)s</strong>
+                    </font>
+                </td>
+                <td colspan="%(colspan_SimboloEnColumnaTraducciones)d" 
+                    id="cid_FilaParaSimboloSobreTraducciones_%(symbol_cell_counter)d_simboloCadena_SobreTraducciones"                    
+                    class="TRAstyle_Clickable TRAstyle_NoDisplay"  valign="top" %(entrar_en_edicion)s >
+                    <font size="1">
+                        <span>%(simbolo-cadena-forWrapLines)s</span>
                     </font>
                 </td>
             </tr>
@@ -6560,6 +6585,7 @@ def _pRenderList(
                     <span class="TRAstyle_NoDisplay" id="cid_ColumnaCadenasTraducidas_%(symbol_cell_counter)d_usuarioCoordinador">%(pTradRow_getUsuarioCoordinador)s</span>
                     <span class="TRAstyle_NoDisplay" id="cid_ColumnaCadenasTraducidas_%(symbol_cell_counter)d_fechaDefinitivo">%(pTradRow_getFechaDefinitivo)s</span>
                     <span class="TRAstyle_NoDisplay" id="cid_ColumnaCadenasTraducidas_%(symbol_cell_counter)d_nombresModulos">%(pTradRow_getNombresModulos)s</span>
+                    <span class="TRAstyle_NoDisplay" id="cid_ColumnaCadenasTraducidas_%(symbol_cell_counter)d_referenciasFuentes">%(pTradRow_getReferenciasFuentes)s</span>
                     <span class="TRAstyle_NoDisplay" id="cid_ColumnaCadenasTraducidas_%(symbol_cell_counter)d_contadorCambios">%(pTradRow_getContadorCambios)d</span>
                     <span class="TRAstyle_NoDisplay" id="cid_ColumnaCadenasTraducidas_%(symbol_cell_counter)d_interactionStatus"></span>
                     <span class="TRAstyle_NoDisplay" id="cid_ColumnaCadenasTraducidas_%(symbol_cell_counter)d_interactionMessage"></span>

@@ -59,6 +59,7 @@ class TRAgvSIGi18nTool_Permissions:
     
     security = ClassSecurityInfo()
     
+
     
     
     security.declareProtected( permissions.View, 'fGetMemberId')

@@ -85,7 +85,7 @@ from TRAUtils                              import *
 from TRAElemento_Permission_Definitions import cBoundObject
 from TRAElemento_Permission_Definitions_UseCaseNames import cUseCase_EllaborateInformeModulesAndLanguages, cUseCase_CreateTRAInforme
 
-
+from TRAArquetipo import TRAArquetipo
 
 
 class TRAInforme_Operaciones:
@@ -119,6 +119,60 @@ class TRAInforme_Operaciones:
     
         return self
 
+    
+    
+    
+    
+    
+    
+    
+    
+
+            
+    
+    security.declarePublic( 'fExtraLinks')    
+    def fExtraLinks( self):
+        
+        unosExtraLinks = TRAArquetipo.fExtraLinks( self)
+        if not unosExtraLinks:
+            unosExtraLinks = [ ]
+        
+        unaURL = self.absolute_url()
+        if not unaURL:
+            return unosExtraLinks
+        
+
+        unExtraLink = self.fNewVoidExtraLink()
+        unExtraLink.update( {
+            'label'   : self.fTranslateI18N( 'plone', 'By Languages', 'By Languages-',),
+            'href'    : '%s/TRAInforme_Idiomas/' % unaURL,
+            'icon'    : '',
+            'domain'  : 'plone',
+            'msgid'   : 'By Languages',
+        })
+        unosExtraLinks.append( unExtraLink)
+                            
+        unExtraLink = self.fNewVoidExtraLink()
+        unExtraLink.update( {
+            'label'   : self.fTranslateI18N( 'plone', 'By Modules', 'By Modules-',),
+            'href'    : '%s/TRAInforme_Modulos/' % unaURL,
+            'icon'    : '',
+            'domain'  : 'plone',
+            'msgid'   : 'By Modules',
+        })
+        unosExtraLinks.append( unExtraLink)
+                            
+
+        return unosExtraLinks
+    
+    
+        
+    
+    
+    
+    
+    
+    
     
     
     

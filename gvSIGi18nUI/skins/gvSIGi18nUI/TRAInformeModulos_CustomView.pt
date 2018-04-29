@@ -27,9 +27,32 @@
 #
 </tal:block>
      
-<tal:block tal:define="
-     pPermiteCrearElementos pPermiteCrearElementos | python: False;
-     pInformeModulos             pInformeModulos | python: here.TRAgvSIGi18n_tool.fInformeModulos( here,)" >
-     
-     <metal:block metal:use-macro="here/TRAInformeModulos_inner/macros/tInformeModulos_inner" />
+
+  
+            
+<h2>
+    <a id="cTRAid_InformeModulos_link" href="#" tal:attributes="href python: '%s/TRAInforme_Modulos' % here.absolute_url()" >
+        <font color="green" >
+            <strong>
+                <span i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_PleaseVisit_msgid">Please visit-</span>
+                &ensp;
+                <span i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAInforme_attr_informeModulos_label">Report by Languages-</span>
+            </strong>   
+        </font>
+    </a>    
+</h2>
+
+<p class="formHelp" i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_TRAInforme_attr_informeModulos_help" >Report or the translation status, summarized by languages.-</p>
+<br/>
+<br/>
+
+
+
+<tal:block tal:replace="nothing" >
+    <tal:block tal:define="
+         pPermiteCrearElementos pPermiteCrearElementos | python: False;
+         pInformeModulos             pInformeModulos | python: here.TRAgvSIGi18n_tool.fInformeModulos( here,)" >
+         
+         <metal:block metal:use-macro="here/TRAInformeModulos_inner/macros/tInformeModulos_inner" />
+    </tal:block>
 </tal:block>

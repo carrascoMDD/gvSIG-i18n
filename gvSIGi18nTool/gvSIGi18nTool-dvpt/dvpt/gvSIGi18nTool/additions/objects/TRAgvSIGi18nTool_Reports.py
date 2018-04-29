@@ -84,6 +84,9 @@ class TRAgvSIGi18nTool_Reports:
         
 
     
+            
+    
+    
     security.declareProtected( permissions.View, 'fInformeContribuciones')
     def fInformeContribuciones( self, 
         theContextualElement    =None,):

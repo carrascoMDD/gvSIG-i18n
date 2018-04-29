@@ -81,55 +81,53 @@
     
             <tal:block tal:condition="python: pInformeActividad and pInformeActividad.get( 'success', False)" >
 
-                <p>
-                    <font size="2">
-                        <span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_InformeActividadDesdeArranque_help', 'Activity Report only reflects changes to the translations catalog performed since the time the web servers were last started, on:-' )" />
-                        <br/>
-                        <strong tal:content="python: here.TRAgvSIGi18n_tool.fAsUnicode( here, pInformeActividad.get( 'startup_date', ''))" />            
-                        <br/>
-                        <span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_InformeActividadHastaMasReciente_help', 'Activity Report reflects the most recent changes, and is refreshed after just a short period of time, or a low number of changes. -' )" />
-                        <br/>
-                        <br/>
-                        <span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_InformeContribucionesMasCompleto_help', 'To review a more complete report of changes to the translations catalog, including changes made before the servers were started, please visit the last Contributions report.-' )" />
-                        <br/>
-                        <tal:block tal:condition="python: not( pInformeActividad.get( 'last_contributions_report_title', '') and pInformeActividad.get( 'last_contributions_report_URL', ''))" >
-                            <span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_InformeContribucionesNotAvailable_msgid', 'No Contributions report available.-' )" />
-                        </tal:block>
-                        <tal:block tal:condition="python: pInformeActividad.get( 'last_contributions_report_title', '') and pInformeActividad.get( 'last_contributions_report_URL', '')" >
-                            <a name="#" id="#" 
-                                tal:attributes="
-                                    href python: pInformeActividad.get( 'last_contributions_report_URL', '');
-                                    name python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_LastContributionsReport_msgid', 'Last Contributions Report-')" >
-                                <font size="3" color="green" >
-                                    <strong tal:content="python: '%s %s' % ( here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_LastContributionsReport_msgid', 'Last Contributions Report-'), pInformeActividad.get( 'last_contributions_report_title', ''),)" />
-                                </font>
-                            </a>
-                        </tal:block>
-                        <br/>
-                        <br/>
+
+				<tal:block tal:define="pUltimoInformeContribuciones python: here.TRAgvSIGi18n_tool.fRetrieveUltimoContribucionesResult( here, )"
+					tal:condition="python: pUltimoInformeContribuciones and ( not ( pUltimoInformeContribuciones.get( 'object', None) == None))" >
+					<p>
+						<font size="2" color="green" >
+							<strong >
+								<a href="#" title="#"
+									tal:define="aLinkTitle python: '%s %s' % ( here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_YouMayVisitReportWithHistoricContributionsByUsers_label',   'You may visit the last Report of Contributions by Users-' ), pUltimoInformeContribuciones.get( 'title', ''),)"
+									tal:attributes="
+										title aLinkTitle;
+										href python: '%s/Tabular/' % pUltimoInformeContribuciones.get( 'url', '')">
+									<img src="#" alt="#" title="#" 
+										 tal:attributes="src  python: '%s/tracontribuciones.gif' % here.TRAgvSIGi18n_tool.fPortalURL(); alt aLinkTitle; title aLinkTitle" 
+										 id="icon-informe" />
+									<span tal:content="aLinkTitle" />
+								</a>
+							</strong>
+						</font>
+					</p>
+					<p class="formHelp" >
                         <span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_InformeContribucionesPuedeNoEstarAlDia_help', 'The last Contributions report may not include the most recent changes, because it is generated on demand by translations Coordinators or authorized Users.-' )" />
-                        <br/>
                         <span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_InformeContribucionesSolicitarACoordinadorOGenerar_help', 'For a recently updated Contributions report, please ask your translations Coordinator, or generate a new one yourself, if you have permission, by clicking on the create contributions report action on the actions menu.-' )" />
-                    </font>
-                </p>
-                <br/>
-                <br/>
-                
-                
+ 					</p>
+					<br/>
+				</tal:block>
+				
+				
+				
                 <h2>
                    <span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_ActivityReport_label',   'Recent Activity-' )" />
                 </h2>         
                 <br/>
-                                
+				
+				
                 <p>
                     <font size="2">
                         <em tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_fechaInformeActividad_label', 'Report date-' )" />
                         &nbsp;
                         <strong tal:content="python: here.TRAgvSIGi18n_tool.fAsUnicode( here, pInformeActividad.get( 'report_date', ''))" />            
+						<br/>
+                        <em tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_ActivityReportingContributionsSince_help', 'Reporting contributions since-' )" />
+                        &nbsp;
+                        <strong tal:content="python: here.TRAgvSIGi18n_tool.fAsUnicode( here, pInformeActividad.get( 'startup_date', ''))" />            
                     </font>
                 </p>
-                
-                
+                <p class="formHelp" tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_InformeActividadHastaMasReciente_help', 'Activity Report reflects the most recent changes, and is refreshed after just a short period of time, or a low number of changes. -' )" />
+                <br/>
                 
                 <tal:block tal:define="
                     pTotals                  python: pInformeActividad.get( 'totals', {});
@@ -368,18 +366,7 @@
 </div>
 
     
-    
-    
-    
 
-
-
-    
-    
-    
-    
-    
-    
     
     
 </body>

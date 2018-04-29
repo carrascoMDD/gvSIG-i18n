@@ -68,7 +68,7 @@ schema = Schema((
         description2="The original symbol identifying the string to be translated.",
         containment="Not Specified",
         ea_guid="{9601C385-3396-492f-BC82-10FC4DED739A}",
-        position="15",
+        position="16",
         owner_class_name="TRATraduccion",
         label="Simbolo"
     ),
@@ -97,7 +97,7 @@ schema = Schema((
         description2="Language code in gvSIG, as gvSIG supports some languages for which there is no international code (yet).",
         containment="Not Specified",
         ea_guid="{084C77CD-8E2C-4ba3-ABAE-502699EF3196}",
-        position="1",
+        position="0",
         owner_class_name="TRATraduccion",
         label="Codigo de Idioma en gvSIG"
     ),
@@ -126,7 +126,7 @@ schema = Schema((
         description2="String translated to the Language.",
         containment="Not Specified",
         ea_guid="{E3340BC4-DCC7-49a3-AB41-C4EB29E64EC1}",
-        position="0",
+        position="1",
         owner_class_name="TRATraduccion",
         label="Traduccion"
     ),
@@ -216,7 +216,7 @@ schema = Schema((
         description2="User who translated this string into this language.",
         containment="Not Specified",
         ea_guid="{E6E7E23E-C722-4324-A8B1-0DC4DA6B6EB6}",
-        position="19",
+        position="21",
         owner_class_name="TRATraduccion",
         label="Traductor"
     ),
@@ -274,7 +274,7 @@ schema = Schema((
         description2="User who reviewd the String Translation to the Language.",
         containment="Not Specified",
         ea_guid="{6BFF5745-AFFD-468a-A2DC-6520395136A8}",
-        position="18",
+        position="20",
         owner_class_name="TRATraduccion",
         label="Revisor"
     ),
@@ -332,7 +332,7 @@ schema = Schema((
         description2="User with Coordinator capabilities, who made Definitive the string translation into the language.",
         containment="Not Specified",
         ea_guid="{075407C5-F759-47ec-AA8C-FFDB360AF510}",
-        position="16",
+        position="17",
         owner_class_name="TRATraduccion",
         label="Coordinador"
     ),
@@ -425,6 +425,35 @@ schema = Schema((
         position="14",
         owner_class_name="TRATraduccion",
         label="Modulos"
+    ),
+
+    StringField(
+        name='referenciasFuentes',
+        widget=StringWidget(
+            label="Referencias a fuentes",
+            label2="Source references",
+            description="Referencias a codigo fuente donde aparece esta cadena.",
+            description2="References to source code where the string is used.",
+            label_msgid='gvSIGi18n_TRATraduccion_attr_referenciasFuentes_label',
+            description_msgid='gvSIGi18n_TRATraduccion_attr_referenciasFuentes_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        scale="0",
+        description="Referencias a codigo fuente donde aparece esta cadena.",
+        duplicates="0",
+        label2="Source references",
+        ea_localid="2079",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        length="0",
+        description2="References to source code where the string is used.",
+        containment="Not Specified",
+        ea_guid="{6499827C-178C-4cd2-A5DE-77D713E980DC}",
+        position="15",
+        owner_class_name="TRATraduccion",
+        label="Referencias a fuentes"
     ),
 
     TextField(
@@ -630,7 +659,7 @@ schema = Schema((
         description2="User who created the translation into the language in Translated or Pending state, during an import or language creation process.",
         containment="Not Specified",
         ea_guid="{E2D4ACFF-A4BB-4dc9-A8B8-149E7033FB14}",
-        position="17",
+        position="18",
         owner_class_name="TRATraduccion",
         label="Creador"
     ),
@@ -659,7 +688,7 @@ schema = Schema((
         description2="User that modified the translation into the Language, as just created, translated or changed status.",
         containment="Not Specified",
         ea_guid="{EE30B571-501B-43d5-9A20-E2BA82EF6782}",
-        position="17",
+        position="19",
         owner_class_name="TRATraduccion",
         label="Modificador"
     ),

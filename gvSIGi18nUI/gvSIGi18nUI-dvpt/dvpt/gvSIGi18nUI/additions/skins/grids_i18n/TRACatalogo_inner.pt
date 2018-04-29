@@ -58,13 +58,21 @@
             
                 
             <tal:block tal:define="
-               pInformeIdiomasYModulos python: here.TRAgvSIGi18n_tool.fInformeTitulosIdiomasYModulosPermitidos( 
+                pInformeIdiomasYModulos python: here.TRAgvSIGi18n_tool.fInformeTitulosIdiomasYModulosPermitidos( 
                         theContextualElement          =here,
                         theUseCaseName                ='List_Languages_And_Modules',
                         thePermissionsCache           =pPermissionsCache, 
                         theRolesCache                 =pRolesCache, 
                         theParentExecutionRecord      =pExecutionRecord,
                     );
+                pInformeActiveUsers python: here.TRAgvSIGi18n_tool.fElaborarInformeUsuariosActivos( 
+                        theContextualElement          =here,
+                        thePermissionsCache           =pPermissionsCache, 
+                        theRolesCache                 =pRolesCache, 
+                        theParentExecutionRecord      =pExecutionRecord,
+                    );
+                    
+                    
                 pDisplayCountryFlags python: here.TRAgvSIGi18n_tool.fDisplayCountryFlags( here);
                 pInformesIdiomas        python: pInformeIdiomasYModulos.get( 'idiomas', []);
                 pCodigosIdiomas         python: [ unInforme.get( 'codigoIdiomaEnGvSIG', '') for unInforme in pInformesIdiomas];
@@ -90,131 +98,223 @@
                         [ 'gvSIGi18n_TRAIdioma_attr_codigoInternacionalDeIdioma_label_abbreviated',     'Intl. Code-' ,         ],
                         [ 'gvSIGi18n_TRAIdioma_attr_nombreIdioma_label_abbreviated',                    'Name-' ,               ],
                         [ 'gvSIGi18n_TRAIdioma_attr_nombreNativoDeIdioma_label_abbreviated',            'Native name-' ,        ],
+                        [ 'gvSIGi18n_ContributingUsers_label',                                          'Contributing Users-' ,],
+                        [ 'gvSIGi18n_AdminUsers_label',                                                 'Administrators-' ,],
+                        [ 'gvSIGi18n_LanguagesAndModules_label',                                        'Languages and Modules-' ,],
                     ]]
                 ], aTranslationsCache)" >
              
-                
+                <tal:block tal:condition="python: pInformeActiveUsers and pInformeActiveUsers.get( 'success', False) and pInformeActiveUsers.get( 'member_infos', []) " >
+                    <h2>
+                        <strong tal:content="python: aTranslationsCache[ 'gvSIGi18n_ContributingUsers_label']" />
+                    </h2>
+                    <tal:block tal:repeat="pMemberInfo python: pInformeActiveUsers.get( 'member_infos', [])" >
+                        <tal:block tal:define="
+                            unIdUsuario        python: pMemberInfo.get( 'user_id', '');
+                            unNombreUsuario    python: pMemberInfo.get( 'member_name', unIdUsuario)  or unIdUsuario;
+                            unIdPhotoUsuario   python: pMemberInfo.get( 'photo_id', '');
+                            unURLPhotoUsuario  python: pMemberInfo.get( 'photo_URL', '');
+                            unURLHomeUsuario   python: pMemberInfo.get( 'home_URL', '')">
+                            <table tal:condition="unNombreUsuario">
+                                <tbody>
+                                    <tr tal:condition="unURLPhotoUsuario">
+                                        <td width="40" >
+                                            <a href="#" title="#" tal:condition="python: unURLPhotoUsuario and not ( unIdPhotoUsuario == 'defaultUser.gif')"
+                                                tal:attributes="href python:  unURLHomeUsuario; title python: '%s %s' % ( unIdUsuario, unNombreUsuario,)">
+                                                <img width="40" alt="#" src="#"
+                                                    tal:attributes="
+                                                        src python: unURLPhotoUsuario;
+                                                        alt unIdUsuario;
+                                                        title unNombreUsuario" />
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40" >
+                                            <a href="#" title="#" tal:condition="unNombreUsuario"
+                                                tal:attributes="href python:  unURLHomeUsuario; title python: '%s %s' % ( unIdUsuario, unNombreUsuario,)">
+                                                <span tal:content="unNombreUsuario" />
+                                            </a>
+                                        </td>
+                                    </tr>
+                                <tbody>
+                            </table>
+                            &emsp;
+                        </tal:block>
+                    </tal:block>
+                    <br/>
+                </tal:block>
 
                 
                 <tal:block tal:condition="python: not( pInformeIdiomasYModulos and pInformeIdiomasYModulos.get( 'success', False))" >
                     <p tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_AccessFailedAndPromptYouHavePermission_label', 'Access to the translations catalog failed.\nDo you have permission ?\nIf so, you may want to login first.-')" />
                 </tal:block>
+                
+                
                 <tal:block tal:condition="python: pInformeIdiomasYModulos and pInformeIdiomasYModulos.get( 'success', False)" >
     
-                <tal:block tal:define="
-                    global pClasesFilas             python: ['even', 'odd',];
-                    global pIndex                   python: 0" >        
+                    <h2>
+                        <strong tal:content="python: aTranslationsCache[ 'gvSIGi18n_LanguagesAndModules_label']" />
+                    </h2>
                     
-                    <p>
-                        <font size="2">
-                            <strong tal:content="python: len( pInformesIdiomas)" />
-                            <em tal:content="aTranslationsCache/gvSIGi18n_TRAColeccionIdiomas_contents_idiomas_label" />
-                            &nbsp;-&nbsp;
-                            <strong tal:content="python: pNumeroCadenas" />
-                            <em tal:content="aTranslationsCache/gvSIGi18n_cadenas_msgid" />
-                            &nbsp;-&nbsp;
-                            <strong tal:content="python: len( pInformesModulos)" />
-                            <em tal:content="aTranslationsCache/gvSIGi18n_TRAColeccionModulos_contents_modulos_label" />
-                        </font>
-                    </p>
-                    <table id="id_LanguagesJumpTable" class="listing" summary="#"  tal:attributes="summary string: Languages" 
-                        tal:define="
-                            pHayCodigosIdiomasInternacionalesDistintosCodigoEnGvSIG python: len( [ unInformeIdioma for unInformeIdioma in  pInformesIdiomas if not ( unInformeIdioma.get( 'codigoIdiomaEnGvSIG', '') == unInformeIdioma.get( 'codigoInternacionalDeIdioma', unInformeIdioma.get( 'codigoIdiomaEnGvSIG', '')))]) > 0;
-                            pHayIdiomasBloqueados python: len( [ unInformeIdioma for unInformeIdioma in  pInformesIdiomas if not ( unInformeIdioma.get( 'modifiable', False) )]) > 0">
-                        <thead>
-                            <tr>
-                                <th class="sortable" align="center" tal:content="aTranslationsCache/gvSIGi18n_TRAIdioma_attr_codigoIdiomaEnGvSIG_label_abbreviated" />
-                                <th tal:condition="pHayCodigosIdiomasInternacionalesDistintosCodigoEnGvSIG"
-                                    class="sortable" align="center" tal:content="aTranslationsCache/gvSIGi18n_TRAIdioma_attr_codigoInternacionalDeIdioma_label_abbreviated" />
-                                <th class="sortable" align="left"   tal:content="aTranslationsCache/gvSIGi18n_TRAIdioma_attr_nombreIdioma_label_abbreviated" />
-                                <th class="sortable" align="left"   tal:content="aTranslationsCache/gvSIGi18n_TRAIdioma_attr_nombreNativoDeIdioma_label_abbreviated" />
-                                <th tal:condition="pDisplayCountryFlags"
-                                    class="nosort" align="center" tal:content="aTranslationsCache/gvSIGi18n_bandera_label" />
-                                <th tal:condition="pHayIdiomasBloqueados"
-                                    class="sortable" align="center" tal:content="aTranslationsCache/gvSIGi18n_LanguageLocked_label" />
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tal:block tal:repeat="unIdiomaIndex python: range( len(  pInformesIdiomas))">
-                                <tr class="#" 
-                                    tal:define="
-                                        unInformeIdioma     python: pInformesIdiomas[ unIdiomaIndex];
-                                        pCode               python: unInformeIdioma.get( 'codigoIdiomaEnGvSIG', '');
-                                        pIntlCode           python: unInformeIdioma.get( 'codigoInternacionalDeIdioma', pCode);
-                                        pName               python: unInformeIdioma.get( 'nombreIdioma', pCode);
-                                        pNativeName         python: unInformeIdioma.get( 'nombreNativoDeIdioma', pName);
-                                        pFlag               python: unInformeIdioma.get( 'flag', '') or 'flag-ninguna.gif';
-                                        pFlagURL            python: unInformeIdioma.get( 'flag_url', '%s/%s' % ( here.TRAgvSIGi18n_tool.fAbsoluteURL( here,), 'flag-ninguna.gif'));
-                                        pHref               python: here.TRAgvSIGi18n_tool.fAsUnicode( here, '%s/TRATraducir/?theCodigoIdiomaCursor=%s&theMostrarInforme=on&theMostrarLista=on' % ( here.TRAgvSIGi18n_tool.fCatalogoAbsoluteURL( here,), pCode,));
-                                        pHref               python: pHref + ((( 'es' in pCodigosIdiomas) and '&theIdiomasReferencia=es')or '' );
-                                        pHref               python: pHref + ((( 'en' in pCodigosIdiomas) and '&theIdiomasReferencia=en')or '' );                                            
-                                        pTitle              python: here.TRAgvSIGi18n_tool.fAsUnicode( here, '%s %s %s %s' % ( pCode, pIntlCode, pName, pNativeName,));
-                                        pSizesIdioma        python: here.TRASizesIdioma( pCode);
-                                        pLanguageLocked     python: not( (unInformeIdioma.get( 'modifiable', False) and True) or False)" 
-                                    tal:attributes="class python: pClasesFilas[ unIdiomaIndex % 2]" >
-                                    <td align="left" valign="baseline" >                                        
-                                        <a href="#" title="#"  tal:attributes="href pHref; title pTitle" >
-                                            <font color="black">
-                                                <strong>
-                                                    <span tal:content="python: pCode" />
-                                                </strong>
-                                            </font>
-                                        </a>
-                                    </td>
-                                    <td tal:condition="pHayCodigosIdiomasInternacionalesDistintosCodigoEnGvSIG"
-                                        align="left" valign="baseline" >                                        
-                                        <a tal:condition="python: not ( pIntlCode == pCode)" 
-                                            href="#" title="#"  tal:attributes="href pHref; title pTitle" >
-                                            <font color="black">
-                                                <strong>
-                                                    <span tal:content="python: pIntlCode" />
-                                                </strong>
-                                            </font>
-                                        </a>
-                                    </td>
-                                    <td align="left" valign="baseline" >                                        
-                                        <a href="#" title="#"  tal:attributes="href pHref; title pTitle" >
-                                            <font color="black">
-                                                <strong>
-                                                    <span tal:content="python: pName" />
-                                                </strong>
-                                            </font>
-                                        </a>
-                                    </td>            
-                                    <td align="left" valign="baseline" >                                        
-                                        <a href="#" title="#"  tal:attributes="href pHref; title pTitle" >
-                                            <font color="black" size="#" tal:attributes="size python: pSizesIdioma.get( 'display_font_size', '1')">
-                                                <strong>
-                                                    <span tal:content="python: pNativeName" />
-                                                </strong>
-                                            </font>
-                                        </a>
-                                    </td>
-                                    <td tal:condition="pDisplayCountryFlags" align="center" valign="baseline" >                                        
-                                        <a href="#" title="#"  tal:attributes="href pHref; title pTitle" >
-                                            <img width="14" height="11" src="#" title="#" alt="#" tal:attributes="src pFlagURL; title pTitle; alt pTitle"/>
-                                        </a>
-                                    </td>
-                                    <td align="center" tal:condition="pHayIdiomasBloqueados" >
-                                        <img tal:condition="pLanguageLocked" src="#" title="#" alt="#" tal:attributes="src python: '%s/%s' % ( here.TRAgvSIGi18n_tool.fAbsoluteURL( here,), 'tra_locked.gif',); title python: aTranslationsCache[ 'gvSIGi18n_LanguageLocked_label']; alt python: aTranslationsCache[ 'gvSIGi18n_LanguageLocked_label']"/>
-                                    </td>
+                    <tal:block tal:define="
+                        global pClasesFilas             python: ['even', 'odd',];
+                        global pIndex                   python: 0" >        
+                        
+                        <p>
+                            <font size="2">
+                                <strong tal:content="python: len( pInformesIdiomas)" />
+                                <em tal:content="aTranslationsCache/gvSIGi18n_TRAColeccionIdiomas_contents_idiomas_label" />
+                                &nbsp;-&nbsp;
+                                <strong tal:content="python: pNumeroCadenas" />
+                                <em tal:content="aTranslationsCache/gvSIGi18n_cadenas_msgid" />
+                                &nbsp;-&nbsp;
+                                <strong tal:content="python: len( pInformesModulos)" />
+                                <em tal:content="aTranslationsCache/gvSIGi18n_TRAColeccionModulos_contents_modulos_label" />
+                            </font>
+                        </p>
+                        <table id="id_LanguagesJumpTable" class="listing" summary="#"  tal:attributes="summary string: Languages" 
+                            tal:define="
+                                pHayCodigosIdiomasInternacionalesDistintosCodigoEnGvSIG python: len( [ unInformeIdioma for unInformeIdioma in  pInformesIdiomas if not ( unInformeIdioma.get( 'codigoIdiomaEnGvSIG', '') == unInformeIdioma.get( 'codigoInternacionalDeIdioma', unInformeIdioma.get( 'codigoIdiomaEnGvSIG', '')))]) > 0;
+                                pHayIdiomasBloqueados python: len( [ unInformeIdioma for unInformeIdioma in  pInformesIdiomas if not ( unInformeIdioma.get( 'modifiable', False) )]) > 0">
+                            <thead>
+                                <tr>
+                                    <th class="sortable" align="center" tal:content="aTranslationsCache/gvSIGi18n_TRAIdioma_attr_codigoIdiomaEnGvSIG_label_abbreviated" />
+                                    <th tal:condition="pHayCodigosIdiomasInternacionalesDistintosCodigoEnGvSIG"
+                                        class="sortable" align="center" tal:content="aTranslationsCache/gvSIGi18n_TRAIdioma_attr_codigoInternacionalDeIdioma_label_abbreviated" />
+                                    <th class="sortable" align="left"   tal:content="aTranslationsCache/gvSIGi18n_TRAIdioma_attr_nombreIdioma_label_abbreviated" />
+                                    <th class="sortable" align="left"   tal:content="aTranslationsCache/gvSIGi18n_TRAIdioma_attr_nombreNativoDeIdioma_label_abbreviated" />
+                                    <th tal:condition="pDisplayCountryFlags"
+                                        class="nosort" align="center" tal:content="aTranslationsCache/gvSIGi18n_bandera_label" />
+                                    <th tal:condition="pHayIdiomasBloqueados"
+                                        class="sortable" align="center" tal:content="aTranslationsCache/gvSIGi18n_LanguageLocked_label" />
                                 </tr>
-                            </tal:block>
-                       </tbody>
-                    </table>
-                    <br/>
+                            </thead>
+                            <tbody>
+                                <tal:block tal:repeat="unIdiomaIndex python: range( len(  pInformesIdiomas))">
+                                    <tr class="#" 
+                                        tal:define="
+                                            unInformeIdioma     python: pInformesIdiomas[ unIdiomaIndex];
+                                            pCode               python: unInformeIdioma.get( 'codigoIdiomaEnGvSIG', '');
+                                            pIntlCode           python: unInformeIdioma.get( 'codigoInternacionalDeIdioma', pCode);
+                                            pName               python: unInformeIdioma.get( 'nombreIdioma', pCode);
+                                            pNativeName         python: unInformeIdioma.get( 'nombreNativoDeIdioma', pName);
+                                            pFlag               python: unInformeIdioma.get( 'flag', '') or 'flag-ninguna.gif';
+                                            pFlagURL            python: unInformeIdioma.get( 'flag_url', '%s/%s' % ( here.TRAgvSIGi18n_tool.fAbsoluteURL( here,), 'flag-ninguna.gif'));
+                                            pHref               python: here.TRAgvSIGi18n_tool.fAsUnicode( here, '%s/TRATraducir/?theCodigoIdiomaCursor=%s&theMostrarInforme=on&theMostrarLista=on' % ( here.TRAgvSIGi18n_tool.fCatalogoAbsoluteURL( here,), pCode,));
+                                            pHref               python: pHref + ((( 'es' in pCodigosIdiomas) and '&theIdiomasReferencia=es')or '' );
+                                            pHref               python: pHref + ((( 'en' in pCodigosIdiomas) and '&theIdiomasReferencia=en')or '' );                                            
+                                            pTitle              python: here.TRAgvSIGi18n_tool.fAsUnicode( here, '%s %s %s %s' % ( pCode, pIntlCode, pName, pNativeName,));
+                                            pSizesIdioma        python: here.TRASizesIdioma( pCode);
+                                            pLanguageLocked     python: not( (unInformeIdioma.get( 'modifiable', False) and True) or False)" 
+                                        tal:attributes="class python: pClasesFilas[ unIdiomaIndex % 2]" >
+                                        <td align="left" valign="baseline" >                                        
+                                            <a href="#" title="#"  tal:attributes="href pHref; title pTitle" >
+                                                <font color="black">
+                                                    <strong>
+                                                        <span tal:content="python: pCode" />
+                                                    </strong>
+                                                </font>
+                                            </a>
+                                        </td>
+                                        <td tal:condition="pHayCodigosIdiomasInternacionalesDistintosCodigoEnGvSIG"
+                                            align="left" valign="baseline" >                                        
+                                            <a tal:condition="python: not ( pIntlCode == pCode)" 
+                                                href="#" title="#"  tal:attributes="href pHref; title pTitle" >
+                                                <font color="black">
+                                                    <strong>
+                                                        <span tal:content="python: pIntlCode" />
+                                                    </strong>
+                                                </font>
+                                            </a>
+                                        </td>
+                                        <td align="left" valign="baseline" >                                        
+                                            <a href="#" title="#"  tal:attributes="href pHref; title pTitle" >
+                                                <font color="black">
+                                                    <strong>
+                                                        <span tal:content="python: pName" />
+                                                    </strong>
+                                                </font>
+                                            </a>
+                                        </td>            
+                                        <td align="left" valign="baseline" >                                        
+                                            <a href="#" title="#"  tal:attributes="href pHref; title pTitle" >
+                                                <font color="black" size="#" tal:attributes="size python: pSizesIdioma.get( 'display_font_size', '1')">
+                                                    <strong>
+                                                        <span tal:content="python: pNativeName" />
+                                                    </strong>
+                                                </font>
+                                            </a>
+                                        </td>
+                                        <td tal:condition="pDisplayCountryFlags" align="center" valign="baseline" >                                        
+                                            <a href="#" title="#"  tal:attributes="href pHref; title pTitle" >
+                                                <img width="14" height="11" src="#" title="#" alt="#" tal:attributes="src pFlagURL; title pTitle; alt pTitle"/>
+                                            </a>
+                                        </td>
+                                        <td align="center" tal:condition="pHayIdiomasBloqueados" >
+                                            <img tal:condition="pLanguageLocked" src="#" title="#" alt="#" tal:attributes="src python: '%s/%s' % ( here.TRAgvSIGi18n_tool.fAbsoluteURL( here,), 'tra_locked.gif',); title python: aTranslationsCache[ 'gvSIGi18n_LanguageLocked_label']; alt python: aTranslationsCache[ 'gvSIGi18n_LanguageLocked_label']"/>
+                                        </td>
+                                    </tr>
+                                </tal:block>
+                           </tbody>
+                        </table>
+                        <br/>
+                        
+                        <h4  tal:content="aTranslationsCache/gvSIGi18n_TRAColeccionModulos_contents_modulos_label" />
+                        <tal:block tal:repeat="pInformeModulo python: pInformesModulos" >
+                            <span tal:content="pInformeModulo" />
+                            &emsp;
+                        </tal:block>
+                        <br/>
                     
-                    <h4  tal:content="aTranslationsCache/gvSIGi18n_TRAColeccionModulos_contents_modulos_label" />
-                    <tal:block tal:repeat="pInformeModulo python: pInformesModulos" >
-                        <span tal:content="pInformeModulo" />
-                        &emsp;
+                                        
+                    </tal:block>
+                        
+                </tal:block>
+                
+                <tal:block tal:condition="python: pInformeActiveUsers and pInformeActiveUsers.get( 'success', False) and pInformeActiveUsers.get( 'admin_infos', []) " >
+                    <br/>
+                    <h2>
+                        <strong tal:content="python: aTranslationsCache[ 'gvSIGi18n_AdminUsers_label']" />
+                    </h2>
+                    <tal:block tal:repeat="pAdminInfo python: pInformeActiveUsers.get( 'admin_infos', [])" >
+                        <tal:block tal:define="
+                            unIdUsuario        python: pAdminInfo.get( 'user_id', '');
+                            unNombreUsuario    python: pAdminInfo.get( 'member_name', unIdUsuario) or unIdUsuario;
+                            unIdPhotoUsuario   python: pAdminInfo.get( 'photo_id', '');
+                            unURLPhotoUsuario  python: pAdminInfo.get( 'photo_URL', '');
+                            unURLHomeUsuario   python: pAdminInfo.get( 'home_URL', '')">
+                            <table tal:condition="unNombreUsuario">
+                                <tbody>
+                                    <tr tal:condition="unURLPhotoUsuario">
+                                        <td width="40" >
+                                            <a href="#" title="#" tal:condition="python: unURLPhotoUsuario and not ( unIdPhotoUsuario == 'defaultUser.gif')"
+                                                tal:attributes="href python:  unURLHomeUsuario; title python: '%s %s' % ( unIdUsuario, unNombreUsuario,)">
+                                                <img width="40" alt="#" src="#"
+                                                    tal:attributes="
+                                                        src python: unURLPhotoUsuario;
+                                                        alt unIdUsuario;
+                                                        title unNombreUsuario" />
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40" >
+                                            <a href="#" title="#" tal:condition="unNombreUsuario"
+                                                tal:attributes="href python:  unURLHomeUsuario; title python: '%s %s' % ( unIdUsuario, unNombreUsuario,)">
+                                                <span tal:content="unNombreUsuario" />
+                                            </a>
+                                        </td>
+                                    </tr>
+                                <tbody>
+                            </table>
+                            &emsp;
+                        </tal:block>
                     </tal:block>
                     <br/>
-                
-                                    
                 </tal:block>
-                    
-            </tal:block>
+                
+                
             </tal:block>
             <br/>        
            

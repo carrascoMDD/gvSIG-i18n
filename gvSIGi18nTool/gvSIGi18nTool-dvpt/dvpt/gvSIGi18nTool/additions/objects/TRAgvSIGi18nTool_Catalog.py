@@ -145,6 +145,38 @@ class TRAgvSIGi18nTool_Catalog:
 
 
     
+    security.declareProtected( permissions.View, 'fCatalogoAllowWrite')
+    def fRetrieveUltimoInformeResult( self,
+        theContextualElement  =None,):
+   
+        if theContextualElement == None:
+            return False
+        
+        unCatalogo = theContextualElement.getCatalogo()
+        if unCatalogo == None:
+            return False
+            
+        unResultadoUltimoInforme = unCatalogo.fRetrieveUltimoInformeResult()
+        
+        return unResultadoUltimoInforme
+    
+    
+    
+    security.declareProtected( permissions.View, 'fRetrieveUltimoContribucionesResult')
+    def fRetrieveUltimoContribucionesResult( self,
+        theContextualElement  =None,):
+   
+        if theContextualElement == None:
+            return False
+        
+        unCatalogo = theContextualElement.getCatalogo()
+        if unCatalogo == None:
+            return False
+            
+        unResultadoUltimoContribuciones = unCatalogo.fRetrieveUltimoContribucionesResult()
+        
+        return unResultadoUltimoContribuciones
+    
     
     
     

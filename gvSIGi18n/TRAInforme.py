@@ -237,7 +237,7 @@ schema = Schema((
         name='informeIdiomas',
         widget=TextAreaWidget(
             label="Informe por Idiomas",
-            label2="Languages Report",
+            label2="Report by Languages",
             description="Informe del estado de traduccion por idiomas.",
             description2="Report or the translation status, summarized by languages.",
             label_msgid='gvSIGi18n_TRAInforme_attr_informeIdiomas_label',
@@ -246,7 +246,7 @@ schema = Schema((
         ),
         description="Informe del estado de traduccion por idiomas.",
         duplicates="0",
-        label2="Languages Report",
+        label2="Report by Languages",
         ea_localid="779",
         derived="0",
         precision=0,
@@ -299,22 +299,22 @@ schema = Schema((
         name='informeModulos',
         widget=TextAreaWidget(
             label="Informe por Modulos e Idiomas",
-            label2="Modules and Languages Report",
+            label2="Report by Modules",
             description="Informe del estado de traduccion por modulos y detallado por  idiomas.",
-            description2="Report or the translation status, summarized by modules and detailed by languages.",
+            description2="Report or the translation status, detailed by modules and languages.",
             label_msgid='gvSIGi18n_TRAInforme_attr_informeModulos_label',
             description_msgid='gvSIGi18n_TRAInforme_attr_informeModulos_help',
             i18n_domain='gvSIGi18n',
         ),
         description="Informe del estado de traduccion por modulos y detallado por  idiomas.",
         duplicates="0",
-        label2="Modules and Languages Report",
+        label2="Report by Modules",
         ea_localid="806",
         derived="0",
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        description2="Report or the translation status, summarized by modules and detailed by languages.",
+        description2="Report or the translation status, detailed by modules and languages.",
         ea_guid="{F3179FE4-09FD-4ecb-929A-AE8CD4B5D418}",
         read_only="True",
         scale="0",
@@ -450,6 +450,24 @@ class TRAInforme(OrderedBaseFolder, TRAArquetipo, TRAInforme_Operaciones, TRACon
 
 
     actions =  (
+
+
+       {'action': "string:${object_url}/TRAInforme_Idiomas",
+        'category': "object",
+        'id': 'TRAInforme_Idiomas',
+        'name': 'By Languages',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:${object_url}/TRAInforme_Modulos",
+        'category': "object",
+        'id': 'TRAInforme_Modulos',
+        'name': 'By Modules',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
 
 
        {'action': "string:$object_url/Editar",
@@ -629,7 +647,7 @@ class TRAInforme(OrderedBaseFolder, TRAArquetipo, TRAInforme_Operaciones, TRACon
         """
         """
         
-        return TRAElemento_Operaciones.fExtraLinks( self)
+        return TRAInforme_Operaciones.fExtraLinks( self)
 
     security.declarePublic('cb_isCopyable')
     def cb_isCopyable(self):

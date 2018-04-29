@@ -71,6 +71,7 @@
 					</div>
 				</tal:block>
                             
+				<tal:block tal:define="void python: here.TRAgvSIGi18n_tool.fInvalidateCatalogReportByObsoleteActivity( here, )" />
 			
 				<metal:block metal:use-macro="here/TRACatalogo_inner/macros/tTRACatalogoInner" />
 			</tal:block>
@@ -84,6 +85,7 @@
 					</div>
 				</tal:block>
                             
+				<tal:block tal:define="void python: here.TRAgvSIGi18n_tool.fInvalidateCatalogReportByObsoleteActivity( here, )" />
 			
 				<div tal:replace="structure python: here.MDDModelDDvlPlone_tool.fRenderTemplateOrCachedForElement( here, 'TRACatalogo_NoHeaderNoFooter' )" />
 			</tal:block>

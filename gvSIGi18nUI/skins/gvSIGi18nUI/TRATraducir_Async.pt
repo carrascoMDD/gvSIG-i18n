@@ -70,7 +70,7 @@
         unNuevoUsuarioCoordinador       python:  ( unosDatosTraduccion and unosDatosTraduccion[ 'getUsuarioCoordinador']) or '';
         unaNuevaFechaDefinitivo         python:  ( unosDatosTraduccion and unosDatosTraduccion[ 'getFechaDefinitivoTextual']) or '';
         unosNombresModulos              python:  ( unosDatosTraduccion and unosDatosTraduccion[ 'getNombresModulos']) or '';
-        
+        unasReferenciasFuentes          python:  ( unosDatosTraduccion and unosDatosTraduccion[ 'getReferenciasFuentes']) or '';
         unChangesCounter                python:  str( ( unosDatosTraduccion and unosDatosTraduccion[ 'getContadorCambios']) or 0);
         unasAllowedStateTransitions     python:  ( unRetrievalResult or {}).get( 'allowed_state_transitions', {});
         unosTargetStateChanges          python:  ' '.join( (unasAllowedStateTransitions or {}).get( unNuevoEstadoTraduccion, {}))"
@@ -120,6 +120,9 @@
 
 <br/>cid_AsyncResponse_theModuleNames&ensp;
 <span id="cid_AsyncResponse_theModuleNames"                 tal:content="unosNombresModulos" />
+
+<br/>cid_AsyncResponse_theSourceReferences&ensp;
+<span id="cid_AsyncResponse_theSourceReferences"            tal:content="unasReferenciasFuentes" />
 
 
 
