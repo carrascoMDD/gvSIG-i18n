@@ -2025,9 +2025,12 @@ class TRACatalogo_Operaciones:
             unStartTime = self.fMillisecondsNow()
         
         try:
-
             unaBusqueda = cBusquedaTodasCadenasOrdenadasPorSimbolo.copy()
-            unaBusqueda[ 'getPathDelRaiz'] = self.getPathDelRaiz() 
+
+# ACV 20090814 
+#   EATR01 Remove Attribute pathDelRaiz from all entities; 	
+#   EATR02 Remove the Type attribute from catalog schemas
+#            unaBusqueda[ 'getPathDelRaiz'] = self.getPathDelRaiz() 
             
             unCatalogFiltroCadenas = self.fCatalogFiltroCadenas()
             if not unCatalogFiltroCadenas:

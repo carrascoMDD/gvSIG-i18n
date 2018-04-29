@@ -327,12 +327,6 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
     
     security.declarePrivate( 'fCrearCadenas')    
     def fCrearCadenas( self,
-        theTimeProfilingResults =None, # invoked from ModelDDvlPloneTool still using previous style of time profiling, thus the parameter is not theParentExecutionRecord =None, 
-        theModelDDvlPloneTool_Mutators   =None, 
-        theNewTypeName          ='', 
-        theNewOneTitle          ='', 
-        theNewOneDescription    ='', 
-        theAdditionalParams     =None,
         thePermissionsCache     =None,
         theRolesCache           =None,
         theParentExecutionRecord=None):
@@ -537,12 +531,6 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
     
     security.declarePrivate( 'fLimpiarCadenas')    
     def fLimpiarCadenas( self,
-        theTimeProfilingResults =None, # invoked from ModelDDvlPloneTool still using previous style of time profiling, thus the parameter is not theParentExecutionRecord =None, 
-        theModelDDvlPloneTool_Mutators   =None, 
-        theNewTypeName          ='', 
-        theNewOneTitle          ='', 
-        theNewOneDescription    ='', 
-        theAdditionalParams     =None,
         thePermissionsCache     =None,
         theRolesCache           =None,
         theParentExecutionRecord=None):

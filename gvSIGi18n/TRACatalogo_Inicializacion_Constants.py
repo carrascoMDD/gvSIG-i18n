@@ -128,7 +128,12 @@ cIndexesCatalogoBusquedaCadenas  = [
     [ 'getSimbolo',         'FieldIndex',  ],
     [ 'getEstadoCadena',    'KeywordIndex',],
 ]
-cSchemaFieldsCatalogoBusquedaCadenas  = [ 'Type', 'getPathDelRaiz', ] + [ aIdxSpec[ 0] for aIdxSpec in cIndexesCatalogoBusquedaCadenas]
+# ACV 20090814 
+#   EATR01 Remove Attribute pathDelRaiz from all entities; 	
+#   EATR02 Remove the Type attribute from catalog schemas
+#cSchemaFieldsCatalogoBusquedaCadenas  = [ 'Type', 'getPathDelRaiz', ] + [ aIdxSpec[ 0] for aIdxSpec in cIndexesCatalogoBusquedaCadenas]
+
+cSchemaFieldsCatalogoBusquedaCadenas  = [ aIdxSpec[ 0] for aIdxSpec in cIndexesCatalogoBusquedaCadenas]
 
 
 
@@ -142,10 +147,15 @@ cIndexesCatalogoFiltroCadenas  = cIndexesCatalogoBusquedaCadenas + [
     [ 'getUsuarioCreador',          'FieldIndex',  ],
     [ 'getFechaCancelacionTextual', 'FieldIndex',   ],
 ]
-cSchemaFieldsCatalogoFiltroCadenas  = [ 'Type', 'getPathDelRaiz', ] + \
-                                      [ aIdxSpec[ 0] for aIdxSpec in cIndexesCatalogoFiltroCadenas] + \
-                                      [ 'getNombresModulos',]
+# ACV 20090814 
+#   EATR01 Remove Attribute pathDelRaiz from all entities; 	
+#   EATR02 Remove the Type attribute from catalog schemas
+#cSchemaFieldsCatalogoFiltroCadenas  = [ 'Type', 'getPathDelRaiz', ] + \
+#                                      [ aIdxSpec[ 0] for aIdxSpec in cIndexesCatalogoFiltroCadenas] + \
+#                                      [ 'getNombresModulos',]
 
+cSchemaFieldsCatalogoFiltroCadenas  = [ aIdxSpec[ 0] for aIdxSpec in cIndexesCatalogoFiltroCadenas] + \
+                                      [ 'getNombresModulos',]
 
 
 
@@ -201,7 +211,12 @@ cIndexesCatalogoBusquedaTraducciones  = [
     [ 'getIdCadena',            'FieldIndex',  ],
     [ 'getEstadoTraduccion',    'KeywordIndex',],
 ]
-cSchemaFieldsCatalogoBusquedaTraducciones  = [ 'Type', 'getPathDelRaiz', 'getCodigoIdiomaEnGvSIG', ] + \
+# ACV 20090814 
+#   EATR01 Remove Attribute pathDelRaiz from all entities; 	
+#   EATR02 Remove the Type attribute from catalog schemas
+#cSchemaFieldsCatalogoBusquedaTraducciones  = [ 'Type', 'getPathDelRaiz', 'getCodigoIdiomaEnGvSIG', ] + \
+#                                             [ aIdxSpec[ 0] for aIdxSpec in cIndexesCatalogoBusquedaTraducciones]
+cSchemaFieldsCatalogoBusquedaTraducciones  = [ 'getCodigoIdiomaEnGvSIG', ] + \
                                              [ aIdxSpec[ 0] for aIdxSpec in cIndexesCatalogoBusquedaTraducciones]
 
 

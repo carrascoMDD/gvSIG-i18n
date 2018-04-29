@@ -543,37 +543,6 @@ schema = Schema((
     ),
 
     StringField(
-        name='pathDelRaiz',
-        widget=StringWidget(
-            label="Path del Raiz",
-            label2="Root's Path",
-            description="Path del Catalogo raiz de este elemento.",
-            description2="This element's root Catalog path.",
-            label_msgid='gvSIGi18n_TRATraduccion_attr_pathDelRaiz_label',
-            description_msgid='gvSIGi18n_TRATraduccion_attr_pathDelRaiz_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        description="Path del Catalogo raiz de este elemento.",
-        duplicates="0",
-        label2="Root's Path",
-        ea_localid="1122",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        description2="This element's root Catalog path.",
-        ea_guid="{7C2708E5-D8E5-406a-A71B-3F907D42F689}",
-        scale="0",
-        label="Path del Raiz",
-        length="0",
-        exclude_from_traversalconfig="True",
-        containment="Not Specified",
-        position="0",
-        owner_class_name="TRATraduccion",
-        exclude_from_views="[ 'Textual', 'Tabular',  ]"
-    ),
-
-    StringField(
         name='usuarioCreador',
         widget=StringWidget(
             label="Creador",

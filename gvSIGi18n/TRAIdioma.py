@@ -578,38 +578,6 @@ schema = Schema((
         owner_class_name="TRAIdioma"
     ),
 
-    ComputedField(
-        name='pathDelRaiz',
-        widget=ComputedField._properties['widget'](
-            label="Path del Raiz",
-            label2="Root's Path",
-            description="Path del Catalogo raiz de este elemento.",
-            description2="This element's root Catalog path.",
-            label_msgid='gvSIGi18n_TRAIdioma_attr_pathDelRaiz_label',
-            description_msgid='gvSIGi18n_TRAIdioma_attr_pathDelRaiz_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        description="Path del Catalogo raiz de este elemento.",
-        duplicates="0",
-        label2="Root's Path",
-        ea_localid="1107",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        description2="This element's root Catalog path.",
-        ea_guid="{00436A4E-8694-4ae3-9AEC-C9A6A1915D96}",
-        scale="0",
-        expression="context.fPathDelRaiz()",
-        label="Path del Raiz",
-        length="0",
-        exclude_from_traversalconfig="True",
-        containment="Not Specified",
-        position="0",
-        owner_class_name="TRAIdioma",
-        exclude_from_views="[ 'Textual', 'Tabular',  ]"
-    ),
-
 ),
 )
 
@@ -715,6 +683,15 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones):
         'name': 'Edit',
         'permissions': ("Modify portal content",),
         'condition': 'python:1'
+       },
+
+
+       {'action': "string:${object_url}/TRACopiar_Traducciones",
+        'category': "object",
+        'id': 'CopyTranslations',
+        'name': 'Copy Translations',
+        'permissions': ("Modify portal content",),
+        'condition': 'python:object.fRoleQuery_IsManagerOrCoordinator()'
        },
 
 

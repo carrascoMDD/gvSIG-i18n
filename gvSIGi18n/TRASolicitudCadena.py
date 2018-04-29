@@ -372,37 +372,6 @@ schema = Schema((
         label="Traduccion al idioma de referencia"
     ),
 
-    StringField(
-        name='pathDelRaiz',
-        widget=StringWidget(
-            label="Path del Raiz",
-            label2="Root's Path",
-            description="Path del Catalogo raiz de este elemento.",
-            description2="This element's root Catalog path.",
-            label_msgid='gvSIGi18n_TRASolicitudCadena_attr_pathDelRaiz_label',
-            description_msgid='gvSIGi18n_TRASolicitudCadena_attr_pathDelRaiz_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        description="Path del Catalogo raiz de este elemento.",
-        duplicates="0",
-        label2="Root's Path",
-        ea_localid="1520",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        description2="This element's root Catalog path.",
-        ea_guid="{E82F252E-2521-4c31-AA7E-2A8BCE07BD36}",
-        scale="0",
-        label="Path del Raiz",
-        length="0",
-        exclude_from_traversalconfig="True",
-        containment="Not Specified",
-        position="1",
-        owner_class_name="TRASolicitudCadena",
-        exclude_from_views="[ 'Textual', 'Tabular',  ]"
-    ),
-
 ),
 )
 

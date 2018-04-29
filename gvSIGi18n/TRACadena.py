@@ -274,37 +274,6 @@ schema = Schema((
         description='Traducciones de una de las Cadenas los varios Idiomas.'
     ),
 
-    StringField(
-        name='pathDelRaiz',
-        widget=StringWidget(
-            label="Path del Raiz",
-            label2="Root's Path",
-            description="Path del Catalogo raiz de este elemento.",
-            description2="This element's root Catalog path.",
-            label_msgid='gvSIGi18n_TRACadena_attr_pathDelRaiz_label',
-            description_msgid='gvSIGi18n_TRACadena_attr_pathDelRaiz_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        description="Path del Catalogo raiz de este elemento.",
-        duplicates="0",
-        label2="Root's Path",
-        ea_localid="1118",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        description2="This element's root Catalog path.",
-        ea_guid="{0970FA45-8541-423a-B514-3147F4681D19}",
-        scale="0",
-        label="Path del Raiz",
-        length="0",
-        exclude_from_traversalconfig="True",
-        containment="Not Specified",
-        position="2",
-        owner_class_name="TRACadena",
-        exclude_from_views="[ 'Textual', 'Tabular',  ]"
-    ),
-
     ComputedField(
         name='simboloEnPalabras',
         widget=ComputedField._properties['widget'](

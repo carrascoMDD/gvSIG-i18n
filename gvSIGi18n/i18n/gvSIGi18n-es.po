@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gvSIGi18n\n"
-"POT-Creation-Date: Fri Aug 14 04:08:55 2009\n"
-"PO-Revision-Date: Fri Aug 14 04:08:55 2009\n"
+"POT-Creation-Date: Sat Aug 15 03:48:01 2009\n"
+"PO-Revision-Date: Sat Aug 15 03:48:01 2009\n"
 "Last-Translator: Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>\n"
 "Language-Team: Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>\n"
 "MIME-Version: 1.0\n"
@@ -85,16 +85,6 @@ msgstr "Modulos"
 #: TRACadena nombresModulos
 msgid "gvSIGi18n_TRACadena_attr_nombresModulos_help"
 msgstr "Nombres de los Modulos en los que se usa esta cadena."
-
-#. Default: "Path del Raiz"
-#: TRACadena pathDelRaiz
-msgid "gvSIGi18n_TRACadena_attr_pathDelRaiz_label"
-msgstr "Path del Raiz"
-
-#. Default: "Path del Catalogo raiz de este elemento."
-#: TRACadena pathDelRaiz
-msgid "gvSIGi18n_TRACadena_attr_pathDelRaiz_help"
-msgstr "Path del Catalogo raiz de este elemento."
 
 #. Default: "Referencias a fuentes"
 #: TRACadena referenciasFuentes
@@ -406,16 +396,6 @@ msgstr "Producto"
 msgid "gvSIGi18n_TRACatalogo_attr_nombreProducto_help"
 msgstr "Nombre del Producto cuyas traducciones se manejan con este Catalogo."
 
-#. Default: "Path del Raiz"
-#: TRACatalogo pathDelRaiz
-msgid "gvSIGi18n_TRACatalogo_attr_pathDelRaiz_label"
-msgstr "Path del Raiz"
-
-#. Default: "Path del Catalogo raiz de este elemento."
-#: TRACatalogo pathDelRaiz
-msgid "gvSIGi18n_TRACatalogo_attr_pathDelRaiz_help"
-msgstr "Path del Catalogo raiz de este elemento."
-
 #. Default: "Tiempo en segundos para confirmar Importacion"
 #: TRACatalogo segundosParaConfirmarImportacion
 msgid "gvSIGi18n_TRACatalogo_attr_segundosParaConfirmarImportacion_label"
@@ -646,16 +626,6 @@ msgstr "TRAColeccionArquetipos"
 msgid "gvSIGi18n_TRAColeccionArquetipos_help"
 msgstr "TRAColeccionArquetipos"
 
-#. Default: "Path del Raiz"
-#: TRAColeccionArquetipos pathDelRaiz
-msgid "gvSIGi18n_TRAColeccionArquetipos_attr_pathDelRaiz_label"
-msgstr "Path del Raiz"
-
-#. Default: "Path del Catalogo raiz de este elemento."
-#: TRAColeccionArquetipos pathDelRaiz
-msgid "gvSIGi18n_TRAColeccionArquetipos_attr_pathDelRaiz_help"
-msgstr "Path del Catalogo raiz de este elemento."
-
 #. Default: "Coleccion de Cadenas"
 #: TRAColeccionCadenas
 msgid "gvSIGi18n_TRAColeccionCadenas_label"
@@ -855,16 +825,6 @@ msgstr "Modulo"
 #: TRAContenidoIntercambio nombreModulo
 msgid "gvSIGi18n_TRAContenidoIntercambio_attr_nombreModulo_help"
 msgstr "Nombre del Modulo en que se usa o resuelve esta cadena (base por defecto)."
-
-#. Default: "Path del Raiz"
-#: TRAContenidoIntercambio pathDelRaiz
-msgid "gvSIGi18n_TRAContenidoIntercambio_attr_pathDelRaiz_label"
-msgstr "Path del Raiz"
-
-#. Default: "Path del Catalogo raiz de este elemento."
-#: TRAContenidoIntercambio pathDelRaiz
-msgid "gvSIGi18n_TRAContenidoIntercambio_attr_pathDelRaiz_help"
-msgstr "Path del Catalogo raiz de este elemento."
 
 #. Default: "Sumario del contenido"
 #: TRAContenidoIntercambio sumarioContenido
@@ -1181,16 +1141,6 @@ msgstr "Nombre propio del idioma"
 msgid "gvSIGi18n_TRAIdioma_attr_nombreNativoDeIdioma_help"
 msgstr "Nombre del idioma expresado en su idioma."
 
-#. Default: "Path del Raiz"
-#: TRAIdioma pathDelRaiz
-msgid "gvSIGi18n_TRAIdioma_attr_pathDelRaiz_label"
-msgstr "Path del Raiz"
-
-#. Default: "Path del Catalogo raiz de este elemento."
-#: TRAIdioma pathDelRaiz
-msgid "gvSIGi18n_TRAIdioma_attr_pathDelRaiz_help"
-msgstr "Path del Catalogo raiz de este elemento."
-
 #. Default: "Idioma Base"
 #: TRAIdioma baseDeIdiomas
 msgid "gvSIGi18n_TRAIdioma_rel_baseDeIdiomas_label"
@@ -1481,16 +1431,6 @@ msgstr "Nombre de Modulo por defecto"
 msgid "gvSIGi18n_TRAImportacion_attr_nombreModuloPorDefecto_help"
 msgstr "Nombre del modulo a utilizar cuando no se puede obtener, bien del nombre del dominio en ficheros GNU gettext .PO, o de la estructura de carpetas si el contenido a importar es una archivo .jar o .zip."
 
-#. Default: "Path del Raiz"
-#: TRAImportacion pathDelRaiz
-msgid "gvSIGi18n_TRAImportacion_attr_pathDelRaiz_label"
-msgstr "Path del Raiz"
-
-#. Default: "Path del Catalogo raiz de este elemento."
-#: TRAImportacion pathDelRaiz
-msgid "gvSIGi18n_TRAImportacion_attr_pathDelRaiz_help"
-msgstr "Path del Catalogo raiz de este elemento."
-
 #. Default: "Usuario Importador"
 #: TRAImportacion usuarioImportador
 msgid "gvSIGi18n_TRAImportacion_attr_usuarioImportador_label"
@@ -1681,16 +1621,6 @@ msgstr "Intervalo minimo de actualizacion en Minutos"
 msgid "gvSIGi18n_TRAInforme_attr_minimoIntervaloActualizacionEnMinutos_help"
 msgstr "Si es Auto-Actualizable, es el Intervalo minimo de tiempo en minutos a esperar antes de actualizar automaticamente el informe. Si el valor es 0, el informe se actualizara en todas las solilcitudes de los usuarios, posiblemente sobrecargando el eistema."
 
-#. Default: "Path del Raiz"
-#: TRAInforme pathDelRaiz
-msgid "gvSIGi18n_TRAInforme_attr_pathDelRaiz_label"
-msgstr "Path del Raiz"
-
-#. Default: "Path del Catalogo raiz de este elemento."
-#: TRAInforme pathDelRaiz
-msgid "gvSIGi18n_TRAInforme_attr_pathDelRaiz_help"
-msgstr "Path del Catalogo raiz de este elemento."
-
 #. Default: "Usuario Informador"
 #: TRAInforme usuarioInformador
 msgid "gvSIGi18n_TRAInforme_attr_usuarioInformador_label"
@@ -1740,16 +1670,6 @@ msgstr "Es Modulo Principal"
 #: TRAModulo esModuloPrincipal
 msgid "gvSIGi18n_TRAModulo_attr_esModuloPrincipal_help"
 msgstr "Si las traducciones en este Modulo pueden resolver las cadenas de mismo simbolo de otros modulos."
-
-#. Default: "Path del Raiz"
-#: TRAModulo pathDelRaiz
-msgid "gvSIGi18n_TRAModulo_attr_pathDelRaiz_label"
-msgstr "Path del Raiz"
-
-#. Default: "Path del Catalogo raiz de este elemento."
-#: TRAModulo pathDelRaiz
-msgid "gvSIGi18n_TRAModulo_attr_pathDelRaiz_help"
-msgstr "Path del Catalogo raiz de este elemento."
 
 #. Default: "TRAModulo_Operaciones"
 #: TRAModulo_Operaciones
@@ -1865,16 +1785,6 @@ msgstr "Modulos"
 #: TRASolicitudCadena nombresModulos
 msgid "gvSIGi18n_TRASolicitudCadena_attr_nombresModulos_help"
 msgstr "Nombres de los Modulos en los que se usa esta cadena."
-
-#. Default: "Path del Raiz"
-#: TRASolicitudCadena pathDelRaiz
-msgid "gvSIGi18n_TRASolicitudCadena_attr_pathDelRaiz_label"
-msgstr "Path del Raiz"
-
-#. Default: "Path del Catalogo raiz de este elemento."
-#: TRASolicitudCadena pathDelRaiz
-msgid "gvSIGi18n_TRASolicitudCadena_attr_pathDelRaiz_help"
-msgstr "Path del Catalogo raiz de este elemento."
 
 #. Default: "Referencias a fuentes"
 #: TRASolicitudCadena referenciasFuentes
@@ -2075,16 +1985,6 @@ msgstr "Modulos"
 #: TRATraduccion nombresModulos
 msgid "gvSIGi18n_TRATraduccion_attr_nombresModulos_help"
 msgstr "Nombres de los Modulos en los que se usa esta cadena."
-
-#. Default: "Path del Raiz"
-#: TRATraduccion pathDelRaiz
-msgid "gvSIGi18n_TRATraduccion_attr_pathDelRaiz_label"
-msgstr "Path del Raiz"
-
-#. Default: "Path del Catalogo raiz de este elemento."
-#: TRATraduccion pathDelRaiz
-msgid "gvSIGi18n_TRATraduccion_attr_pathDelRaiz_help"
-msgstr "Path del Catalogo raiz de este elemento."
 
 #. Default: "Simbolo"
 #: TRATraduccion simbolo

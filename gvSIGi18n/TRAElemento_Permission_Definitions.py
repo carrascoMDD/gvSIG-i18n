@@ -360,6 +360,7 @@ cUseCase_InvalidateStringTranslations   = 'Invalidate_String_Translations'
 cUseCase_CreateTRAIdioma                = 'Create_TRAIdioma'
 cUseCase_CreateTRACadena                = 'Create_TRACadena'
 cUseCase_CleanupTRAColeccionSolicitudesCadenas = 'Cleanup_TRAColeccionSolicitudesCadenas'
+cUseCase_Copy_Translations              = 'Copy_Translations'
 
 
                                                                 
@@ -388,6 +389,7 @@ cTRAUseCaseNames = [
     cUseCase_CreateTRAIdioma,
     cUseCase_CreateTRACadena,
     cUseCase_CleanupTRAColeccionSolicitudesCadenas,
+    cUseCase_Copy_Translations,
 ]
 
 
@@ -1437,7 +1439,33 @@ cTRAUseCasesWithAbbreviatedPermissions =  {
         ],  
         [
         ],                                                                                           
-    ],                                                                                                  
+    ],        
+    cUseCase_Copy_Translations: [ 
+        [   {   'title':  'Es TRAIdioma',
+                'path':   [ 'object', ],
+                'types':  [ cNombreTipoTRAIdioma,],     
+                'roles':  [  cTRACoordinator_role, ] +  cUbiquitousWriterRoles, 
+                'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren + [ 'APC', 'APF', 'MPC', ],
+            }, 
+            {   'title':  'Accessible TRACatalogo',
+                'name':   'catalogo',
+                'path':   [ 'object', 'getCatalogo',],  
+                'types':  [ cNombreTipoTRACatalogo,],    
+                'roles':  [ cTRACoordinator_role, ] +  cUbiquitousWriterRoles, 
+                'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren,
+            },
+            {   'title':  'Filtro otros TRAIdioma accesibles',
+                'name':   'languages',
+                'mode':   cUseCaseRuleMode_Filter,
+                'path':   [ 'object', 'fObtenerOtrosIdiomas', ],  
+                'types':  [ cNombreTipoTRAIdioma,],    
+                'roles':  [ cTRACoordinator_role,] +  cUbiquitousWriterRoles, 
+                'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren , 
+            },
+        ],  
+        [
+        ],  
+    ],
  }
 
 

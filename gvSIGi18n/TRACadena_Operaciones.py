@@ -471,69 +471,6 @@ class TRACadena_Operaciones:
     
     
     
-    
-    # #########################################################################
-    #   Factorias de  TRATraduccion
-    # ##########################################################################
-    
-
-    #security.declarePrivate('fCrearTraduccionQueFalta')
-    #def fCrearTraduccionSiFalta( self, 
-        #theCodigoIdioma, 
-        #theMemberId, 
-        #thePloneUtilsTool, 
-        #theCatalogBusquedaTraducciones, 
-        #theCatalogFiltroTraducciones, 
-        #theCatalogTextoTraducciones):
-        #if not theCodigoIdioma:
-            #return None
-            
-        #unSimboloCadena = self.getSimbolo()
-        #unaIdCadena     = self.getId()
-        #unTitulo = '%s-%s' % ( unSimboloCadena, theCodigoIdioma)
-        #aNewId = self.fIdTraduccionEnLenguage( theCodigoIdioma, thePloneUtilsTool)
-        
-        #unaTraduccionExistente   = self.getElementoPorID( aNewId)
-        #if unaNuevaTraduccion:
-            #return [ 'exists', unaNuevaTraduccion, ]
-        
-        #anAttrsDict = { 
-            #'pathDelRaiz':          self.fPathDelRaiz(),
-            #'title':                unTitulo,
-            #'description':          '',
-            #'simbolo':              unSimboloCadena,
-            #'codigoIdiomaEnGvSIG':  theCodigoIdioma, 
-            #'estadoCadena':         cEstadoCadenaActiva,
-            #'idCadena':             unaIdCadena,
-            #'nombresModulos':       '',
-            #'estadoTraduccion'   :  cEstadoTraduccionPendiente,
-            #'cadenaTraducida'    :  '',
-            #'usuarioTraductor':     '', 
-            #'fechaTraduccion':      None,  
-            #'usuarioRevisor':       None, 
-            #'fechaRevision':        None,  
-            #'fechaDefinitivo':      None,  
-            #'comentario':           "",   
-            #'historia':             "",            
-        #}
-        
-        #unaIdNuevaTraduccion = self.invokeFactory( cNombreTipoTRATraduccion, aNewId, **anAttrsDict)
-        #if not unaIdNuevaTraduccion:
-            #return [ 'failed', None]
-        #unaNuevaTraduccion   = self.getElementoPorID( unaIdNuevaTraduccion)
-        #if not unaNuevaTraduccion:
-            #return [ 'failed', None]
-            
-        #unaNuevaTraduccion.pAddToCatalogs( theCatalogBusquedaTraducciones, theCatalogFiltroTraducciones, theCatalogTextoTraducciones)        
-        
-        #unaNuevaTraduccion.manage_fixupOwnershipAfterAdd()
-        #unaNuevaTraduccion.pSetPermissions()
-                
-        #return [ 'created', unaNuevaTraduccion]
-
-    
-    
-    
         
           
  

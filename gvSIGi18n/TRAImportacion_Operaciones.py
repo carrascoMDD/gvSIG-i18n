@@ -3703,7 +3703,10 @@ class TRAImportacion_Operaciones:
             aNewIdWithCounter = thePloneUtilsTool.normalizeString( aNewIdWithCounter)
             
         anAttrsDict = { 
-            'pathDelRaiz':              theCatalogo.fPathDelRaiz(),
+# ACV 20090814 
+#   EATR01 Remove Attribute pathDelRaiz from all entities; 	
+#   EATR02 Remove the Type attribute from catalog schemas
+#            'pathDelRaiz':              theCatalogo.fPathDelRaiz(),
             'title':                    theSimboloCadena,
             'description':              '',
             'simbolo':                  theSimboloCadena,
@@ -3817,7 +3820,10 @@ class TRAImportacion_Operaciones:
 
                     
         anAttrsDict = { 
-            'pathDelRaiz':          theCadena.fPathDelRaiz(),
+# ACV 20090814 
+#   EATR01 Remove Attribute pathDelRaiz from all entities; 	
+#   EATR02 Remove the Type attribute from catalog schemas
+#            'pathDelRaiz':          theCadena.fPathDelRaiz(),
             'title':                unTitulo,
             'description':          '',
             'simbolo':              theSimboloCadena,
@@ -3897,7 +3903,10 @@ class TRAImportacion_Operaciones:
         unDateStoreString = self.fDateTimeNowTextual()
 
         anAttrsDict = { 
-            'pathDelRaiz':          theCadena.fPathDelRaiz(),
+# ACV 20090814 
+#   EATR01 Remove Attribute pathDelRaiz from all entities; 	
+#   EATR02 Remove the Type attribute from catalog schemas
+#            'pathDelRaiz':          theCadena.fPathDelRaiz(),
             'title':                unTitulo,
             'description':          '',
             'simbolo':              theSimboloCadena,

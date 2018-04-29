@@ -1,0 +1,19 @@
+------------
+version 1.2.0.6build200908150447 
+
+EATR01 Remove Attribute pathDelRaiz from all entities
+EATR02 Remove the Type attribute from catalog schemas
+UC24 Use Case Copy Translations from Language	
+------------
+ 
+version 1.2.0.5build200908140434 
+
+ADMI08 Describe recipe to create and mount an additional file to store the translations
+ADMI09 Downloadable in tar.gz format	
+BUG AttributeError TRARenderExecutionDetails	
+BUG Security access error message prints also a Python dict	
+BUG TRACatalogo is not initialized when supplying an id	
+UC21 Use Case Add String to be translated	
+UC23 Create Language	
+------------
+ 

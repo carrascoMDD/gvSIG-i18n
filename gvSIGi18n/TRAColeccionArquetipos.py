@@ -42,38 +42,6 @@ from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import Reference
 
 schema = Schema((
 
-    ComputedField(
-        name='pathDelRaiz',
-        widget=ComputedField._properties['widget'](
-            label="Path del Raiz",
-            label2="Root's Path",
-            description="Path del Catalogo raiz de este elemento.",
-            description2="This element's root Catalog path.",
-            label_msgid='gvSIGi18n_TRAColeccionArquetipos_attr_pathDelRaiz_label',
-            description_msgid='gvSIGi18n_TRAColeccionArquetipos_attr_pathDelRaiz_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        description="Path del Catalogo raiz de este elemento.",
-        duplicates="0",
-        label2="Root's Path",
-        ea_localid="1153",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        description2="This element's root Catalog path.",
-        ea_guid="{B7179848-3F34-4d34-853D-337C1259FDD4}",
-        scale="0",
-        expression="context.fPathDelRaiz()",
-        label="Path del Raiz",
-        length="0",
-        exclude_from_traversalconfig="True",
-        containment="Not Specified",
-        position="0",
-        owner_class_name="TRAColeccionArquetipos",
-        exclude_from_views="[ 'Textual', 'Tabular',  ]"
-    ),
-
 ),
 )
 
