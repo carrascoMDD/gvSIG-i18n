@@ -239,7 +239,39 @@ class TRAgvSIGi18nTool_Status:
 
 
 
+      
     security.declareProtected( permissions.View, 'fElaborarInformeModulos')
+    def fElaborarInformeModulos(self, 
+        theContextualElement    =None,
+        theCheckPermissions         =True, 
+        thePermissionsCache         =None, 
+        theRolesCache               =None, 
+        theParentExecutionRecord    =None):
+        """Generate Report By Modules
+
+        """        
+        
+        if theContextualElement == None:
+            return {
+                'error':    cTRAToolCondition_NoContextualElement,   
+            } 
+            
+        unCatalogo = theContextualElement.getCatalogo()
+        if unCatalogo == None:
+            return {
+                'error':    cTRAToolCondition_NoCatalogElement,   
+            }
+        
+        return unCatalogo.fElaborarInformeModulos(
+            theCheckPermissions         =theCheckPermissions, 
+            thePermissionsCache         =thePermissionsCache, 
+            theRolesCache               =theRolesCache, 
+            theParentExecutionRecord    =theParentExecutionRecord,
+        )
+    
+    
+    
+    security.declareProtected( permissions.View, 'fInvalidateObsoleteStatusReportByModulesAndLanguages')
     def fInvalidateObsoleteStatusReportByModulesAndLanguages(self,
         theContextualElement        =None,):
         
