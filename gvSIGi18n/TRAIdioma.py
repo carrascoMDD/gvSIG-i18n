@@ -138,7 +138,7 @@ schema = Schema((
         position="17",
         owner_class_name="TRAIdioma",
         expression="not context.fAllowWrite()",
-        computed_types="boolean",
+        computed_types="Boolean",
         exclude_from_copyconfig="True",
         exclude_from_exportconfig="True"
     ),

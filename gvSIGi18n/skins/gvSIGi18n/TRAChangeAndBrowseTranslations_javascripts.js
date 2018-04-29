@@ -1177,6 +1177,15 @@ function pTRAResetFiltros( ) {
 }
 
 
+/* cleans all the GoTo parameters */
+function pTRAResetGoToParameters( ) {
+
+    document.getElementById( 'theGoToSymbolIndex').value = "";
+    document.getElementById( 'theGoToPageIndex').value = "";
+    document.getElementById( 'theGoToSymbolStartingWith').value = "";
+
+    return true;
+}
 
 
 /* changes from true to false and back a filter by translation status */
@@ -4042,13 +4051,15 @@ function pTRAMostarDetallesTraduccionEnFilaNumero( theNewParentRowIndex) {
     unElementEditorDetalleContainerEnFila.appendChild( unElementEditorDetalle);
 
 
+    fTRA_SetContenidoTextoElementoWithId( 'cid_TRAEditorDetalle_simboloCadena',  fTRA_FieldDatosEnFila( unosDatosEnFila, 'simboloCadena')[ 1]);
     fTRA_SetContenidoTextoElementoWithId( 'cid_TRAEditorDetalle_nombresModulos', fTRA_FieldDatosEnFila( unosDatosEnFila, 'nombresModulos')[ 1]);
     fTRA_SetContenidoTextoElementoWithId( 'cid_TRAEditorDetalle_idCadena',		 fTRA_FieldDatosEnFila( unosDatosEnFila, 'idCadena')[ 1]);
     fTRA_SetContenidoTextoElementoWithId( 'cid_TRAEditorDetalle_contadorCambios',fTRA_FieldDatosEnFila( unosDatosEnFila, 'contadorCambios')[ 1]);
 
-    pTRAShowElementWithId( 'cid_TRAEditorDetalle_nombresModulos_row');
+    pTRAShowElementWithId( 'cid_TRAEditorDetalle_simboloCadena_row');
     pTRAShowElementWithId( 'cid_TRAEditorDetalle_idCadena_row');
     pTRAShowElementWithId( 'cid_TRAEditorDetalle_contadorCambios_row');
+    pTRAShowElementWithId( 'cid_TRAEditorDetalle_nombresModulos_row');
 
     unEstadoTraduccionFila = fTRA_FieldDatosEnFila( unosDatosEnFila, 'estadoTraduccion')[ 1];
 

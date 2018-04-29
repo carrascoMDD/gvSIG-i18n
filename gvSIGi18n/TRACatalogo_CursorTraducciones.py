@@ -259,7 +259,7 @@ class TRACatalogo_CursorTraducciones:
                 unSleepSeconds = float( unSleepSecondsString)
             except:
                 None
-            if unSleepSeconds > 0.0001:
+            if unSleepSeconds >= 0.01:
                 time.sleep( unSleepSeconds)
 
         
@@ -981,19 +981,6 @@ class TRACatalogo_CursorTraducciones:
                     theReport[ 'use_case_query_results'].append( unBrowseUseCaseQueryResult)  
                     
                     
-                    # ACV 20090927 in support of UC22 Use Case Invalidate String translations to all languages
-                    #
-                    # Redundant with pAllowInvalidateStringTranslations
-                    #unInvalidateStringTranslationsUseCaseQueryResult = self.fUseCaseAssessment(  
-                        #theUseCaseName          = cUseCase_InvalidateStringTranslations, 
-                        #theElementsBindings     = { cBoundObject: self,},
-                        ## theRulesToCollect       = [ 'languages', 'modules', 'changeable_languages', 'changeable_modules',], 
-                        #thePermissionsCache     = unPermissionsCache, 
-                        #theRolesCache           = unRolesCache, 
-                        #theParentExecutionRecord= unExecutionRecord
-                    #)    
-                    #if unBrowseUseCaseQueryResult:
-                        #theReport[ 'use_case_query_results'].append( unInvalidateStringTranslationsUseCaseQueryResult)  
                     
                     
                     unosIdiomasAccesibles   = unBrowseUseCaseQueryResult.get( 'collected_rule_assessments_by_name', {}).get( 'languages', {}).get( 'accepted_final_objects', [])
@@ -2464,7 +2451,16 @@ class TRACatalogo_CursorTraducciones:
             
             if unModoDesplazamiento == 'Previous':
                 return self.pAplicarDesplazamientoYPaginado_Previous( theSearchParameters, theReport, theDictResultadosTraducciones, None, unExecutionRecord)
-        
+
+            if unModoDesplazamiento == 'SymbolIndex':
+                return self.pAplicarDesplazamientoYPaginado_SymbolIndex( theSearchParameters, theReport, theDictResultadosTraducciones, None, unExecutionRecord)
+            
+            if unModoDesplazamiento == 'PageIndex':
+                return self.pAplicarDesplazamientoYPaginado_PageIndex( theSearchParameters, theReport, theDictResultadosTraducciones, None, unExecutionRecord)
+            
+            if unModoDesplazamiento == 'SymbolStartingWith':
+                return self.pAplicarDesplazamientoYPaginado_SymbolStartingWith( theSearchParameters, theReport, theDictResultadosTraducciones, None, unExecutionRecord)
+
             return self.pAplicarDesplazamientoYPaginado_Current(      theSearchParameters, theReport, theDictResultadosTraducciones, None, unExecutionRecord)
         
         finally:
@@ -2819,8 +2815,9 @@ class TRACatalogo_CursorTraducciones:
                     
                     return self                
             
-        return self.pAplicarDesplazamientoYPaginado_First( theSearchParameters, theReport, theDictResultadosTraducciones, theSimbolosCadenasOrdenados, theParentExecutionRecord)
-                
+        self.pAplicarDesplazamientoYPaginado_First( theSearchParameters, theReport, theDictResultadosTraducciones, theSimbolosCadenasOrdenados, theParentExecutionRecord)
+        
+        return self
        
     
 
@@ -2884,14 +2881,229 @@ class TRACatalogo_CursorTraducciones:
                     return self    
               
             
-        return self.pAplicarDesplazamientoYPaginado_Last( theSearchParameters, theReport, theDictResultadosTraducciones, theSimbolosCadenasOrdenados, theParentExecutionRecord)
+        self.pAplicarDesplazamientoYPaginado_Last( theSearchParameters, theReport, theDictResultadosTraducciones, theSimbolosCadenasOrdenados, theParentExecutionRecord)
+        
+        return self
+      
+    
+    
+      
+
+    
+    
+       
+    security.declarePrivate( 'pAplicarDesplazamientoYPaginado_SymbolIndex')
+    def pAplicarDesplazamientoYPaginado_SymbolIndex( self, theSearchParameters, theReport, theDictResultadosTraducciones, theSimbolosCadenasOrdenados=None, theParentExecutionRecord=None):
+        """One of the cases to paginate a block with a maximum number of records from the matching set of TRATraduccion, starting at the symbol with index specified in the symbolIndex search parameter.
+        
+        """
+           
+        if not len( theDictResultadosTraducciones):
+            return self
+
+        aTraduccionesPorPagina        = self.fTraduccionesPorPagina( theSearchParameters)
+        if ( not aTraduccionesPorPagina) or ( aTraduccionesPorPagina <= 0):
+            return self
+        
+        unosSimbolosCadenasOrdenados = theSimbolosCadenasOrdenados
+        if not unosSimbolosCadenasOrdenados:
+            if theSearchParameters.get( 'cadenasInactivas', '').strip().lower() == "on":
+                unosSimbolosCadenasOrdenados = self.fListaSimbolosCadenasInactivasOrdenados( theParentExecutionRecord)
+            else:
+                unosSimbolosCadenasOrdenados = self.fListaSimbolosCadenasOrdenados(          theParentExecutionRecord)
+            
+        
+    
+        unNumeroSimbolos              = len( unosSimbolosCadenasOrdenados) 
+            
+        unSymbolIndex = theSearchParameters.get( 'symbolIndex', 0)
+        
+        if unSymbolIndex < 1:
+            self.pAplicarDesplazamientoYPaginado_First( theSearchParameters, theReport, theDictResultadosTraducciones, theSimbolosCadenasOrdenados, theParentExecutionRecord)
+            return self
+        
+        if unSymbolIndex >= unNumeroSimbolos:
+            self.pAplicarDesplazamientoYPaginado_Last( theSearchParameters, theReport, theDictResultadosTraducciones, theSimbolosCadenasOrdenados, theParentExecutionRecord)
+            return self
+        
+        unaPaginaDatosTraducciones = []
+         
+        unIndiceSimbolosCadena = 0
+        unNumeroSimbolosSkipped = 0
+        while ( unNumeroSimbolosSkipped < ( unSymbolIndex - 1) ) and ( unIndiceSimbolosCadena < unNumeroSimbolos):
+            unSimboloCadena = unosSimbolosCadenasOrdenados[ unIndiceSimbolosCadena]
+            unIndiceSimbolosCadena += 1
+            unosDatosTraduccion = theDictResultadosTraducciones.get( unSimboloCadena, None)
+            if unosDatosTraduccion:
+                unNumeroSimbolosSkipped += 1  
+       
+        while ( unIndiceSimbolosCadena < unNumeroSimbolos) and ( len( unaPaginaDatosTraducciones) < aTraduccionesPorPagina):
+            unSimboloCadena = unosSimbolosCadenasOrdenados[ unIndiceSimbolosCadena]
+            unIndiceSimbolosCadena += 1
+            unosDatosTraduccion = theDictResultadosTraducciones.get( unSimboloCadena, None)
+            if unosDatosTraduccion:
+                unaPaginaDatosTraducciones.append( unosDatosTraduccion)  
+                 
+        theReport[ 'datosTraducciones']         = unaPaginaDatosTraducciones
+        theReport[ 'from_translation_index']    = unSymbolIndex
+        theReport[ 'to_translation_index']      = unSymbolIndex + len( unaPaginaDatosTraducciones) - 1
+        theReport[ 'total_translations']        = len( theDictResultadosTraducciones)
+        
+        return self
                 
-      
+       
     
     
-      
+    
+    
 
+    
+    
+       
+    security.declarePrivate( 'pAplicarDesplazamientoYPaginado_PageIndex')
+    def pAplicarDesplazamientoYPaginado_PageIndex( self, theSearchParameters, theReport, theDictResultadosTraducciones, theSimbolosCadenasOrdenados=None, theParentExecutionRecord=None):
+        """One of the cases to paginate a block with a maximum number of records from the matching set of TRATraduccion, starting at the page index specified in the pageIndex search parameter.
+        
+        """
+           
+        if not len( theDictResultadosTraducciones):
+            return self
 
+        aTraduccionesPorPagina        = self.fTraduccionesPorPagina( theSearchParameters)
+        if ( not aTraduccionesPorPagina) or ( aTraduccionesPorPagina <= 0):
+            return self
+        
+        unosSimbolosCadenasOrdenados = theSimbolosCadenasOrdenados
+        if not unosSimbolosCadenasOrdenados:
+            if theSearchParameters.get( 'cadenasInactivas', '').strip().lower() == "on":
+                unosSimbolosCadenasOrdenados = self.fListaSimbolosCadenasInactivasOrdenados( theParentExecutionRecord)
+            else:
+                unosSimbolosCadenasOrdenados = self.fListaSimbolosCadenasOrdenados(          theParentExecutionRecord)
+            
+        
+    
+        unNumeroSimbolos              = len( unosSimbolosCadenasOrdenados) 
+            
+        unPageIndex = theSearchParameters.get( 'pageIndex', 0)
+        
+        if unPageIndex < 1:
+            self.pAplicarDesplazamientoYPaginado_First( theSearchParameters, theReport, theDictResultadosTraducciones, theSimbolosCadenasOrdenados, theParentExecutionRecord)
+            return self
+        
+        unSymbolIndex = (( unPageIndex - 1) * aTraduccionesPorPagina) + 1
+        
+        if unSymbolIndex >= unNumeroSimbolos:
+            self.pAplicarDesplazamientoYPaginado_Last( theSearchParameters, theReport, theDictResultadosTraducciones, theSimbolosCadenasOrdenados, theParentExecutionRecord)
+            return self
+        
+        unaPaginaDatosTraducciones = []
+         
+        unIndiceSimbolosCadena = 0
+        unNumeroSimbolosSkipped = 0
+        while ( unNumeroSimbolosSkipped < ( unSymbolIndex - 1) ) and ( unIndiceSimbolosCadena < unNumeroSimbolos):
+            unSimboloCadena = unosSimbolosCadenasOrdenados[ unIndiceSimbolosCadena]
+            unIndiceSimbolosCadena += 1
+            unosDatosTraduccion = theDictResultadosTraducciones.get( unSimboloCadena, None)
+            if unosDatosTraduccion:
+                unNumeroSimbolosSkipped += 1  
+       
+        while ( unIndiceSimbolosCadena < unNumeroSimbolos) and ( len( unaPaginaDatosTraducciones) < aTraduccionesPorPagina):
+            unSimboloCadena = unosSimbolosCadenasOrdenados[ unIndiceSimbolosCadena]
+            unIndiceSimbolosCadena += 1
+            unosDatosTraduccion = theDictResultadosTraducciones.get( unSimboloCadena, None)
+            if unosDatosTraduccion:
+                unaPaginaDatosTraducciones.append( unosDatosTraduccion)  
+                 
+        theReport[ 'datosTraducciones']         = unaPaginaDatosTraducciones
+        theReport[ 'from_translation_index']    = unSymbolIndex
+        theReport[ 'to_translation_index']      = unSymbolIndex + len( unaPaginaDatosTraducciones) - 1
+        theReport[ 'total_translations']        = len( theDictResultadosTraducciones)
+        
+        return self
+             
+    
+    
+    
+    
+       
+    security.declarePrivate( 'pAplicarDesplazamientoYPaginado_SymbolStartingWith')
+    def pAplicarDesplazamientoYPaginado_SymbolStartingWith( self, theSearchParameters, theReport, theDictResultadosTraducciones, theSimbolosCadenasOrdenados=None, theParentExecutionRecord=None):
+        """One of the cases to paginate a block with a maximum number of records from the matching set of TRATraduccion, starting at the symbol with index specified in the symbolIndex search parameter.
+        
+        """
+           
+        if not len( theDictResultadosTraducciones):
+            return self
+
+        aTraduccionesPorPagina        = self.fTraduccionesPorPagina( theSearchParameters)
+        if ( not aTraduccionesPorPagina) or ( aTraduccionesPorPagina <= 0):
+            return self
+        
+        unosSimbolosCadenasOrdenados = theSimbolosCadenasOrdenados
+        if not unosSimbolosCadenasOrdenados:
+            if theSearchParameters.get( 'cadenasInactivas', '').strip().lower() == "on":
+                unosSimbolosCadenasOrdenados = self.fListaSimbolosCadenasInactivasOrdenados( theParentExecutionRecord)
+            else:
+                unosSimbolosCadenasOrdenados = self.fListaSimbolosCadenasOrdenados(          theParentExecutionRecord)
+            
+        
+    
+        unNumeroSimbolos              = len( unosSimbolosCadenasOrdenados) 
+            
+        unSymbolStartingWith = theSearchParameters.get( 'symbolStartingWith', 0)
+        
+        if not unSymbolStartingWith:
+            self.pAplicarDesplazamientoYPaginado_First( theSearchParameters, theReport, theDictResultadosTraducciones, theSimbolosCadenasOrdenados, theParentExecutionRecord)
+            return self
+        
+        
+        unaPaginaDatosTraducciones = []
+         
+        unPreviousIndiceSimboloCadena = 0
+        unIndiceSimbolosCadena = 0
+        unNumSkippedSimbolos = 0
+        while unIndiceSimbolosCadena < unNumeroSimbolos:
+            unSimboloCadena = unosSimbolosCadenasOrdenados[ unIndiceSimbolosCadena]
+            unosDatosTraduccion = theDictResultadosTraducciones.get( unSimboloCadena, None)
+            if unosDatosTraduccion:
+                if unSimboloCadena.startswith( unSymbolStartingWith):
+                    break
+                elif unSimboloCadena > unSymbolStartingWith:
+                    unIndiceSimbolosCadena = unPreviousIndiceSimboloCadena
+                    break
+                else:
+                    unNumSkippedSimbolos += 1
+            unPreviousIndiceSimboloCadena = unIndiceSimbolosCadena
+            unIndiceSimbolosCadena += 1
+                    
+                    
+                
+        if not unIndiceSimbolosCadena:
+            self.pAplicarDesplazamientoYPaginado_First( theSearchParameters, theReport, theDictResultadosTraducciones, theSimbolosCadenasOrdenados, theParentExecutionRecord)
+            return self
+                
+        if unIndiceSimbolosCadena >= unNumeroSimbolos:
+            self.pAplicarDesplazamientoYPaginado_Last( theSearchParameters, theReport, theDictResultadosTraducciones, theSimbolosCadenasOrdenados, theParentExecutionRecord)
+            return self
+                
+        
+        while ( unIndiceSimbolosCadena < unNumeroSimbolos) and ( len( unaPaginaDatosTraducciones) < aTraduccionesPorPagina):
+            unSimboloCadena = unosSimbolosCadenasOrdenados[ unIndiceSimbolosCadena]
+            unIndiceSimbolosCadena += 1
+            unosDatosTraduccion = theDictResultadosTraducciones.get( unSimboloCadena, None)
+            if unosDatosTraduccion:
+                unaPaginaDatosTraducciones.append( unosDatosTraduccion)  
+                 
+        theReport[ 'datosTraducciones']         = unaPaginaDatosTraducciones
+        theReport[ 'from_translation_index']    = unNumSkippedSimbolos + 1
+        theReport[ 'to_translation_index']      = unNumSkippedSimbolos + len( unaPaginaDatosTraducciones)
+        theReport[ 'total_translations']        = len( theDictResultadosTraducciones)
+        
+        return self
+                 
+    
+    
+    
 
 
 

@@ -33,6 +33,16 @@ Antonio Carrasco Valero <carrasco@ModelDD.org>"""
 __docformat__ = 'plaintext'
 
 
+# #######################################
+"""To deliver a build compatible with MDD version 1.0.2,
+and locate key pieces of code changed for MDD versions 1.0.3 and after
+"""
+cMDDVersionBackwardsCompatible_102 = True
+
+
+
+
+
 cNewStringSymbol_AcceptableNonAlphanumericChars = '-_'
 
 

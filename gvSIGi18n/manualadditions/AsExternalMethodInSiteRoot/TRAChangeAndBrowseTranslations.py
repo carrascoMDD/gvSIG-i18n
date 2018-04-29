@@ -368,13 +368,7 @@ def TRAChangeAndBrowseTranslations(
         
                 
         
-        # ################################################################
-        """Retrieve information of all existing and visible TRAIdioma.
-        
-        ACV OJO 200904010009 Should come with the service response....
-        
-        """
-    
+
 
          
         
@@ -416,7 +410,29 @@ def TRAChangeAndBrowseTranslations(
         pRenderTimes                    = theRequest.get( 'theRenderTimes',                 '') == 'on'
         pRenderAsyncRequest             = theRequest.get( 'theRenderAsyncRequest',          '') == 'on'
         pRenderUserInterfaceEvents      = theRequest.get( 'theRenderUserInterfaceEvents',   '') == 'on'
+        
+        pGoToSymbolIndex = 0
+        aGoToSymbolIndexStr             = theRequest.get( 'theGoToSymbolIndex',             '')
+        if aGoToSymbolIndexStr:
+            try:
+                pGoToSymbolIndex = int( aGoToSymbolIndexStr)
+            except:
+                None
+                
+                
+        pGoToPageIndex = 0
+        aGoToPageIndexStr               = theRequest.get( 'theGoToPageIndex',               '')
+        if aGoToPageIndexStr:
+            try:
+                pGoToPageIndex = int( aGoToPageIndexStr)
+            except:
+                None
+        
+        pGoToSymbolStartingWith         = theRequest.get( 'theGoToSymbolStartingWith',      '')
 
+        
+        
+        
         pRequestedNuevoEstadoTraduccion = theRequest.get( 'theNuevoEstadoTraduccion',       '') 
      
         pEditorKeyCRAction               = theRequest.get( 'theKeyAction_CR',               cKeyAction_Default_CR)
@@ -524,25 +540,7 @@ def TRAChangeAndBrowseTranslations(
       
       
                 
-            #elif pFormSubmit == aTranslationsCache[ 'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Pendiente']:
-                #aRequestedChangeKind = cRequestedChangeKind_HacerPendiente
-            #elif pFormSubmit == aTranslationsCache[ 'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Traducida']:
-                #aRequestedChangeKind = cRequestedChangeKind_HacerTraducida
-            #elif pFormSubmit == aTranslationsCache[ 'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Revisada']:
-                #aRequestedChangeKind = cRequestedChangeKind_HacerRevisada
-            #elif pFormSubmit == aTranslationsCache[ 'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Definitiva']:
-                #aRequestedChangeKind = cRequestedChangeKind_HacerDefinitiva
-                
-            #elif pFormSubmit == aTranslationsCache[ 'gvSIGi18n_TranslationAction_Grabar']:
-                #aRequestedChangeKind = cRequestedChangeKind_IntentarTraducir
-            #elif pFormSubmit == aTranslationsCache[ 'gvSIGi18n_TranslationAction_Borrar']:
-                #aRequestedChangeKind = cRequestedChangeKind_HacerPendiente
-            #elif pFormSubmit == aTranslationsCache[ 'gvSIGi18n_TranslationAction_Abrir']:
-                #aRequestedChangeKind = cRequestedChangeKind_HacerTraducida
-            #elif pFormSubmit == aTranslationsCache[ 'gvSIGi18n_TranslationAction_Revisar']:
-                #aRequestedChangeKind = cRequestedChangeKind_HacerRevisada
-            #elif pFormSubmit == aTranslationsCache[ 'gvSIGi18n_TranslationAction_Bloquear']:
-                #aRequestedChangeKind = cRequestedChangeKind_HacerDefinitiva
+
       
             pServiceRequestParameters[ 'change_parameters'].update( {
                 'change_counter':               pChangeCounter,
@@ -592,7 +590,13 @@ def TRAChangeAndBrowseTranslations(
         """
      
         pModoDesplazamiento = ''
-        if ( pFormSubmit == 'GoToFirst')        or (pFormSubmit == aTranslationsCache[ 'gvSIGi18n_traducciones_iraprimero_label']) or ( pFormSubmit.find( 'alt="%s"' % aTranslationsCache[ 'gvSIGi18n_traducciones_iraprimero_label']) >= 0):
+        if pGoToSymbolIndex > 0:
+            pModoDesplazamiento = 'SymbolIndex'
+        elif pGoToPageIndex > 0:
+            pModoDesplazamiento = 'PageIndex'
+        elif pGoToSymbolStartingWith:
+            pModoDesplazamiento = 'SymbolStartingWith'
+        elif ( pFormSubmit == 'GoToFirst')        or (pFormSubmit == aTranslationsCache[ 'gvSIGi18n_traducciones_iraprimero_label']) or ( pFormSubmit.find( 'alt="%s"' % aTranslationsCache[ 'gvSIGi18n_traducciones_iraprimero_label']) >= 0):
             pModoDesplazamiento = 'First'
         elif ( pFormSubmit == 'GoToPrevious')   or (pFormSubmit == aTranslationsCache[ 'gvSIGi18n_traducciones_iraanterior_label']) or ( pFormSubmit.find( 'alt="%s"' % aTranslationsCache[ 'gvSIGi18n_traducciones_iraanterior_label']) >= 0):
             pModoDesplazamiento = 'Previous'
@@ -635,13 +639,7 @@ def TRAChangeAndBrowseTranslations(
         """
         
         pDesplazarUnRegistroOPagina = cDesplazarUnaPagina
-        #if pMostrarEditor:
-            #pDesplazarUnRegistroOPagina = cDesplazarUnRegistro
-    
-        #if pMostrarEditor and not pMostrarLista:
-            #pTraduccionesPorPagina = '1'
-                
-                
+             
                 
             
             
@@ -656,9 +654,12 @@ def TRAChangeAndBrowseTranslations(
             'idioma':                       pCodigoIdiomaCursor, 
             'idCadena':                     theRequest.get( 'theSearchIdCadena',               ''), 
             'simboloCadenaCursor':          pSimboloCadenaCursor, 
+            'traduccionesPorPagina' :       pTraduccionesPorPagina, 
             'modoDesplazamiento':           pModoDesplazamiento, 
             'desplazarUnRegistroOPagina':   pDesplazarUnRegistroOPagina,
-            'traduccionesPorPagina' :       pTraduccionesPorPagina, 
+            'symbolIndex':                  pGoToSymbolIndex,
+            'pageIndex':                    pGoToPageIndex,
+            'symbolStartingWith':           pGoToSymbolStartingWith,
             'idiomasReferencia':            pIdiomasReferencia,         
             'estadosAIncluir':              pEstadosAIncluir, 
             'simbolo':                      theRequest.get( 'theSearchSimbolo',                ''),
@@ -781,6 +782,8 @@ def TRAChangeAndBrowseTranslations(
         pInformeEstadosFiltrados            = pBrowseResult.get( 'informeEstadosFiltrados',     cInformeEstadosVacio)
         pDictsTraduccionesIdiomasReferencia = pBrowseResult.get( 'dictsTraduccionesIdiomasReferencia',   { })
         pTraduccionesPorPagina              = pBrowseResult.get( 'traduccionesPorPagina',       theCatalogo.fTraduccionesPorPaginaPorDefecto())
+        pTotalTranslations                  = pBrowseResult.get( 'total_translations', 0)
+        
         pUseCaseQueryResults                = pBrowseResult.get( 'use_case_query_results',      [])
         
         pAllowedStateTransitions            = pBrowseResult.get( 'allowed_state_transitions',   {}) 
@@ -823,12 +826,7 @@ def TRAChangeAndBrowseTranslations(
                 aTranslationsCache
             )
     
-        # Redundant with pAllowInvalidateStringTranslations
-        #pCanInvalidateStringTranslations = False
-        #for aUseCaseQueryResult in pUseCaseQueryResults:
-            #if aUseCaseQueryResult and aUseCaseQueryResult.get( 'use_case_name', '') == cUseCase_InvalidateStringTranslations:
-                #if aUseCaseQueryResult.get( 'success', False):
-                    #pCanInvalidateStringTranslations = True
+
         
         
         
@@ -1175,6 +1173,22 @@ def TRAChangeAndBrowseTranslations(
             pSearchParameters, 
             aTranslationsCache
         )
+        
+        unasTraduccionesPorPagina = 1
+        try:
+            unasTraduccionesPorPagina = int( pTraduccionesPorPagina)
+        except:
+            None
+            
+        pRenderCollapsibleGoTo( 
+            anOutput, 
+            theCatalogo, 
+            pTotalTranslations,
+            int( pTotalTranslations / unasTraduccionesPorPagina)  + ((( pTotalTranslations % unasTraduccionesPorPagina) and 1) or 0),
+            pSearchParameters, 
+            aTranslationsCache
+        )
+                
         
           
         if pMostrarInforme:
@@ -3499,6 +3513,239 @@ def pRenderFiltroModulos(
 
 
 
+
+
+
+    
+def pRenderCollapsibleGoTo( 
+    anOutput, 
+    unContextualObject, 
+    pNumberOfStrings,
+    pNumberOfPages,
+    pSearchParameters, 
+    aTranslationsCache):
+    """Render as collapsible the go to section of the translations browser.
+    
+    """    
+           
+    mfTranslateI18N     = unContextualObject.fTranslateI18N
+    mfAsUnicode         = unContextualObject.fAsUnicode
+            
+    pRenderCollapsible_Lambda(  anOutput,
+        mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_seccionGoTo_title', 'GoTo-'),
+        u'elid_GoTo_collapsible_dl', 
+        lambda : pRenderGoTo( 
+            anOutput, 
+            unContextualObject, 
+            pNumberOfStrings,
+            pNumberOfPages,
+            pSearchParameters, 
+            aTranslationsCache
+        ),
+    )
+    
+    return None        
+
+
+
+
+
+
+
+
+
+
+
+
+
+def pRenderGoTo( 
+    anOutput, 
+    unContextualObject, 
+    pNumberOfStrings,
+    pNumberOfPages,
+    pSearchParameters, 
+    aTranslationsCache):
+    """Render the filter section of the translations browser.
+    
+    """    
+       
+    
+    mfTranslateI18N     = unContextualObject.fTranslateI18N
+    mfAsUnicode         = unContextualObject.fAsUnicode
+ 
+    unTabIndex = 11
+    
+    anOutput.write( u"""    
+
+        <!-- #################################################################
+        SECTION: Specify the first symbol to show in the list
+        ################################################################# -->
+                      
+        <br/>
+        <input tabindex=%(tabindex)d name="form_submit" style="font-size: 10pt; font-style: italic"  value="%(gvSIGi18n_refrescar_action_label)s" type="submit"/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input tabindex=%(tabindex2)d type="button" name="todos" style="font-size: 9pt; "  value="%(gvSIGi18n_first_label)s" onclick="pTRAResetGoToParameters(); return true;" class="TRAstyle_Clickable"  />
+        <br/>
+        \n""" % { 
+        'tabindex':                                                    unTabIndex,
+        'tabindex2':                                                   unTabIndex + 1,
+        'gvSIGi18n_refrescar_action_label':                            mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_refrescar_action_label', 'Refresh-'),                
+        'gvSIGi18n_first_label':                                       mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_first_label', 'First-'),                
+    })
+    
+    
+    unTabIndex += 2
+
+    
+    unPortalURL = unContextualObject.portal_url()
+   
+ 
+    anOutput.write( u""" 
+
+        <!-- ########################
+        SubSection: GoTo parameters: symbol index number, page index number, symbol starting with string
+        #############################-->
+                                             
+        <table class="listing nosort" id="sct_GoTo_Parameters" >
+            <thead>
+                <tr>
+                    <th  align="left"  colspan="2">
+                        <font size="2">
+                            <strong>
+                                %(gvSIGi18n_GoToParameters_title)s
+                            </strong>
+                        </font>
+                    </th>
+                </tr>
+            </thead>      
+            <tbody>  
+            \n""" % { 
+        'gvSIGi18n_GoToParameters_title':  mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_GoToParameters_title',    'First symbol to show in the translations list-'), 
+    })            
+
+             
+    
+              
+    
+    anOutput.write( u""" 
+
+        <!-- ########################
+        SubSection: GoTo Parameter by Symbol Index Number
+        #############################-->   
+                                   
+        <tr class="even" >
+            <td align="left" valign="baseline" >
+                %(gvSIGi18n_TranslationsPage_GoTo_SymbolIndex_label)s
+                %(gvSIGi18n_TranslationsPage_GoTo_SymbolIndex_of)s
+                %(pNumberOfStrings)s
+                <p class="formHelp">%(gvSIGi18n_TranslationsPage_GoTo_SymbolIndex_help)s</p>
+            </td>
+            <td align="left" valign="baseline"  >
+                <input type="text" tabindex=%(tabindex)d name="theGoToSymbolIndex" id="theGoToSymbolIndex" style="font-size: 10pt;" size="6" maxlength="6" value="" /> 
+            </td>
+        </tr>
+        \n""" % { 
+        'tabindex':                                             unTabIndex,
+        'pNumberOfStrings':                                     mfAsUnicode( str( pNumberOfStrings)),
+        'gvSIGi18n_TranslationsPage_GoTo_SymbolIndex_label':    mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TranslationsPage_GoTo_SymbolIndex_label',  'Symbol at index #-'), 
+        'gvSIGi18n_TranslationsPage_GoTo_SymbolIndex_of':       mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TranslationsPage_GoTo_SymbolIndex_of',    'of-'), 
+        'gvSIGi18n_TranslationsPage_GoTo_SymbolIndex_help':     mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TranslationsPage_GoTo_SymbolIndex_help',  'The index number of the first symbol to show.-'), 
+    })
+    
+    
+    unTabIndex += 1
+    
+    
+    
+            
+    
+    anOutput.write( u""" 
+
+        <!-- ########################
+        SubSection: GoTo Parameter by Page Index Number
+        #############################-->   
+                                   
+        <tr class="odd" >
+            <td align="left" valign="baseline" >
+                %(gvSIGi18n_TranslationsPage_GoTo_PageIndex_label)s
+                %(gvSIGi18n_TranslationsPage_GoTo_PageIndex_of)s
+                %(pNumberOfPages)s
+                <p class="formHelp">%(gvSIGi18n_TranslationsPage_GoTo_PageIndex_help)s</p>
+            </td>
+            <td align="left" valign="baseline"  >
+                <input type="text" tabindex=%(tabindex)d name="theGoToPageIndex" id="theGoToPageIndex" style="font-size: 10pt;" size="4" maxlength="4" value="" /> 
+            </td>
+        </tr>
+        \n""" % { 
+        'tabindex':                                             unTabIndex,
+        'pNumberOfPages':                                     mfAsUnicode( str( pNumberOfPages)),
+        'gvSIGi18n_TranslationsPage_GoTo_PageIndex_label':    mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TranslationsPage_GoTo_PageIndex_label',  'Page number #-'), 
+        'gvSIGi18n_TranslationsPage_GoTo_PageIndex_of':       mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TranslationsPage_GoTo_PageIndex_of',    'of-'), 
+        'gvSIGi18n_TranslationsPage_GoTo_PageIndex_help':     mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TranslationsPage_GoTo_PageIndex_help',  'The index number of the page to show-'), 
+    })
+    
+    
+    unTabIndex += 1
+    
+    
+
+    anOutput.write( u""" 
+
+        <!-- ########################
+        SubSection: GoTo Parameter by Symbol starting with characters
+        #############################-->   
+                                   
+        <tr class="even" >
+            <td align="left" valign="baseline" >
+                %(gvSIGi18n_TranslationsPage_GoTo_SymbolStartingWithChars_label)s
+                <p class="formHelp">%(gvSIGi18n_TranslationsPage_GoTo_SymbolStartingWithChars_help)s</p>
+            </td>
+            <td align="left" valign="baseline"  >
+                <input type="text" tabindex=%(tabindex)d name="theGoToSymbolStartingWith" id="theGoToSymbolStartingWith" style="font-size: 9pt;" size="16" maxlength="64" value="" /> 
+            </td>
+        </tr>
+        \n""" % { 
+        'tabindex':                                           unTabIndex,
+        'gvSIGi18n_TranslationsPage_GoTo_SymbolStartingWithChars_label':    mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TranslationsPage_GoTo_SymbolStartingWithChars_label',  'Symbol beginning with-'), 
+        'gvSIGi18n_TranslationsPage_GoTo_SymbolStartingWithChars_help':     mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TranslationsPage_GoTo_SymbolStartingWithChars_help',  'Beginning letters of the first symbol to show in the translations list.-'), 
+    })
+    
+    
+    unTabIndex += 1
+    
+    
+
+    anOutput.write( u"""  
+            </tbody>
+        </table>
+        <br/>
+        \n""")                                 
+             
+    
+    anOutput.write( u"""     
+        <input tabindex=%(tabindex)d name="form_submit" style="font-size: 10pt; font-style: italic"  value="%(gvSIGi18n_refrescar_action_label)s" type="submit"/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input tabindex=%(tabindex2)d type="button" name="todos" style="font-size: 9pt; "  value="%(gvSIGi18n_first_label)s" onclick="pTRAResetGoToParameters(); return true;" class="TRAstyle_Clickable"  />
+        <br/>
+        <br/>
+        \n""" % { 
+        'tabindex':                                                    unTabIndex,
+        'tabindex2':                                                   unTabIndex + 1,
+        'gvSIGi18n_refrescar_action_label':                            mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_refrescar_action_label', 'Refresh-'),                
+        'gvSIGi18n_first_label':                                       mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_first_label', 'First-'),                
+    })
+    
+    
+       
+    return None
+
+
+
+
+
+
+
+
     
 def pRenderCollapsibleInforme( 
     anOutput, 
@@ -3531,6 +3778,12 @@ def pRenderCollapsibleInforme(
     )
     
     return None        
+
+
+
+
+
+
 
 
 
@@ -3906,13 +4159,13 @@ def pRenderEditorDetail(
         <!-- #####
         ## Fields: display TRATraduccion nombresModulos and cadena id 
         ##########-->  
-            <tr class="TRAstyle_NoDisplay" id="cid_TRAEditorDetalle_nombresModulos_row">
+            <tr class="TRAstyle_NoDisplay" id="cid_TRAEditorDetalle_simboloCadena_row">
                 <td align="left" valign="baseline" >                
-                    <font size="1" ><strong>%(gvSIGi18n_Modulos_title)s</strong></font>
+                    <font size="1" ><strong>%(gvSIGi18n_Symbol_title)s</strong></font>
                     &emsp;
                 </td>
                 <td  align="left" valign="baseline"  colspan="2">                
-                    <font size="1" ><span id="cid_TRAEditorDetalle_nombresModulos" ></span></font>
+                    <font size="1" ><span id="cid_TRAEditorDetalle_simboloCadena" ></span></font>
                 </td>
             </tr>
             <tr class="TRAstyle_NoDisplay" id="cid_TRAEditorDetalle_idCadena_row">            
@@ -3933,7 +4186,17 @@ def pRenderEditorDetail(
                     <font size="1" ><span id="cid_TRAEditorDetalle_contadorCambios" >0</span></font>
                 </td>
             </tr>
+            <tr class="TRAstyle_NoDisplay" id="cid_TRAEditorDetalle_nombresModulos_row">
+                <td align="left" valign="baseline" >                
+                    <font size="1" ><strong>%(gvSIGi18n_Modulos_title)s</strong></font>
+                    &emsp;
+                </td>
+                <td  align="left" valign="baseline"  colspan="2">                
+                    <font size="1" ><span id="cid_TRAEditorDetalle_nombresModulos" ></span></font>
+                </td>
+            </tr>
         \n""" % { 
+        'gvSIGi18n_Symbol_title':               aTranslationsCache[ 'gvSIGi18n_TRATraduccion_attr_simbolo_label'], 
         'gvSIGi18n_Modulos_title':              mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Modulos_title', 'Modules-'), 
         'gvSIGi18n_TRACadena_attr_id_label':    aTranslationsCache[ 'gvSIGi18n_TRACadena_attr_id_label'], 
         'gvSIGi18n_TRATraduccion_attr_contadorCambios_label':    aTranslationsCache[ 'gvSIGi18n_TRATraduccion_attr_contadorCambios_label'], 
@@ -5022,8 +5285,6 @@ def pRenderList(
             }
         
                  
-        # ACV200904131333 fix
-        # unRowSpanAttribute = ( unosIdiomasIdiomasReferenciaSinElPrincipal and ( 'rowspan="%d"' % ( len( unosIdiomasIdiomasReferenciaSinElPrincipal) + 1))) or ''
         unRowSpanAttribute = ( 'rowspan="%d"' % ( len( unosIdiomasIdiomasReferenciaSinElPrincipal) + 2)) or ''
 
         unSimboloCadenaUnicode          = mfAsUnicode( pTradRow_getSimbolo)   
@@ -5130,6 +5391,7 @@ def pRenderList(
                             id="cid_ColumnaCadenasTraducidas_%(symbol_cell_counter)d_cadenaTraducida">%(cadenaTraducida)s</span>
                     </span>
                     <span class="TRAstyle_NoDisplay" id="cid_ColumnaCadenasTraducidas_%(symbol_cell_counter)d_index">%(symbol_cell_counter)s</span>
+                    <span class="TRAstyle_NoDisplay" id="cid_ColumnaCadenasTraducidas_%(symbol_cell_counter)d_simboloCadena">%(simbolo-cadena)s</span>
                     <span class="TRAstyle_NoDisplay" id="cid_ColumnaCadenasTraducidas_%(symbol_cell_counter)d_idCadena">%(idCadena)s</span>
                     <span class="TRAstyle_NoDisplay" id="cid_ColumnaCadenasTraducidas_%(symbol_cell_counter)d_estadoTraduccion">%(estadoTraduccion)s</span>
                     <span class="TRAstyle_NoDisplay" id="cid_ColumnaCadenasTraducidas_%(symbol_cell_counter)d_targetStatusChanges">%(targetStatusChanges)s</span>
@@ -5813,56 +6075,6 @@ def pRenderTechnical_Times(
 
 
 
-# ACV 20100112 Rendered by template
-
-#def pRenderTechnical_Profile( 
-    #anOutput, 
-    #unContextualObject,  
-    #theTitle, 
-    #theExecutionRecord,
-    #aTranslationsCache):
-    #"""Render the detailed execution profiling technical section of the translations browser.
-    
-    #"""           
-
-    #if not theExecutionRecord:
-        #anOutput.write(  """
-            #<br/>
-            #<font size="2">
-                #<strong>
-                    #EMPTY  %(theTitle)s 
-                #</strong>
-            #</font>
-            #<br/>
-            #\n""" % { 
-            #'theTitle': theTitle, 
-        #})  
-        
-    #else:
-        #anOutput.write(  """
-            #<br/>
-            #<font size="2">
-                 #<strong>
-                    #%(theTitle)s
-                 #</strong>
-            #</font>
-            #<br/>
-            #<font face="Courier,Courier-New,Courier New,Fixedsys" >
-            #\n""" % { 
-            #'theTitle': theTitle, 
-        #})        
-
-        ## ACV200903312200 until we manage to invoke the rendering external method, possibly not from here, but from the calling template
-        ## anOutput.write(  theExecutionRecord.fPrettyPrintProfilingResultHTML( theProfilingResult.get( 'root', [])))
-        #anOutput.write(  """
-            #</font>
-            #<br/>
-            #\n"""
-        #)
-        
-    #return None
-        
-        
 
 
 
@@ -6003,35 +6215,4 @@ def pRenderCursorButtons(
             
   
 
-
-
-#def pRenderBackToCatalog( 
-    #anOutput, 
-    #unContextualObject):
-    #"""Render a link to go back to the TRACatalogo.
-    
-    #"""
-    
-    #mfTranslateI18N     = unContextualObject.fTranslateI18N
-    #mfAsUnicode         = unContextualObject.fAsUnicode
-    
-
-
-    #anOutput.write( u"""  
-
-        #<!-- #################################################################
-         #SECTION: Link to navigate back to Catalogo container 
-         ################################################################## -->
-         
-        #<a href="%(pCatalogoAbsoluteURL)s" class="state-visible" title="%(gvSIGi18n_catalogo_action_label)s" >
-            #<img src="%(pCatalogoAbsoluteURL)s/contenedor.gif" alt="%(gvSIGi18n_catalogo_action_label)s" title="%(gvSIGi18n_catalogo_action_label)s" id="icon-contenedor" />                                        
-            #%(gvSIGi18n_catalogo_action_label)s
-        #</a>
-        #\n""" % { 
-        #'pCatalogoAbsoluteURL':                                 unContextualObject.absolute_url(), 
-        #'gvSIGi18n_catalogo_action_label':              mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_catalogo_action_label', 'Catalog-'),  
-    #})
-
-                
-    #return None
         

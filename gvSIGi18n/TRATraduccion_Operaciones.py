@@ -641,6 +641,8 @@ class TRATraduccion_Operaciones:
                     if not( unContadorCambios == None):
                         if not ( unContadorCambios == unContadorCambiosActual):
                             return self.fResultForChangeCounterDetectedOverwrite(
+                                theCadenaTraducida       =theCadenaTraducida, 
+                                theComentario            =theComentario, 
                                 theAdditionalParams      =theAdditionalParams,
                                 theUseCaseQueryResult    =theUseCaseQueryResult, 
                                 theRegistrarHistoria     =theRegistrarHistoria, 

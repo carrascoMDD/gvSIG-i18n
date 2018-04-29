@@ -4607,3 +4607,73 @@ msgstr "No se permiten blancos."
 #: TRAColeccionSolicitudersCadenas_Operaciones.py
 msgid "gvSIGi18n_Warning_NewStringSymbol_OnlyAlphanumerocCharsAnd"
 msgstr "Solo se permiten caracteres alfanumericos y "
+
+
+
+
+#. Default: "Go To"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_seccionGoTo_title"
+msgstr "Ir A"
+
+
+
+
+#. Default: "First symbol to show in the translations list"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_GoToParameters_title"
+msgstr "Primer simbolo a mostrar en la lista"
+
+
+
+#. Default: "First"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_first_label"
+msgstr "Principio"
+
+
+
+
+#. Default: "Symbol at index #"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationsPage_GoTo_SymbolIndex_label"
+msgstr "Simbolo en ordinal #"
+
+
+
+#. Default: "of"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationsPage_GoTo_SymbolIndex_of"
+msgstr "de"
+
+#. Default: "The index number of the first symbol to show"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationsPage_GoTo_SymbolIndex_help"
+msgstr "La posicion del primer simbolo a mostrar"
+
+
+#. Default: "Page number #"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationsPage_GoTo_PageIndex_label"
+msgstr "Pagina numero #"
+
+#. Default: "of"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationsPage_GoTo_PageIndex_of"
+msgstr "de"
+
+#. Default: "The index number of the page to show"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationsPage_GoTo_PageIndex_help"
+msgstr "El numero de la primera pagina a mostrar"
+
+
+#. Default: "Symbol beginning with"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationsPage_GoTo_SymbolStartingWithChars_label"
+msgstr "Simbolo comenzando con"
+
+#. Default: "Beginning letters of the first symbol to show."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationsPage_GoTo_SymbolStartingWithChars_help"
+msgstr "Las letras iniciales del primer simbolo a mostrar."

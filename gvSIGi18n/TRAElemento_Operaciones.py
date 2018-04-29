@@ -70,12 +70,21 @@ from Products.Archetypes.atapi  import OrderedBaseFolder, BaseBTreeFolder
 from Products.PloneLanguageTool import availablelanguages as PloneLanguageToolAvailableLanguages
 
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneTool import cModelDDvlPloneToolId, ModelDDvlPloneTool
+from TRAElemento_Constants              import *
+
+
+# #######################################
+"""To deliver a build compatible with MDD version 1.0.2,
+and locate key pieces of code changed for MDD versions 1.0.3 and after
+"""
+if cMDDVersionBackwardsCompatible_102:
+    from Products.ModelDDvlPloneTool.ModelDDvlPloneTool import cModelDDvlPloneToolId, ModelDDvlPloneTool
+else:
+    from Products.ModelDDvlPloneTool.ModelDDvlPloneTool import ModelDDvlPloneTool
+    from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Inicializacion_Constants import cModelDDvlPloneToolId
 
 from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fReprAsString, fMillisecondsNow, fDateTimeNow
 
-
-from TRAElemento_Constants              import *
 
 from TRAElemento_Permission_Definitions import cTRAUsersGroup_AllLanguages_postfix
     
@@ -3662,32 +3671,6 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
     
     
 
-    
-    
-    
-      
-    # ##########################################
-    """BEGIN PATCH ACV for Mario Carrera 20100907
-     
-     
-    """       
-      
-
-    #security.declarePrivate('pFlushCachedTemplates_All')
-    #def pFlushCachedTemplates_All(self, theViewsToFlush=[]):
-        
-        #unModelDDvlPloneTool = self.fModelDDvlPloneTool()
-        #if not unModelDDvlPloneTool:
-            #return self
-
-        #someUIDs = self.fAllElementUIDs()
-        #if someUIDs:        
-            #unModelDDvlPloneTool.pFlushCachedTemplatesForImpactedElementsUIDs( self, someUIDs, theViewsToFlush=theViewsToFlush)
-
-        #return self
-        
-    
-
     security.declarePrivate('pFlushCachedTemplates_All')
     def pFlushCachedTemplates_All(self, theViewsToFlush=[]):
         
@@ -3695,83 +3678,14 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
         if not unModelDDvlPloneTool:
             return self
 
-        someUIDs = self.fAllCacheableElementUIDs()
+        someUIDs = self.fAllElementUIDs()
         if someUIDs:        
             unModelDDvlPloneTool.pFlushCachedTemplatesForImpactedElementsUIDs( self, someUIDs, theViewsToFlush=theViewsToFlush)
 
         return self
-
-    
-    
-    security.declarePrivate('fAllCacheableElementUIDs')
-    def fAllCacheableElementUIDs(self,):
-        
-        someUIDs = [ ]
-        
-        someNombresTiposCacheables = None
-        try:
-            someNombresTiposCacheables = None # to deliver patch - for version 1.2.5 and future must be = cTodosNombresTiposCacheables[:]
-        except:
-            None
-        
-        if not someNombresTiposCacheables:
-            """Use inlined list Just for patch to avoid using damaged Plone portal_catalog ZCatalog instance, by problem posted by Mario Carrera on 20100907
-               For version 1.2.5 use the constant cTodosNombresTiposCacheables
-            """
-            someNombresTiposCacheables = [
-                cNombreTipoTRACatalogo,               
-                cNombreTipoTRAColeccionIdiomas,       
-                cNombreTipoTRAIdioma,                 
-                cNombreTipoTRAColeccionModulos,       
-                cNombreTipoTRAModulo,                 
-                cNombreTipoTRAColeccionCadenas,       
-                cNombreTipoTRAColeccionImportaciones, 
-                cNombreTipoTRAImportacion, 
-                cNombreTipoTRAContenidoIntercambio,   
-                cNombreTipoTRAColeccionInformes,      
-                cNombreTipoTRAInforme,      
-                cNombreTipoTRAColeccionSolicitudesCadenas,
-                cNombreTipoTRASolicitudCadena,
-            ]  
-        
-        self.pAllCacheableElementUIDs_into( someUIDs, someNombresTiposCacheables)        
-        
-        return someUIDs
-        
         
     
-   
-    security.declarePrivate('pAllCacheableElementUIDs_into')
-    def pAllCacheableElementUIDs_into(self, theUIDs, theNombresTiposCacheables):
-        
-        if theUIDs == None:
-            return self
-        
-        aMetaType = ''
-        try:
-            aMetaType = self.meta_type
-        except:
-            None
-        if ( not aMetaType) or not ( aMetaType in theNombresTiposCacheables):
-            return self
-        
-        anUID = self.UID()
-        theUIDs.append( anUID)
-        
-        someElements = self.objectValues( theNombresTiposCacheables)
-        for anElement in someElements:
-            anElement.pAllCacheableElementUIDs_into( theUIDs, theNombresTiposCacheables)
-        
-        return self
-        
-        
-    # ##########################################
-    """END PATCH ACV for Mario Carrera 20100907
     
-    
-    """       
-    
-        
    
         
     security.declarePrivate('fAllElementUIDs')

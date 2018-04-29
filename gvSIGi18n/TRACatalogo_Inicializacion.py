@@ -57,28 +57,44 @@ from Products.ZCTextIndex.Lexicon   import Splitter
 from Products.ZCTextIndex.Lexicon   import StopWordRemover
 
 
+from TRASplitter import TRASplitter
+
+
+
 gCJKSplitter = None
 try:
     from Products.CJKSplitter.CJKSplitter import CJKSplitter as gCJKSplitter
 except:
     None
     
+    
+
+
 
 from Products.CMFCore               import permissions
 from Products.CMFCore.utils         import getToolByName
 
 
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneTool                   import cModelDDvlPloneToolId,          ModelDDvlPloneTool
-from Products.ModelDDvlPloneConfiguration.ModelDDvlPloneConfiguration import cModelDDvlPloneConfigurationId, ModelDDvlPloneConfiguration
+from TRAElemento_Constants import *
+
+
+
+# #######################################
+"""To deliver a build compatible with MDD version 1.0.2,
+and locate key pieces of code changed for MDD versions 1.0.3 and after
+"""
+if cMDDVersionBackwardsCompatible_102:
+    from Products.ModelDDvlPloneTool.ModelDDvlPloneTool import cModelDDvlPloneToolId, ModelDDvlPloneTool
+else:
+    from Products.ModelDDvlPloneTool.ModelDDvlPloneTool                          import ModelDDvlPloneTool
+    from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Inicializacion_Constants import cModelDDvlPloneToolId
+    
+from Products.ModelDDvlPloneConfiguration.ModelDDvlPloneConfiguration        import cModelDDvlPloneConfigurationId, ModelDDvlPloneConfiguration
 
 
 
 from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow
-
-
-from TRAElemento_Constants import *
-
 
 from TRACatalogo_Inicializacion_Constants import *
 
@@ -110,7 +126,14 @@ from TRAElemento_Permission_Definitions import cTRAUserGroups_Catalogo_Authorize
 cLogInformeLazyCrear     = True
 
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneTool import cInstall_Tools_On_PortalSkinsCustom, cInstallPath_PortalSkinsCustom
+# #######################################
+"""To deliver a build compatible with MDD version 1.0.2,
+and locate key pieces of code changed for MDD versions 1.0.3 and after
+"""
+if cMDDVersionBackwardsCompatible_102:
+    from Products.ModelDDvlPloneTool.ModelDDvlPloneTool  import cInstall_Tools_On_PortalSkinsCustom, cInstallPath_PortalSkinsCustom    
+else:
+    from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Inicializacion_Constants import cInstall_Tools_On_PortalSkinsCustom, cInstallPath_PortalSkinsCustom
 
 
 
@@ -132,12 +155,8 @@ class TRACatalogo_Inicializacion:
 ##code-section module-footer #fill in your manual code here
 
 
-
-
-
     
-    
-    
+
     security.declarePrivate('fInstallContainer_Tools')
     def fInstallContainer_Tools( self):
         
@@ -169,9 +188,7 @@ class TRACatalogo_Inicializacion:
             return None
         
         return aTraversedObject
-    
-    
-            
+                
 
         
             
@@ -519,7 +536,7 @@ class TRACatalogo_Inicializacion:
                 # unInforme[ 'user_groups_all_idiomas']          = self.fLazyCrearUserGroupsAllIdiomas(          theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
                 # unInforme[ 'user_groups_all_modulos']          = self.fLazyCrearUserGroupsAllModulos(          theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
                 # unInforme[ 'user_groups_idiomas']              = self.fLazyCrearUserGroupsIdiomas(             theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
-                # unInforme[ 'user_groups_modulos']             = self.fLazyCrearUserGroupsModulos(             theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
+                # unInforme[ 'user_groups_modulos']              = self.fLazyCrearUserGroupsModulos(             theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
                 
                 unInforme[ 'success'] = \
                     unInforme[ 'ModelDDvlPloneTool']            and unInforme[ 'ModelDDvlPloneTool'][ 'success'] and  \
@@ -1355,9 +1372,10 @@ class TRACatalogo_Inicializacion:
                 if not unLanguage:
                     return self.fNewVoidInformeLazyCrearTodosCatalogs()
          
-                if (unLanguage in cLanguagesWithChineseJapaneseKoreanLexicon) and not ( gCJKSplitter == None):
-                    unSpecialPipelineSpec = cLexiconPipelineChineseJapaneseKorean[:]
-                    
+         
+                if ( cLanguagesWithSpecialLexiconPipelines.has_key( unLanguage)):
+                    unSpecialPipelineSpec = cLanguagesWithSpecialLexiconPipelines.get( unLanguage, None)
+         
                 return  self.fLazyCrearCatalogsEIndicesEnContenedor( 
                     theAllowCreation, 
                     theIdioma, 
@@ -1537,7 +1555,7 @@ class TRACatalogo_Inicializacion:
                                 unNombreLexicon          = unLexiconSpec[ 0]
                                 unosPipelineElementNames = unLexiconSpec[ 1]
                                 
-                                # special case for Chinese Japanese Korean indexing
+                                # special case for Chinese Japanese Korean, english indexing
                                 if theSpecialPipelineSpec:
                                     unosPipelineElementNames = theSpecialPipelineSpec
                                             
@@ -1567,7 +1585,7 @@ class TRACatalogo_Inicializacion:
                                         unLexiconReportEntry[ 'status'] = 'missing',
                                     else:
                                      
-                                        unosPipelineElements     = []
+                                        unosPipelineElements     = [ ]
                                      
                                         
                                         for unPipelineElementName in unosPipelineElementNames:
@@ -1578,7 +1596,17 @@ class TRACatalogo_Inicializacion:
                                             elif unPipelineElementName == 'StopWordRemover':
                                                 unosPipelineElements.append( StopWordRemover())  
                                             elif unPipelineElementName == 'CJKSplitter':
-                                                unosPipelineElements.append( gCJKSplitter())  
+                                                if gCJKSplitter:
+                                                    unosPipelineElements.append( gCJKSplitter())  
+                                                else:
+                                                    unosPipelineElements = [ ]
+                                                    unosPipelineElements.append( Splitter())  
+                                                    unosPipelineElements.append( CaseNormalizer())  
+                                                    unosPipelineElements.append( StopWordRemover())                                                      
+                                            elif unPipelineElementName == 'TRASplitter':
+                                                unosPipelineElements.append( TRASplitter())  
+                                                 
+                                                
                                         if not unosPipelineElements:
                                             unLexiconReportEntry.update( {
                                                 'status':                               'empty_pipeline',           
@@ -2801,6 +2829,82 @@ class TRACatalogo_Inicializacion:
     
     
 
+
+    #security.declarePrivate('fLexiconPipeline_ImportedClass')
+    #def fLexiconPipeline_ImportedClass( self, theSplitterModuleAndClassNames):
+        #if (not theSplitterModuleAndClassNames) or len( theSplitterModuleAndClassNames < 3):
+            #return None
+        
+        #aModuleQualifiedName = theSplitterModuleAndClassNames[ 1]
+        #if not aModuleQualifiedName:
+            #return None
+        
+        #aClassName = theSplitterModuleAndClassNames[ 2]
+        #if not aClassName:
+            #return None
+        
+        #aClassQualifiedName = '%s.%s' % ( aModuleQualifiedName, aClassName,)
+        
+        #someClasses = gLexiconPipeline_ModulesAndClasses.get( 'classes', None)
+        #if someClasses == None:
+            #someClasses = { }
+            #gLexiconPipeline_ModulesAndClasses[ 'classes'] = someClasses
+            
+        #aClass = someClasses.get( aClassQualifiedName, None)
+        #if aClass:
+            #return aClass
+        
+        
+        #someModules = gLexiconPipeline_ModulesAndClasses.get( 'modules', None)
+        #if someModules == None:
+            #someModules = { }
+            #gLexiconPipeline_ModulesAndClasses[ 'modules'] = someModules
+        
+        #aModule = someModules.get( aModuleQualifiedName, None)
+        #if not aModule:
+        
+            #someModuleNameSteps = aModuleQualifiedName.split( '.')
+            #if not someModuleNameSteps:
+                #return None
+            
+            #try:
+                #aRootModule = __import__( aModuleQualifiedName, globals(), locals())
+            #except:
+                #None
+            
+            #if not aRootModule:                                
+                #return None
+        
+            #aModule = aRootModule
+        
+            #if len( someModuleNameSteps) > 1:
+                
+                #someRemainingSteps = someModuleNameSteps[1:]
+                #for aModuleNameStep in someRemainingSteps:                        
+                    #aModule = getattr( aModule, aModuleNameStep)
+                    #if not aModule:
+                        #break
+        
+            #if not aModule:
+                #return None
+            
+            #someModules[ aModuleQualifiedName] = aModule
+                
+        
+        #aClass = getattr( aModule, aClassName)
+        #if not aClass:
+            #return None
+        
+        #someClasses[ aClassQualifiedName] = aClass
+        
+        #return aClass
+    
+    
+    
+    
+        
+    
+    
 
 ##/code-section module-footer
 

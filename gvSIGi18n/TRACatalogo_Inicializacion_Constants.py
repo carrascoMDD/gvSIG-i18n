@@ -122,12 +122,30 @@ cNombreCatalogoTextoTraducciones    = 'TRATraduccionTexto'
 
 
 
-cLanguagesWithChineseJapaneseKoreanLexicon  = [ 'zh', 'ja', 'ko', ]
+#cLanguagesWithChineseJapaneseKoreanLexicon  = [ 'zh', 'ja', 'ko', ]
 
-cLexiconPipelineChineseJapaneseKorean  = [ 'CJKSplitter', ]
+#cLexiconPipelineChineseJapaneseKorean  = [ 'CJKSplitter', ]
 
+
+        
+#cLexiconPipelines_ModulesAndClasses = [
+    #[ 'Splitter',            'Products.ZCTextIndex.Lexicon',     'Splitter',],
+    #[ 'CaseNormalizer',      'Products.ZCTextIndex.Lexicon',     'CaseNormalizer',],
+    #[ 'StopWordRemover',     'Products.ZCTextIndex.Lexicon',     'StopWordRemover',],
+    #[ 'CJKSplitter',         'Products.CJKSplitter.CJKSplitter', 'CJKSplitter',],
+    #[ 'TRASplitter',         'Products.gvSIGi18n.TRASplitter',   'TRASplitter',],
+#]
+
+cLanguagesWithSpecialLexiconPipelines = {
+    'zh':  [ 'CJKSplitter', ],
+    'ja':  [ 'CJKSplitter', ],
+    'ko':  [ 'CJKSplitter', ],
+    'en':  [ 'Splitter', 'CaseNormalizer', 'StopWordRemover', ],
+}
 
     
+
+
 
 
 
@@ -137,10 +155,7 @@ cIndexesCatalogoBusquedaCadenas  = [
     [ 'getSimbolo',         'FieldIndex',  ],
     [ 'getEstadoCadena',    'KeywordIndex',],
 ]
-# ACV 20090814 
-#   EATR01 Remove Attribute pathDelRaiz from all entities; 	
-#   EATR02 Remove the Type attribute from catalog schemas
-#cSchemaFieldsCatalogoBusquedaCadenas  = [ 'Type', 'getPathDelRaiz', ] + [ aIdxSpec[ 0] for aIdxSpec in cIndexesCatalogoBusquedaCadenas]
+
 
 cSchemaFieldsCatalogoBusquedaCadenas  = [ aIdxSpec[ 0] for aIdxSpec in cIndexesCatalogoBusquedaCadenas]
 
@@ -156,12 +171,7 @@ cIndexesCatalogoFiltroCadenas  = cIndexesCatalogoBusquedaCadenas + [
     [ 'getUsuarioCreador',          'FieldIndex',  ],
     [ 'getFechaCancelacionTextual', 'FieldIndex',   ],
 ]
-# ACV 20090814 
-#   EATR01 Remove Attribute pathDelRaiz from all entities; 	
-#   EATR02 Remove the Type attribute from catalog schemas
-#cSchemaFieldsCatalogoFiltroCadenas  = [ 'Type', 'getPathDelRaiz', ] + \
-#                                      [ aIdxSpec[ 0] for aIdxSpec in cIndexesCatalogoFiltroCadenas] + \
-#                                      [ 'getNombresModulos',]
+
 
 cSchemaFieldsCatalogoFiltroCadenas  = [ aIdxSpec[ 0] for aIdxSpec in cIndexesCatalogoFiltroCadenas] + \
                                       [ 'getNombresModulos',]
@@ -220,11 +230,8 @@ cIndexesCatalogoBusquedaTraducciones  = [
     [ 'getIdCadena',            'FieldIndex',  ],
     [ 'getEstadoTraduccion',    'KeywordIndex',],
 ]
-# ACV 20090814 
-#   EATR01 Remove Attribute pathDelRaiz from all entities; 	
-#   EATR02 Remove the Type attribute from catalog schemas
-#cSchemaFieldsCatalogoBusquedaTraducciones  = [ 'Type', 'getPathDelRaiz', 'getCodigoIdiomaEnGvSIG', ] + \
-#                                             [ aIdxSpec[ 0] for aIdxSpec in cIndexesCatalogoBusquedaTraducciones]
+
+
 cSchemaFieldsCatalogoBusquedaTraducciones  = [ 'getCodigoIdiomaEnGvSIG', ] + \
                                              [ aIdxSpec[ 0] for aIdxSpec in cIndexesCatalogoBusquedaTraducciones]
 
@@ -258,7 +265,7 @@ cSchemaFieldsCatalogoTextoTraducciones  = [ 'getId', 'getIdCadena', 'getSimbolo'
 
 
 cLexiconsCatalogoTextoTraducciones  = [ 
-    [ 'plaintext_lexicon', [ 'Splitter', 'CaseNormalizer', 'StopWordRemover', ], ],
+    [ 'plaintext_lexicon', [ 'TRASplitter', ], ],
 ]
 
 
@@ -272,12 +279,12 @@ cCatalogsDetailsParaIdioma = [
     {   'name':             cNombreCatalogoBusquedaTraducciones,
         'indexes':          cIndexesCatalogoBusquedaTraducciones,
         'schema_fields':    cSchemaFieldsCatalogoBusquedaTraducciones,
-        'lexicons':         '',
+        'lexicons':         [],
     },
     {   'name':             cNombreCatalogoFiltroTraducciones,
         'indexes':          cIndexesCatalogoFiltroTraducciones,
         'schema_fields':    cSchemaFieldsCatalogoFiltroTraducciones,
-        'lexicons':         '',
+        'lexicons':         [],
    },   
     {   'name':             cNombreCatalogoTextoTraducciones,
         'indexes':          cIndexesCatalogoTextoTraducciones,

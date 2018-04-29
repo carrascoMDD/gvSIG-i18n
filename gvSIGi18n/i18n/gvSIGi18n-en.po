@@ -4591,3 +4591,73 @@ msgstr "Blanks not allowed"
 #: TRAColeccionSolicitudersCadenas_Operaciones.py
 msgid "gvSIGi18n_Warning_NewStringSymbol_OnlyAlphanumerocCharsAnd"
 msgstr "Only allowed alphanumeric chars and"
+
+
+
+#. Default: "Primer simbolo a mostrar en la lista"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_GoToParameters_title"
+msgstr "First symbol to show in the translations list"
+
+
+#. Default: "Principio"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_first_label"
+msgstr "First"
+
+
+
+
+#. Default: "Ir A"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_seccionGoTo_title"
+msgstr "Go To"
+
+
+
+#. Default: "Simbolo en ordinal #"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationsPage_GoTo_SymbolIndex_label"
+msgstr "Symbol at index #"
+
+
+
+#. Default: "de"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationsPage_GoTo_SymbolIndex_of"
+msgstr "of"
+
+
+#. Default: "La posicion del primer simbolo a mostrar"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationsPage_GoTo_SymbolIndex_help"
+msgstr "The index number of the first symbol to show"
+
+
+#. Default: "Pagina numero #"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationsPage_GoTo_PageIndex_label"
+msgstr "Page number #"
+
+
+#. Default: "de"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationsPage_GoTo_PageIndex_of"
+msgstr "of"
+
+
+#. Default: "El numero de la primera pagina a mostrar"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationsPage_GoTo_PageIndex_help"
+msgstr "The index number of the page to show"
+
+
+#. Default: "Simbolo comenzando con"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationsPage_GoTo_SymbolStartingWithChars_label"
+msgstr "Symbol beginning with"
+
+#. Default: "Las letras iniciales del primer simbolo a mostrar."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationsPage_GoTo_SymbolStartingWithChars_help"
+msgstr "Beginning letters of the first symbol to show."

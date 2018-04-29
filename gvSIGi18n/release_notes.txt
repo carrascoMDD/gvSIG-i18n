@@ -1,68 +1,22 @@
 ﻿gvSIG-i18n RELEASE NOTES
 ========================
 
-Patch 20110129 cumulative on v 1.2.1
-------------------------------------------------
-Fixed error on export for gvSIG, to include in the file name the code of the main language exported (and not the first in the alphabetically ordered list of the exported language and its reference language, such that all languages exported with code after 'en', no longer yield a file name with 'en', but with the right exported language code.
-
-Added to TRAUncatalog utility the capability to export or not the module names, status and contributions, by editing configuration in the ExternalMethod named TRAExportAdditionalConfig.py
-
-
 
 |
 |
 
-Patch 20110128 cumulative on v 1.2.1
-------------------------------------------------
-Added TRAUncatalog.py ExternalMethod and TRAUncatalogLauncher.pt view,
-in support of the unistall needed to migrate to version 2.x
+version 1.2.2
+----------------
+
+Task Id  	Task Summary  	Start Date  	End Date  	Percent Complete
+730	Delete Technical coordinator from credits	2010-03-25 02:00	  2010-04-01 03:00	100%
+737	BUG: Translations page filter by words in the translation to CYRILIC languages fails to retrieve matching translations	2010-04-19 19:00	  2010-04-26 19:00	100%
+738	BUG: Translations page filter by words in the translation to GREEK languages fails to retrieve matching translations	2010-04-20 05:00	  2010-04-27 05:00	100%
+739	SUC33x1 Match acute variations with plain ascii vowel leters when Filter translations into a language by words in the translation	2010-04-21 09:00	  2010-04-28 09:00	100%
+741	UITR GoTo Symbol by its index number, page index number, or beginning characters of symbol	2010-04-22 16:00	  2010-04-29 16:00	100%
 
 
 
-|
-|
-
-Patch 20110127 cumulative on v 1.2.1
-------------------------------------------------
-Changed TRACAtalogo_Exportacion.py to fix bug that was fixed in 1.2.4:
-BUG EXPO for gvSIG-i18n extension fails to unicode_escape non ascii chars (i.e. latin chars, althoughit does for non-ascii and non-latin)
-Now correclty escapes all required characters when exporting for gvSIG ( java.properties format, with unicode_escape encoding).
-
-
-
-|
-|
-
-
-Patch 20110125 cumulative on v 1.2.1
-------------------------------------------------
-Changed TRACAtalogo_Exportacion.py and added ExternalMethod TRAExportAdditionalConfig.py,
-to export translation status, module names and contributing users and dates.
-
-
-|
-|
-
-
-
-Patch 20101111 cumulative on v 1.2.1
-------------------------------------------------
-Fix TRATraduccion_Operaciones::fIntentarTraducir 
-to avoid exception because of wrong signature of invocation to fResultForChangeCounterDetectedOverwrite, problem posted by Victor Acevedo on 20101028
-
- 
-|
-|
-
- 
-
-Patch 20100915
-------------------------------------------------
-Fix TRAElemento_Operaciones::pFlushCachedTemplates_All 
-to avoid using damaged Plone portal_catalog ZCatalog instance, by problem posted by Mario Carrera on 20100907
-
-
- 
 |
 |
 

@@ -79,7 +79,7 @@ gTRACredits_Constant = {
     'gvSIGi18n_credits_RequirementsCoordination_Administration_URL':u"gvsig.org/web/author/vacevedo",
     'gvSIGi18n_credits_SponsorProjectTitle_Jefe_Name':u"Martin Garcia",
     'gvSIGi18n_credits_SponsorProjectTitle_CoordinadorGeneral_Name':u"Gabriel Carrion",
-    'gvSIGi18n_credits_SponsorProjectTitle_CoordinadorTecnico_Name':u"Luis W. Sevilla",
+    'gvSIGi18n_credits_SponsorProjectTitle_CoordinadorTecnico_Name':u"",
     'gvSIGi18n_credits_Standards_UML_PropertyValue': u"Unified Modeling Language (UML)",   
     'gvSIGi18n_credits_Standards_UML_URL_PropertyValue':u"www.omg.org/technology/documents/modeling_spec_catalog.htm#UML",
     'gvSIGi18n_credits_Standards_MOF_PropertyValue': u"Meta Object Facility (MOF)",    
