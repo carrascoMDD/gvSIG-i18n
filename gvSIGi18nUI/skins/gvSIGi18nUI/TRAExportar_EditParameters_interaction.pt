@@ -50,6 +50,7 @@
             ( 'theIncludeLocalesCSV',       here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theIncludeLocalesCSV',        None),),
             ( 'theSeparatedModules',        here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theSeparatedModules',         None),),
             ( 'theExportModuleNames',       here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theExportModuleNames',        None),),
+            ( 'theExportContributions',     here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theExportContributions',      None),),
             ( 'theExportStringSources',     here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theExportStringSources',      None),),
             ( 'theExportTranslationsStatus',here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theExportTranslationsStatus', None),),
             ( 'theTipoArchivo',             here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theTipoArchivo',              None),),
@@ -140,6 +141,9 @@
             pExportModuleNames                  python: pExport_EditParameters_Parameters_output.get( 'theExportModuleNames',                    '');
             pExportModuleNamesVocabulary        python: pExport_EditParameters_Parameters_output.get( 'theExportModuleNames_vocabulary',         []);
             pExportModuleNamesVocabularyMsgIds  python: pExport_EditParameters_Parameters_output.get( 'theExportModuleNames_vocabulary_msgids',  []);
+            pExportContributions                python: pExport_EditParameters_Parameters_output.get( 'theExportContributions',                    '');
+            pExportContributionsVocabulary      python: pExport_EditParameters_Parameters_output.get( 'theExportContributions_vocabulary',         []);
+            pExportContributionsVocabularyMsgIds python: pExport_EditParameters_Parameters_output.get( 'theExportContributions_vocabulary_msgids',  []);
             pExportStringSources                python: pExport_EditParameters_Parameters_output.get( 'theExportStringSources',                    '');
             pExportStringSourcesVocabulary      python: pExport_EditParameters_Parameters_output.get( 'theExportStringSources_vocabulary',         []);
             pExportStringSourcesVocabularyMsgIds python: pExport_EditParameters_Parameters_output.get( 'theExportStringSources_vocabulary_msgids',  []);
@@ -511,6 +515,46 @@
                                       
                                       
                         
+                        
+                        
+                             
+                        <tr class="#" tal:attributes="class python: pClasesFilas[unIndexClassFila % 2]" tal:define="global unIndexClassFila python: unIndexClassFila + 1">
+                            <td align="left" valign="baseline">
+                                <strong  tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_exportar_Parameter_ExportContributions_label',   'Export contributing dates and user names-' )" />
+                            </td>
+                            <td align="left" valign="baseline">
+                            
+                                <tal:block tal:repeat="aExportContributionsOptionIndex python: range( len( pExportContributionsVocabulary))" >
+                                    <tal:block tal:condition="not: repeat/aExportContributionsOptionIndex/start">&emsp;&emsp;&emsp;</tal:block>
+                                    <tal:block tal:define="
+                                        aExportContributionsOption      python: pExportContributionsVocabulary[ aExportContributionsOptionIndex];
+                                        aExportContributionsOptionMsgId python: pExportContributionsVocabularyMsgIds[ aExportContributionsOptionIndex]">
+                                        <tal:block tal:condition="python: pExportContributions == aExportContributionsOption" >
+                                            <input checked="on"  type="radio"  class="noborder" 
+                                                name="theExportContributions" id="#"  value="#"  
+                                                tal:attributes="
+                                                    id python: 'theExportContributions_%s' % aExportContributionsOption;
+                                                    value aExportContributionsOption" />
+                                        </tal:block>
+                                        <tal:block tal:condition="python: not( pExportContributions == aExportContributionsOption)" >
+                                            <input   type="radio"  class="noborder" 
+                                                name="theExportContributions" id="#"  value="#"  
+                                                tal:attributes="
+                                                    id python: 'theExportContributions_%s' % aExportContributionsOption;
+                                                    value aExportContributionsOption" />
+                                        </tal:block>
+                                        <strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', aExportContributionsOptionMsgId,   aExportContributionsOption + '-' )" />
+                                        
+                                    </tal:block>
+                                </tal:block>
+                            
+                            </td>
+                        </tr>                     
+                        <tr class="#" tal:attributes="class python: pClasesFilas[unIndexClassFila % 2]" >
+                            <td colspan="2" align="left" valign="baseline">
+                                <p class="formHelp"  tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_exportar_Parameter_ExportContributions_help',   'Export for each translation the dates and user names that created, translated, reviewed or marked it as definitive.-' )" />
+                            </td>
+                        </tr>                     
                         
                         
                         

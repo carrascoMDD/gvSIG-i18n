@@ -634,6 +634,26 @@ msgstr "Domain for strings not in a module"
 msgid "gvSIGi18n_TRAConfiguracionExportacion_attr_dominioPorDefecto_help"
 msgstr "Information that appears in the exported files with GNU gettext PO format, when exporting separately in its own file strings that do not pertain to any module,  to indicate the application or module to which the translations apply."
 
+#. Default: "Exportar fechas y usuarios contribuidores"
+#: TRAConfiguracionExportacion exportarContribucionesPorDefecto
+msgid "gvSIGi18n_TRAConfiguracionExportacion_attr_exportarContribucionesPorDefecto_label"
+msgstr "Export contributing dates and user names"
+
+#. Default: "Exportar para cada traduccion las fechas y nombres de usuario que la crearon, tradujeron, revisaron o marcaron como definitiva."
+#: TRAConfiguracionExportacion exportarContribucionesPorDefecto
+msgid "gvSIGi18n_TRAConfiguracionExportacion_attr_exportarContribucionesPorDefecto_help"
+msgstr "Export for each translation the dates and user names that created, translated, reviewed or marked it as definitive."
+
+#. Default: "Si"
+#: TRAConfiguracionExportacion exportarContribucionesPorDefecto
+msgid "gvSIGi18n_TRAConfiguracionExportacion_attr_exportarContribucionesPorDefecto_option_Si"
+msgstr "Yes"
+
+#. Default: "No"
+#: TRAConfiguracionExportacion exportarContribucionesPorDefecto
+msgid "gvSIGi18n_TRAConfiguracionExportacion_attr_exportarContribucionesPorDefecto_option_No"
+msgstr "No"
+
 #. Default: "Exportar estado traducciones"
 #: TRAConfiguracionExportacion exportarEstadoTraduccionesPorDefecto
 msgid "gvSIGi18n_TRAConfiguracionExportacion_attr_exportarEstadoTraduccionesPorDefecto_label"
@@ -1033,6 +1053,16 @@ msgstr "Import using configured module name"
 #: TRAConfiguracionImportacion importarConNombreModuloConfiguradoPorDefecto
 msgid "gvSIGi18n_TRAConfiguracionImportacion_attr_importarConNombreModuloConfiguradoPorDefecto_help"
 msgstr "Import using the module name configured for the import or the interchange contents"
+
+#. Default: "Importar fechas y usuarios contribuidores desde comentarios"
+#: TRAConfiguracionImportacion importarContribucionesDesdeComentariosPorDefecto
+msgid "gvSIGi18n_TRAConfiguracionImportacion_attr_importarContribucionesDesdeComentariosPorDefecto_label"
+msgstr "Import contributing dates and user names from comments"
+
+#. Default: "Importar desde comentarios de cada traduccion las fechas y nombres de usuario que la crearon, tradujeron, revisaron o marcaron como definitiva."
+#: TRAConfiguracionImportacion importarContribucionesDesdeComentariosPorDefecto
+msgid "gvSIGi18n_TRAConfiguracionImportacion_attr_importarContribucionesDesdeComentariosPorDefecto_help"
+msgstr "Import from each translation comments the dates and user names that created, translated, reviewed or marked it as definitive."
 
 #. Default: "Importar fuentes desde comentarios"
 #: TRAConfiguracionImportacion importarFuentesDesdeComentariosPorDefecto
@@ -2164,6 +2194,16 @@ msgstr "Import using configured module name"
 msgid "gvSIGi18n_TRAContenidoIntercambio_attr_importarConNombreModuloConfigurado_help"
 msgstr "Import strings as used in the module with the name configured for the import or the interchange contents."
 
+#. Default: "Importar fechas y usuarios contribuidores desde comentarios"
+#: TRAContenidoIntercambio importarContribucionesDesdeComentarios
+msgid "gvSIGi18n_TRAContenidoIntercambio_attr_importarContribucionesDesdeComentarios_label"
+msgstr "Import contributing dates and user names from comments"
+
+#. Default: "Importar desde comentarios de cada traduccion las fechas y nombres de usuario que la crearon, tradujeron, revisaron o marcaron como definitiva."
+#: TRAContenidoIntercambio importarContribucionesDesdeComentarios
+msgid "gvSIGi18n_TRAContenidoIntercambio_attr_importarContribucionesDesdeComentarios_help"
+msgstr "Import from each translation comments the dates and user names that created, translated, reviewed or marked it as definitive."
+
 #. Default: "Importar fuentes desde comentarios"
 #: TRAContenidoIntercambio importarFuentesDesdeComentarios
 msgid "gvSIGi18n_TRAContenidoIntercambio_attr_importarFuentesDesdeComentarios_label"
@@ -2703,6 +2743,16 @@ msgstr "Import using configured module name"
 #: TRAImportacion importarConNombreModuloConfigurado
 msgid "gvSIGi18n_TRAImportacion_attr_importarConNombreModuloConfigurado_help"
 msgstr "Import strings as used in the module with the name configured for the import or the interchange contents."
+
+#. Default: "Importar fechas y usuarios contribuidores desde comentarios"
+#: TRAImportacion importarContribucionesDesdeComentarios
+msgid "gvSIGi18n_TRAImportacion_attr_importarContribucionesDesdeComentarios_label"
+msgstr "Import contributing dates and user names from comments"
+
+#. Default: "Importar desde comentarios de cada traduccion las fechas y nombres de usuario que la crearon, tradujeron, revisaron o marcaron como definitiva."
+#: TRAImportacion importarContribucionesDesdeComentarios
+msgid "gvSIGi18n_TRAImportacion_attr_importarContribucionesDesdeComentarios_help"
+msgstr "Import from each translation comments the dates and user names that created, translated, reviewed or marked it as definitive."
 
 #. Default: "Importar fuentes desde comentarios"
 #: TRAImportacion importarFuentesDesdeComentarios

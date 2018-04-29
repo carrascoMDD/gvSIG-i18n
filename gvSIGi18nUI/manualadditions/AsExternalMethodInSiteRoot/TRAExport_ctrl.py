@@ -202,6 +202,20 @@ def TRAExport_ParametersCandidateValues(
                 unInforme[ 'theExportModuleNames_vocabulary']        = unExportModuleNamesVocabulary
                 unInforme[ 'theExportModuleNames_vocabulary_msgids'] = unExportModuleNamesMetaAndValue[ 8]
      
+     
+                
+                
+            unExportContributionsMetaAndValue = someConfiguracionMetaAndValuesDict.get( 'exportarContribucionesPorDefecto', None)
+            if unExportContributionsMetaAndValue:
+                unExportContributionsVocabulary = unExportContributionsMetaAndValue[ 7]
+                unExportContributions = theParametersInput.get( 'theExportContributions', None)
+                if not ( unExportContributions in unExportContributionsVocabulary):
+                    unExportContributions = unExportContributionsMetaAndValue[ 1]
+                if not ( unExportContributions in unExportContributionsVocabulary):
+                    unExportContributions = unExportContributionsVocabulary[ 0]
+                unInforme[ 'theExportContributions']                   = unExportContributions
+                unInforme[ 'theExportContributions_vocabulary']        = unExportContributionsVocabulary
+                unInforme[ 'theExportContributions_vocabulary_msgids'] = unExportContributionsMetaAndValue[ 8]
                 
                 
             unExportStringSourcesMetaAndValue = someConfiguracionMetaAndValuesDict.get( 'exportarFuentesPorDefecto', None)

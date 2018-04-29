@@ -196,6 +196,47 @@ class TRAImportacion_Operaciones_Parse( \
             'comment_unicode':      u'',
             'comment_encoded':      '',
             'comment_error':        '',
+            
+            'creation_date_raw':          u'',
+            'creation_date_unicode':      u'',
+            'creation_date_encoded':      '',
+            'creation_date_error':        '',
+        
+            'creator_raw':          u'',
+            'creator_unicode':      u'',
+            'creator_encoded':      '',
+            'creator_error':        '',
+        
+            'translation_date_raw':          u'',
+            'translation_date_unicode':      u'',
+            'translation_date_encoded':      '',
+            'translation_date_error':        '',
+           
+            'translator_raw':          u'',
+            'translator_unicode':      u'',
+            'translator_encoded':      '',
+            'translator_error':        '',
+        
+            'review_date_raw':          u'',
+            'review_date_unicode':      u'',
+            'review_date_encoded':      '',
+            'review_date_error':        '',
+        
+            'reviewer_raw':          u'',
+            'reviewer_unicode':      u'',
+            'reviewer_encoded':      '',
+            'reviewer_error':        '',
+            
+            'definitive_date_raw':          u'',
+            'definitive_date_unicode':      u'',
+            'definitive_date_encoded':      '',
+            'definitive_date_error':        '',
+        
+            'coordinator_raw':          u'',
+            'coordinator_unicode':      u'',
+            'coordinator_encoded':      '',
+            'coordinator_error':        '',
+        
         }
         return unRecord
     
@@ -740,6 +781,33 @@ class TRAImportacion_Operaciones_Parse( \
                             if not unLocaleLanguage:
                                 continue
                             else:
+                                
+                                # #############################################
+                                """Determine if an entry for the file already exists, which may happen if there are CSV records for the same file as both a language to translate and a reference language.
+                                
+                                """
+                                
+                                for otherUploadedEntry in someUploadedEntries:
+                                    
+                                    otherFileName = otherFileName.get( 'file_name', '')
+                                    if otherFileName == unFileName:
+                                        
+                                        otherIsReference = otherFileName.get( 'is_reference', False) 
+                                        if otherIsReference:
+                                            if not unIsReference:
+                                                someUploadedEntries.remove( otherUploadedEntry)
+                                            else:
+                                                continue
+                                        else:
+                                            continue
+                                
+                                
+                                        
+                                # #############################################
+                                """Create entry for the file.
+                                
+                                """
+                                        
                                 unUploadedEntry = self.fNewVoidUploadedEntry()
                                 someUploadedEntries.append( unUploadedEntry)
                                 

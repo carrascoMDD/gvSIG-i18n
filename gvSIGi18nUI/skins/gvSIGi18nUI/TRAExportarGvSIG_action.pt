@@ -390,6 +390,7 @@
 											'theL10NVersion':     pL10NVersion,
 											'theModulesToExport': pModulesToExport,
 											'theExportModuleNames':True,
+											'theExportContributions':True,
 											'theExportTranslationsStatus':True,											
 										};
                                         pProgressHandlerCreationResult python: here.TRAgvSIGi18n_tool.fCreateProgressHandlerFor_ExportGvSIG( 

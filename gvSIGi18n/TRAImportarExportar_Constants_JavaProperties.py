@@ -73,6 +73,14 @@ cPropertiesModulesLinePrefix = '#Modules '
 cPropertiesSourcesLinePrefix = '#Sources '
 cPropertiesFlagsLinePrefix   = '#Flags '
 cPropertiesCommentLinePrefix = '#Comment '
+cPropertiesCreationDateLinePrefix = '#CreationDate '
+cPropertiesCreatorLinePrefix = '#Creator '
+cPropertiesTranslationDateLinePrefix = '#TranslationDate '
+cPropertiesTranslatorLinePrefix = '#Translator '
+cPropertiesReviewDateLinePrefix = '#ReviewDate '
+cPropertiesReviewerLinePrefix = '#Reviewer '
+cPropertiesDefinitiveDateLinePrefix = '#DefinitiveDate '
+cPropertiesCoordinatorLinePrefix = '#Coordinator '
 
 
 

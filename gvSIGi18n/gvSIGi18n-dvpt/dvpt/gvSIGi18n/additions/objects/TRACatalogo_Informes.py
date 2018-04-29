@@ -622,8 +622,9 @@ class TRACatalogo_Informes:
                     aDifference = 100 - unTotalPorcentajes
 
                     if aDifference > 0:
-                        someInformesEstadoCasiUnoPorCiento = [ unInformeEstado for unInformeEstado in unosInformesEstados if ( unInformeEstado[ 'cantidad'] > 0)  and ( unInformeEstado[ 'porcentaje'] < 1) ]
-                        someSortedInformesEstadoCasiUnoPorCiento = sorted( someInformesEstadoCasiUnoPorCiento, cmp=lambda unInformeEstado, otroInformeEstado: cmp(  unInformeEstado[ 'cantidad'], otroInformeEstado[ 'cantidad']), reverse=True)
+                        someInformesEstadoNoVacios = [ unInformeEstado for unInformeEstado in unosInformesEstados if ( unInformeEstado[ 'cantidad'] > 0) ]
+                        someSortedInformesEstadoNoVacios = sorted( someInformesEstadoNoVacios, cmp=lambda unInformeEstado, otroInformeEstado: cmp(  unInformeEstado[ 'cantidad'], otroInformeEstado[ 'cantidad'])) 
+                        someSortedInformesEstadoCasiUnoPorCiento = [ unInformeEstado for unInformeEstado in someSortedInformesEstadoNoVacios if ( unInformeEstado[ 'porcentaje'] < 1) ]
 
                         for unInformeEstado in someSortedInformesEstadoCasiUnoPorCiento:
                             unInformeEstado[ 'porcentaje'] = 1
@@ -632,8 +633,7 @@ class TRACatalogo_Informes:
                                 break
 
                         if aDifference > 0:
-                            someSortedInformesEstado = sorted( unosInformesEstados, cmp=lambda unInformeEstado, otroInformeEstado: cmp(  unInformeEstado[ 'cantidad'], otroInformeEstado[ 'cantidad'])) # ACV 20110117 Was , reverse=True)
-                            for unInformeEstado in someSortedInformesEstado:
+                            for unInformeEstado in someSortedInformesEstadoNoVacios:
                                 unInformeEstado[ 'porcentaje'] += 1
                                 aDifference -= 1   
                                 if aDifference < 1:
@@ -671,9 +671,6 @@ class TRACatalogo_Informes:
 
         finally:
             unExecutionRecord and unExecutionRecord.pEndExecution()
-
-
-
 
 
 
@@ -822,19 +819,30 @@ class TRACatalogo_Informes:
                                 unCatalogBusquedaTraducciones   = unosCatalogosParaIdioma[ unIndexIdioma]
 
                                 if unCodigoIdiomaEnGvSIG and unCatalogBusquedaTraducciones:
+                                    
+                                    unaBusqueda = { 
+                                        'getEstadoCadena':          cEstadoCadenaActiva,
+                                        'getSimbolo':               unosSimbolosCadenasEnModulo,
+                                    }
+                                    unosResultadosBusqueda = unCatalogBusquedaTraducciones.searchResults(**unaBusqueda)
+                                    
+                                    unosNumeroResultadosPorEstado = [ 0] * len( cTodosEstados)
+                                    
+                                    for unResultadoTraduccion in unosResultadosBusqueda:
+                                        unEstadoResultadoTraduccion = unResultadoTraduccion[ 'getEstadoTraduccion']
+                                        unIndexEstadoTraduccion = -1
+                                        try:
+                                            unIndexEstadoTraduccion = cTodosEstados.index( unEstadoResultadoTraduccion)
+                                        except:
+                                            None
+                                        if unIndexEstadoTraduccion >= 0:
+                                            unosNumeroResultadosPorEstado[ unIndexEstadoTraduccion] += 1
 
-                                    unTotalTraduccionesEnIdioma = 0            
-
+                                            
                                     for unIndexEstado in range( len( cTodosEstados)):
                                         unEstado = cTodosEstados[ unIndexEstado]
                         
-                                        unaBusqueda = { 
-                                            'getEstadoCadena':          cEstadoCadenaActiva,
-                                            'getEstadoTraduccion' :     unEstado, 
-                                            'getSimbolo':               unosSimbolosCadenasEnModulo,
-                                        }
-                                        unosResultadosBusqueda = unCatalogBusquedaTraducciones.searchResults(**unaBusqueda)
-                                        unNumeroResultados = len( unosResultadosBusqueda)
+                                        unNumeroResultados = unosNumeroResultadosPorEstado[ unIndexEstado]
 
                                         unInformeIdioma[ 'informes_estados'][ unIndexEstado][ 'cantidad'] = unNumeroResultados
                                         unInformeIdioma[ 'total_traducciones' ] += unNumeroResultados
@@ -848,6 +856,40 @@ class TRACatalogo_Informes:
                                         unasCabecerasIdiomas[ unIndexIdioma][ 'totales_estados'][ unIndexEstado][ 'cantidad']  += unNumeroResultados
                                         unasCabecerasIdiomas[ unIndexIdioma][ 'numero_cadenas'] += unNumeroResultados
 
+                                        
+                                    # Calc percentages
+                                    unTotalPorcentajes = 0
+                                    for unIndexEstado in range( len( cTodosEstados)):
+                                        if unNumeroCadenas:
+                                            unPorcentaje = int( floor( 100 * unInformeIdioma[ 'informes_estados'][ unIndexEstado][ 'cantidad'] / unNumeroCadenasEnModulo ))
+                                        else:
+                                            unPorcentaje = 100
+                                        unInformeIdioma[ 'informes_estados'][ unIndexEstado][ 'porcentaje'] =  unPorcentaje
+                                        unTotalPorcentajes += unPorcentaje                                 
+                
+                                    aDifference = 100 - unTotalPorcentajes
+                
+                                    if aDifference > 0:
+                                        someInformesEstadoNoVacios = [ unInformeEstado for unInformeEstado in unInformeIdioma[ 'informes_estados'] if ( unInformeEstado[ 'cantidad'] > 0) ]
+                                        someSortedInformesEstadoNoVacios = sorted( someInformesEstadoNoVacios, cmp=lambda unInformeEstado, otroInformeEstado: cmp(  unInformeEstado[ 'cantidad'], otroInformeEstado[ 'cantidad'])) 
+                                        someSortedInformesEstadoCasiUnoPorCiento = [ unInformeEstado for unInformeEstado in someSortedInformesEstadoNoVacios if ( unInformeEstado[ 'porcentaje'] < 1) ]
+                
+                                        for unInformeEstado in someSortedInformesEstadoCasiUnoPorCiento:
+                                            unInformeEstado[ 'porcentaje'] = 1
+                                            aDifference -= 1  
+                                            if aDifference < 1:
+                                                break
+                
+                                        if aDifference > 0:
+                                            for unInformeEstado in someSortedInformesEstadoNoVacios:
+                                                unInformeEstado[ 'porcentaje'] += 1
+                                                aDifference -= 1   
+                                                if aDifference < 1:
+                                                    break    
+                
+                                                
+                                                
+                                                
 
                 unInforme[ 'report_date'] = self.fDateTimeNowString()   
                 unInforme[ 'success'] = True
@@ -893,205 +935,6 @@ class TRACatalogo_Informes:
 
 
 
-    security.declarePrivate( 'fElaborarInformeModulos_WOpercentages')
-    def fElaborarInformeModulos_WOpercentages(self, 
-        theCheckPermissions         =True, 
-        thePermissionsCache         =None, 
-        theRolesCache               =None, 
-        theParentExecutionRecord    =None):                                
-        """Generate Report By Modules and Languages
-
-        """        
-
-
-        unExecutionRecord = self.fStartExecution( 'method',  'fElaborarInformeModulos', theParentExecutionRecord, False) 
-
-        try:
-            try:
-                unInforme = self.fNewVoidInformeModulos()
-                unInforme[ 'report_date'] = self.fDateTimeNowString()
-
-                unPermissionsCache = fDictOrNew( thePermissionsCache)
-                unRolesCache       = fDictOrNew( theRolesCache)
-
-                if theCheckPermissions:
-                    unUseCaseQueryResult = self.fUseCaseAssessment(  
-                        theUseCaseName          = cUseCase_EllaborateInformeModulesAndLanguages, 
-                        theElementsBindings     = { cBoundObject: self,},
-                        theRulesToCollect       = [ 'languages', 'modules',], 
-                        thePermissionsCache     = unPermissionsCache, 
-                        theRolesCache           = unRolesCache, 
-                        theParentExecutionRecord= unExecutionRecord
-                    ) 
-
-                    if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
-                        return unInforme
-
-                
-                unosIdiomasAccesibles = self.getCatalogo().fObtenerTodosIdiomas()
-                # ACV 20101013
-                #if not unosIdiomasAccesibles:
-                    #return unInforme
-                
-                unosCatalogosParaIdioma = [ None,] * len( unosIdiomasAccesibles)   
-                for unIndexIdioma in range( len( unosIdiomasAccesibles)):
-                    unIdioma = unosIdiomasAccesibles[ unIndexIdioma]
-                    unosCatalogosParaIdioma[ unIndexIdioma] = self.getCatalogo().fCatalogBusquedaTraduccionesParaIdioma( unIdioma)
-
-                
-                
-                unosModulosAccesibles = self.getCatalogo().fObtenerTodosModulos()
-                unosModulosAccesibles.append( cNombreModuloNoEspecificadoSentinel)
-
-                unosLanguagesNamesAndFlagsPorCodigo = self.fLanguagesNamesAndFlagsPorCodigo()
-
-                unasCabecerasIdiomas    = unInforme[ 'cabeceras_idiomas']        
-                unosInformesModulos     = unInforme[ 'informes_modulos']        
-
-                for unIdioma in unosIdiomasAccesibles:
-                    unaCabeceraIdioma = self.fNewVoidCabeceraIdioma()
-                    unCodigoIdioma = unIdioma.getCodigoIdiomaEnGvSIG()
-                    unPermiteModificar = unIdioma.fAllowWrite()                    
-                    unaCabeceraIdioma.update( {
-                        'nombre_idioma':    unIdioma.Title(), 
-                        'url_idioma':       unIdioma.absolute_url(), 
-                        'nombre_nativo_idioma':         unIdioma.getNombreNativoDeIdioma(), 
-                        'codigo_idioma_en_gvsig':       unCodigoIdioma,
-                        'codigo_internacional_idioma':  unIdioma.getCodigoInternacionalDeIdioma(),
-                        'flag':                         unosLanguagesNamesAndFlagsPorCodigo.get( unCodigoIdioma, {}).get( 'flag', cTRAFlagIdiomaDesconocida),
-                        'flag_url':                      self.fAsUnicode( unosLanguagesNamesAndFlagsPorCodigo.get( unCodigoIdioma, {}).get( 'flag_url', '%s/%s' % ( self.fPortalURL(), cTRAFlagIdiomaDesconocida,))),
-                        'modifiable':                   ( unPermiteModificar and True) or False,
-                    })
-                    unasCabecerasIdiomas.append( unaCabeceraIdioma)
-
-
-
-                unNumeroCadenas = self.fObtenerNumeroCadenas()
-                unInforme[ 'numero_cadenas'] =  unNumeroCadenas
-
-
-                for unModulo in unosModulosAccesibles:
-                    unNombreModulo = ''
-                    unNombreModuloForSearch = ''
-                    if unModulo == cNombreModuloNoEspecificadoSentinel:
-                        unNombreModulo          = self.fTranslateI18N( 'gvSIGi18n', cNombreModuloNoEspecificadoLabel_MsgId, u'Unspecified module-').encode( cTRAEncodingUTF8)
-                        unNombreModuloForSearch = cNombreModuloNoEspecificadoInputValue
-                    else:
-                        unNombreModulo          = unModulo.Title()
-                        unNombreModuloForSearch = unNombreModulo
-
-                    unInformeModulo = self.fNewVoidInformeModulo()
-                    unInformeModulo[ 'nombre_modulo'] = unNombreModulo
-                    unInformeModulo[ 'nombre_modulo_for_search'] = unNombreModuloForSearch
-                    
-                    unosInformesModulos.append( unInformeModulo)
-
-                    unosInformesIdiomas = unInformeModulo[ 'informes_idiomas']
-
-                    for unIndexIdioma in range( len( unosIdiomasAccesibles)):
-                        unInformeIdioma = self.fNewVoidInformeIdioma()
-                        
-                        unIdioma = unosIdiomasAccesibles[ unIndexIdioma]
-                        unCodigoIdioma = unIdioma.getCodigoIdiomaEnGvSIG()
-                        unPermiteModificar = unIdioma.fAllowWrite()                    
-                        
-                        unInformeIdioma.update( {
-                            'nombre_idioma':                unIdioma.Title(), 
-                            'codigo_idioma_en_gvsig':       unCodigoIdioma, 
-                            'codigo_internacional_idioma':  unIdioma.getCodigoInternacionalDeIdioma(),
-                            'nombre_nativo_idioma':         unIdioma.getNombreNativoDeIdioma(), 
-                            'url_idioma':                   unIdioma.absolute_url(), 
-                            'flag':                         unosLanguagesNamesAndFlagsPorCodigo.get( unCodigoIdioma, {}).get( 'flag', cTRAFlagIdiomaDesconocida),
-                            'flag_url':                     self.fAsUnicode( unosLanguagesNamesAndFlagsPorCodigo.get( unCodigoIdioma, {}).get( 'flag_url', '%s/%s' % ( self.fPortalURL(), cTRAFlagIdiomaDesconocida,))),
-                            'list_contents_permission':     True,
-                            'modifiable':                   ( unPermiteModificar and True) or False,
-                            'modules':                      [ unNombreModulo, ],
-
-                        } )
-                        unosInformesIdiomas.append( unInformeIdioma)
-
-
-
-                    if unNumeroCadenas:      
-                        if unModulo == cNombreModuloNoEspecificadoSentinel:
-                            unosSimbolosCadenasEnModulo = self.fListaSimbolosCadenasOrdenadosModuloNoEspecificado( unExecutionRecord)
-                        else:                        
-                            unosSimbolosCadenasEnModulo = self.fListaSimbolosCadenasOrdenadosEnModulo( unModulo.Title(), unExecutionRecord)
-                        
-                        unNumeroCadenasEnModulo = len( unosSimbolosCadenasEnModulo)
-                        if unNumeroCadenasEnModulo:
-
-                            unInformeModulo[ 'numero_cadenas'] = unNumeroCadenasEnModulo
-
-
-                            for unIndexIdioma in range( len( unosInformesIdiomas)):
-
-                                unInformeIdioma                 = unosInformesIdiomas[ unIndexIdioma]
-                                unCodigoIdiomaEnGvSIG           = unInformeIdioma[ 'codigo_idioma_en_gvsig']
-
-                                unCatalogBusquedaTraducciones   = unosCatalogosParaIdioma[ unIndexIdioma]
-
-                                if unCodigoIdiomaEnGvSIG and unCatalogBusquedaTraducciones:
-
-                                    unTotalTraduccionesEnIdioma = 0            
-
-                                    for unIndexEstado in range( len( cTodosEstados)):
-                                        unEstado = cTodosEstados[ unIndexEstado]
-                        
-                                        unaBusqueda = { 
-                                            'getEstadoCadena':          cEstadoCadenaActiva,
-                                            'getEstadoTraduccion' :     unEstado, 
-                                            'getSimbolo':               unosSimbolosCadenasEnModulo,
-                                        }
-                                        unosResultadosBusqueda = unCatalogBusquedaTraducciones.searchResults(**unaBusqueda)
-                                        unNumeroResultados = len( unosResultadosBusqueda)
-
-                                        unInformeIdioma[ 'informes_estados'][ unIndexEstado][ 'cantidad'] = unNumeroResultados
-                                        unInformeIdioma[ 'total_traducciones' ] += unNumeroResultados
-
-                                        unInformeModulo[ 'totales_estados'][ unIndexEstado][ 'cantidad'] += unNumeroResultados
-                                        unInformeModulo[ 'total_traducciones'] += unNumeroResultados
-
-                                        unInforme[ 'totales_estados'][ unIndexEstado][ 'cantidad'] += unNumeroResultados
-                                        unInforme[ 'total_traducciones' ] += unNumeroResultados
-
-                                        unasCabecerasIdiomas[ unIndexIdioma][ 'totales_estados'][ unIndexEstado][ 'cantidad']  += unNumeroResultados
-                                        unasCabecerasIdiomas[ unIndexIdioma][ 'numero_cadenas'] += unNumeroResultados
-
-
-                unInforme[ 'report_date'] = self.fDateTimeNowString()   
-                unInforme[ 'success'] = True
-                
-                self.pStatusReportByModulesAndLanguagesJustGenerated()
-
-                
-                return unInforme
-
-            except:
-                unaExceptionInfo = sys.exc_info()
-                unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
-
-                unInformeExcepcion = 'Exception during fElaborarInformeModulos\n' 
-                unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-                try:
-                    unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
-                except:
-                    None
-                unInformeExcepcion += unaExceptionFormattedTraceback   
-
-                unInforme[ 'success'] = False
-                unInforme[ 'condition'] = 'exception'
-                unInforme[ 'exception'] = unInformeExcepcion
-
-                unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
-
-                if cLogExceptions:
-                    logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
-
-                return unInforme
-
-        finally:
-            unExecutionRecord and unExecutionRecord.pEndExecution()
 
 
 

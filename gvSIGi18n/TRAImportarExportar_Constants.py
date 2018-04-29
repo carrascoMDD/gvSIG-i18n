@@ -139,13 +139,16 @@ cExportArchiveTypes = [ cZipFilePostfix, cJarFilePostfix, ]
 cOutputFilePostfixes = [ cZipFilePostfix, cJarFilePostfix, ]
 
 cOutputFileNameLanguageSeparator = '-'
-
-cOutputFileNameModuleSeparator = '-'
+cOutputFileNameProduct_Separator = '-'
+cOutputFileNameModuleSeparator   = '-'
 
 cMaxLenIdiomasOutputFileName = 40
 cMaxLenModulosOutputFileName = 68
 
-cExportZipFileNamePrefix = 'Export'
+cExportZipFileNamePrefix       = 'EXPORT'
+cExportBackupFileNamePrefix    = 'BACKUP'
+cExportBackupFileNameSeparator = '_'
+
 
 
 cTRAContenidoExportacionEliminado = ''
@@ -207,6 +210,7 @@ cExportarXMLTypeConfigFilters = {
                 'segundosParaConfirmarImportacion', 
                 'importarConNombreModuloConfiguradoPorDefecto', 
                 'importarNombresModulosDesdeComentariosPorDefecto', 
+                'importarContribucionesDesdeComentariosPorDefecto', 
                 'importarNombreModuloDesdeDominioONombreFicheroPorDefecto', 
                 'importarFuentesDesdeComentariosPorDefecto', 
                 'importarStatusDesdeComentariosPorDefecto', 
@@ -232,6 +236,7 @@ cExportarXMLTypeConfigFilters = {
                 'incluirManifestPorDefecto', 
                 'modulosPorSeparadoPorDefecto', 
                 'exportarNombresModulosPorDefecto', 
+                'exportarContribucionesPorDefecto', 
                 'exportarEstadoTraduccionesPorDefecto', 
                 'exportarFuentesPorDefecto', 
                 'tipoArchivoExportacionPorDefecto', 
@@ -593,16 +598,33 @@ cScannedKeys_Translation_Flags       = 'f'
 cScannedKeys_Translation_Comment     = 'c'
 
 
+cScannedKeys_Translation_CreationDate    = 'crd'
+cScannedKeys_Translation_Creator         = 'ctr'
+cScannedKeys_Translation_TranslationDate = 'trd'
+cScannedKeys_Translation_Translator      = 'ttr'      
+cScannedKeys_Translation_ReviewDate      = 'red'
+cScannedKeys_Translation_Reviewer        = 'rwr'      
+cScannedKeys_Translation_DefinitiveDate  = 'ded'
+cScannedKeys_Translation_Coordinator     = 'ctr'      
+
+
 
 cScanError_String_Modules     = 'm'
 cScanError_String_Sources     = 's'
-
 
 cScanError_Translation_Translation = 't'
 cScanError_Translation_Status      = 's'
 cScanError_Translation_Flags       = 'f'
 cScanError_Translation_Comment     = 'c'
 
+cScanError_Translation_CreationDate    = 'crd'
+cScanError_Translation_Creator         = 'ctr'
+cScanError_Translation_TranslationDate = 'trd'
+cScanError_Translation_Translator      = 'ttr'      
+cScanError_Translation_ReviewDate      = 'red'
+cScanError_Translation_Reviewer        = 'rwr'      
+cScanError_Translation_DefinitiveDate  = 'ded'
+cScanError_Translation_Coordinator     = 'ctr'      
 
 
 

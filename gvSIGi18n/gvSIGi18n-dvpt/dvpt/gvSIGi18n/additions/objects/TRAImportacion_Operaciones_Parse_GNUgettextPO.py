@@ -361,6 +361,7 @@ class TRAImportacion_Operaciones_Parse_GNUgettextPO:
             aImportarConNombreModuloConfigurado     =  theAdditionalParams.get( 'theImportWithConfiguredModuleName', False) == True
             aImportarNombreModuloDesdeDominioONombreFichero =  theAdditionalParams.get( 'theImportModuleNameFromDomainOrFilename', None) == True
             aImportarNombresModulosDesdeComentarios =  theAdditionalParams.get( 'theImportModuleNamesFromComment',   False) == True
+            aImportarContribucionesDesdeComentarios =  theAdditionalParams.get( 'theImportContributionsFromComment', False) == True
             aImportarFuentesDesdeComentarios        =  theAdditionalParams.get( 'theImportSourcesFromComment',       False) == True
             aImportarStatusDesdeComentarios         =  theAdditionalParams.get( 'theImportStatusFromComment',        False) == True
             aNumeroMaximoLineasAExplorarString      =  theAdditionalParams.get( 'theMaxLinesToScan',                 '-1')
@@ -671,12 +672,8 @@ class TRAImportacion_Operaciones_Parse_GNUgettextPO:
 
                                     
                                     
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
+
+                                
                     # ###############################################################
                     """Create a new translation data to hold the translation just read, and add it to the string data
         
@@ -757,7 +754,232 @@ class TRAImportacion_Operaciones_Parse_GNUgettextPO:
                                                       
 
                                 
+
+                                    
+                                    
+                                    
+                    if aImportarContribucionesDesdeComentarios:
+                        # ###############################################################
+                        """Set translation data to the dates and user names that created, translated, reviewed or marked as definitive just read.
+            
+                        """       
+                        
+                        if unCursorRecord.get( 'creation_date_error', False):
+                            # ###############################################################
+                            """Record translation creation_date error.
+                
+                            """                                    
+                            someScannedTranslationErrors = aScannedTranslation.get( cScannedKeys_Translation_Errors, None)
+                            if someScannedTranslationErrors == None:
+                                someScannedTranslationErrors = [ cScanError_Translation_CreationDate,]
+                                aScannedTranslation[ cScannedKeys_Translation_Errors] = someScannedTranslationErrors
+                            else:
+                                if not ( cScanError_Translation_CreationDate in someScannedTranslationErrors):
+                                    someScannedTranslationErrors.append( cScanError_Translation_CreationDate)
+                            
+                        else:
+                            unCreationDateString = unCursorRecord.get( 'creation_date_encoded', '')
+                            if unCreationDateString:
+                                    
+                                unCreationDate = None
+                                try:
+                                    unCreationDate = DateTime( unCreationDateString)
+                                except:
+                                    None
+                                    
+                                if unCreationDate:
+                                    unCreationDateStoreString = self.fDateToStoreString( unCreationDate)
+                                    
+                                    if unCreationDateStoreString:
+                                        aScannedTranslation[ cScannedKeys_Translation_CreationDate] = unCreationDateStoreString
+                        
                                 
+
+                                        
+                        if unCursorRecord.get( 'creator_error', False):
+                            # ###############################################################
+                            """Record translation creator error.
+                
+                            """                                    
+                            someScannedTranslationErrors = aScannedTranslation.get( cScannedKeys_Translation_Errors, None)
+                            if someScannedTranslationErrors == None:
+                                someScannedTranslationErrors = [ cScanError_Translation_Creator,]
+                                aScannedTranslation[ cScannedKeys_Translation_Errors] = someScannedTranslationErrors
+                            else:
+                                if not ( cScanError_Translation_Creator in someScannedTranslationErrors):
+                                    someScannedTranslationErrors.append( cScanError_Translation_Creator)
+                            
+                        else:
+                            unCreatorString = unCursorRecord.get( 'creator_encoded', '')
+                            if unCreatorString:
+                                aScannedTranslation[ cScannedKeys_Translation_Creator] = unCreatorString
+                        
+                                
+                                         
+                                        
+
+                        if unCursorRecord.get( 'translation_date_error', False):
+                            # ###############################################################
+                            """Record translation translation_date error.
+                
+                            """                                    
+                            someScannedTranslationErrors = aScannedTranslation.get( cScannedKeys_Translation_Errors, None)
+                            if someScannedTranslationErrors == None:
+                                someScannedTranslationErrors = [ cScanError_Translation_TranslationDate,]
+                                aScannedTranslation[ cScannedKeys_Translation_Errors] = someScannedTranslationErrors
+                            else:
+                                if not ( cScanError_Translation_TranslationDate in someScannedTranslationErrors):
+                                    someScannedTranslationErrors.append( cScanError_Translation_TranslationDate)
+                            
+                        else:
+                            unTranslationDateString = unCursorRecord.get( 'translation_date_encoded', '')
+                            if unTranslationDateString:
+                                    
+                                unTranslationDate = None
+                                try:
+                                    unTranslationDate = DateTime( unTranslationDateString)
+                                except:
+                                    None
+                                    
+                                if unTranslationDate:
+                                    unTranslationDateStoreString = self.fDateToStoreString( unTranslationDate)
+                                    
+                                    if unTranslationDateStoreString:
+                                        aScannedTranslation[ cScannedKeys_Translation_TranslationDate] = unTranslationDateStoreString
+                        
+                                        
+                                
+
+                        if unCursorRecord.get( 'translator_error', False):
+                            # ###############################################################
+                            """Record translation translator error.
+                
+                            """                                    
+                            someScannedTranslationErrors = aScannedTranslation.get( cScannedKeys_Translation_Errors, None)
+                            if someScannedTranslationErrors == None:
+                                someScannedTranslationErrors = [ cScanError_Translation_Translator,]
+                                aScannedTranslation[ cScannedKeys_Translation_Errors] = someScannedTranslationErrors
+                            else:
+                                if not ( cScanError_Translation_Translator in someScannedTranslationErrors):
+                                    someScannedTranslationErrors.append( cScanError_Translation_Translator)
+                            
+                        else:
+                            unTranslatorString = unCursorRecord.get( 'translator_encoded', '')
+                            if unTranslatorString:
+                                aScannedTranslation[ cScannedKeys_Translation_Translator] = unTranslatorString
+                        
+                                
+                                                                             
+                                
+                        
+                        if unCursorRecord.get( 'review_date_error', False):
+                            # ###############################################################
+                            """Record translation review_date error.
+                
+                            """                                    
+                            someScannedTranslationErrors = aScannedTranslation.get( cScannedKeys_Translation_Errors, None)
+                            if someScannedTranslationErrors == None:
+                                someScannedTranslationErrors = [ cScanError_Translation_ReviewDate,]
+                                aScannedTranslation[ cScannedKeys_Translation_Errors] = someScannedTranslationErrors
+                            else:
+                                if not ( cScanError_Translation_ReviewDate in someScannedTranslationErrors):
+                                    someScannedTranslationErrors.append( cScanError_Translation_ReviewDate)
+                            
+                        else:
+                            unReviewDateString = unCursorRecord.get( 'review_date_encoded', '')
+                            if unReviewDateString:
+                                    
+                                unReviewDate = None
+                                try:
+                                    unReviewDate = DateTime( unReviewDateString)
+                                except:
+                                    None
+                                    
+                                if unReviewDate:
+                                    unReviewDateStoreString = self.fDateToStoreString( unReviewDate)
+                                    
+                                    if unReviewDateStoreString:
+                                        aScannedTranslation[ cScannedKeys_Translation_ReviewDate] = unReviewDateStoreString
+                        
+                                                                       
+                                
+
+                        if unCursorRecord.get( 'reviewer_error', False):
+                            # ###############################################################
+                            """Record translation reviewer error.
+                
+                            """                                    
+                            someScannedTranslationErrors = aScannedTranslation.get( cScannedKeys_Translation_Errors, None)
+                            if someScannedTranslationErrors == None:
+                                someScannedTranslationErrors = [ cScanError_Translation_Reviewer,]
+                                aScannedTranslation[ cScannedKeys_Translation_Errors] = someScannedTranslationErrors
+                            else:
+                                if not ( cScanError_Translation_Reviewer in someScannedTranslationErrors):
+                                    someScannedTranslationErrors.append( cScanError_Translation_Reviewer)
+                            
+                        else:
+                            unReviewerString = unCursorRecord.get( 'reviewer_encoded', '')
+                            if unReviewerString:
+                                aScannedTranslation[ cScannedKeys_Translation_Reviewer] = unReviewerString
+                        
+                                
+                                 
+                                
+                        
+                        if unCursorRecord.get( 'definitive_date_error', False):
+                            # ###############################################################
+                            """Record translation definitive_date error.
+                
+                            """                                    
+                            someScannedTranslationErrors = aScannedTranslation.get( cScannedKeys_Translation_Errors, None)
+                            if someScannedTranslationErrors == None:
+                                someScannedTranslationErrors = [ cScanError_Translation_DefinitiveDate,]
+                                aScannedTranslation[ cScannedKeys_Translation_Errors] = someScannedTranslationErrors
+                            else:
+                                if not ( cScanError_Translation_DefinitiveDate in someScannedTranslationErrors):
+                                    someScannedTranslationErrors.append( cScanError_Translation_DefinitiveDate)
+                            
+                        else:
+                            unDefinitiveDateString = unCursorRecord.get( 'definitive_date_encoded', '')
+                            if unDefinitiveDateString:
+                                    
+                                unDefinitiveDate = None
+                                try:
+                                    unDefinitiveDate = DateTime( unDefinitiveDateString)
+                                except:
+                                    None
+                                    
+                                if unDefinitiveDate:
+                                    unDefinitiveDateStoreString = self.fDateToStoreString( unDefinitiveDate)
+                                    
+                                    if unDefinitiveDateStoreString:
+                                        aScannedTranslation[ cScannedKeys_Translation_DefinitiveDate] = unDefinitiveDateStoreString
+                        
+                                        
+                                        
+                                
+
+                        if unCursorRecord.get( 'coordinator_error', False):
+                            # ###############################################################
+                            """Record translation coordinator error.
+                
+                            """                                    
+                            someScannedTranslationErrors = aScannedTranslation.get( cScannedKeys_Translation_Errors, None)
+                            if someScannedTranslationErrors == None:
+                                someScannedTranslationErrors = [ cScanError_Translation_Coordinator,]
+                                aScannedTranslation[ cScannedKeys_Translation_Errors] = someScannedTranslationErrors
+                            else:
+                                if not ( cScanError_Translation_Coordinator in someScannedTranslationErrors):
+                                    someScannedTranslationErrors.append( cScanError_Translation_Coordinator)
+                            
+                        else:
+                            unCoordinatorString = unCursorRecord.get( 'coordinator_encoded', '')
+                            if unCoordinatorString:
+                                aScannedTranslation[ cScannedKeys_Translation_Coordinator] = unCoordinatorString
+                        
+                                
+                                                                          
+                                    
                                 
                                     
                     # ###############################################################
@@ -1110,6 +1332,299 @@ class TRAImportacion_Operaciones_Parse_GNUgettextPO:
             
             
             
+            
+            
+            elif unaLinea.startswith( cPOTranslationEntryCreationDatePrefix):
+                
+                if not unosDatosCadenaActual:
+                    unosDatosCadenaActual = self.fNewVoidCursorRecord()
+                        
+                unosDatosCadenaActual[ 'continuable_translation']   = False
+                    
+                unCreationDateString = unaLinea[ len( cPOTranslationEntryCreationDatePrefix):]
+                unCreationDateString = unCreationDateString.replace( '"', '').strip()
+                
+                if unCreationDateString:
+                    
+                    unosDatosCadenaActual[ 'creation_date_raw'] = unCreationDateString
+                    
+                    unCreationDateStringUnicode = u''
+                    try:
+                        unCreationDateStringUnicode = unCreationDateString.decode( unImportedCharSet )
+                    except UnicodeDecodeError:
+                        unosDatosCadenaActual[ 'creation_date_error'] = 'gvSIGi18n ERROR: UnicodeDecodeError from charset %s: in .PO' % unImportedCharSet   
+                    
+                    if unCreationDateStringUnicode:
+
+                        unosDatosCadenaActual[ 'creation_date_unicode'] = unCreationDateStringUnicode
+                        unCreationDateStringEncoded  = ''
+                        try:
+                            unCreationDateStringEncoded =  aTranslationService.encode( unCreationDateStringUnicode)      
+                        except:
+                            unosDatosCadenaActual[ 'creation_date_error'] = 'gvSIGi18n ERROR: encode error to plone default charset in .PO'   
+       
+                        if unCreationDateStringEncoded:    
+                            unosDatosCadenaActual[ 'creation_date_encoded'] = unCreationDateStringEncoded
+                continue    
+            
+            
+           
+            
+            elif unaLinea.startswith( cPOTranslationEntryCreatorPrefix):
+                
+                if not unosDatosCadenaActual:
+                    unosDatosCadenaActual = self.fNewVoidCursorRecord()
+                        
+                unosDatosCadenaActual[ 'continuable_translation']   = False
+                    
+                unCreatorString = unaLinea[ len( cPOTranslationEntryCreatorPrefix):]
+                unCreatorString = unCreatorString.replace( '"', '').strip()
+                
+                if unCreatorString:
+                    
+                    unosDatosCadenaActual[ 'creator_raw'] = unCreatorString
+                    
+                    unCreatorStringUnicode = u''
+                    try:
+                        unCreatorStringUnicode = unCreatorString.decode( unImportedCharSet )
+                    except UnicodeDecodeError:
+                        unosDatosCadenaActual[ 'creator_error'] = 'gvSIGi18n ERROR: UnicodeDecodeError from charset %s: in .PO' % unImportedCharSet   
+                    
+                    if unCreatorStringUnicode:
+
+                        unosDatosCadenaActual[ 'creator_unicode'] = unCreatorStringUnicode
+                        unCreatorStringEncoded  = ''
+                        try:
+                            unCreatorStringEncoded =  aTranslationService.encode( unCreatorStringUnicode)      
+                        except:
+                            unosDatosCadenaActual[ 'creator_error'] = 'gvSIGi18n ERROR: encode error to plone default charset in .PO'   
+       
+                        if unCreatorStringEncoded:    
+                            unosDatosCadenaActual[ 'creator_encoded'] = unCreatorStringEncoded
+                continue    
+            
+            
+            
+            
+            
+            elif unaLinea.startswith( cPOTranslationEntryTranslationDatePrefix):
+                
+                if not unosDatosCadenaActual:
+                    unosDatosCadenaActual = self.fNewVoidCursorRecord()
+                        
+                unosDatosCadenaActual[ 'continuable_translation']   = False
+                    
+                unTranslationDateString = unaLinea[ len( cPOTranslationEntryTranslationDatePrefix):]
+                unTranslationDateString = unTranslationDateString.replace( '"', '').strip()
+                
+                if unTranslationDateString:
+                    
+                    unosDatosCadenaActual[ 'translation_date_raw'] = unTranslationDateString
+                    
+                    unTranslationDateStringUnicode = u''
+                    try:
+                        unTranslationDateStringUnicode = unTranslationDateString.decode( unImportedCharSet )
+                    except UnicodeDecodeError:
+                        unosDatosCadenaActual[ 'translation_date_error'] = 'gvSIGi18n ERROR: UnicodeDecodeError from charset %s: in .PO' % unImportedCharSet   
+                    
+                    if unTranslationDateStringUnicode:
+
+                        unosDatosCadenaActual[ 'translation_date_unicode'] = unTranslationDateStringUnicode
+                        unTranslationDateStringEncoded  = ''
+                        try:
+                            unTranslationDateStringEncoded =  aTranslationService.encode( unTranslationDateStringUnicode)      
+                        except:
+                            unosDatosCadenaActual[ 'translation_date_error'] = 'gvSIGi18n ERROR: encode error to plone default charset in .PO'   
+       
+                        if unTranslationDateStringEncoded:    
+                            unosDatosCadenaActual[ 'translation_date_encoded'] = unTranslationDateStringEncoded
+                continue    
+            
+            
+            
+ 
+            
+            elif unaLinea.startswith( cPOTranslationEntryTranslatorPrefix):
+                
+                if not unosDatosCadenaActual:
+                    unosDatosCadenaActual = self.fNewVoidCursorRecord()
+                        
+                unosDatosCadenaActual[ 'continuable_translation']   = False
+                    
+                unTranslatorString = unaLinea[ len( cPOTranslationEntryTranslatorPrefix):]
+                unTranslatorString = unTranslatorString.replace( '"', '').strip()
+                
+                if unTranslatorString:
+                    
+                    unosDatosCadenaActual[ 'translator_raw'] = unTranslatorString
+                    
+                    unTranslatorStringUnicode = u''
+                    try:
+                        unTranslatorStringUnicode = unTranslatorString.decode( unImportedCharSet )
+                    except UnicodeDecodeError:
+                        unosDatosCadenaActual[ 'translator_error'] = 'gvSIGi18n ERROR: UnicodeDecodeError from charset %s: in .PO' % unImportedCharSet   
+                    
+                    if unTranslatorStringUnicode:
+
+                        unosDatosCadenaActual[ 'translator_unicode'] = unTranslatorStringUnicode
+                        unTranslatorStringEncoded  = ''
+                        try:
+                            unTranslatorStringEncoded =  aTranslationService.encode( unTranslatorStringUnicode)      
+                        except:
+                            unosDatosCadenaActual[ 'translator_error'] = 'gvSIGi18n ERROR: encode error to plone default charset in .PO'   
+       
+                        if unTranslatorStringEncoded:    
+                            unosDatosCadenaActual[ 'translator_encoded'] = unTranslatorStringEncoded
+                continue    
+            
+                        
+            
+            elif unaLinea.startswith( cPOTranslationEntryReviewDatePrefix):
+                
+                if not unosDatosCadenaActual:
+                    unosDatosCadenaActual = self.fNewVoidCursorRecord()
+                        
+                unosDatosCadenaActual[ 'continuable_translation']   = False
+                    
+                unReviewDateString = unaLinea[ len( cPOTranslationEntryReviewDatePrefix):]
+                unReviewDateString = unReviewDateString.replace( '"', '').strip()
+                
+                if unReviewDateString:
+                    
+                    unosDatosCadenaActual[ 'review_date_raw'] = unReviewDateString
+                    
+                    unReviewDateStringUnicode = u''
+                    try:
+                        unReviewDateStringUnicode = unReviewDateString.decode( unImportedCharSet )
+                    except UnicodeDecodeError:
+                        unosDatosCadenaActual[ 'review_date_error'] = 'gvSIGi18n ERROR: UnicodeDecodeError from charset %s: in .PO' % unImportedCharSet   
+                    
+                    if unReviewDateStringUnicode:
+
+                        unosDatosCadenaActual[ 'review_date_unicode'] = unReviewDateStringUnicode
+                        unReviewDateStringEncoded  = ''
+                        try:
+                            unReviewDateStringEncoded =  aTranslationService.encode( unReviewDateStringUnicode)      
+                        except:
+                            unosDatosCadenaActual[ 'review_date_error'] = 'gvSIGi18n ERROR: encode error to plone default charset in .PO'   
+       
+                        if unReviewDateStringEncoded:    
+                            unosDatosCadenaActual[ 'review_date_encoded'] = unReviewDateStringEncoded
+                continue    
+            
+            
+            
+ 
+            
+            elif unaLinea.startswith( cPOTranslationEntryReviewerPrefix):
+                
+                if not unosDatosCadenaActual:
+                    unosDatosCadenaActual = self.fNewVoidCursorRecord()
+                        
+                unosDatosCadenaActual[ 'continuable_translation']   = False
+                    
+                unReviewerString = unaLinea[ len( cPOTranslationEntryReviewerPrefix):]
+                unReviewerString = unReviewerString.replace( '"', '').strip()
+                
+                if unReviewerString:
+                    
+                    unosDatosCadenaActual[ 'reviewer_raw'] = unReviewerString
+                    
+                    unReviewerStringUnicode = u''
+                    try:
+                        unReviewerStringUnicode = unReviewerString.decode( unImportedCharSet )
+                    except UnicodeDecodeError:
+                        unosDatosCadenaActual[ 'reviewer_error'] = 'gvSIGi18n ERROR: UnicodeDecodeError from charset %s: in .PO' % unImportedCharSet   
+                    
+                    if unReviewerStringUnicode:
+
+                        unosDatosCadenaActual[ 'reviewer_unicode'] = unReviewerStringUnicode
+                        unReviewerStringEncoded  = ''
+                        try:
+                            unReviewerStringEncoded =  aTranslationService.encode( unReviewerStringUnicode)      
+                        except:
+                            unosDatosCadenaActual[ 'reviewer_error'] = 'gvSIGi18n ERROR: encode error to plone default charset in .PO'   
+       
+                        if unReviewerStringEncoded:    
+                            unosDatosCadenaActual[ 'reviewer_encoded'] = unReviewerStringEncoded
+                continue    
+            
+                        
+            
+            elif unaLinea.startswith( cPOTranslationEntryDefinitiveDatePrefix):
+                
+                if not unosDatosCadenaActual:
+                    unosDatosCadenaActual = self.fNewVoidCursorRecord()
+                        
+                unosDatosCadenaActual[ 'continuable_translation']   = False
+                    
+                unDefinitiveDateString = unaLinea[ len( cPOTranslationEntryDefinitiveDatePrefix):]
+                unDefinitiveDateString = unDefinitiveDateString.replace( '"', '').strip()
+                
+                if unDefinitiveDateString:
+                    
+                    unosDatosCadenaActual[ 'definitive_date_raw'] = unDefinitiveDateString
+                    
+                    unDefinitiveDateStringUnicode = u''
+                    try:
+                        unDefinitiveDateStringUnicode = unDefinitiveDateString.decode( unImportedCharSet )
+                    except UnicodeDecodeError:
+                        unosDatosCadenaActual[ 'definitive_date_error'] = 'gvSIGi18n ERROR: UnicodeDecodeError from charset %s: in .PO' % unImportedCharSet   
+                    
+                    if unDefinitiveDateStringUnicode:
+
+                        unosDatosCadenaActual[ 'definitive_date_unicode'] = unDefinitiveDateStringUnicode
+                        unDefinitiveDateStringEncoded  = ''
+                        try:
+                            unDefinitiveDateStringEncoded =  aTranslationService.encode( unDefinitiveDateStringUnicode)      
+                        except:
+                            unosDatosCadenaActual[ 'definitive_date_error'] = 'gvSIGi18n ERROR: encode error to plone default charset in .PO'   
+       
+                        if unDefinitiveDateStringEncoded:    
+                            unosDatosCadenaActual[ 'definitive_date_encoded'] = unDefinitiveDateStringEncoded
+                continue    
+            
+            
+            
+ 
+            
+            elif unaLinea.startswith( cPOTranslationEntryCoordinatorPrefix):
+                
+                if not unosDatosCadenaActual:
+                    unosDatosCadenaActual = self.fNewVoidCursorRecord()
+                        
+                unosDatosCadenaActual[ 'continuable_translation']   = False
+                    
+                unCoordinatorString = unaLinea[ len( cPOTranslationEntryCoordinatorPrefix):]
+                unCoordinatorString = unCoordinatorString.replace( '"', '').strip()
+                
+                if unCoordinatorString:
+                    
+                    unosDatosCadenaActual[ 'coordinator_raw'] = unCoordinatorString
+                    
+                    unCoordinatorStringUnicode = u''
+                    try:
+                        unCoordinatorStringUnicode = unCoordinatorString.decode( unImportedCharSet )
+                    except UnicodeDecodeError:
+                        unosDatosCadenaActual[ 'coordinator_error'] = 'gvSIGi18n ERROR: UnicodeDecodeError from charset %s: in .PO' % unImportedCharSet   
+                    
+                    if unCoordinatorStringUnicode:
+
+                        unosDatosCadenaActual[ 'coordinator_unicode'] = unCoordinatorStringUnicode
+                        unCoordinatorStringEncoded  = ''
+                        try:
+                            unCoordinatorStringEncoded =  aTranslationService.encode( unCoordinatorStringUnicode)      
+                        except:
+                            unosDatosCadenaActual[ 'coordinator_error'] = 'gvSIGi18n ERROR: encode error to plone default charset in .PO'   
+       
+                        if unCoordinatorStringEncoded:    
+                            unosDatosCadenaActual[ 'coordinator_encoded'] = unCoordinatorStringEncoded
+                continue    
+            
+
+            
+            
+            
             elif unaLinea.startswith( cPOTranslationEntrySourcesPrefix):
                                     
                 if not unosDatosCadenaActual:
@@ -1182,6 +1697,7 @@ class TRAImportacion_Operaciones_Parse_GNUgettextPO:
             
             
             
+                                    
             
             elif unaLinea.startswith( cPOTranslationEntryCommentPrefix):
                 

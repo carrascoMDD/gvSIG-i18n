@@ -36,8 +36,8 @@ from TRAConfiguracionImportacion_Operaciones import TRAConfiguracionImportacion_
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
-from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import ReferenceBrowserWidget
 from TRAElemento_Operaciones import TRAElemento_Operaciones
+from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import ReferenceBrowserWidget
 
 ##code-section module-header #fill in your manual code here
 ##/code-section module-header
@@ -70,7 +70,7 @@ schema = Schema((
         label="Nombre de Modulo por defecto",
         length="0",
         containment="Not Specified",
-        position="6",
+        position="7",
         owner_class_name="TRAConfiguracionImportacion"
     ),
 
@@ -130,7 +130,7 @@ schema = Schema((
         label="Tiempo en segundos para confirmar Importacion",
         length="0",
         containment="Not Specified",
-        position="8",
+        position="9",
         owner_class_name="TRAConfiguracionImportacion"
     ),
 
@@ -160,7 +160,7 @@ schema = Schema((
         label="Numero Maximo de Lineas a Explorar",
         length="0",
         containment="Not Specified",
-        position="7",
+        position="8",
         owner_class_name="TRAConfiguracionImportacion"
     ),
 
@@ -315,6 +315,36 @@ schema = Schema((
     ),
 
     BooleanField(
+        name='importarContribucionesDesdeComentariosPorDefecto',
+        widget=BooleanField._properties['widget'](
+            label="Importar fechas y usuarios contribuidores desde comentarios",
+            label2="Import contributing dates and user names from comments",
+            description="Importar desde comentarios de cada traduccion las fechas y nombres de usuario que la crearon, tradujeron, revisaron o marcaron como definitiva.",
+            description2="Import from each translation comments the dates and user names that created, translated, reviewed or marked it as definitive.",
+            label_msgid='gvSIGi18n_TRAConfiguracionImportacion_attr_importarContribucionesDesdeComentariosPorDefecto_label',
+            description_msgid='gvSIGi18n_TRAConfiguracionImportacion_attr_importarContribucionesDesdeComentariosPorDefecto_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Importar desde comentarios de cada traduccion las fechas y nombres de usuario que la crearon, tradujeron, revisaron o marcaron como definitiva.",
+        duplicates="0",
+        label2="Import contributing dates and user names from comments",
+        ea_localid="2059",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="Import from each translation comments the dates and user names that created, translated, reviewed or marked it as definitive.",
+        ea_guid="{85EECB20-3C83-4c15-92C9-842132A5D536}",
+        scale="0",
+        default="True",
+        label="Importar fechas y usuarios contribuidores desde comentarios",
+        length="0",
+        containment="Not Specified",
+        position="6",
+        owner_class_name="TRAConfiguracionImportacion"
+    ),
+
+    BooleanField(
         name='importarXMLTRACatalogoPorDefecto',
         widget=BooleanField._properties['widget'](
             label="Importar propiedades TRACatalogo desde XML",
@@ -374,7 +404,7 @@ schema = Schema((
         label="Importar las TRAConfiguracion desde XML",
         length="0",
         containment="Not Specified",
-        position="12",
+        position="11",
         owner_class_name="TRAConfiguracionImportacion"
     ),
 
@@ -406,7 +436,7 @@ schema = Schema((
         label="Importar los TRAParametrosControlProgreso desde XML",
         length="0",
         containment="Not Specified",
-        position="14",
+        position="12",
         owner_class_name="TRAConfiguracionImportacion"
     ),
 
@@ -438,7 +468,7 @@ schema = Schema((
         label="Importar los TRAIdioma desde XML",
         length="0",
         containment="Not Specified",
-        position="16",
+        position="13",
         owner_class_name="TRAConfiguracionImportacion"
     ),
 
@@ -470,7 +500,7 @@ schema = Schema((
         label="Importar los TRASolicitudCadena desde XML",
         length="0",
         containment="Not Specified",
-        position="18",
+        position="14",
         owner_class_name="TRAConfiguracionImportacion"
     ),
 
@@ -502,7 +532,7 @@ schema = Schema((
         label="Importar los TRAModulo desde XML",
         length="0",
         containment="Not Specified",
-        position="21",
+        position="15",
         owner_class_name="TRAConfiguracionImportacion"
     ),
 
@@ -534,7 +564,7 @@ schema = Schema((
         label="Importar los TRAInforme desde XML",
         length="0",
         containment="Not Specified",
-        position="22",
+        position="16",
         owner_class_name="TRAConfiguracionImportacion"
     ),
 

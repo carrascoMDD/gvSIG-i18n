@@ -37,8 +37,8 @@ from TRAContenidoIntercambio_Operaciones import TRAContenidoIntercambio_Operacio
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
-from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import ReferenceBrowserWidget
 from TRAElemento_Operaciones import TRAElemento_Operaciones
+from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import ReferenceBrowserWidget
 
 ##code-section module-header #fill in your manual code here
 ##/code-section module-header
@@ -200,6 +200,7 @@ schema = Schema((
 
     ComputedField(
         name='informeContenido',
+        exclude_from_views="[ 'Textual', 'Tabular', ]",
         widget=ComputedField._properties['widget'](
             label="Contenido Intercambio de Traducciones",
             label2="Content in Translations Interchange",
@@ -221,15 +222,17 @@ schema = Schema((
         ea_guid="{6E839E35-1227-4081-9397-0F4CF172D96A}",
         exclude_from_values_form="True",
         scale="0",
-        exclude_from_views="[ 'Textual', 'Tabular', ]",
+        expression="context.fInformeContenidoIntercambio()",
+        computed_types="text",
         label="Contenido Intercambio de Traducciones",
         length="0",
-        expression="context.fInformeContenidoIntercambio()",
+        exclude_from_traversalconfig="True",
         containment="Not Specified",
         position="9",
         owner_class_name="TRAContenidoIntercambio",
         custom_presentation_view="TRAContenidoIntercambioDatos_NoHeaderNoFooter",
-        computed_types="text"
+        exclude_from_exportconfig="True",
+        exclude_from_copyconfig="True"
     ),
 
     StringField(
@@ -455,6 +458,69 @@ schema = Schema((
         owner_class_name="TRAContenidoIntercambio"
     ),
 
+    TextField(
+        name='contenido',
+        widget=TextAreaWidget(
+            label="Contenido",
+            label2="Contents",
+            description="Contenido ya analizado del intercambio de traducciones de cadenas a idiomas.",
+            description2="Already analised contents of the interchange of string translations into languages.",
+            label_msgid='gvSIGi18n_TRAContenidoIntercambio_attr_contenido_label',
+            description_msgid='gvSIGi18n_TRAContenidoIntercambio_attr_contenido_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Contenido ya analizado del intercambio de traducciones de cadenas a idiomas.",
+        duplicates="0",
+        label2="Contents",
+        ea_localid="964",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="Already analised contents of the interchange of string translations into languages.",
+        ea_guid="{711B544F-FEA0-403e-8D74-D691687CFE9C}",
+        read_only="True",
+        scale="0",
+        label="Contenido",
+        length="0",
+        exclude_from_traversalconfig="True",
+        containment="Not Specified",
+        position="1",
+        owner_class_name="TRAContenidoIntercambio"
+    ),
+
+    BooleanField(
+        name='importarContribucionesDesdeComentarios',
+        widget=BooleanField._properties['widget'](
+            label="Importar fechas y usuarios contribuidores desde comentarios",
+            label2="Import contributing dates and user names from comments",
+            description="Importar desde comentarios de cada traduccion las fechas y nombres de usuario que la crearon, tradujeron, revisaron o marcaron como definitiva.",
+            description2="Import from each translation comments the dates and user names that created, translated, reviewed or marked it as definitive.",
+            label_msgid='gvSIGi18n_TRAContenidoIntercambio_attr_importarContribucionesDesdeComentarios_label',
+            description_msgid='gvSIGi18n_TRAContenidoIntercambio_attr_importarContribucionesDesdeComentarios_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        containment="Not Specified",
+        description="Importar desde comentarios de cada traduccion las fechas y nombres de usuario que la crearon, tradujeron, revisaron o marcaron como definitiva.",
+        duplicates="0",
+        label2="Import contributing dates and user names from comments",
+        ea_localid="2061",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="Import from each translation comments the dates and user names that created, translated, reviewed or marked it as definitive.",
+        ea_guid="{B4CCFA6A-641F-482a-955A-5BDBAF37381A}",
+        read_only="True",
+        scale="0",
+        default="True",
+        label="Importar fechas y usuarios contribuidores desde comentarios",
+        length="0",
+        default_method="fInitial_ImportarContribucionesDesdeComentarios",
+        position="9",
+        owner_class_name="TRAContenidoIntercambio"
+    ),
+
     IntegerField(
         name='numeroMaximoLineasAExplorar',
         widget=IntegerField._properties['widget'](
@@ -484,37 +550,6 @@ schema = Schema((
         length="0",
         default_method="fInitial_NumeroMaximoLineasAExplorar",
         position="11",
-        owner_class_name="TRAContenidoIntercambio"
-    ),
-
-    TextField(
-        name='contenido',
-        widget=TextAreaWidget(
-            label="Contenido",
-            label2="Contents",
-            description="Contenido ya analizado del intercambio de traducciones de cadenas a idiomas.",
-            description2="Already analised contents of the interchange of string translations into languages.",
-            label_msgid='gvSIGi18n_TRAContenidoIntercambio_attr_contenido_label',
-            description_msgid='gvSIGi18n_TRAContenidoIntercambio_attr_contenido_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        description="Contenido ya analizado del intercambio de traducciones de cadenas a idiomas.",
-        duplicates="0",
-        label2="Contents",
-        ea_localid="964",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        description2="Already analised contents of the interchange of string translations into languages.",
-        ea_guid="{711B544F-FEA0-403e-8D74-D691687CFE9C}",
-        read_only="True",
-        scale="0",
-        label="Contenido",
-        length="0",
-        exclude_from_traversalconfig="True",
-        containment="Not Specified",
-        position="1",
         owner_class_name="TRAContenidoIntercambio"
     ),
 

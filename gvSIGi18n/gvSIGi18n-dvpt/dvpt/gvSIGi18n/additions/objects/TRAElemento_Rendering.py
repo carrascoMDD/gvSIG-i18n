@@ -186,17 +186,18 @@ class TRAElemento_Rendering:
     
     
 
-    
-    security.declarePrivate( 'fNewVoidTranslationActivity')
-    def fNewVoidTranslationActivity( self,):
-        unTranslationActivity = { 
-            cRecentActivity_Date:        None,
-            cRecentActivity_Language:    None,
-            cRecentActivity_User:        None,
-            cRecentActivity_Commented:   None,
-            cRecentActivity_Action:      None,
-            cRecentActivity_Symbol:      None,
-            cRecentActivity_Counter:     None,
-        }
-        return unTranslationActivity
+    # ACV 20110122 Had already been Moved to TRAElemento_VoidResults
+    #
+    #security.declarePrivate( 'fNewVoidTranslationActivity')
+    #def fNewVoidTranslationActivity( self,):
+        #unTranslationActivity = { 
+            #cRecentActivity_Date:        None,
+            #cRecentActivity_Language:    None,
+            #cRecentActivity_User:        None,
+            #cRecentActivity_Commented:   None,
+            #cRecentActivity_Action:      None,
+            #cRecentActivity_Symbol:      None,
+            #cRecentActivity_Counter:     None,
+        #}
+        #return unTranslationActivity
      

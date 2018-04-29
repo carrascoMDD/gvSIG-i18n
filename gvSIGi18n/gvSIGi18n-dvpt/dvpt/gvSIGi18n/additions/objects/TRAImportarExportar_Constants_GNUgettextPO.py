@@ -71,6 +71,16 @@ cPOTranslationEntryStatusPrefix   = "#: --status--"
 cPOTranslationEntrySourcesPrefix  = "#:"
 cPOTranslationEntryFlagsPrefix    = "#,"
 
+cPOTranslationEntryCreationDatePrefix            = '#: --creation-date--'
+cPOTranslationEntryCreatorPrefix                 = '#: --creator--'
+cPOTranslationEntryTranslationDatePrefix         = '#: --translation-date--'
+cPOTranslationEntryTranslatorPrefix              = '#: --translator--'
+cPOTranslationEntryReviewDatePrefix              = '#: --review-date--'
+cPOTranslationEntryReviewerPrefix                = '#: --reviewer--'
+cPOTranslationEntryDefinitiveDatePrefix          = '#: --definitive-date--'
+cPOTranslationEntryCoordinatorPrefix             = '#: --coordinator--'
+
+
 cPOTranslationEntryMsgidPrefix    = "msgid"
 cPOTranslationEntryMsgstrPrefix   = "msgstr"
 cPOTranslationEntryMsgstrContinuationPrefix   = '"'
@@ -139,6 +149,22 @@ cGNUgettextPOEntryLabel_AfterMsgid         = '"\n'
 cGNUgettextPOEntryLabel_msgstr             = 'msgstr "'
 cGNUgettextPOEntryLabel_AfterMsgstr        = '"\n'
 
+cGNUgettextPOEntryLabel_CreationDate            = '#: --creation-date-- '
+cGNUgettextPOEntryLabel_AfterCreationDate       = '\n'
+cGNUgettextPOEntryLabel_Creator                 = '#: --creator-- '
+cGNUgettextPOEntryLabel_AfterCreator            = '\n'
+cGNUgettextPOEntryLabel_TranslationDate         = '#: --translation-date-- '
+cGNUgettextPOEntryLabel_AfterTranslationDate    = '\n'
+cGNUgettextPOEntryLabel_Translator              = '#: --translator-- '
+cGNUgettextPOEntryLabel_AfterTranslator         = '\n'
+cGNUgettextPOEntryLabel_ReviewDate              = '#: --review-date-- '
+cGNUgettextPOEntryLabel_AfterReviewDate         = '\n'
+cGNUgettextPOEntryLabel_Reviewer                = '#: --reviewer-- '
+cGNUgettextPOEntryLabel_AfterReviewer           = '\n'
+cGNUgettextPOEntryLabel_DefinitiveDate          = '#: --definitive-date-- '
+cGNUgettextPOEntryLabel_AfterDefinitiveDate     = '\n'
+cGNUgettextPOEntryLabel_Coordinator             = '#: --coordinator-- '
+cGNUgettextPOEntryLabel_AfterCoordinator        = '\n'
 
 
 

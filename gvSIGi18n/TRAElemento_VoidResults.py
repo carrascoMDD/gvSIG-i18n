@@ -96,6 +96,9 @@ class TRAElemento_VoidResults:
             'theExportModuleNames':                   '',
             'theExportModuleNames_vocabulary':        [],
             'theExportModuleNames_vocabulary_msgids': [],
+            'theExportContributions':                   '',
+            'theExportContributions_vocabulary':        [],
+            'theExportContributions_vocabulary_msgids': [],
             'theExportStringSources':                 '',
             'theExportStringSources_vocabulary':      [],
             'theExportStringSources_vocabulary_msgids': [],
@@ -393,6 +396,16 @@ class TRAElemento_VoidResults:
             # cScannedKeys_Translation_Status:      3,      # optional. value 2 for Reviewed status, value 3 for Definitive status
             # cScannedKeys_Translation_Comment:     '',     # optional. comment
             # cScannedKeys_Translation_Flags:       '',     # optional. flags
+            
+            #cScannedKeys_Translation_CreationDate   
+            #cScannedKeys_Translation_Creator        
+            #cScannedKeys_Translation_TranslationDate
+            #cScannedKeys_Translation_Translator        
+            #cScannedKeys_Translation_ReviewDate     
+            #cScannedKeys_Translation_Reviewer          
+            #cScannedKeys_Translation_DefinitiveDate 
+            #cScannedKeys_Translation_Coordinator       
+
         }
         return aScannedTranslation
                     

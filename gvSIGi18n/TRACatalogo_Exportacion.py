@@ -318,6 +318,7 @@ class TRACatalogo_Exportacion( TRACatalogo_Exportacion_GNUgettextPO, TRACatalogo
             'export_module_names':      False,
             'export_string_sources':    False,
             'export_translation_status':False,
+            'export_contributions':     False,
             'languages_requested':      [],
             'reference_languages':      {},
             'languages_export_reports': [],
@@ -420,6 +421,7 @@ class TRACatalogo_Exportacion( TRACatalogo_Exportacion_GNUgettextPO, TRACatalogo
                 theIncludeLocalesCSV            = theParametersInput.get( 'theIncludeLocalesCSV', '')  == ( theParametersInput.get( 'theIncludeLocalesCSV_vocabulary',  ['xXxXxXx',])[ 0])
                 theSeparatedModules             = theParametersInput.get( 'theSeparatedModules', '')   == ( theParametersInput.get( 'theSeparatedModules_vocabulary', ['xXxXxXx',])[ 0])
                 theExportModuleNames            = theParametersInput.get( 'theExportModuleNames', '') == ( theParametersInput.get( 'theExportModuleNames_vocabulary', ['xXxXxXx',])[ 0])
+                theExportContributions            = theParametersInput.get( 'theExportContributions', '') == ( theParametersInput.get( 'theExportContributions_vocabulary', ['xXxXxXx',])[ 0])
                 theExportStringSources          = theParametersInput.get( 'theExportStringSources', '') == ( theParametersInput.get( 'theExportStringSources_vocabulary', ['xXxXxXx',])[ 0])
                 theExportTranslationsStatus     = theParametersInput.get( 'theExportTranslationsStatus', '') == ( theParametersInput.get( 'theExportTranslationsStatus_vocabulary', ['xXxXxXx',])[ 0])
                 theTipoArchivo                  = theParametersInput.get( 'theTipoArchivo', '')
@@ -526,6 +528,9 @@ class TRACatalogo_Exportacion( TRACatalogo_Exportacion_GNUgettextPO, TRACatalogo
                 unExportModuleNames              = theExportModuleNames and True           
                 unInforme[ 'export_module_names']= unExportModuleNames
                 
+                unExportContributions              = theExportContributions and True           
+                unInforme[ 'export_contributions'] = unExportContributions
+                
                 unExportStringSources              = theExportStringSources and True           
                 unInforme[ 'export_string_sources']= unExportStringSources
                 
@@ -557,11 +562,14 @@ class TRACatalogo_Exportacion( TRACatalogo_Exportacion_GNUgettextPO, TRACatalogo
                         unosCodigosEIdiomasAExportar.append( [ unCodigoIdioma, unIdioma, ])
                         unosCodigosIdiomasAExportar.add( unCodigoIdioma)
                         
-                    if unCodigoIdioma in unosCodigosIdiomasReferencia:
+                        
+                for unIdioma in unosIdiomasVisibles:
+                    unCodigoIdioma = unIdioma.getCodigoIdiomaEnGvSIG()
+                    
+                    if ( unCodigoIdioma in unosCodigosIdiomasReferencia) and ( not( unCodigoIdioma in unosCodigosIdiomasAExportar)) and ( not ( unCodigoIdioma in unosCodigosIdiomasReferenciaAExportar)):
                         unosCodigosIdiomasReferenciaAExportar.add( unCodigoIdioma)
                         if unExportAsJavaProperties:
-                            if not( unCodigoIdioma in unosCodigosIdiomasAExportar):
-                                unosCodigosEIdiomasAExportar.append( [ unCodigoIdioma, unIdioma, ])
+                            unosCodigosEIdiomasAExportar.append( [ unCodigoIdioma, unIdioma, ])
                                  
 
                 unosCodigosEIdiomasOrdenados = sorted( unosCodigosEIdiomasAExportar, cmp=lambda uno, otro: cmp( uno[ 0], otro[ 0]))
@@ -962,7 +970,11 @@ class TRACatalogo_Exportacion( TRACatalogo_Exportacion_GNUgettextPO, TRACatalogo
         unNow = self.fDateTimeNow()
         unTimestamp = '%4.4d%02d%02d%02d%02d%02d' % ( unNow.year(), unNow.month(), unNow.day(), unNow.hour(), unNow.minute(), unNow.second())    
         
-        unNombreArchivoExportacion = '%s%s%s%s%s%s%s%s' % ( cExportZipFileNamePrefix, cOutputFileNameLanguageSeparator, unosCodigosIdiomasNombreArchivo, cOutputFileNameModuleSeparator, unLastNombresModulosNombreArchivo, cOutputFileNameModuleSeparator, unTimestamp, unArchivePostfix)
+        unNombreProducto = self.getNombreProducto()
+        if not unNombreProducto:
+            unNombreProducto = ''
+            
+        unNombreArchivoExportacion = '%s%s%s%s%s%s%s%s%s%s' % ( cExportZipFileNamePrefix, cOutputFileNameProduct_Separator, unNombreProducto, cOutputFileNameLanguageSeparator, unosCodigosIdiomasNombreArchivo, cOutputFileNameModuleSeparator, unLastNombresModulosNombreArchivo, cOutputFileNameModuleSeparator, unTimestamp, unArchivePostfix)
         
         return unNombreArchivoExportacion
     
@@ -983,6 +995,9 @@ class TRACatalogo_Exportacion( TRACatalogo_Exportacion_GNUgettextPO, TRACatalogo
         theFileNamePO):
 
         if not theCodigoIdioma:
+            return self
+        
+        if not ( theWriteEntry or theWriteReferenceEntry):
             return self
         
         unLanguage, unCountry, unaVariation = self.fLanguageAndCountryAndVariationIdioma( theCodigoIdioma)
@@ -1038,6 +1053,9 @@ class TRACatalogo_Exportacion( TRACatalogo_Exportacion_GNUgettextPO, TRACatalogo
         if not theCodigoIdioma:
             return self
         
+        if not ( theWriteEntry or theWriteReferenceEntry):
+            return self
+
         unLanguage, unCountry, unaVariation = self.fLanguageAndCountryAndVariationIdioma( theCodigoIdioma)
         
         if theWriteEntry:
@@ -1717,7 +1735,9 @@ class TRACatalogo_Exportacion( TRACatalogo_Exportacion_GNUgettextPO, TRACatalogo
                     if unInformeIdiomasYModulos.has_key( 'use_case_query_results'):
                         unInformeIdiomasYModulos.pop( 'use_case_query_results')
          
-
+                unNombreProducto = unCatalogoRaiz.getNombreProducto()
+                if not unNombreProducto:
+                    unNombreProducto = ''
                                                     
                 someInputParameters = {
                     'process_type'                    : cTRAProgress_ProcessType_Backup,
@@ -1742,6 +1762,9 @@ class TRACatalogo_Exportacion( TRACatalogo_Exportacion_GNUgettextPO, TRACatalogo
                     'theExportModuleNames'            : unaConfigurationDict.get( 'exportarNombresModulosPorDefecto', cTRABooleanSi),
                     'theExportModuleNames_vocabulary' : cTRABooleanVocabulary,
                     'theExportModuleNames_vocabulary_msgids' : cTRABooleanVocabulary_msgids,
+                    'theExportContributions'            : unaConfigurationDict.get( 'exportarContribucionesPorDefecto', cTRABooleanSi),
+                    'theExportContributions_vocabulary' : cTRABooleanVocabulary,
+                    'theExportContributions_vocabulary_msgids' : cTRABooleanVocabulary_msgids,
                     'theExportStringSources'          : unaConfigurationDict.get( 'exportarFuentesPorDefecto', cTRABooleanSi),
                     'theExportStringSources_vocabulary': cTRABooleanVocabulary,
                     'theExportStringSources_vocabulary_msgids': cTRABooleanVocabulary_msgids,
@@ -1760,10 +1783,10 @@ class TRACatalogo_Exportacion( TRACatalogo_Exportacion_GNUgettextPO, TRACatalogo
                     'theDefaultLanguageCode'          : unaConfigurationDict.get( 'codigoIdiomaPorDefecto', ''),
                     'theDefaultModuleName'            : '',
                     'theDefaultDomain'                : unaConfigurationDict.get( 'dominioPorDefecto', ''),
-                    'theProductName'                  : unCatalogoRaiz.getNombreProducto(),
+                    'theProductName'                  : unNombreProducto,
                     'theProductVersion'               : '',
                     'theL10NVersion'                  : '',
-                    'theSpecificFilename'             : '%s_BACKUP_%s_%s.zip' % ( unCatalogoRaiz.getNombreProducto(), unaFechaYHora.replace( ' ', '_').replace( ':', '-'), unMemberId),
+                    'theSpecificFilename'             : '%s%s%s%s%s%s%s.zip' % ( cExportBackupFileNamePrefix, cExportBackupFileNameSeparator, unNombreProducto, cExportBackupFileNameSeparator, unaFechaYHora.replace( ' ', '_').replace( ':', '-'), cExportBackupFileNameSeparator, unMemberId),
                     'theConfiguration'                : unaConfigurationDict,
                     
                     'theExportarTRACatalogo':         cTRABooleanSi,
@@ -2156,6 +2179,9 @@ class TRACatalogo_Exportacion( TRACatalogo_Exportacion_GNUgettextPO, TRACatalogo
                     'theExportModuleNames'            : unaConfigurationDict.get( 'exportarNombresModulosPorDefecto', cTRABooleanSi),
                     'theExportModuleNames_vocabulary' : cTRABooleanVocabulary,
                     'theExportModuleNames_vocabulary_msgids' : cTRABooleanVocabulary_msgids,
+                    'theExportContributions'            : theAdditionalParams.get( 'theExportContributions', cTRABooleanSi),
+                    'theExportContributions_vocabulary' : theAdditionalParams.get( 'theExportContributions_vocabulary', [])[:],
+                    'theExportContributions_vocabulary_msgids' : theAdditionalParams.get( 'theExportContributions_vocabulary_msgids', [])[:],
                     'theExportStringSources'          : unaConfigurationDict.get( 'exportarFuentesPorDefecto', cTRABooleanSi),
                     'theExportStringSources_vocabulary': cTRABooleanVocabulary,
                     'theExportStringSources_vocabulary_msgids': cTRABooleanVocabulary_msgids,
@@ -2499,6 +2525,9 @@ class TRACatalogo_Exportacion( TRACatalogo_Exportacion_GNUgettextPO, TRACatalogo
                     'theExportModuleNames'            : theAdditionalParams.get( 'theExportModuleNames', cTRABooleanSi),
                     'theExportModuleNames_vocabulary' : theAdditionalParams.get( 'theExportModuleNames_vocabulary', [])[:],
                     'theExportModuleNames_vocabulary_msgids' : theAdditionalParams.get( 'theExportModuleNames_vocabulary_msgids', [])[:],
+                    'theExportContributions'            : theAdditionalParams.get( 'theExportContributions', cTRABooleanSi),
+                    'theExportContributions_vocabulary' : theAdditionalParams.get( 'theExportContributions_vocabulary', [])[:],
+                    'theExportContributions_vocabulary_msgids' : theAdditionalParams.get( 'theExportContributions_vocabulary_msgids', [])[:],
                     'theExportStringSources'            : theAdditionalParams.get( 'theExportStringSources', cTRABooleanSi),
                     'theExportStringSources_vocabulary' : theAdditionalParams.get( 'theExportStringSources_vocabulary', [])[:],
                     'theExportStringSources_vocabulary_msgids' : theAdditionalParams.get( 'theExportStringSources_vocabulary_msgids', [])[:],
@@ -2692,132 +2721,7 @@ class TRACatalogo_Exportacion( TRACatalogo_Exportacion_GNUgettextPO, TRACatalogo
 
 
 
-
-        
-#def fBackupInitialize_lambda( theContextualElement, theProcessControlManager, theAdditionalParmsHere):  
-
-    #if theContextualElement == None:
-        #return None
-    
-    #if not theProcessControlManager:
-        #return None
-    
-
-    #unosCodigosIdiomas = [ unIdioma.getCodigoIdiomaEnGvSIG() for unIdioma in theContextualElement.getCatalogo().fObtenerTodosIdiomas()]
-    #someExportParameters = {
-        #'theLanguagesToExport':         unosCodigosIdiomas,
-        #'theCodigosIdiomaReferencia':   {}, # No reference language
-        #'theCodificacionesCaracteres':  dict( [ ( unCodigo, cTRAEncodingUnicodeEscape,) for unCodigo in unosCodigosIdiomas]), 
-        #'theModulesToExport':           [ unModulo.Title() for unModulo in theContextualElement.getCatalogo().fObtenerTodosModulos()] + [ cModuloNoEspecificado_ValorNombre,],
-        #'theExportFormat':              cExportFormatOption_JavaProperties,
-        #'theIncludeManifest':           cTRABooleanNo,
-        #'theIncludeManifest_vocabulary': [cTRABooleanSi, cTRABooleanNo,],
-        #'theIncludeLocalesCSV':         cTRABooleanSi,
-        #'theIncludeLocalesCSV_vocabulary': [cTRABooleanSi, cTRABooleanNo,],
-        #'theSeparatedModules':          cTRABooleanNo,
-        #'theSeparatedModules_vocabulary': [cTRABooleanSi, cTRABooleanNo,],
-        #'theExportModuleNames':          cTRABooleanSi,
-        #'theExportModuleNames_vocabulary': [cTRABooleanSi, cTRABooleanNo,],
-        #'theExportStringSources':          cTRABooleanSi,
-        #'theExportStringSources_vocabulary': [cTRABooleanSi, cTRABooleanNo,],
-        #'theExportTranslationsStatus':    cTRABooleanSi,
-        #'theExportTranslationsStatus_vocabulary': [cTRABooleanSi, cTRABooleanNo,],
-        #'theTipoArchivo':               cZipFilePostfix,
-        #'theEncodingErrorHandleMode':   cTRAEncodingErrorHandleMode_BackslashReplaceAndContinue,
-        #'theFilenameForGvSIG':          cTRABooleanNo,
-        #'theFilenameForGvSIG_vocabulary': [cTRABooleanSi, cTRABooleanNo,],
-        #'theProductName':               theContextualElement.getCatalogo().getNombreProducto(),
-        #'theProductVersion':            '',
-        #'theL10NVersion':               '',
-        #'theSpecificFilename':          '%s_BACKUP_%s_%s.zip' % ( theContextualElement.getCatalogo().getNombreProducto(), theContextualElement.fDateTimeNowTextual().replace( ' ', '_').replace( ':', '-'), theContextualElement.fGetMemberId())
-    #}
-                
-    
-    #unosInitializedObjects = {
-        #'export_parameters': someExportParameters,
-    #}
-                
-    #theProcessControlManager.pAddInitializedObjects( unosInitializedObjects)
-    
-    #return None        
-            
- 
-
-
-
-
-        
-#def fExportGvSIGInitialize_lambda( theContextualElement, theProcessControlManager, theAdditionalParmsHere):  
-
-    #if theContextualElement == None:
-        #return None
-    
-    #if not theProcessControlManager:
-        #return None
-    
-    #if not theProcessControlManager.vInputParameters:
-        #return None
-
-    #unCodigoIdioma = theProcessControlManager.vInputParameters.get( 'theCodigoIdioma', '')
-    #if not unCodigoIdioma:
-        #return None
-    
-    #unCatalogoRaiz = theContextualElement.getCatalogo()
-    #if unCatalogoRaiz == None:
-        #return None
      
-    #unIdioma = unCatalogoRaiz.fGetIdiomaPorCodigo( unCodigoIdioma)
-    #if ( unIdioma == None):
-        #return None
-    
-        
-    #unosCodigosIdiomas           = [ unCodigoIdioma,]
-    #unosCodigosIdiomasReferencia = dict( [ ( unCodigoIdioma, cTRAReferenceLanguageCodesForLanguages.get( unCodigoIdioma, cTRADefaultReferenceLanguageCode),),])
-    
-
-    
-    #someModulesToExport = theProcessControlManager.vInputParameters.get( 'theModulesToExport', [])
-    #if not someModulesToExport:
-        #someModulesToExport = [ unModulo.Title() for unModulo in unCatalogoRaiz.fObtenerTodosModulos()] + [ cModuloNoEspecificado_ValorNombre,]
-        
-    
-    #someExportParameters = {
-        #'theLanguagesToExport':         unosCodigosIdiomas,
-        #'theCodigosIdiomaReferencia':   unosCodigosIdiomasReferencia,
-        #'theCodificacionesCaracteres':  dict( [ ( unCodigo, cTRAEncodingUnicodeEscape,) for unCodigo in unosCodigosIdiomas]), 
-        #'theModulesToExport':           someModulesToExport,
-        #'theExportFormat':              cExportFormatOption_JavaProperties,
-        #'theIncludeManifest':           cTRABooleanNo,
-        #'theIncludeManifest_vocabulary': [cTRABooleanSi, cTRABooleanNo,],
-        #'theIncludeLocalesCSV':         cTRABooleanSi,
-        #'theIncludeLocalesCSV_vocabulary': [cTRABooleanSi, cTRABooleanNo,],
-        #'theSeparatedModules':          cTRABooleanNo,
-        #'theSeparatedModules_vocabulary': [cTRABooleanSi, cTRABooleanNo,],
-        #'theExportModuleNames':          cTRABooleanSi,
-        #'theExportModuleNames_vocabulary': [cTRABooleanSi, cTRABooleanNo,],
-        #'theExportStringSources':          cTRABooleanSi,
-        #'theExportStringSources_vocabulary': [cTRABooleanSi, cTRABooleanNo,],
-        #'theExportTranslationsStatus':          cTRABooleanSi,
-        #'theExportTranslationsStatus_vocabulary': [cTRABooleanSi, cTRABooleanNo,],
-        #'theDefaultLanguageCode':       'es',
-        #'theTipoArchivo':               cZipFilePostfix,
-        #'theEncodingErrorHandleMode':   cTRAEncodingErrorHandleMode_BackslashReplaceAndContinue,
-        #'theFilenameForGvSIG':          cTRABooleanSi,
-        #'theFilenameForGvSIG_vocabulary': [cTRABooleanSi, cTRABooleanNo,],
-        #'theProductName':               theProcessControlManager.vInputParameters.get( 'theProductName',    unCatalogoRaiz.getNombreProducto()),
-        #'theProductVersion':            theProcessControlManager.vInputParameters.get( 'theProductVersion', '1'),
-        #'theL10NVersion':               theProcessControlManager.vInputParameters.get( 'theL10NVersion',    '1'),
-        #'theSpecificFilename':          None,
-    #}
-        
-   
-    #unosInitializedObjects = {
-        #'export_parameters': someExportParameters,
-    #}
-                
-    #theProcessControlManager.pAddInitializedObjects( unosInitializedObjects)
-    
-    #return None        
             
  
 
@@ -2899,6 +2803,7 @@ def fExportLoop_lambda( theInitialElement, theProcessControlManager, theAddition
         theIncludeLocalesCSV            = someExportParameters.get( 'theIncludeLocalesCSV', '')          == ( someExportParameters.get( 'theIncludeLocalesCSV_vocabulary',  ['xXxXxXx',])[ 0])
         theSeparatedModules             = someExportParameters.get( 'theSeparatedModules', '')           == ( someExportParameters.get( 'theSeparatedModules_vocabulary', ['xXxXxXx',])[ 0])
         theExportModuleNames            = someExportParameters.get( 'theExportModuleNames', '')          == ( someExportParameters.get( 'theExportModuleNames_vocabulary', ['xXxXxXx',])[ 0])
+        theExportContributions          = someExportParameters.get( 'theExportContributions', '')          == ( someExportParameters.get( 'theExportContributions_vocabulary', ['xXxXxXx',])[ 0])
         theExportStringSources          = someExportParameters.get( 'theExportStringSources', '')        == ( someExportParameters.get( 'theExportStringSources_vocabulary', ['xXxXxXx',])[ 0])
         theExportTranslationsStatus     = someExportParameters.get( 'theExportTranslationsStatus', '')   == ( someExportParameters.get( 'theExportTranslationsStatus_vocabulary', ['xXxXxXx',])[ 0])
         theTipoArchivo                  = someExportParameters.get( 'theTipoArchivo', '')
@@ -3081,6 +2986,9 @@ def fExportLoop_lambda( theInitialElement, theProcessControlManager, theAddition
         unExportModuleNames              = theExportModuleNames and True           
         unInforme[ 'export_module_names']= unExportModuleNames
     
+        unExportContributions              = theExportContributions and True           
+        unInforme[ 'export_contributions']= unExportContributions
+    
         unExportStringSources              = theExportStringSources and True           
         unInforme[ 'export_string_sources']= unExportStringSources
     
@@ -3095,6 +3003,7 @@ def fExportLoop_lambda( theInitialElement, theProcessControlManager, theAddition
         theProcessControlManager.vResult[ 'separate_modules']            = unInforme[ 'separate_modules'] 
         theProcessControlManager.vResult[ 'export_module_names']         = unInforme[ 'export_module_names'] 
         theProcessControlManager.vResult[ 'export_translation_status']   = unInforme[ 'export_translation_status'] 
+        theProcessControlManager.vResult[ 'export_contributions']        = unInforme[ 'export_contributions'] 
         
             
         
@@ -3115,6 +3024,7 @@ def fExportLoop_lambda( theInitialElement, theProcessControlManager, theAddition
         unosCodigosIdiomasAExportar           = set()
         unosCodigosIdiomasReferenciaAExportar = set()
         
+
         for unIdioma in unosIdiomasVisibles:
             unCodigoIdioma = unIdioma.getCodigoIdiomaEnGvSIG()
                                 
@@ -3122,12 +3032,15 @@ def fExportLoop_lambda( theInitialElement, theProcessControlManager, theAddition
                 unosCodigosEIdiomasAExportar.append( [ unCodigoIdioma, unIdioma, ])
                 unosCodigosIdiomasAExportar.add( unCodigoIdioma)
                 
-            if unCodigoIdioma in unosCodigosIdiomasReferencia:
+                
+        for unIdioma in unosIdiomasVisibles:
+            unCodigoIdioma = unIdioma.getCodigoIdiomaEnGvSIG()
+            
+            if ( unCodigoIdioma in unosCodigosIdiomasReferencia) and ( not( unCodigoIdioma in unosCodigosIdiomasAExportar)) and ( not ( unCodigoIdioma in unosCodigosIdiomasReferenciaAExportar)):
                 unosCodigosIdiomasReferenciaAExportar.add( unCodigoIdioma)
                 if unExportAsJavaProperties:
-                    if not( unCodigoIdioma in unosCodigosIdiomasAExportar):
-                        unosCodigosEIdiomasAExportar.append( [ unCodigoIdioma, unIdioma, ])
-                         
+                    unosCodigosEIdiomasAExportar.append( [ unCodigoIdioma, unIdioma, ])
+                                 
     
         unosCodigosEIdiomasOrdenados = sorted( unosCodigosEIdiomasAExportar, cmp=lambda uno, otro: cmp( uno[ 0], otro[ 0]))
                  
@@ -3389,7 +3302,7 @@ def fExportLoop_lambda( theInitialElement, theProcessControlManager, theAddition
                             theBuffer               = unManifestBuffer, 
                             theCodigoIdioma         = unCodigoIdioma, 
                             theWriteEntry           = unCodigoIdioma in unosCodigosIdiomasAExportar, 
-                            theWriteReferenceEntry  = unCodigoIdioma in unosCodigosIdiomasReferencia, 
+                            theWriteReferenceEntry  = unCodigoIdioma in unosCodigosIdiomasReferenciaAExportar, 
                             theWriteJavaProperties  = unExportAsJavaProperties, 
                             theFileNameProperties   = unFileNameProperties, 
                             theWriteGNUgettextPO    = unExportAsGNUgettextPO, 
@@ -3401,7 +3314,7 @@ def fExportLoop_lambda( theInitialElement, theProcessControlManager, theAddition
                             theBuffer               = unLocalesCSVBuffer, 
                             theCodigoIdioma         = unCodigoIdioma, 
                             theWriteEntry           = unCodigoIdioma in unosCodigosIdiomasAExportar, 
-                            theWriteReferenceEntry  = unCodigoIdioma in unosCodigosIdiomasReferencia, 
+                            theWriteReferenceEntry  = unCodigoIdioma in unosCodigosIdiomasReferenciaAExportar, 
                             theWriteJavaProperties  = unExportAsJavaProperties, 
                             theFileNameProperties   = unFileNameProperties, 
                             theWriteGNUgettextPO    = unExportAsGNUgettextPO, 
@@ -3410,21 +3323,22 @@ def fExportLoop_lambda( theInitialElement, theProcessControlManager, theAddition
                         
                     if unFileNameProperties:
                         unResultFicheroExportacion = theProcessControlManager.vCatalogoRaiz.fContenidoFicheroExportacionIdiomaModulo_JavaProperties( 
-                            unIdioma, 
-                            unNombreModulo, 
-                            unaCodificacionCaracteres, 
-                            unosResultadosTraducciones,
-                            unosSourcesCadenasPorSimbolo,
-                            unExportModuleNames,
-                            unExportStringSources,
-                            unExportTranslationsStatus,
-                            unosModulosCadenasPorSimbolo,
-                            theEncodingErrorHandleMode,
-                            anEncodedFileErrorsMode,
-                            aSystemToUnicodeErrorsMode,
-                            aUnicodeToUTF8ErrorsMode,
-                            aTranslationService,
-                            unExecutionRecord,
+                            theIdioma                      =unIdioma, 
+                            theNombreModulo                =unNombreModulo, 
+                            theCodificacionCaracteres      =unaCodificacionCaracteres, 
+                            theResultadosTraducciones      =unosResultadosTraducciones, 
+                            theSourcesCadenasPorSimbolo    =unosSourcesCadenasPorSimbolo,
+                            theExportModuleNames           =unExportModuleNames,
+                            theExportStringSources         =unExportStringSources,
+                            theExportTranslationsStatus    =unExportTranslationsStatus,
+                            theExportContributions         =unExportContributions,
+                            theModulosCadenasPorSimbolo    =unosModulosCadenasPorSimbolo,
+                            theEncodingErrorHandleMode     =theEncodingErrorHandleMode,
+                            theEncodedFileErrorsMode       =anEncodedFileErrorsMode,
+                            theSystemToUnicodeErrorsMode   =aSystemToUnicodeErrorsMode,
+                            theUnicodeToUTF8ErrorsMode     =aUnicodeToUTF8ErrorsMode,
+                            theTranslationService          =aTranslationService,
+                            theParentExecutionRecord       =unExecutionRecord,                            
                         )
                         unInformeExportarModulo[ 'export_result'] = unResultFicheroExportacion
                         if ( not unResultFicheroExportacion) or  ( not unResultFicheroExportacion.get( 'success', False)):
@@ -3442,22 +3356,23 @@ def fExportLoop_lambda( theInitialElement, theProcessControlManager, theAddition
                          
                     if unFileNamePO:
                         unResultFicheroExportacion = theProcessControlManager.vCatalogoRaiz.fContenidoFicheroExportacionIdiomaModulo_GNUgettextPO(   
-                            unIdioma, 
-                            unNombreModulo, 
-                            unaCodificacionCaracteres, 
-                            unosResultadosTraducciones, 
-                            unosResultadosTraduccionesReferencia,
-                            unosSourcesCadenasPorSimbolo,
-                            unExportModuleNames,
-                            unExportStringSources,
-                            unExportTranslationsStatus,
-                            unosModulosCadenasPorSimbolo,
-                            theEncodingErrorHandleMode,
-                            anEncodedFileErrorsMode,
-                            aSystemToUnicodeErrorsMode,
-                            aUnicodeToUTF8ErrorsMode,
-                            aTranslationService,
-                            unExecutionRecord,
+                            theIdioma                            =unIdioma, 
+                            theDomainName                        =unNombreModulo,
+                            theCodificacionCaracteres            =unaCodificacionCaracteres, 
+                            theResultadosTraducciones            =unosResultadosTraducciones,
+                            theResultadosTraduccionesReferencia  =unosResultadosTraduccionesReferencia, 
+                            theSourcesCadenasPorSimbolo          =unosSourcesCadenasPorSimbolo,
+                            theExportModuleNames                 =unExportModuleNames,
+                            theExportStringSources               =unExportStringSources,
+                            theExportTranslationsStatus          =unExportTranslationsStatus,
+                            theExportContributions               =unExportContributions,
+                            theModulosCadenasPorSimbolo          =unosModulosCadenasPorSimbolo,
+                            theEncodingErrorHandleMode           =theEncodingErrorHandleMode,
+                            theEncodedFileErrorsMode             =anEncodedFileErrorsMode,
+                            theSystemToUnicodeErrorsMode         =aSystemToUnicodeErrorsMode,
+                            theUnicodeToUTF8ErrorsMode           =aUnicodeToUTF8ErrorsMode,
+                            theTranslationService                =aTranslationService,
+                            theParentExecutionRecord             =unExecutionRecord,                                
                         )
                         unInformeExportarModulo[ 'export_result'] = unResultFicheroExportacion
                         if ( not unResultFicheroExportacion) or  ( not unResultFicheroExportacion.get( 'success', False)):
@@ -3543,7 +3458,7 @@ def fExportLoop_lambda( theInitialElement, theProcessControlManager, theAddition
                                 theBuffer               = unManifestBuffer, 
                                 theCodigoIdioma         = unCodigoIdioma, 
                                 theWriteEntry           = unCodigoIdioma in unosCodigosIdiomasAExportar, 
-                                theWriteReferenceEntry  = unCodigoIdioma in unosCodigosIdiomasReferencia, 
+                                theWriteReferenceEntry  = unCodigoIdioma in unosCodigosIdiomasReferenciaAExportar, 
                                 theWriteJavaProperties  = unExportAsJavaProperties, 
                                 theFileNameProperties   = unFileNameProperties, 
                                 theWriteGNUgettextPO    = unExportAsGNUgettextPO, 
@@ -3555,7 +3470,7 @@ def fExportLoop_lambda( theInitialElement, theProcessControlManager, theAddition
                                 theBuffer               = unLocalesCSVBuffer, 
                                 theCodigoIdioma         = unCodigoIdioma, 
                                 theWriteEntry           = unCodigoIdioma in unosCodigosIdiomasAExportar, 
-                                theWriteReferenceEntry  = unCodigoIdioma in unosCodigosIdiomasReferencia, 
+                                theWriteReferenceEntry  = unCodigoIdioma in unosCodigosIdiomasReferenciaAExportar, 
                                 theWriteJavaProperties  = unExportAsJavaProperties, 
                                 theFileNameProperties   = unFileNameProperties, 
                                 theWriteGNUgettextPO    = unExportAsGNUgettextPO, 
@@ -3564,21 +3479,22 @@ def fExportLoop_lambda( theInitialElement, theProcessControlManager, theAddition
         
                         if unFileNameProperties:
                             unResultFicheroExportacion = theProcessControlManager.vCatalogoRaiz.fContenidoFicheroExportacionIdiomaModuloNoEspecificado_JavaProperties( 
-                                unIdioma, 
-                                theDefaultModuleName,
-                                unaCodificacionCaracteres, 
-                                unosResultadosTraducciones,
-                                unosSourcesCadenasPorSimbolo,
-                                unExportModuleNames,
-                                unExportStringSources,
-                                unExportTranslationsStatus,
-                                unosModulosCadenasPorSimbolo,
-                                theEncodingErrorHandleMode,
-                                anEncodedFileErrorsMode,
-                                aSystemToUnicodeErrorsMode,
-                                aUnicodeToUTF8ErrorsMode,
-                                aTranslationService,
-                                unExecutionRecord,
+                                theIdioma                      =unIdioma, 
+                                theNombreModulo                =theDefaultModuleName, 
+                                theCodificacionCaracteres      =unaCodificacionCaracteres, 
+                                theResultadosTraducciones      =unosResultadosTraducciones, 
+                                theSourcesCadenasPorSimbolo    =unosSourcesCadenasPorSimbolo,
+                                theExportModuleNames           =unExportModuleNames,
+                                theExportStringSources         =unExportStringSources,
+                                theExportTranslationsStatus    =unExportTranslationsStatus,
+                                theExportContributions         =unExportContributions,
+                                theModulosCadenasPorSimbolo    =unosModulosCadenasPorSimbolo,
+                                theEncodingErrorHandleMode     =theEncodingErrorHandleMode,
+                                theEncodedFileErrorsMode       =anEncodedFileErrorsMode,
+                                theSystemToUnicodeErrorsMode   =aSystemToUnicodeErrorsMode,
+                                theUnicodeToUTF8ErrorsMode     =aUnicodeToUTF8ErrorsMode,
+                                theTranslationService          =aTranslationService,
+                                theParentExecutionRecord       =unExecutionRecord,                            
                             )
                             unInformeExportarModulo[ 'export_result'] = unResultFicheroExportacion
                             if ( not unResultFicheroExportacion) or  ( not unResultFicheroExportacion.get( 'success', False)):
@@ -3701,7 +3617,7 @@ def fExportLoop_lambda( theInitialElement, theProcessControlManager, theAddition
                         theBuffer               = unManifestBuffer, 
                         theCodigoIdioma         = unCodigoIdioma, 
                         theWriteEntry           = unCodigoIdioma in unosCodigosIdiomasAExportar, 
-                        theWriteReferenceEntry  = unCodigoIdioma in unosCodigosIdiomasReferencia, 
+                        theWriteReferenceEntry  = unCodigoIdioma in unosCodigosIdiomasReferenciaAExportar, 
                         theWriteJavaProperties  = unExportAsJavaProperties, 
                         theFileNameProperties   = unFileNameProperties, 
                         theWriteGNUgettextPO    = unExportAsGNUgettextPO, 
@@ -3713,7 +3629,7 @@ def fExportLoop_lambda( theInitialElement, theProcessControlManager, theAddition
                         theBuffer               = unLocalesCSVBuffer, 
                         theCodigoIdioma         = unCodigoIdioma, 
                         theWriteEntry           = unCodigoIdioma in unosCodigosIdiomasAExportar, 
-                        theWriteReferenceEntry  = unCodigoIdioma in unosCodigosIdiomasReferencia, 
+                        theWriteReferenceEntry  = unCodigoIdioma in unosCodigosIdiomasReferenciaAExportar, 
                         theWriteJavaProperties  = unExportAsJavaProperties, 
                         theFileNameProperties   = unFileNameProperties, 
                         theWriteGNUgettextPO    = unExportAsGNUgettextPO, 
@@ -3722,21 +3638,22 @@ def fExportLoop_lambda( theInitialElement, theProcessControlManager, theAddition
     
                 if unFileNameProperties:
                     unResultFicheroExportacion  = theProcessControlManager.vCatalogoRaiz.fContenidoFicheroExportacionIdiomaTodosModulos_JavaProperties( 
-                        unIdioma, 
-                        theDefaultModuleName,
-                        unaCodificacionCaracteres, 
-                        unosResultadosTraducciones,
-                        unosSourcesCadenasPorSimbolo,
-                        unExportModuleNames,
-                        unExportStringSources,
-                        unExportTranslationsStatus,
-                        unosModulosCadenasPorSimbolo,
-                        theEncodingErrorHandleMode,
-                        anEncodedFileErrorsMode,
-                        aSystemToUnicodeErrorsMode,
-                        aUnicodeToUTF8ErrorsMode,
-                        aTranslationService,
-                        unExecutionRecord,
+                        theIdioma                      =unIdioma, 
+                        theNombreModulo                =theDefaultModuleName, 
+                        theCodificacionCaracteres      =unaCodificacionCaracteres, 
+                        theResultadosTraducciones      =unosResultadosTraducciones, 
+                        theSourcesCadenasPorSimbolo    =unosSourcesCadenasPorSimbolo,
+                        theExportModuleNames           =unExportModuleNames,
+                        theExportStringSources         =unExportStringSources,
+                        theExportTranslationsStatus    =unExportTranslationsStatus,
+                        theExportContributions         =unExportContributions,
+                        theModulosCadenasPorSimbolo    =unosModulosCadenasPorSimbolo,
+                        theEncodingErrorHandleMode     =theEncodingErrorHandleMode,
+                        theEncodedFileErrorsMode       =anEncodedFileErrorsMode,
+                        theSystemToUnicodeErrorsMode   =aSystemToUnicodeErrorsMode,
+                        theUnicodeToUTF8ErrorsMode     =aUnicodeToUTF8ErrorsMode,
+                        theTranslationService          =aTranslationService,
+                        theParentExecutionRecord       =unExecutionRecord,                            
                     )
                     unInformeExportarIdioma[ 'export_result'] = unResultFicheroExportacion
                     if ( not unResultFicheroExportacion) or  ( not unResultFicheroExportacion.get( 'success', False)):
@@ -3755,22 +3672,23 @@ def fExportLoop_lambda( theInitialElement, theProcessControlManager, theAddition
                         
                 if unFileNamePO:
                     unResultFicheroExportacion = theProcessControlManager.vCatalogoRaiz.fContenidoFicheroExportacionIdiomaTodosModulos_GNUgettextPO(   
-                        unIdioma, 
-                        theDefaultDomain,
-                        unaCodificacionCaracteres, 
-                        unosResultadosTraducciones,
-                        unosResultadosTraduccionesReferencia,
-                        unosSourcesCadenasPorSimbolo,
-                        unExportModuleNames,
-                        unExportStringSources,
-                        unExportTranslationsStatus,
-                        unosModulosCadenasPorSimbolo,
-                        theEncodingErrorHandleMode,
-                        anEncodedFileErrorsMode,
-                        aSystemToUnicodeErrorsMode,
-                        aUnicodeToUTF8ErrorsMode,
-                        aTranslationService,
-                        unExecutionRecord,
+                        theIdioma                            =unIdioma, 
+                        theDomainName                        =theDefaultDomain,
+                        theCodificacionCaracteres            =unaCodificacionCaracteres, 
+                        theResultadosTraducciones            =unosResultadosTraducciones,
+                        theResultadosTraduccionesReferencia  =unosResultadosTraduccionesReferencia, 
+                        theSourcesCadenasPorSimbolo          =unosSourcesCadenasPorSimbolo,
+                        theExportModuleNames                 =unExportModuleNames,
+                        theExportStringSources               =unExportStringSources,
+                        theExportTranslationsStatus          =unExportTranslationsStatus,
+                        theExportContributions               =unExportContributions,
+                        theModulosCadenasPorSimbolo          =unosModulosCadenasPorSimbolo,
+                        theEncodingErrorHandleMode           =theEncodingErrorHandleMode,
+                        theEncodedFileErrorsMode             =anEncodedFileErrorsMode,
+                        theSystemToUnicodeErrorsMode         =aSystemToUnicodeErrorsMode,
+                        theUnicodeToUTF8ErrorsMode           =aUnicodeToUTF8ErrorsMode,
+                        theTranslationService                =aTranslationService,
+                        theParentExecutionRecord             =unExecutionRecord,                                
                     )
                     unInformeExportarIdioma[ 'export_result'] = unResultFicheroExportacion
                     if ( not unResultFicheroExportacion) or  ( not unResultFicheroExportacion.get( 'success', False)):

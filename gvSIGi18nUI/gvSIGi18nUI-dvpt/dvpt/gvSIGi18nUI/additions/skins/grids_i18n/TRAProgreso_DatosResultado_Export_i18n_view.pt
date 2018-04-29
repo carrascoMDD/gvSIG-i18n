@@ -188,6 +188,17 @@
      
                 <tr class="#" tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
                     <td align="left">
+						<strong  tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_exportar_Parameter_ExportContributions_label',   'Export contribution dates and user names-' )" />
+                    </td>
+                    <td align="left" tal:define="pValue python: pExportReport.get( 'export_contributions', False)" >
+                        <span tal:condition="pValue"      tal:content="pLabelYes" />
+                        <span tal:condition="not: pValue" tal:content="pLabelNo" />
+                    </td>
+                    <tal:block tal:define="global pRowIndex python: pRowIndex + 1" />
+                </tr>
+     
+                <tr class="#" tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
+                    <td align="left">
 						<strong  tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_exportar_Parameter_ExportTranslationsStatus_label',   'Export Translations Status-' )" />
                     </td>
                     <td align="left" tal:define="pValue python: pExportReport.get( 'export_translation_status', False)" >

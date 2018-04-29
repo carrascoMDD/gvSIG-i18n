@@ -51,7 +51,8 @@
             ( 'theIncludeLocalesCSV',       here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theIncludeLocalesCSV',        None),),
             ( 'theSeparatedModules',        here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theSeparatedModules',         None),),
             ( 'theExportModuleNames',       here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theExportModuleNames',        None),),
-            ( 'theExportStringSources',     here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theExportStringSources',        None),),
+            ( 'theExportContributions',     here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theExportContributions',      None),),
+            ( 'theExportStringSources',     here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theExportStringSources',      None),),
             ( 'theExportTranslationsStatus',here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theExportTranslationsStatus', None),),
             ( 'theTipoArchivo',             here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theTipoArchivo',              None),),
             ( 'theDefaultLanguageCode',     here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theDefaultLanguageCode',      None),),
@@ -142,14 +143,17 @@
             pExportModuleNames                  python: pExport_ReviewParameters_Parameters_output.get( 'theExportModuleNames',                    '');
             pExportModuleNamesVocabulary        python: pExport_ReviewParameters_Parameters_output.get( 'theExportModuleNames_vocabulary',         []);
             pExportModuleNamesVocabularyMsgIds  python: pExport_ReviewParameters_Parameters_output.get( 'theExportModuleNames_vocabulary_msgids',  []);
-            pExportStringSources                  python: pExport_ReviewParameters_Parameters_output.get( 'theExportStringSources',                    '');
-            pExportStringSourcesVocabulary        python: pExport_ReviewParameters_Parameters_output.get( 'theExportStringSources_vocabulary',         []);
-            pExportStringSourcesVocabularyMsgIds  python: pExport_ReviewParameters_Parameters_output.get( 'theExportStringSources_vocabulary_msgids',  []);
-            pExportTranslationsStatus                  python: pExport_ReviewParameters_Parameters_output.get( 'theExportTranslationsStatus',                    '');
-            pExportTranslationsStatusVocabulary        python: pExport_ReviewParameters_Parameters_output.get( 'theExportTranslationsStatus_vocabulary',         []);
+            pExportContributions                python: pExport_ReviewParameters_Parameters_output.get( 'theExportContributions',                    '');
+            pExportContributionsVocabulary      python: pExport_ReviewParameters_Parameters_output.get( 'theExportContributions_vocabulary',         []);
+            pExportContributionsVocabularyMsgIds python: pExport_ReviewParameters_Parameters_output.get( 'theExportContributions_vocabulary_msgids',  []);
+            pExportStringSources                python: pExport_ReviewParameters_Parameters_output.get( 'theExportStringSources',                    '');
+            pExportStringSourcesVocabulary      python: pExport_ReviewParameters_Parameters_output.get( 'theExportStringSources_vocabulary',         []);
+            pExportStringSourcesVocabularyMsgIds python: pExport_ReviewParameters_Parameters_output.get( 'theExportStringSources_vocabulary_msgids',  []);
+            pExportTranslationsStatus           python: pExport_ReviewParameters_Parameters_output.get( 'theExportTranslationsStatus',                    '');
+            pExportTranslationsStatusVocabulary python: pExport_ReviewParameters_Parameters_output.get( 'theExportTranslationsStatus_vocabulary',         []);
             pExportTranslationsStatusVocabularyMsgIds  python: pExport_ReviewParameters_Parameters_output.get( 'theExportTranslationsStatus_vocabulary_msgids',  []);
-            pExportTranslationsStatus                  python: pExport_ReviewParameters_Parameters_output.get( 'theExportTranslationsStatus',                    '');
-            pExportTranslationsStatusVocabulary        python: pExport_ReviewParameters_Parameters_output.get( 'theExportTranslationsStatus_vocabulary',         []);
+            pExportTranslationsStatus           python: pExport_ReviewParameters_Parameters_output.get( 'theExportTranslationsStatus',                    '');
+            pExportTranslationsStatusVocabulary python: pExport_ReviewParameters_Parameters_output.get( 'theExportTranslationsStatus_vocabulary',         []);
             pExportTranslationsStatusVocabularyMsgIds  python: pExport_ReviewParameters_Parameters_output.get( 'theExportTranslationsStatus_vocabulary_msgids',  []);
             pTipoArchivo                        python: pExport_ReviewParameters_Parameters_output.get( 'theTipoArchivo',                         '');
             pTipoArchivoVocabulary              python: pExport_ReviewParameters_Parameters_output.get( 'theTipoArchivo_vocabulary',              []);
@@ -377,8 +381,6 @@
                         
                         
                         
-                        
-                        
                         <tr class="#" tal:attributes="class python: pClasesFilas[unIndexClassFila % 2]" tal:define="global unIndexClassFila python: unIndexClassFila + 1">
                             <td align="left" valign="baseline">
                                 <strong  tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_exportar_Parameter_ExportStringSources_label',   'Export String Sources-' )" />
@@ -440,6 +442,40 @@
                             </td>
                         </tr>                     
 
+                        
+
+                        
+                        
+                        
+                        <tr class="#" tal:attributes="class python: pClasesFilas[unIndexClassFila % 2]" tal:define="global unIndexClassFila python: unIndexClassFila + 1">
+                            <td align="left" valign="baseline">
+                                <strong  tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_exportar_Parameter_ExportContributions_label',   'Export contributing dates and user names-' )" />
+                            </td>
+                            <td align="left" valign="baseline">
+                                <tal:block tal:repeat="aExportContributionsOptionIndex python: range( len( pExportContributionsVocabulary))" >
+                                    <tal:block tal:define="
+                                        aExportContributionsOption      python: pExportContributionsVocabulary[ aExportContributionsOptionIndex];
+                                        aExportContributionsOptionMsgId python: pExportContributionsVocabularyMsgIds[ aExportContributionsOptionIndex]">
+                                        <tal:block tal:condition="python: pExportContributions == aExportContributionsOption" >
+                                            <input type="hidden" name="theExportContributions" id="#"  value="#"  
+                                                tal:attributes="
+                                                    id python: 'theExportContributions_%s' % aExportContributionsOption;
+                                                    value aExportContributionsOption" />
+                                            <strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', aExportContributionsOptionMsgId,   aExportContributionsOption + '-' )" />
+                                        </tal:block>
+                                    </tal:block>
+                                </tal:block>
+                            
+                            </td>
+                        </tr>                     
+                        <tr class="#" tal:attributes="class python: pClasesFilas[unIndexClassFila % 2]" >
+                            <td colspan="2" align="left" valign="baseline">
+                                <p class="formHelp"  tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_exportar_Parameter_ExportContributions_help',   'Export for each translation the dates and user names that created, translated, reviewed or marked it as definitive.-' )" />
+                            </td>
+                        </tr>                     
+                        
+                        
+                        
                         
                         
                         

@@ -441,7 +441,27 @@ class TRAImportacion_Operaciones( \
         unValue = unaConfiguracion.getImportarStatusDesdeComentariosPorDefecto()        
         return unValue
     
+
+ 
     
+    security.declarePrivate('fInitial_ImportarContribucionesDesdeComentarios')
+    def fInitial_ImportarContribucionesDesdeComentarios(self, ):   
+
+        unCatalog = None
+        try:
+            unCatalog = self.getCatalogo()
+        except:
+            None
+        if unCatalog == None:
+            return False
+        
+        unaConfiguracion = unCatalog.fObtenerConfiguracion( self.fAspectoConfiguracion())
+        if unaConfiguracion == None:
+            return False
+        
+        unValue = unaConfiguracion.getImportarContribucionesDesdeComentariosPorDefecto()        
+        return unValue
+        
 
      
     
@@ -749,6 +769,7 @@ class TRAImportacion_Operaciones( \
             'importarConNombreModuloConfigurado': self.getImportarConNombreModuloConfigurado(),
             'importarNombreModuloDesdeDominioONombreFichero': self.getImportarNombreModuloDesdeDominioONombreFichero(),
             'importarNombresModulosDesdeComentarios': self.getImportarNombresModulosDesdeComentarios(),
+            'importarContribucionesDesdeComentarios': self.getImportarContribucionesDesdeComentarios(),
             'importarFuentesDesdeComentarios':    self.getImportarFuentesDesdeComentarios(),
             'importarStatusDesdeComentarios':     self.getImportarStatusDesdeComentarios(),
             'numeroMaximoLineasAExplorar':        self.getNumeroMaximoLineasAExplorar(),
@@ -1123,7 +1144,12 @@ class TRAImportacion_Operaciones( \
                         if not unModulosString:
                             unModulosString = cNombreModuloNoEspecificadoInputValue
                         
-                        unosFileNames = [ unUploadedEntry[ 'file_name'] for unUploadedEntry in unasUploadedEntries]
+                        unosFileNamesPossiblyDuplicated = [ unUploadedEntry[ 'file_name'] for unUploadedEntry in unasUploadedEntries]
+
+                        unosFileNames = [ ]
+                        for aFileName in unosFileNamesPossiblyDuplicated:
+                            if not ( aFileName in unosFileNames):
+                                unosFileNames.append( aFileName)
                             
                         unosFileNamesString = ' '.join( unosFileNames)
                          
@@ -1189,6 +1215,7 @@ class TRAImportacion_Operaciones( \
                         unNuevoContenidoIntercambio.setImportarConNombreModuloConfigurado( theAdditionalParams.get( 'theImportWithConfiguredModuleName', False) == True) 
                         unNuevoContenidoIntercambio.setImportarNombreModuloDesdeDominioONombreFichero( theAdditionalParams.get( 'theImportModuleNameFromDomainOrFilename', False) == True) 
                         unNuevoContenidoIntercambio.setImportarNombresModulosDesdeComentarios( theAdditionalParams.get( 'theImportModuleNamesFromComment',  False) == True) 
+                        unNuevoContenidoIntercambio.setImportarContribucionesDesdeComentarios( theAdditionalParams.get( 'theImportContributionsFromComment',  False) == True) 
                         unNuevoContenidoIntercambio.setImportarFuentesDesdeComentarios( theAdditionalParams.get( 'theImportSourcesFromComment',  False) == True) 
                         unNuevoContenidoIntercambio.setImportarStatusDesdeComentarios( theAdditionalParams.get( 'theImportStatusFromComment',  False) == True) 
                         aNumeroMaximoLineasAExplorarString = theAdditionalParams.get( 'theMaxLinesToScan', '-1')
@@ -1505,6 +1532,16 @@ class TRAImportacion_Operaciones( \
                                                 unScannedTranslationComment     = unaScannedTranslation.get( cScannedKeys_Translation_Comment,     None) or ''
                                                 unScannedTranslationErrors      = unaScannedTranslation.get( cScannedKeys_Translation_Errors,      None) or []
                                                 
+                                                unScannedTranslationCreationDate     = unaScannedTranslation.get( cScannedKeys_Translation_CreationDate,     None) or ''
+                                                unScannedTranslationCreator          = unaScannedTranslation.get( cScannedKeys_Translation_Creator,          None) or ''
+                                                unScannedTranslationTranslationDate  = unaScannedTranslation.get( cScannedKeys_Translation_TranslationDate,  None) or ''
+                                                unScannedTranslationTranslator       = unaScannedTranslation.get( cScannedKeys_Translation_Translator,       None) or ''
+                                                unScannedTranslationReviewDate       = unaScannedTranslation.get( cScannedKeys_Translation_ReviewDate,       None) or ''
+                                                unScannedTranslationReviewer         = unaScannedTranslation.get( cScannedKeys_Translation_Reviewer,         None) or ''
+                                                unScannedTranslationDefinitiveDate   = unaScannedTranslation.get( cScannedKeys_Translation_DefinitiveDate,   None) or ''
+                                                unScannedTranslationCoordinator      = unaScannedTranslation.get( cScannedKeys_Translation_Coordinator,      None) or ''
+                                                
+                                                
                                                 unaCombinedTranslation = someCombinedStringTranslations.get( unScannedLenguage, None)
                                                 
                                                 if unaCombinedTranslation == None:
@@ -1514,7 +1551,23 @@ class TRAImportacion_Operaciones( \
                                                     unaCombinedTranslation[ cScannedKeys_Translation_Flags]       = unScannedTranslationFlags
                                                     unaCombinedTranslation[ cScannedKeys_Translation_Comment]     = unScannedTranslationComment
                                                     unaCombinedTranslation[ cScannedKeys_Translation_Errors]      = unScannedTranslationErrors
-                                                
+
+                                                    if unScannedTranslationCreationDate and unScannedTranslationCreator:
+                                                        unaCombinedTranslation[ cScannedKeys_Translation_CreationDate   ]      = unScannedTranslationCreationDate
+                                                        unaCombinedTranslation[ cScannedKeys_Translation_Creator        ]      = unScannedTranslationCreator
+                                                        
+                                                    if unScannedTranslationTranslationDate and unScannedTranslationTranslator:
+                                                        unaCombinedTranslation[ cScannedKeys_Translation_TranslationDate]      = unScannedTranslationTranslationDate
+                                                        unaCombinedTranslation[ cScannedKeys_Translation_Translator     ]      = unScannedTranslationTranslator
+
+                                                    if unScannedTranslationReviewDate and unScannedTranslationReviewer:
+                                                        unaCombinedTranslation[ cScannedKeys_Translation_ReviewDate     ]      = unScannedTranslationReviewDate
+                                                        unaCombinedTranslation[ cScannedKeys_Translation_Reviewer       ]      = unScannedTranslationReviewer
+
+                                                    if unScannedTranslationDefinitiveDate and unScannedTranslationCoordinator:
+                                                        unaCombinedTranslation[ cScannedKeys_Translation_DefinitiveDate ]      = unScannedTranslationDefinitiveDate
+                                                        unaCombinedTranslation[ cScannedKeys_Translation_Coordinator    ]      = unScannedTranslationCoordinator
+                                                   
                                                     someCombinedStringTranslations[ unScannedLenguage] = unaCombinedTranslation
                                                     
                                                 else:
@@ -1573,10 +1626,34 @@ class TRAImportacion_Operaciones( \
                                                                 
                                                                     someCombinedStringTranslations[ unScannedLenguage] = unaScannedTranslation.copy()
                                                             
-                                                            
+   
+                                                    unaCombinedTranslationCreationDate     = unaCombinedTranslation.get( cScannedKeys_Translation_CreationDate,     None) or ''
+                                                    unaCombinedTranslationCreator          = unaCombinedTranslation.get( cScannedKeys_Translation_Creator,          None) or ''
+                                                    unaCombinedTranslationTranslationDate  = unaCombinedTranslation.get( cScannedKeys_Translation_TranslationDate,  None) or ''
+                                                    unaCombinedTranslationTranslator       = unaCombinedTranslation.get( cScannedKeys_Translation_Translator,       None) or ''
+                                                    unaCombinedTranslationReviewDate       = unaCombinedTranslation.get( cScannedKeys_Translation_ReviewDate,       None) or ''
+                                                    unaCombinedTranslationReviewer         = unaCombinedTranslation.get( cScannedKeys_Translation_Reviewer,         None) or ''
+                                                    unaCombinedTranslationDefinitiveDate   = unaCombinedTranslation.get( cScannedKeys_Translation_DefinitiveDate,   None) or ''
+                                                    unaCombinedTranslationCoordinator      = unaCombinedTranslation.get( cScannedKeys_Translation_Coordinator,      None) or ''
             
+                                                    if ( unScannedTranslationCreationDate and unScannedTranslationCreator) and ( ( not unaCombinedTranslationCreationDate) or ( not unaCombinedTranslationCreator)):
+                                                        unaCombinedTranslation[ cScannedKeys_Translation_CreationDate   ]      = unScannedTranslationCreationDate
+                                                        unaCombinedTranslation[ cScannedKeys_Translation_Creator        ]      = unScannedTranslationCreator
+                                                        
+                                                    if ( unScannedTranslationTranslationDate and unScannedTranslationTranslator) and ( ( not unaCombinedTranslationTranslationDate) or ( not unaCombinedTranslationTranslator)):
+                                                        unaCombinedTranslation[ cScannedKeys_Translation_TranslationDate]      = unScannedTranslationTranslationDate
+                                                        unaCombinedTranslation[ cScannedKeys_Translation_Translator     ]      = unScannedTranslationTranslator
+
+                                                    if ( unScannedTranslationReviewDate and unScannedTranslationReviewer) and ( ( not unaCombinedTranslationReviewDate) or ( not unaCombinedTranslationCreator)):
+                                                        unaCombinedTranslation[ cScannedKeys_Translation_ReviewDate     ]      = unScannedTranslationReviewDate
+                                                        unaCombinedTranslation[ cScannedKeys_Translation_Reviewer       ]      = unScannedTranslationReviewer
+
+                                                    if ( unScannedTranslationDefinitiveDate and unScannedTranslationCoordinator) and ( ( not unaCombinedTranslationDefinitiveDate) or ( not unaCombinedTranslationCoordinator)):
+                                                        unaCombinedTranslation[ cScannedKeys_Translation_DefinitiveDate ]      = unScannedTranslationDefinitiveDate
+                                                        unaCombinedTranslation[ cScannedKeys_Translation_Coordinator    ]      = unScannedTranslationCoordinator
                                     
-                              
+                       
+                                                        
             unCombinedScannedData[ 'languages'] = sorted( unosCombinedLanguages)
             unCombinedScannedData[ 'modules']   = sorted( unosCombinedModules)
             

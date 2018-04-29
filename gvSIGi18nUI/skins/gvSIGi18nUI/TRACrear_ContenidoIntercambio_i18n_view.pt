@@ -47,6 +47,7 @@
 				pImportarConNombreModuloConfigurado             python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theImportWithConfiguredModuleName',        pInitialParameters.get( 'importarConNombreModuloConfigurado', None)             and 'Yes') == 'Yes';
 				pImportarNombreModuloDesdeDominioONombreFichero python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theImportModuleNameFromDomainOrFilename',  pInitialParameters.get( 'importarNombreModuloDesdeDominioONombreFichero', None) and 'Yes') == 'Yes';
 				pImportarNombresModulosDesdeComentarios         python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theImportModuleNamesFromComment',          pInitialParameters.get( 'importarNombresModulosDesdeComentarios', None)         and 'Yes') == 'Yes';
+				pImportarContribucionesDesdeComentarios         python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theImportContributionsFromComment',        pInitialParameters.get( 'importarContribucionesDesdeComentarios', None)         and 'Yes') == 'Yes';
 				pImportarFuentesDesdeComentarios                python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theImportSourcesFromComment',              pInitialParameters.get( 'importarFuentesDesdeComentarios', None)                and 'Yes') == 'Yes';
 				pImportarStatusDesdeComentarios                 python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theImportStatusFromComment',               pInitialParameters.get( 'importarStatusDesdeComentarios', None)                 and 'Yes') == 'Yes';
 				pNumeroMaximoLineasAExplorar                    python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theMaxLinesToScan',                        pInitialParameters.get( 'numeroMaximoLineasAExplorar', None))             or '';
@@ -266,7 +267,40 @@
 								</td>
 							</tr>
 							
+							
+
 							<tr class="even">
+								<td>
+									<strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAContenidoIntercambio_attr_importarContribucionesDesdeComentarios_label">Import contributing dates and user names from comments-</strong>
+									<br/>
+									<span  class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAContenidoIntercambio_attr_importarContribucionesDesdeComentarios_help">Import from each translation comments the dates and user names that created, translated, reviewed or marked it as definitive..-</span>
+								</td>
+								<td>
+									<tal:block tal:condition="pImportarContribucionesDesdeComentarios">
+										<strong tal:content="pLabelYes" />
+										<input type="radio" checked="checked"
+											class="noborder" name="theImportContributionsFromComment"   id="theImportContributionsFromComment_Yes"  value="Yes" /> 					
+										&emsp;
+										&emsp;
+										<strong tal:content="pLabelNo" />
+										<input type="radio" 
+											class="noborder" name="theImportContributionsFromComment"   id="theImportContributionsFromComment_No"   value="No" /> 					
+									</tal:block>
+									<tal:block tal:condition="not: pImportarContribucionesDesdeComentarios">
+										<strong tal:content="pLabelYes" />
+										<input type="radio" 
+											class="noborder" name="theImportContributionsFromComment"   id="theImportContributionsFromComment_Yes"  value="Yes" /> 					
+										&emsp;
+										&emsp;
+										<strong tal:content="pLabelNo" />
+										<input type="radio" checked="checked"
+											class="noborder" name="theImportContributionsFromComment"   id="theImportContributionsFromComment_No"   value="No" /> 					
+									</tal:block>
+								</td>
+							</tr>
+							
+							
+							<tr class="odd">
 								<td>
 									<strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAContenidoIntercambio_attr_numeroMaximoLineasAExplorar_label">Maximum Number of Lines to Scan-</strong>
 									<br/>
@@ -441,6 +475,7 @@
 												'theImportModuleNamesFromComment':          pImportarNombresModulosDesdeComentarios,
 												'theImportSourcesFromComment':              pImportarFuentesDesdeComentarios,
 												'theImportStatusFromComment':               pImportarStatusDesdeComentarios,
+												'theImportContributionsFromComment':        pImportarContribucionesDesdeComentarios,
 												'theMaxLinesToScan':                        pNumeroMaximoLineasAExplorar,
 											},
 											thePermissionsCache              =None,

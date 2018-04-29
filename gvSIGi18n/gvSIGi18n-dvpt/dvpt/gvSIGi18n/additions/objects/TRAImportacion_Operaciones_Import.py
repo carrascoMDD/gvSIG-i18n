@@ -1421,7 +1421,7 @@ class TRAImportacion_Operaciones_Import:
                             
                                 theInformeImportarContenidos[ 'string_sources_changes'] += 1 
                                 
-                                theProcessControlManager.pProcessStep( unaCadena, {}, { unaCadena.meta_type: 1, }, { unaCadena.meta_type: 1, })
+                                theProcessControlManager.pProcessStep( unaCadena, { unaCadena.meta_type: 1, }, { unaCadena.meta_type: 1, })
                                
                     unaIdCadena = unaCadena.getId()
                     unosNombresModulosCadena = unaCadena.getNombresModulos()
@@ -1464,6 +1464,17 @@ class TRAImportacion_Operaciones_Import:
                                 unComentarioTraduccionScanned   = unaTraduccionScanned.get( cScannedKeys_Translation_Comment, None)
 
                                 
+                                unCreationDateScanned     = unaTraduccionScanned.get( cScannedKeys_Translation_CreationDate,     None) or ''
+                                unCreatorScanned          = unaTraduccionScanned.get( cScannedKeys_Translation_Creator,          None) or ''
+                                unTranslationDateScanned  = unaTraduccionScanned.get( cScannedKeys_Translation_TranslationDate,  None) or ''
+                                unTranslatorScanned       = unaTraduccionScanned.get( cScannedKeys_Translation_Translator,       None) or ''
+                                unReviewDateScanned       = unaTraduccionScanned.get( cScannedKeys_Translation_ReviewDate,       None) or ''
+                                unReviewerScanned         = unaTraduccionScanned.get( cScannedKeys_Translation_Reviewer,         None) or ''
+                                unDefinitiveDateScanned   = unaTraduccionScanned.get( cScannedKeys_Translation_DefinitiveDate,   None) or ''
+                                unCoordinatorScanned      = unaTraduccionScanned.get( cScannedKeys_Translation_Coordinator,      None) or ''
+                                
+                                
+                                
                                 if unaTraduccionEncoded:
                                     
                                     unaTraduccionExistente  = unasTraduccionesExistentes.get( unCodigoIdioma, None)
@@ -1484,6 +1495,14 @@ class TRAImportacion_Operaciones_Import:
                                             theNombresModulos                   =unosNombresModulosCadena,
                                             theEstadoTraduccion                 =unEstadoTraduccionScanned,
                                             theComment                          =unComentarioTraduccionScanned,
+                                            theCreationDate                     =unCreationDateScanned,
+                                            theCreator                          =unCreatorScanned,
+                                            theTranslationDate                  =unTranslationDateScanned,
+                                            theTranslator                       =unTranslatorScanned,
+                                            theReviewDate                       =unReviewDateScanned,
+                                            theReviewer                         =unReviewerScanned,
+                                            theDefinitiveDate                   =unDefinitiveDateScanned,
+                                            theCoordinator                      =unCoordinatorScanned,
                                             theMemberId                         =theMemberId, 
                                             thePloneUtilsTool                   =thePloneUtilsTool, 
                                             theCatalogBusquedaTraducciones      =unosCatalogsBusquedaTraduccionesPorIdioma[ unCodigoIdioma], 
@@ -1540,31 +1559,63 @@ class TRAImportacion_Operaciones_Import:
     
                                             unaTraduccionExistente.setCadenaTraducida(            unaTraduccionEncoded)
                                             
+                                            
                                             unUsuarioModificador = theMemberId
                                             unaFechaModificacion = unAhoraStoreString
+                                            unUsuarioTraductor   = theMemberId
+                                            unaFechaTraduccion   = unAhoraStoreString
                                             unUsuarioRevisor     = ''
                                             unaFechaRevision     = ''
                                             unUsuarioCoordinador = ''
                                             unaFechaDefinitivo   = ''
+                                            
+                                            if unTranslationDateScanned and unTranslatorScanned:
+                                                unUsuarioTraductor   = unTranslatorScanned
+                                                unaFechaTraduccion   = unTranslationDateScanned
+                                                unUsuarioModificador = unTranslatorScanned
+                                                unaFechaModificacion = unTranslationDateScanned
+                                            else:
+                                                unUsuarioTraductor   = theMemberId
+                                                unaFechaTraduccion   = unAhoraStoreString
+                                                unUsuarioModificador = theMemberId
+                                                unaFechaModificacion = unAhoraStoreString
+                                            
                                         
                                             unNuevoEstadoTraduccion = cEstadoTraduccionTraducida
                                             if unEstadoTraduccionScanned in [ cEstadoTraduccionRevisada, cEstadoTraduccionDefinitiva, ]:
                                                                         
                                                 unNuevoEstadoTraduccion = unEstadoTraduccionScanned
 
-                                                unUsuarioRevisor = theMemberId
-                                                unaFechaRevision = unAhoraStoreString
+                                                if unReviewDateScanned and unReviewerScanned:
+                                                    unUsuarioRevisor     = unReviewerScanned
+                                                    unaFechaRevision     = unReviewDateScanned
+                                                    unUsuarioModificador = unReviewerScanned
+                                                    unaFechaModificacion = unReviewDateScanned
+                                                else:
+                                                    unUsuarioRevisor     = theMemberId
+                                                    unaFechaRevision     = unDateStoreString
+                                                    unUsuarioModificador = theMemberId
+                                                    unaFechaModificacion = unDateStoreString
+                                                
                                     
                                                 if unEstadoTraduccionScanned == cEstadoTraduccionDefinitiva:
-                                                    unUsuarioCoordinador = theMemberId
-                                                    unaFechaDefinitivo = unAhoraStoreString
+                                                    if unDefinitiveDateScanned and unCoordinatorScanned:
+                                                        unUsuarioCoordinador = unCoordinatorScanned
+                                                        unaFechaDefinitivo   = unDefinitiveDateScanned
+                                                        unUsuarioModificador = unCoordinatorScanned
+                                                        unaFechaModificacion = unDefinitiveDateScanned
+                                                    else:
+                                                        unUsuarioCoordinador = theMemberId
+                                                        unaFechaDefinitivo   = unDateStoreString
+                                                        unUsuarioModificador = theMemberId
+                                                        unaFechaModificacion = unDateStoreString
                                             
                                             
                                             unaTraduccionExistente.setEstadoTraduccion(           unNuevoEstadoTraduccion)    
                                             unaTraduccionExistente.setUsuarioModificador(         unUsuarioModificador)   
                                             unaTraduccionExistente.setFechaModificacionTextual(   unaFechaModificacion)                                                
-                                            unaTraduccionExistente.setUsuarioTraductor(           theMemberId)   
-                                            unaTraduccionExistente.setFechaTraduccionTextual(     unAhoraStoreString)    
+                                            unaTraduccionExistente.setUsuarioTraductor(           unUsuarioTraductor)   
+                                            unaTraduccionExistente.setFechaTraduccionTextual(     unaFechaTraduccion)    
                                             unaTraduccionExistente.setUsuarioRevisor(             unUsuarioRevisor)  
                                             unaTraduccionExistente.setFechaRevisionTextual(       unaFechaRevision)
                                             unaTraduccionExistente.setUsuarioCoordinador(         unUsuarioCoordinador)   
@@ -1572,11 +1623,11 @@ class TRAImportacion_Operaciones_Import:
                                             
                                             unaTraduccionExistente.pRegistrarHistoria( 
                                                 theAccion                   = cTranslationHistoryAction_Importar, 
-                                                theFechaAccionTextual       = unAhoraStoreString, 
-                                                theUsuarioActor             = theMemberId, 
+                                                theFechaAccionTextual       = unaFechaModificacion, 
+                                                theUsuarioActor             = unUsuarioModificador, 
                                                 theEstadoTraduccion         = cEstadoTraduccionTraducida, 
-                                                theFechaTraduccionTextual   = unAhoraStoreString, 
-                                                theUsuarioTraductor         = theMemberId, 
+                                                theFechaTraduccionTextual   = unaFechaTraduccion, 
+                                                theUsuarioTraductor         = unUsuarioTraductor, 
                                                 theCadenaTraducida          = unaTraduccionEncoded, 
                                                 theFechaRevisionTextual     = unaFechaRevision, 
                                                 theUsuarioRevisor           = unUsuarioRevisor, 
@@ -1622,16 +1673,22 @@ class TRAImportacion_Operaciones_Import:
                                             else:
                                                 
                                                 if unaTraduccionEncoded == unaCadenaTraducida:
-                                                        
+                                                    """Translation is the same. Do not change translation. Just upgrade status if scanned status is higher.
+                                                    
+                                                    """
                                                     if not ( unNuevoEstadoTraduccion == unEstadoTraduccion):
                                                         
                                                         if ( unIndexEstadoTraduccionScanned > unIndexEstadoTraduccion):
                                                             unUpgradeToEstado = unNuevoEstadoTraduccion
                                                         else:
                                                             if ( unIndexEstadoTraduccionScanned < unIndexEstadoTraduccion):
-                                                                unTranslationIgnored = True                                                                                                                                                
+                                                                unTranslationIgnored = True    
+                                                                
+                                                                
                                                 else:
+                                                    """Translation is not the same, but Ignore if current status higher than scanned status.
                                                     
+                                                    """
                                                     if unIndexEstadoTraduccionScanned >= unIndexEstadoTraduccion:
                                                         unUpdateCadenaTraducida = True
                                                         
@@ -1645,6 +1702,9 @@ class TRAImportacion_Operaciones_Import:
                                                     
                                             unaCadenaTraducidaACambiar = ''
                                             unEstadoTraduccionACambiar = ''
+                                            
+                                            unUsuarioModificadorACambiar=''
+                                            unaFechaModificacionACambiar=''                                            
                                             unTraductorACambiar        = ''
                                             unaFechaTraduccionACambiar = ''
                                             unRevisorACambiar          = ''
@@ -1665,46 +1725,80 @@ class TRAImportacion_Operaciones_Import:
                                                 unEstadoTraduccionACambiar = unUpgradeToEstado
 
                                                 
-                                                if ( unUpgradeToEstado == cEstadoTraduccionTraducida)  and ( unEstadoTraduccion in [ cEstadoTraduccionTraducida,]):
-                                                    
-                                                    unaTraduccionExistente.setUsuarioTraductor(         theMemberId)  
-                                                    unaTraduccionExistente.setFechaTraduccionTextual(   unAhoraStoreString)
-                                                    
-                                                    unTraductorACambiar        = theMemberId
-                                                    unaFechaTraduccionACambiar = unAhoraStoreString
+                                                
+                                                #if ( unUpgradeToEstado == cEstadoTraduccionTraducida)  and ( unEstadoTraduccion in [ cEstadoTraduccionTraducida,]):
+                                            if ( ( unUpgradeToEstado in [ cEstadoTraduccionTraducida]) and ( unEstadoTraduccion in [ cEstadoTraduccionTraducida])) or \
+                                               ( ( ( not unUpgradeToEstado) and unUpdateCadenaTraducida) and ( unEstadoTraduccion in [ cEstadoTraduccionTraducida]) ):
+                                                
+                                                if unTranslationDateScanned and unTranslatorScanned:
+                                                    unTraductorACambiar          = unTranslatorScanned
+                                                    unaFechaTraduccionACambiar   = unTranslationDateScanned
+                                                    unUsuarioModificadorACambiar = unTranslatorScanned
+                                                    unaFechaModificacionACambiar = unTranslationDateScanned
+                                                else:
+                                                    unTraductorACambiar          = theMemberId
+                                                    unaFechaTraduccionACambiar   = unAhoraStoreString
+                                                    unUsuarioModificadorACambiar = theMemberId
+                                                    unaFechaModificacionACambiar = unAhoraStoreString
+                                                
+                                                unaTraduccionExistente.setUsuarioTraductor(         unTraductorACambiar)  
+                                                unaTraduccionExistente.setFechaTraduccionTextual(   unaFechaTraduccionACambiar)
                                                                       
                                                 
+                                                    
                                                 
-                                                if ( unUpgradeToEstado in [ cEstadoTraduccionRevisada, cEstadoTraduccionDefinitiva]) and ( unEstadoTraduccion in [ cEstadoTraduccionTraducida, cEstadoTraduccionRevisada]):
+                                                #if ( unUpgradeToEstado in [ cEstadoTraduccionRevisada, cEstadoTraduccionDefinitiva]) and ( unEstadoTraduccion in [ cEstadoTraduccionTraducida, cEstadoTraduccionRevisada]):
+                                            if ( ( unUpgradeToEstado in [ cEstadoTraduccionRevisada, cEstadoTraduccionDefinitiva]) and ( unEstadoTraduccion in [ cEstadoTraduccionTraducida, cEstadoTraduccionRevisada])) or \
+                                               ( ( ( not unUpgradeToEstado) and unUpdateCadenaTraducida) and ( unEstadoTraduccion in [ cEstadoTraduccionRevisada]) ):
                                                     
-                                                    unaTraduccionExistente.setUsuarioRevisor(         theMemberId)  
-                                                    unaTraduccionExistente.setFechaRevisionTextual(   unAhoraStoreString)
-                                                    
-                                                    unRevisorACambiar        = theMemberId
-                                                    unaFechaRevisionACambiar = unAhoraStoreString
+                                                if unReviewDateScanned and unReviewerScanned:
+                                                    unRevisorACambiar            = unReviewerScanned
+                                                    unaFechaRevisionACambiar     = unReviewDateScanned
+                                                    unUsuarioModificadorACambiar = unReviewerScanned
+                                                    unaFechaModificacionACambiar = unReviewDateScanned
+                                                else:
+                                                    unRevisorACambiar            = theMemberId
+                                                    unaFechaRevisionACambiar     = unAhoraStoreString
+                                                    unUsuarioModificadorACambiar = theMemberId
+                                                    unaFechaModificacionACambiar = unAhoraStoreString
+
+                                                unaTraduccionExistente.setUsuarioRevisor(         unRevisorACambiar)  
+                                                unaTraduccionExistente.setFechaRevisionTextual(   unaFechaRevisionACambiar)
+
                                                 
                                                     
                                                     
-                                                if ( unUpgradeToEstado == cEstadoTraduccionDefinitiva) and ( unEstadoTraduccion in [ cEstadoTraduccionTraducida, cEstadoTraduccionRevisada]):
-                                                                                                        
-                                                    unaTraduccionExistente.setUsuarioCoordinador(     theMemberId)  
-                                                    unaTraduccionExistente.setFechaDefinitivoTextual( unAhoraStoreString)
+                                                #if ( unUpgradeToEstado == cEstadoTraduccionDefinitiva) and ( unEstadoTraduccion in [ cEstadoTraduccionTraducida, cEstadoTraduccionRevisada]):
+                                            if ( ( unUpgradeToEstado in [ cEstadoTraduccionDefinitiva]) and ( unEstadoTraduccion in [ cEstadoTraduccionTraducida, cEstadoTraduccionRevisada])) or \
+                                               ( ( ( not unUpgradeToEstado) and unUpdateCadenaTraducida) and ( unEstadoTraduccion in [ cEstadoTraduccionDefinitiva]) ):
                                                     
-                                                    unCoordinadorACambiar      = theMemberId
-                                                    unaFechaDefinitivoACambiar = unAhoraStoreString
+                                                if unDefinitiveDateScanned and unCoordinatorScanned:
+                                                    unCoordinadorACambiar        = unCoordinatorScanned
+                                                    unaFechaDefiniticoACambiar   = unDefinitiveDateScanned
+                                                    unUsuarioModificadorACambiar = unCoordinatorScanned
+                                                    unaFechaModificacionACambiar = unDefinitiveDateScanned
+                                                else:
+                                                    unCoordinadorACambiar        = theMemberId
+                                                    unaFechaDefiniticoACambiar   = unAhoraStoreString
+                                                    unUsuarioModificadorACambiar = theMemberId
+                                                    unaFechaModificacionACambiar = unAhoraStoreString
+                                                                                                    
+                                                unaTraduccionExistente.setUsuarioCoordinador(     unCoordinadorACambiar)  
+                                                unaTraduccionExistente.setFechaDefinitivoTextual( unaFechaDefiniticoACambiar)
+                                                    
                                                     
                                                     
                                                     
                                             if unUpdateCadenaTraducida or unUpgradeToEstado:
                                                 
-                                                unaTraduccionExistente.setUsuarioModificador(         theMemberId)   
-                                                unaTraduccionExistente.setFechaModificacionTextual(   unAhoraStoreString)    
+                                                unaTraduccionExistente.setUsuarioModificador(         unUsuarioModificadorACambiar)   
+                                                unaTraduccionExistente.setFechaModificacionTextual(   unaFechaModificacionACambiar)    
                                                 
                                                 
                                                 unaTraduccionExistente.pRegistrarHistoria( 
                                                     theAccion                   = cTranslationHistoryAction_Importar, 
-                                                    theFechaAccionTextual       = unAhoraStoreString, 
-                                                    theUsuarioActor             = theMemberId, 
+                                                    theFechaAccionTextual       = unaFechaModificacionACambiar, 
+                                                    theUsuarioActor             = unUsuarioModificadorACambiar, 
                                                     theEstadoTraduccion         = unEstadoTraduccionACambiar, 
                                                     theFechaTraduccionTextual   = unaFechaTraduccionACambiar, 
                                                     theUsuarioTraductor         = unTraductorACambiar, 
@@ -2659,6 +2753,14 @@ class TRAImportacion_Operaciones_Import:
         theNombresModulos, 
         theEstadoTraduccion,
         theComment,
+        theCreationDate,    
+        theCreator,         
+        theTranslationDate, 
+        theTranslator,      
+        theReviewDate,      
+        theReviewer,        
+        theDefinitiveDate,  
+        theCoordinator,             
         theMemberId, 
         thePloneUtilsTool, 
         theCatalogBusquedaTraducciones, 
@@ -2686,30 +2788,66 @@ class TRAImportacion_Operaciones_Import:
             else:
                 unEstadoTraduccion = cEstadoTraduccionPendiente
   
-        unUsuarioTraductor = ''
-        unaFechaTraduccion = ''
-        unUsuarioRevisor = ''
-        unaFechaRevision = ''
+                
+        unUsuarioCreador     = ''
+        unaFechaCreacion     = ''
+            
+        unUsuarioTraductor   = ''
+        unaFechaTraduccion   = ''
+            
+        unUsuarioRevisor     = ''
+        unaFechaRevision     = ''
+            
         unUsuarioCoordinador = ''
-        unaFechaDefinitivo = ''
+        unaFechaDefinitivo   = ''
+            
+            
+        if theCreationDate and theCreator:
+            unUsuarioCreador = theCreator
+            unaFechaCreacion = theCreationDate
+        else:
+            unUsuarioCreador = theMemberId
+            unaFechaCreacion = unDateStoreString
+            
                 
         if unEstadoTraduccion in [ cEstadoTraduccionTraducida, cEstadoTraduccionRevisada, cEstadoTraduccionDefinitiva, ]:
 
-            unUsuarioTraductor = theMemberId
-            unaFechaTraduccion = unDateStoreString
+            if theTranslationDate and theTranslator:
+                unUsuarioTraductor   = theTranslator
+                unaFechaTraduccion   = theTranslationDate
+                unUsuarioModificador = theTranslator
+                unaFechaModificacion = theTranslationDate
+            else:
+                unUsuarioTraductor   = theMemberId
+                unaFechaTraduccion   = unDateStoreString
+                unUsuarioModificador = theMemberId
+                unaFechaModificacion = unDateStoreString
 
             if unEstadoTraduccion in [ cEstadoTraduccionRevisada, cEstadoTraduccionDefinitiva, ]:
-                unUsuarioRevisor = theMemberId
-                unaFechaRevision = unDateStoreString
+                if theReviewDate and theReviewer:
+                    unUsuarioRevisor     = theReviewer
+                    unaFechaRevision     = theReviewDate
+                    unUsuarioModificador = theReviewer
+                    unaFechaModificacion = theReviewDate
+                else:
+                    unUsuarioRevisor     = theMemberId
+                    unaFechaRevision     = unDateStoreString
+                    unUsuarioModificador = theMemberId
+                    unaFechaModificacion = unDateStoreString
 
             if unEstadoTraduccion == cEstadoTraduccionDefinitiva:
-                unUsuarioCoordinador = theMemberId
-                unaFechaDefinitivo = unDateStoreString
+                if theDefinitiveDate and theCoordinator:
+                    unUsuarioCoordinador = theCoordinator
+                    unaFechaDefinitivo   = theDefinitiveDate
+                    unUsuarioModificador = theCoordinator
+                    unaFechaModificacion = theDefinitiveDate
+                else:
+                    unUsuarioCoordinador = theMemberId
+                    unaFechaDefinitivo   = unDateStoreString
+                    unUsuarioModificador = theMemberId
+                    unaFechaModificacion = unDateStoreString
                 
-        unUsuarioModificador = theMemberId
-        unaFechaModificacion = unDateStoreString
-                
-                    
+
         anAttrsDict = { 
             'title':                unTitulo,
             'description':          '',
@@ -2720,16 +2858,16 @@ class TRAImportacion_Operaciones_Import:
             'nombresModulos':       theNombresModulos,
             'estadoTraduccion'   :  unEstadoTraduccion,
             'cadenaTraducida'    :  theTraduccionEncoded,
-            'usuarioCreador':       theMemberId, 
-            'fechaCreacionTextual': unDateStoreString,  
+            'usuarioCreador':       unUsuarioCreador, 
+            'fechaCreacionTextual': unaFechaCreacion,  
             'usuarioTraductor':     unUsuarioTraductor, 
             'fechaTraduccionTextual': unaFechaTraduccion,  
             'usuarioRevisor':       unUsuarioRevisor, 
             'fechaRevisionTextual': unaFechaRevision,  
             'usuarioCoordinador':   unUsuarioCoordinador, 
-            'fechaDefinitivoTextual':  unaFechaDefinitivo,  
+            'fechaDefinitivoTextual': unaFechaDefinitivo,  
             'fechaModificacionTextual': unaFechaModificacion,  
-            'usuarioModificador':     unUsuarioModificador, 
+            'usuarioModificador':   unUsuarioModificador, 
             'comentario':           theComment,   
             'historia':             '',  
         }

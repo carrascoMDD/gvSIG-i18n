@@ -248,6 +248,7 @@ class TRACatalogo_Exportacion_JavaProperties:
         theExportModuleNames,
         theExportStringSources,
         theExportTranslationsStatus,
+        theExportContributions,
         theModulosCadenasPorSimbolo,
         theCodificacionCaracteres,
         theEncodingErrorHandleMode, 
@@ -347,7 +348,22 @@ class TRACatalogo_Exportacion_JavaProperties:
             unHayErrorNombresModulos = False
             unHayErrorSimbolo3       = False
             unHayErrorSimbolo4       = False
-            
+            unHayErrorSimbolo5       = False
+            unHayErrorSimbolo6       = False
+            unHayErrorSimbolo7       = False
+            unHayErrorSimbolo8       = False
+            unHayErrorSimbolo9       = False
+            unHayErrorSimbolo10      = False
+            unHayErrorSimbolo11      = False
+            unHayErrorSimbolo12      = False
+            unHayErrorCreationDate   = False
+            unHayErrorCreator        = False
+            unHayErrorTranslationDate = False
+            unHayErrorTranslator     = False
+            unHayErrorReviewDate     = False
+            unHayErrorReviewer       = False
+            unHayErrorDefinitiveDate = False
+            unHayErrorCoordinator    = False
             
             unSimboloCadena   = unResultadoTraduccion[ 'getSimbolo']
             unSimboloCadenaEncoded = ''
@@ -529,6 +545,329 @@ class TRACatalogo_Exportacion_JavaProperties:
                                     
                                             
                 
+            if theExportContributions:
+                # ######################################################################
+                """Encode dates and user names that created, translated, reviewed or marked as definitive the translation.
+                
+                """
+                unCreationDate        = unResultadoTraduccion[ 'getFechaCreacionTextual']
+                unCreationDateEncoded = ''
+                unCreator             = unResultadoTraduccion[ 'getUsuarioCreador']
+                unCreatorEncoded      = ''
+                
+                unTranslationDate     = unResultadoTraduccion[ 'getFechaTraduccionTextual']
+                unTranslationDateEncoded  = ''
+                unTranslator          = unResultadoTraduccion[ 'getUsuarioTraductor']
+                unTranslatorEncoded   = ''
+                
+                unReviewDate          = unResultadoTraduccion[ 'getFechaRevisionTextual']
+                unReviewDateEncoded   = ''
+                unReviewer            = unResultadoTraduccion[ 'getUsuarioRevisor']
+                unReviewerEncoded     = ''
+                
+                unDefinitiveDate      = unResultadoTraduccion[ 'getFechaDefinitivoTextual']
+                unDefinitiveDateEncoded   = ''
+                unCoordinator         = unResultadoTraduccion[ 'getUsuarioCoordinador']
+                unCoordinatorEncoded  = ''
+                
+                
+                if unCreationDate:
+                    
+                    if theCodificacionCaracteres == cTRAEncodingUnicodeEscape:
+                        unCreationDateEncoded, unCreationDateEncodedEncodingErrorCondition = self.fFromSystemEncodingToUnicodeEscape( 
+                            unCreationDate, 
+                            theTranslationService, 
+                            theSystemToUnicodeErrorsMode, 
+                        )
+                        
+                        if unCreationDateEncodedEncodingErrorCondition or not unCreationDateEncoded:
+                            if unCreationDateEncodedEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicodeEscape:
+                                theResult[ 'contributions_error_codificacion_SystemToUnicode'] = True    
+                            return False
+                    else: 
+                    
+                        unCreationDateEncoded, unCreationDateEncodedEncodingErrorCondition = self.fFromSystemEncodingToUnicodeToUTF8( 
+                            unCreationDate, 
+                            theTranslationService, 
+                            theSystemToUnicodeErrorsMode, 
+                            theUnicodeToUTF8ErrorsMode, 
+                        )
+                        if unCreationDateEncodedEncodingErrorCondition:
+                            
+                            unHayErrorCreationDate = True
+                            unHayError =  True
+                            
+                            if unCreationDateEncodedEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicode:
+                                theResult[ 'contributions_error_codificacion_SystemToUnicode'].append( unSimboloCadena)    
+            
+                            elif unCreationDateEncodedEncodingErrorCondition == cResultCondition_Encoding_FailureFromUnicodeToUTF8:
+                                theResult[ 'contributions_error_codificacion_UnicodeToUTF'].append( unSimboloCadena)    
+                        
+                            if theEncodingErrorHandleMode in [ cTRAEncodingErrorHandleMode_CancelOnFirstError,]:
+                                return False                   
+                                 
+                            
+                            
+                                            
+                if unCreator:
+                    
+                    if theCodificacionCaracteres == cTRAEncodingUnicodeEscape:
+                        unCreatorEncoded, unCreatorEncodedEncodingErrorCondition = self.fFromSystemEncodingToUnicodeEscape( 
+                            unCreator, 
+                            theTranslationService, 
+                            theSystemToUnicodeErrorsMode, 
+                        )
+                        
+                        if unCreatorEncodedEncodingErrorCondition or not unCreatorEncoded:
+                            if unCreatorEncodedEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicodeEscape:
+                                theResult[ 'contributions_error_codificacion_SystemToUnicode'] = True    
+                            return False
+                    else: 
+                    
+                        unCreatorEncoded, unCreatorEncodedEncodingErrorCondition = self.fFromSystemEncodingToUnicodeToUTF8( 
+                            unCreator, 
+                            theTranslationService, 
+                            theSystemToUnicodeErrorsMode, 
+                            theUnicodeToUTF8ErrorsMode, 
+                        )
+                        if unCreatorEncodedEncodingErrorCondition:
+                            
+                            unHayErrorCreator = True
+                            unHayError =  True
+                            
+                            if unCreatorEncodedEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicode:
+                                theResult[ 'contributions_error_codificacion_SystemToUnicode'].append( unSimboloCadena)    
+            
+                            elif unCreatorEncodedEncodingErrorCondition == cResultCondition_Encoding_FailureFromUnicodeToUTF8:
+                                theResult[ 'contributions_error_codificacion_UnicodeToUTF'].append( unSimboloCadena)    
+                        
+                            if theEncodingErrorHandleMode in [ cTRAEncodingErrorHandleMode_CancelOnFirstError,]:
+                                return False         
+                            
+                            
+                            
+
+                if unTranslationDate:
+                    
+                    if theCodificacionCaracteres == cTRAEncodingUnicodeEscape:
+                        unTranslationDateEncoded, unTranslationDateEncodedEncodingErrorCondition = self.fFromSystemEncodingToUnicodeEscape( 
+                            unTranslationDate, 
+                            theTranslationService, 
+                            theSystemToUnicodeErrorsMode, 
+                        )
+                        
+                        if unTranslationDateEncodedEncodingErrorCondition or not unTranslationDateEncoded:
+                            if unTranslationDateEncodedEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicodeEscape:
+                                theResult[ 'contributions_error_codificacion_SystemToUnicode'] = True    
+                            return False
+                    else: 
+                    
+                        unTranslationDateEncoded, unTranslationDateEncodedEncodingErrorCondition = self.fFromSystemEncodingToUnicodeToUTF8( 
+                            unTranslationDate, 
+                            theTranslationService, 
+                            theSystemToUnicodeErrorsMode, 
+                            theUnicodeToUTF8ErrorsMode, 
+                        )
+                        if unTranslationDateEncodedEncodingErrorCondition:
+                            
+                            unHayErrorTranslationDate = True
+                            unHayError =  True
+                            
+                            if unTranslationDateEncodedEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicode:
+                                theResult[ 'contributions_error_codificacion_SystemToUnicode'].append( unSimboloCadena)    
+            
+                            elif unTranslationDateEncodedEncodingErrorCondition == cResultCondition_Encoding_FailureFromUnicodeToUTF8:
+                                theResult[ 'contributions_error_codificacion_UnicodeToUTF'].append( unSimboloCadena)    
+                        
+                            if theEncodingErrorHandleMode in [ cTRAEncodingErrorHandleMode_CancelOnFirstError,]:
+                                return False                   
+                                 
+                                                        
+                                            
+                if unTranslator:
+                    
+                    if theCodificacionCaracteres == cTRAEncodingUnicodeEscape:
+                        unTranslatorEncoded, unTranslatorEncodedEncodingErrorCondition = self.fFromSystemEncodingToUnicodeEscape( 
+                            unTranslator, 
+                            theTranslationService, 
+                            theSystemToUnicodeErrorsMode, 
+                        )
+                        
+                        if unTranslatorEncodedEncodingErrorCondition or not unTranslatorEncoded:
+                            if unTranslatorEncodedEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicodeEscape:
+                                theResult[ 'contributions_error_codificacion_SystemToUnicode'] = True    
+                            return False
+                    else: 
+                    
+                        unTranslatorEncoded, unTranslatorEncodedEncodingErrorCondition = self.fFromSystemEncodingToUnicodeToUTF8( 
+                            unTranslator, 
+                            theTranslationService, 
+                            theSystemToUnicodeErrorsMode, 
+                            theUnicodeToUTF8ErrorsMode, 
+                        )
+                        if unTranslatorEncodedEncodingErrorCondition:
+                            
+                            unHayErrorTranslator = True
+                            unHayError =  True
+                            
+                            if unTranslatorEncodedEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicode:
+                                theResult[ 'contributions_error_codificacion_SystemToUnicode'].append( unSimboloCadena)    
+            
+                            elif unTranslatorEncodedEncodingErrorCondition == cResultCondition_Encoding_FailureFromUnicodeToUTF8:
+                                theResult[ 'contributions_error_codificacion_UnicodeToUTF'].append( unSimboloCadena)    
+                        
+                            if theEncodingErrorHandleMode in [ cTRAEncodingErrorHandleMode_CancelOnFirstError,]:
+                                return False         
+                                                        
+                            
+
+                if unReviewDate:
+                    
+                    if theCodificacionCaracteres == cTRAEncodingUnicodeEscape:
+                        unReviewDateEncoded, unReviewDateEncodedEncodingErrorCondition = self.fFromSystemEncodingToUnicodeEscape( 
+                            unReviewDate, 
+                            theTranslationService, 
+                            theSystemToUnicodeErrorsMode, 
+                        )
+                        
+                        if unReviewDateEncodedEncodingErrorCondition or not unReviewDateEncoded:
+                            if unReviewDateEncodedEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicodeEscape:
+                                theResult[ 'contributions_error_codificacion_SystemToUnicode'] = True    
+                            return False
+                    else: 
+                    
+                        unReviewDateEncoded, unReviewDateEncodedEncodingErrorCondition = self.fFromSystemEncodingToUnicodeToUTF8( 
+                            unReviewDate, 
+                            theTranslationService, 
+                            theSystemToUnicodeErrorsMode, 
+                            theUnicodeToUTF8ErrorsMode, 
+                        )
+                        if unReviewDateEncodedEncodingErrorCondition:
+                            
+                            unHayErrorReviewDate = True
+                            unHayError =  True
+                            
+                            if unReviewDateEncodedEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicode:
+                                theResult[ 'contributions_error_codificacion_SystemToUnicode'].append( unSimboloCadena)    
+            
+                            elif unReviewDateEncodedEncodingErrorCondition == cResultCondition_Encoding_FailureFromUnicodeToUTF8:
+                                theResult[ 'contributions_error_codificacion_UnicodeToUTF'].append( unSimboloCadena)    
+                        
+                            if theEncodingErrorHandleMode in [ cTRAEncodingErrorHandleMode_CancelOnFirstError,]:
+                                return False                   
+                                 
+                                  
+                            
+                if unReviewer:
+                    
+                    if theCodificacionCaracteres == cTRAEncodingUnicodeEscape:
+                        unReviewerEncoded, unReviewerEncodedEncodingErrorCondition = self.fFromSystemEncodingToUnicodeEscape( 
+                            unReviewer, 
+                            theTranslationService, 
+                            theSystemToUnicodeErrorsMode, 
+                        )
+                        
+                        if unReviewerEncodedEncodingErrorCondition or not unReviewerEncoded:
+                            if unReviewerEncodedEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicodeEscape:
+                                theResult[ 'contributions_error_codificacion_SystemToUnicode'] = True    
+                            return False
+                    else: 
+                    
+                        unReviewerEncoded, unReviewerEncodedEncodingErrorCondition = self.fFromSystemEncodingToUnicodeToUTF8( 
+                            unReviewer, 
+                            theTranslationService, 
+                            theSystemToUnicodeErrorsMode, 
+                            theUnicodeToUTF8ErrorsMode, 
+                        )
+                        if unReviewerEncodedEncodingErrorCondition:
+                            
+                            unHayErrorReviewer = True
+                            unHayError =  True
+                            
+                            if unReviewerEncodedEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicode:
+                                theResult[ 'contributions_error_codificacion_SystemToUnicode'].append( unSimboloCadena)    
+            
+                            elif unReviewerEncodedEncodingErrorCondition == cResultCondition_Encoding_FailureFromUnicodeToUTF8:
+                                theResult[ 'contributions_error_codificacion_UnicodeToUTF'].append( unSimboloCadena)    
+                        
+                            if theEncodingErrorHandleMode in [ cTRAEncodingErrorHandleMode_CancelOnFirstError,]:
+                                return False         
+                            
+                            
+
+                if unDefinitiveDate:
+                    
+                    if theCodificacionCaracteres == cTRAEncodingUnicodeEscape:
+                        unDefinitiveDateEncoded, unDefinitiveDateEncodedEncodingErrorCondition = self.fFromSystemEncodingToUnicodeEscape( 
+                            unDefinitiveDate, 
+                            theTranslationService, 
+                            theSystemToUnicodeErrorsMode, 
+                        )
+                        
+                        if unDefinitiveDateEncodedEncodingErrorCondition or not unDefinitiveDateEncoded:
+                            if unDefinitiveDateEncodedEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicodeEscape:
+                                theResult[ 'contributions_error_codificacion_SystemToUnicode'] = True    
+                            return False
+                    else: 
+                    
+                        unDefinitiveDateEncoded, unDefinitiveDateEncodedEncodingErrorCondition = self.fFromSystemEncodingToUnicodeToUTF8( 
+                            unDefinitiveDate, 
+                            theTranslationService, 
+                            theSystemToUnicodeErrorsMode, 
+                            theUnicodeToUTF8ErrorsMode, 
+                        )
+                        if unDefinitiveDateEncodedEncodingErrorCondition:
+                            
+                            unHayErrorDefinitiveDate = True
+                            unHayError =  True
+                            
+                            if unDefinitiveDateEncodedEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicode:
+                                theResult[ 'contributions_error_codificacion_SystemToUnicode'].append( unSimboloCadena)    
+            
+                            elif unDefinitiveDateEncodedEncodingErrorCondition == cResultCondition_Encoding_FailureFromUnicodeToUTF8:
+                                theResult[ 'contributions_error_codificacion_UnicodeToUTF'].append( unSimboloCadena)    
+                        
+                            if theEncodingErrorHandleMode in [ cTRAEncodingErrorHandleMode_CancelOnFirstError,]:
+                                return False                   
+                                 
+             
+                            
+                if unCoordinator:
+                    
+                    if theCodificacionCaracteres == cTRAEncodingUnicodeEscape:
+                        unCoordinatorEncoded, unCoordinatorEncodedEncodingErrorCondition = self.fFromSystemEncodingToUnicodeEscape( 
+                            unCoordinator, 
+                            theTranslationService, 
+                            theSystemToUnicodeErrorsMode, 
+                        )
+                        
+                        if unCoordinatorEncodedEncodingErrorCondition or not unCoordinatorEncoded:
+                            if unCoordinatorEncodedEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicodeEscape:
+                                theResult[ 'contributions_error_codificacion_SystemToUnicode'] = True    
+                            return False
+                    else: 
+                    
+                        unCoordinatorEncoded, unCoordinatorEncodedEncodingErrorCondition = self.fFromSystemEncodingToUnicodeToUTF8( 
+                            unCoordinator, 
+                            theTranslationService, 
+                            theSystemToUnicodeErrorsMode, 
+                            theUnicodeToUTF8ErrorsMode, 
+                        )
+                        if unCoordinatorEncodedEncodingErrorCondition:
+                            
+                            unHayErrorCoordinator = True
+                            unHayError =  True
+                            
+                            if unCoordinatorEncodedEncodingErrorCondition == cResultCondition_Encoding_FailureFromSystemToUnicode:
+                                theResult[ 'contributions_error_codificacion_SystemToUnicode'].append( unSimboloCadena)    
+            
+                            elif unCoordinatorEncodedEncodingErrorCondition == cResultCondition_Encoding_FailureFromUnicodeToUTF8:
+                                theResult[ 'contributions_error_codificacion_UnicodeToUTF'].append( unSimboloCadena)    
+                        
+                            if theEncodingErrorHandleMode in [ cTRAEncodingErrorHandleMode_CancelOnFirstError,]:
+                                return False         
+                                                                                                                                                                          
+                            
                             
             # ######################################################################
             """Write line with string symbol and translation.
@@ -656,7 +995,7 @@ class TRACatalogo_Exportacion_JavaProperties:
         
                                 
                                 try:    
-                                    theBuffer.write( unosNombresModulos)
+                                    theBuffer.write( unosNombresModulosEncoded)
                                     
                                 except:
                                     unHayErrorNombresModulos = True
@@ -706,7 +1045,7 @@ class TRACatalogo_Exportacion_JavaProperties:
         
                                 
                                 try:    
-                                    theBuffer.write( unosSources)
+                                    theBuffer.write( unosSourcesEncoded)
                                     
                                 except:
                                     unHayErrorSources = True
@@ -717,7 +1056,378 @@ class TRACatalogo_Exportacion_JavaProperties:
                                         unHayError =  True
                                 
                         theBuffer.write( cPropertyLineSeparator)
+                        
+                        
+                        
+                if theExportContributions:
+                    # ######################################################################
+                    """Write contributions lines with dates and user names that created, translated, reviewed or marked as definitive the translation.
+                    
+                    """     
+                    
+                    if ( not unHayErrorSimbolo) and ( not unHayErrorCreationDate) and unCreationDateEncoded:
+                        unHayErrorCreationDateLabel = False
+                        try:    
+                            theBuffer.write( cPropertiesCreationDateLinePrefix)
+                            
+                        except:
+                            if theEncodingErrorHandleMode in [ cTRAEncodingErrorHandleMode_CancelOnFirstError,]:
+                                return False
+                            else:
+                                unHayErrorCreationDateLabel = True
+                                unHayError =  True
+                                
+                        if not unHayErrorCreationDateLabel:
+                            
+                            try:    
+                                theBuffer.write( unSimboloCadenaEncoded)
+                            except:
+                                theResult[ 'simbolos_error_codificacion_Export'].append( unSimboloCadena)    
+                                if theEncodingErrorHandleMode in [ cTRAEncodingErrorHandleMode_CancelOnFirstError,]:
+                                    return False
+                                else:
+                                    unHayErrorSimbolo5 = True
+                                    unHayError =  True
+                            
+                            if not unHayErrorSimbolo5:     
+                                
+                                theBuffer.write( cPropertyNameValueSeparator )
+        
+                                
+                                try:    
+                                    theBuffer.write( unCreationDateEncoded)
+                                    
+                                except:
+                                    unHayErrorCreationDate = True
+                                    if theEncodingErrorHandleMode in [ cTRAEncodingErrorHandleMode_CancelOnFirstError,]:
+                                        return False
+                                    else:
+                                        unHayErrorCreationDate = True
+                                        unHayError =  True
+                                
+                        theBuffer.write( cPropertyLineSeparator)
+                     
+                    
+                        
+                        
+                    
+                    if ( not unHayErrorSimbolo) and ( not unHayErrorCreator) and unCreatorEncoded:
+                        unHayErrorCreatorLabel = False
+                        try:    
+                            theBuffer.write( cPropertiesCreatorLinePrefix)
+                            
+                        except:
+                            if theEncodingErrorHandleMode in [ cTRAEncodingErrorHandleMode_CancelOnFirstError,]:
+                                return False
+                            else:
+                                unHayErrorCreatorLabel = True
+                                unHayError =  True
+                                
+                        if not unHayErrorCreatorLabel:
+                            
+                            try:    
+                                theBuffer.write( unSimboloCadenaEncoded)
+                            except:
+                                theResult[ 'simbolos_error_codificacion_Export'].append( unSimboloCadena)    
+                                if theEncodingErrorHandleMode in [ cTRAEncodingErrorHandleMode_CancelOnFirstError,]:
+                                    return False
+                                else:
+                                    unHayErrorSimbolo6 = True
+                                    unHayError =  True
+                            
+                            if not unHayErrorSimbolo6:     
+                                
+                                theBuffer.write( cPropertyNameValueSeparator )
+        
+                                
+                                try:    
+                                    theBuffer.write( unCreatorEncoded)
+                                    
+                                except:
+                                    unHayErrorCreator = True
+                                    if theEncodingErrorHandleMode in [ cTRAEncodingErrorHandleMode_CancelOnFirstError,]:
+                                        return False
+                                    else:
+                                        unHayErrorCreator = True
+                                        unHayError =  True
+                                
+                        theBuffer.write( cPropertyLineSeparator)
+      
+                        
+                        
+                    
+                    if ( not unHayErrorSimbolo) and ( not unHayErrorTranslationDate) and unTranslationDateEncoded:
+                        unHayErrorTranslationDateLabel = False
+                        try:    
+                            theBuffer.write( cPropertiesTranslationDateLinePrefix)
+                            
+                        except:
+                            if theEncodingErrorHandleMode in [ cTRAEncodingErrorHandleMode_CancelOnFirstError,]:
+                                return False
+                            else:
+                                unHayErrorTranslationDateLabel = True
+                                unHayError =  True
+                                
+                        if not unHayErrorTranslationDateLabel:
+                            
+                            try:    
+                                theBuffer.write( unSimboloCadenaEncoded)
+                            except:
+                                theResult[ 'simbolos_error_codificacion_Export'].append( unSimboloCadena)    
+                                if theEncodingErrorHandleMode in [ cTRAEncodingErrorHandleMode_CancelOnFirstError,]:
+                                    return False
+                                else:
+                                    unHayErrorSimbolo7 = True
+                                    unHayError =  True
+                            
+                            if not unHayErrorSimbolo7:     
+                                
+                                theBuffer.write( cPropertyNameValueSeparator )
+        
+                                
+                                try:    
+                                    theBuffer.write( unTranslationDateEncoded)
+                                    
+                                except:
+                                    unHayErrorTranslationDate = True
+                                    if theEncodingErrorHandleMode in [ cTRAEncodingErrorHandleMode_CancelOnFirstError,]:
+                                        return False
+                                    else:
+                                        unHayErrorTranslationDate = True
+                                        unHayError =  True
+                                
+                        theBuffer.write( cPropertyLineSeparator)
+                     
+                                            
+                        
+                       
+                    
+                    if ( not unHayErrorSimbolo) and ( not unHayErrorTranslator) and unTranslatorEncoded:
+                        unHayErrorTranslatorLabel = False
+                        try:    
+                            theBuffer.write( cPropertiesTranslatorLinePrefix)
+                            
+                        except:
+                            if theEncodingErrorHandleMode in [ cTRAEncodingErrorHandleMode_CancelOnFirstError,]:
+                                return False
+                            else:
+                                unHayErrorTranslatorLabel = True
+                                unHayError =  True
+                                
+                        if not unHayErrorTranslatorLabel:
+                            
+                            try:    
+                                theBuffer.write( unSimboloCadenaEncoded)
+                            except:
+                                theResult[ 'simbolos_error_codificacion_Export'].append( unSimboloCadena)    
+                                if theEncodingErrorHandleMode in [ cTRAEncodingErrorHandleMode_CancelOnFirstError,]:
+                                    return False
+                                else:
+                                    unHayErrorSimbolo8 = True
+                                    unHayError =  True
+                            
+                            if not unHayErrorSimbolo8:     
+                                
+                                theBuffer.write( cPropertyNameValueSeparator )
+        
+                                
+                                try:    
+                                    theBuffer.write( unTranslatorEncoded)
+                                    
+                                except:
+                                    unHayErrorTranslator = True
+                                    if theEncodingErrorHandleMode in [ cTRAEncodingErrorHandleMode_CancelOnFirstError,]:
+                                        return False
+                                    else:
+                                        unHayErrorTranslator = True
+                                        unHayError =  True
+                                
+                        theBuffer.write( cPropertyLineSeparator)
+                              
 
+                        
+
+                    
+                    if ( not unHayErrorSimbolo) and ( not unHayErrorReviewDate) and unReviewDateEncoded:
+                        unHayErrorReviewDateLabel = False
+                        try:    
+                            theBuffer.write( cPropertiesReviewDateLinePrefix)
+                            
+                        except:
+                            if theEncodingErrorHandleMode in [ cTRAEncodingErrorHandleMode_CancelOnFirstError,]:
+                                return False
+                            else:
+                                unHayErrorReviewDateLabel = True
+                                unHayError =  True
+                                
+                        if not unHayErrorReviewDateLabel:
+                            
+                            try:    
+                                theBuffer.write( unSimboloCadenaEncoded)
+                            except:
+                                theResult[ 'simbolos_error_codificacion_Export'].append( unSimboloCadena)    
+                                if theEncodingErrorHandleMode in [ cTRAEncodingErrorHandleMode_CancelOnFirstError,]:
+                                    return False
+                                else:
+                                    unHayErrorSimbolo9 = True
+                                    unHayError =  True
+                            
+                            if not unHayErrorSimbolo9:     
+                                
+                                theBuffer.write( cPropertyNameValueSeparator )
+        
+                                
+                                try:    
+                                    theBuffer.write( unReviewDateEncoded)
+                                    
+                                except:
+                                    unHayErrorReviewDate = True
+                                    if theEncodingErrorHandleMode in [ cTRAEncodingErrorHandleMode_CancelOnFirstError,]:
+                                        return False
+                                    else:
+                                        unHayErrorReviewDate = True
+                                        unHayError =  True
+                                
+                        theBuffer.write( cPropertyLineSeparator)
+                     
+                                                          
+     
+                    
+                    if ( not unHayErrorSimbolo) and ( not unHayErrorReviewer) and unReviewerEncoded:
+                        unHayErrorReviewerLabel = False
+                        try:    
+                            theBuffer.write( cPropertiesReviewerLinePrefix)
+                            
+                        except:
+                            if theEncodingErrorHandleMode in [ cTRAEncodingErrorHandleMode_CancelOnFirstError,]:
+                                return False
+                            else:
+                                unHayErrorReviewerLabel = True
+                                unHayError =  True
+                                
+                        if not unHayErrorReviewerLabel:
+                            
+                            try:    
+                                theBuffer.write( unSimboloCadenaEncoded)
+                            except:
+                                theResult[ 'simbolos_error_codificacion_Export'].append( unSimboloCadena)    
+                                if theEncodingErrorHandleMode in [ cTRAEncodingErrorHandleMode_CancelOnFirstError,]:
+                                    return False
+                                else:
+                                    unHayErrorSimbolo10 = True
+                                    unHayError =  True
+                            
+                            if not unHayErrorSimbolo10:     
+                                
+                                theBuffer.write( cPropertyNameValueSeparator )
+        
+                                
+                                try:    
+                                    theBuffer.write( unReviewerEncoded)
+                                    
+                                except:
+                                    unHayErrorReviewer = True
+                                    if theEncodingErrorHandleMode in [ cTRAEncodingErrorHandleMode_CancelOnFirstError,]:
+                                        return False
+                                    else:
+                                        unHayErrorReviewer = True
+                                        unHayError =  True
+                                
+                        theBuffer.write( cPropertyLineSeparator)
+  
+                        
+                       
+
+                    
+                    if ( not unHayErrorSimbolo) and ( not unHayErrorDefinitiveDate) and unDefinitiveDateEncoded:
+                        unHayErrorDefinitiveDateLabel = False
+                        try:    
+                            theBuffer.write( cPropertiesDefinitiveDateLinePrefix)
+                            
+                        except:
+                            if theEncodingErrorHandleMode in [ cTRAEncodingErrorHandleMode_CancelOnFirstError,]:
+                                return False
+                            else:
+                                unHayErrorDefinitiveDateLabel = True
+                                unHayError =  True
+                                
+                        if not unHayErrorDefinitiveDateLabel:
+                            
+                            try:    
+                                theBuffer.write( unSimboloCadenaEncoded)
+                            except:
+                                theResult[ 'simbolos_error_codificacion_Export'].append( unSimboloCadena)    
+                                if theEncodingErrorHandleMode in [ cTRAEncodingErrorHandleMode_CancelOnFirstError,]:
+                                    return False
+                                else:
+                                    unHayErrorSimbolo11 = True
+                                    unHayError =  True
+                            
+                            if not unHayErrorSimbolo11:     
+                                
+                                theBuffer.write( cPropertyNameValueSeparator )
+        
+                                
+                                try:    
+                                    theBuffer.write( unDefinitiveDateEncoded)
+                                    
+                                except:
+                                    unHayErrorDefinitiveDate = True
+                                    if theEncodingErrorHandleMode in [ cTRAEncodingErrorHandleMode_CancelOnFirstError,]:
+                                        return False
+                                    else:
+                                        unHayErrorDefinitiveDate = True
+                                        unHayError =  True
+                                
+                        theBuffer.write( cPropertyLineSeparator)
+                     
+                                                          
+                    
+                    if ( not unHayErrorSimbolo) and ( not unHayErrorCoordinator) and unCoordinatorEncoded:
+                        unHayErrorCoordinatorLabel = False
+                        try:    
+                            theBuffer.write( cPropertiesCoordinatorLinePrefix)
+                            
+                        except:
+                            if theEncodingErrorHandleMode in [ cTRAEncodingErrorHandleMode_CancelOnFirstError,]:
+                                return False
+                            else:
+                                unHayErrorCoordinatorLabel = True
+                                unHayError =  True
+                                
+                        if not unHayErrorCoordinatorLabel:
+                            
+                            try:    
+                                theBuffer.write( unSimboloCadenaEncoded)
+                            except:
+                                theResult[ 'simbolos_error_codificacion_Export'].append( unSimboloCadena)    
+                                if theEncodingErrorHandleMode in [ cTRAEncodingErrorHandleMode_CancelOnFirstError,]:
+                                    return False
+                                else:
+                                    unHayErrorSimbolo12 = True
+                                    unHayError =  True
+                            
+                            if not unHayErrorSimbolo12:     
+                                
+                                theBuffer.write( cPropertyNameValueSeparator )
+        
+                                
+                                try:    
+                                    theBuffer.write( unCoordinatorEncoded)
+                                    
+                                except:
+                                    unHayErrorCoordinator = True
+                                    if theEncodingErrorHandleMode in [ cTRAEncodingErrorHandleMode_CancelOnFirstError,]:
+                                        return False
+                                    else:
+                                        unHayErrorCoordinator = True
+                                        unHayError =  True
+                                
+                        theBuffer.write( cPropertyLineSeparator)
+  
+                        
+                                                    
+                        
         return not unHayError        
     
     
@@ -736,6 +1446,7 @@ class TRACatalogo_Exportacion_JavaProperties:
         theExportModuleNames,
         theExportStringSources,
         theExportTranslationsStatus,
+        theExportContributions,
         theModulosCadenasPorSimbolo,
         theEncodingErrorHandleMode,
         theEncodedFileErrorsMode,
@@ -784,15 +1495,15 @@ class TRACatalogo_Exportacion_JavaProperties:
                 anErrorInFile = False
                 
                 if not self.fWriteHeader_JavaProperties( 
-                    unEncodedFile, 
-                    unResult,
-                    theIdioma, 
-                    theNombreModulo, 
-                    theCodificacionCaracteres,
-                    theEncodingErrorHandleMode, 
-                    theSystemToUnicodeErrorsMode,
-                    theUnicodeToUTF8ErrorsMode,
-                    theTranslationService):
+                    theBuffer                     =unEncodedFile, 
+                    theResult                     =unResult,
+                    theIdioma                     =theIdioma, 
+                    theNombreModulo               =theNombreModulo, 
+                    theCodificacionCaracteres     =theCodificacionCaracteres,
+                    theEncodingErrorHandleMode    =theEncodingErrorHandleMode, 
+                    theSystemToUnicodeErrorsMode  =theSystemToUnicodeErrorsMode,
+                    theUnicodeToUTF8ErrorsMode    =theUnicodeToUTF8ErrorsMode,
+                    theTranslationService         =theTranslationService):                   
     
                     anErrorInFile = True
                     
@@ -814,19 +1525,20 @@ class TRACatalogo_Exportacion_JavaProperties:
                 
                 
                 if not self.fWriteTranslationResults_JavaProperties( 
-                    unEncodedFile, 
-                    unResult,
-                    theResultadosTraducciones,
-                    theSourcesCadenasPorSimbolo,
-                    theExportModuleNames,
-                    theExportStringSources,
-                    theExportTranslationsStatus,
-                    theModulosCadenasPorSimbolo,
-                    theCodificacionCaracteres,
-                    theEncodingErrorHandleMode,
-                    theSystemToUnicodeErrorsMode,
-                    theUnicodeToUTF8ErrorsMode,
-                    theTranslationService):
+                    theBuffer                       =unEncodedFile, 
+                    theResult                       =unResult,
+                    theResultadosTraducciones       =theResultadosTraducciones, 
+                    theSourcesCadenasPorSimbolo     =theSourcesCadenasPorSimbolo,
+                    theExportModuleNames            =theExportModuleNames,
+                    theExportStringSources          =theExportStringSources,
+                    theExportTranslationsStatus     =theExportTranslationsStatus,
+                    theExportContributions          =theExportContributions,
+                    theModulosCadenasPorSimbolo     =theModulosCadenasPorSimbolo,
+                    theCodificacionCaracteres       =theCodificacionCaracteres,
+                    theEncodingErrorHandleMode      =theEncodingErrorHandleMode, 
+                    theSystemToUnicodeErrorsMode    =theSystemToUnicodeErrorsMode, 
+                    theUnicodeToUTF8ErrorsMode      =theUnicodeToUTF8ErrorsMode, 
+                    theTranslationService           =theTranslationService,):
                     
                     anErrorInFile = True
                     
@@ -877,6 +1589,7 @@ class TRACatalogo_Exportacion_JavaProperties:
         theExportModuleNames,
         theExportStringSources,
         theExportTranslationsStatus,
+        theExportContributions,
         theModulosCadenasPorSimbolo,
         theEncodingErrorHandleMode,
         theEncodedFileErrorsMode,
@@ -888,21 +1601,22 @@ class TRACatalogo_Exportacion_JavaProperties:
         unExecutionRecord = self.fStartExecution( 'method',  'fContenidoFicheroExportacionIdiomaModuloNoEspecificado_JavaProperties', theParentExecutionRecord, True, { 'log_what': 'details', 'log_when': True,}, 'language %s    unspecified Module' % ((theIdioma and theIdioma.getCodigoIdiomaEnGvSIG()) or '?'))
         try:
             unResult = self.fContenidoFicheroExportacionIdiomaModulo_JavaProperties( 
-                theIdioma, 
-                theNombreModulo, 
-                theCodificacionCaracteres, 
-                theResultadosTraducciones, 
-                theSourcesCadenasPorSimbolo,
-                theExportModuleNames,
-                theExportStringSources,
-                theExportTranslationsStatus,
-                theModulosCadenasPorSimbolo,
-                theEncodingErrorHandleMode,
-                theEncodedFileErrorsMode,
-                theSystemToUnicodeErrorsMode,
-                theUnicodeToUTF8ErrorsMode,
-                theTranslationService,
-                theParentExecutionRecord    =unExecutionRecord
+                theIdioma                        =theIdioma, 
+                theNombreModulo                  =theNombreModulo, 
+                theCodificacionCaracteres        =theCodificacionCaracteres, 
+                theResultadosTraducciones        =theResultadosTraducciones, 
+                theSourcesCadenasPorSimbolo      =theSourcesCadenasPorSimbolo,
+                theExportModuleNames             =theExportModuleNames,
+                theExportStringSources           =theExportStringSources,
+                theExportTranslationsStatus      =theExportTranslationsStatus,
+                theExportContributions           =theExportContributions,
+                theModulosCadenasPorSimbolo      =theModulosCadenasPorSimbolo,
+                theEncodingErrorHandleMode       =theEncodingErrorHandleMode,
+                theEncodedFileErrorsMode         =theEncodedFileErrorsMode,
+                theSystemToUnicodeErrorsMode     =theSystemToUnicodeErrorsMode,
+                theUnicodeToUTF8ErrorsMode       =theUnicodeToUTF8ErrorsMode,
+                theTranslationService            =theTranslationService,
+                theParentExecutionRecord         =unExecutionRecord
             )
             return unResult  
         
@@ -923,6 +1637,7 @@ class TRACatalogo_Exportacion_JavaProperties:
         theExportModuleNames,
         theExportStringSources,
         theExportTranslationsStatus,
+        theExportContributions,
         theModulosCadenasPorSimbolo,
         theEncodingErrorHandleMode,
         theEncodedFileErrorsMode,
@@ -934,21 +1649,22 @@ class TRACatalogo_Exportacion_JavaProperties:
         unExecutionRecord = self.fStartExecution( 'method',  'fContenidoFicheroExportacionIdiomaTodosModulos_JavaProperties', theParentExecutionRecord, True, { 'log_what': 'details', 'log_when': True,}, 'idioma %s    all modules' % ((theIdioma and theIdioma.getCodigoIdiomaEnGvSIG()) or '?'))
         try:
             unResult = self.fContenidoFicheroExportacionIdiomaModulo_JavaProperties( 
-                theIdioma, 
-                theNombreModulo, 
-                theCodificacionCaracteres, 
-                theResultadosTraducciones, 
-                theSourcesCadenasPorSimbolo,
-                theExportModuleNames,
-                theExportStringSources,
-                theExportTranslationsStatus,
-                theModulosCadenasPorSimbolo,
-                theEncodingErrorHandleMode,
-                theEncodedFileErrorsMode,
-                theSystemToUnicodeErrorsMode,
-                theUnicodeToUTF8ErrorsMode,
-                theTranslationService,
-                theParentExecutionRecord    =unExecutionRecord
+                theIdioma                        =theIdioma, 
+                theNombreModulo                  =theNombreModulo, 
+                theCodificacionCaracteres        =theCodificacionCaracteres, 
+                theResultadosTraducciones        =theResultadosTraducciones, 
+                theSourcesCadenasPorSimbolo      =theSourcesCadenasPorSimbolo,
+                theExportModuleNames             =theExportModuleNames,
+                theExportStringSources           =theExportStringSources,
+                theExportTranslationsStatus      =theExportTranslationsStatus,
+                theExportContributions           =theExportContributions,
+                theModulosCadenasPorSimbolo      =theModulosCadenasPorSimbolo,
+                theEncodingErrorHandleMode       =theEncodingErrorHandleMode,
+                theEncodedFileErrorsMode         =theEncodedFileErrorsMode,
+                theSystemToUnicodeErrorsMode     =theSystemToUnicodeErrorsMode,
+                theUnicodeToUTF8ErrorsMode       =theUnicodeToUTF8ErrorsMode,
+                theTranslationService            =theTranslationService,
+                theParentExecutionRecord         =unExecutionRecord,
             )
             return unResult  
         
@@ -957,25 +1673,7 @@ class TRACatalogo_Exportacion_JavaProperties:
             unExecutionRecord and unExecutionRecord.pClearLoggedAll()
         
                         
-     
-     
-    
-
-            
-            
- 
-
-            
-            
-            
-            
-            
-            
-    
-            
-            
-            
-            
+              
             
            
             

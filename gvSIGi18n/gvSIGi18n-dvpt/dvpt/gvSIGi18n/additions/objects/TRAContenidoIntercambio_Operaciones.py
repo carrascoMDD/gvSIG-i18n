@@ -138,6 +138,9 @@ class TRAContenidoIntercambio_Operaciones:
         unValue = unaImportacion.getImportarNombresModulosDesdeComentarios()        
         theItem.setImportarNombresModulosDesdeComentarios( unValue)
         
+        unValue = unaImportacion.getImportarContribucionesDesdeComentarios()        
+        theItem.setImportarContribucionesDesdeComentarios( unValue)
+        
         unValue = unaImportacion.getImportarStatusDesdeComentarios()        
         theItem.setImportarStatusDesdeComentarios( unValue)
         
@@ -313,6 +316,25 @@ class TRAContenidoIntercambio_Operaciones:
     
     
 
+ 
+    
+    security.declarePrivate('fInitial_ImportarContribucionesDesdeComentarios')
+    def fInitial_ImportarContribucionesDesdeComentarios(self, ):   
+
+        unaImportacion = None
+        try:
+            unaImportacion = self.getContenedor()
+        except:
+            None
+        if not unaImportacion:
+            return False
+        
+        unValue = unaImportacion.getImportarContribucionesDesdeComentarios()        
+        return unValue
+    
+    
+    
+    
  
     
     security.declarePrivate('fInitial_NumeroMaximoLineasAExplorar')

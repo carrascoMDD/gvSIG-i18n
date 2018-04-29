@@ -51,6 +51,7 @@
             ( 'theIncludeLocalesCSV',       here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theIncludeLocalesCSV',        None),),
             ( 'theSeparatedModules',        here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theSeparatedModules',         None),),
             ( 'theExportModuleNames',       here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theExportModuleNames',        None),),
+            ( 'theExportContributions',     here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theExportContributions',        None),),
             ( 'theExportStringSources',     here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theExportStringSources',        None),),
             ( 'theExportTranslationsStatus',here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theExportTranslationsStatus', None),),
             ( 'theTipoArchivo',             here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theTipoArchivo',              None),),

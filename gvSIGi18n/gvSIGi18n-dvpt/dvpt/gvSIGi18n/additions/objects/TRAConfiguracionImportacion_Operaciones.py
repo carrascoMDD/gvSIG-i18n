@@ -102,7 +102,8 @@ class TRAConfiguracionImportacion_Operaciones:
             'importarFuentesDesdeComentariosPorDefecto',                  
             'importarNombreModuloDesdeDominioONombreFicheroPorDefecto',   
             'importarNombresModulosDesdeComentariosPorDefecto',           
-            'importarStatusDesdeComentariosPorDefecto',                   
+            'importarStatusDesdeComentariosPorDefecto',     
+            'importarContribucionesDesdeComentariosPorDefecto',
             'numeroMaximoLineasAExplorar',                                
         ]
         return someAttributeNames

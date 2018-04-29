@@ -494,6 +494,7 @@ class TRAColeccionIdiomas_Operaciones:
                 unaNuevaImportacion.setImportarFuentesDesdeComentarios(                False)
                 unaNuevaImportacion.setImportarNombreModuloDesdeDominioONombreFichero( False)
                 unaNuevaImportacion.setImportarNombresModulosDesdeComentarios(         False)
+                unaNuevaImportacion.setImportarContribucionesDesdeComentarios(         False)                
                 unaNuevaImportacion.setImportarStatusDesdeComentarios(                 False)
                 
                      

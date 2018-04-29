@@ -37,8 +37,8 @@ from Products.gvSIGi18n.TRAConRegistroActividad import TRAConRegistroActividad
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
-from TRAElemento_Operaciones import TRAElemento_Operaciones
 from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import ReferenceBrowserWidget
+from TRAElemento_Operaciones import TRAElemento_Operaciones
 
 ##code-section module-header #fill in your manual code here
 ##/code-section module-header
@@ -426,7 +426,7 @@ schema = Schema((
         label="Importar modulo de nombre de fichero o domino PO",
         length="0",
         default_method="fInitial_ImportarNombreModuloDesdeDominioONombreFichero",
-        position="7",
+        position="8",
         owner_class_name="TRAImportacion"
     ),
 
@@ -456,7 +456,7 @@ schema = Schema((
         label="Importar nombres de modulos desde comentarios",
         length="0",
         default_method="fInitial_ImportarNombresModulosDesdeComentarios",
-        position="8",
+        position="9",
         owner_class_name="TRAImportacion"
     ),
 
@@ -486,7 +486,7 @@ schema = Schema((
         label="Importar fuentes desde comentarios",
         length="0",
         default_method="fInitial_ImportarFuentesDesdeComentarios",
-        position="6",
+        position="7",
         owner_class_name="TRAImportacion"
     ),
 
@@ -516,7 +516,38 @@ schema = Schema((
         label="Importar estado de traduciones de comentarios",
         length="0",
         default_method="fInitial_ImportarStatusDesdeComentarios",
-        position="9",
+        position="10",
+        owner_class_name="TRAImportacion"
+    ),
+
+    BooleanField(
+        name='importarContribucionesDesdeComentarios',
+        widget=BooleanField._properties['widget'](
+            label="Importar fechas y usuarios contribuidores desde comentarios",
+            label2="Import contributing dates and user names from comments",
+            description="Importar desde comentarios de cada traduccion las fechas y nombres de usuario que la crearon, tradujeron, revisaron o marcaron como definitiva.",
+            description2="Import from each translation comments the dates and user names that created, translated, reviewed or marked it as definitive.",
+            label_msgid='gvSIGi18n_TRAImportacion_attr_importarContribucionesDesdeComentarios_label',
+            description_msgid='gvSIGi18n_TRAImportacion_attr_importarContribucionesDesdeComentarios_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        containment="Not Specified",
+        description="Importar desde comentarios de cada traduccion las fechas y nombres de usuario que la crearon, tradujeron, revisaron o marcaron como definitiva.",
+        duplicates="0",
+        label2="Import contributing dates and user names from comments",
+        ea_localid="2060",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="Import from each translation comments the dates and user names that created, translated, reviewed or marked it as definitive.",
+        ea_guid="{BE805526-0906-4707-A5B6-9210757EBE47}",
+        scale="0",
+        default="True",
+        label="Importar fechas y usuarios contribuidores desde comentarios",
+        length="0",
+        default_method="fInitial_ImportarContribucionesDesdeComentarios",
+        position="11",
         owner_class_name="TRAImportacion"
     ),
 
@@ -577,7 +608,7 @@ schema = Schema((
         label="Importar propiedades TRACatalogo desde XML",
         length="0",
         default_method="fInitial_ImportarXMLTRACatalogo",
-        position="10",
+        position="12",
         owner_class_name="TRAImportacion"
     ),
 
@@ -763,6 +794,7 @@ schema = Schema((
 
     ComputedField(
         name='informeContenidosImportacion',
+        exclude_from_views="[ 'Textual', 'Tabular', ]",
         widget=ComputedField._properties['widget'](
             label="Contenidos Importacion",
             label2="Import contents",
@@ -772,7 +804,6 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRAImportacion_attr_informeContenidosImportacion_help',
             i18n_domain='gvSIGi18n',
         ),
-        custom_presentation_view="TRAInformeContenidosImportacion_CustomView",
         description="Informe de lenguajes, cadenas y traducciones en los archivos de intercambio de traducciones.",
         duplicates="0",
         label2="Import contents",
@@ -788,11 +819,14 @@ schema = Schema((
         expression="context.fInformeContenidosImportacion()",
         label="Contenidos Importacion",
         length="0",
+        exclude_from_traversalconfig="True",
         containment="Not Specified",
         position="20",
         owner_class_name="TRAImportacion",
-        exclude_from_views="[ 'Textual', 'Tabular', ]",
-        computed_types="text"
+        custom_presentation_view="TRAInformeContenidosImportacion_CustomView",
+        computed_types="text",
+        exclude_from_copyconfig="True",
+        exclude_from_exportconfig="True"
     ),
 
 ),

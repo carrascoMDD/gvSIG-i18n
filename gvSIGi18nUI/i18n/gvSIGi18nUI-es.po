@@ -364,6 +364,22 @@ msgstr "Exportar estado traducciones"
 msgid "gvSIGi18n_exportar_Parameter_ExportTranslationsStatus_help"
 msgstr "Exportar el estado de cada traduccion, como un comentario en el fichero .properties o GNUgettextPO."
 
+
+
+
+
+#. Default: "Export contributing dates and user names"
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_ExportContributions_label"
+msgstr "Exportar fechas y usuarios contribuidores"
+
+#. Default: "Export for each translation the dates and user names that created, translated, reviewed or marked it as definitive."
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_ExportContributions_help"
+msgstr "Exportar para cada traduccion las fechas y nombres de usuario que la crearon, tradujeron, revisaron o marcaron como definitiva."
+
+
+
 #. Default: "Start date and time"
 #: TRAChangeAndBrowseTranslations.py
 msgid "gvSIGi18n_FechaComienzo_label"
@@ -498,6 +514,17 @@ msgstr "Cadenas a procesar"
 #: TRAExportar.pt
 msgid "gvSIGi18n_NombreMetricaInformeProgreso_translation_changes_label"
 msgstr "Traducciones cambiadas"
+
+
+#. Default: "Translation Status changes"
+#: TRAExportar.pt
+msgid "gvSIGi18n_NombreMetricaInformeProgreso_translation_status_changes_label"
+msgstr "Traducciones con cambios de estado"
+
+#. Default: "String sources changes"
+#: TRAExportar.pt
+msgid "gvSIGi18n_NombreMetricaInformeProgreso_string_sources_changes_label"
+msgstr "Traducciones con cambios de fuentes"
 
 #. Default: "Translations created as pending"
 #: TRAExportar.pt
