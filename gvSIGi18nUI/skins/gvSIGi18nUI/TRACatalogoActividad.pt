@@ -75,7 +75,6 @@
 					</div>
 				</tal:block>
                 
-			
 				<metal:block metal:use-macro="here/TRACatalogoActividad_inner/macros/tTRACatalogoActividadInner" />
 			</tal:block>
 			
@@ -83,21 +82,38 @@
 			<tal:block tal:condition="not: pNoCacheAllowed">
 
 			    <tal:block tal:define="pInvalidateObsoleteReport python: here.TRAgvSIGi18n_tool.fInvalidateObsoleteActivityReport( here,)">
-					<div class="portalMessage" tal:condition="python: (not pInvalidateObsoleteReport.get( 'invalidated', False)) and pInvalidateObsoleteReport.get( 'changes_recorded', 0)">					
-					    <span tal:content="python: '%s %s.' % ( here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_ActivityReport_SlightlyObsoleteAfterChanges', 'Activity Report slightly obsolete after changes to translations:-'), pInvalidateObsoleteReport.get( 'changes_recorded', 0),)" />
-						<br/>
-						<span tal:content="python: '%s %d' % ( 
-							here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_ActivityReport_ShallBeRegeneratedAfterActivity', 'Shall be refreshed after additional activity: -'), 
-							pInvalidateObsoleteReport.get( 'changes_threshold', 0) - pInvalidateObsoleteReport.get( 'changes_recorded', 0), 
-						)" /> 
-						<span tal:content="python: ', %s %d %s.' % ( 
-							here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_StatusReport_OrAfterTime', 'or in-'), 
-							pInvalidateObsoleteReport.get( 'seconds_threshold', 0) - pInvalidateObsoleteReport.get( 'seconds_lapsed', 0), 
-							here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_Seconds', 'Seconds-'), 							
-						)" /> 
-					</div>
-				    <br/>
+					
+					<tal:block tal:condition="python: not ( pInvalidateObsoleteReport and pInvalidateObsoleteReport.get( 'success', False))"  >
+						<p>
+							<font size="2" color="red"
+								tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_ActivityReport_ErrorRefreshing', 'Error refreshing Activity Report-')" />
+						</p>
+					</tal:block>
+					
+					<tal:block tal:condition="python: pInvalidateObsoleteReport and pInvalidateObsoleteReport.get( 'sucess', False)"  >
+						<div class="portalMessage" tal:condition="python: (not pInvalidateObsoleteReport.get( 'invalidated', False)) and pInvalidateObsoleteReport.get( 'changes_recorded', 0)">					
+							<span tal:content="python: '%s %s.' % ( here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_ActivityReport_SlightlyObsoleteAfterChanges', 'Activity Report slightly obsolete after changes to translations:-'), pInvalidateObsoleteReport.get( 'changes_recorded', 0),)" />
 
+							<tal:block tal:condition="python: not pInvalidateObsoleteReport.get( 'can_ellaborate', False)"  >
+								<br/>
+								<span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_ActivityReport_WillNotBeRegeneratedForUsersWithoutPermission', 'Shall Not be refreshed because you have no permission to ellaborate it.-')" /> 
+							</tal:block>
+							
+							<tal:block tal:condition="python: pInvalidateObsoleteReport.get( 'can_ellaborate', False)"  >
+								<br/>
+								<span tal:content="python: '%s %d' % ( 
+									here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_ActivityReport_ShallBeRegeneratedAfterActivity', 'Shall be refreshed after additional activity: -'), 
+									pInvalidateObsoleteReport.get( 'changes_threshold', 0) - pInvalidateObsoleteReport.get( 'changes_recorded', 0), 
+								)" /> 
+								<span tal:content="python: ', %s %d %s.' % ( 
+									here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_StatusReport_OrAfterTime', 'or in-'), 
+									pInvalidateObsoleteReport.get( 'seconds_threshold', 0) - pInvalidateObsoleteReport.get( 'seconds_lapsed', 0), 
+									here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_Seconds', 'Seconds-'), 							
+								)" /> 
+							</tal:block>
+						</div>
+						<br/>
+					</tal:block>
 				</tal:block>
 				
 				

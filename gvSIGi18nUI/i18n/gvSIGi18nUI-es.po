@@ -4971,3 +4971,14 @@ msgstr "REALMENTE desea aplicar el LOTE a TODAS las traducciones SELECCIONADAS ?
 
 
 
+#. Default: "Error refreshing Activity Report"
+#: TRACatalogoActividad.pt
+msgid "gvSIGi18n_ActivityReport_ErrorRefreshing"
+msgstr "Error refrescando Informe de Actividad"
+
+
+#. Default: "Shall Not be refreshed because you have no permission to ellaborate it."
+#: TRACatalogoActividad.pt
+msgid "gvSIGi18n_ActivityReport_WillNotBeRegeneratedForUsersWithoutPermission"
+msgstr "No sera refrescado porque Usted no tiene permisos para generarlo."
+

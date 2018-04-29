@@ -48,6 +48,11 @@ cTRABGColor_Translation_NotChangedInServer = '#F0E000';
 cTRABGColor_Translation_BatchStatusChangeRecorded = cTRABGColor_Translation_ChangedStatus;
 
 
+cTRAMaxRowsToLoopForRowElements      = 30000;
+cTRAMaxRowsToLoopForOtherElements    = 500
+
+
+
 /* #################################################################
 Scripts to be executed upon loading of the page:
 Open editor on the first translation row.
@@ -469,7 +474,7 @@ function fTRA_GetIndexFilaConSimboloCadena( theSimboloCadena) {
         return -1;
     }
 
-    for ( unIndexFila = 1; unIndexFila < 10000; unIndexFila++) {
+    for ( unIndexFila = 1; unIndexFila < cTRAMaxRowsToLoopForRowElements; unIndexFila++) {
 
         var unaIdElementoSimboloCadena = 'cid_ColumnaCadenasTraducidas_' + unIndexFila + '_simboloCadena';
     
@@ -486,6 +491,35 @@ function fTRA_GetIndexFilaConSimboloCadena( theSimboloCadena) {
     return -1;
 }
 
+
+// ACV 20110220 stop loop if element not found by id
+function fTRA_GetIndexFilaConSimboloCadena( theSimboloCadena) {
+
+    if ( (!theSimboloCadena) || ( theSimboloCadena.length < 1)) {
+        return -1;
+    }
+
+    for ( unIndexFila = 1; unIndexFila < cTRAMaxRowsToLoopForRowElements; unIndexFila++) {
+
+        var unaIdElementoSimboloCadena = 'cid_ColumnaCadenasTraducidas_' + unIndexFila + '_simboloCadena';
+    
+        var unElementoSimboloCadena	= document.getElementById( unaIdElementoSimboloCadena);
+        
+        if ( ! unElementoSimboloCadena) {
+            break;
+        }
+        
+        var unFirstChild = unElementoSimboloCadena.firstChild;
+        if ( unFirstChild) {
+    
+            var unSimboloCadena = unFirstChild.data;
+            if ( unSimboloCadena == theSimboloCadena) {
+                 return unIndexFila;
+            }
+        }
+    }
+    return -1;
+}
 
 
 
@@ -1056,31 +1090,84 @@ function pTRAShowElement( theElement) {
 
 
 function pTRAHideSymbolColumn( ) {
-
+    
+    var unElement = document.getElementById( 'cid_ColumnaSimbolos');
+    if ( unElement && hasClassName( unElement, 'TRAstyle_Display')) {
+        replaceClassName( unElement, 'TRAstyle_Display', 'TRAstyle_NoDisplay');
+    }   
+    
     var unElement = document.getElementById( 'cid_ColumnaSimbolos_show_help');
     if ( unElement && hasClassName( unElement, 'TRAstyle_NoDisplay')) {
         replaceClassName( unElement, 'TRAstyle_NoDisplay', 'TRAstyle_Display');
-    }                            
+    }         
+                         
 
-    for( var unIdCounter=0; unIdCounter < 10000; unIdCounter++) {
-
+    for( var unIdCounter=1; unIdCounter <= cTRAMaxRowsToLoopForRowElements; unIdCounter++) {
+     
+        var unCellElement = document.getElementById( 'cid_FilaParaSimboloSobreTraducciones_' + unIdCounter );
+        if ( !unCellElement) {
+            break;
+        }
+        if ( hasClassName( unCellElement, 'TRAstyle_NoDisplay')) {
+            replaceClassName( unCellElement, 'TRAstyle_NoDisplay', 'TRAstyle_Display');
+        }
+        
+        /*        
         var unCellElement = document.getElementById( 'cid_ColumnaSimbolos_' + unIdCounter );
+        if ( !unCellElement) {
+            break;
+        }
+        if ( hasClassName( unCellElement, 'TRAstyle_NoDisplay')) {
+            replaceClassName( unCellElement, 'TRAstyle_NoDisplay', 'TRAstyle_Display');
+        }
+        */
+        
+        /*
+        var unCellElement = document.getElementById( 'cid_ColumnaSimbolos_' + unIdCounter + '_fillerForSymbol');
         if ( !unCellElement) {
             break;
         }
         if ( hasClassName( unCellElement, 'TRAstyle_Display')) {
             replaceClassName( unCellElement, 'TRAstyle_Display', 'TRAstyle_NoDisplay');
+        }        
+        */        
+        
+        /*
+        var unCellElement = document.getElementById( 'cid_ColumnaSimbolos_' + unIdCounter + '_fillerForLanguageAndStatusColumns');
+        if ( !unCellElement) {
+            break;
         }
-    
-        if ( unIdCounter > 0) {
-            var unLabelElement = document.getElementById( 'cid_ColumnaSimbolos_' + unIdCounter + '_SymbolDisplay');
-            if ( !unLabelElement) {
-                break;
-            }
-            if ( hasClassName( unLabelElement, 'TRAstyle_Display')) {
-                replaceClassName( unLabelElement, 'TRAstyle_Display', 'TRAstyle_NoDisplay');
-            }                
+        if ( hasClassName( unCellElement, 'TRAstyle_Display')) {
+            replaceClassName( unCellElement, 'TRAstyle_Display', 'TRAstyle_NoDisplay');
+        }        
+
+        var unCellElement = document.getElementById( 'cid_ColumnaSimbolos_' + unIdCounter + '_simboloCadena_SobreTraducciones');
+        if ( !unCellElement) {
+            break;
         }
+        if ( hasClassName( unCellElement, 'TRAstyle_Display')) {
+            replaceClassName( unCellElement, 'TRAstyle_Display', 'TRAstyle_DNoisplay');
+        }    
+        */        
+        var unCellElement = document.getElementById( 'cid_ColumnaSimbolos_' + unIdCounter + '_simboloCadena_SobreTraducciones_Display');
+        if ( !unCellElement) {
+            break;
+        }
+        if ( hasClassName( unCellElement, 'TRAstyle_Display')) {
+            replaceClassName( unCellElement, 'TRAstyle_Display', 'TRAstyle_DNoisplay');
+        }    
+               
+
+        
+        
+        var unLabelElement = document.getElementById( 'cid_ColumnaSimbolos_' + unIdCounter + '_SymbolDisplay');
+        if ( !unLabelElement) {
+            break;
+        }
+        if ( hasClassName( unLabelElement, 'TRAstyle_Display')) {
+            replaceClassName( unLabelElement, 'TRAstyle_Display', 'TRAstyle_NoDisplay');
+        }                
+
     }  
     return true;
 }
@@ -1090,31 +1177,71 @@ function pTRAHideSymbolColumn( ) {
 
 
 function pTRAShowSymbolColumn( ) {
-
+    
+    var unElement = document.getElementById( 'cid_ColumnaSimbolos');
+    if ( unElement && hasClassName( unElement, 'TRAstyle_NoDisplay')) {
+        replaceClassName( unElement, 'TRAstyle_NoDisplay', 'TRAstyle_Display');
+    }        
+    
     var unElement = document.getElementById( 'cid_ColumnaSimbolos_show_help');
     if ( unElement &&  hasClassName( unElement, 'TRAstyle_Display')) {
         replaceClassName( unElement, 'TRAstyle_Display', 'TRAstyle_NoDisplay');
-    }                            
+    }            
+                    
+  
+    for( var unIdCounter=1; unIdCounter <= cTRAMaxRowsToLoopForRowElements; unIdCounter++) {
 
-    for( var unIdCounter=0; unIdCounter < 10000; unIdCounter++) {
-
-        var unCellElement = document.getElementById( 'cid_ColumnaSimbolos_' + unIdCounter );
+        var unCellElement = document.getElementById( 'cid_ColumnaSimbolos_' + unIdCounter + '_fillerForSymbol');
         if ( !unCellElement) {
             break;
         }
         if ( hasClassName( unCellElement, 'TRAstyle_NoDisplay')) {
             replaceClassName( unCellElement, 'TRAstyle_NoDisplay', 'TRAstyle_Display');
+        }        
+        
+            
+        var unCellElement = document.getElementById( 'cid_ColumnaSimbolos_' + unIdCounter + '_fillerForLanguageAndStatusColumns');
+        if ( !unCellElement) {
+            break;
         }
-    
-        if ( unIdCounter > 0) {
-            var unLabelElement = document.getElementById( 'cid_ColumnaSimbolos_' + unIdCounter + '_SymbolDisplay');
-            if ( !unLabelElement) {
-                break;
-            }
-            if ( hasClassName( unLabelElement, 'TRAstyle_NoDisplay')) {
-                replaceClassName( unLabelElement, 'TRAstyle_NoDisplay', 'TRAstyle_Display');
-            }                
+        if ( hasClassName( unCellElement, 'TRAstyle_NoDisplay')) {
+            replaceClassName( unCellElement, 'TRAstyle_NoDisplay', 'TRAstyle_Display');
+        }        
+        
+        var unCellElement = document.getElementById( 'cid_ColumnaSimbolos_' + unIdCounter + '_simboloCadena_SobreTraducciones');
+        if ( !unCellElement) {
+            break;
         }
+        if ( hasClassName( unCellElement, 'TRAstyle_NoDisplay')) {
+            replaceClassName( unCellElement, 'TRAstyle_NoDisplay', 'TRAstyle_Display');
+        }        
+         
+        
+        var unCellElement = document.getElementById( 'cid_ColumnaSimbolos_' + unIdCounter + '_simboloCadena_SobreTraducciones_Display');
+        if ( !unCellElement) {
+            break;
+        }
+        if ( hasClassName( unCellElement, 'TRAstyle_NoDisplay')) {
+            replaceClassName( unCellElement, 'TRAstyle_NoDisplay', 'TRAstyle_Display');
+        }   
+               
+        var unCellElement = document.getElementById( 'cid_ColumnaSimbolos_' + unIdCounter );
+        if ( !unCellElement) {
+            break;
+        }
+        if ( hasClassName( unCellElement, 'TRAstyle_Display')) {
+            replaceClassName( unCellElement, 'TRAstyle_Display', 'TRAstyle_NoDisplay');
+        }
+ 
+        
+        var unLabelElement = document.getElementById( 'cid_ColumnaSimbolos_' + unIdCounter + '_SymbolDisplay');
+        if ( !unLabelElement) {
+            break;
+        }
+        if ( hasClassName( unCellElement, 'TRAstyle_Display')) {
+            replaceClassName( unCellElement, 'TRAstyle_Display', 'TRAstyle_NoDisplay');
+        }
+
     }  
 }
 
@@ -1254,7 +1381,7 @@ function pTRAToggleIdiomaReferencia( theIndexIdioma ) {
 /* cleans  the NombresModulos filter parameter */
 function pTRAResetFiltroNombresModulos( ) {
 
-    for( var unIdCounter=0; unIdCounter < 10000; unIdCounter++) {
+    for( var unIdCounter=0; unIdCounter < cTRAMaxRowsToLoopForOtherElements; unIdCounter++) {
 
         var unElement = document.getElementById( 'theNombreModulo_' + unIdCounter );
     
@@ -5377,7 +5504,7 @@ function pTRAToggleAllReferenceLanguages( ) {
         return false;
     }
     var unNewValueForAllReferenceLanguages = unElementAllReferenceLanguages.checked;
-    for( var unIdCounter=0; unIdCounter < 10000; unIdCounter++) {
+    for( var unIdCounter=0; unIdCounter < cTRAMaxRowsToLoopForOtherElements; unIdCounter++) {
 
         var unElement = document.getElementById( 'theIdiomasReferencia_' + unIdCounter );
     
@@ -5395,7 +5522,7 @@ function pTRAToggleAllReferenceLanguages( ) {
 /* selects all of the Languages for translator's reference */
 function pTRASelectAllReferenceLanguages( ) {
 
-    for( var unIdCounter=0; unIdCounter < 10000; unIdCounter++) {
+    for( var unIdCounter=0; unIdCounter < cTRAMaxRowsToLoopForOtherElements; unIdCounter++) {
 
         var unElement = document.getElementById( 'theIdiomasReferencia_' + unIdCounter );
     
@@ -5412,7 +5539,7 @@ function pTRASelectAllReferenceLanguages( ) {
 /* deselects the Languages for translator's reference */
 function pTRASelectNoReferenceLanguages( ) {
 
-    for( var unIdCounter=0; unIdCounter < 10000; unIdCounter++) {
+    for( var unIdCounter=0; unIdCounter < cTRAMaxRowsToLoopForOtherElements; unIdCounter++) {
 
         var unElement = document.getElementById( 'theIdiomasReferencia_' + unIdCounter );
     
@@ -5434,7 +5561,7 @@ function pTRAToggleAllModules( ) {
         return false;
     }
     unNewValueForAllModules = unElementAllModules.checked;
-    for( var unIdCounter=0; unIdCounter < 10000; unIdCounter++) {
+    for( var unIdCounter=0; unIdCounter < cTRAMaxRowsToLoopForOtherElements; unIdCounter++) {
 
         var unElement = document.getElementById( 'theNombreModulo_' + unIdCounter );
     
@@ -5451,7 +5578,7 @@ function pTRAToggleAllModules( ) {
 /* selects all the Modules in the filter  */
 function pTRASelectAllModules( ) {
 
-    for( var unIdCounter=0; unIdCounter < 10000; unIdCounter++) {
+    for( var unIdCounter=0; unIdCounter < cTRAMaxRowsToLoopForOtherElements; unIdCounter++) {
 
         var unElement = document.getElementById( 'theNombreModulo_' + unIdCounter );
     
@@ -5468,7 +5595,7 @@ function pTRASelectAllModules( ) {
 /* deselects the Modules in the filter  */
 function pTRASelectNoModules( ) {
 
-    for( var unIdCounter=0; unIdCounter < 10000; unIdCounter++) {
+    for( var unIdCounter=0; unIdCounter < 1000; unIdCounter++) {
 
         var unElement = document.getElementById( 'theNombreModulo_' + unIdCounter );
     
@@ -5759,7 +5886,7 @@ function pTRAToggleAllBatchStatusChanges( theTranslationStatus) {
     
     if ( !unNewValueForAllBatchStatusChanges) {
         unElementoBatchStatusChangeIds.value = ''
-        for( var unIdCounter=1; unIdCounter < 10000; unIdCounter++) {
+        for( var unIdCounter=1; unIdCounter < cTRAMaxRowsToLoopForRowElements; unIdCounter++) {
             if (!fTRA_SetBGColorEnBotonEstadoFilaNumero( unIdCounter, theTranslationStatus, '')) {
                 break;
             }
@@ -5801,7 +5928,7 @@ function pTRAToggleAllBatchStatusChanges( theTranslationStatus) {
 
     var unosBatchStatusChangeIds = '';
      
-    for( var unIdCounter=1; unIdCounter < 10000; unIdCounter++) {
+    for( var unIdCounter=1; unIdCounter < cTRAMaxRowsToLoopForRowElements; unIdCounter++) {
 
         var unosDatosEnFila = fTRA_GetDatosEnFilaNumero( unIdCounter);
         if ( !unosDatosEnFila) {

@@ -1627,13 +1627,7 @@ class TRAImportacion_Operaciones_Import:
                                                 theFechaAccionTextual       = unaFechaModificacion, 
                                                 theUsuarioActor             = unUsuarioModificador, 
                                                 theEstadoTraduccion         = cEstadoTraduccionTraducida, 
-                                                theFechaTraduccionTextual   = unaFechaTraduccion, 
-                                                theUsuarioTraductor         = unUsuarioTraductor, 
                                                 theCadenaTraducida          = unaTraduccionEncoded, 
-                                                theFechaRevisionTextual     = unaFechaRevision, 
-                                                theUsuarioRevisor           = unUsuarioRevisor, 
-                                                theFechaDefinitivoTextual   = unaFechaDefinitivo, 
-                                                theUsuarioCoordinador       = unUsuarioCoordinador,
                                                 theComentario               = unComentarioTraduccionScanned or cMarcaDeComentarioSinCambios,                                            
                                             )
                                                                                 
@@ -1801,13 +1795,7 @@ class TRAImportacion_Operaciones_Import:
                                                     theFechaAccionTextual       = unaFechaModificacionACambiar, 
                                                     theUsuarioActor             = unUsuarioModificadorACambiar, 
                                                     theEstadoTraduccion         = unEstadoTraduccionACambiar, 
-                                                    theFechaTraduccionTextual   = unaFechaTraduccionACambiar, 
-                                                    theUsuarioTraductor         = unTraductorACambiar, 
                                                     theCadenaTraducida          = unaCadenaTraducidaACambiar, 
-                                                    theFechaRevisionTextual     = unaFechaRevisionACambiar, 
-                                                    theUsuarioRevisor           = unRevisorACambiar, 
-                                                    theFechaDefinitivoTextual   = unaFechaDefinitivoACambiar, 
-                                                    theUsuarioCoordinador       = unCoordinadorACambiar,
                                                     theComentario               = unComentarioTraduccionScanned or cMarcaDeComentarioSinCambios, 
                                                 )                                                    
                                                 

@@ -1,6 +1,18 @@
 gvSIG-i18n RELEASE NOTES
 ========================
 
+
+version 2.1.2 in progress
+
+Fixed bug: No Activity Report is presented to Users, like Anonymous, that are not permitted to ellaborate an up-to-date Activity Report, when the existing Activity Report is obsolete or none exists.
+Addition: In the translations page, when the user requests to hide the left-side column with symbols, then rows with the symbol are added on top of each translation.
+
+
+------------------------------------------------
+
+|
+|
+
 version 2.1.1
 
 Addition: Translations Page.Options: added options to control whether actions should be protected by confirmation dialogs for translation changes, status changes and translation deletions.

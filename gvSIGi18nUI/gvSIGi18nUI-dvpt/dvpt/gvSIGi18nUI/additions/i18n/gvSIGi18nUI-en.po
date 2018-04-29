@@ -4861,3 +4861,17 @@ msgstr "Do you want to apply BATCH to ALL the SELECTED translations ?"
 msgid "gvSIGi18n_ReallyConfirmBatchMsg"
 msgstr "Do you REALLY want to apply BATCH to ALL the SELECTED translations ?"
 
+
+
+#. Default: "Error refreshing Activity Report"
+#: TRACatalogoActividad.pt
+msgid "gvSIGi18n_ActivityReport_ErrorRefreshing"
+msgstr "Error refreshing Activity Report"
+
+
+#. Default: "Shall Not be refreshed because you have no permission to ellaborate it."
+#: TRACatalogoActividad.pt
+msgid "gvSIGi18n_ActivityReport_WillNotBeRegeneratedForUsersWithoutPermission"
+msgstr "Shall Not be refreshed because you have no permission to ellaborate it."
+
+

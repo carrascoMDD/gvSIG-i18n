@@ -6228,7 +6228,7 @@ def _pRenderList(
             <thead>
                 <tr>
                     <th width="25%%"  valign="bottom" align="left" class="TRAstyle_Display TRAstyle_Clickable" 
-                        id="cid_ColumnaSimbolos_0" 
+                        id="cid_ColumnaSimbolos" 
                         onclick="pTRAHideSymbolColumn(); return true;" >
                         <font size="1">%(gvSIGi18n_TRATraduccion_attr_simbolo_label)s</font>
                         <br/>
@@ -6363,17 +6363,10 @@ def _pRenderList(
     unosIdiomasIdiomasReferenciaSinElPrincipal = [ unIdiomaReferencia for unIdiomaReferencia in pIdiomasReferencia if not ( unIdiomaReferencia ==  pCodigoIdiomaCursor) ]
      
     
-    unColSpanTraduccionIdiomaReferencia = 1
-    
-    #if pShowStateTransitionColumns:
-        #if ( cEstadoTraduccionTraducida in pAllTargetStatusChanges):
-            #unColSpanTraduccionIdiomaReferencia += 1
-            
-        #if ( cEstadoTraduccionRevisada in pAllTargetStatusChanges):
-            #unColSpanTraduccionIdiomaReferencia += 1
-            
-        #if ( cEstadoTraduccionDefinitiva in pAllTargetStatusChanges):
-            #unColSpanTraduccionIdiomaReferencia += 1
+    unColSpanTraduccionIdiomaReferencia   = 1
+    unColSpanSimboloEnColumnaTraducciones = 1 + ( ( pShowStateTransitionColumns and len( someEstadosConBotonesEnColumnas)) or 0)
+
+
                         
     unYaRendereadoEditor = False
     
@@ -6437,6 +6430,7 @@ def _pRenderList(
                     
         
         unDictRenderValues = { 
+            'gvSIGi18n_TRATraduccion_attr_simbolo_label':          mfAsUnicode( aTranslationsCache[ 'gvSIGi18n_TRATraduccion_attr_simbolo_label']),
             'portal_url':                                           aPortalURL, 
             'entrar_en_edicion':                                    unEntrarEnEdicionEventHandler,
             'symbol_cell_counter':                                  pSymbolCellCounter,
@@ -6470,13 +6464,13 @@ def _pRenderList(
             'pTradRow_getUsuarioTraductor':                         fCGIE(mfAsUnicode(pTradRow_getUsuarioTraductor)),
             'pTradRow_getFechaCreacion':                            pTradRow_getFechaCreacion,
             'pTradRow_getUsuarioCreador':                           fCGIE(mfAsUnicode(pTradRow_getUsuarioCreador)),
+            'colspan_SimboloEnColumnaTraducciones':                 unColSpanSimboloEnColumnaTraducciones,
         }
-        
         
 
         anOutput.write( u"""  
             <tr class="%s TRAstyle_NoDisplay"  id="cid_TRAInteractionMessageHolder_%d">
-                <td colspan="%d" class="TRAstyle_Clickable" %s >
+                <td colspan="%d" class="TRAstyle_Clickable" %s   valign="top">
                     <font size="1">
                         <strong>%s</strong>
                         <span  id="cid_TRAInteractionMessage_%d" >
@@ -6486,12 +6480,33 @@ def _pRenderList(
             \n""" %  (  
             cClasesFilas [ pIndex %2],
             pSymbolCellCounter,
-            5 + len( someEstadosConBotonesEnColumnas), 
+            pNumTotalColumns, 
             unDictRenderValues.get( 'entrar_en_edicion', ''),
             aTranslationsCache[ 'gvSIGi18n_InteracionStatusMessage'],
             pSymbolCellCounter
         ))
         
+        
+        
+        
+        # ACV 20110220
+                
+        anOutput.write( u"""  
+            <tr class="%(pClassFila)s TRAstyle_NoDisplay"  id="cid_FilaParaSimboloSobreTraducciones_%(symbol_cell_counter)d">
+                <td class="xxTRAstyle_NoDisplay" id="cid_ColumnaSimbolos_%(symbol_cell_counter)d_fillerForSymbol" />
+                <td colspan="3" class="xxTRAstyle_NoDisplay" id="cid_ColumnaSimbolos_%(symbol_cell_counter)d_fillerForLanguageAndStatusColumns" >
+                     %(gvSIGi18n_TRATraduccion_attr_simbolo_label)s
+                <td/>
+                <td colspan="%(colspan_SimboloEnColumnaTraducciones)d" 
+                    id="cid_ColumnaCadenasTraducidas_%(symbol_cell_counter)d_simboloCadena_SobreTraducciones"                    
+                    class="TRAstyle_Clickable xxTRAstyle_NoDisplay"  valign="top" %(entrar_en_edicion)s >
+                    <font size="1">
+                        <span id="cid_ColumnaCadenasTraducidas_%(symbol_cell_counter)d_simboloCadena_SobreTraducciones_Display" >%(simbolo-cadena-forWrapLines)s</span>
+                    </font>
+                </td>
+            </tr>
+            \n""" % unDictRenderValues
+        )
          
         
         anOutput.write( u"""  
