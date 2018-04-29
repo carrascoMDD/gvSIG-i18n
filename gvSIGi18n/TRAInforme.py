@@ -32,7 +32,8 @@ __docformat__ = 'plaintext'
 from AccessControl import ClassSecurityInfo
 from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.TRAArquetipo import TRAArquetipo
-from Products.gvSIGi18n.TRAInforme_Operaciones import TRAInforme_Operaciones
+from TRAInforme_Operaciones import TRAInforme_Operaciones
+from Products.gvSIGi18n.TRAConRegistroActividad import TRAConRegistroActividad
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
@@ -100,7 +101,7 @@ schema = Schema((
         description2="Import process state, as active or inactive.",
         ea_guid="{548B9F5A-DEA3-4daa-82A4-FA62B7523978}",
         vocabulary2=['Inactive', 'Active', ],
-        read_only=True,
+        read_only="True",
         scale="0",
         label="Estado del Proceso",
         length="0",
@@ -130,7 +131,7 @@ schema = Schema((
         styleex="volatile=0;",
         description2="Whether the import process has ever started to execute.",
         ea_guid="{C86A43EB-2E89-4e09-96A6-10557B82BB2F}",
-        read_only=True,
+        read_only="True",
         scale="0",
         default="False",
         label="Comenzo a ejecutar",
@@ -161,7 +162,7 @@ schema = Schema((
         styleex="volatile=0;",
         description2="User who requested the ellaboration of the report.",
         ea_guid="{8BD63B05-0F14-49b3-80A1-0222C34E3C8E}",
-        read_only=True,
+        read_only="True",
         scale="0",
         label="Usuario Informador",
         length="0",
@@ -191,7 +192,7 @@ schema = Schema((
         styleex="volatile=0;",
         description2="Whether the import process has sucessfully completed execution.",
         ea_guid="{CA62E5F4-34EB-4d25-918A-DB1029ABAD35}",
-        read_only=True,
+        read_only="True",
         scale="0",
         default="False",
         label="Exito?",
@@ -222,7 +223,7 @@ schema = Schema((
         styleex="volatile=0;",
         description2="Date and time when the status report ellaboration started.",
         ea_guid="{0EC44BD8-E02D-4521-93F1-36C0FB5F0872}",
-        read_only=True,
+        read_only="True",
         scale="0",
         label="Fecha y Hora de Comienzo",
         length="0",
@@ -252,7 +253,7 @@ schema = Schema((
         styleex="volatile=0;",
         description2="Date and Time when the ellaboration of the status report was terminated.",
         ea_guid="{7BD0FCAF-EBFB-4e98-A55C-9EB75FACAA94}",
-        read_only=True,
+        read_only="True",
         scale="0",
         label="Fecha y Hora de Fin",
         length="0",
@@ -282,7 +283,7 @@ schema = Schema((
         styleex="volatile=0;",
         description2="When the ellaboration of the status report terminates with an error, contains the applicacion exception report.",
         ea_guid="{4CE08483-728C-4fe1-98A5-C6CF6FF8DD28}",
-        read_only=True,
+        read_only="True",
         scale="0",
         label="Informe de Excepcion",
         length="0",
@@ -312,7 +313,7 @@ schema = Schema((
         styleex="volatile=0;",
         description2="Report or the translation status, summarized by languages.",
         ea_guid="{13808998-877C-4cb2-923E-77C93CEEB9EF}",
-        read_only=True,
+        read_only="True",
         scale="0",
         exclude_from_views="[ 'Textual',   'General', ]",
         label="Informe por Idiomas",
@@ -344,7 +345,7 @@ schema = Schema((
         styleex="volatile=0;",
         description2="When the ellaboration of the Languages status report terminates with an error, contains the applicacion exception report.",
         ea_guid="{B0CD5D6A-FA31-43f0-B518-21FE7E9D268E}",
-        read_only=True,
+        read_only="True",
         scale="0",
         label="Excepcion en Informe Idiomas",
         length="0",
@@ -374,7 +375,7 @@ schema = Schema((
         styleex="volatile=0;",
         description2="Report or the translation status, summarized by modules and detailed by languages.",
         ea_guid="{F3179FE4-09FD-4ecb-929A-AE8CD4B5D418}",
-        read_only=True,
+        read_only="True",
         scale="0",
         exclude_from_views="[ 'Textual',   'General', ]",
         label="Informe por Modulos e Idiomas",
@@ -406,7 +407,7 @@ schema = Schema((
         styleex="volatile=0;",
         description2="When the ellaboration of the Modules status report terminates with an error, contains the applicacion exception report.",
         ea_guid="{068E1D59-A5B9-4a5c-89DE-4DE7FCB02B9B}",
-        read_only=True,
+        read_only="True",
         scale="0",
         label="Excepcion en Informe por Modulos",
         length="0",
@@ -454,25 +455,37 @@ schema = Schema((
 TRAInforme_schema = OrderedBaseFolderSchema.copy() + \
     getattr(TRAArquetipo, 'schema', Schema(())).copy() + \
     getattr(TRAInforme_Operaciones, 'schema', Schema(())).copy() + \
+    getattr(TRAConRegistroActividad, 'schema', Schema(())).copy() + \
     schema.copy()
 
 ##code-section after-schema #fill in your manual code here
 ##/code-section after-schema
 
-class TRAInforme(OrderedBaseFolder, TRAArquetipo, TRAInforme_Operaciones):
+class TRAInforme(OrderedBaseFolder, TRAArquetipo, TRAInforme_Operaciones, TRAConRegistroActividad):
     """
     """
     security = ClassSecurityInfo()
-    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAArquetipo,'__implements__',()),) + (getattr(TRAInforme_Operaciones,'__implements__',()),)
+    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAArquetipo,'__implements__',()),) + (getattr(TRAInforme_Operaciones,'__implements__',()),) + (getattr(TRAConRegistroActividad,'__implements__',()),)
 
     # This name appears in the 'add' box
     archetype_name = 'Informe de Estado'
 
     meta_type = 'TRAInforme'
     portal_type = 'TRAInforme'
+
+
+    creation_date_field = 'fechaCreacion'
+    creation_user_field = 'usuarioCreador'
+    modification_date_field = 'fechaModificacion'
+    modification_user_field = 'usuarioModificador'
+    deletion_date_field = 'fechaEliminacion'
+    deletion_user_field = 'usuarioEliminador'
+    is_inactive_field = 'estaInactivo'
+    change_counter_field = 'contadorCambios'
+    change_log_field = 'registroDeCambios'
     use_folder_tabs = 0
 
-    allowed_content_types = [] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRAInforme_Operaciones, 'allowed_content_types', []))
+    allowed_content_types = [] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRAInforme_Operaciones, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', []))
     filter_content_types = 1
     global_allow = 0
     content_icon = 'trainforme.gif'
@@ -492,57 +505,21 @@ class TRAInforme(OrderedBaseFolder, TRAArquetipo, TRAInforme_Operaciones):
     actions =  (
 
 
-       {'action': "string:$object_url/content_status_history",
-        'category': "object",
-        'id': 'content_status_history',
-        'name': 'State',
-        'permissions': ("View",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:${object_url}/folder_listing",
-        'category': "folder",
-        'id': 'folderlisting',
-        'name': 'Folder Listing',
-        'permissions': ("View",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:${object_url}/sharing",
-        'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:${object_url}/reference_graph",
-        'category': "object",
-        'id': 'references',
-        'name': 'References',
-        'permissions': ("Modify portal content",),
-        'condition': 'python:0'
-       },
-
-
        {'action': "string:$object_url/Editar",
         'category': "object",
         'id': 'edit',
         'name': 'Edit',
         'permissions': ("Modify portal content",),
-        'condition': 'python:1'
+        'condition': """python:object.fAllowWrite()"""
        },
 
 
        {'action': "string:${object_url}/TRAElaborarInforme_action",
-        'category': "object",
-        'id': 'infomar',
+        'category': "object_buttons",
+        'id': 'informar',
         'name': 'Build Report',
         'permissions': ("Modify portal content",),
-        'condition': 'python:True or ( not object.getHaComenzado()) or object.getEsAutoActualizable()'
+        'condition': """python:object.fAllowWrite() and ( ( True or not object.getHaComenzado()) or object.getEsAutoActualizable())"""
        },
 
 
@@ -551,7 +528,52 @@ class TRAInforme(OrderedBaseFolder, TRAArquetipo, TRAInforme_Operaciones):
         'id': 'view',
         'name': 'View',
         'permissions': ("View",),
-        'condition': 'python:1'
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:${object_url}/sharing",
+        'category': "object",
+        'id': 'local_roles',
+        'name': 'Sharing',
+        'permissions': ("Manage properties",),
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/folder_listing",
+        'category': "folder",
+        'id': 'folderlisting',
+        'name': 'Folder Listing',
+        'permissions': ("View",),
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/reference_graph",
+        'category': "object",
+        'id': 'references',
+        'name': 'References',
+        'permissions': ("Modify portal content",),
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/TRASeguridadUsuarioConectado",
+        'category': "object_buttons",
+        'id': 'TRA_SeguridadUsuarioConectado',
+        'name': 'Permissions',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:$object_url/content_status_history",
+        'category': "object",
+        'id': 'content_status_history',
+        'name': 'State',
+        'permissions': ("View",),
+        'condition': """python:0"""
        },
 
 
@@ -565,13 +587,6 @@ class TRAInforme(OrderedBaseFolder, TRAArquetipo, TRAInforme_Operaciones):
     ##/code-section class-header
 
     # Methods
-
-    security.declarePublic('cb_isCopyable')
-    def cb_isCopyable(self):
-        """
-        """
-        
-        return False
 
     security.declarePublic('manage_afterAdd')
     def manage_afterAdd(self,item,container):
@@ -593,10 +608,31 @@ class TRAInforme(OrderedBaseFolder, TRAArquetipo, TRAInforme_Operaciones):
         """
         
         return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
+
+    security.declarePublic('cb_isMoveable')
+    def cb_isMoveable(self):
+        """
+        """
+        
+        return False
+
+    security.declarePublic('cb_isCopyable')
+    def cb_isCopyable(self):
+        """
+        """
+        
+        return False
+
+    security.declarePublic('displayContentsTab')
+    def displayContentsTab(self):
+        """
+        """
+        
+        return False
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:
-        if a['id'] in ['metadata']:
+        if a['id'] in ['metadata', 'sharing', 'folderContents']:
             a['visible'] = 0
     return fti
 

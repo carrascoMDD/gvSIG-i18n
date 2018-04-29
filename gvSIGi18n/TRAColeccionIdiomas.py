@@ -32,7 +32,7 @@ __docformat__ = 'plaintext'
 from AccessControl import ClassSecurityInfo
 from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.TRAColeccionArquetipos import TRAColeccionArquetipos
-from Products.gvSIGi18n.TRAColeccionIdiomas_Operaciones import TRAColeccionIdiomas_Operaciones
+from TRAColeccionIdiomas_Operaciones import TRAColeccionIdiomas_Operaciones
 from Products.gvSIGi18n.config import *
 
 ##code-section module-header #fill in your manual code here
@@ -91,6 +91,17 @@ class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccio
 
     meta_type = 'TRAColeccionIdiomas'
     portal_type = 'TRAColeccionIdiomas'
+
+
+    creation_date_field = 'fechaCreacion'
+    creation_user_field = 'usuarioCreador'
+    modification_date_field = 'fechaModificacion'
+    modification_user_field = 'usuarioModificador'
+    deletion_date_field = 'fechaEliminacion'
+    deletion_user_field = 'usuarioEliminador'
+    is_inactive_field = 'estaInactivo'
+    change_counter_field = 'contadorCambios'
+    change_log_field = 'registroDeCambios'
     allowed_content_types = ['TRAIdioma'] + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', [])) + list(getattr(TRAColeccionIdiomas_Operaciones, 'allowed_content_types', []))
     filter_content_types = 1
     global_allow = 0
@@ -104,28 +115,19 @@ class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccio
     typeDescription2 = '''Collection of languages to translate the strings into.'''
     archetype_name_msgid = 'gvSIGi18n_TRAColeccionIdiomas_label'
     factory_methods = { 'TRAIdioma' : 'fCrearIdioma',}
-    factory_enablers = { 'TRAIdioma' : 'fUseCaseCheckDoable_CreateTRAIdioma',}
+    factory_enablers = { 'TRAIdioma' : [ 'fUseCaseCheckDoableFactory', 'Create_TRAIdioma',]}
     allow_discussion = False
 
 
     actions =  (
 
 
-       {'action': "string:$object_url/content_status_history",
+       {'action': "string:${object_url}/sharing",
         'category': "object",
-        'id': 'content_status_history',
-        'name': 'State',
-        'permissions': ("View",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:$object_url/Editar",
-        'category': "object",
-        'id': 'edit',
-        'name': 'Edit',
-        'permissions': ("Modify portal content",),
-        'condition': 'python:0'
+        'id': 'local_roles',
+        'name': 'Sharing',
+        'permissions': ("Manage properties",),
+        'condition': """python:object.fAllowWrite() and object.fRoleQuery_IsManagerOrCoordinator()"""
        },
 
 
@@ -134,16 +136,7 @@ class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccio
         'id': 'folderlisting',
         'name': 'Folder Listing',
         'permissions': ("View",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:${object_url}/sharing",
-        'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
-        'condition': 'python:0'
+        'condition': """python:0"""
        },
 
 
@@ -152,7 +145,7 @@ class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccio
         'id': 'references',
         'name': 'References',
         'permissions': ("Modify portal content",),
-        'condition': 'python:0'
+        'condition': """python:0"""
        },
 
 
@@ -161,16 +154,34 @@ class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccio
         'id': 'view',
         'name': 'View',
         'permissions': ("View",),
-        'condition': 'python:1'
+        'condition': """python:1"""
        },
 
 
-       {'action': "string:${object_url}/sharing",
+       {'action': "string:$object_url/Editar",
         'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
-        'condition': 'python:object.fRoleQuery_IsCoordinator()'
+        'id': 'edit',
+        'name': 'Edit',
+        'permissions': ("Modify portal content",),
+        'condition': """python:object.fAllowWrite()"""
+       },
+
+
+       {'action': "string:${object_url}/TRASeguridadUsuarioConectado",
+        'category': "object_buttons",
+        'id': 'TRA_SeguridadUsuarioConectado',
+        'name': 'Permissions',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:$object_url/content_status_history",
+        'category': "object",
+        'id': 'content_status_history',
+        'name': 'State',
+        'permissions': ("View",),
+        'condition': """python:0"""
        },
 
 
@@ -199,6 +210,13 @@ class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccio
         
         return TRAColeccionArquetipos.manage_afterAdd( self, item, container)
 
+    security.declarePublic('cb_isMoveable')
+    def cb_isMoveable(self):
+        """
+        """
+        
+        return False
+
     security.declarePublic('manage_beforeDelete')
     def manage_beforeDelete(self,item,container):
         """
@@ -212,10 +230,17 @@ class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccio
         """
         
         return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
+
+    security.declarePublic('displayContentsTab')
+    def displayContentsTab(self):
+        """
+        """
+        
+        return False
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:
-        if a['id'] in ['metadata', 'sharing']:
+        if a['id'] in ['metadata', 'folderContents']:
             a['visible'] = 0
     return fti
 

@@ -122,7 +122,7 @@ def fExecutionRecordPrintString( theExecutionRecord, ):
     
 
 
-def TRARenderExecutionDetails( theExecutionRecord,):
+def TRARenderExecutionDetails( theExecutionRecord, theOutput=None):
     """Render Performance profiling information.
     
     """
@@ -134,8 +134,8 @@ def TRARenderExecutionDetails( theExecutionRecord,):
         if not theExecutionRecord.vInitialized:
             return 'TRARenderExecutionDetails error: theExecutionRecord not initialized'
         
-        
-        theOutput = StringIO()
+        if theOutput == None:
+            theOutput = StringIO()
         
         unDuration = theExecutionRecord.vExecutionEndTime - theExecutionRecord.vExecutionStartTime
         
@@ -288,7 +288,7 @@ def pWriteScriptsForExecutionRecordPrintString( theOutput, ):
         <!-- #################################################################
          SECTION: Scripts to control display of execution profiling records
          ################################################################# -->
-        <script>
+        <script type="text/javascript">
              function pTRAExpandOrCollapseDirectChildren( theElementId) {
                 // this function toggles the display of execution profiling records
                 
@@ -318,7 +318,7 @@ def pWriteScriptsForExecutionRecordPrintString( theOutput, ):
                 return true;
             }
         </script>
-        <script>
+        <script type="text/javascript">
              function pTRAExpandOrCollapseAllChildren( theElementId) {
                 // this function toggles the display of execution profiling records
                 
@@ -352,7 +352,7 @@ def pWriteScriptsForExecutionRecordPrintString( theOutput, ):
                 return true;
             }
         </script>
-        <script>
+        <script type="text/javascript">
             function fTRAApplyDisplay( theElement, theRowClassCounter) {
                 // Set class as Display for children of expanded elements and NoDisplay for children of collapsed elements
                 
@@ -442,7 +442,7 @@ def pWriteScriptsForExecutionRecordPrintString( theOutput, ):
                 return unRowClassCounter;
             }
         </script>
-        <script>
+        <script type="text/javascript">
             function pTRAChangeClassInChildren( theElement, theExistingClass, theNewClass, theRecurse) {
                 // changes element's children class, optionally recursively
                 

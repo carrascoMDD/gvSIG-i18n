@@ -35,11 +35,16 @@
 
     <div metal:define-macro="tSeguridadUsuarioConectado_i18n" >
     
+            <br/>
             <tal:block tal:replace="structure python: here.TRARenderLoggedUsedHere(                 here, True, True)" />
+            <br/>
             <br/>
             <tal:block tal:replace="structure python: here.TRARenderGroupsRolesHere(                here, True, True)" />
             <br/>
-            <br/>        
+            <br/>
+            <tal:block tal:replace="structure python: here.TRARenderPermissionDefinitions(          here, True, True)" />
+            <br/>
+            <br/>            
    
     </div>
     

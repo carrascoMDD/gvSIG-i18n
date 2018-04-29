@@ -76,12 +76,23 @@
 
             <tal:block tal:condition="pInforme/error | nothing" >
                 <font color="Red" size="3"><strong tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Error_label', 'Error-' )"/></font>
+                <br/>
                 <font color="Red" size="2"><strong tal:content="pInforme/error" /></font>
-                <tal:block tal:condition="pInforme/error_details | nothing" >
-                    <font color="Red" size="2"><strong tal:content="pInforme/error_details" /></font>
+                <br/>
+                <tal:block tal:condition="pInforme/error_detail | nothing" >
+                    <font color="Red" size="1" tal:define="pErrorDetail pInforme/error_detail">
+                        <strong>
+                            <tal:block tal:repeat="pErrorLine python: pErrorDetail.splitlines()">
+                                <span tal:content="pErrorLine" />
+                                <br/>
+                            </tal:block>
+                        </strong>
+                    </font>
                 </tal:block>
                 <br/>
             </tal:block>
+            
+            
                         
           
             <table class="listing" summary="ArchiveFileContents" id="Import process Report">

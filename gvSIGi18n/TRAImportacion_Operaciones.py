@@ -79,7 +79,7 @@ from TRAElemento_Permission_Definitions import cUseCase_CreateTRAContenidoInterc
 from TRAElemento_Permission_Definitions import cUseCase_ImportTRAImportacion, cUseCase_CreateMissingTRATraduccion
 from TRAElemento_Permission_Definitions import cBoundObject
 
-
+from TRAElemento_Permission_Definitions import cPermissionsToDenyEverywhereToEverybody
 
 
 cLogEachExecution_fCombinedContenidosIntercambio = True
@@ -380,7 +380,7 @@ class TRAImportacion_Operaciones:
                     anActionReport = { 'effect': 'error', 'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_no_permission_msgid', "User does not have permission to create interchange contents.-"), }
                     return anActionReport  
                             
-                aModelDDvlPlone_tool = ModelDDvlPloneTool()
+                aModelDDvlPlone_tool = self.fModelDDvlPloneTool()
                              
                 
                 unNewTypeName = theNewTypeName
@@ -2217,248 +2217,305 @@ class TRAImportacion_Operaciones:
         try:
 
             unSubExecutionRecord = self.fStartExecution( 'block',  'fImportarContenidosIntercambio-SubExecution to retrieve TRACatalog and accessible languages and modules', unExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
+            
+            unAlInicio_PermiteModificar = False
+            unCambiado_PermiteModificar = False
+            
             try:
+                
                 unInformeImportarContenidos = self.fNewVoidInformeImportarContenidos()
                 
                 unInformeImportarContenidos[ 'start_date'] = self.fDateTimeNowTextual()
                 
-                if not self.fNoHaComenzadoOEnDevelopmentODebug():
-                    unInformeImportarContenidos[ 'error'] = "gvSIGi18n_ImportAlreadyStarted_error_msgid"
-                    unInformeImportarContenidos[ 'end_date'] = self.fDateTimeNow()
-                    return unInformeImportarContenidos
-        
-                  
-                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
-                    
-                unUseCaseQueryResult = self.fUseCaseAssessment(  
-                    theUseCaseName          = cUseCase_ImportTRAImportacion, 
-                    theElementsBindings     = { cBoundObject: self,}, 
-                    theRulesToCollect       = ['languages', 'modules',], 
-                    thePermissionsCache     = unPermissionsCache, 
-                    theRolesCache           = unRolesCache, 
-                    theParentExecutionRecord= unExecutionRecord
-                )
-                                
-                                
-                if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
-                    unInformeImportarContenidos[ 'error'] = "gvSIGi18n_NoPermission_error_msgid"
-                    unInformeImportarContenidos[ 'end_date'] = self.fDateTimeNowTextual()
-                    return unInformeImportarContenidos
-                                
-                unosIdiomasAccesibles = unUseCaseQueryResult.get( 'collected_rule_assessments_by_name', {}).get( 'languages', {}).get( 'accepted_final_objects', [])
-                unosModulosAccesibles = unUseCaseQueryResult.get( 'collected_rule_assessments_by_name', {}).get( 'modules', {}).get( 'accepted_final_objects', [])
-        
                 unCatalogo = self.getCatalogo()
                 if not unCatalogo:
                     unInformeImportarContenidos[ 'end_date'] = self.fDateTimeNowTextual()
                     return unInformeImportarContenidos
-
-                unDebeCrearTraduccionesQueFaltan = self.getDebeCrearTraduccionesQueFaltan()
                 
-                unUseCaseQueryResult_CrearTraduccionesQueFaltan = None
-                if unDebeCrearTraduccionesQueFaltan:
-                    unUseCaseQueryResult_CrearTraduccionesQueFaltan = self.fUseCaseAssessment(  
-                        theUseCaseName          = cUseCase_CreateMissingTRATraduccion, 
+                unAlInicio_PermiteModificar =  unCatalogo.getPermiteModificar( )
+                unCambiado_PermiteModificar = False
+                
+                if not theJustEstimateCost:
+                    if unAlInicio_PermiteModificar:
+                        unCatalogo.setPermiteModificar( False)
+                        unCambiado_PermiteModificar = True
+                        
+                        transaction.commit( )            
+                        logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT at the begining to change translations catalog allow write flag to False")        
+                
+                try:
+                     
+                    if not self.fNoHaComenzadoOEnDevelopmentODebug():
+                        unInformeImportarContenidos[ 'error'] = "gvSIGi18n_ImportAlreadyStarted_error_msgid"
+                        unInformeImportarContenidos[ 'end_date'] = self.fDateTimeNow()
+                        return unInformeImportarContenidos
+            
+                      
+                    unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
+                    unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+                        
+                    unUseCaseQueryResult = self.fUseCaseAssessment(  
+                        theUseCaseName          = cUseCase_ImportTRAImportacion, 
                         theElementsBindings     = { cBoundObject: self,}, 
-                        theRulesToCollect       = None, 
+                        theRulesToCollect       = ['languages', 'modules',], 
+                        thePredicateOverrides   = { self.getCatalogo().UID(): { 'fAllowWrite': True, }, },
                         thePermissionsCache     = unPermissionsCache, 
                         theRolesCache           = unRolesCache, 
                         theParentExecutionRecord= unExecutionRecord
                     )
+                                    
+                                    
+                    if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
+                        unInformeImportarContenidos[ 'error'] = "gvSIGi18n_NoPermission_error_msgid"
+                        unInformeImportarContenidos[ 'end_date'] = self.fDateTimeNowTextual()
+                        return unInformeImportarContenidos
+                                    
+                    unosIdiomasAccesibles = unUseCaseQueryResult.get( 'collected_rule_assessments_by_name', {}).get( 'languages', {}).get( 'accepted_final_objects', [])
+                    unosModulosAccesibles = unUseCaseQueryResult.get( 'collected_rule_assessments_by_name', {}).get( 'modules', {}).get( 'accepted_final_objects', [])
+            
+    
+                    unDebeCrearTraduccionesQueFaltan = self.getDebeCrearTraduccionesQueFaltan()
                     
+                    unUseCaseQueryResult_CrearTraduccionesQueFaltan = None
+                    if unDebeCrearTraduccionesQueFaltan:
+                        unUseCaseQueryResult_CrearTraduccionesQueFaltan = self.fUseCaseAssessment(  
+                            theUseCaseName          = cUseCase_CreateMissingTRATraduccion, 
+                            theElementsBindings     = { cBoundObject: self,}, 
+                            theRulesToCollect       = None, 
+                            thePredicateOverrides   = { self.getCatalogo().UID(): { 'fAllowWrite': True, }, },
+                            thePermissionsCache     = unPermissionsCache, 
+                            theRolesCache           = unRolesCache, 
+                            theParentExecutionRecord= unExecutionRecord
+                        )
+                        
+                        
+                finally:
+                    unSubExecutionRecord and unSubExecutionRecord.pEndExecution()
+                    unSubExecutionRecord and unSubExecutionRecord.pClearLoggedAll()
                     
-            finally:
-                unSubExecutionRecord and unSubExecutionRecord.pEndExecution()
-                unSubExecutionRecord and unSubExecutionRecord.pClearLoggedAll()
-                
-          
+              
+                     
+                unSubExecutionRecord = self.fStartExecution( 'block',  'fImportarContenidosIntercambio-SubExecution to retrieve translations interchange contents', unExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
+                try:
+                    unContenido = self.fCombinedContenidosIntercambio( 
+                        theParentExecutionRecord= unExecutionRecord
+                    )
+                    if not unContenido:
+                        unInformeImportarContenidos[ 'end_date'] = self.fDateTimeNowTextual()
+                        return unInformeImportarContenidos
+                    
+                finally:
+                    unSubExecutionRecord and unSubExecutionRecord.pEndExecution()
+                    unSubExecutionRecord and unSubExecutionRecord.pClearLoggedAll()
+                    
+              
+                unSubExecutionRecord = self.fStartExecution( 'block',  'fImportarContenidosIntercambio-SubExecution to create status report before import and to set the first import progress report.', unExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
+                try:
                  
-            unSubExecutionRecord = self.fStartExecution( 'block',  'fImportarContenidosIntercambio-SubExecution to retrieve translations interchange contents', unExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
-            try:
-                unContenido = self.fCombinedContenidosIntercambio( 
-                    theParentExecutionRecord= unExecutionRecord
-                )
-                if not unContenido:
-                    unInformeImportarContenidos[ 'end_date'] = self.fDateTimeNowTextual()
-                    return unInformeImportarContenidos
-                
-            finally:
-                unSubExecutionRecord and unSubExecutionRecord.pEndExecution()
-                unSubExecutionRecord and unSubExecutionRecord.pClearLoggedAll()
-                
-          
-            unSubExecutionRecord = self.fStartExecution( 'block',  'fImportarContenidosIntercambio-SubExecution to create status report before import and to set the first import progress report.', unExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
-            try:
-             
-                unaColeccionCadenas = unCatalogo.fObtenerColeccionCadenas()
-                if ( unaColeccionCadenas == None):
-                    unInformeImportarContenidos[ 'end_date'] = self.fDateTimeNowTextual()
-                    return unInformeImportarContenidos
-        
-        
-        
-                unMemberId = self.fGetMemberId()
-                unIdNumber = unCatalogo.getHighestCadenaIdNumber()
-                unIdNumberHolder = [ unIdNumber, ]
-                
-                aPloneUtilsTool = self.getPloneUtilsToolForNormalizeString()  
-                       
-                unAhora = self.fDateTimeNow()
-
-                if not theJustEstimateCost:
-                    self.setHaComenzado( True)
-                    self.setEstadoProceso( 'Activo')
-                    self.setUsuarioImportador( unMemberId)
-                    self.setFechaComienzoProceso( unAhora)
-                    self.setHaCompletadoConExito( False)
-        
-                unInformeImportarContenidos[ 'fecha_informe'] = self.fDateToStoreString( unAhora)
-                
-                if not theJustEstimateCost:
-                    self.setInformeProgreso( str( unInformeImportarContenidos))
-                    self.setFechaUltimoInformeProgreso( unAhora)
-                    self.setFechaFinProceso( None)
-                    self.setInformeFinal(    '')
-                    self.setInformeExcepcion(    '')
-
-                    self.pEliminarInformesEstado( 
-                        unUseCaseQueryResult, 
-                        False, 
-                        thePermissionsCache=unPermissionsCache, 
-                        theRolesCache=unRolesCache, 
-                        theParentExecutionRecord=unExecutionRecord
-                    )
-                
-                    self.pCrearInformeEstado( 
-                        'antes', 
-                        unUseCaseQueryResult, 
-                        False, 
-                        thePermissionsCache=unPermissionsCache, 
-                        theRolesCache=unRolesCache, 
-                        theParentExecutionRecord=unExecutionRecord
-                    )
-        
-                
-                    transaction.commit( )
-        
-                    logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT status report before import.") 
-                
-            finally:
-                unSubExecutionRecord and unSubExecutionRecord.pEndExecution()
-                unSubExecutionRecord and unSubExecutionRecord.pClearLoggedAll()
-                
-            unaExceptionInfo = None
-            try:
-                try:
-                    self.pImportarContenidosIntercambio( 
-                        theJustEstimateCost         =theJustEstimateCost,
-                        theCatalogo                 =unCatalogo, 
-                        theUseCaseQueryResult       =unUseCaseQueryResult, 
-                        theUseCaseQueryResult_CrearTraduccionesQueFaltan=unUseCaseQueryResult_CrearTraduccionesQueFaltan,
-                        theIdiomasAccesibles        =unosIdiomasAccesibles, 
-                        theModulosAccesibles        =unosModulosAccesibles, 
-                        theColeccionCadenas         =unaColeccionCadenas, 
-                        theIdNumberHolder           =unIdNumberHolder, 
-                        theMemberId                 =unMemberId, 
-                        theContenido                =unContenido, 
-                        theInformeImportarContenidos=unInformeImportarContenidos, 
-                        thePloneUtilsTool           =aPloneUtilsTool,
-                        thePermissionsCache         =unPermissionsCache, 
-                        theRolesCache               =unRolesCache, 
-                        theParentExecutionRecord    =unExecutionRecord,
-                    )
-                except:
-                    unaExceptionInfo = sys.exc_info()
-                    unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
+                    unaColeccionCadenas = unCatalogo.fObtenerColeccionCadenas()
+                    if ( unaColeccionCadenas == None):
+                        unInformeImportarContenidos[ 'end_date'] = self.fDateTimeNowTextual()
+                        return unInformeImportarContenidos
+            
+            
+            
+                    unMemberId = self.fGetMemberId()
+                    unIdNumber = unCatalogo.getHighestCadenaIdNumber()
+                    unIdNumberHolder = [ unIdNumber, ]
                     
-                    unInformeExcepcion = 'Exception during Import operation\n' 
-                    unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-                    unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
-                    unInformeExcepcion += unaExceptionFormattedTraceback   
-                    
-                    unaFechaString = self.fDateTimeNowTextual()
-                    unInformeImportarContenidos[ 'fecha_informe'] = unaFechaString
-                    unInformeImportarContenidos[ 'end_date']      = unaFechaString
-                    unInformeImportarContenidos[ 'valid'] = False
-                    unInformeImportarContenidos[ 'error'] = 'exception'
-                    unInformeImportarContenidos[ 'error_detail'] = unInformeExcepcion
-
-                    unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
-                    
-                    if not theJustEstimateCost:
-                        self.setInformeFinal(      str( unInformeImportarContenidos))
-                        self.setInformeExcepcion(  unInformeExcepcion)
-                    
-                        transaction.commit( )
-                        logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT ON EXCEPTION changes") 
-                    
-                    logging.getLogger( 'gvSIGi18n::Importar').info("EXCEPTION: exception details follow:\n%s\n" % unInformeExcepcion) 
-                            
-                    return unInformeImportarContenidos
-                            
-                
-                
-            finally:
-                
-                unSubExecutionRecord = self.fStartExecution( 'block',  'fImportarContenidosIntercambio-SubExecution to create status report after import and to clear the import progress report.', unExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
-                try:
-                    if not theJustEstimateCost:
-                        transaction.commit( )
-                    
-                    logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT FINAL changes")        
-        
+                    aPloneUtilsTool = self.getPloneUtilsToolForNormalizeString()  
+                           
                     unAhora = self.fDateTimeNow()
                     
+    
                     if not theJustEstimateCost:
-                        if unaExceptionInfo:
-                            self.setHaCompletadoConExito( False)
-                        else:
-                            self.setHaCompletadoConExito( True)
+                                                
+                        self.setHaComenzado( True)
+                        self.setEstadoProceso( 'Activo')
+                        self.setUsuarioImportador( unMemberId)
+                        self.setFechaComienzoProceso( unAhora)
+                        self.setHaCompletadoConExito( False)
                         
+            
                     unInformeImportarContenidos[ 'fecha_informe'] = self.fDateToStoreString( unAhora)
-                    unInformeImportarContenidos[ 'end_date']      = self.fDateToStoreString( unAhora)
-                    
-                    logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT FINAL status")        
                     
                     if not theJustEstimateCost:
-                        self.setEstadoProceso(  'Inactivo')
-                        self.setInformeFinal(    str( unInformeImportarContenidos))
-                        self.setFechaFinProceso( unAhora)
-                        self.setInformeProgreso( '')
-                        self.setFechaUltimoInformeProgreso( None)                
-                
-                        transaction.commit( )
-                     
-        
-                        unCatalogo.setUltimaImportacion( self)
-            
-                        self.pCrearInformeEstado( 
-                            'despues', 
+                        self.setInformeProgreso( str( unInformeImportarContenidos))
+                        self.setFechaUltimoInformeProgreso( unAhora)
+                        self.setFechaFinProceso( None)
+                        self.setInformeFinal(    '')
+                        self.setInformeExcepcion(    '')
+    
+                        self.pEliminarInformesEstado( 
                             unUseCaseQueryResult, 
                             False, 
                             thePermissionsCache=unPermissionsCache, 
                             theRolesCache=unRolesCache, 
                             theParentExecutionRecord=unExecutionRecord
                         )
-                        
-                        transaction.commit( )
-                        logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT FINAL report")        
-        
-                    if not theJustEstimateCost:
-                        unCatalogo.pInvalidateSimbolosCadenasOrdenados()  
-                        
-                        transaction.commit( )            
-                        logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT pInvalidateSimbolosCadenasOrdenados")        
-        
-                    unInformeImportarContenidos[ 'end_date'] = self.fDateTimeNowTextual()
                     
-                    return unInformeImportarContenidos
-                
+                        self.pCrearInformeEstado( 
+                            'antes', 
+                            unUseCaseQueryResult, 
+                            False, 
+                            thePermissionsCache=unPermissionsCache, 
+                            theRolesCache=unRolesCache, 
+                            theParentExecutionRecord=unExecutionRecord
+                        )
+            
+                    
+                        transaction.commit( )
+            
+                        logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT status report before import.") 
+                    
                 finally:
                     unSubExecutionRecord and unSubExecutionRecord.pEndExecution()
                     unSubExecutionRecord and unSubExecutionRecord.pClearLoggedAll()
-        
+                    
+                unaExceptionInfo = None
+                try:
+                    try:
+                        self.pImportarContenidosIntercambio( 
+                            theJustEstimateCost         =theJustEstimateCost,
+                            theCatalogo                 =unCatalogo, 
+                            theUseCaseQueryResult       =unUseCaseQueryResult, 
+                            theUseCaseQueryResult_CrearTraduccionesQueFaltan=unUseCaseQueryResult_CrearTraduccionesQueFaltan,
+                            theIdiomasAccesibles        =unosIdiomasAccesibles, 
+                            theModulosAccesibles        =unosModulosAccesibles, 
+                            theColeccionCadenas         =unaColeccionCadenas, 
+                            theIdNumberHolder           =unIdNumberHolder, 
+                            theMemberId                 =unMemberId, 
+                            theContenido                =unContenido, 
+                            theInformeImportarContenidos=unInformeImportarContenidos, 
+                            thePloneUtilsTool           =aPloneUtilsTool,
+                            thePermissionsCache         =unPermissionsCache, 
+                            theRolesCache               =unRolesCache, 
+                            theParentExecutionRecord    =unExecutionRecord,
+                        )
+                    except:
+                        unaExceptionInfo = sys.exc_info()
+                        unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
+                        
+                        unInformeExcepcion = 'Exception during Import operation\n' 
+                        unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
+                        unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                        unInformeExcepcion += unaExceptionFormattedTraceback   
+                        
+                        unaFechaString = self.fDateTimeNowTextual()
+                        unInformeImportarContenidos[ 'fecha_informe'] = unaFechaString
+                        unInformeImportarContenidos[ 'end_date']      = unaFechaString
+                        unInformeImportarContenidos[ 'valid'] = False
+                        unInformeImportarContenidos[ 'error'] = 'exception'
+                        unInformeImportarContenidos[ 'error_detail'] = unInformeExcepcion
+    
+                        unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
+                        
+                        if not theJustEstimateCost:
+                            self.setInformeFinal(      str( unInformeImportarContenidos))
+                            self.setInformeExcepcion(  unInformeExcepcion)
+                        
+                            transaction.commit( )
+                            logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT ON EXCEPTION changes") 
+                        
+                        logging.getLogger( 'gvSIGi18n::Importar').info("EXCEPTION: exception details follow:\n%s\n" % unInformeExcepcion) 
+                                
+                        return unInformeImportarContenidos
+                                
+                    
+                    
+                finally:
+                    
+                    unSubExecutionRecord = self.fStartExecution( 'block',  'fImportarContenidosIntercambio-SubExecution to create status report after import and to clear the import progress report.', unExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
+                    try:
+                        if not theJustEstimateCost:
+                            transaction.commit( )
+                        
+                        logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT FINAL changes")        
+            
+                        unAhora = self.fDateTimeNow()
+                        
+                        if not theJustEstimateCost:
+                            if unaExceptionInfo:
+                                self.setHaCompletadoConExito( False)
+                            else:
+                                self.setHaCompletadoConExito( True)
+                            
+                        unInformeImportarContenidos[ 'fecha_informe'] = self.fDateToStoreString( unAhora)
+                        unInformeImportarContenidos[ 'end_date']      = self.fDateToStoreString( unAhora)
+                        
+                        logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT FINAL status")        
+                        
+                        if not theJustEstimateCost:
+                            self.setEstadoProceso(  'Inactivo')
+                            self.setInformeFinal(    str( unInformeImportarContenidos))
+                            self.setFechaFinProceso( unAhora)
+                            self.setInformeProgreso( '')
+                            self.setFechaUltimoInformeProgreso( None)                
+                    
+                            transaction.commit( )
+                         
+            
+                            unCatalogo.setUltimaImportacion( self)
+                
+                            self.pCrearInformeEstado( 
+                                'despues', 
+                                unUseCaseQueryResult, 
+                                False, 
+                                thePermissionsCache=unPermissionsCache, 
+                                theRolesCache=unRolesCache, 
+                                theParentExecutionRecord=unExecutionRecord
+                            )
+                            
+                            transaction.commit( )
+                            logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT FINAL report")        
+            
+                        if not theJustEstimateCost:
+                            unCatalogo.pInvalidateSimbolosCadenasOrdenados()  
+                            
+                            transaction.commit( )            
+                            logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT pInvalidateSimbolosCadenasOrdenados")        
+            
+                        unInformeImportarContenidos[ 'end_date'] = self.fDateTimeNowTextual()
+                        
+                        return unInformeImportarContenidos
+                    
+                    finally:
+                        unSubExecutionRecord and unSubExecutionRecord.pEndExecution()
+                        unSubExecutionRecord and unSubExecutionRecord.pClearLoggedAll()
+                        
+            finally:
+                
+                if not theJustEstimateCost:
+                    unaColeccionImportaciones = self.getContenedor()
+                    if unaColeccionImportaciones:
+                        
+                        unasImportaciones = unaColeccionImportaciones.objectValues( 'TRAImportacion')
+                        
+                        unaSiguienteImportacionAEjecutar = None
+                        
+                        for unaSiguienteImportacion in unasImportaciones:
+                            
+                            if ( not unaSiguienteImportacion == self):
+                                if ( not unaSiguienteImportacion.getHaComenzado()) and unaSiguienteImportacion.getComenzarAlFinalizarAnterior():
+                                    unaSiguienteImportacionAEjecutar = unaSiguienteImportacion
+                                    break
+                        
+                        if unaSiguienteImportacionAEjecutar:
+                            unaSiguienteImportacionAEjecutar.fImportarContenidosIntercambio( 
+                                theJustEstimateCost      =theJustEstimateCost, 
+                                thePermissionsCache      =thePermissionsCache, 
+                                theRolesCache            =theRolesCache, 
+                                theParentExecutionRecord =unExecutionRecord
+                            )
+
+                if not theJustEstimateCost:
+                    if unCambiado_PermiteModificar:
+                        unCatalogo.setPermiteModificar( unAlInicio_PermiteModificar)
+                        
+                        transaction.commit( )            
+                        logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT at the end to change translations catalog allow write flag to %s" % str( unAlInicio_PermiteModificar))        
+    
+                        
  
         finally:
             unExecutionRecord and unExecutionRecord.pEndExecution()
@@ -3645,19 +3702,7 @@ class TRAImportacion_Operaciones:
 
    
     
-  
-    security.declareProtected( permissions.View, 'getCatalogo')
-    def getCatalogo( self):
-        return self.getContenedorContenedor()
-        
 
-       
-        
-    
-    
-
-
-    
 
     
 
@@ -3764,6 +3809,9 @@ class TRAImportacion_Operaciones:
             
         theNuevaCadena.manage_fixupOwnershipAfterAdd()
         
+        for unaPermission in cPermissionsToDenyEverywhereToEverybody:
+            theNuevaCadena.manage_permission( unaPermission, roles=[], acquire=False)
+        
         if theCadenaPermissionsSpecs:
             for unaPermission in theCadenaPermissionsSpecs.keys():
                 unaPermissionSpec   = theCadenaPermissionsSpecs[ unaPermission]
@@ -3772,6 +3820,7 @@ class TRAImportacion_Operaciones:
                 
                 if unaPermission:
                     theNuevaCadena.manage_permission( unaPermission, roles=unosRoles, acquire=unAcquire)
+                    
                     
         self.fSetAcquiringRoleAssignments( theNuevaCadena, True)
                             
@@ -3986,6 +4035,9 @@ class TRAImportacion_Operaciones:
                 if unaPermission:
                     theNuevaTraduccion.manage_permission( unaPermission, roles=unosRoles, acquire=unAcquire)
         
+        for unaPermission in cPermissionsToDenyEverywhereToEverybody:
+            theNuevaTraduccion.manage_permission( unaPermission, roles=[], acquire=False)
+        
         self.fSetAcquiringRoleAssignments( theNuevaTraduccion, True)
         
         return self
@@ -4112,6 +4164,7 @@ class TRAImportacion_Operaciones:
                         theUseCaseName          = cUseCase_CreateAndDeleteTRAInformeInTRAImportacion,        
                         theElementsBindings     = { cBoundObject: self,},                                    
                         theRulesToCollect       = None,                                                      
+                        thePredicateOverrides   = { self.getCatalogo().UID(): { 'fAllowWrite': True, }, },
                         thePermissionsCache     = unPermissionsCache,                                        
                         theRolesCache           = unRolesCache,                                              
                         theParentExecutionRecord= unExecutionRecord,                                          
@@ -4163,6 +4216,7 @@ class TRAImportacion_Operaciones:
                         theUseCaseName          = cUseCase_CreateAndDeleteTRAInformeInTRAImportacion,        
                         theElementsBindings     = { cBoundObject: self,},                                    
                         theRulesToCollect       = None,                                                      
+                        thePredicateOverrides   = { self.getCatalogo().UID(): { 'fAllowWrite': True, }, },
                         thePermissionsCache     = unPermissionsCache,                                        
                         theRolesCache           = unRolesCache,                                              
                         theParentExecutionRecord= unExecutionRecord,                                          

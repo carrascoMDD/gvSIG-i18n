@@ -774,17 +774,37 @@ def TRARenderGroupsRolesHere( theContextualObject, theCollapsible=False, theColl
         'element-path':       unElementPath,
      })
     
-    TRARenderGroupsRolesHere_forAGroupLevel( unOutput, theContextualObject,     'Global',                                          lambda theGroupName: theContextualObject.getCatalogo().fUserGroupIdEnCatalogoFor(theGroupName),            unElementClassName, unElementPath, unRolesHeaderBlock, unPermittedBlock, unForbiddenBlock)
+    TRARenderGroupsRolesHere_forAGroupLevel( 
+        unOutput, 
+        theContextualObject,     
+        'Global',  
+        lambda theGroupName: theContextualObject.getCatalogo().fUserGroupIdEnCatalogoFor(theGroupName),            
+        unElementClassName, 
+        unElementPath, 
+        unRolesHeaderBlock, 
+        unPermittedBlock, 
+        unForbiddenBlock,
+    )
 
-    TRARenderGroupsRolesHere_forAGroupLevel( unOutput, theContextualObject,     'AllLanguages',                                    lambda theGroupName: theContextualObject.getCatalogo().fUserGroupIdAllIdiomasFor(theGroupName),            unElementClassName, unElementPath, unRolesHeaderBlock, unPermittedBlock, unForbiddenBlock)
+    # ACV 20090928 Simpler security model now does not use user groups for languages or modules (all or specific).
+    #
+    #Users get access to all languages by being added to he global user groups for application roles. 
+    #There is no need anymore to use the "_All" user groups.
+    #
+    #Rather, users are given language or module specific local roles directly on the language or module.
+    #Because the languages and modules do not contain  elements (translations are under strings, elsewhere),
+    #assigning local roles to users ar languages and modules do not have a performance penalty 
+    #(as it has on elements with lots of contained elements).
+    #
+    #TRARenderGroupsRolesHere_forAGroupLevel( unOutput, theContextualObject,     'AllLanguages', lambda theGroupName: theContextualObject.getCatalogo().fUserGroupIdAllIdiomasFor(theGroupName),            unElementClassName, unElementPath, unRolesHeaderBlock, unPermittedBlock, unForbiddenBlock)
     
-    unosIdiomas = theContextualObject.getCatalogo().fObtenerTodosIdiomas()
-    for unIdioma in unosIdiomas:
-        TRARenderGroupsRolesHere_forAGroupLevel( unOutput, theContextualObject, 'Language %s' % unIdioma.getCodigoIdiomaEnGvSIG(), lambda theGroupName: theContextualObject.fUserGroupIdIdiomaFor( theGroupName, unIdioma),     unElementClassName, unElementPath, unRolesHeaderBlock, unPermittedBlock, unForbiddenBlock)
+    #unosIdiomas = theContextualObject.getCatalogo().fObtenerTodosIdiomas()
+    #for unIdioma in unosIdiomas:
+        #TRARenderGroupsRolesHere_forAGroupLevel( unOutput, theContextualObject, 'Language %s' % unIdioma.getCodigoIdiomaEnGvSIG(), lambda theGroupName: theContextualObject.fUserGroupIdIdiomaFor( theGroupName, unIdioma),     unElementClassName, unElementPath, unRolesHeaderBlock, unPermittedBlock, unForbiddenBlock)
     
     #unosModulos = theContextualObject.getCatalogo().fObtenerTodosModulos()
     #for unModulo in unosModulos:
-        #TRARenderGroupsRolesHere_forAGroupLevel( unOutput, theContextualObject, 'Module %s' % unModulo.Title(),                    lambda theGroupName: theContextualObject.fUserGroupIdModuloFor( theGroupName, unModulo),     unElementClassName, unElementPath, unRolesHeaderBlock, unPermittedBlock, unForbiddenBlock)
+        #TRARenderGroupsRolesHere_forAGroupLevel( unOutput, theContextualObject, 'Module %s' % unModulo.Title(),  lambda theGroupName: theContextualObject.fUserGroupIdModuloFor( theGroupName, unModulo),     unElementClassName, unElementPath, unRolesHeaderBlock, unPermittedBlock, unForbiddenBlock)
     
     unOutput.write( """
             </tbody>

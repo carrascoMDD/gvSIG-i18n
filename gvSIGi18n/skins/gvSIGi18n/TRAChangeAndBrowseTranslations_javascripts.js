@@ -54,12 +54,26 @@ Scripts to be executed upon loading of the page:
 Open editor on the first translation row.
 ################################################################# */
 
+/* Changing to adding a listener, through the plone registerPloneFunction
 window.onload = function(){
 
     pTRAResetCachedGlobals();
 
     pTRAAbrirEditorEnFilaNumero( 1);
 }
+*/
+
+
+
+function pTRAWindowOnLoad() {
+
+    pTRAResetCachedGlobals();
+
+    pTRAAbrirEditorEnFilaNumero( 1);
+}
+
+
+registerPloneFunction( pTRAWindowOnLoad);
 
 
 
@@ -455,6 +469,26 @@ function fTRA_GetSimboloCadenaEIndexEnFilaNumero( theTranslationRowIndex) {
 
     return [ unSimboloCadena, unIndex]   
 }    
+
+
+
+function fTRA_GetConstantValue( theConstantElementName) {
+    if (!theConstantElementName) {
+        return '';
+    }
+
+    var unElemento	= document.getElementById( theConstantElementName);
+    if (!unElemento) {
+        return '';
+    }
+
+    if ( !unElemento.firstChild) {
+        return '';
+    }
+    
+    return unElemento.firstChild.data;
+}
+
 
 
 
@@ -1786,6 +1820,158 @@ function fTRAEvtHlr_Editor_Button_Pendiente_OnKeyPress( event) {
 
 
 
+function fTRAEvtHlr_Editor_Button_InvalidarTraduccionesCadena_OnMouseUp() {
+
+    try {
+        pLogUserInterfaceEvent_BEGIN( 'fTRAEvtHlr_Editor_Button_InvalidarTraduccionesCadena_OnMouseUp', '');
+
+        if ( gUserInterfaceInTransition) {
+            pLogUserInterfaceEvent_IGNORED( 'fTRAEvtHlr_Editor_Button_InvalidarTraduccionesCadena_OnMouseUp', '');
+            return false;
+        }
+        gUserInterfaceInTransition = true;
+
+        try {
+            pTRADisableElementWithId( 'TRAStatusChangeButton_InvalidarTraduccionesCadena');
+            pTRADisableElementWithId( 'TRAStatusChangeButton_InvalidarTraduccionesCadena_Icon1');
+            pTRADisableElementWithId( 'TRAStatusChangeButton_InvalidarTraduccionesCadena_Icon2');
+
+            try {
+            
+                var unInvalidateStringTranslationsMsg = fTRA_GetConstantValue( 'cTRAId_ConfirmInvalidateStringTranslationsMsg');
+                var unConfirmed = window.confirm( unInvalidateStringTranslationsMsg + '?');
+                if (! unConfirmed) {
+                    return false;
+                }
+            
+                var unReallyInvalidateStringTranslationsMsg = fTRA_GetConstantValue( 'cTRAId_ReallyInvalidateStringTranslationsMsg');
+                unConfirmed = window.confirm( unReallyInvalidateStringTranslationsMsg + '?');
+                if (! unConfirmed) {
+                    return false;
+                }
+                
+                var unEditorRowIndex =  fTRACadenaTraducidaIndexNumber()
+                if ( unEditorRowIndex) {
+                
+                    fTRA_DeleteSavedAndNewCadenaTraducidaFilaNumero( unEditorRowIndex);
+                    fTRA_ResetValorTextAreaFilaNumero( unEditorRowIndex);
+                    
+
+                    // ACV 20090927 Error Does not refresh properly because the response is not structured as expected
+                    // Known limitation: Invalidate in Synch Mode
+
+                    //if ( fAsynchronousTranslationMode()) {
+                               
+                        //fTRASubmitInvalidateStringTranslations_Async( unEditorRowIndex);
+                    //}
+                    //else {
+                        //fTRASubmitInvalidateStringTranslations_Sync( );
+                    //}
+                    fTRASubmitInvalidateStringTranslations_Sync( );
+                }
+            }
+            catch( unaException) {
+                throw unaException;
+            }
+        }
+        finally {
+            pTRAEnableElementWithId( 'TRAStatusChangeButton_InvalidarTraduccionesCadena');
+            pTRAEnableElementWithId( 'TRAStatusChangeButton_InvalidarTraduccionesCadena_Icon1');
+            pTRAEnableElementWithId( 'TRAStatusChangeButton_InvalidarTraduccionesCadena_Icon2');
+        }
+    }
+    finally {
+        gUserInterfaceInTransition = false;
+        pLogUserInterfaceEvent_END( 'fTRAEvtHlr_Editor_Button_InvalidarTraduccionesCadena_OnMouseUp', '');
+    }
+}
+
+
+
+
+
+function fTRAEvtHlr_Editor_Button_InvalidarTraduccionesCadena_OnKeyPress( event) {
+
+    try {
+        pLogUserInterfaceEvent_BEGIN( 'fTRAEvtHlr_Editor_Button_InvalidarTraduccionesCadena_OnKeyPress', '');
+        
+        if ( gUserInterfaceInTransition) {
+            pLogUserInterfaceEvent_IGNORED( 'fTRAEvtHlr_Editor_Button_InvalidarTraduccionesCadena_OnKeyPress', '');
+            return false;
+        }
+        gUserInterfaceInTransition = true;
+
+        if ( !event) {
+            return false;
+        }
+        try {
+    
+            pTRADisableElementWithId( 'TRAStatusChangeButton_InvalidarTraduccionesCadena');
+            pTRADisableElementWithId( 'TRAStatusChangeButton_InvalidarTraduccionesCadena_Icon1');
+            pTRADisableElementWithId( 'TRAStatusChangeButton_InvalidarTraduccionesCadena_Icon2');
+            try {
+            
+                var unKeyNumber = fTRAKeyNumberFromEvent( event);
+                    
+                pLogUserInterfaceEvent( 'fTRAEvtHlr_Editor_Button_InvalidarTraduccionesCadena_OnKeyPress', 'key:' + unKeyNumber);
+                
+                if ( unKeyNumber == cKeyNumberCR) {
+                
+                    var unInvalidateStringTranslationsMsg = fTRA_GetConstantValue( 'cTRAId_ConfirmInvalidateStringTranslationsMsg');
+                    var unConfirmed = window.confirm( unInvalidateStringTranslationsMsg + '?');
+                    if (! unConfirmed) {
+                        return false;
+                    }
+                
+                    var unReallyInvalidateStringTranslationsMsg = fTRA_GetConstantValue( 'cTRAId_ReallyInvalidateStringTranslationsMsg');
+                    unConfirmed = window.confirm( unReallyInvalidateStringTranslationsMsg + '?');
+                    if (! unConfirmed) {
+                        return false;
+                    }
+                
+                    var unEditorRowIndex =  fTRACadenaTraducidaIndexNumber()
+                    if ( unEditorRowIndex) {
+                    
+                        fTRA_DeleteSavedAndNewCadenaTraducidaFilaNumero( unEditorRowIndex);
+                        fTRA_ResetValorTextAreaFilaNumero(               unEditorRowIndex);
+
+                        // ACV 20090927 Error Does not refresh properly because the response is not structured as expected
+                        // Known limitation: Invalidate in Synch Mode
+
+                        //if ( fAsynchronousTranslationMode()) {
+                                   
+                            //fTRASubmitInvalidateStringTranslations_Async( unEditorRowIndex);
+                        //}
+                        //else {
+                            //fTRASubmitInvalidateStringTranslations_Sync( );
+                        //}
+                        fTRASubmitInvalidateStringTranslations_Sync( );
+
+                    }
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            }
+            catch( unaException) {
+                throw unaException;
+            }
+        }
+        finally {
+            pTRAEnableElementWithId( 'TRAStatusChangeButton_InvalidarTraduccionesCadena');
+            pTRAEnableElementWithId( 'TRAStatusChangeButton_InvalidarTraduccionesCadena_Icon1');
+            pTRAEnableElementWithId( 'TRAStatusChangeButton_InvalidarTraduccionesCadena_Icon2');
+        }
+    }
+    finally {
+        gUserInterfaceInTransition = false;
+        pLogUserInterfaceEvent_END( 'fTRAEvtHlr_Editor_Button_InvalidarTraduccionesCadena_OnKeyPress', '');
+    }
+}
+
+
+
 
 function fTRAEvtHlr_Editor_Button_StatusChange_OnMouseUp( theEditorIndex, theNewTranslationStatus) {
 
@@ -2473,6 +2659,50 @@ function fTRASubmitStatusChange_Async( theCadenaTraducidaIndex, theNewTranslatio
 
 
 
+function fTRASubmitInvalidateStringTranslations_Async( theCadenaTraducidaIndex) {  
+    // ACV 20090927 Error Does not refresh properly because the response is not structured as expected
+    // Known limitation: Invalidate in Synch Mode
+
+    try {
+
+        pLogUserInterfaceEvent_BEGIN( '        ->fTRASubmitInvalidateStringTranslations_Async', 'editorIndex: ' + theCadenaTraducidaIndex);
+
+        var unElementoCodigoIdiomaCursor        = document.getElementById( 'theCodigoIdiomaCursor');
+        if ( !unElementoCodigoIdiomaCursor) {
+            return false;
+        }
+        var unCodigoIdiomaCursor = unElementoCodigoIdiomaCursor.value;
+        if ( !unCodigoIdiomaCursor.length) {
+            return false;
+        }
+        
+        // get data in the translation to edit
+        var unosDatosEnFila = fTRA_GetDatosEnFilaNumero( theCadenaTraducidaIndex);
+        if ( !unosDatosEnFila) {
+            return false;
+        }
+    
+        var unFieldSimboloCadena	    = fTRA_FieldDatosEnFila( unosDatosEnFila, 'simboloCadena')
+        if ( !unFieldSimboloCadena) {
+            return false;
+        }
+        var unSimboloCadenaATraducir = unFieldSimboloCadena[ 1];
+        if ( !unSimboloCadenaATraducir) {
+            return false;
+        }
+    
+        pLogUserInterfaceEvent( '            ->fTRASubmitInvalidateStringTranslations_Async', 'editorIndex: ' + theCadenaTraducidaIndex + ' SENDING');
+        pTRAAsyncRequest_Service_InvalidateStringTranslations_Send( unCodigoIdiomaCursor, unSimboloCadenaATraducir);
+    
+        return true;
+    }
+    finally {
+        pLogUserInterfaceEvent_END( '        ->fTRASubmitInvalidateStringTranslations_Async', 'editorIndex: ' + theCadenaTraducidaIndex);
+    }    
+}
+
+
+
 
 function fTRA_BlinkBGColorEnCadenaTraducidaFilaNumero( theTranslationRowIndex, theBGColor) {
     var unaCelda = document.getElementById( 'cid_ColumnaCadenasTraducidas_' + theTranslationRowIndex);
@@ -2633,6 +2863,9 @@ function fTRASubmitStatusChange_Sync( theNewTranslationStatus) {
         if ( !unElementoNuevoEstadoTraduccion) {
             return false;
         }
+        unElementoNuevoEstadoTraduccion.value			= theNewTranslationStatus;
+        unElementoNuevoEstadoTraduccion.defaultValue	= theNewTranslationStatus;
+      
         
         var unElementoCadenaTraducida = document.getElementById( 'theCadenaTraducida');
         if ( unElementoCadenaTraducida) {
@@ -2645,9 +2878,6 @@ function fTRASubmitStatusChange_Sync( theNewTranslationStatus) {
             unElementoGoTo.defaultValue	= '';
         }
          
-        unElementoNuevoEstadoTraduccion.value			= theNewTranslationStatus;
-        unElementoNuevoEstadoTraduccion.defaultValue	= theNewTranslationStatus;
-      
         document.forms[ 'TranslationFormId'].submit();
         return true;
     }
@@ -2657,6 +2887,43 @@ function fTRASubmitStatusChange_Sync( theNewTranslationStatus) {
 }
 
 
+
+
+function fTRASubmitInvalidateStringTranslations_Sync( ) {
+
+    try {
+
+        pLogUserInterfaceEvent_BEGIN( '        ->fTRASubmitInvalidateStringTranslations_Sync', '');
+        
+        if ( !fTRACadenaTraducidaIndexNumber()) {
+            return false;
+        }
+    
+        var unElementoNuevoEstadoTraduccion = document.getElementById( 'theNuevoEstadoTraduccion');
+        if ( !unElementoNuevoEstadoTraduccion) {
+            return false;
+        }
+        unElementoNuevoEstadoTraduccion.value			= 'InvalidarTraduccionesCadena';
+        unElementoNuevoEstadoTraduccion.defaultValue	= 'InvalidarTraduccionesCadena';
+      
+        var unElementoCadenaTraducida = document.getElementById( 'theCadenaTraducida');
+        if ( unElementoCadenaTraducida) {
+            unElementoCadenaTraducida.value			= '';
+            unElementoCadenaTraducida.defaultValue	= '';
+        }
+        var unElementoGoTo = document.getElementById( 'theGoTo');
+        if ( unElementoGoTo) {
+            unElementoGoTo.value			= '';
+            unElementoGoTo.defaultValue	= '';
+        }
+         
+        document.forms[ 'TranslationFormId'].submit();
+        return true;
+    }
+    finally {
+        pLogUserInterfaceEvent_END( '        ->fTRASubmitInvalidateStringTranslations_Sync', '');
+    }    
+}
 
 
 
@@ -3091,7 +3358,6 @@ function pTRAShowOrHideEditorTextAreaEnFilaNumero( theTranslationIndex) {
     
     var unosTargetStatusChanges  = fTRA_FieldDatosEnFila( unosDatosEnFila, 'targetStatusChanges')[ 1]
         
-    
     if (( ( unEstadoTraduccion == 'Pendiente') || ( unEstadoTraduccion == 'Traducida')) && ( unosTargetStatusChanges.indexOf( 'Traducida') >= 0)) {
     
         pTRAShowElementWithId( 'theCadenaTraducida');
@@ -3554,6 +3820,34 @@ function pTRAAsyncRequest_Service_StatusChange_Send( theCodigoIdiomaATraducir, t
 }
 
 
+function pTRAAsyncRequest_Service_InvalidateStringTranslations_Send( theCodigoIdiomaATraducir, theSimboloCadenaATraducir) {
+    
+    if ( !fTRAIsAsyncRequestSupported()) {
+        return false;
+    }
+
+    // need to use encodeURIComponent instead of encodeURI, to escape +
+    //
+    // theCodigoIdiomaATraducir is sent as the current language, to retrieve results from
+    //
+    var someRequestParameters = '?theCodigoIdiomaATraducir='  + encodeURIComponent( theCodigoIdiomaATraducir);
+    someRequestParameters = someRequestParameters + '&theSimboloCadenaATraducir=' + encodeURIComponent( theSimboloCadenaATraducir);
+    someRequestParameters = someRequestParameters + '&form_submit=InvalidarTraduccionesCadena';
+
+    var aRequestString = fTRAAsyncRequestURL() + someRequestParameters
+
+    var unResponseDisplayField = document.getElementById( 'theTRAAsyncRequest_Display_Field');
+    if (unResponseDisplayField) {
+        unResponseDisplayField.value = aRequestString
+    }
+
+    g_ajax_obj.CallXMLHTTPObjectGET( aRequestString, pTRAAsyncRequest_Response_Handler)
+
+    return true;
+
+}
+
+
 function pTRAAsyncRequest_Response_Handler( theResponseText) {
     if (!theResponseText) {
         return false;
@@ -3570,7 +3864,7 @@ function pTRAAsyncRequest_Response_Handler( theResponseText) {
 // this function selects all of the Languages for translator's reference
 function pTRAToggleAllReferenceLanguages( ) {
 
-    unElementAllReferenceLanguages = document.getElementById( 'cid_TRAToggleAllReferenceLanguages')
+    unElementAllReferenceLanguages = document.getElementById( 'cid_TRAToggleAllReferenceLanguages');
     if ( !unElementAllReferenceLanguages) {
         return false;
     }

@@ -84,10 +84,7 @@ class TRAIdioma_Operaciones:
 
     ##code-section class-header #fill in your manual code here
         
-    security.declareProtected( permissions.View, 'getCatalogo')
-    def getCatalogo( self):
-        return self.getContenedorContenedor()
-        
+
 
     
 
@@ -375,7 +372,7 @@ class TRAIdioma_Operaciones:
 
                 aPloneUtilsTool = self.getPloneUtilsToolForNormalizeString()  
                
-                unTitleImportacion = '%s %s %s %s -> %s' % ( self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_copyTranslations_Importacion_prefix', "To Copy Translations from Language to Language"), unMemberId, unaFechaYHora, theCopyFromLanguageCode, unCodigoIdioma)
+                unTitleImportacion = '%s %s->%s by %s on %s' % ( self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_copyTranslations_Importacion_prefix', "To Copy Translations from Language to Language"), theCopyFromLanguageCode, unCodigoIdioma, unMemberId, unaFechaYHora)
                 aNewIdImportacion = unTitleImportacion.lower().replace( ' ', '-')
                 if aPloneUtilsTool:
                     aNewIdImportacion = aPloneUtilsTool.normalizeString( aNewIdImportacion)

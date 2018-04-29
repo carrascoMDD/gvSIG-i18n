@@ -1,5 +1,5 @@
 <tal:block replace="nothing">
-# File: TRACatalogoInforme.pt
+# File: TRAConfirmarDesbloquearCatalogo.pt
 #
 # Copyright (c) 2008, 2009 by Conselleria de Infraestructuras y Transporte de la
 # Generalidad Valenciana
@@ -41,10 +41,10 @@
         i18n:domain="gvSIGi18n">
 
         <tal:block tal:define="
-            pExecutionRecord python: here.fStartExecution( 'template', 'TRACatalogoInforme.pt', None, True, { 'log_what': 'details', 'log_when': True, });
+            pExecutionRecord python: here.fStartExecution( 'template', 'TRAConfirmarDesbloquearCatalogo.pt', None, True, { 'log_what': 'details', 'log_when': True, });
             pPermissionsCache python: {};
             pRolesCache python: {}" >
-    
+            
             <div metal:use-macro="here/document_actions/macros/document_actions">
                 Document actions (print, sendto etc)
             </div>
@@ -65,7 +65,7 @@
                 
             <table width="100%%" cellspacing="0" cellpadding="0" frame="void" >
                 <tr>
-                    <td width="25%" align="left" valign="baseline" >
+                    <td width="25%"  align="left" valign="baseline" >
                         <font size="2">
                             <em><span tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TRACatalogo_attr_nombreProducto_label',   'Product Name-' )" /></em>
                          </font>        
@@ -73,83 +73,100 @@
                             <strong><span tal:content="python: here.fAsUnicode( here.getNombreProducto())" /></strong>
                          </font>
                     </td>         
-                    <td width="25%" align="right" valign="baseline">                    
-                        <strong>
-                            <a href="#" title="#"
-                                tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_refrescar_action_label',   'Refresh-' )"
-                                tal:attributes="
-                                    title aLinkTitle;
-                                    href python: '%s/TRACatalogoInforme' % here.getCatalogo().absolute_url()">
-                                <img src="#" alt="#" title="#" 
-                                     tal:attributes="src string:${portal_url}/refrescar.gif; alt aLinkTitle; title aLinkTitle" 
-                                     id="icon-refrescar" />
-                                <span tal:content="aLinkTitle" />
-                            </a>
-                        </strong>
-                    </td>
-                    <td width="25" align="center" valign="baseline">
-                    
-                        <tal:block tal:define="pUseCaseAsessmentResult python: here.fUseCaseAssessment(
-                            theUseCaseName          = 'View_any_TRA_element', 
-                            theElementsBindings     = { 'object': here,},
-                            theRulesToCollect       = None, 
-                            thePermissionsCache     = pPermissionsCache, 
-                            theRolesCache           = pRolesCache, 
-                            theParentExecutionRecord= pExecutionRecord)" 
-                            tal:condition="python: pUseCaseAsessmentResult and pUseCaseAsessmentResult.get( 'success', False)">
+                    <td  width="25%" align="center" valign="baseline">
+                        <tal:block tal:define="
+                            pUseCaseAssessmentResult python: here.fUseCaseAssessment( 
+                                theUseCaseName          = 'Advanced_View_on_any_TRA_element', 
+                                theElementsBindings     = { 'object': here,},
+                                theRulesToCollect       = None, 
+                                thePermissionsCache     = pPermissionsCache, 
+                                theRolesCache           = pRolesCache, 
+                                theParentExecutionRecord= pExecutionRecord)"
+                            tal:condition="python: pUseCaseAssessmentResult and pUseCaseAssessmentResult.get( 'success', False)">    
                             <strong>
                                 <a href="#" title="#" 
                                     tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_vistaAvanzada_msgid',   'Advanced view-')"
                                     tal:attributes="
                                         title aLinkTitle;
                                         href python: '%s/Tabular' % here.getCatalogo().absolute_url()">
-                                    <img src="#" alt="#" title="#" 
-                                         tal:attributes="src string:${portal_url}/tabular.gif; alt aLinkTitle; title aLinkTitle" 
-                                         id="icon-tabular" />
                                     <span tal:content="aLinkTitle" />
                                 </a>
                             </strong>
                         </tal:block>
                     </td>
-                    <td width="25%" align="right" valign="baseline">                    
+                    <td width="25%"  align="right" valign="baseline">                    
                         <strong>
-                            <a href="#" title="#"
-                                tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_ocultarinformedeestado_msgid',   'HideStatus Report-' )"
+                            <a href="#" title="#"  
+                                tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_volveracatalogo_msgid',   'Back to catalog-' )"
                                 tal:attributes="
                                     title aLinkTitle;
-                                    href python: '%s/TRACatalogo' % here.getCatalogo().absolute_url()">
-                                <img src="#" alt="#" title="#" 
-                                     tal:attributes="src string:${portal_url}/trainforme.gif; alt aLinkTitle; title aLinkTitle" 
-                                     id="icon-informe" />
+                                    href python: '%s/TRACatalogo' % here.absolute_url()">
+                                <span tal:content="aLinkTitle" />
+                            </a>
+                        </strong>
+                    </td>                
+                    <td  width="25%" align="right" valign="baseline">                    
+                        <strong>
+                            <a href="#" title="#" 
+                                tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_mostrarinformedeestado_msgid',   'Show Status Report-' )"                                    
+                                tal:attributes="
+                                    title aLinkTitle;
+                                    href python: '%s/TRACatalogoInforme' % here.getCatalogo().absolute_url()">
                                 <span tal:content="aLinkTitle" />
                             </a>
                         </strong>
                     </td>
                 </tr>
             </table>
-                     
-         
-            
+                        
             <br/>
+            <br/>
+
+            
             <tal:block tal:define="
-                pInformeIdiomas        python: here.fElaborarInformeIdiomas(
-                    theInformeIdiomasUseCaseQueryResult  =None, 
-                    theCheckPermissions         =True, 
-                    thePermissionsCache         =pPermissionsCache, 
-                    theRolesCache               =pRolesCache, 
-                    theParentExecutionRecord    =pExecutionRecord)" >
-                <metal:block metal:use-macro="here/TRAInformeIdiomas_inner/macros/tInformeIdiomas_inner" />
+                pDesbloquearUseCaseAssessmentResult python: here.fUseCaseAssessment( 
+                    theUseCaseName          = 'Unlock_TRACatalogo', 
+                    theElementsBindings     = { 'object': here,},
+                    theRulesToCollect       = None, 
+                    thePermissionsCache     = pPermissionsCache, 
+                    theRolesCache           = pRolesCache, 
+                    theParentExecutionRecord= pExecutionRecord)" >
+                <tal:block tal:condition="python: pDesbloquearUseCaseAssessmentResult and pDesbloquearUseCaseAssessmentResult.get( 'success', False)">  
+                    <a href="#" title="#" 
+                        tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_confirmarDesbloquearCatalogo_msgid',   'Confirm unlocking the translations catalog-' )"                                    
+                        tal:attributes="
+                            title aLinkTitle;
+                           href python: '%s/TRADesbloquearCatalogo_action?theConfirm=%s' % ( here.getCatalogo().absolute_url(), here.fMagicMillisecondsNowString())">
+                        <font size="3" color="red">
+                            <strong>
+                                <span tal:content="aLinkTitle" />
+                            </strong>
+                        </font>
+                    </a>
+                </tal:block>
+
+                <tal:block tal:condition="python: not(  pDesbloquearUseCaseAssessmentResult and pDesbloquearUseCaseAssessmentResult.get( 'success', False))">    
+                    <br/>
+                    <br/>
+                    <font size="3" color="gray">
+                        <strong>
+                            <tal:block tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_userCanNotUnlockCatalogo_msgid',   'You are not allowed to lock the translations catalog.-' )" />
+                        </strong>
+                    </font>
+                </tal:block>
+                <br/>
+                <br/>
             </tal:block>
-            <br/>      
-           
+            
     
             <tal:block tal:define="dummy python: pExecutionRecord and here.pEndExecution( pExecutionRecord)" />
     
             <metal:block metal:use-macro="here/TRAFooter_i18n_view/macros/tFooter_i18n" />
-     
+    
             <tal:block tal:replace="structure python: pExecutionRecord and here.TRARenderExecutionDetails( pExecutionRecord)" />
+
         </tal:block>
-    </tal:main-macro>
+     </tal:main-macro>
 </metal:main>
 
 </body>

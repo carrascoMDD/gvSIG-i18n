@@ -445,10 +445,12 @@ cDefaultEncodingsSourceMap = [
     [ u'shift_jisx0213', u'shiftjisx0213,sjisx0213,s_jisx0213', u'Japanese', u'ja',],
  ]
 
-cDefaultEncodingsForLanguages = {
-    
-    
-    
-    
-}
+
+cAllEncodingNames = reduce( lambda todosEncodings, someEncodings: todosEncodings + someEncodings, [ [ unEncodingSpec[ 0], ] + unEncodingSpec[ 1].split( ',') for unEncodingSpec in cUTFEncodingsForAllLanguages + cDefaultEncodingsSourceMap], [])
+
+
+
+
+# ACV 20090922 Unused. Removed.
+#cDefaultEncodingsForLanguages = { }
 

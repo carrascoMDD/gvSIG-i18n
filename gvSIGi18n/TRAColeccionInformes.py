@@ -88,6 +88,17 @@ class TRAColeccionInformes(OrderedBaseFolder, TRAColeccionArquetipos):
 
     meta_type = 'TRAColeccionInformes'
     portal_type = 'TRAColeccionInformes'
+
+
+    creation_date_field = 'fechaCreacion'
+    creation_user_field = 'usuarioCreador'
+    modification_date_field = 'fechaModificacion'
+    modification_user_field = 'usuarioModificador'
+    deletion_date_field = 'fechaEliminacion'
+    deletion_user_field = 'usuarioEliminador'
+    is_inactive_field = 'estaInactivo'
+    change_counter_field = 'contadorCambios'
+    change_log_field = 'registroDeCambios'
     use_folder_tabs = 0
 
     allowed_content_types = ['TRAInforme'] + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', []))
@@ -103,29 +114,11 @@ class TRAColeccionInformes(OrderedBaseFolder, TRAColeccionArquetipos):
     typeDescription2 = '''Collection of Status Reports of Translations to  Languages and Modules'''
     archetype_name_msgid = 'gvSIGi18n_TRAColeccionInformes_label'
     factory_methods = None
-    factory_enablers = None
+    factory_enablers = { 'TRAInforme' : [ 'fUseCaseCheckDoableFactory', 'Generate_TRAInforme_by_Modules_and_Languages',]}
     allow_discussion = False
 
 
     actions =  (
-
-
-       {'action': "string:$object_url/content_status_history",
-        'category': "object",
-        'id': 'content_status_history',
-        'name': 'State',
-        'permissions': ("View",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:$object_url/Editar",
-        'category': "object",
-        'id': 'edit',
-        'name': 'Edit',
-        'permissions': ("Modify portal content",),
-        'condition': 'python:0'
-       },
 
 
        {'action': "string:${object_url}/folder_listing",
@@ -133,16 +126,7 @@ class TRAColeccionInformes(OrderedBaseFolder, TRAColeccionArquetipos):
         'id': 'folderlisting',
         'name': 'Folder Listing',
         'permissions': ("View",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:${object_url}/sharing",
-        'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
-        'condition': 'python:0'
+        'condition': """python:0"""
        },
 
 
@@ -151,7 +135,7 @@ class TRAColeccionInformes(OrderedBaseFolder, TRAColeccionArquetipos):
         'id': 'references',
         'name': 'References',
         'permissions': ("Modify portal content",),
-        'condition': 'python:0'
+        'condition': """python:0"""
        },
 
 
@@ -160,7 +144,43 @@ class TRAColeccionInformes(OrderedBaseFolder, TRAColeccionArquetipos):
         'id': 'view',
         'name': 'View',
         'permissions': ("View",),
-        'condition': 'python:1'
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:$object_url/Editar",
+        'category': "object",
+        'id': 'edit',
+        'name': 'Edit',
+        'permissions': ("Modify portal content",),
+        'condition': """python:object.fAllowWrite()"""
+       },
+
+
+       {'action': "string:${object_url}/sharing",
+        'category': "object",
+        'id': 'local_roles',
+        'name': 'Sharing',
+        'permissions': ("Manage properties",),
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/TRASeguridadUsuarioConectado",
+        'category': "object_buttons",
+        'id': 'TRA_SeguridadUsuarioConectado',
+        'name': 'Permissions',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:$object_url/content_status_history",
+        'category': "object",
+        'id': 'content_status_history',
+        'name': 'State',
+        'permissions': ("View",),
+        'condition': """python:0"""
        },
 
 
@@ -175,8 +195,22 @@ class TRAColeccionInformes(OrderedBaseFolder, TRAColeccionArquetipos):
 
     # Methods
 
-    security.declarePublic('cb_isCopyable')
-    def cb_isCopyable(self):
+    security.declarePublic('manage_beforeDelete')
+    def manage_beforeDelete(self,item,container):
+        """
+        """
+        
+        return TRAColeccionArquetipos.manage_beforeDelete( self, item, container)
+
+    security.declarePublic('displayContentsTab')
+    def displayContentsTab(self):
+        """
+        """
+        
+        return False
+
+    security.declarePublic('cb_isMoveable')
+    def cb_isMoveable(self):
         """
         """
         
@@ -189,12 +223,12 @@ class TRAColeccionInformes(OrderedBaseFolder, TRAColeccionArquetipos):
         
         return TRAColeccionArquetipos.manage_afterAdd( self, item, container)
 
-    security.declarePublic('manage_beforeDelete')
-    def manage_beforeDelete(self,item,container):
+    security.declarePublic('cb_isCopyable')
+    def cb_isCopyable(self):
         """
         """
         
-        return TRAColeccionArquetipos.manage_beforeDelete( self, item, container)
+        return False
 
     security.declarePublic('manage_pasteObjects')
     def manage_pasteObjects(self,cb_copy_data,REQUEST):
@@ -205,7 +239,7 @@ class TRAColeccionInformes(OrderedBaseFolder, TRAColeccionArquetipos):
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:
-        if a['id'] in ['metadata']:
+        if a['id'] in ['metadata', 'sharing', 'folderContents']:
             a['visible'] = 0
     return fti
 

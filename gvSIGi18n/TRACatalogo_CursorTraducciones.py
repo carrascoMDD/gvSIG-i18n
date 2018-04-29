@@ -64,9 +64,9 @@ from Products.CMFCore       import permissions
 
 from TRAElemento_Constants import *
 
-from TRAElemento_Permission_Definitions import cBoundObject
+from TRAElemento_Permission_Definitions import cBoundObject, cUseCase_InvalidateStringTranslations
 from TRAElemento_Permission_Definitions import cUseCase_BrowseTranslations, cUseCase_TRATraduccionStateChange, cUseCase_TRATraduccionComment
-from TRAElemento_Permission_Definitions import cStateChangeActionRoles
+from TRAElemento_Permission_Definitions import cStateChangeActionRoles, cInvalidateStringTranslationsRoles
 
 
 
@@ -209,12 +209,21 @@ class TRACatalogo_CursorTraducciones:
             'traduccionesPorPagina'      : str( self.fTraduccionesPorPaginaPorDefecto()),
             'datosTraducciones'          : [],
             'read_permission'            : False,
+            'write_permission'           : False,            
             'use_case_query_results'     : [ ],        
-            'allowed_state_transitions':   {},
-            'target_state_changes_anyTranslations':   set(),
+            'allowed_state_transitions'  : {},
+            'all_target_state_changes'   : [ ],
+            # ACV 20090926 Added allow_reset_in_all_languages 
+            #    To support UC22 Use Case Invalidate String translations to all languages
+            'allow_invalidate_string_translations': False,
+            # ACV 20090926 Unused: Removed
+            #'target_state_changes_anyTranslations':   set(),
             'from_translation_index':    0,
             'to_translation_index':      0,
             'total_translations':        0,
+            # Nobody uses writable_language_codes and writable_module_names, and redundant with the use_case_query_results above
+            # 'writable_language_codes':   [ ],
+            # 'writable_module_names':     [ ],
         }
         return unResult
      
@@ -632,7 +641,7 @@ class TRACatalogo_CursorTraducciones:
             
             unChangeActionResult  = None
 
-            if not unCodigoIdiomaATraducir or not unSimboloCadenaATraducir:
+            if ( not unSimboloCadenaATraducir) or ( ( not unCodigoIdiomaATraducir) and not ( unRequestedChangeKind == cRequestedChangeKind_InvalidarTraduccionesCadena)):
 
                 unResult[ 'success']   = False
                 unResult[ 'condition'] = 'Missing_parameters'
@@ -718,6 +727,14 @@ class TRACatalogo_CursorTraducciones:
                         unExecutionRecord
                     )    
 
+                elif unRequestedChangeKind == cRequestedChangeKind_InvalidarTraduccionesCadena:
+                    unChangeActionResult = self.fInvalidarTraduccionesCadenas(   
+                        unSimboloCadenaATraducir, 
+                        unComentario, 
+                        unPermissionsCache, 
+                        unRolesCache, 
+                        unExecutionRecord
+                    )    
 
                 if unChangeActionResult:
                     unChangeActionResult[ 'duration']    = self.fMillisecondsNow() - unChangeStart
@@ -909,6 +926,13 @@ class TRACatalogo_CursorTraducciones:
 
                 try:
                     
+                    # ##################################################################
+                    """Check if the translations catalog allows modifications or is locked for writing.
+                    
+                    """
+                    unAllowWrite = self.fAllowWrite()
+                    
+                    
     
                     # ##################################################################
                     """Retrieve languages and modules available for translation browsing by the connected user.
@@ -917,7 +941,7 @@ class TRACatalogo_CursorTraducciones:
                     unBrowseUseCaseQueryResult = self.fUseCaseAssessment(  
                         theUseCaseName          = cUseCase_BrowseTranslations, 
                         theElementsBindings     = { cBoundObject: self,},
-                        theRulesToCollect       = [ 'languages', 'modules',], 
+                        theRulesToCollect       = [ 'languages', 'modules', 'changeable_languages', 'changeable_modules',], 
                         thePermissionsCache     = unPermissionsCache, 
                         theRolesCache           = unRolesCache, 
                         theParentExecutionRecord= unExecutionRecord
@@ -928,12 +952,35 @@ class TRACatalogo_CursorTraducciones:
                         return self    
                 
                     theReport[ 'use_case_query_results'].append( unBrowseUseCaseQueryResult)  
-                    unosIdiomasAccesibles = unBrowseUseCaseQueryResult.get( 'collected_rule_assessments_by_name', {}).get( 'languages', {}).get( 'accepted_final_objects', [])
+                    
+                    
+                    # ACV 20090927 in support of UC22 Use Case Invalidate String translations to all languages
+                    #
+                    # Redundant with pAllowInvalidateStringTranslations
+                    #unInvalidateStringTranslationsUseCaseQueryResult = self.fUseCaseAssessment(  
+                        #theUseCaseName          = cUseCase_InvalidateStringTranslations, 
+                        #theElementsBindings     = { cBoundObject: self,},
+                        ## theRulesToCollect       = [ 'languages', 'modules', 'changeable_languages', 'changeable_modules',], 
+                        #thePermissionsCache     = unPermissionsCache, 
+                        #theRolesCache           = unRolesCache, 
+                        #theParentExecutionRecord= unExecutionRecord
+                    #)    
+                    #if unBrowseUseCaseQueryResult:
+                        #theReport[ 'use_case_query_results'].append( unInvalidateStringTranslationsUseCaseQueryResult)  
+                    
+                    
+                    unosIdiomasAccesibles   = unBrowseUseCaseQueryResult.get( 'collected_rule_assessments_by_name', {}).get( 'languages', {}).get( 'accepted_final_objects', [])
+                    unosIdiomasModificables = []
+                    if unAllowWrite:
+                        unosIdiomasModificables = unBrowseUseCaseQueryResult.get( 'collected_rule_assessments_by_name', {}).get( 'changeable_languages', {}).get( 'accepted_final_objects', [])
                         
+                    # Nobody uses this, and is redundant with the use case assessment results above
+                    #
+                    # theReport[ 'writable_language_codes'] = [ unIdioma.getCodigoIdiomaEnGvSIG() for unIdioma in unosIdiomasModificables]
                     
     
-                   
-    
+                        
+                        
                     # ##################################################################
                     """Check language selected for browsing is among the accesible ones.
                     
@@ -953,12 +1000,30 @@ class TRACatalogo_CursorTraducciones:
                     
                     
                     
+                     # ##################################################################
+                    """Check language selected for browsing is among the modifiable ones.
                     
-                    # ##################################################################
+                    """  
+                    unIdiomaCursorModifiable = unAllowWrite and ( unIdiomaCursor in unosIdiomasModificables)
+                    theReport[ 'write_permission'] = unIdiomaCursorModifiable
+ 
+                      
+                    
+                     # ##################################################################
                     """Get connected user roles at language to browse.
                     
                     """
                     unosRolesEnIdiomaCursor = self.fGetElementRoles( unIdiomaCursor, unRolesCache)
+                    
+                     
+                     # ##################################################################
+                    """Get connected user roles at root catalog. 
+                    Relevant for the Invalidate String Translations use case, which is not language specific, but rather affects all languages.
+                    
+                    """
+                    unCatalogo = unIdiomaCursor.getCatalogo()
+                    
+                    unosRolesEnCatalogo = self.fGetElementRoles( unCatalogo, unRolesCache)
                     
                      
                             
@@ -969,7 +1034,14 @@ class TRACatalogo_CursorTraducciones:
                     
                     """
                     unosModulosAccesibles = unBrowseUseCaseQueryResult.get( 'collected_rule_assessments_by_name', {}).get( 'modules', {}).get( 'accepted_final_objects', [])
+                    unosModulosModificables = []
+                    if unAllowWrite:
+                        unosModulosModificables = unBrowseUseCaseQueryResult.get( 'collected_rule_assessments_by_name', {}).get( 'changeable_modules', {}).get( 'accepted_final_objects', [])
 
+                    # Nobody uses this, and is redundant with the use case assessment results above
+                    #
+                    #theReport[ 'writable_module_names'] = [ unModulo.Title() for unModulo in unosModulosModificables]
+                    
                     
                     
                     
@@ -985,8 +1057,22 @@ class TRACatalogo_CursorTraducciones:
                     
                     
                     
+                    # #################################################################
+                    """Check for Roles for use case to invalidate string translations.
                     
-                    # ##################################################################
+                    """
+                    if set( cInvalidateStringTranslationsRoles).intersection( unosRolesEnCatalogo):
+                        theReport[ 'allow_invalidate_string_translations']  = True      
+                     
+                     
+                    # #################################################################
+                    """Unless the catalog or the language are not modifiable, determine state transitions permitted to the connected user for translations in the language requested to browse and accessible module.
+                    
+                    """
+                    unasAllowedStateTransitions     = { }
+                    unosAllTargetStateChanges       = set( )
+                    
+                    
                     """Get connected user roles at any of the accessible modules.
                     
                     """
@@ -995,40 +1081,32 @@ class TRACatalogo_CursorTraducciones:
                     for unModulo in unosModulosAccesibles:
                         unosRolesEnModulo   = unModulo.fGetElementRoles( unModulo, unRolesCache)
                         unosRolesEnTodosModulos.update( unosRolesEnModulo)
+                    
+                    
+                    if unIdiomaCursorModifiable:
+                    
+                        for unEstado in cTodosEstados:
+                
+                            unasStateChangeRules = cStateChangeActionRoles.get( unEstado, None)
+                            unosEstadosFinales = set( )
+                
+                            unasAllowedStateTransitions[ unEstado] = unosEstadosFinales
+                            
+                            if unasStateChangeRules:
+                                unosEstadosFinalesInRule = unasStateChangeRules.keys()
+                                if unosEstadosFinalesInRule:
+                                    for unEstadoFinal in unosEstadosFinalesInRule:
+                                        unosRolesRequeridosParaTransicion = unasStateChangeRules.get( unEstadoFinal, set())
+                                        if unosRolesRequeridosParaTransicion:
+                                            if set( unosRolesRequeridosParaTransicion).intersection( unosRolesEnIdiomaCursor).intersection( unosRolesEnTodosModulos):
+                                                unosEstadosFinales.add( unEstadoFinal)
+                                                unosAllTargetStateChanges.add( unEstadoFinal)
                         
-     
-                        
-                    
-                    
-                    
-                    # #################################################################
-                    """Determine state transitions permitted to the connected user for translations in the language requested to browse and accessible module.
-                    
-                    """
-                    unasAllowedStateTransitions     = { }
-                    unosAllTargetStateChanges       = set( )
-                    for unEstado in cTodosEstados:
-            
-                        unasStateChangeRules = cStateChangeActionRoles.get( unEstado, None)
-                        unosEstadosFinales = set( )
-            
-                        unasAllowedStateTransitions[ unEstado] = unosEstadosFinales
-                        
-                        if unasStateChangeRules:
-                            unosEstadosFinalesInRule = unasStateChangeRules.keys()
-                            if unosEstadosFinalesInRule:
-                                for unEstadoFinal in unosEstadosFinalesInRule:
-                                    unosRolesRequeridosParaTransicion = unasStateChangeRules.get( unEstadoFinal, set())
-                                    if unosRolesRequeridosParaTransicion:
-                                        if set( unosRolesRequeridosParaTransicion).intersection( unosRolesEnIdiomaCursor).intersection( unosRolesEnTodosModulos):
-                                            unosEstadosFinales.add( unEstadoFinal)
-                                            unosAllTargetStateChanges.add( unEstadoFinal)
-                    
-                    theReport[ 'allowed_state_transitions'] = unasAllowedStateTransitions      
-                    theReport[ 'all_target_state_changes']  = unosAllTargetStateChanges      
+                        theReport[ 'allowed_state_transitions'] = unasAllowedStateTransitions      
+                        theReport[ 'all_target_state_changes']  = unosAllTargetStateChanges      
                     
                                             
-                                            
+                           
                                             
                     # ##############################################################            
                     """If requested browsing just one translation by its string id, 

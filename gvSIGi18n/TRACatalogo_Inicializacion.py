@@ -80,7 +80,7 @@ from TRACatalogo_Inicializacion_Constants import *
 
 
 from TRAElemento_Permission_Definitions import cTRAUserGroups_Catalogo
-from TRAElemento_Permission_Definitions import cUseCase_InitializeTRACatalogo, cBoundObject
+from TRAElemento_Permission_Definitions import cUseCase_InitializeTRACatalogo, cUseCase_VerifyTRACatalogo, cBoundObject
 from TRAElemento_Permission_Definitions import cTRAUserGroups_Catalogo_AuthorizedOnCatalogo
 from TRAElemento_Permission_Definitions import cTRAUserGroups_Catalogo_AuthorizedOnIndividualIdiomas, cTRAUserGroups_Catalogo_AuthorizedOnIndividualModulos
 # ACV 20090914 NOW approach: Simpler security schema: no user groups for languages or modules, shall assign local roles to users directly on the language or module element
@@ -446,18 +446,35 @@ class TRACatalogo_Inicializacion:
             
                 if theCheckPermissions:
                     
-                    unUseCaseQueryResult = self.fUseCaseAssessment(  
-                        theUseCaseName          = cUseCase_InitializeTRACatalogo, 
-                        theElementsBindings     = { cBoundObject: self,},
-                        theRulesToCollect       = [ ], 
-                        thePermissionsCache     = unPermissionsCache, 
-                        theRolesCache           = unRolesCache, 
-                        theParentExecutionRecord= unExecutionRecord
-                    )
-                    if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
-                        unInforme[ 'success']   =  False
-                        unInforme[ 'condition'] = 'user_can_NOT_initialize_TRACatalogo'
-                        return unInforme
+                    if theAllowCreation:
+                    
+                        unUseCaseQueryResult = self.fUseCaseAssessment(  
+                            theUseCaseName          = cUseCase_InitializeTRACatalogo, 
+                            theElementsBindings     = { cBoundObject: self,},
+                            theRulesToCollect       = [ ], 
+                            thePermissionsCache     = unPermissionsCache, 
+                            theRolesCache           = unRolesCache, 
+                            theParentExecutionRecord= unExecutionRecord
+                        )
+                        if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
+                            unInforme[ 'success']   =  False
+                            unInforme[ 'condition'] = 'user_can_NOT_initialize_TRACatalogo'
+                            return unInforme
+                        
+                    else:
+                        unUseCaseQueryResult = self.fUseCaseAssessment(  
+                            theUseCaseName          = cUseCase_VerifyTRACatalogo, 
+                            theElementsBindings     = { cBoundObject: self,},
+                            theRulesToCollect       = [ ], 
+                            thePermissionsCache     = unPermissionsCache, 
+                            theRolesCache           = unRolesCache, 
+                            theParentExecutionRecord= unExecutionRecord
+                        )
+                        if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
+                            unInforme[ 'success']   =  False
+                            unInforme[ 'condition'] = 'user_can_NOT_verify_TRACatalogo'
+                            return unInforme
+                        
                                     
                                 
                 unInforme[ 'ModelDDvlPloneTool']               = self.fLazyCrearModelDDvlPloneTool(            theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)

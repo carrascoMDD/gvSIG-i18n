@@ -38,13 +38,14 @@ from TRAElemento_Meta import TRAElemento_Meta
 from TRAElemento_TraversalConfig import TRAElemento_TraversalConfig
 from TRAElemento_Operaciones import TRAElemento_Operaciones
 from Products.ATContentTypes.content.base import ATCTMixin
+from Products.ATContentTypes.content.document import ATDocument
+from Products.ATContentTypes.content.base import updateAliases
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
 from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import ReferenceBrowserWidget
-from Acquisition  import aq_inner, aq_parent
-from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils  import getToolByName
+from Acquisition  import aq_inner, aq_parent
 
 ##code-section module-header #fill in your manual code here
 ##/code-section module-header
@@ -143,7 +144,7 @@ schema = Schema((
         owner_class_name="TRAElemento",
         expression="context.objectValues(['Image'])",
         computed_types=['Image'],
-        non_framework_elements=False,
+        non_framework_elements=True,
         description='Elementos Plone convencionales conteniendo una Imagen.'
     ),
 
@@ -225,6 +226,9 @@ class TRAElemento(TRAElemento_MappingConfig, TRAElemento_ExportConfig, TRAElemen
     __implements__ = (getattr(TRAElemento_MappingConfig,'__implements__',()),) + (getattr(TRAElemento_ExportConfig,'__implements__',()),) + (getattr(TRAElemento_CopyConfig,'__implements__',()),) + (getattr(TRAElemento_Meta,'__implements__',()),) + (getattr(TRAElemento_TraversalConfig,'__implements__',()),) + (getattr(TRAElemento_Operaciones,'__implements__',()),) + (getattr(ATCTMixin,'__implements__',()),)
 
     allowed_content_types = ['Image', 'Document', 'File', 'Link', 'News Item'] + list(getattr(TRAElemento_MappingConfig, 'allowed_content_types', [])) + list(getattr(TRAElemento_ExportConfig, 'allowed_content_types', [])) + list(getattr(TRAElemento_CopyConfig, 'allowed_content_types', [])) + list(getattr(TRAElemento_Meta, 'allowed_content_types', [])) + list(getattr(TRAElemento_TraversalConfig, 'allowed_content_types', [])) + list(getattr(TRAElemento_Operaciones, 'allowed_content_types', [])) + list(getattr(ATCTMixin, 'allowed_content_types', []))
+
+    aliases = updateAliases( ATDocument, {'folder_factories':'Tabular','cut':'Tabular','object_cut':'Tabular','delete_confirmation': 'Eliminar','object_rename': 'Editar','content_status_modify':'Tabular','content_status_history':'Tabular','placeful_workflow_configuration': 'Tabular',})
+
     _at_rename_after_creation = True
 
     schema = TRAElemento_schema
@@ -241,12 +245,47 @@ class TRAElemento(TRAElemento_MappingConfig, TRAElemento_ExportConfig, TRAElemen
         
         return getToolByName( self, 'ModelDDvlPlone_tool').fCookedBodyForElement( None, self, stx_level, setlevel, None)
 
+    security.declarePublic('fAllowExport')
+    def fAllowExport(self):
+        """
+        """
+        
+        return False
+
+    security.declarePublic('fAllowImport')
+    def fAllowImport(self):
+        """
+        """
+        
+        return False
+
+    security.declarePublic('fAllowEditId')
+    def fAllowEditId(self):
+        """
+        """
+        
+        return False
+
     security.declarePublic('fAllowPaste')
     def fAllowPaste(self):
         """
         """
         
         return False
+
+    security.declarePublic('fAllowRead')
+    def fAllowRead(self):
+        """
+        """
+        
+        return True
+
+    security.declarePublic('fAllowWrite')
+    def fAllowWrite(self):
+        """
+        """
+        
+        return self.fAllowRead() and self.getCatalogo().getPermiteModificar()
 
     security.declarePublic('getContenedor')
     def getContenedor(self):
@@ -310,6 +349,13 @@ class TRAElemento(TRAElemento_MappingConfig, TRAElemento_ExportConfig, TRAElemen
         """
         
         return TRAElemento_Operaciones.pHandle_manage_beforeDelete( self, item, container)
+
+    security.declarePublic('getAddableTypesInMenu')
+    def getAddableTypesInMenu(self,theTypes):
+        """
+        """
+        
+        return []
 # end of class TRAElemento
 
 ##code-section module-footer #fill in your manual code here

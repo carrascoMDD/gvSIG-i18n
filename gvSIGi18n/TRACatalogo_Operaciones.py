@@ -65,9 +65,12 @@ from TRACatalogo_Inicializacion import cNombreCatalogoBusquedaCadenas, cNombreCa
 from TRAElemento import TRAElemento
 
 from TRAElemento_Permission_Definitions import cUseCase_VerifyTRACatalogo, cUseCase_InitializeTRACatalogo, cUseCase_Export, cUseCase_ConfigureTRACatalogo
-from TRAElemento_Permission_Definitions import cUseCase_AuthorizeUsers, cUseCase_ReviewUsersAuthorizations
+from TRAElemento_Permission_Definitions import cUseCase_LockTRACatalogo, cUseCase_UnlockTRACatalogo
+# ACV 20090924 Unused, REmoved
+#
+#from TRAElemento_Permission_Definitions import cUseCase_AuthorizeUsers, cUseCase_ReviewUsersAuthorizations
 
-from TRAElemento_Permission_Definitions import cTRAUserGroups_Catalogo
+from TRAElemento_Permission_Definitions import cBoundObject, cTRAUserGroups_Catalogo
 from TRAElemento_Permission_Definitions import cTRAUserGroups_Catalogo_AuthorizedOnIndividualIdiomas, cTRAUserGroups_Catalogo_AuthorizedOnIndividualModulos
 
 
@@ -101,6 +104,124 @@ class TRACatalogo_Operaciones:
 
     
     
+
+    
+    security.declareProtected( permissions.AddPortalFolders, 'fBloquearCatalogo')
+    def fBloquearCatalogo( self , thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
+        
+        unExecutionRecord = self.fStartExecution( 'method',  'fBloquearCatalogo', theParentExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
+
+        try:
+            
+            try:
+                
+                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
+                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+            
+                unUseCaseQueryResult = self.fUseCaseAssessment(  
+                    theUseCaseName          = cUseCase_LockTRACatalogo, 
+                    theElementsBindings     = { cBoundObject: self,},
+                    theRulesToCollect       = [ ], 
+                    thePermissionsCache     = unPermissionsCache, 
+                    theRolesCache           = unRolesCache, 
+                    theParentExecutionRecord= unExecutionRecord
+                )
+                if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
+                    return False
+                        
+                                    
+                unPermiteModificar = self.getPermiteModificar()
+                
+                if unPermiteModificar:
+                    self.setPermiteModificar( False)
+                    transaction.commit()
+                    logging.getLogger( 'gvSIGi18n').info( "COMMIT TRACatalogo::fBloquearCatalogo %s" % '/'.join( self.getPhysicalPath()))
+                    
+                return True
+            
+            except:
+                unaExceptionInfo = sys.exc_info()
+                unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
+                
+                unInformeExcepcion = 'Exception during TRACatalogo::fBloquearCatalogo %s \n'  % '/'.join( self.getPhysicalPath())
+                unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
+                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                unInformeExcepcion += unaExceptionFormattedTraceback   
+
+                unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
+
+                if cLogExceptions:
+                    logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
+                
+                return False
+        
+             
+        finally:
+            unExecutionRecord and unExecutionRecord.pEndExecution()
+            unExecutionRecord and unExecutionRecord.pClearLoggedAll()
+
+            
+ 
+    
+
+    
+    security.declareProtected( permissions.ModifyPortalContent, 'fDesbloquearCatalogo')
+    def fDesbloquearCatalogo( self , thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
+        
+        unExecutionRecord = self.fStartExecution( 'method',  'fDesbloquearCatalogo', theParentExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
+
+        try:
+            
+            try:
+                
+                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
+                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+            
+                unUseCaseQueryResult = self.fUseCaseAssessment(  
+                    theUseCaseName          = cUseCase_UnlockTRACatalogo, 
+                    theElementsBindings     = { cBoundObject: self,},
+                    theRulesToCollect       = [ ], 
+                    thePermissionsCache     = unPermissionsCache, 
+                    theRolesCache           = unRolesCache, 
+                    theParentExecutionRecord= unExecutionRecord
+                )
+                if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
+                    return False
+                        
+                                    
+                unPermiteModificar = self.getPermiteModificar()
+                
+                if not unPermiteModificar:
+                    self.setPermiteModificar( True)
+                    transaction.commit()
+                    logging.getLogger( 'gvSIGi18n').info( "COMMIT TRACatalogo::fDesbloquearCatalogo %s" % '/'.join( self.getPhysicalPath()))
+                    
+                return True
+            
+            except:
+                unaExceptionInfo = sys.exc_info()
+                unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
+                
+                unInformeExcepcion = 'Exception during TRACatalogo::fDesbloquearCatalogo %s \n'  % '/'.join( self.getPhysicalPath())
+                unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
+                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                unInformeExcepcion += unaExceptionFormattedTraceback   
+
+                unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
+
+                if cLogExceptions:
+                    logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
+                
+                return False
+        
+             
+        finally:
+            unExecutionRecord and unExecutionRecord.pEndExecution()
+            unExecutionRecord and unExecutionRecord.pClearLoggedAll()
+
+            
+ 
+        
     
 
     
@@ -108,6 +229,8 @@ class TRACatalogo_Operaciones:
     def getCatalogo( self):
         return self
         
+    
+    
     
     security.declarePrivate( 'fCodigoIdiomaPorDefecto')
     def fCodigoIdiomaPorDefecto( self, ):
@@ -166,47 +289,48 @@ class TRACatalogo_Operaciones:
         
     
     
-    security.declarePublic('fUseCaseCheckDoable_VerifyTRACatalogo')
-    def fUseCaseCheckDoable_VerifyTRACatalogo(self, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):   
+    # ACV 20090924 Invocations substituted by invocations of generic method with parameter object.fUseCaseCheckDoable( 'Verify_TRACatalogo')
+    #security.declarePublic('fUseCaseCheckDoable_VerifyTRACatalogo')
+    #def fUseCaseCheckDoable_VerifyTRACatalogo(self, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):   
 
  
-        unExecutionRecord = self.fStartExecution( 'method',  'fUseCaseCheckDoable_VerifyTRACatalogo', theParentExecutionRecord, False) 
+        #unExecutionRecord = self.fStartExecution( 'method',  'fUseCaseCheckDoable_VerifyTRACatalogo', theParentExecutionRecord, False) 
         
-        try:
-            try:
-                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+        #try:
+            #try:
+                #unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
+                #unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
                     
-                unUseCaseAssessmentResult = self.fUseCaseAssessment( 
-                    theUseCaseName          = cUseCase_VerifyTRACatalogo, 
-                    theElementsBindings     = { 'object': self,},
-                    theRulesToCollect       = None, 
-                    thePermissionsCache     = unPermissionsCache, 
-                    theRolesCache           = unRolesCache, 
-                    theParentExecutionRecord= unExecutionRecord)
+                #unUseCaseAssessmentResult = self.fUseCaseAssessment( 
+                    #theUseCaseName          = cUseCase_VerifyTRACatalogo, 
+                    #theElementsBindings     = { 'object': self,},
+                    #theRulesToCollect       = None, 
+                    #thePermissionsCache     = unPermissionsCache, 
+                    #theRolesCache           = unRolesCache, 
+                    #theParentExecutionRecord= unExecutionRecord)
                 
-                unResult = unUseCaseAssessmentResult and unUseCaseAssessmentResult.get( 'success', False)
-                return unResult 
+                #unResult = unUseCaseAssessmentResult and unUseCaseAssessmentResult.get( 'success', False)
+                #return unResult 
     
     
-            except:
-                unaExceptionInfo = sys.exc_info()
-                unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
+            #except:
+                #unaExceptionInfo = sys.exc_info()
+                #unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
                 
-                unInformeExcepcion = 'Exception during fUseCaseCheckDoable_VerifyTRACatalogo\n' 
-                unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
-                unInformeExcepcion += unaExceptionFormattedTraceback   
+                #unInformeExcepcion = 'Exception during fUseCaseCheckDoable_VerifyTRACatalogo\n' 
+                #unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
+                #unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                #unInformeExcepcion += unaExceptionFormattedTraceback   
                          
-                unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
+                #unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
     
-                if cLogExceptions:
-                    logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
+                #if cLogExceptions:
+                    #logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
                 
-                return False
+                #return False
 
-        finally:
-            unExecutionRecord and unExecutionRecord.pEndExecution()
+        #finally:
+            #unExecutionRecord and unExecutionRecord.pEndExecution()
      
         
     
@@ -214,141 +338,143 @@ class TRACatalogo_Operaciones:
 
     
     
-    security.declarePublic('fUseCaseCheckDoable_ConfigureTRACatalogo')
-    def fUseCaseCheckDoable_ConfigureTRACatalogo(self, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):   
+    # ACV 20090924 Invocations substituted by invocations of generic method with parameter object.fUseCaseCheckDoable( 'Configure_TRACatalogo')
+    #security.declarePublic('fUseCaseCheckDoable_ConfigureTRACatalogo')
+    #def fUseCaseCheckDoable_ConfigureTRACatalogo(self, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):   
 
  
-        unExecutionRecord = self.fStartExecution( 'method',  'fUseCaseCheckDoable_ConfigureTRACatalogo', theParentExecutionRecord, False) 
+        #unExecutionRecord = self.fStartExecution( 'method',  'fUseCaseCheckDoable_ConfigureTRACatalogo', theParentExecutionRecord, False) 
         
-        try:
-            try:
-                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+        #try:
+            #try:
+                #unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
+                #unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
                     
-                unUseCaseAssessmentResult = self.fUseCaseAssessment( 
-                    theUseCaseName          = cUseCase_ConfigureTRACatalogo, 
-                    theElementsBindings     = { 'object': self,},
-                    theRulesToCollect       = None, 
-                    thePermissionsCache     = unPermissionsCache, 
-                    theRolesCache           = unRolesCache, 
-                    theParentExecutionRecord= unExecutionRecord)
+                #unUseCaseAssessmentResult = self.fUseCaseAssessment( 
+                    #theUseCaseName          = cUseCase_ConfigureTRACatalogo, 
+                    #theElementsBindings     = { 'object': self,},
+                    #theRulesToCollect       = None, 
+                    #thePermissionsCache     = unPermissionsCache, 
+                    #theRolesCache           = unRolesCache, 
+                    #theParentExecutionRecord= unExecutionRecord)
                 
-                unResult = unUseCaseAssessmentResult and unUseCaseAssessmentResult.get( 'success', False)
-                return unResult 
+                #unResult = unUseCaseAssessmentResult and unUseCaseAssessmentResult.get( 'success', False)
+                #return unResult 
     
     
-            except:
-                unaExceptionInfo = sys.exc_info()
-                unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
+            #except:
+                #unaExceptionInfo = sys.exc_info()
+                #unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
                 
-                unInformeExcepcion = 'Exception during fUseCaseCheckDoable_ConfigureTRACatalogo\n' 
-                unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
-                unInformeExcepcion += unaExceptionFormattedTraceback   
+                #unInformeExcepcion = 'Exception during fUseCaseCheckDoable_ConfigureTRACatalogo\n' 
+                #unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
+                #unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                #unInformeExcepcion += unaExceptionFormattedTraceback   
                          
-                unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
+                #unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
     
-                if cLogExceptions:
-                    logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
+                #if cLogExceptions:
+                    #logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
                 
-                return False
+                #return False
 
-        finally:
-            unExecutionRecord and unExecutionRecord.pEndExecution()
+        #finally:
+            #unExecutionRecord and unExecutionRecord.pEndExecution()
      
         
     
     
     
-    security.declarePublic('fUseCaseCheckDoable_InitializeTRACatalogo')
-    def fUseCaseCheckDoable_InitializeTRACatalogo(self, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):   
+   # ACV 20090924 Unused. Removed. Checks for the use case are done programmatically, and using the results, therefore there are no stand alone doability invocations for the use case.
+    #security.declarePublic('fUseCaseCheckDoable_InitializeTRACatalogo')
+    #def fUseCaseCheckDoable_InitializeTRACatalogo(self, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):   
 
  
-        unExecutionRecord = self.fStartExecution( 'method',  'fUseCaseCheckDoable_InitializeTRACatalogo', theParentExecutionRecord, False) 
+        #unExecutionRecord = self.fStartExecution( 'method',  'fUseCaseCheckDoable_InitializeTRACatalogo', theParentExecutionRecord, False) 
         
-        try:
+        #try:
      
-            try: 
-                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+            #try: 
+                #unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
+                #unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
                     
-                unUseCaseAssessmentResult = self.fUseCaseAssessment( 
-                    theUseCaseName          = cUseCase_InitializeTRACatalogo, 
-                    theElementsBindings     = { 'object': self,},
-                    theRulesToCollect       = None, 
-                    thePermissionsCache     = unPermissionsCache, 
-                    theRolesCache           = unRolesCache, 
-                    theParentExecutionRecord= unExecutionRecord)
+                #unUseCaseAssessmentResult = self.fUseCaseAssessment( 
+                    #theUseCaseName          = cUseCase_InitializeTRACatalogo, 
+                    #theElementsBindings     = { 'object': self,},
+                    #theRulesToCollect       = None, 
+                    #thePermissionsCache     = unPermissionsCache, 
+                    #theRolesCache           = unRolesCache, 
+                    #theParentExecutionRecord= unExecutionRecord)
                 
-                unResult = unUseCaseAssessmentResult and unUseCaseAssessmentResult.get( 'success', False)
-                return unResult 
+                #unResult = unUseCaseAssessmentResult and unUseCaseAssessmentResult.get( 'success', False)
+                #return unResult 
     
     
-            except:
-                unaExceptionInfo = sys.exc_info()
-                unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
+            #except:
+                #unaExceptionInfo = sys.exc_info()
+                #unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
                 
-                unInformeExcepcion = 'Exception during fUseCaseCheckDoable_InitializeTRACatalogo\n' 
-                unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
-                unInformeExcepcion += unaExceptionFormattedTraceback   
+                #unInformeExcepcion = 'Exception during fUseCaseCheckDoable_InitializeTRACatalogo\n' 
+                #unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
+                #unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                #unInformeExcepcion += unaExceptionFormattedTraceback   
                          
-                unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
+                #unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
     
-                if cLogExceptions:
-                    logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
+                #if cLogExceptions:
+                    #logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
                 
-                return False
+                #return False
 
-        finally:
-            unExecutionRecord and unExecutionRecord.pEndExecution()
+        #finally:
+            #unExecutionRecord and unExecutionRecord.pEndExecution()
      
         
     
 
-    
-    security.declarePublic('fUseCaseCheckDoable_Export')
-    def fUseCaseCheckDoable_Export(self, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):   
+    # ACV 20090924 Invocations substituted by invocations of generic method with parameter object.fUseCaseCheckDoable( 'Export')
+    #security.declarePublic('fUseCaseCheckDoable_Export')
+    #def fUseCaseCheckDoable_Export(self, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):   
 
  
-        unExecutionRecord = self.fStartExecution( 'method',  'fUseCaseCheckDoable_Export', theParentExecutionRecord, False) 
+        #unExecutionRecord = self.fStartExecution( 'method',  'fUseCaseCheckDoable_Export', theParentExecutionRecord, False) 
         
-        try:
+        #try:
      
-            try: 
-                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+            #try: 
+                #unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
+                #unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
                     
-                unUseCaseAssessmentResult = self.fUseCaseAssessment( 
-                    theUseCaseName          = cUseCase_Export, 
-                    theElementsBindings     = { 'object': self,},
-                    theRulesToCollect       = None, 
-                    thePermissionsCache     = unPermissionsCache, 
-                    theRolesCache           = unRolesCache, 
-                    theParentExecutionRecord= unExecutionRecord)
+                #unUseCaseAssessmentResult = self.fUseCaseAssessment( 
+                    #theUseCaseName          = cUseCase_Export, 
+                    #theElementsBindings     = { 'object': self,},
+                    #theRulesToCollect       = None, 
+                    #thePermissionsCache     = unPermissionsCache, 
+                    #theRolesCache           = unRolesCache, 
+                    #theParentExecutionRecord= unExecutionRecord)
                 
-                unResult = unUseCaseAssessmentResult and unUseCaseAssessmentResult.get( 'success', False)
-                return unResult 
+                #unResult = unUseCaseAssessmentResult and unUseCaseAssessmentResult.get( 'success', False)
+                #return unResult 
     
     
-            except:
-                unaExceptionInfo = sys.exc_info()
-                unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
+            #except:
+                #unaExceptionInfo = sys.exc_info()
+                #unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
                 
-                unInformeExcepcion = 'Exception during fUseCaseCheckDoable_Export\n' 
-                unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
-                unInformeExcepcion += unaExceptionFormattedTraceback   
+                #unInformeExcepcion = 'Exception during fUseCaseCheckDoable_Export\n' 
+                #unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
+                #unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                #unInformeExcepcion += unaExceptionFormattedTraceback   
                 
-                unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
+                #unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
     
-                if cLogExceptions:
-                    logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
+                #if cLogExceptions:
+                    #logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
                 
-                return False
+                #return False
 
-        finally:
-            unExecutionRecord and unExecutionRecord.pEndExecution()
+        #finally:
+            #unExecutionRecord and unExecutionRecord.pEndExecution()
      
 
             
@@ -402,48 +528,49 @@ class TRACatalogo_Operaciones:
             
             
             
-    
-    security.declarePublic('fUseCaseCheckDoable_AuthorizeUsers')
-    def fUseCaseCheckDoable_AuthorizeUsers(self, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):   
+    # ACV 20090924 Unused, removed
+    #
+    #security.declarePublic('fUseCaseCheckDoable_AuthorizeUsers')
+    #def fUseCaseCheckDoable_AuthorizeUsers(self, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):   
 
  
-        unExecutionRecord = self.fStartExecution( 'method',  'fUseCaseCheckDoable_AuthorizeUsers', theParentExecutionRecord, False) 
+        #unExecutionRecord = self.fStartExecution( 'method',  'fUseCaseCheckDoable_AuthorizeUsers', theParentExecutionRecord, False) 
         
-        try:
-            try:
-                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+        #try:
+            #try:
+                #unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
+                #unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
                     
-                unUseCaseAssessmentResult = self.fUseCaseAssessment( 
-                    theUseCaseName          = cUseCase_AuthorizeUsers, 
-                    theElementsBindings     = { 'object': self,},
-                    theRulesToCollect       = None, 
-                    thePermissionsCache     = unPermissionsCache, 
-                    theRolesCache           = unRolesCache, 
-                    theParentExecutionRecord= unExecutionRecord)
+                #unUseCaseAssessmentResult = self.fUseCaseAssessment( 
+                    #theUseCaseName          = cUseCase_AuthorizeUsers, 
+                    #theElementsBindings     = { 'object': self,},
+                    #theRulesToCollect       = None, 
+                    #thePermissionsCache     = unPermissionsCache, 
+                    #theRolesCache           = unRolesCache, 
+                    #theParentExecutionRecord= unExecutionRecord)
                 
-                unResult = unUseCaseAssessmentResult and unUseCaseAssessmentResult.get( 'success', False)
-                return unResult 
+                #unResult = unUseCaseAssessmentResult and unUseCaseAssessmentResult.get( 'success', False)
+                #return unResult 
     
     
-            except:
-                unaExceptionInfo = sys.exc_info()
-                unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
+            #except:
+                #unaExceptionInfo = sys.exc_info()
+                #unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
                 
-                unInformeExcepcion = 'Exception during fUseCaseCheckDoable_AuthorizeUsers\n' 
-                unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
-                unInformeExcepcion += unaExceptionFormattedTraceback   
+                #unInformeExcepcion = 'Exception during fUseCaseCheckDoable_AuthorizeUsers\n' 
+                #unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
+                #unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                #unInformeExcepcion += unaExceptionFormattedTraceback   
                          
-                unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
+                #unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
     
-                if cLogExceptions:
-                    logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
+                #if cLogExceptions:
+                    #logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
                 
-                return False
+                #return False
 
-        finally:
-            unExecutionRecord and unExecutionRecord.pEndExecution()
+        #finally:
+            #unExecutionRecord and unExecutionRecord.pEndExecution()
      
         
                 
@@ -1297,6 +1424,9 @@ class TRACatalogo_Operaciones:
                 unDelta = (unIndexIdiomaAnterior + 1) - len( unosCodigosIdioma) 
                 unaColeccionIdiomas.moveObjectsByDelta( [ unaIdNuevoIdioma,], unDelta)
                 
+            unNuevoIdioma.setPermiteLeer( True)
+            unNuevoIdioma.setPermiteModificar( True)
+            
             return unNuevoIdioma
         
         finally:
@@ -1382,6 +1512,8 @@ class TRACatalogo_Operaciones:
                 unDelta = (unIndexModuloAnterior + 1) - len( unosNombresModulo) 
                 unaColeccionModulos.moveObjectsByDelta( [ unaIdNuevoModulo,], unDelta)
                 
+            unNuevoModulo.setPermiteLeer( True)
+            unNuevoModulo.setPermiteModificar( True)
             
             return unNuevoModulo
         
@@ -1740,6 +1872,38 @@ class TRACatalogo_Operaciones:
   
 
 
+
+    security.declarePrivate( 'fInvalidarTraduccionesCadenas')    
+    def fInvalidarTraduccionesCadenas( self, 
+        theSimboloCadena, 
+        theComentario, 
+        thePermissionsCache         =None, 
+        theRolesCache               =None, 
+        theParentExecutionRecord=None):
+
+        unExecutionRecord = self.fStartExecution( 'method',  'fInvalidarTraduccionesCadenas', theParentExecutionRecord, False) 
+        
+        try:
+            if  not theSimboloCadena:
+                return self.fNewVoidChangeTranslationResult()
+                
+            unaCadena = self.fGetCadenaPorSimbolo( theSimboloCadena)
+            if not unaCadena:
+                return self.fNewVoidChangeTranslationResult()
+                
+            unResultado = unaCadena.fInvalidarTraducciones(  
+                theComentario, 
+                thePermissionsCache     =thePermissionsCache, 
+                theRolesCache           =theRolesCache, 
+                theParentExecutionRecord=unExecutionRecord
+            )
+                 
+            return unResultado        
+       
+        finally:
+            unExecutionRecord and unExecutionRecord.pEndExecution()
+            
+  
 
 
     security.declarePrivate( 'fLoteCambiosEstadoTraduccionesCadenas')    

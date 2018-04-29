@@ -59,7 +59,7 @@
             <tal:block tal:define="pPermiteEditar python: False; pPermiteEliminar python: False; pShowOrHideTrees python: False">
                 <metal:block metal:use-macro="here/TRACabeceraEnTabla_i18n_view/macros/tCabeceraEnTabla_i18n" />   
             </tal:block>
-            <br/>
+
     
             <tal:block tal:define="
                pPermissionsCache python: {};
@@ -105,7 +105,7 @@
                     <table width="100%%" cellspacing="0" cellpadding="0" frame="void" >
                         <tbody>
                             <tr>
-                                <td width="33%" align="left" valign="baseline">
+                                <td width="25%" align="left" valign="baseline">
                                     <font size="2">
                                         <em><span tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TRACatalogo_attr_nombreProducto_label',   'Product Name-' )" /></em>
                                      </font>        
@@ -113,7 +113,21 @@
                                         <strong><span tal:content="python: here.fAsUnicode( here.getNombreProducto())" /></strong>
                                      </font>
                                 </td>         
-                                <td width="33%" align="center" valign="baseline">
+                                <td width="25%" align="right" valign="baseline">                    
+                                    <strong>
+                                       <a href="#" title="#"
+                                           tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_refrescar_action_label',   'Refresh-' )"
+                                           tal:attributes="
+                                               title aLinkTitle;
+                                               href python: '%s/TRACatalogo' % here.getCatalogo().absolute_url()">
+                                           <img src="#" alt="#" title="#" 
+                                                tal:attributes="src string:${portal_url}/refrescar.gif; alt aLinkTitle; title aLinkTitle" 
+                                                id="icon-refrescar" />
+                                           <span tal:content="aLinkTitle" />
+                                       </a>
+                                    </strong>
+                                </td>
+                                <td width="25%" align="center" valign="baseline">
                                     <tal:block tal:define="
                                         pUseCaseAssessmentResult_VistaAvanzada python: here.fUseCaseAssessment( 
                                             theUseCaseName          = 'Advanced_View_on_any_TRA_element', 
@@ -124,10 +138,6 @@
                                             theParentExecutionRecord= pExecutionRecord)"
                                         tal:condition="python: pUseCaseAssessmentResult_VistaAvanzada">
                                                                     
-<!-- ACV 200904040454 was  
-                                        <tal:block tal:define="dummy python: pInformeIdiomasYModulos.get( 'use_case_query_results', []).append( pUseCaseAssessmentResult_VistaAvanzada)"
-                                            tal:condition="python: pUseCaseAssessmentResult_VistaAvanzada.get( 'success', False)" >
- -->
                                         <tal:block tal:condition="python: pUseCaseAssessmentResult_VistaAvanzada.get( 'success', False)" >
                                             <strong>
                                                 <a href="#" title="#" 
@@ -135,19 +145,25 @@
                                                     tal:attributes="
                                                         title aLinkTitle;
                                                         href python: '%s/Tabular' % here.getCatalogo().absolute_url()">
+                                                    <img src="#" alt="#" title="#" 
+                                                         tal:attributes="src string:${portal_url}/tabular.gif; alt aLinkTitle; title aLinkTitle" 
+                                                         id="icon-tabular" />
                                                     <span tal:content="aLinkTitle" />
                                                 </a>
                                             </strong>
                                         </tal:block>
                                     </tal:block>
                                 </td>
-                                <td width="34%" align="right" valign="baseline">                    
+                                <td width="25%" align="right" valign="baseline">                    
                                     <strong>
                                         <a href="#" title="#" 
                                             tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_mostrarinformedeestado_msgid',   'Show Status Report-' )"                                    
                                             tal:attributes="
                                                 title aLinkTitle;
                                                 href python: '%s/TRACatalogoInforme' % here.getCatalogo().absolute_url()">
+                                            <img src="#" alt="#" title="#" 
+                                                 tal:attributes="src string:${portal_url}/trainforme.gif; alt aLinkTitle; title aLinkTitle" 
+                                                 id="icon-informe" />
                                             <span tal:content="aLinkTitle" />
                                         </a>
                                     </strong>

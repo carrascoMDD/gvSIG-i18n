@@ -81,18 +81,6 @@ class TRAInforme_Operaciones:
 
 
 
-
-    security.declareProtected( permissions.View, 'getCatalogo')
-    def getCatalogo( self):
-        return self.getContenedorContenedor()
-          
-
-
-    
-    
-    
-    
-    
     
     security.declareProtected( permissions.ModifyPortalContent, 'fElaborarInforme')
     def fElaborarInforme( self, 

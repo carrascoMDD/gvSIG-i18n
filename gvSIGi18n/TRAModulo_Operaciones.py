@@ -60,15 +60,11 @@ class TRAModulo_Operaciones:
 
     ##code-section class-header #fill in your manual code here
     
-    
-    
-      
-    security.declareProtected( permissions.View, 'getCatalogo')
-    def getCatalogo( self):
-        return self.getContenedorContenedor()
-        
-    
 
+    
+    
+    
+    
     
     
     

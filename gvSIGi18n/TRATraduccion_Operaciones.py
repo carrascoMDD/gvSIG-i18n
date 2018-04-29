@@ -321,26 +321,30 @@ class TRATraduccion_Operaciones:
     security.declarePrivate('pHandle_manage_beforeDelete')
     def pHandle_manage_beforeDelete(self, theItem, theContainer):   
        
+        try:
+            unIdioma = self.getIdioma()
+            if unIdioma:
+                unCatalogoRaiz = self.getCatalogo()
+                if unCatalogoRaiz:
+                    
+                    unCatalogKey = theElement.fCatalogKey()
+                    
+                    unCatalogBusquedaTraducciones = unCatalogoRaiz.fCatalogBusquedaTraduccionesParaIdioma( unIdioma)
+                    if not( unCatalogBusquedaTraducciones == None):
+                        unCatalogBusquedaTraducciones.uncatalog_object( unCatalogKey)
+                     
+                    unCatalogFiltroTraducciones   = unCatalogoRaiz.fCatalogFiltroTraduccionesParaIdioma( unIdioma)
+                    if not( unCatalogFiltroTraducciones == None):
+                        unCatalogFiltroTraducciones.uncatalog_object(   unCatalogKey)
+            
+                    unCatalogTextoTraducciones   = unCatalogoRaiz.fCatalogTextoTraduccionesParaIdioma( unIdioma)
+                    if not( unCatalogTextoTraducciones == None):
+                        unCatalogTextoTraducciones.uncatalog_object(   unCatalogKey)
+        except:
+            None
+        
         TRAElemento.manage_beforeDelete( self, theElement, theContainer)
          
-        unIdioma = self.getIdioma()
-        if unIdioma:
-            unCatalogoRaiz = self.getCatalogo()
-            if unCatalogoRaiz:
-                
-                unCatalogKey = theElement.fCatalogKey()
-                
-                unCatalogBusquedaTraducciones = unCatalogoRaiz.fCatalogBusquedaTraduccionesParaIdioma( unIdioma)
-                if not( unCatalogBusquedaTraducciones == None):
-                    unCatalogBusquedaTraducciones.uncatalog_object( unCatalogKey)
-                 
-                unCatalogFiltroTraducciones   = unCatalogoRaiz.fCatalogFiltroTraduccionesParaIdioma( unIdioma)
-                if not( unCatalogFiltroTraducciones == None):
-                    unCatalogFiltroTraducciones.uncatalog_object(   unCatalogKey)
-        
-                unCatalogTextoTraducciones   = unCatalogoRaiz.fCatalogTextoTraduccionesParaIdioma( unIdioma)
-                if not( unCatalogTextoTraducciones == None):
-                    unCatalogTextoTraducciones.uncatalog_object(   unCatalogKey)
         return self
     
 
@@ -433,18 +437,6 @@ class TRATraduccion_Operaciones:
     
     
   
-    security.declareProtected( permissions.View, 'getCatalogo')
-    def getCatalogo( self):
-        """Retrieve owner TRACatalogo.
-        
-        """
-        unaCadena = self.getCadena()
-        if not unaCadena:
-            return None
-            
-        unCatalogo = unaCadena.getCatalogo()
-        return unCatalogo         
-
 
     
     
@@ -992,7 +984,151 @@ class TRATraduccion_Operaciones:
 
          
     
+
+
+     
+    security.declarePrivate( 'fInvalidar')
+    def fInvalidar( self, 
+        theComentario, 
+        thePermissionsCache=None, 
+        theRolesCache=None, 
+        theParentExecutionRecord=None):
     
+        unExecutionRecord = self.fStartExecution( 'method',  'fHacerPendiente', theParentExecutionRecord,  False)  
+        
+        try:
+            aResult = self.fNewVoidChangeTranslationResult()
+            
+            unaCadena = self.getCadena()
+            if not unaCadena:
+                return aResult
+            
+            aResult.update({
+                'simboloCadena': unaCadena.getSimbolo(),
+                'idCadena':      unaCadena.getId(),
+                   
+            })
+            aResult[ 'found'] = True
+            
+            unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
+            unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+            
+                
+            unaCadenaTraducida          = self.getCadenaTraducida()            
+            unComentarioTraduccion      = self.getComentario() 
+            unaHistoriaTraduccion       = self.getHistoria()
+            unEstadoTraduccion          = self.getEstadoTraduccion()  
+            unaFechaTraduccionTextual   = self.getFechaTraduccionTextual()  
+            unUsuarioTraductor          = self.getUsuarioTraductor()  
+            unaFechaRevisionTextual     = self.getFechaRevisionTextual()  
+            unUsuarioRevisor            = self.getUsuarioRevisor()  
+            unaFechaDefinitivoTextual   = self.getFechaDefinitivoTextual()  
+            unUsuarioCoordinador        = self.getUsuarioCoordinador()  
+            
+            aResult[ 'estadoTraduccion_previousValue'] = unEstadoTraduccion
+
+            if self.getEstadoTraduccion() == cEstadoTraduccionPendiente:
+             
+                aResult.update({
+                    'success': True,
+                    'changed': False,
+                    'estadoTraduccion_newValue': cEstadoTraduccionPendiente,
+                })
+                          
+                return aResult
+            
+                 
+            aMembershipTool = getToolByName( self, 'portal_membership', None)
+            unMember = aMembershipTool.getAuthenticatedMember()   
+            if not unMember:
+                aResult.update({
+                    'status': 'authenticated_member_not_found',
+                })
+                return aResult                
+            unMemberId = unMember.getMemberId()     
+            if not unMemberId:
+                aResult.update({
+                    'status': 'authenticated_member_id_missing',
+                })
+                return aResult
+    
+            aResult[ 'memberid'] = unMemberId
+         
+            
+            unAhoraStoreString = self.fDateTimeNowTextual()
+        
+            unHayCambio = False
+            try:
+                self.setCadenaTraducida(   "") 
+                self.setEstadoTraduccion(  cEstadoTraduccionPendiente)    
+                
+                aResult[ 'estadoTraduccion_newValue']      = cEstadoTraduccionPendiente
+                
+                if  unUsuarioTraductor:
+                    self.setUsuarioTraductor(  None)   
+                    
+                if  unaFechaTraduccionTextual:
+                    self.setFechaTraduccionTextual(   None)
+                   
+                if  unUsuarioRevisor:
+                    self.setUsuarioRevisor(  None)   
+                    
+                if  unaFechaRevisionTextual:
+                    self.setFechaRevisionTextual(   None)    
+                    
+                if  unaFechaDefinitivoTextual:
+                    self.setFechaDefinitivoTextual(   None)    
+                                                        
+                if  unUsuarioCoordinador:
+                    self.setUsuarioCoordinador(  None)   
+                        
+                
+                                        
+                unNuevoComentario = theComentario
+                if not unNuevoComentario:
+                    unNuevoComentario = ""            
+                unNuevoComentario = unNuevoComentario.strip()
+                unComentarioParaHistoria = cMarcaDeComentarioSinCambios
+                if not ( unNuevoComentario == unComentarioTraduccion):
+                    unComentarioParaHistoria = unNuevoComentario
+                    self.setComentario(  unNuevoComentario)       
+        
+                self.pRegistrarHistoria( 
+                    theAccion                   = 'Dejar como Pendiente', 
+                    theFechaAccionTextual       = unAhoraStoreString, 
+                    theUsuarioActor             = unMemberId, 
+                    theEstadoTraduccion         = cEstadoTraduccionPendiente, 
+                    theFechaTraduccionTextual   = None, 
+                    theUsuarioTraductor         = None, 
+                    theCadenaTraducida          = unaCadenaTraducida, 
+                    theFechaRevisionTextual     = None, 
+                    theUsuarioRevisor           = None, 
+                    theFechaDefinitivoTextual   = None, 
+                    theUsuarioCoordinador       = None, 
+                    theComentario               = unComentarioParaHistoria,                   
+                )
+                                       
+                unHayCambio = True
+                aResult.update({
+                    'success': True,
+                    'changed': True,
+                    'estadoTraduccion_newValue': cEstadoTraduccionPendiente,
+                })
+                return aResult
+    
+            finally:
+                if unHayCambio:
+                    self.pRecatalogTraduccion( unExecutionRecord)
+                        
+                    if cLogTranslationChanges:
+                        logging.getLogger( 'gvSIGi18n::fHacerPendiente').info( "CHANGED")               
+       
+        finally:
+            unExecutionRecord and unExecutionRecord.pEndExecution()
+            
+  
+
+     
     
     
     

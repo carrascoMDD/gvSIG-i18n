@@ -79,38 +79,24 @@ def initialize(context):
 
     # imports packages and types for registration
 
-    import TRACatalogo_Autorizaciones
     import TRAColeccionInformes
     import TRAArquetipo
-    import TRACatalogo_Inicializacion
     import TRAModulo
-    import TRAIdioma_Operaciones
     import TRAColeccionCadenas
-    import TRACatalogo_Informes
     import TRAInforme
     import TRAColeccionArquetipos
     import TRAColeccionImportaciones
     import TRACadena
     import TRAColeccionSolicitudesCadenas
     import TRAElemento
-    import TRAColeccionSolicitudesCadenas_Operaciones
     import TRACatalogo
     import TRAColeccionIdiomas
-    import TRACatalogo_CursorTraducciones
-    import TRAModulo_Operaciones
-    import TRACatalogo_Operaciones
-    import TRAImportacion_Operaciones
     import TRAContenidoIntercambio
+    import TRAConRegistroActividad
     import TRAImportacion
-    import TRACatalogo_Exportacion
-    import TRAContenidoIntercambio_Operaciones
     import TRAIdioma
-    import TRATraduccion_Operaciones
     import TRAColeccionModulos
-    import TRAColeccionIdiomas_Operaciones
     import TRATraduccion
-    import TRAInforme_Operaciones
-    import TRACadena_Operaciones
     import TRASolicitudCadena
 
     # Initialize portal content

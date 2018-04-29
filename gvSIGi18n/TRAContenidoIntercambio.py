@@ -32,7 +32,8 @@ __docformat__ = 'plaintext'
 from AccessControl import ClassSecurityInfo
 from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.TRAArquetipo import TRAArquetipo
-from Products.gvSIGi18n.TRAContenidoIntercambio_Operaciones import TRAContenidoIntercambio_Operaciones
+from Products.gvSIGi18n.TRAConRegistroActividad import TRAConRegistroActividad
+from TRAContenidoIntercambio_Operaciones import TRAContenidoIntercambio_Operaciones
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
@@ -124,7 +125,7 @@ schema = Schema((
         styleex="volatile=0;",
         description2="User who uploaded the interchange archive content string translations into languages.",
         ea_guid="{E444AD8A-CE91-417c-8488-F7C9A8BD6CE0}",
-        read_only=True,
+        read_only="True",
         scale="0",
         label="Usuario Contribuidor",
         length="0",
@@ -154,7 +155,7 @@ schema = Schema((
         styleex="volatile=0;",
         description2="Date and Time when the process to  analise translations interchange archives was completed or terminated.",
         ea_guid="{47A5578E-D8DD-40b4-9C13-E58B10354525}",
-        read_only=True,
+        read_only="True",
         scale="0",
         label="Fecha y Hora de Carga",
         length="0",
@@ -250,7 +251,7 @@ schema = Schema((
         styleex="volatile=0;",
         description2="Already analised contents of the interchange of string translations into languages.",
         ea_guid="{711B544F-FEA0-403e-8D74-D691687CFE9C}",
-        read_only=True,
+        read_only="True",
         scale="0",
         label="Contenido",
         length="0",
@@ -268,26 +269,38 @@ schema = Schema((
 
 TRAContenidoIntercambio_schema = OrderedBaseFolderSchema.copy() + \
     getattr(TRAArquetipo, 'schema', Schema(())).copy() + \
+    getattr(TRAConRegistroActividad, 'schema', Schema(())).copy() + \
     getattr(TRAContenidoIntercambio_Operaciones, 'schema', Schema(())).copy() + \
     schema.copy()
 
 ##code-section after-schema #fill in your manual code here
 ##/code-section after-schema
 
-class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAContenidoIntercambio_Operaciones):
+class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRAContenidoIntercambio_Operaciones):
     """
     """
     security = ClassSecurityInfo()
-    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAArquetipo,'__implements__',()),) + (getattr(TRAContenidoIntercambio_Operaciones,'__implements__',()),)
+    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAArquetipo,'__implements__',()),) + (getattr(TRAConRegistroActividad,'__implements__',()),) + (getattr(TRAContenidoIntercambio_Operaciones,'__implements__',()),)
 
     # This name appears in the 'add' box
     archetype_name = 'Contenido de Intercambio'
 
     meta_type = 'TRAContenidoIntercambio'
     portal_type = 'TRAContenidoIntercambio'
+
+
+    creation_date_field = 'fechaCreacion'
+    creation_user_field = 'usuarioCreador'
+    modification_date_field = 'fechaModificacion'
+    modification_user_field = 'usuarioModificador'
+    deletion_date_field = 'fechaEliminacion'
+    deletion_user_field = 'usuarioEliminador'
+    is_inactive_field = 'estaInactivo'
+    change_counter_field = 'contadorCambios'
+    change_log_field = 'registroDeCambios'
     use_folder_tabs = 0
 
-    allowed_content_types = [] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRAContenidoIntercambio_Operaciones, 'allowed_content_types', []))
+    allowed_content_types = [] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', [])) + list(getattr(TRAContenidoIntercambio_Operaciones, 'allowed_content_types', []))
     filter_content_types = 1
     global_allow = 0
     content_icon = 'tracontenidointercambio.gif'
@@ -307,57 +320,12 @@ class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAContenidoInter
     actions =  (
 
 
-       {'action': "string:$object_url/content_status_history",
-        'category': "object",
-        'id': 'content_status_history',
-        'name': 'State',
-        'permissions': ("View",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:${object_url}/folder_listing",
-        'category': "folder",
-        'id': 'folderlisting',
-        'name': 'Folder Listing',
-        'permissions': ("View",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:${object_url}/sharing",
-        'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:${object_url}/reference_graph",
-        'category': "object",
-        'id': 'references',
-        'name': 'References',
-        'permissions': ("Modify portal content",),
-        'condition': 'python:0'
-       },
-
-
        {'action': "string:$object_url/Editar",
         'category': "object",
         'id': 'edit',
         'name': 'Edit',
         'permissions': ("Modify portal content",),
-        'condition': 'python:1'
-       },
-
-
-       {'action': "string:${object_url}/TRAInformeContenidoIntercambio_action",
-        'category': "object",
-        'id': 'ContenidoIntercambio',
-        'name': 'Data',
-        'permissions': ("View",),
-        'condition': 'python:1'
+        'condition': """python:object.fAllowWrite() and object.fRoleQuery_IsManagerOrCoordinator()"""
        },
 
 
@@ -366,7 +334,61 @@ class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAContenidoInter
         'id': 'view',
         'name': 'View',
         'permissions': ("View",),
-        'condition': 'python:1'
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:${object_url}/TRAInformeContenidoIntercambio_action",
+        'category': "object",
+        'id': 'ContenidoIntercambio',
+        'name': 'Data',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:${object_url}/sharing",
+        'category': "object",
+        'id': 'local_roles',
+        'name': 'Sharing',
+        'permissions': ("Manage properties",),
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/folder_listing",
+        'category': "folder",
+        'id': 'folderlisting',
+        'name': 'Folder Listing',
+        'permissions': ("View",),
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/reference_graph",
+        'category': "object",
+        'id': 'references',
+        'name': 'References',
+        'permissions': ("Modify portal content",),
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/TRASeguridadUsuarioConectado",
+        'category': "object_buttons",
+        'id': 'TRA_SeguridadUsuarioConectado',
+        'name': 'Permissions',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:$object_url/content_status_history",
+        'category': "object",
+        'id': 'content_status_history',
+        'name': 'State',
+        'permissions': ("View",),
+        'condition': """python:0"""
        },
 
 
@@ -381,12 +403,12 @@ class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAContenidoInter
 
     # Methods
 
-    security.declarePublic('cb_isCopyable')
-    def cb_isCopyable(self):
+    security.declarePublic('manage_beforeDelete')
+    def manage_beforeDelete(self,item,container):
         """
         """
         
-        return False
+        return TRAArquetipo.manage_beforeDelete( self, item, container)
 
     security.declarePublic('manage_afterAdd')
     def manage_afterAdd(self,item,container):
@@ -395,12 +417,26 @@ class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAContenidoInter
         
         return TRAArquetipo.manage_afterAdd( self, item, container)
 
-    security.declarePublic('manage_beforeDelete')
-    def manage_beforeDelete(self,item,container):
+    security.declarePublic('cb_isCopyable')
+    def cb_isCopyable(self):
         """
         """
         
-        return TRAArquetipo.manage_beforeDelete( self, item, container)
+        return False
+
+    security.declarePublic('cb_isMoveable')
+    def cb_isMoveable(self):
+        """
+        """
+        
+        return False
+
+    security.declarePublic('displayContentsTab')
+    def displayContentsTab(self):
+        """
+        """
+        
+        return False
 
     security.declarePublic('manage_pasteObjects')
     def manage_pasteObjects(self,cb_copy_data,REQUEST):
@@ -411,7 +447,7 @@ class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAContenidoInter
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:
-        if a['id'] in ['metadata']:
+        if a['id'] in ['metadata', 'sharing', 'folderContents']:
             a['visible'] = 0
     return fti
 

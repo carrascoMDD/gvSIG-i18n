@@ -642,6 +642,10 @@ class TRAElemento_Operaciones( TRAElemento_Permissions):
     gUseCaseSpecificationsByName = { }
     
     
+    # ACV 20090926 This method is provided by its definition in the model in the TRAElemento class, and code-generated: removed 
+    #security.declarePublic( 'getAddableTypesInMenu')    
+    #def getAddableTypesInMenu( self, theTypes):
+        #return []
     
     
     security.declarePublic( 'fIsCollection')    
@@ -1283,6 +1287,18 @@ class TRAElemento_Operaciones( TRAElemento_Permissions):
             return None
         
         return unContenedor.getRaiz()
+
+    
+    
+    
+    
+    security.declarePrivate( 'getCatalogo')
+    def getCatalogo( self):
+        unCatalogo = self.getRaiz()
+        if not (unCatalogo.__class__.__name__ == cNombreTipoTRACatalogo):
+            return None
+        return unCatalogo
+        
 
 
 
@@ -2829,29 +2845,41 @@ class TRAElemento_Operaciones( TRAElemento_Permissions):
         """
         try:
     
-            unPortalRoot = self.fPortalRoot()
-            if not unPortalRoot:
-                return None
+            # ACV 2009092 Seems easier to use the getToolByName, otherwise the commented code works ok
+            # Changed when eliminating arbitrary instantiations of ModelDDvlPloneTool, 
+            # rather than looking up the tool singleton
+            # Now, those cases retrieve the tool invoking this function
+            #
+           
+            #aModelDDvlPloneTool = None
+            #try:
+                #aModelDDvlPloneTool = aq_get( unPortalRoot, cModelDDvlPloneToolName, None, 1)
+            #except:
+                #None  
             
-            aModelDDvlPloneTool = None
-            try:
-                aModelDDvlPloneTool = aq_get( unPortalRoot, cModelDDvlPloneToolName, None, 1)
-            except:
-                None  
+            
+            aModelDDvlPlone_tool = getToolByName( self, 'ModelDDvlPlone_tool', None)
+            
             if aModelDDvlPloneTool:
                 return aModelDDvlPloneTool
             
             if not ( theAllowCreation and cLazyCreateModelDDvlPloneTool):
                 return None
      
-            
+            unPortalRoot = self.fPortalRoot()
+            if not unPortalRoot:
+                return None
+             
             unaNuevaTool = ModelDDvlPloneTool( ) 
             unPortalRoot._setObject( cModelDDvlPloneToolName,  unaNuevaTool)
             aModelDDvlPloneTool = None
-            try:
-                aModelDDvlPloneTool = aq_get( unPortalRoot, cModelDDvlPloneToolName, None, 1)
-            except:
-                None  
+            
+            #try:
+                #aModelDDvlPloneTool = aq_get( unPortalRoot, cModelDDvlPloneToolName, None, 1)
+            #except:
+                #None  
+                
+            aModelDDvlPlone_tool = getToolByName( self, 'ModelDDvlPlone_tool', None)
             if not aModelDDvlPloneTool:
                 return None
                         

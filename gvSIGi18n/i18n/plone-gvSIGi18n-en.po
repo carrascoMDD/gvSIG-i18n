@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gvSIGi18n\n"
-"POT-Creation-Date: Mon Sep 21 05:48:25 2009\n"
-"PO-Revision-Date: Mon Sep 21 05:48:25 2009\n"
+"POT-Creation-Date: Mon Sep 28 23:16:15 2009\n"
+"PO-Revision-Date: Mon Sep 28 23:16:15 2009\n"
 "Last-Translator: Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>\n"
 "Language-Team: Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>\n"
 "MIME-Version: 1.0\n"
@@ -36,11 +36,6 @@ msgstr "Strings collection"
 msgid "Coleccion de Idiomas"
 msgstr "Languages collection"
 
-#. Default: "TRAColeccionIdiomas_Operaciones"
-#: TRAColeccionIdiomas_Operaciones
-msgid "TRAColeccionIdiomas_Operaciones"
-msgstr "TRAColeccionIdiomas_Operaciones"
-
 #. Default: "Coleccion de Importaciones"
 #: TRAColeccionImportaciones
 msgid "Coleccion de Importaciones"
@@ -60,11 +55,6 @@ msgstr "Modules collection"
 #: TRAColeccionSolicitudesCadenas
 msgid "Coleccion de Solicitudes de creacion de Cadenas"
 msgstr "Strings creation request collection"
-
-#. Default: "TRAColeccionSolicitudesCadenas_Operaciones"
-#: TRAColeccionSolicitudesCadenas_Operaciones
-msgid "TRAColeccionSolicitudesCadenas_Operaciones"
-msgstr "TRAColeccionSolicitudesCadenas_Operaciones"
 
 #. Default: "Contenido de Intercambio"
 #: TRAContenidoIntercambio
@@ -119,6 +109,12 @@ msgstr "Translation"
 
 
 
+
+
+#. Default: "Build Report"
+#: TRAInforme
+msgid "Build Report"
+msgstr "Build Report"
 
 
 #. Default: "Verify"
@@ -177,14 +173,33 @@ msgid "Copy Translations"
 msgstr "Copy Translations"
 
 #. Default: "Create Strings"
-#: TRAIdioma
+#: TRAColeccionSolicitudesCadena
 msgid "Create Strings"
 msgstr "Create Strings"
 
 #. Default: "Clean-up Strings"
-#: TRAIdioma
+#: TRAColeccionSolicitudesCadena
 msgid "Clean-up Strings"
 msgstr "Clean-up Strings"
+
+#. Default: "Lock Catalog"
+#: TRACatalogo
+msgid "Lock Catalog"
+msgstr "Lock Catalog"
+
+
+#. Default: "Unlock Catalog"
+#: TRACatalogo
+msgid "Unlock Catalog"
+msgstr "Unlock Catalog"
+
+
+#. Default: "Permissions"
+#: TRACatalogo
+msgid "Permissions"
+msgstr "Permissions"
+
+
 
 
 

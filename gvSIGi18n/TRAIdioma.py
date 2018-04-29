@@ -32,7 +32,8 @@ __docformat__ = 'plaintext'
 from AccessControl import ClassSecurityInfo
 from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.TRAArquetipo import TRAArquetipo
-from Products.gvSIGi18n.TRAIdioma_Operaciones import TRAIdioma_Operaciones
+from TRAIdioma_Operaciones import TRAIdioma_Operaciones
+from Products.gvSIGi18n.TRAConRegistroActividad import TRAConRegistroActividad
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
@@ -42,6 +43,70 @@ from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import Reference
 ##/code-section module-header
 
 schema = Schema((
+
+    BooleanField(
+        name='permiteLeer',
+        widget=BooleanField._properties['widget'](
+            label="Permite ver Idioma",
+            label2="Allow to see Language",
+            description="Si Verdadero, entonces los usuarios puede ver el idioma. Puede ser Falso durante  procesos de importacion largos, o por indicacion del coordinador.",
+            description2="If True, then the users may see  the language. It may be False during long import processes or by coordinator request.",
+            label_msgid='gvSIGi18n_TRAIdioma_attr_permiteLeer_label',
+            description_msgid='gvSIGi18n_TRAIdioma_attr_permiteLeer_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Si Verdadero, entonces los usuarios puede ver el idioma. Puede ser Falso durante  procesos de importacion largos, o por indicacion del coordinador.",
+        duplicates="0",
+        label2="Allow to see Language",
+        ea_localid="1576",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;IsLiteral=0;",
+        description2="If True, then the users may see  the language. It may be False during long import processes or by coordinator request.",
+        ea_guid="{76F8837E-DEC9-4f32-B6CA-0F04ABE405F1}",
+        scale="0",
+        default="True",
+        label="Permite ver Idioma",
+        length="0",
+        containment="Not Specified",
+        position="15",
+        owner_class_name="TRAIdioma",
+        exclude_from_exportconfig="True",
+        exclude_from_copyconfig="True"
+    ),
+
+    BooleanField(
+        name='permiteModificar',
+        widget=BooleanField._properties['widget'](
+            label="Permite Modificar Idioma",
+            label2="Allow Changes to Language",
+            description="Si Verdadero, entonces el usuario puede realizar los cambios a los que permite sus roles en el idioma. Si Falso, entonces no puede realizar cambios en el idioma,  Puede ocurrir durante  procesos de importacion largos, o por indicacion del coordinador.",
+            description2="If True, then the user may perform  the changes authorized by the roles held on the language. If False, then the user can not make changes to the language. This may happen during long import processes or coordinator request.",
+            label_msgid='gvSIGi18n_TRAIdioma_attr_permiteModificar_label',
+            description_msgid='gvSIGi18n_TRAIdioma_attr_permiteModificar_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Si Verdadero, entonces el usuario puede realizar los cambios a los que permite sus roles en el idioma. Si Falso, entonces no puede realizar cambios en el idioma,  Puede ocurrir durante  procesos de importacion largos, o por indicacion del coordinador.",
+        duplicates="0",
+        label2="Allow Changes to Language",
+        ea_localid="1573",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;IsLiteral=0;",
+        description2="If True, then the user may perform  the changes authorized by the roles held on the language. If False, then the user can not make changes to the language. This may happen during long import processes or coordinator request.",
+        ea_guid="{45A11E6E-E5C8-405a-9702-9BF365FFD3DE}",
+        scale="0",
+        default="True",
+        label="Permite Modificar Idioma",
+        length="0",
+        containment="Not Specified",
+        position="14",
+        owner_class_name="TRAIdioma",
+        exclude_from_exportconfig="True",
+        exclude_from_copyconfig="True"
+    ),
 
     StringField(
         name='codigoIdiomaEnGvSIG',
@@ -67,7 +132,7 @@ schema = Schema((
         description2="Language code in gvSIG, as gvSIG supports some languages for which there is no international code (yet).",
         containment="Not Specified",
         ea_guid="{C8E57D89-5CEC-48f0-B926-DA83FCDC9EAD}",
-        position="1",
+        position="0",
         owner_class_name="TRAIdioma",
         label="Codigo de Idioma en gvSIG"
     ),
@@ -96,7 +161,7 @@ schema = Schema((
         description2="Standard international language code,according to the I18N conventions.",
         containment="Not Specified",
         ea_guid="{32F6E759-E25D-4145-8961-613BE5F817F3}",
-        position="2",
+        position="1",
         owner_class_name="TRAIdioma",
         label="Codigo internacional de Idioma"
     ),
@@ -125,7 +190,7 @@ schema = Schema((
         description2="Language name, expressed in english language.",
         containment="Not Specified",
         ea_guid="{B6FA4A49-ABED-41d7-B35E-4031AD105F59}",
-        position="3",
+        position="2",
         owner_class_name="TRAIdioma",
         label="Nombre en ingles"
     ),
@@ -154,7 +219,7 @@ schema = Schema((
         description2="Language name expressed in the native language.",
         containment="Not Specified",
         ea_guid="{27989BCF-643E-4730-87F2-939F42EA6F38}",
-        position="4",
+        position="3",
         owner_class_name="TRAIdioma",
         label="Nombre propio del idioma"
     ),
@@ -186,7 +251,7 @@ schema = Schema((
         label="Codigo de Idioma de referencia",
         length="0",
         containment="Not Specified",
-        position="12",
+        position="11",
         owner_class_name="TRAIdioma"
     ),
 
@@ -219,7 +284,7 @@ schema = Schema((
         label="Ambito",
         length="0",
         containment="Not Specified",
-        position="5",
+        position="4",
         owner_class_name="TRAIdioma"
     ),
 
@@ -276,7 +341,7 @@ schema = Schema((
         description2="Team in charge of translations to the language. This information appears in the exported files of GNUgettext PO format.",
         containment="Not Specified",
         ea_guid="{CD852AC8-F684-4a10-A1C9-9E3C5A72F7FE}",
-        position="6",
+        position="5",
         owner_class_name="TRAIdioma",
         label="Equipo del idioma"
     ),
@@ -308,7 +373,7 @@ schema = Schema((
         label="Juego de caracteres para exportacion como Java Properties",
         length="0",
         containment="Not Specified",
-        position="7",
+        position="6",
         owner_class_name="TRAIdioma"
     ),
 
@@ -339,7 +404,7 @@ schema = Schema((
         label="Juego de caracteres para exportacion como GNU gettext PO",
         length="0",
         containment="Not Specified",
-        position="8",
+        position="7",
         owner_class_name="TRAIdioma"
     ),
 
@@ -369,7 +434,7 @@ schema = Schema((
         label="Codificacion de transferencia de contenido",
         length="0",
         containment="Not Specified",
-        position="9",
+        position="8",
         owner_class_name="TRAIdioma"
     ),
 
@@ -399,7 +464,7 @@ schema = Schema((
         label="Formas plurales",
         length="0",
         containment="Not Specified",
-        position="10",
+        position="9",
         owner_class_name="TRAIdioma"
     ),
 
@@ -429,7 +494,7 @@ schema = Schema((
         label="Codificaciones preferidas",
         length="0",
         containment="Not Specified",
-        position="11",
+        position="10",
         owner_class_name="TRAIdioma"
     ),
 
@@ -472,23 +537,35 @@ schema = Schema((
 TRAIdioma_schema = OrderedBaseFolderSchema.copy() + \
     getattr(TRAArquetipo, 'schema', Schema(())).copy() + \
     getattr(TRAIdioma_Operaciones, 'schema', Schema(())).copy() + \
+    getattr(TRAConRegistroActividad, 'schema', Schema(())).copy() + \
     schema.copy()
 
 ##code-section after-schema #fill in your manual code here
 ##/code-section after-schema
 
-class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones):
+class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRegistroActividad):
     """
     """
     security = ClassSecurityInfo()
-    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAArquetipo,'__implements__',()),) + (getattr(TRAIdioma_Operaciones,'__implements__',()),)
+    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAArquetipo,'__implements__',()),) + (getattr(TRAIdioma_Operaciones,'__implements__',()),) + (getattr(TRAConRegistroActividad,'__implements__',()),)
 
     # This name appears in the 'add' box
     archetype_name = 'Idioma'
 
     meta_type = 'TRAIdioma'
     portal_type = 'TRAIdioma'
-    allowed_content_types = [] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRAIdioma_Operaciones, 'allowed_content_types', []))
+
+
+    creation_date_field = 'fechaCreacion'
+    creation_user_field = 'usuarioCreador'
+    modification_date_field = 'fechaModificacion'
+    modification_user_field = 'usuarioModificador'
+    deletion_date_field = 'fechaEliminacion'
+    deletion_user_field = 'usuarioEliminador'
+    is_inactive_field = 'estaInactivo'
+    change_counter_field = 'contadorCambios'
+    change_log_field = 'registroDeCambios'
+    allowed_content_types = [] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRAIdioma_Operaciones, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', []))
     filter_content_types = 1
     global_allow = 0
     content_icon = 'traidioma.gif'
@@ -508,48 +585,12 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones):
     actions =  (
 
 
-       {'action': "string:$object_url/content_status_history",
-        'category': "object",
-        'id': 'content_status_history',
-        'name': 'State',
-        'permissions': ("View",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:${object_url}/folder_listing",
-        'category': "folder",
-        'id': 'folderlisting',
-        'name': 'Folder Listing',
-        'permissions': ("View",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:${object_url}/sharing",
-        'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:${object_url}/reference_graph",
-        'category': "object",
-        'id': 'references',
-        'name': 'References',
-        'permissions': ("Modify portal content",),
-        'condition': 'python:0'
-       },
-
-
        {'action': "string:${object_url}/TRACopiar_Traducciones",
-        'category': "object",
+        'category': "object_buttons",
         'id': 'CopyTranslations',
         'name': 'Copy Translations',
         'permissions': ("Modify portal content",),
-        'condition': 'python:object.fRoleQuery_IsManagerOrCoordinator()'
+        'condition': """python:object.fUseCaseCheckDoable( 'Copy_Translations')"""
        },
 
 
@@ -558,7 +599,7 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones):
         'id': 'edit',
         'name': 'Edit',
         'permissions': ("Modify portal content",),
-        'condition': 'python:1'
+        'condition': """python:object.fAllowWrite()"""
        },
 
 
@@ -567,7 +608,7 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones):
         'id': 'local_roles',
         'name': 'Sharing',
         'permissions': ("Manage properties",),
-        'condition': 'python:object.fRoleQuery_IsCoordinator()'
+        'condition': """python:object.fAllowWrite() and object.fRoleQuery_IsManagerOrCoordinator()"""
        },
 
 
@@ -576,7 +617,43 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones):
         'id': 'view',
         'name': 'View',
         'permissions': ("View",),
-        'condition': 'python:1'
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:${object_url}/folder_listing",
+        'category': "folder",
+        'id': 'folderlisting',
+        'name': 'Folder Listing',
+        'permissions': ("View",),
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/reference_graph",
+        'category': "object",
+        'id': 'references',
+        'name': 'References',
+        'permissions': ("Modify portal content",),
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/TRASeguridadUsuarioConectado",
+        'category': "object_buttons",
+        'id': 'TRA_SeguridadUsuarioConectado',
+        'name': 'Permissions',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:$object_url/content_status_history",
+        'category': "object",
+        'id': 'content_status_history',
+        'name': 'State',
+        'permissions': ("View",),
+        'condition': """python:0"""
        },
 
 
@@ -598,12 +675,33 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones):
         
         return False
 
+    security.declarePublic('displayContentsTab')
+    def displayContentsTab(self):
+        """
+        """
+        
+        return False
+
     security.declarePublic('manage_afterAdd')
     def manage_afterAdd(self,item,container):
         """
         """
         
         return TRAIdioma_Operaciones.pHandle_manage_afterAdd( self, item, container)
+
+    security.declarePublic('fAllowRead')
+    def fAllowRead(self):
+        """
+        """
+        
+        return self.getPermiteLeer() and self.getCatalogo().fAllowRead()
+
+    security.declarePublic('fAllowWrite')
+    def fAllowWrite(self):
+        """
+        """
+        
+        return self.fAllowRead() and self.getPermiteModificar() and self.getCatalogo().fAllowWrite()
 
     security.declarePublic('manage_beforeDelete')
     def manage_beforeDelete(self,item,container):
@@ -618,10 +716,17 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones):
         """
         
         return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
+
+    security.declarePublic('cb_isMoveable')
+    def cb_isMoveable(self):
+        """
+        """
+        
+        return False
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:
-        if a['id'] in ['metadata']:
+        if a['id'] in ['metadata', 'folderContents']:
             a['visible'] = 0
     return fti
 

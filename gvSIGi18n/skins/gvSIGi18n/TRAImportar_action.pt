@@ -112,9 +112,12 @@
             <tal:block tal:define="dummy python: pExecutionRecord and here.pEndExecution( pExecutionRecord)" />
    
             <metal:block metal:use-macro="here/TRAFooter_i18n_view/macros/tFooter_i18n" />
-   
-            <tal:block tal:replace="structure python: pExecutionRecord and here.TRARenderExecutionDetails( pExecutionRecord)" />
-            
+    
+            <!-- ACV 20090928 Execution details of an import operation my be really big. 
+                 Do not present to the user unless specifically asked for by passing a request parameter theRenderProfile set to string value "on"
+               -->            
+            <tal:block tal:condition="request/theRenderProfile | nothing"
+                tal:replace="structure python: pExecutionRecord and here.TRARenderExecutionDetails( pExecutionRecord)" />
             
         </tal:block>
         

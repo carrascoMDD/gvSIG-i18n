@@ -32,7 +32,8 @@ __docformat__ = 'plaintext'
 from AccessControl import ClassSecurityInfo
 from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.TRAArquetipo import TRAArquetipo
-from Products.gvSIGi18n.TRACadena_Operaciones import TRACadena_Operaciones
+from Products.gvSIGi18n.TRAConRegistroActividad import TRAConRegistroActividad
+from TRACadena_Operaciones import TRACadena_Operaciones
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
@@ -64,7 +65,7 @@ schema = Schema((
         styleex="volatile=0;",
         description2="The symbol identifying the string requested to be created,",
         ea_guid="{C13920DA-0B81-4b5e-82F9-B5202CB599CE}",
-        read_only=True,
+        read_only="True",
         scale="0",
         label="Simbolo",
         length="0",
@@ -97,7 +98,7 @@ schema = Schema((
         description2="String Request Status as Pending, Discarded, or Created.",
         ea_guid="{F3F7D328-9FB0-4ef3-95A8-1EA079E3DEF8}",
         vocabulary2=['Pending', 'Discarded', 'Created',],
-        read_only=True,
+        read_only="True",
         scale="0",
         default='Pendiente',
         label="Estado de la Solicitud de Cadena",
@@ -128,7 +129,7 @@ schema = Schema((
         styleex="volatile=0;",
         description2="Textual representation of the date when the String was first created.",
         ea_guid="{4F88BD50-4984-4d81-A80B-2FA459EFAE9D}",
-        read_only=True,
+        read_only="True",
         scale="0",
         label="Fecha de Creacion como texto",
         length="0",
@@ -158,7 +159,7 @@ schema = Schema((
         styleex="volatile=0;",
         description2="User who created or imported the string to be translated.",
         ea_guid="{CB2AC430-C5CC-4bf0-B6B7-4C11B9D9EC95}",
-        read_only=True,
+        read_only="True",
         scale="0",
         label="Usuario Creador",
         length="0",
@@ -188,7 +189,7 @@ schema = Schema((
         styleex="volatile=0;",
         description2="The date when the String was cancelled, such that the string won't be considered again for translation.",
         ea_guid="{EA940557-4C2D-4e06-ACF4-AB6E2113B24F}",
-        read_only=True,
+        read_only="True",
         scale="0",
         label="Fecha de Cancelacion",
         length="0",
@@ -276,7 +277,7 @@ schema = Schema((
         styleex="volatile=0;",
         description2="Main Language code for which the developer supplies a translation.",
         ea_guid="{E14EFE05-76A1-4432-9B81-B98CB8DE66DE}",
-        read_only=True,
+        read_only="True",
         scale="0",
         label="Codigo de Idioma Principal",
         length="0",
@@ -380,24 +381,36 @@ schema = Schema((
 
 TRASolicitudCadena_schema = OrderedBaseFolderSchema.copy() + \
     getattr(TRAArquetipo, 'schema', Schema(())).copy() + \
+    getattr(TRAConRegistroActividad, 'schema', Schema(())).copy() + \
     getattr(TRACadena_Operaciones, 'schema', Schema(())).copy() + \
     schema.copy()
 
 ##code-section after-schema #fill in your manual code here
 ##/code-section after-schema
 
-class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones):
+class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRACadena_Operaciones):
     """
     """
     security = ClassSecurityInfo()
-    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAArquetipo,'__implements__',()),) + (getattr(TRACadena_Operaciones,'__implements__',()),)
+    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAArquetipo,'__implements__',()),) + (getattr(TRAConRegistroActividad,'__implements__',()),) + (getattr(TRACadena_Operaciones,'__implements__',()),)
 
     # This name appears in the 'add' box
     archetype_name = 'Solicitud Creacion Cadena'
 
     meta_type = 'TRASolicitudCadena'
     portal_type = 'TRASolicitudCadena'
-    allowed_content_types = [] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRACadena_Operaciones, 'allowed_content_types', []))
+
+
+    creation_date_field = 'fechaCreacion'
+    creation_user_field = 'usuarioCreador'
+    modification_date_field = 'fechaModificacion'
+    modification_user_field = 'usuarioModificador'
+    deletion_date_field = 'fechaEliminacion'
+    deletion_user_field = 'usuarioEliminador'
+    is_inactive_field = 'estaInactivo'
+    change_counter_field = 'contadorCambios'
+    change_log_field = 'registroDeCambios'
+    allowed_content_types = [] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', [])) + list(getattr(TRACadena_Operaciones, 'allowed_content_types', []))
     filter_content_types = 1
     global_allow = 0
     content_icon = 'trasolicitudcadena.gif'
@@ -417,39 +430,12 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones)
     actions =  (
 
 
-       {'action': "string:$object_url/content_status_history",
+       {'action': "string:${object_url}/Tabular",
         'category': "object",
-        'id': 'content_status_history',
-        'name': 'State',
+        'id': 'view',
+        'name': 'View',
         'permissions': ("View",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:${object_url}/folder_listing",
-        'category': "folder",
-        'id': 'folderlisting',
-        'name': 'Folder Listing',
-        'permissions': ("View",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:${object_url}/sharing",
-        'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:${object_url}/reference_graph",
-        'category': "object",
-        'id': 'references',
-        'name': 'References',
-        'permissions': ("Modify portal content",),
-        'condition': 'python:0'
+        'condition': """python:1"""
        },
 
 
@@ -458,16 +444,52 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones)
         'id': 'edit',
         'name': 'Edit',
         'permissions': ("Modify portal content",),
-        'condition': 'python:object.fRoleQuery_IsCoordinatorOrDeveloper()'
+        'condition': """python:object.fAllowWrite() and object.fRoleQuery_IsCoordinatorOrDeveloper()"""
        },
 
 
-       {'action': "string:${object_url}/Tabular",
+       {'action': "string:${object_url}/sharing",
         'category': "object",
-        'id': 'view',
-        'name': 'View',
+        'id': 'local_roles',
+        'name': 'Sharing',
+        'permissions': ("Manage properties",),
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/folder_listing",
+        'category': "folder",
+        'id': 'folderlisting',
+        'name': 'Folder Listing',
         'permissions': ("View",),
-        'condition': 'python:1'
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/reference_graph",
+        'category': "object",
+        'id': 'references',
+        'name': 'References',
+        'permissions': ("Modify portal content",),
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/TRASeguridadUsuarioConectado",
+        'category': "object_buttons",
+        'id': 'TRA_SeguridadUsuarioConectado',
+        'name': 'Permissions',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:$object_url/content_status_history",
+        'category': "object",
+        'id': 'content_status_history',
+        'name': 'State',
+        'permissions': ("View",),
+        'condition': """python:0"""
        },
 
 
@@ -482,13 +504,6 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones)
 
     # Methods
 
-    security.declarePublic('cb_isCopyable')
-    def cb_isCopyable(self):
-        """
-        """
-        
-        return False
-
     security.declarePublic('manage_afterAdd')
     def manage_afterAdd(self,item,container):
         """
@@ -496,12 +511,33 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones)
         
         return TRAArquetipo.manage_afterAdd( self, item, container)
 
+    security.declarePublic('cb_isMoveable')
+    def cb_isMoveable(self):
+        """
+        """
+        
+        return False
+
     security.declarePublic('manage_beforeDelete')
     def manage_beforeDelete(self,item,container):
         """
         """
         
         return TRAArquetipo.manage_beforeDelete( self, item, container)
+
+    security.declarePublic('cb_isCopyable')
+    def cb_isCopyable(self):
+        """
+        """
+        
+        return False
+
+    security.declarePublic('displayContentsTab')
+    def displayContentsTab(self):
+        """
+        """
+        
+        return False
 
     security.declarePublic('manage_pasteObjects')
     def manage_pasteObjects(self,cb_copy_data,REQUEST):
@@ -512,7 +548,7 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:
-        if a['id'] in ['metadata', 'sharing']:
+        if a['id'] in ['metadata', 'sharing', 'folderContents']:
             a['visible'] = 0
     return fti
 

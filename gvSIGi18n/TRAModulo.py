@@ -32,7 +32,8 @@ __docformat__ = 'plaintext'
 from AccessControl import ClassSecurityInfo
 from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.TRAArquetipo import TRAArquetipo
-from Products.gvSIGi18n.TRAModulo_Operaciones import TRAModulo_Operaciones
+from Products.gvSIGi18n.TRAConRegistroActividad import TRAConRegistroActividad
+from TRAModulo_Operaciones import TRAModulo_Operaciones
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
@@ -42,6 +43,70 @@ from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import Reference
 ##/code-section module-header
 
 schema = Schema((
+
+    BooleanField(
+        name='permiteLeer',
+        widget=BooleanField._properties['widget'](
+            label="Permite ver Modulo",
+            label2="Allow to see Module",
+            description="Si Verdadero, entonces el usuario puede ver el modulo. Si Falso, entonces no puede ver el modulo. Puede ocurrir durante  procesos de importacion largos, o por indicacion del coordinador.",
+            description2="If True, then the user may see  the module. If False, then the user can not see  the module. This may happen during long import processes or by coordinator request.",
+            label_msgid='gvSIGi18n_TRAModulo_attr_permiteLeer_label',
+            description_msgid='gvSIGi18n_TRAModulo_attr_permiteLeer_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Si Verdadero, entonces el usuario puede ver el modulo. Si Falso, entonces no puede ver el modulo. Puede ocurrir durante  procesos de importacion largos, o por indicacion del coordinador.",
+        duplicates="0",
+        label2="Allow to see Module",
+        ea_localid="1577",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;IsLiteral=0;",
+        description2="If True, then the user may see  the module. If False, then the user can not see  the module. This may happen during long import processes or by coordinator request.",
+        ea_guid="{6607BD0C-0619-492e-B4EC-1BD206122B87}",
+        scale="0",
+        default="True",
+        label="Permite ver Modulo",
+        length="0",
+        containment="Not Specified",
+        position="3",
+        owner_class_name="TRAModulo",
+        exclude_from_exportconfig="True",
+        exclude_from_copyconfig="True"
+    ),
+
+    BooleanField(
+        name='permiteModificar',
+        widget=BooleanField._properties['widget'](
+            label="Permite Modificar Modulo",
+            label2="Allow Changes to Module",
+            description="Si Verdadero, entonces el usuario puede realizar los cambios a los que permite sus roles en el modulo. Si Falso, entonces no puede realizar cambios en el modulo. Puede ocurrir durante  procesos de importacion largos, o por indicacion del coordinador.",
+            description2="If True, then the user may perform  the changes authorized by the roles held on the module. If False, then the user can not make changes to the module. This may happen during long import processe.",
+            label_msgid='gvSIGi18n_TRAModulo_attr_permiteModificar_label',
+            description_msgid='gvSIGi18n_TRAModulo_attr_permiteModificar_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Si Verdadero, entonces el usuario puede realizar los cambios a los que permite sus roles en el modulo. Si Falso, entonces no puede realizar cambios en el modulo. Puede ocurrir durante  procesos de importacion largos, o por indicacion del coordinador.",
+        duplicates="0",
+        label2="Allow Changes to Module",
+        ea_localid="1575",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;IsLiteral=0;",
+        description2="If True, then the user may perform  the changes authorized by the roles held on the module. If False, then the user can not make changes to the module. This may happen during long import processe.",
+        ea_guid="{C9E9AD96-7852-49a3-BC7D-45130F8C9816}",
+        scale="0",
+        default="True",
+        label="Permite Modificar Modulo",
+        length="0",
+        containment="Not Specified",
+        position="2",
+        owner_class_name="TRAModulo",
+        exclude_from_exportconfig="True",
+        exclude_from_copyconfig="True"
+    ),
 
     StringField(
         name='dominio',
@@ -67,7 +132,7 @@ schema = Schema((
         description2="Iinformation that appears in the exported files of GNUgettext PO format, to indicate the application or module to which the translations apply.",
         containment="Not Specified",
         ea_guid="{70C5AFBA-F231-4944-BC58-D108311B4B10}",
-        position="6",
+        position="1",
         owner_class_name="TRAModulo",
         label="Dominio"
     ),
@@ -100,7 +165,7 @@ schema = Schema((
         length="0",
         exclude_from_traversalconfig="True",
         containment="Not Specified",
-        position="1",
+        position="0",
         owner_class_name="TRAModulo",
         exclude_from_views="[ 'Textual', 'Tabular',  'General', ]"
     ),
@@ -113,26 +178,38 @@ schema = Schema((
 
 TRAModulo_schema = OrderedBaseFolderSchema.copy() + \
     getattr(TRAArquetipo, 'schema', Schema(())).copy() + \
+    getattr(TRAConRegistroActividad, 'schema', Schema(())).copy() + \
     getattr(TRAModulo_Operaciones, 'schema', Schema(())).copy() + \
     schema.copy()
 
 ##code-section after-schema #fill in your manual code here
 ##/code-section after-schema
 
-class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAModulo_Operaciones):
+class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRAModulo_Operaciones):
     """
     """
     security = ClassSecurityInfo()
-    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAArquetipo,'__implements__',()),) + (getattr(TRAModulo_Operaciones,'__implements__',()),)
+    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAArquetipo,'__implements__',()),) + (getattr(TRAConRegistroActividad,'__implements__',()),) + (getattr(TRAModulo_Operaciones,'__implements__',()),)
 
     # This name appears in the 'add' box
     archetype_name = 'Modulo'
 
     meta_type = 'TRAModulo'
     portal_type = 'TRAModulo'
+
+
+    creation_date_field = 'fechaCreacion'
+    creation_user_field = 'usuarioCreador'
+    modification_date_field = 'fechaModificacion'
+    modification_user_field = 'usuarioModificador'
+    deletion_date_field = 'fechaEliminacion'
+    deletion_user_field = 'usuarioEliminador'
+    is_inactive_field = 'estaInactivo'
+    change_counter_field = 'contadorCambios'
+    change_log_field = 'registroDeCambios'
     use_folder_tabs = 0
 
-    allowed_content_types = [] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRAModulo_Operaciones, 'allowed_content_types', []))
+    allowed_content_types = [] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', [])) + list(getattr(TRAModulo_Operaciones, 'allowed_content_types', []))
     filter_content_types = 1
     global_allow = 0
     content_icon = 'tramodulo.gif'
@@ -152,48 +229,12 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAModulo_Operaciones):
     actions =  (
 
 
-       {'action': "string:$object_url/content_status_history",
-        'category': "object",
-        'id': 'content_status_history',
-        'name': 'State',
-        'permissions': ("View",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:${object_url}/folder_listing",
-        'category': "folder",
-        'id': 'folderlisting',
-        'name': 'Folder Listing',
-        'permissions': ("View",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:${object_url}/sharing",
-        'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:${object_url}/reference_graph",
-        'category': "object",
-        'id': 'references',
-        'name': 'References',
-        'permissions': ("Modify portal content",),
-        'condition': 'python:0'
-       },
-
-
        {'action': "string:$object_url/Editar",
         'category': "object",
         'id': 'edit',
         'name': 'Edit',
         'permissions': ("Modify portal content",),
-        'condition': 'python:1'
+        'condition': """python:object.fAllowWrite()"""
        },
 
 
@@ -202,7 +243,7 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAModulo_Operaciones):
         'id': 'local_roles',
         'name': 'Sharing',
         'permissions': ("Manage properties",),
-        'condition': 'python:object.fRoleQuery_IsCoordinator()'
+        'condition': """python:object.fAllowWrite() and object.fRoleQuery_IsManagerOrCoordinator()"""
        },
 
 
@@ -211,7 +252,43 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAModulo_Operaciones):
         'id': 'view',
         'name': 'View',
         'permissions': ("View",),
-        'condition': 'python:1'
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:${object_url}/folder_listing",
+        'category': "folder",
+        'id': 'folderlisting',
+        'name': 'Folder Listing',
+        'permissions': ("View",),
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/reference_graph",
+        'category': "object",
+        'id': 'references',
+        'name': 'References',
+        'permissions': ("Modify portal content",),
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/TRASeguridadUsuarioConectado",
+        'category': "object_buttons",
+        'id': 'TRA_SeguridadUsuarioConectado',
+        'name': 'Permissions',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:$object_url/content_status_history",
+        'category': "object",
+        'id': 'content_status_history',
+        'name': 'State',
+        'permissions': ("View",),
+        'condition': """python:0"""
        },
 
 
@@ -253,10 +330,38 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAModulo_Operaciones):
         """
         
         return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
+
+    security.declarePublic('displayContentsTab')
+    def displayContentsTab(self):
+        """
+        """
+        
+        return False
+
+    security.declarePublic('fAllowRead')
+    def fAllowRead(self):
+        """
+        """
+        
+        return self.getPermiteLeer() and self.getCatalogo().fAllowRead()
+
+    security.declarePublic('fAllowWrite')
+    def fAllowWrite(self):
+        """
+        """
+        
+        return self.fAllowRead() and self.getPermiteModificar() and self.getCatalogo().fAllowWrite()
+
+    security.declarePublic('cb_isMoveable')
+    def cb_isMoveable(self):
+        """
+        """
+        
+        return False
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:
-        if a['id'] in ['metadata']:
+        if a['id'] in ['metadata', 'folderContents']:
             a['visible'] = 0
     return fti
 

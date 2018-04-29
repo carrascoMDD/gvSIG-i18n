@@ -201,6 +201,8 @@ fsISS = fsIsSomethingOrNonEmptyStringOrSequence
 # UI actions
 #
 cAccion_Traducir = 'Traducir'
+cAccion_InvalidarTraduccionesCadena = 'InvalidarTraduccionesCadena'
+
 
 
 
@@ -251,6 +253,7 @@ cRequestedChangeKind_HacerTraducida     = 'ChangeToTranslated'
 cRequestedChangeKind_HacerRevisada      = 'ChangeToReviewed'
 cRequestedChangeKind_HacerDefinitiva    = 'ChangeToLocked'
 cRequestedChangeKind_BatchCambioEstado  = 'BatchStatusChange'
+cRequestedChangeKind_InvalidarTraduccionesCadena = 'InvalidarTraduccionesCadena'
 
 cRequestedChangeKinds = [
     cRequestedChangeKind_IntentarTraducir,  
@@ -258,7 +261,8 @@ cRequestedChangeKinds = [
     cRequestedChangeKind_HacerPendiente,    
     cRequestedChangeKind_HacerTraducida,    
     cRequestedChangeKind_HacerRevisada,     
-    cRequestedChangeKind_HacerDefinitiva,         
+    cRequestedChangeKind_HacerDefinitiva,     
+    cRequestedChangeKind_InvalidarTraduccionesCadena,             
 ]
 
 

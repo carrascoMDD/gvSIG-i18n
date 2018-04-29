@@ -112,12 +112,7 @@ class TRAContenidoIntercambio_Operaciones:
         return self.getContenedor()
    
 
-    security.declareProtected( permissions.View, 'getCatalogo')
-    def getCatalogo( self):
-        unaImportacion = self.getImportacion()
-        return unaImportacion.getCatalogo()
 
-    
     
     security.declarePrivate( 'pSetContenido')    
     def pSetContenido( self, theContenido):

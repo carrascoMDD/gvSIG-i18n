@@ -51,6 +51,9 @@ from Products.Archetypes.utils import shasattr
 
 from TRAElemento_Constants         import *
 
+from TRAElemento_Permission_Definitions import cUseCase_InvalidateStringTranslations, cBoundObject
+
+
 
 from TRAElemento import TRAElemento
 
@@ -362,56 +365,40 @@ class TRACadena_Operaciones:
     security.declarePrivate('pHandle_manage_beforeDelete')
     def pHandle_manage_beforeDelete(self, theItem, theContainer):   
  
+        try:
+            unCatalogoRaiz = self.getCatalogo()
+            if unCatalogoRaiz:
+                
+                unCatalogKey = theElement.fCatalogKey()
+                
+                unCatalogBusquedaCadenas = unCatalogoRaiz.fCatalogBusquedaCadenas()
+                if not( unCatalogBusquedaCadenas == None):
+                    unCatalogBusquedaCadenas.uncatalog_object( unCatalogKey)
+                 
+                unCatalogFiltroCadenas   = unCatalogoRaiz.fCatalogFiltroCadenas()
+                if not( unCatalogFiltroCadenas == None):
+                    unCatalogFiltroCadenas.uncatalog_object(   unCatalogKey)
+        
+                unCatalogTextoCadenas   = unCatalogoRaiz.fCatalogTextoCadenas()
+                if not( unCatalogTextoCadenas == None):
+                    unCatalogTextoCadenas.uncatalog_object(    unCatalogKey)
+        except:
+            None
+
         TRAElemento.manage_beforeDelete( self, theElement, theContainer)
          
-        unCatalogoRaiz = self.getCatalogo()
-        if unCatalogoRaiz:
-            
-            unCatalogKey = theElement.fCatalogKey()
-            
-            unCatalogBusquedaCadenas = unCatalogoRaiz.fCatalogBusquedaCadenas()
-            if not( unCatalogBusquedaCadenas == None):
-                unCatalogBusquedaCadenas.uncatalog_object( unCatalogKey)
-             
-            unCatalogFiltroCadenas   = unCatalogoRaiz.fCatalogFiltroCadenas()
-            if not( unCatalogFiltroCadenas == None):
-                unCatalogFiltroCadenas.uncatalog_object(   unCatalogKey)
-    
-            unCatalogTextoCadenas   = unCatalogoRaiz.fCatalogTextoCadenas()
-            if not( unCatalogTextoCadenas == None):
-                unCatalogTextoCadenas.uncatalog_object(    unCatalogKey)
-
         return self
      
     
     
    
-    
-# #########################################################################
-#   Derivacion de referencias
-# ##################    
 
-         
-    security.declarePrivate( 'getCatalogo')
-    def getCatalogo( self):
-        unCatalogo = self.getPropietario()
-        if not (unCatalogo.__class__.__name__ == cNombreTipoTRACatalogo):
-            return None
-        return unCatalogo
-        
-
-
-
-
-
-    
-    
     
 
     
-# #########################################################################
-#   Acceso a instancias de TRATraduccion de la TRACadena
-# ##################    
+    # #########################################################################
+    #   Acceso a instancias de TRATraduccion de la TRACadena
+    # ##################    
 
     
     security.declarePrivate( 'fObtenerTodasTraducciones')
@@ -864,7 +851,50 @@ class TRACadena_Operaciones:
             unExecutionRecord and unExecutionRecord.pEndExecution()
          
         
+            
+            
+            
 
+    security.declarePrivate( 'fInvalidarTraducciones')    
+    def fInvalidarTraducciones( self, 
+        theComentario, 
+        thePermissionsCache=None, 
+        theRolesCache=None, 
+        theParentExecutionRecord=None):
+        
+        unExecutionRecord = self.fStartExecution( 'method',  'fInvalidarTraducciones', theParentExecutionRecord, False) 
+        
+        try:
+     
+            unUseCaseQueryResult = self.fUseCaseAssessment(  
+                theUseCaseName          = cUseCase_InvalidateStringTranslations,        
+                theElementsBindings     = { cBoundObject: self,},                                    
+                theRulesToCollect       = None,                                                      
+                thePermissionsCache     = thePermissionsCache,                                        
+                theRolesCache           = theRolesCache,                                              
+                theParentExecutionRecord= unExecutionRecord,                                          
+            )                    
+            if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
+                aResult.update({
+                    'status': 'UseCase_assessment_failed: %s' % cUseCase_InvalidateStringTranslations,
+                })
+                return aResult
+            
+            
+            unasTraducciones = self.fObtenerTodasTraducciones()
+            
+            for unaTraduccion in unasTraducciones:
+                unResultTraduccion = unaTraduccion.fInvalidar( 
+                    theComentario, 
+                    thePermissionsCache         =thePermissionsCache, 
+                    theRolesCache               =theRolesCache, 
+                    theParentExecutionRecord    =unExecutionRecord
+                )
+        
+        finally:
+            unExecutionRecord and unExecutionRecord.pEndExecution()
+         
+  
 
 
 

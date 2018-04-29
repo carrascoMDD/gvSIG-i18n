@@ -39,6 +39,7 @@ import traceback
 import logging
 
 from Products.CMFCore       import permissions
+from Products.CMFCore.utils  import getToolByName
 
 from Products.ModelDDvlPloneTool.ModelDDvlPloneTool import ModelDDvlPloneTool
 
@@ -78,20 +79,8 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
     
     
         
-# ###################################################################
-#   Parent and children access
-# ###############################                  
-    
 
-    security.declareProtected( permissions.View, 'getCatalogo')
-    def getCatalogo( self):
-        """Retrieve container element (shall be of type TRACatalogo).
-        
-        """
-        return self.getContenedor()
-        
-        
-    
+
 
                                 
                 
@@ -167,7 +156,7 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                     anActionReport = { 'effect': 'error', 'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_no_permission_ToCreateNewStringRequest_msgid', "User does not have permission to create new string requests.-"), }
                     return anActionReport  
                             
-                aModelDDvlPlone_tool = ModelDDvlPloneTool()
+                aModelDDvlPlone_tool = getToolByName( self, 'ModelDDvlPlone_tool')
                              
                 
                 unNewTypeName = theNewTypeName
@@ -240,7 +229,7 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                     'description':                      '',
                     'simbolo':                          aNewSymbol,
                     'usuarioCreador':                   unMemberId,
-                    'fechaCreacionTextual':             self.fDateTimeNowTextual(),
+                    'fechaCreacion':                    self.fDateTimeNow(),
                     'codigoIdiomaPrincipal':            aMainlanguage,
                     'cadenaTraducidaAIdiomaPrincipal':  aTranslationIntoMainLanguage,
                     'codigoIdiomaReferencia':           aReferenceLanguage,
@@ -406,7 +395,7 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
 
                 aPloneUtilsTool = self.getPloneUtilsToolForNormalizeString()  
                
-                unTitleImportacion = '%s %s %s' % ( self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_crearCadeas_Importacion_prefix', "To Create Strings"), unMemberId, unaFechaYHora, )
+                unTitleImportacion = '%s by %s on %s' % ( self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_crearCadeas_Importacion_prefix', "To Create Strings"), unMemberId, unaFechaYHora, )
                 aNewIdImportacion = unTitleImportacion.lower().replace( ' ', '-')
                 if aPloneUtilsTool:
                     aNewIdImportacion = aPloneUtilsTool.normalizeString( aNewIdImportacion)
@@ -559,7 +548,7 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                     anActionReport = { 'effect': 'error', 'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_no_permission_ToCleanUpnewStringRequests_msgid', "User does not have permission to clean up new string requests.-"), }
                     return anActionReport  
                             
-                aModelDDvlPlone_tool = ModelDDvlPloneTool()
+                aModelDDvlPlone_tool = self.fModelDDvlPloneTool()
                              
                 
                 someSolicitudesCadenas = self.fObtenerTodasSolicitudesCadenas()

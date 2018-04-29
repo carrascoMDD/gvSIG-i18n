@@ -31,13 +31,15 @@ __docformat__ = 'plaintext'
 
 from AccessControl import ClassSecurityInfo
 from Products.Archetypes.atapi import *
-from Products.gvSIGi18n.TRACatalogo_Autorizaciones import TRACatalogo_Autorizaciones
 from Products.gvSIGi18n.TRAArquetipo import TRAArquetipo
-from Products.gvSIGi18n.TRACatalogo_Inicializacion import TRACatalogo_Inicializacion
-from Products.gvSIGi18n.TRACatalogo_Informes import TRACatalogo_Informes
-from Products.gvSIGi18n.TRACatalogo_Operaciones import TRACatalogo_Operaciones
-from Products.gvSIGi18n.TRACatalogo_CursorTraducciones import TRACatalogo_CursorTraducciones
-from Products.gvSIGi18n.TRACatalogo_Exportacion import TRACatalogo_Exportacion
+from TRACatalogo_Inicializacion import TRACatalogo_Inicializacion
+from TRACatalogo_Informes import TRACatalogo_Informes
+from TRACatalogo_Operaciones import TRACatalogo_Operaciones
+from TRACatalogo_CursorTraducciones import TRACatalogo_CursorTraducciones
+from TRACatalogo_Exportacion import TRACatalogo_Exportacion
+from Products.gvSIGi18n.TRAConRegistroActividad import TRAConRegistroActividad
+from Products.ATContentTypes.content.document import ATDocument
+from Products.ATContentTypes.content.base import updateAliases
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
@@ -47,6 +49,39 @@ from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import Reference
 ##/code-section module-header
 
 schema = Schema((
+
+    BooleanField(
+        name='permiteModificar',
+        widget=BooleanField._properties['widget'](
+            label="Permite Modificar",
+            label2="Allow Changes",
+            description="Si Verdadero, entonces los usuarios puede realizar los cambios a los que permite sus roles en la aplicacion. Si Falso, entonces no puede realizar cambios,  Puede ocurrir durante  procesos de importacion largos.",
+            description2="If True, then the users may perform the changes authorized by granted roles. If False, then the user can not make changes. This may happen during long import processe.",
+            label_msgid='gvSIGi18n_TRACatalogo_attr_permiteModificar_label',
+            description_msgid='gvSIGi18n_TRACatalogo_attr_permiteModificar_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Si Verdadero, entonces los usuarios puede realizar los cambios a los que permite sus roles en la aplicacion. Si Falso, entonces no puede realizar cambios,  Puede ocurrir durante  procesos de importacion largos.",
+        duplicates="0",
+        label2="Allow Changes",
+        ea_localid="1561",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;IsLiteral=0;",
+        description2="If True, then the users may perform the changes authorized by granted roles. If False, then the user can not make changes. This may happen during long import processe.",
+        ea_guid="{C371164E-3825-45fb-8A9B-19C539BD9E84}",
+        read_only="True",
+        scale="0",
+        default="True",
+        label="Permite Modificar",
+        length="0",
+        containment="Not Specified",
+        position="0",
+        owner_class_name="TRACatalogo",
+        exclude_from_exportconfig="True",
+        exclude_from_copyconfig="True"
+    ),
 
     StringField(
         name='nombreProducto',
@@ -906,7 +941,7 @@ schema = Schema((
         description2="Last process importing modules, languages, strings and translations.",
         ea_guid="{E75635C1-6754-483f-BD18-2E27B08563C2}",
         allowed_types=['TRAImportacion'],
-        read_only=True,
+        read_only="True",
         scale="0",
         additional_columns=['versionDelProducto', 'buildDelProducto', 'estadoProceso', 'haCompletadoConExito', 'fechaFinProceso'],
         label="Ultima importacion",
@@ -940,7 +975,7 @@ schema = Schema((
         description2="Last Status report ellaborated from the catalog.",
         ea_guid="{7DAE6970-929C-4a03-AC6F-01774676A754}",
         allowed_types=['TRAInforme'],
-        read_only=True,
+        read_only="True",
         scale="0",
         additional_columns=['esAutoActualizable', 'estadoProceso', 'fechaFinProceso', 'haCompletadoConExito'],
         label="Ultimo Informe de Estado",
@@ -958,30 +993,41 @@ schema = Schema((
 ##/code-section after-local-schema
 
 TRACatalogo_schema = OrderedBaseFolderSchema.copy() + \
-    getattr(TRACatalogo_Autorizaciones, 'schema', Schema(())).copy() + \
     getattr(TRAArquetipo, 'schema', Schema(())).copy() + \
     getattr(TRACatalogo_Inicializacion, 'schema', Schema(())).copy() + \
     getattr(TRACatalogo_Informes, 'schema', Schema(())).copy() + \
     getattr(TRACatalogo_Operaciones, 'schema', Schema(())).copy() + \
     getattr(TRACatalogo_CursorTraducciones, 'schema', Schema(())).copy() + \
     getattr(TRACatalogo_Exportacion, 'schema', Schema(())).copy() + \
+    getattr(TRAConRegistroActividad, 'schema', Schema(())).copy() + \
     schema.copy()
 
 ##code-section after-schema #fill in your manual code here
 ##/code-section after-schema
 
-class TRACatalogo(OrderedBaseFolder, TRACatalogo_Autorizaciones, TRAArquetipo, TRACatalogo_Inicializacion, TRACatalogo_Informes, TRACatalogo_Operaciones, TRACatalogo_CursorTraducciones, TRACatalogo_Exportacion):
+class TRACatalogo(OrderedBaseFolder, TRAArquetipo, TRACatalogo_Inicializacion, TRACatalogo_Informes, TRACatalogo_Operaciones, TRACatalogo_CursorTraducciones, TRACatalogo_Exportacion, TRAConRegistroActividad):
     """
     """
     security = ClassSecurityInfo()
-    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRACatalogo_Autorizaciones,'__implements__',()),) + (getattr(TRAArquetipo,'__implements__',()),) + (getattr(TRACatalogo_Inicializacion,'__implements__',()),) + (getattr(TRACatalogo_Informes,'__implements__',()),) + (getattr(TRACatalogo_Operaciones,'__implements__',()),) + (getattr(TRACatalogo_CursorTraducciones,'__implements__',()),) + (getattr(TRACatalogo_Exportacion,'__implements__',()),)
+    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAArquetipo,'__implements__',()),) + (getattr(TRACatalogo_Inicializacion,'__implements__',()),) + (getattr(TRACatalogo_Informes,'__implements__',()),) + (getattr(TRACatalogo_Operaciones,'__implements__',()),) + (getattr(TRACatalogo_CursorTraducciones,'__implements__',()),) + (getattr(TRACatalogo_Exportacion,'__implements__',()),) + (getattr(TRAConRegistroActividad,'__implements__',()),)
 
     # This name appears in the 'add' box
     archetype_name = 'Catalogo de Traducciones'
 
     meta_type = 'TRACatalogo'
     portal_type = 'TRACatalogo'
-    allowed_content_types = ['TRAColeccionInformes', 'TRAColeccionCadenas', 'TRAColeccionImportaciones', 'TRAColeccionSolicitudesCadenas', 'TRAColeccionIdiomas', 'TRAColeccionModulos'] + list(getattr(TRACatalogo_Autorizaciones, 'allowed_content_types', [])) + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Inicializacion, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Informes, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Operaciones, 'allowed_content_types', [])) + list(getattr(TRACatalogo_CursorTraducciones, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Exportacion, 'allowed_content_types', []))
+
+
+    creation_date_field = 'fechaCreacion'
+    creation_user_field = 'usuarioCreador'
+    modification_date_field = 'fechaModificacion'
+    modification_user_field = 'usuarioModificador'
+    deletion_date_field = 'fechaEliminacion'
+    deletion_user_field = 'usuarioEliminador'
+    is_inactive_field = 'estaInactivo'
+    change_counter_field = 'contadorCambios'
+    change_log_field = 'registroDeCambios'
+    allowed_content_types = ['TRAColeccionInformes', 'TRAColeccionCadenas', 'TRAColeccionImportaciones', 'TRAColeccionSolicitudesCadenas', 'TRAColeccionIdiomas', 'TRAColeccionModulos'] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Inicializacion, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Informes, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Operaciones, 'allowed_content_types', [])) + list(getattr(TRACatalogo_CursorTraducciones, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Exportacion, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', []))
     filter_content_types = 1
     global_allow = 1
     content_icon = 'tracatalogo.gif'
@@ -1001,48 +1047,30 @@ class TRACatalogo(OrderedBaseFolder, TRACatalogo_Autorizaciones, TRAArquetipo, T
     actions =  (
 
 
-       {'action': "string:$object_url/content_status_history",
-        'category': "object",
-        'id': 'content_status_history',
-        'name': 'State',
-        'permissions': ("View",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:${object_url}/folder_listing",
-        'category': "folder",
-        'id': 'folderlisting',
-        'name': 'Folder Listing',
-        'permissions': ("View",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:${object_url}/sharing",
-        'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:${object_url}/reference_graph",
-        'category': "object",
-        'id': 'references',
-        'name': 'References',
+       {'action': "string:${object_url}/TRAConfirmarBloquearCatalogo",
+        'category': "object_buttons",
+        'id': 'TRA_bloquear_catalogo',
+        'name': 'Lock Catalog',
         'permissions': ("Modify portal content",),
-        'condition': 'python:0'
+        'condition': """python:object.fUseCaseCheckDoable( 'Lock_TRACatalogo')"""
+       },
+
+
+       {'action': "string:${object_url}/TRAConfirmarDesbloquearCatalogo",
+        'category': "object_buttons",
+        'id': 'TRA_desbloquear_catalogo',
+        'name': 'Unlock Catalog',
+        'permissions': ("Modify portal content",),
+        'condition': """python:object.fUseCaseCheckDoable( 'Unlock_TRACatalogo')"""
        },
 
 
        {'action': "string:${object_url}/Editar",
-        'category': "object",
+        'category': "object_buttons",
         'id': 'TRA_configurar',
         'name': 'Configure',
         'permissions': ("Modify portal content",),
-        'condition': 'python:object.fUseCaseCheckDoable_ConfigureTRACatalogo()'
+        'condition': """python:object.fUseCaseCheckDoable( 'Configure_TRACatalogo')"""
        },
 
 
@@ -1051,25 +1079,25 @@ class TRACatalogo(OrderedBaseFolder, TRACatalogo_Autorizaciones, TRAArquetipo, T
         'id': 'edit',
         'name': 'Edit',
         'permissions': ("Modify portal content",),
-        'condition': 'python:1'
+        'condition': """python:'portal_factory' in object.getPhysicalPath()"""
        },
 
 
        {'action': "string:${object_url}/TRAExportar",
-        'category': "object",
+        'category': "object_buttons",
         'id': 'TRA_export_translations',
         'name': 'Export',
         'permissions': ("View",),
-        'condition': 'python:object.fUseCaseCheckDoable_Export()'
+        'condition': """python:object.fUseCaseCheckDoable( 'Export')"""
        },
 
 
        {'action': "string:${object_url}/TRAVerificar_action",
-        'category': "object",
+        'category': "object_buttons",
         'id': 'TRA_verificar',
         'name': 'Verify',
         'permissions': ("View",),
-        'condition': 'python:object.fUseCaseCheckDoable_VerifyTRACatalogo()'
+        'condition': """python:object.fUseCaseCheckDoable( 'Verify_TRACatalogo')"""
        },
 
 
@@ -1078,11 +1106,59 @@ class TRACatalogo(OrderedBaseFolder, TRACatalogo_Autorizaciones, TRAArquetipo, T
         'id': 'view',
         'name': 'View',
         'permissions': ("View",),
-        'condition': 'python:1'
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:${object_url}/sharing",
+        'category': "object",
+        'id': 'local_roles',
+        'name': 'Sharing',
+        'permissions': ("Manage properties",),
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/folder_listing",
+        'category': "folder",
+        'id': 'folderlisting',
+        'name': 'Folder Listing',
+        'permissions': ("View",),
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/reference_graph",
+        'category': "object",
+        'id': 'references',
+        'name': 'References',
+        'permissions': ("Modify portal content",),
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/TRASeguridadUsuarioConectado",
+        'category': "object_buttons",
+        'id': 'TRA_SeguridadUsuarioConectado',
+        'name': 'Permissions',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:$object_url/content_status_history",
+        'category': "object",
+        'id': 'content_status_history',
+        'name': 'State',
+        'permissions': ("View",),
+        'condition': """python:0"""
        },
 
 
     )
+
+
+    aliases = updateAliases( ATDocument, {'folder_factories':'Tabular','cut':'Tabular','object_cut':'Tabular','delete_confirmation': 'Tabular','object_rename': 'Editar','content_status_modify':'Tabular','content_status_history':'Tabular','placeful_workflow_configuration': 'Tabular',})
 
     _at_rename_after_creation = True
 
@@ -1095,6 +1171,20 @@ class TRACatalogo(OrderedBaseFolder, TRACatalogo_Autorizaciones, TRAArquetipo, T
 
     security.declarePublic('cb_isCopyable')
     def cb_isCopyable(self):
+        """
+        """
+        
+        return False
+
+    security.declarePublic('cb_isMoveable')
+    def cb_isMoveable(self):
+        """
+        """
+        
+        return False
+
+    security.declarePublic('displayContentsTab')
+    def displayContentsTab(self):
         """
         """
         
@@ -1130,7 +1220,7 @@ class TRACatalogo(OrderedBaseFolder, TRACatalogo_Autorizaciones, TRAArquetipo, T
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:
-        if a['id'] in ['metadata']:
+        if a['id'] in ['metadata', 'sharing', 'folderContents']:
             a['visible'] = 0
     return fti
 

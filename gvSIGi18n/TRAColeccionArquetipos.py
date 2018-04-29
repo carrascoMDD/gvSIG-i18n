@@ -32,6 +32,7 @@ __docformat__ = 'plaintext'
 from AccessControl import ClassSecurityInfo
 from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.TRAElemento import TRAElemento
+from Products.gvSIGi18n.TRAConRegistroActividad import TRAConRegistroActividad
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
@@ -49,38 +50,32 @@ schema = Schema((
 ##/code-section after-local-schema
 
 TRAColeccionArquetipos_schema = getattr(TRAElemento, 'schema', Schema(())).copy() + \
+    getattr(TRAConRegistroActividad, 'schema', Schema(())).copy() + \
     schema.copy()
 
 ##code-section after-schema #fill in your manual code here
 ##/code-section after-schema
 
-class TRAColeccionArquetipos(TRAElemento):
+class TRAColeccionArquetipos(TRAElemento, TRAConRegistroActividad):
     """
     """
     security = ClassSecurityInfo()
-    __implements__ = (getattr(TRAElemento,'__implements__',()),)
+    __implements__ = (getattr(TRAElemento,'__implements__',()),) + (getattr(TRAConRegistroActividad,'__implements__',()),)
 
-    allowed_content_types = [] + list(getattr(TRAElemento, 'allowed_content_types', []))
+
+
+    creation_date_field = 'fechaCreacion'
+    creation_user_field = 'usuarioCreador'
+    modification_date_field = 'fechaModificacion'
+    modification_user_field = 'usuarioModificador'
+    deletion_date_field = 'fechaEliminacion'
+    deletion_user_field = 'usuarioEliminador'
+    is_inactive_field = 'estaInactivo'
+    change_counter_field = 'contadorCambios'
+    change_log_field = 'registroDeCambios'
+    allowed_content_types = [] + list(getattr(TRAElemento, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', []))
 
     actions =  (
-
-
-       {'action': "string:$object_url/content_status_history",
-        'category': "object",
-        'id': 'content_status_history',
-        'name': 'State',
-        'permissions': ("View",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:$object_url/Editar",
-        'category': "object",
-        'id': 'edit',
-        'name': 'Edit',
-        'permissions': ("Modify portal content",),
-        'condition': 'python:0'
-       },
 
 
        {'action': "string:${object_url}/folder_listing",
@@ -88,16 +83,7 @@ class TRAColeccionArquetipos(TRAElemento):
         'id': 'folderlisting',
         'name': 'Folder Listing',
         'permissions': ("View",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:${object_url}/sharing",
-        'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
-        'condition': 'python:0'
+        'condition': """python:0"""
        },
 
 
@@ -106,7 +92,7 @@ class TRAColeccionArquetipos(TRAElemento):
         'id': 'references',
         'name': 'References',
         'permissions': ("Modify portal content",),
-        'condition': 'python:0'
+        'condition': """python:0"""
        },
 
 
@@ -115,7 +101,43 @@ class TRAColeccionArquetipos(TRAElemento):
         'id': 'view',
         'name': 'View',
         'permissions': ("View",),
-        'condition': 'python:1'
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:$object_url/Editar",
+        'category': "object",
+        'id': 'edit',
+        'name': 'Edit',
+        'permissions': ("Modify portal content",),
+        'condition': """python:object.fAllowWrite()"""
+       },
+
+
+       {'action': "string:${object_url}/sharing",
+        'category': "object",
+        'id': 'local_roles',
+        'name': 'Sharing',
+        'permissions': ("Manage properties",),
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/TRASeguridadUsuarioConectado",
+        'category': "object_buttons",
+        'id': 'TRA_SeguridadUsuarioConectado',
+        'name': 'Permissions',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:$object_url/content_status_history",
+        'category': "object",
+        'id': 'content_status_history',
+        'name': 'State',
+        'permissions': ("View",),
+        'condition': """python:0"""
        },
 
 
@@ -136,6 +158,20 @@ class TRAColeccionArquetipos(TRAElemento):
         """
         
         return True
+
+    security.declarePublic('displayContentsTab')
+    def displayContentsTab(self):
+        """
+        """
+        
+        return False
+
+    security.declarePublic('externalEditorEnabled')
+    def externalEditorEnabled(self):
+        """
+        """
+        
+        return False
 
     security.declarePublic('manage_afterAdd')
     def manage_afterAdd(self,item,container):

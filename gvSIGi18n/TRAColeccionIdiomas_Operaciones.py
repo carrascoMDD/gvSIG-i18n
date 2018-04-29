@@ -39,7 +39,9 @@ import sys
 import traceback
 import logging
 
-from Products.CMFCore       import permissions
+from Products.CMFCore        import permissions
+from Products.CMFCore.utils  import getToolByName
+
 
 from Products.ModelDDvlPloneTool.ModelDDvlPloneTool import ModelDDvlPloneTool
 
@@ -71,19 +73,12 @@ class TRAColeccionIdiomas_Operaciones:
     ##code-section class-header #fill in your manual code here
     
 
-# ###################################################################
-#   Parent and children access
-# ###############################                  
+    # ###################################################################
+    #   Parent and children access
+    # ###############################                  
     
 
-    security.declareProtected( permissions.View, 'getCatalogo')
-    def getCatalogo( self):
-        """Retrieve container element (shall be of type TRACatalogo).
-        
-        """
-        return self.getContenedor()
-        
-        
+
     
 
                                 
@@ -182,7 +177,7 @@ class TRAColeccionIdiomas_Operaciones:
                     anActionReport = { 'effect': 'error', 'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_no_permission_ToCreateLanguage_msgid', "User does not have permission to create languages (as an import process).-"), }
                     return anActionReport  
                             
-                aModelDDvlPlone_tool = ModelDDvlPloneTool()
+                aModelDDvlPlone_tool = self.fModelDDvlPloneTool()
                              
                 
                  
@@ -251,7 +246,10 @@ class TRAColeccionIdiomas_Operaciones:
                     anActionReport = { 'effect': 'error', 'failure': '%s' %  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCreating_Idioma_TRAImportacion_Created_TRAImportacion_NotFound_msgid', "Could not find import just created-."), }
                     return anActionReport     
 
-                unTitleContenidoIntercambio = '%s %s' % ( self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_crearIdioma_Importacion_prefix', "To Create Language"), aNewCodigoIdiomaEnGvSIG, )
+                unMemberId = self.fGetMemberId()
+                unaFechaYHora = self.fDateTimeNowTextual()
+                
+                unTitleContenidoIntercambio = '%s %s by %s on %s' % ( self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_crearIdioma_Importacion_prefix', "To Create Language"), aNewCodigoIdiomaEnGvSIG, unMemberId, unaFechaYHora,)
                 aNewIdContenidoIntercambio = unTitleContenidoIntercambio.lower().replace( ' ', '-')
                 if aPloneUtilsTool:
                     aNewIdContenidoIntercambio = aPloneUtilsTool.normalizeString( aNewIdContenidoIntercambio)

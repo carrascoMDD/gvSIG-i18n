@@ -32,7 +32,7 @@ __docformat__ = 'plaintext'
 from AccessControl import ClassSecurityInfo
 from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.TRAColeccionArquetipos import TRAColeccionArquetipos
-from Products.gvSIGi18n.TRAColeccionSolicitudesCadenas_Operaciones import TRAColeccionSolicitudesCadenas_Operaciones
+from TRAColeccionSolicitudesCadenas_Operaciones import TRAColeccionSolicitudesCadenas_Operaciones
 from Products.gvSIGi18n.config import *
 
 ##code-section module-header #fill in your manual code here
@@ -91,6 +91,17 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
 
     meta_type = 'TRAColeccionSolicitudesCadenas'
     portal_type = 'TRAColeccionSolicitudesCadenas'
+
+
+    creation_date_field = 'fechaCreacion'
+    creation_user_field = 'usuarioCreador'
+    modification_date_field = 'fechaModificacion'
+    modification_user_field = 'usuarioModificador'
+    deletion_date_field = 'fechaEliminacion'
+    deletion_user_field = 'usuarioEliminador'
+    is_inactive_field = 'estaInactivo'
+    change_counter_field = 'contadorCambios'
+    change_log_field = 'registroDeCambios'
     allowed_content_types = ['TRASolicitudCadena'] + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', [])) + list(getattr(TRAColeccionSolicitudesCadenas_Operaciones, 'allowed_content_types', []))
     filter_content_types = 1
     global_allow = 0
@@ -104,28 +115,28 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
     typeDescription2 = '''Collection of requests by developers to create new strings.'''
     archetype_name_msgid = 'gvSIGi18n_TRAColeccionSolicitudesCadenas_label'
     factory_methods = { 'TRASolicitudCadena' : 'fCrearSolicitudCadena',}
-    factory_enablers = None
+    factory_enablers = { 'TRASolicitudCadena' : [ 'fUseCaseCheckDoableFactory', 'Create_TRASolicitudCadena',]}
     allow_discussion = False
 
 
     actions =  (
 
 
-       {'action': "string:$object_url/content_status_history",
-        'category': "object",
-        'id': 'content_status_history',
-        'name': 'State',
-        'permissions': ("View",),
-        'condition': 'python:0'
+       {'action': "string:${object_url}/TRACrearCadenas_action",
+        'category': "object_buttons",
+        'id': 'CreateStrings',
+        'name': 'Create Strings',
+        'permissions': ("Modify portal content",),
+        'condition': """python:object.fUseCaseCheckDoable( 'Create_TRASolicitudCadena')"""
        },
 
 
-       {'action': "string:$object_url/Editar",
-        'category': "object",
-        'id': 'edit',
-        'name': 'Edit',
+       {'action': "string:${object_url}/TRALimpiarCadenas_action",
+        'category': "object_buttons",
+        'id': 'CleanupStrings',
+        'name': 'Clean-up Strings',
         'permissions': ("Modify portal content",),
-        'condition': 'python:0'
+        'condition': """python:object.fUseCaseCheckDoable( 'Cleanup_TRAColeccionSolicitudesCadenas')"""
        },
 
 
@@ -134,16 +145,7 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
         'id': 'folderlisting',
         'name': 'Folder Listing',
         'permissions': ("View",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:${object_url}/sharing",
-        'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
-        'condition': 'python:0'
+        'condition': """python:0"""
        },
 
 
@@ -152,7 +154,7 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
         'id': 'references',
         'name': 'References',
         'permissions': ("Modify portal content",),
-        'condition': 'python:0'
+        'condition': """python:0"""
        },
 
 
@@ -161,25 +163,43 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
         'id': 'view',
         'name': 'View',
         'permissions': ("View",),
-        'condition': 'python:1'
+        'condition': """python:1"""
        },
 
 
-       {'action': "string:${object_url}/TRACrearCadenas_action",
+       {'action': "string:$object_url/Editar",
         'category': "object",
-        'id': 'CreateStrings',
-        'name': 'Create Strings',
+        'id': 'edit',
+        'name': 'Edit',
         'permissions': ("Modify portal content",),
-        'condition': 'python:object.fRoleQuery_IsManagerOrCoordinator()'
+        'condition': """python:object.fAllowWrite()"""
        },
 
 
-       {'action': "string:${object_url}/TRALimpiarCadenas_action",
+       {'action': "string:${object_url}/sharing",
         'category': "object",
-        'id': 'CleanupStrings',
-        'name': 'Clean-up Strings',
-        'permissions': ("Modify portal content",),
-        'condition': 'python:object.fRoleQuery_IsManagerOrCoordinator()'
+        'id': 'local_roles',
+        'name': 'Sharing',
+        'permissions': ("Manage properties",),
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/TRASeguridadUsuarioConectado",
+        'category': "object_buttons",
+        'id': 'TRA_SeguridadUsuarioConectado',
+        'name': 'Permissions',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:$object_url/content_status_history",
+        'category': "object",
+        'id': 'content_status_history',
+        'name': 'State',
+        'permissions': ("View",),
+        'condition': """python:0"""
        },
 
 
@@ -194,12 +214,12 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
 
     # Methods
 
-    security.declarePublic('cb_isCopyable')
-    def cb_isCopyable(self):
+    security.declarePublic('manage_beforeDelete')
+    def manage_beforeDelete(self,item,container):
         """
         """
         
-        return False
+        return TRAColeccionArquetipos.manage_beforeDelete( self, item, container)
 
     security.declarePublic('manage_afterAdd')
     def manage_afterAdd(self,item,container):
@@ -208,12 +228,26 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
         
         return TRAColeccionArquetipos.manage_afterAdd( self, item, container)
 
-    security.declarePublic('manage_beforeDelete')
-    def manage_beforeDelete(self,item,container):
+    security.declarePublic('cb_isMoveable')
+    def cb_isMoveable(self):
         """
         """
         
-        return TRAColeccionArquetipos.manage_beforeDelete( self, item, container)
+        return False
+
+    security.declarePublic('displayContentsTab')
+    def displayContentsTab(self):
+        """
+        """
+        
+        return False
+
+    security.declarePublic('cb_isCopyable')
+    def cb_isCopyable(self):
+        """
+        """
+        
+        return False
 
     security.declarePublic('manage_pasteObjects')
     def manage_pasteObjects(self,cb_copy_data,REQUEST):
@@ -224,7 +258,7 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:
-        if a['id'] in ['metadata', 'sharing']:
+        if a['id'] in ['metadata', 'sharing', 'folderContents']:
             a['visible'] = 0
     return fti
 

@@ -32,7 +32,7 @@ __docformat__ = 'plaintext'
 from AccessControl import ClassSecurityInfo
 from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.TRAArquetipo import TRAArquetipo
-from Products.gvSIGi18n.TRACadena_Operaciones import TRACadena_Operaciones
+from TRACadena_Operaciones import TRACadena_Operaciones
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
@@ -353,39 +353,12 @@ class TRACadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones):
     actions =  (
 
 
-       {'action': "string:$object_url/content_status_history",
+       {'action': "string:${object_url}/Tabular",
         'category': "object",
-        'id': 'content_status_history',
-        'name': 'State',
+        'id': 'view',
+        'name': 'View',
         'permissions': ("View",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:${object_url}/folder_listing",
-        'category': "folder",
-        'id': 'folderlisting',
-        'name': 'Folder Listing',
-        'permissions': ("View",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:${object_url}/sharing",
-        'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
-        'condition': 'python:0'
-       },
-
-
-       {'action': "string:${object_url}/reference_graph",
-        'category': "object",
-        'id': 'references',
-        'name': 'References',
-        'permissions': ("Modify portal content",),
-        'condition': 'python:0'
+        'condition': """python:1"""
        },
 
 
@@ -394,16 +367,52 @@ class TRACadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones):
         'id': 'edit',
         'name': 'Edit',
         'permissions': ("Modify portal content",),
-        'condition': 'python:0'
+        'condition': """python:0"""
        },
 
 
-       {'action': "string:${object_url}/Tabular",
+       {'action': "string:${object_url}/sharing",
         'category': "object",
-        'id': 'view',
-        'name': 'View',
+        'id': 'local_roles',
+        'name': 'Sharing',
+        'permissions': ("Manage properties",),
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/folder_listing",
+        'category': "folder",
+        'id': 'folderlisting',
+        'name': 'Folder Listing',
         'permissions': ("View",),
-        'condition': 'python:1'
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/reference_graph",
+        'category': "object",
+        'id': 'references',
+        'name': 'References',
+        'permissions': ("Modify portal content",),
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/TRASeguridadUsuarioConectado",
+        'category': "object_buttons",
+        'id': 'TRA_SeguridadUsuarioConectado',
+        'name': 'Permissions',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:$object_url/content_status_history",
+        'category': "object",
+        'id': 'content_status_history',
+        'name': 'State',
+        'permissions': ("View",),
+        'condition': """python:0"""
        },
 
 
@@ -439,6 +448,20 @@ class TRACadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones):
         
         return TRACadena_Operaciones.pHandle_manage_afterAdd( self, item, container)
 
+    security.declarePublic('reindexObject')
+    def reindexObject(self,idxs=[]):
+        """
+        """
+        
+        return TRACadena_Operaciones.pHandle_reindexObject( self, idxs)
+
+    security.declarePublic('displayContentsTab')
+    def displayContentsTab(self):
+        """
+        """
+        
+        return False
+
     security.declarePublic('manage_beforeDelete')
     def manage_beforeDelete(self,item,container):
         """
@@ -446,23 +469,23 @@ class TRACadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones):
         
         return TRAArquetipo.manage_beforeDelete( self, item, container)
 
+    security.declarePublic('cb_isMoveable')
+    def cb_isMoveable(self):
+        """
+        """
+        
+        return False
+
     security.declarePublic('manage_pasteObjects')
     def manage_pasteObjects(self,cb_copy_data,REQUEST):
         """
         """
         
         return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
-
-    security.declarePublic('reindexObject')
-    def reindexObject(self,idxs=[]):
-        """
-        """
-        
-        return TRACadena_Operaciones.pHandle_reindexObject( self, idxs)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:
-        if a['id'] in ['metadata', 'sharing']:
+        if a['id'] in ['metadata', 'sharing', 'folderContents']:
             a['visible'] = 0
     return fti
 
