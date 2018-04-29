@@ -1,0 +1,551 @@
+<tal:block replace="nothing">
+# File: TRACrear_ContenidoIntercambio_i18n_view.pt
+# Copyright (c) 2008, 2009, 2010, 2011  by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+#
+# GNU General Public License (GPL)
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+#
+# Authors: 
+# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana 
+# Model Driven Development sl  Valencia (Spain) www.ModelDD.org 
+# Antonio Carrasco Valero                       carrasco@ModelDD.org
+#
+</tal:block>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en">
+<body>
+
+
+    <div metal:define-macro="tTRACrear_ContenidoIntercambio_i18n_view" >
+	
+	
+        <metal:block metal:use-macro="here/PerformanceAnalysis/macros/tSetupPerformanceAnalysis" />   
+
+        <tal:block tal:define="
+                pNewTypeName				python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theNewTypeName', '');		
+                pAggregationName			python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theAggregationName', '');
+				pUploadedFile				python: here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theUploadedFile', None);
+				pInitialParameters          python: here.TRAgvSIGi18n_tool.fInitialParameters_CrearContenidoIntercambio(
+					theContextualElement  = here,
+				);
+				pCodigoIdiomaPorDefecto                         python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theDefaultLanguage',                       pInitialParameters.get( 'codigoIdiomaPorDefecto', None))                  or '';
+				pNombreModuloPorDefecto                         python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theDefaultModule',                         pInitialParameters.get( 'nombreModuloPorDefecto', None))                  or '';
+				pImportarConNombreModuloConfigurado             python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theImportWithConfiguredModuleName',        pInitialParameters.get( 'importarConNombreModuloConfigurado', None)             and 'Yes') == 'Yes';
+				pImportarNombreModuloDesdeDominioONombreFichero python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theImportModuleNameFromDomainOrFilename',  pInitialParameters.get( 'importarNombreModuloDesdeDominioONombreFichero', None) and 'Yes') == 'Yes';
+				pImportarNombresModulosDesdeComentarios         python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theImportModuleNamesFromComment',          pInitialParameters.get( 'importarNombresModulosDesdeComentarios', None)         and 'Yes') == 'Yes';
+				pImportarContribucionesDesdeComentarios         python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theImportContributionsFromComment',        pInitialParameters.get( 'importarContribucionesDesdeComentarios', None)         and 'Yes') == 'Yes';
+				pImportarFuentesDesdeComentarios                python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theImportSourcesFromComment',              pInitialParameters.get( 'importarFuentesDesdeComentarios', None)                and 'Yes') == 'Yes';
+				pImportarStatusDesdeComentarios                 python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theImportStatusFromComment',               pInitialParameters.get( 'importarStatusDesdeComentarios', None)                 and 'Yes') == 'Yes';
+				pNumeroMaximoLineasAExplorar                    python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theMaxLinesToScan',                        pInitialParameters.get( 'numeroMaximoLineasAExplorar', None))             or '';
+				
+				
+         global pMostrarFormulario			python: ( not pUploadedFile) ;
+                pTrue						python: True;
+                pFalse						python: False;
+				pPermissionsCache			python: { };
+				pRolesCache					python: { };
+				pParentExecutionRecord		pExecutionRecord | nothing;">
+                
+				
+                    
+			<tal:block tal:condition="not: pUploadedFile" >
+				<form name="Crear_TRAContenidoIntercambio" method="post" enctype="multipart/form-data">
+				
+                                       
+					<input originalvalue="#" name="theNewTypeName" value="#" type="hidden"
+						tal:attributes="originalvalue python: pNewTypeName;value python: pNewTypeName" />
+						
+					<input originalvalue="#" name="theAggregationName" value="#" type="hidden"
+						tal:attributes="originalvalue python: pAggregationName;value python: pAggregationName" />
+						
+    			    <h3  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearContenidoAImportar_action_page_title">Crear contenido de traducciones a importar desde fichero-</h3>
+    			    <br/>
+    			    <p  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearContenidoAImportar_action_selectFile">Seleccione un fichero con traducciones a importar y pulse el boton guardar.-</p>
+    			    <p  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearContenidoAImportar_action_selectFile2">El contenido del fichero debe corresponder a ficheros de localicacion Java .properties o GNU gettext .po.-</p>
+    			    <p  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearContenidoAImportar_action_selectFile3">Uno o varios de estos ficheros pueden estar archivados (y posiblemente comprimidos) con formato .zip (por ejemplo, .zip o .jar).-</p>
+                    <br/>			    
+						
+					<table class="listing" 
+						tal:define="
+							pLabelYes python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_Yes', 'Yes-');
+							pLabelNo  python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_No', 'No-')">
+						<thead>
+							<tr>
+								<th>
+								</th>
+								<th>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="odd">
+								<td>
+									<strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAContenidoIntercambio_attr_codigoIdiomaPorDefecto_label">Idioma por defecto-</strong>
+									<br/>
+									<span  class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAContenidoIntercambio_attr_codigoIdiomaPorDefecto_help">Code of the language to import translations interchange content file in Java .properties format, when the file name does not contain the language code.-</span>
+								</td>
+								<td>
+									<input name="theDefaultLanguage"   id="theDefaultLanguage"  size="8" value="#" tal:attributes="value python: pCodigoIdiomaPorDefecto"/> 					
+								</td>
+							</tr>
+							
+							<tr class="even">
+								<td>
+									<strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAContenidoIntercambio_attr_nombreModuloPorDefecto_label">Default Module Name-</strong>
+									<br/>
+									<span  class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAContenidoIntercambio_attr_nombreModuloPorDefecto_help">Name of the Module to use when no module name can be obtained, whether from domain name in the GNUgettext .POfile header, or from the folder structure if the uploaded content is a .jar or .zip archive file.-</span>
+								</td>
+								<td>
+									<input name="theDefaultModule" id="theDefaultModule" size="64" value="#" tal:attributes="value python: pNombreModuloPorDefecto"/> 					
+								</td>
+							</tr>
+						
+							<tr class="odd">
+								<td>
+									<strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAContenidoIntercambio_attr_importarConNombreModuloConfigurado_label">Import using configured module name-</strong>
+									<br/>
+									<span  class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAContenidoIntercambio_attr_importarConNombreModuloConfigurado_help">Import strings as used in the module with the name configured for the import or the interchange contents.-</span>
+								</td>
+								<td>
+									<tal:block tal:condition="pImportarConNombreModuloConfigurado">
+										<strong tal:content="pLabelYes" />
+										<input type="radio" checked="checked"
+											class="noborder" name="theImportWithConfiguredModuleName"   id="theImportWithConfiguredModuleName_Yes"  value="Yes" /> 					
+										&emsp;
+										&emsp;
+										<strong tal:content="pLabelNo" />
+										<input type="radio" 
+											class="noborder" name="theImportWithConfiguredModuleName"   id="theImportWithConfiguredModuleName_No"   value="No" /> 					
+									</tal:block>
+									<tal:block tal:condition="not: pImportarConNombreModuloConfigurado">
+										<strong tal:content="pLabelYes" />
+										<input type="radio" 
+											class="noborder" name="theImportWithConfiguredModuleName"   id="theImportWithConfiguredModuleName_Yes"  value="Yes" /> 					
+										&emsp;
+										&emsp;
+										<strong tal:content="pLabelNo" />
+										<input type="radio" checked="checked"
+											class="noborder" name="theImportWithConfiguredModuleName"   id="theImportWithConfiguredModuleName_No"   value="No" /> 					
+									</tal:block>
+								</td>
+							</tr>
+							
+							<tr class="even">
+								<td>
+									<strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAContenidoIntercambio_attr_importarNombreModuloDesdeDominioONombreFichero_label">Import module from file name or PO Domain-</strong>
+									<br/>
+									<span  class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAContenidoIntercambio_attr_importarNombreModuloDesdeDominioONombreFichero_help">Import module name from the file name or from the GNU gettext PO header Domain line.-</span>
+								</td>
+								<td>
+									<tal:block tal:condition="pImportarNombreModuloDesdeDominioONombreFichero">
+										<strong tal:content="pLabelYes" />
+										<input type="radio" checked="checked"
+											class="noborder" name="theImportModuleNameFromDomainOrFilename"   id="theImportModuleNameFromDomainOrFilename_Yes"  value="Yes" /> 					
+										&emsp;
+										&emsp;
+										<strong tal:content="pLabelNo" />
+										<input type="radio" 
+											class="noborder" name="theImportModuleNameFromDomainOrFilename"   id="theImportModuleNameFromDomainOrFilename_No"   value="No" /> 					
+									</tal:block>
+									<tal:block tal:condition="not: pImportarNombreModuloDesdeDominioONombreFichero">
+										<strong tal:content="pLabelYes" />
+										<input type="radio" 
+											class="noborder" name="theImportModuleNameFromDomainOrFilename"   id="theImportModuleNameFromDomainOrFilename_Yes"  value="Yes" /> 					
+										&emsp;
+										&emsp;
+										<strong tal:content="pLabelNo" />
+										<input type="radio" checked="checked"
+											class="noborder" name="theImportModuleNameFromDomainOrFilename"   id="theImportModuleNameFromDomainOrFilename_No"   value="No" /> 					
+									</tal:block>
+								</td>
+							</tr>
+							
+							<tr class="odd">
+								<td>
+									<strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAContenidoIntercambio_attr_importarNombresModulosDesdeComentarios_label">Import module names from comments-</strong>
+									<br/>
+									<span  class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAContenidoIntercambio_attr_importarNombresModulosDesdeComentarios_help">Import the names of modules for each string, from its comments in the .properties or GNUgettextPO file.-</span>
+								</td>
+								<td>
+									<tal:block tal:condition="pImportarNombresModulosDesdeComentarios">
+										<strong tal:content="pLabelYes" />
+										<input type="radio" checked="checked"
+											class="noborder" name="theImportModuleNamesFromComment"   id="theImportModuleNamesFromComment_Yes"  value="Yes" /> 					
+										&emsp;
+										&emsp;
+										<strong tal:content="pLabelNo" />
+										<input type="radio" 
+											class="noborder" name="theImportModuleNamesFromComment"   id="theImportModuleNamesFromComment_No"   value="No" /> 					
+									</tal:block>
+									<tal:block tal:condition="not: pImportarNombresModulosDesdeComentarios">
+										<strong tal:content="pLabelYes" />
+										<input type="radio" 
+											class="noborder" name="theImportModuleNamesFromComment"   id="theImportModuleNamesFromComment_Yes"  value="Yes" /> 					
+										&emsp;
+										&emsp;
+										<strong tal:content="pLabelNo" />
+										<input type="radio" checked="checked"
+											class="noborder" name="theImportModuleNamesFromComment"   id="theImportModuleNamesFromComment_No"   value="No" /> 					
+									</tal:block>
+								</td>
+							</tr>
+							
+							<tr class="even">
+								<td>
+									<strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAContenidoIntercambio_attr_importarFuentesDesdeComentarios_label">Import sources from comments-</strong>
+									<br/>
+									<span  class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAContenidoIntercambio_attr_importarFuentesDesdeComentarios_help">Import the names of source files where each string appears, from its comments in the .properties or GNUgettextPO file.-</span>
+								</td>
+								<td>
+									<tal:block tal:condition="pImportarFuentesDesdeComentarios">
+										<strong tal:content="pLabelYes" />
+										<input type="radio" checked="checked"
+											class="noborder" name="theImportSourcesFromComment"   id="theImportSourcesFromComment_Yes"  value="Yes" /> 					
+										&emsp;
+										&emsp;
+										<strong tal:content="pLabelNo" />
+										<input type="radio" 
+											class="noborder" name="theImportSourcesFromComment"   id="theImportSourcesFromComment_No"   value="No" /> 					
+									</tal:block>
+									<tal:block tal:condition="not: pImportarFuentesDesdeComentarios">
+										<strong tal:content="pLabelYes" />
+										<input type="radio" 
+											class="noborder" name="theImportSourcesFromComment"   id="theImportSourcesFromComment_Yes"  value="Yes" /> 					
+										&emsp;
+										&emsp;
+										<strong tal:content="pLabelNo" />
+										<input type="radio" checked="checked"
+											class="noborder" name="theImportSourcesFromComment"   id="theImportSourcesFromComment_No"   value="No" /> 					
+									</tal:block>
+								</td>
+							</tr>
+							
+							
+							
+							
+							<tr class="odd">
+								<td>
+									<strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAContenidoIntercambio_attr_importarStatusDesdeComentarios_label">Import translations status from comments-</strong>
+									<br/>
+									<span  class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAContenidoIntercambio_attr_importarStatusDesdeComentarios_help">Import the status of each translation, from its comments in the .properties or GNUgettextPO file.-</span>
+								</td>
+								<td>
+									<tal:block tal:condition="pImportarStatusDesdeComentarios">
+										<strong tal:content="pLabelYes" />
+										<input type="radio" checked="checked"
+											class="noborder" name="theImportStatusFromComment"   id="theImportStatusFromComment_Yes"  value="Yes" /> 					
+										&emsp;
+										&emsp;
+										<strong tal:content="pLabelNo" />
+										<input type="radio" 
+											class="noborder" name="theImportStatusFromComment"   id="theImportStatusFromComment_No"   value="No" /> 					
+									</tal:block>
+									<tal:block tal:condition="not: pImportarStatusDesdeComentarios">
+										<strong tal:content="pLabelYes" />
+										<input type="radio" 
+											class="noborder" name="theImportStatusFromComment"   id="theImportStatusFromComment_Yes"  value="Yes" /> 					
+										&emsp;
+										&emsp;
+										<strong tal:content="pLabelNo" />
+										<input type="radio" checked="checked"
+											class="noborder" name="theImportStatusFromComment"   id="theImportStatusFromComment_No"   value="No" /> 					
+									</tal:block>
+								</td>
+							</tr>
+							
+							
+
+							<tr class="even">
+								<td>
+									<strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAContenidoIntercambio_attr_importarContribucionesDesdeComentarios_label">Import contributing dates and user names from comments-</strong>
+									<br/>
+									<span  class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAContenidoIntercambio_attr_importarContribucionesDesdeComentarios_help">Import from each translation comments the dates and user names that created, translated, reviewed or marked it as definitive..-</span>
+								</td>
+								<td>
+									<tal:block tal:condition="pImportarContribucionesDesdeComentarios">
+										<strong tal:content="pLabelYes" />
+										<input type="radio" checked="checked"
+											class="noborder" name="theImportContributionsFromComment"   id="theImportContributionsFromComment_Yes"  value="Yes" /> 					
+										&emsp;
+										&emsp;
+										<strong tal:content="pLabelNo" />
+										<input type="radio" 
+											class="noborder" name="theImportContributionsFromComment"   id="theImportContributionsFromComment_No"   value="No" /> 					
+									</tal:block>
+									<tal:block tal:condition="not: pImportarContribucionesDesdeComentarios">
+										<strong tal:content="pLabelYes" />
+										<input type="radio" 
+											class="noborder" name="theImportContributionsFromComment"   id="theImportContributionsFromComment_Yes"  value="Yes" /> 					
+										&emsp;
+										&emsp;
+										<strong tal:content="pLabelNo" />
+										<input type="radio" checked="checked"
+											class="noborder" name="theImportContributionsFromComment"   id="theImportContributionsFromComment_No"   value="No" /> 					
+									</tal:block>
+								</td>
+							</tr>
+							
+							
+							<tr class="odd">
+								<td>
+									<strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAContenidoIntercambio_attr_numeroMaximoLineasAExplorar_label">Maximum Number of Lines to Scan-</strong>
+									<br/>
+									<span  class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAContenidoIntercambio_attr_numeroMaximoLineasAExplorar_help">When scanning a translations interchange file, the system shall scan up to this maximum number of lines.-</span>
+								</td>
+								<td>
+									<input name="theMaxLinesToScan" id="theMaxLinesToScan" size="10" value="#" tal:attributes="value python: pNumeroMaximoLineasAExplorar"/> 					
+								</td>
+							</tr>
+							
+							
+						</tbody>
+					</table>
+					
+
+					<br/>
+					<br/>
+
+    			    <p><strong i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearContenidoAImportar_fichero_label">Fichero a importar-</strong></p>
+					
+					<input name="theUploadedFile" type="file" />
+					
+					<br/>
+					<br/>
+						
+					<input class="context" name="form_submit"  type="submit"  value="Save"  i18n:domain="plone" i18n:attributes="value label_save" />                                                        
+					
+					
+					
+					<br/>
+                    <br/>                        
+                    <p>
+                        <font size="3">
+                            <strong>
+                                <a href="#" title="#"  
+                                    tal:define="aLinkTitle python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_cancelarCreacionContenidoIntercambioYVolverATabular_msgid',   'Cancel upload of translations interchange contents and navigate back to import tabular view-' )"
+                                    tal:attributes="
+                                        title aLinkTitle;
+                                        href python: '%s/#hidMDDTraversal_contenido_label' % here.TRAgvSIGi18n_tool.fAbsoluteURL( here,)">
+                                    <span tal:content="aLinkTitle" />
+                                </a>
+                            </strong>
+                        </font>
+                    </p>
+                    <br/>
+					
+				</form>
+			</tal:block>
+				
+                                                                       
+            <tal:block tal:condition="pUploadedFile" >
+			
+                <tal:block tal:define="
+					pUseCaseAssessmentResult python: here.TRAgvSIGi18n_tool.fUseCaseAssessment( 
+						theContextualElement    = here, 
+                        theUseCaseName          = 'Create_TRAContenidoIntercambio', 
+                        theElementsBindings     = { 'object': here,},
+                        theRulesToCollect       = None, 
+                        thePermissionsCache     = pPermissionsCache, 
+                        theRolesCache           = pRolesCache, 
+                        theParentExecutionRecord= pExecutionRecord);
+					pPermiteCrear python: pUseCaseAssessmentResult and pUseCaseAssessmentResult.get( 'success', False)" >
+					<tal:block tal:condition="pPermiteCrear" >
+		
+						<tal:block tal:define="    
+							pRetrievalStartTime  python: here.MDDModelDDvlPlone_tool.fMillisecondsNow();                
+							pProfilingResults python: (pPerformanceAnalysis or {}).get( 'profiling_results', None);                
+							unosArgs python: { 
+								'theTimeProfilingResults'     :pProfilingResults,
+								'theElement'                  :here, 
+								'theParent'                   :None,
+								'theParentTraversalName'      :'',
+								'theTypeConfig'               :None, 
+								'theAllTypeConfigs'           :None, 
+								'theViewName'                 :'Tabular', 
+								'theRetrievalExtents'         :[ 'traversals', 'owner', ],
+								'theWritePermissions'         :[ 'object', 'aggregations', 'add', 'add_collection', ],
+								'theFeatureFilters'           :{ 'aggregations': [ pAggregationName,], 'relations': [], }, 
+								'theInstanceFilters'          :None,
+								'theTranslationsCaches'       :None,
+								'theCheckedPermissionsCache'  :None,
+								'theAdditionalParams'         :None, };                      
+							SRES  python: here.MDDModelDDvlPlone_tool.fRetrieveTypeConfig( **unosArgs);
+							pRetrievalEndTime  python: here.MDDModelDDvlPlone_tool.fMillisecondsNow();
+							unasTraversals python: [ unaTraversal for unaTraversal in SRES[ 'traversals'] if (unaTraversal[ 'traversal_kind'] == 'aggregation') and ( unaTraversal[ 'traversal_name'] == pAggregationName)]" 
+							tal:condition="unasTraversals" >
+							
+							<metal:block metal:use-macro="here/PerformanceAnalysis/macros/tRenderRetrievalTime_HTML" />   
+							
+							
+							<tal:block tal:define="
+								unaTraversal python: unasTraversals[ 0]; 
+								unasFactories python: [ unaFactory for unaFactory in unaTraversal[ 'factories'] if unaFactory[ 'meta_type'] == pNewTypeName]"
+								tal:condition="unasFactories">
+						   
+								<tal:block tal:define="
+									unaFactory python: unasFactories[ 0]" 
+									tal:condition="unaFactory" >
+																
+									<tal:block tal:define="
+										pPermiteAbandonarCrear      pTrue;
+										pShowTrees                  pFalse;
+										pShowOrHideTrees            pFalse;
+										pPermiteEditar              pFalse;
+										pPermiteEliminar            pFalse;
+										pMostrarAnteriorPosterior   pFalse;
+										pPaginaAnteriorPosterior    string:;
+										pPagina                     string:Tabular;
+										pAbandonarAnchorName        string:#aggregation-${pAggregationName}" >                            
+										<metal:block metal:use-macro="here/CabeceraEnTabla_i18n_view/macros/tCabeceraEnTabla_i18n" />   
+									</tal:block>
+						
+									<h2>
+										<span i18n:domain="ModelDDvlPlone" i18n:translate="ModelDDvlPlone_crear_action_label">Crear nuevo elemento&nbsp;</span>
+										&nbsp;  
+										(      
+										<img src="#" tal:attributes="src python: '%s/%s.gif' % (here.TRAgvSIGi18n_tool.fAbsoluteURL( here,), unaFactory[ 'meta_type'].lower())"  
+											alt="" title="New Typeicon" id="icon-new type" />
+										<span tal:content="unaFactory/type_translations/translated_archetype_name" />    
+										)
+										&nbsp; 
+										<span i18n:domain="ModelDDvlPlone" i18n:translate="ModelDDvlPlone_ensiguecontenedorcuandocreando">&nbsp;en&nbsp;</span>
+										<tal:block tal:condition="SRES/is_collection" >
+											<span tal:content="SRES/values_by_name/title/value" />
+											&nbsp;(
+											<img src="#" tal:attributes="src python: '%s/%s' % (here.TRAgvSIGi18n_tool.fAbsoluteURL( here,), SRES[ 'content_icon'])"  
+												 alt="" title="here icon" id="icon-here" />
+											&nbsp;
+											<span i18n:translate="" tal:content="SRES/type_translations/translated_archetype_name" />
+											)
+											&nbsp; 
+											<span i18n:domain="ModelDDvlPlone" i18n:translate="ModelDDvlPlone_colecciondesiguecontenedorcuandocreando">&nbsp;de&nbsp;</span>                                   
+											&nbsp; 
+											<span tal:content="SRES/owner_element/values_by_name/title/value" />
+											&nbsp;(
+											<img src="#" tal:attributes="src python: '%s/%s' % ( here.TRAgvSIGi18n_tool.fAbsoluteURL( here,), SRES[ 'owner_element'][ 'content_icon'])"  
+												 alt="" title="Propietario MetaType icon" id="icon-propietario" />
+											&nbsp;
+											<span tal:content="SRES/owner_element/type_translations/translated_archetype_name" />
+											)
+										</tal:block>                                
+										<tal:block tal:condition="not: SRES/is_collection" >
+											<span tal:content="SRES/values_by_name/title/value" />
+											&nbsp;(
+											<img src="#" tal:attributes="src python: '%s/%s' % (here.TRAgvSIGi18n_tool.fAbsoluteURL( here,), SRES[ 'content_icon'])"  
+												 alt="" title="here icon" id="icon-here" />
+											&nbsp;
+											<span i18n:translate="" tal:content="SRES/type_translations/translated_archetype_name" />
+											)
+										</tal:block>                                
+									</h2>
+								   
+									<p class="formHelp"  tal:content="unaFactory/type_translations/translated_type_description" />        
+									<br/>
+									<br/>
+								
+									
+									<tal:block tal:define="
+										pCrearResult python: here.TRAgvSIGi18n_tool.fCrearContenidoIntercambio(
+											theContextualElement             =here,
+											theTimeProfilingResults          =(pPerformanceAnalysis or {}).get( 'profiling_results', None), 
+											theModelDDvlPloneTool_Mutators   =None, 
+											theNewTypeName                   ='TRAContenidoIntercambio', 
+											theNewOneTitle                   =pNombreModuloPorDefecto, 
+											theNewOneDescription             ='', 
+											theAdditionalParams              ={
+												'theUploadedFile':                          pUploadedFile,  
+												'theDefaultLanguage':                       pCodigoIdiomaPorDefecto,
+												'theDefaultModule':                         pNombreModuloPorDefecto,
+												'theImportWithConfiguredModuleName':        pImportarConNombreModuloConfigurado,
+												'theImportModuleNameFromDomainOrFilename':  pImportarNombreModuloDesdeDominioONombreFichero,
+												'theImportModuleNamesFromComment':          pImportarNombresModulosDesdeComentarios,
+												'theImportSourcesFromComment':              pImportarFuentesDesdeComentarios,
+												'theImportStatusFromComment':               pImportarStatusDesdeComentarios,
+												'theImportContributionsFromComment':        pImportarContribucionesDesdeComentarios,
+												'theMaxLinesToScan':                        pNumeroMaximoLineasAExplorar,
+											},
+											thePermissionsCache              =None,
+											theRolesCache                    =None,
+											theParentExecutionRecord         =None,
+										)" >
+										<tal:block tal:condition="python: pCrearResult and ( pCrearResult[ 'effect'] == 'created')" >
+											<tal:block tal:define="
+												dummy python: here.TRAgvSIGi18n_tool.pHTTPResponse_redirect( here, '%sEditar/' % pCrearResult[ 'new_object_result'][ 'url']);" />
+										</tal:block>
+										<tal:block tal:condition="python: not ( pCrearResult) or not ( pCrearResult[ 'effect'] == 'created')" >
+											<h4>
+												<font color="Red">
+													<span i18n:domain="ModelDDvlPlone"  i18n:translate="ModelDDvlPlone_nosehacreadoelemento_info_msgid" >ModelDDvlPlone_nosehacreadoelemento_info_msgid</span>
+												</font>
+											</h4>
+											<p>
+												<font color="Red">
+													<span tal:condition="python: pCrearResult[ 'failure'] in [ 'duplicate_title',]"
+														i18n:domain="ModelDDvlPlone"  i18n:translate="ModelDDvlPlone_tituloduplicado_error_msgid" >ModelDDvlPlone_tituloduplicado_error_msgid
+														<tal:block tal:define="global pMostrarFormulario pTrue" />
+													</span>
+													<span tal:condition="python: pCrearResult[ 'failure'] in [ 'read_permission', 'write_permission',]"
+														i18n:domain="ModelDDvlPlone"  i18n:translate="ModelDDvlPlone_sinpermisoparacrear_error_message" >ModelDDvlPlone_sinpermisoparacrear_error_message</span>
+													<span tal:condition="python: pCrearResult[ 'failure'] in [ 'content_type_not_allowed', ]"
+														i18n:domain="ModelDDvlPlone"  i18n:translate="ModelDDvlPlone_nosepuedecreartipocontenido_error_message" >ModelDDvlPlone_nosepuedecreartipocontenido_error_message</span>
+													<span tal:condition="python: pCrearResult[ 'failure'] in [ 'factory_failure', ]"
+														i18n:domain="ModelDDvlPlone"  i18n:translate="ModelDDvlPlone_creandocontenido_error_message" >ModelDDvlPlone_creandocontenido_error_message</span>
+													<span tal:condition="python: not( pCrearResult[ 'failure'] in [ 'duplicate_title', 'factory_failure', 'read_permission', 'write_permission',  'content_type_not_allowed',  'factory_failure', ])"
+														i18n:domain="ModelDDvlPlone"  i18n:translate="" tal:content="pCrearResult/failure" />
+	
+												</font>
+											</p>
+										</tal:block>
+									</tal:block>
+								</tal:block>
+							</tal:block>
+						</tal:block>
+					</tal:block>						
+					<tal:block tal:condition="not: pPermiteCrear" >
+						<br/>
+						<h2 > 
+							<a  href="#" tal:attributes="href python: '%sTabular/' % SRES[ 'url']" class="state-visible" title="">
+								<font color="Red">                    
+									<span  i18n:domain="ModelDDvlPlone" i18n:translate="ModelDDvlPlone_sinpermisoparacrear_error_message"/>
+									&nbsp;
+									<span tal:content="unaFactory/type_translations/translated_archetype_name" />
+									&nbsp;
+									<span  i18n:domain="ModelDDvlPlone" i18n:translate="ModelDDvlPlone_ensiguecontenedorcuandocreando"/>
+									&nbsp;
+									<span tal:content="SRES/values_by_name/title/uvalue " />
+									&nbsp;(                    
+									<img src="#" tal:attributes="src python: '%s/%s' % (here.TRAgvSIGi18n_tool.fAbsoluteURL( here,), SRES[ 'content_icon'])"  
+										 alt="" title="MetaType icon" id="icon-here" />
+									&nbsp;
+									<span tal:content="SRES/type_translations/translated_archetype_name" />
+									)                        
+								</font>
+							</a>                
+						</h2>      
+					</tal:block>				
+				</tal:block>
+            </tal:block>
+        </tal:block>
+		
+        <metal:block metal:use-macro="here/PerformanceAnalysis/macros/tRenderProcessingTime_HTML" />   
+             
+    </div>
+    
+
+</body>
+</html>
+

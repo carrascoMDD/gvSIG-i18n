@@ -1,0 +1,182 @@
+<tal:block replace="nothing">
+# File: TRACrear_Modulo_i18n_view.pt
+# Copyright (c) 2008, 2009, 2010, 2011  by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+#
+# GNU General Public License (GPL)
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+#
+# Authors: 
+# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana 
+# Model Driven Development sl  Valencia (Spain) www.ModelDD.org 
+# Antonio Carrasco Valero                       carrasco@ModelDD.org
+#
+</tal:block>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+    lang="en">
+<body>
+
+
+<div metal:define-macro="tTRACrear_Modulo_i18n_view" >
+
+
+    <metal:block metal:use-macro="here/PerformanceAnalysis/macros/tSetupPerformanceAnalysis" />   
+
+
+    <tal:block tal:define="
+        pNewTypeName		string:TRAModulo;		
+        pAggregationName	python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theAggregationName', '');
+        pNewNombreModulo   	python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theNewModuleName', '');
+
+    global pMostrarFormulario					python: not pNewNombreModulo;
+        pTrue								python: True;
+        pFalse								python: False;
+        pPermissionsCache					python: { };
+        pRolesCache							python: { };
+        pParentExecutionRecord				pExecutionRecord | nothing;">
+
+        <tal:block tal:define="
+            pUseCaseAssessmentResult python: here.TRAgvSIGi18n_tool.fUseCaseAssessment( 
+                    theContextualElement    = here, 
+                theUseCaseName          = 'Create_TRAModulo', 
+                theElementsBindings     = { 'object': here,},
+                theRulesToCollect       = None, 
+                thePermissionsCache     = pPermissionsCache, 
+                theRolesCache           = pRolesCache, 
+                theParentExecutionRecord= pExecutionRecord);
+            pPermiteCrear python: pUseCaseAssessmentResult and pUseCaseAssessmentResult.get( 'success', False)" >
+
+
+            <tal:block tal:condition="not: pPermiteCrear" >
+                <br/>
+                <h2 > 
+                    <a  href="#" tal:attributes="href python: '%s/Tabular/' % here.TRAgvSIGi18n_tool.fCatalogoAbsoluteURL( here,)" class="state-visible" title="">
+                        <font color="Red">                    
+                            <span  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearModulo_action_NoPermissionToCreate_ErrorMsg">You are not allowed to create a new Module-</span>
+                        </font>
+                    </a>                
+                </h2>      
+            </tal:block>				
+
+
+            <tal:block tal:condition="pPermiteCrear" >	
+
+                <tal:block tal:condition="not: pMostrarFormulario" >
+                    <tal:block tal:define="
+                        pCrearResult python: here.TRAgvSIGi18n_tool.fCrearModulo( 
+                            theContextualElement             =here,
+                            theTimeProfilingResults          =(pPerformanceAnalysis or {}).get( 'profiling_results', None), 
+                            theModelDDvlPloneTool_Mutators   =None, 
+                            theNewTypeName                   ='TRAModulo', 
+                            theNewOneTitle                   =pNewNombreModulo, 
+                            theNewOneDescription             ='', 
+                            theAdditionalParams              =None,
+                            thePermissionsCache              =None,
+                            theRolesCache                    =None,
+                            theParentExecutionRecord         =None,
+                        )" >
+                        
+                        <tal:block tal:condition="python: pCrearResult and ( pCrearResult[ 'effect'] == 'created') and pCrearResult[ 'new_object_result'][ 'url']" >
+                            <tal:block tal:define="
+                                dummy python: here.TRAgvSIGi18n_tool.pHTTPResponse_redirect( here,  '%sEditar/' % pCrearResult[ 'new_object_result'][ 'url']);" />
+                        </tal:block>
+                        <tal:block tal:condition="python: not ( pCrearResult) or not ( pCrearResult[ 'effect'] == 'created')" >
+                            <tal:block tal:define="global pMostrarFormulario python: True" />
+                            <h4>
+                                <font color="Red">
+                                    <span i18n:domain="ModelDDvlPlone"  i18n:translate="ModelDDvlPlone_nosehacreadoelemento_info_msgid" >ModelDDvlPlone_nosehacreadoelemento_info_msgid</span>
+                                </font>
+                            </h4>
+                            <p>
+                                <font color="Red">
+                                    <span tal:condition="python: pCrearResult[ 'failure'] in [ 'duplicate_title',]"
+                                        i18n:domain="ModelDDvlPlone"  i18n:translate="ModelDDvlPlone_tituloduplicado_error_msgid" >ModelDDvlPlone_tituloduplicado_error_msgid
+                                        <tal:block tal:define="global pMostrarFormulario pTrue" />
+                                    </span>
+                                    <span tal:condition="python: pCrearResult[ 'failure'] in [ 'read_permission', 'write_permission',]"
+                                        i18n:domain="ModelDDvlPlone"  i18n:translate="ModelDDvlPlone_sinpermisoparacrear_error_message" >ModelDDvlPlone_sinpermisoparacrear_error_message</span>
+                                    <span tal:condition="python: pCrearResult[ 'failure'] in [ 'content_type_not_allowed', ]"
+                                        i18n:domain="ModelDDvlPlone"  i18n:translate="ModelDDvlPlone_nosepuedecreartipocontenido_error_message" >ModelDDvlPlone_nosepuedecreartipocontenido_error_message</span>
+                                    <span tal:condition="python: pCrearResult[ 'failure'] in [ 'factory_failure', ]"
+                                        i18n:domain="ModelDDvlPlone"  i18n:translate="ModelDDvlPlone_creandocontenido_error_message" >ModelDDvlPlone_creandocontenido_error_message</span>
+                                    <span tal:condition="python: not( pCrearResult[ 'failure'] in [ 'duplicate_title', 'factory_failure', 'read_permission', 'write_permission',  'content_type_not_allowed',  'factory_failure', ])"
+                                        i18n:domain="ModelDDvlPlone"  i18n:translate="" tal:content="pCrearResult/failure" />
+            
+                                </font>
+                            </p>
+                            <br/>
+                        </tal:block>
+                    </tal:block>
+                </tal:block>
+
+
+                <tal:block tal:condition="pMostrarFormulario" >
+                    <form name="Crear_TRAModulo" method="post" enctype="multipart/form-data"
+                        tal:define="pExistingNombresModulos python: here.TRAgvSIGi18n_tool.fTodosNombresModulos( here)">
+
+                        <h3  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearModulo_action_page_title">Create New Module-</h3>
+                        <br/>
+                        <p class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearModulo_action_page_help">Enter a name for the desired new Module name. The name must not be the same as one of the existing modules.-</p>
+                        <br/>
+
+                        <h4  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearModulo_ModulosExistentes_title">Names of already existing modules-</h4>
+                        
+                        
+                        <tal:block tal:condition="pExistingNombresModulos">
+                            <tal:block tal:repeat="unModuloExistente pExistingNombresModulos">
+                                <span tal:content="python: here.TRAgvSIGi18n_tool.fAsUnicode( here, unModuloExistente)" />
+                                &emsp;
+                            </tal:block>
+                            <br/>            
+                            <br/>            
+                        </tal:block>
+                        <tal:block tal:condition="not: pExistingNombresModulos">
+                            <span i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearModulo_NoHayModulosExistentes_msgid">There are no modules in the translations catalog.-</span>
+                            <br/>            
+                            <br/>            
+                        </tal:block>
+
+
+                        <input originalvalue="#" name="theNewTypeName" value="#" type="hidden"
+                            tal:attributes="originalvalue python: pNewTypeName;value python: pNewTypeName" />
+                    
+                        <input originalvalue="#" name="theAggregationName" value="#" type="hidden"
+                            tal:attributes="originalvalue python: pAggregationName;value python: pAggregationName" />
+                    
+                        <p><strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAModulo_Nombre_label">Name for the new Module-</strong></p>
+                        <input name="theNewModuleName" id="theNewModuleName" type="text" size="64" maxlength="64" tabindex="1"
+                            value="" tal:attributes="value pNewNombreModulo"/> 					
+                        <br/>			    
+                        <br/>
+
+
+
+
+                        <input class="context" name="form_submit"  type="submit"  value="Save" tabindex="5" i18n:domain="plone" i18n:attributes="value label_save" />                                                        
+                    </form>
+                </tal:block>				
+            </tal:block>
+        </tal:block>
+    </tal:block>
+
+    <metal:block metal:use-macro="here/PerformanceAnalysis/macros/tRenderProcessingTime_HTML" />   
+
+</div>
+
+
+</body>
+</html>
+

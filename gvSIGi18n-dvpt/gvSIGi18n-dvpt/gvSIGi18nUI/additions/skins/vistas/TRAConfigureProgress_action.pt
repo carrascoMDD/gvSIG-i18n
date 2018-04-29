@@ -1,0 +1,840 @@
+<tal:block replace="nothing">
+# File: TRAConfigureProgress_action.pt
+#
+# Copyright (c) 2008, 2009, 2010, 2011  by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+#
+# GNU General Public License (GPL)
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+#
+# Authors: 
+# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana 
+# Model Driven Development sl  Valencia (Spain) www.ModelDD.org 
+# Antonio Carrasco Valero                       carrasco@ModelDD.org
+#
+</tal:block>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+<body>                     
+<metal:main fill-slot="main">
+    <tal:main-macro metal:define-macro="main"
+        tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas.
+        global pStartTime       pStartTime | python: here.MDDModelDDvlPlone_tool.fMillisecondsNow()" 
+        i18n:domain="gvSIGi18n">
+
+           
+
+
+        <tal:block tal:define="
+            pExecutionRecord python: here.TRAgvSIGi18n_tool.fStartExecution( here, 'template', 'TRAConfigureProgress_action.pt', None, True, { 'log_when': True, });
+            pPermissionsCache python: {};
+            pRolesCache python: {}" >
+    
+            <div metal:use-macro="here/document_actions/macros/document_actions">
+                Document actions (print, sendto etc)
+            </div>
+    
+            <h1 tal:content="object_title" class="documentFirstHeading">
+              Title or id
+            </h1>
+    
+            <div metal:use-macro="here/document_byline/macros/byline">
+              Get the byline - contains details about author and modification date.
+            </div>
+            
+            
+            <tal:block tal:condition="python: not here.TRAgvSIGi18n_tool.fAllowWrite( here,)" >
+                <div class="portalMessage" >
+                    <span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TranslationsCatalogIsLockedAgainstModifications', 'The Translations Catalog Is Locked Against Modifications')" />
+                </div>
+            </tal:block>
+
+			
+			
+            <metal:block metal:use-macro="here/PerformanceAnalysis/macros/tSetupPerformanceAnalysis" />   
+            
+            <tal:block tal:define="
+                pTrue                python: True;
+                pFalse               python: False;
+                pRetrievalStartTime  python: here.MDDModelDDvlPlone_tool.fMillisecondsNow();
+                pProfilingResults python: (pPerformanceAnalysis or {}).get( 'profiling_results', None);
+                unosArgs python: { 
+                    'theTimeProfilingResults'     :pProfilingResults,
+                    'theElement'                  :here, 
+                    'theParent'                   :None,
+                    'theParentTraversalName'      :'',
+                    'theTypeConfig'               :None, 
+                    'theAllTypeConfigs'           :None, 
+                    'theViewName'                 :'Tabular', 
+                    'theRetrievalExtents'         :[ 'traversals', 'owner', 'cursor', 'extra_links',],
+                    'theWritePermissions'         :[ ],
+                    'theFeatureFilters'           :{'aggregations': [], 'relations': [], 'attrs': [ 'title', 'description',], },
+                    'theInstanceFilters'          :None,
+                    'theTranslationsCaches'       :None,
+                    'theCheckedPermissionsCache'  :None,
+                    'theAdditionalParams'         :None, };    
+                SRES  python: here.MDDModelDDvlPlone_tool.fRetrieveTypeConfig( **unosArgs);
+                pRetrievalEndTime  python: here.MDDModelDDvlPlone_tool.fMillisecondsNow();
+                pPermiteEditar  python: pFalse; 
+                pPermiteEliminar python: pFalse; 
+                pShowOrHideTrees pFalse; 
+                pMostrarAnteriorPosterior pTrue;
+                pAllowTextualAndTabular pTrue;
+                pAllowRefrescar pTrue;
+                pPagina          string:Textual; 
+                pPaginaAnteriorPosterior string:TRAConfigureProgress_action;
+                pPaginaRefrescar string:TRAConfigureProgress_action" >
+
+
+                <metal:block metal:use-macro="here/PerformanceAnalysis/macros/tRenderRetrievalTime_HTML" />   
+         
+                <metal:block metal:use-macro="here/CabeceraEnTabla_i18n_view/macros/tCabeceraEnTabla_i18n" />   				  
+					
+			
+				<h2>
+					<strong  tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_ConfigureProcessParameters',  'Configure progress control parameters of long-lived process-' )" />
+				</h2>
+					
+				
+				<tal:block tal:define="
+					pIsOverProgressHandler  python: here.TRAgvSIGi18n_tool.fIsOverProgressHandler(
+						theContextualElement = here,
+					)" >
+
+				
+					<tal:block tal:condition="pIsOverProgressHandler" >
+						<div class="portalMessage" >
+							<span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_ProgressControlHandlerIsOver_CanNotConfigure', 'You can not configure the progress of the process, because the process is over.-')" />
+						</div>
+					</tal:block>
+				
+				  
+					<tal:block tal:condition="not: pIsOverProgressHandler" >
+					
+						   
+					   <tal:block tal:define="
+							pConfigureUseCaseAssessmentResult python: here.TRAgvSIGi18n_tool.fUseCaseAssessment( 
+								theContextualElement    = here, 
+								theUseCaseName          = 'Configure_TRAProgreso', 
+								theElementsBindings     = { 'object': here,},
+								theRulesToCollect       = None, 
+								thePermissionsCache     = pPermissionsCache, 
+								theRolesCache           = pRolesCache, 
+								theParentExecutionRecord= pExecutionRecord)" >
+								
+							<tal:block tal:condition="python: not( pConfigureUseCaseAssessmentResult and pConfigureUseCaseAssessmentResult.get( 'success', False))">    
+								<br/>
+								<br/>
+								<font size="3" >
+									<strong>
+										<tal:block tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_userCanNotConfigureProcessParameters_msgid',   'You are not allowed to configure progress control parameters for this long-lived process.-' )" />
+									</strong>
+								</font>
+								<br/>
+								<br/>
+							</tal:block>
+							
+							
+							<tal:block tal:condition="python: pConfigureUseCaseAssessmentResult and pConfigureUseCaseAssessmentResult.get( 'success', False)">    
+								
+								
+								<tal:block tal:define="pNuevosParametrosControl python: here.TRAgvSIGi18n_tool.fNewVoidProgressControlParms_ToChange(
+									theContextualElement = here,
+									)" >
+			
+									<tal:block tal:condition="python: here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theRunAfterPrevious', '') == 'Yes'" >
+										<tal:block tal:define="void python: pNuevosParametrosControl.update( { 'RunAfterPrevious':  True,})" />
+									</tal:block>
+									<tal:block tal:condition="python: here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theRunAfterPrevious', '') == 'No'" >
+										<tal:block tal:define="void python: pNuevosParametrosControl.update( { 'RunAfterPrevious':  False,})" />
+									</tal:block>
+									
+									
+									<tal:block tal:condition="python: here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theCreateReportBefore', '') == 'Yes'" >
+										<tal:block tal:define="void python: pNuevosParametrosControl.update( { 'CreateReportBefore':  True,})" />
+									</tal:block>
+									<tal:block tal:condition="python: here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theCreateReportBefore', '') == 'No'" >
+										<tal:block tal:define="void python: pNuevosParametrosControl.update( { 'CreateReportBefore':  False,})" />
+									</tal:block>
+
+									
+									<tal:block tal:condition="python: here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theCreateReportAfter', '') == 'Yes'" >
+										<tal:block tal:define="void python: pNuevosParametrosControl.update( { 'CreateReportAfter':  True,})" />
+									</tal:block>
+									<tal:block tal:condition="python: here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theCreateReportAfter', '') == 'No'" >
+										<tal:block tal:define="void python: pNuevosParametrosControl.update( { 'CreateReportAfter':  False,})" />
+									</tal:block>
+									
+																		
+								
+									<tal:block tal:define="pNuevosParametrosControl_StoreResults python: pNuevosParametrosControl.get( 'StoreResults', {})" >
+										<tal:block tal:condition="python: here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theStoreResults_Enabled', '') == 'Enabled'" >
+											<tal:block tal:define="void python: pNuevosParametrosControl_StoreResults.update( { 'enabled':  True,})" />
+										</tal:block>
+										<tal:block tal:condition="python: here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theStoreResults_Enabled', '') == 'Disabled'" >
+											<tal:block tal:define="void python: pNuevosParametrosControl_StoreResults.update( { 'enabled':  False,})" />
+										</tal:block>
+										<tal:block tal:condition="python: ( not ( here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theStoreResults_Enabled', '') == 'Enabled'))  and ( not ( here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theStoreResults_Enabled', '') == 'Disabled')) " >
+											<tal:block tal:define="void python: pNuevosParametrosControl_StoreResults.update( { 'enabled':  None,})" />
+										</tal:block>
+										<tal:block tal:define="void python: pNuevosParametrosControl_StoreResults.update( { 'max_milliseconds':       here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theStoreResults_max_milliseconds', ''),})" />
+										<tal:block tal:define="void python: pNuevosParametrosControl_StoreResults.update( { 'max_elements_traversed': here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theStoreResults_max_elements_traversed', ''),})" />
+										<tal:block tal:define="void python: pNuevosParametrosControl_StoreResults.update( { 'max_elements_changed':   here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theStoreResults_max_elements_changed', ''),})" />
+									</tal:block>
+								
+								
+									<tal:block tal:define="pNuevosParametrosControl_Transactional python: pNuevosParametrosControl.get( 'Transactional', {})" >
+										<tal:block tal:condition="python: here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theTransactional_Enabled', '') == 'Enabled'" >
+											<tal:block tal:define="void python: pNuevosParametrosControl_Transactional.update( { 'enabled':  True,})" />
+										</tal:block>
+										<tal:block tal:condition="python: here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theTransactional_Enabled', '') == 'Disabled'" >
+											<tal:block tal:define="void python: pNuevosParametrosControl_Transactional.update( { 'enabled':  False,})" />
+										</tal:block>
+										<tal:block tal:condition="python: ( not ( here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theTransactional_Enabled', '') == 'Enabled'))  and ( not ( here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theTransactional_Enabled', '') == 'Disabled')) " >
+											<tal:block tal:define="void python: pNuevosParametrosControl_Transactional.update( { 'enabled':  None,})" />
+										</tal:block>
+										<tal:block tal:define="void python: pNuevosParametrosControl_Transactional.update( { 'max_milliseconds':       here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theTransactional_max_milliseconds', ''),})" />
+										<tal:block tal:define="void python: pNuevosParametrosControl_Transactional.update( { 'max_elements_traversed': here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theTransactional_max_elements_traversed', ''),})" />
+										<tal:block tal:define="void python: pNuevosParametrosControl_Transactional.update( { 'max_elements_changed':   here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theTransactional_max_elements_changed', ''),})" />
+									</tal:block>
+								
+								
+									<tal:block tal:define="pNuevosParametrosControl_Logging python: pNuevosParametrosControl.get( 'Logging', {})" >
+										<tal:block tal:condition="python: here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theLogging_Enabled', '') == 'Enabled'" >
+											<tal:block tal:define="void python: pNuevosParametrosControl_Logging.update( { 'enabled':  True,})" />
+										</tal:block>
+										<tal:block tal:condition="python: here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theLogging_Enabled', '') == 'Disabled'" >
+											<tal:block tal:define="void python: pNuevosParametrosControl_Logging.update( { 'enabled':  False,})" />
+										</tal:block>
+										<tal:block tal:condition="python: ( not ( here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theLogging_Enabled', '') == 'Enabled'))  and ( not ( here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theLogging_Enabled', '') == 'Disabled')) " >
+											<tal:block tal:define="void python: pNuevosParametrosControl_Logging.update( { 'enabled':  None,})" />
+										</tal:block>
+										<tal:block tal:define="void python: pNuevosParametrosControl_Logging.update( { 'max_milliseconds':             here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theLogging_max_milliseconds', ''),})" />
+										<tal:block tal:define="void python: pNuevosParametrosControl_Logging.update( { 'max_elements_traversed':       here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theLogging_max_elements_traversed', ''),})" />
+										<tal:block tal:define="void python: pNuevosParametrosControl_Logging.update( { 'max_elements_changed':         here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theLogging_max_elements_changed', ''),})" />
+										<tal:block tal:define="void python: pNuevosParametrosControl_Logging.update( { 'log_every_nth_transactions':   here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theLogging_log_every_nth_transactions', ''),})" />
+									</tal:block>
+								
+								
+								
+									<tal:block tal:define="pNuevosParametrosControl_YieldProcessor python: pNuevosParametrosControl.get( 'YieldProcessor', {})" >
+										<tal:block tal:condition="python: here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theYieldProcessor_Enabled', '') == 'Enabled'" >
+											<tal:block tal:define="void python: pNuevosParametrosControl_YieldProcessor.update( { 'enabled':  True,})" />
+										</tal:block>
+										<tal:block tal:condition="python: here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theYieldProcessor_Enabled', '') == 'Disabled'" >
+											<tal:block tal:define="void python: pNuevosParametrosControl_YieldProcessor.update( { 'enabled':  False,})" />
+										</tal:block>
+										<tal:block tal:condition="python: ( not ( here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theYieldProcessor_Enabled', '') == 'Enabled'))  and ( not ( here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theYieldProcessor_Enabled', '') == 'Disabled')) " >
+											<tal:block tal:define="void python: pNuevosParametrosControl_YieldProcessor.update( { 'enabled':  None,})" />
+										</tal:block>
+										
+										<tal:block tal:condition="python: here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theYieldProcessor_only_between_transactions', '') == 'Yes'" >
+											<tal:block tal:define="void python: pNuevosParametrosControl_YieldProcessor.update( { 'only_between_transactions':  True,})" />
+										</tal:block>
+										<tal:block tal:condition="python: here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theYieldProcessor_only_between_transactions', '') == 'No'" >
+											<tal:block tal:define="void python: pNuevosParametrosControl_YieldProcessor.update( { 'only_between_transactions':  False,})" />
+										</tal:block>
+										<tal:block tal:condition="python: ( not ( here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theYieldProcessor_only_between_transactions', '') == 'Yes'))  and ( not ( here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theYieldProcessor_only_between_transactions', '') == 'No')) " >
+											<tal:block tal:define="void python: pNuevosParametrosControl_YieldProcessor.update( { 'only_between_transactions':  None,})" />
+										</tal:block>
+										
+										<tal:block tal:define="void python: pNuevosParametrosControl_YieldProcessor.update( { 'max_milliseconds':             here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theYieldProcessor_max_milliseconds', ''),})" />
+										<tal:block tal:define="void python: pNuevosParametrosControl_YieldProcessor.update( { 'max_elements_traversed':       here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theYieldProcessor_max_elements_traversed', ''),})" />
+										<tal:block tal:define="void python: pNuevosParametrosControl_YieldProcessor.update( { 'max_elements_changed':         here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theYieldProcessor_max_elements_changed', ''),})" />
+										<tal:block tal:define="void python: pNuevosParametrosControl_YieldProcessor.update( { 'percent_active_time':          here.TRAgvSIGi18n_tool.fHTTPRequest_form_get( here, 'theYieldProcessor_percent_active_time', ''),})" />
+									
+									</tal:block>
+								
+									
+									<tal:block tal:define="
+										pServiceResult python: here.TRAgvSIGi18n_tool.fService_ProcessControl( 
+											theContextualElement     =here,
+											theProcessControlAction  ='ChangeParameters',
+											theAdditionalParams      =pNuevosParametrosControl,
+											thePermissionsCache      =pPermissionsCache,
+											theRolesCache            =pRolesCache,
+											theParentExecutionRecord =pExecutionRecord);
+										unServiceSuccess                python:  ( pServiceResult or {}).get( 'success', False);" > 
+										<tal:block tal:replace="nothing" >
+											<tal:block tal:condition="unServiceSuccess" >
+												<font size="2" color="red">
+													<strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_parametrosControl_changed_msgid',    'Progress control parameters have been CHANGED.-')" />
+												</font>
+											</tal:block>
+											<p tal:condition="not: unServiceSuccess" tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_parametrosControl_notChanged_msgid', 'Progress control parameters have NOT been changed.-')" />
+										</tal:block>
+									</tal:block>
+			
+								</tal:block>
+								
+								
+								
+								
+								
+								
+								
+								<tal:block tal:define="
+									pParametrosControl python: here.TRAgvSIGi18n_tool.fParametrosControl( theContextualElement = here,);
+									pLabelYes      python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_Yes', 'Yes-');
+									pLabelNo       python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_No', 'No-');
+									pLabelEnabled  python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_parametrosControl_enabled_label',  'Enabled');
+									pLabelDisabled python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_parametrosControl_disabled_label', 'Disabled')" >
+								
+									<tal:block tal:condition="not: pParametrosControl" >
+										<p>
+											<strong i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_nohayparametroscontrol_warning_msgid">There are no control parameters for the process available at this time.-</strong>
+										</p>
+										<br/>
+										<br/>                        
+									</tal:block>
+									
+									
+									<tal:block tal:condition="pParametrosControl" >
+						 
+										
+										<p>
+											<span>
+												<strong  tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_Timestamp_msgid',  'Date and Time-' )" />
+											</span>
+											&nbsp;
+											<span  tal:content="python: pParametrosControl.get( 'timestamp', False)" />
+										</p>
+										<br/>
+										<form method="post" id="cid_TRAConfigureProgress_form" enctype="multipart/form-data">
+											
+											<input name="form_submit" style="font-size: 10pt; font-style: italic"  value="Save" i18n:domain="plone" i18n:attributes="value label_save" type="submit"/>
+											<br/>
+										 
+											<table id="cid_TRAProgress_ControlParms" class="listing" tal:define="pClasesFilas python: [ 'even', 'odd',]" >
+												<thead>
+													<tr>
+														<th colspan="3" align="left"  class="nosort">
+															<font size="2">
+																<strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_attr_parametrosControl_label', 'Control Parameters-')" />
+															</font>
+														</th>
+													</tr>
+												</thead>
+			
+												
+												
+												
+												<tal:block tal:define="global pRowIndex python: 0;
+														pParametrosControl_RunAfterPrevious   python: pParametrosControl.get( 'RunAfterPrevious', False);
+														pParametrosControl_CreateReportAfter  python: pParametrosControl.get( 'CreateReportAfter', False);
+														pParametrosControl_CreateReportBefore python: pParametrosControl.get( 'CreateReportBefore', False)" >
+													<tbody>
+														<tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]" >
+															<td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_runAfterPrevious_label', 'Run After Previous-')"/>
+															<td align="center" tal:content="python: ( pParametrosControl_RunAfterPrevious and pLabelYes) or pLabelNo" />
+															<td align="center"  tal:define="pName string:theRunAfterPrevious">
+																<tal:block tal:condition="pParametrosControl_RunAfterPrevious" >
+																	<span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_Yes', 'Yes')"/> 
+																	&nbsp;
+																	<input type="radio" class="noborder" checked="checked" value="Yes" name="#" id="#"
+																		tal:attributes="name pName; id string:cid_CtrlParms_RunAfterPrevious_Yes" />
+																	&emsp;&emsp;
+																	<span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_No', 'No')"/> 
+																	<input type="radio" class="noborder" value="No" name="#" id="#"
+																		tal:attributes="name pName; id string:cid_CtrlParms_RunAfterPrevious_No" />
+																</tal:block>
+																<tal:block tal:condition="not: pParametrosControl_RunAfterPrevious" >
+																	<span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_Yes', 'Yes')"/> 
+																	&nbsp;
+																	<input type="radio" class="noborder" value="Yes" name="#" id="#"
+																		tal:attributes="name pName; id string:cid_CtrlParms_RunAfterPrevious_Yes" />
+																	&emsp;&emsp;
+																	<span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_No', 'No')"/> 
+																	<input type="radio" class="noborder" checked="checked"  value="No" name="#" id="#"
+																		tal:attributes="name pName; id string:cid_CtrlParms_RunAfterPrevious_No" />
+																</tal:block>
+			
+															</td>
+														</tr>
+												
+												
+														<tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]" >
+															<td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAParametrosControlProgreso_attr_crearInformeAntes_label', 'Create Report Before-')"/>
+															<td align="center" tal:content="python: ( pParametrosControl_CreateReportBefore and pLabelYes) or pLabelNo" />
+															<td align="center"  tal:define="pName string:theCreateReportBefore">
+																<tal:block tal:condition="pParametrosControl_CreateReportBefore" >
+																	<span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_Yes', 'Yes')"/> 
+																	&nbsp;
+																	<input type="radio" class="noborder" checked="checked" value="Yes" name="#" id="#"
+																		tal:attributes="name pName; id string:cid_CtrlParms_CreateReportBefore_Yes" />
+																	&emsp;&emsp;
+																	<span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_No', 'No')"/> 
+																	<input type="radio" class="noborder" value="No" name="#" id="#"
+																		tal:attributes="name pName; id string:cid_CtrlParms_CreateReportBefore_No" />
+																</tal:block>
+																<tal:block tal:condition="not: pParametrosControl_CreateReportBefore" >
+																	<span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_Yes', 'Yes')"/> 
+																	&nbsp;
+																	<input type="radio" class="noborder" value="Yes" name="#" id="#"
+																		tal:attributes="name pName; id string:cid_CtrlParms_CreateReportBefore_Yes" />
+																	&emsp;&emsp;
+																	<span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_No', 'No')"/> 
+																	<input type="radio" class="noborder" checked="checked"  value="No" name="#" id="#"
+																		tal:attributes="name pName; id string:cid_CtrlParms_CreateReportBefore_No" />
+																</tal:block>
+															</td>
+														</tr>
+														
+														
+														<tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]" >
+															<td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAParametrosControlProgreso_attr_crearInformeDespues_label', 'Create Report After-')"/>
+															<td align="center" tal:content="python: ( pParametrosControl_CreateReportAfter and pLabelYes) or pLabelNo" />
+															<td align="center"  tal:define="pName string:theCreateReportAfter">
+																<tal:block tal:condition="pParametrosControl_CreateReportAfter" >
+																	<span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_Yes', 'Yes')"/> 
+																	&nbsp;
+																	<input type="radio" class="noborder" checked="checked" value="Yes" name="#" id="#"
+																		tal:attributes="name pName; id string:cid_CtrlParms_CreateReportAfter_Yes" />
+																	&emsp;&emsp;
+																	<span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_No', 'No')"/> 
+																	<input type="radio" class="noborder" value="No" name="#" id="#"
+																		tal:attributes="name pName; id string:cid_CtrlParms_CreateReportAfter_No" />
+																</tal:block>
+																<tal:block tal:condition="not: pParametrosControl_CreateReportAfter" >
+																	<span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_Yes', 'Yes')"/> 
+																	&nbsp;
+																	<input type="radio" class="noborder" value="Yes" name="#" id="#"
+																		tal:attributes="name pName; id string:cid_CtrlParms_CreateReportAfter_Yes" />
+																	&emsp;&emsp;
+																	<span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_No', 'No')"/> 
+																	<input type="radio" class="noborder" checked="checked"  value="No" name="#" id="#"
+																		tal:attributes="name pName; id string:cid_CtrlParms_CreateReportAfter_No" />
+																</tal:block>
+															</td>
+														</tr>
+													</tbody>
+												</tal:block>
+																						
+												 
+												
+												
+												
+												<tal:block tal:define="pParametrosControl_StoreResults python: pParametrosControl.get( 'StoreResults', None)" >
+													<tal:block tal:condition="python: pParametrosControl_StoreResults" >
+														<thead>
+															<tr>
+																<th colspan="3" align="left"  class="nosort">
+																	<strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_facility_StoreResults_label', 'Store Intermediate Results-')" />
+																</th>
+															</tr>
+														</thead>
+														<tbody tal:define="global pRowIndex python: 0;
+															pParametrosControl_StoreResults_Enabled python: pParametrosControl_StoreResults.get( 'enabled', False)" >
+															<tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
+																<td tal:content="python: pLabelEnabled"/>
+																<td align="center" tal:content="python: ( pParametrosControl_StoreResults_Enabled and pLabelEnabled) or pLabelDisabled" />
+																<td align="center"  tal:define="pName string:theStoreResults_Enabled">
+																	<tal:block tal:condition="pParametrosControl_StoreResults_Enabled" >
+																		<span tal:content="python: pLabelEnabled"/> 
+																		&nbsp;
+																		<input type="radio" class="noborder" checked="checked" value="Enabled" name="#" id="#"
+																			tal:attributes="name pName; id string:cid_CtrlParms_StoreResults_Enabled_True" />
+																		&emsp;&emsp;
+																		<span tal:content="python: pLabelDisabled"/> 
+																		<input type="radio" class="noborder" value="Disabled" name="#" id="#"
+																			tal:attributes="name pName; id string:cid_CtrlParms_StoreResults_Enabled_False" />
+																	</tal:block>
+																	<tal:block tal:condition="not: pParametrosControl_StoreResults_Enabled" >
+																		<span tal:content="python: pLabelEnabled"/> 
+																		&nbsp;
+																		<input type="radio" class="noborder" value="Enabled" name="#" id="#"
+																			tal:attributes="name pName; id string:cid_CtrlParms_StoreResults_Enabled_True" />
+																		&emsp;&emsp;
+																		<span tal:content="python: pLabelDisabled"/> 
+																		<input type="radio" class="noborder" checked="checked"  value="Disabled" name="#" id="#"
+																			tal:attributes="name pName; id string:cid_CtrlParms_StoreResults_Enabled_False" />
+																	</tal:block>
+																</td>
+															</tr>
+															<tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
+																<td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_parametrosControl_max_milliseconds_label', 'max_milliseconds')"/>
+																<td align="right" tal:content="python:'%d' % pParametrosControl_StoreResults.get( 'max_milliseconds', 0)" />
+																<td align="right">
+																	<input style="font-size: 9pt;" size="8" name="#" id="#" value="#" 
+																		tal:attributes="name string:theStoreResults_max_milliseconds; id string:cid_CtrlParms_StoreResults_max_milliseconds; 
+																			value python: pParametrosControl_StoreResults.get( 'max_milliseconds', 0)" />
+																</td>
+															</tr>
+															<tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
+																<td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_parametrosControl_max_elements_traversed_label', 'max_elements_traversed')"/>
+																<td align="right" tal:content="python:'%d' % pParametrosControl_StoreResults.get( 'max_elements_traversed', 0)" />
+																<td align="right">
+																	<input style="font-size: 9pt;" size="8" name="#" id="#" value="#" 
+																		tal:attributes="name string:theStoreResults_max_elements_traversed; id string:cid_CtrlParms_StoreResults_max_elements_traversed; 
+																			value python: pParametrosControl_StoreResults.get( 'max_elements_traversed', 0)" />
+																</td>
+															</tr>
+															<tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
+																<td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_parametrosControl_max_elements_changed_label', 'max_elements_changed')"/>
+																<td align="right" tal:content="python:'%d' % pParametrosControl_StoreResults.get( 'max_elements_changed', 0)" />
+																<td align="right">
+																	<input style="font-size: 9pt;" size="8" name="#" id="#" value="#" 
+																		tal:attributes="name string:theStoreResults_max_elements_changed; id string:cid_CtrlParms_StoreResults_max_elements_changed; 
+																			value python: pParametrosControl_StoreResults.get( 'max_elements_changed', 0)" />
+																</td>
+															</tr>
+														</tbody>
+													</tal:block>
+												</tal:block>
+												
+												
+												
+												
+			
+												<tal:block tal:define="pParametrosControl_Transactional python: pParametrosControl.get( 'Transactional', None)" >
+													<tal:block tal:condition="python: pParametrosControl_Transactional" >
+														<thead>
+															<tr>
+																<th colspan="3" align="left"  class="nosort">
+																	<strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_facility_Transactional_label', 'Commit Intermediate Transactions-')" />
+																</th>
+															</tr>
+														</thead>
+														<tbody tal:define="global pRowIndex python: 0;
+															pParametrosControl_Transactional_Enabled python: pParametrosControl_Transactional.get( 'enabled', False)" >
+															<tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
+																<td tal:content="python: pLabelEnabled"/>
+																<td align="center" tal:content="python: ( pParametrosControl_Transactional_Enabled and pLabelEnabled) or pLabelDisabled" />
+																<td align="center"  tal:define="pName string:theTransactional_Enabled">
+																	<tal:block tal:condition="pParametrosControl_Transactional_Enabled" >
+																		<span tal:content="python: pLabelEnabled"/> 
+																		&nbsp;
+																		<input type="radio" class="noborder" checked="checked" value="Enabled" name="#" id="#"
+																			tal:attributes="name pName; id string:cid_CtrlParms_Transactional_Enabled_True" />
+																		&emsp;&emsp;
+																		<span tal:content="python: pLabelDisabled"/> 
+																		<input type="radio" class="noborder" value="Disabled" name="#" id="#"
+																			tal:attributes="name pName; id string:cid_CtrlParms_Transactional_Enabled_False" />
+																	</tal:block>
+																	<tal:block tal:condition="not: pParametrosControl_Transactional_Enabled" >
+																		<span tal:content="python: pLabelEnabled"/> 
+																		&nbsp;
+																		<input type="radio" class="noborder" value="Enabled" name="#" id="#"
+																			tal:attributes="name pName; id string:cid_CtrlParms_Transactional_Enabled_True" />
+																		&emsp;&emsp;
+																		<span tal:content="python: pLabelDisabled"/> 
+																		<input type="radio" class="noborder" checked="checked"  value="Disabled" name="#" id="#"
+																			tal:attributes="name pName; id string:cid_CtrlParms_Transactional_Enabled_False" />
+																	</tal:block>
+																</td>
+															</tr>
+															<tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
+																<td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_parametrosControl_max_milliseconds_label', 'max_milliseconds')"/>
+																<td align="right" tal:content="python:'%d' % pParametrosControl_Transactional.get( 'max_milliseconds', 0)" />
+																<td align="right">
+																	<input style="font-size: 9pt;" size="8" name="#" id="#" value="#" 
+																		tal:attributes="name string:theTransactional_max_milliseconds; id string:cid_CtrlParms_Transactional_max_milliseconds; 
+																			value python: pParametrosControl_Transactional.get( 'max_milliseconds', 0)" />
+																</td>
+															</tr>
+															<tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
+																<td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_parametrosControl_max_elements_traversed_label', 'max_elements_traversed')"/>
+																<td align="right" tal:content="python:'%d' % pParametrosControl_Transactional.get( 'max_elements_traversed', 0)" />
+																<td align="right">
+																	<input style="font-size: 9pt;" size="8" name="#" id="#" value="#" 
+																		tal:attributes="name string:theTransactional_max_elements_traversed; id string:cid_CtrlParms_Transactional_max_elements_traversed; 
+																			value python: pParametrosControl_Transactional.get( 'max_elements_traversed', 0)" />
+																</td>
+															</tr>
+															<tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
+																<td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_parametrosControl_max_elements_changed_label', 'max_elements_changed')"/>
+																<td align="right" tal:content="python:'%d' % pParametrosControl_Transactional.get( 'max_elements_changed', 0)" />
+																<td align="right">
+																	<input style="font-size: 9pt;" size="8" name="#" id="#" value="#" 
+																		tal:attributes="name string:theTransactional_max_elements_changed; id string:cid_CtrlParms_Transactional_max_elements_changed; 
+																			value python: pParametrosControl_Transactional.get( 'max_elements_changed', 0)" />
+																</td>
+															</tr>
+														</tbody>
+													</tal:block>
+												</tal:block>
+												
+												
+																					
+												
+												
+												
+			
+												<tal:block tal:define="pParametrosControl_Logging python: pParametrosControl.get( 'Logging', None)" >
+													<tal:block tal:condition="python: pParametrosControl_Logging" >
+														<thead>
+															<tr>
+																<th colspan="3" align="left"  class="nosort">
+																	<strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_facility_Logging_label', 'Periodical Logging of activities-')" />
+																</th>
+															</tr>
+														</thead>
+														<tbody tal:define="global pRowIndex python: 0;
+															pParametrosControl_Logging_Enabled python: pParametrosControl_Logging.get( 'enabled', False)" >
+															<tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
+																<td tal:content="python: pLabelEnabled"/>
+																<td align="center" tal:content="python: ( pParametrosControl_Logging_Enabled and pLabelEnabled) or pLabelDisabled" />
+																<td align="center"  tal:define="pName string:theLogging_Enabled">
+																	<tal:block tal:condition="pParametrosControl_Logging_Enabled" >
+																		<span tal:content="python: pLabelEnabled"/> 
+																		&nbsp;
+																		<input type="radio" class="noborder" checked="checked" value="Enabled" name="#" id="#"
+																			tal:attributes="name pName; id string:cid_CtrlParms_Logging_Enabled_True" />
+																		&emsp;&emsp;
+																		<span tal:content="python: pLabelDisabled"/> 
+																		<input type="radio" class="noborder" value="Disabled" name="#" id="#"
+																			tal:attributes="name pName; id string:cid_CtrlParms_Logging_Enabled_False" />
+																	</tal:block>
+																	<tal:block tal:condition="not: pParametrosControl_Logging_Enabled" >
+																		<span tal:content="python: pLabelEnabled"/> 
+																		&nbsp;
+																		<input type="radio" class="noborder" value="Enabled" name="#" id="#"
+																			tal:attributes="name pName; id string:cid_CtrlParms_Logging_Enabled_True" />
+																		&emsp;&emsp;
+																		<span tal:content="python: pLabelDisabled"/> 
+																		<input type="radio" class="noborder" checked="checked"  value="Disabled" name="#" id="#"
+																			tal:attributes="name pName; id string:cid_CtrlParms_Logging_Enabled_False" />
+																	</tal:block>
+				
+																</td>
+															</tr>
+															<tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
+																<td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_parametrosControl_max_milliseconds_label', 'max_milliseconds')"/>
+																<td align="right" tal:content="python:'%d' % pParametrosControl_Logging.get( 'max_milliseconds', 0)" />
+																<td align="right">
+																	<input style="font-size: 9pt;" size="8" name="#" id="#" value="#" 
+																		tal:attributes="name string:theLogging_max_milliseconds; id string:cid_CtrlParms_Logging_max_milliseconds; 
+																			value python: pParametrosControl_Logging.get( 'max_milliseconds', 0)" />
+																</td>
+															</tr>
+															<tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
+																<td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_parametrosControl_max_elements_traversed_label', 'max_elements_traversed')"/>
+																<td align="right" tal:content="python:'%d' % pParametrosControl_Logging.get( 'max_elements_traversed', 0)" />
+																<td align="right">
+																	<input style="font-size: 9pt;" size="8" name="#" id="#" value="#" 
+																		tal:attributes="name string:theLogging_max_elements_traversed; id string:cid_CtrlParms_Logging_max_elements_traversed; 
+																			value python: pParametrosControl_Logging.get( 'max_elements_traversed', 0)" />
+																</td>
+															</tr>
+															<tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
+																<td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_parametrosControl_max_elements_changed_label', 'max_elements_changed')"/>
+																<td align="right" tal:content="python:'%d' % pParametrosControl_Logging.get( 'max_elements_changed', 0)" />
+																<td align="right">
+																	<input style="font-size: 9pt;" size="8" name="#" id="#" value="#" 
+																		tal:attributes="name string:theLogging_max_elements_changed; id string:cid_CtrlParms_Logging_max_elements_changed; 
+																			value python: pParametrosControl_Logging.get( 'max_elements_changed', 0)" />
+																</td>
+															</tr>
+															<tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
+																<td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_parametrosControl_log_every_nth_transactions_label', 'log_every_nth_transactions')"/>
+																<td align="right" tal:content="python:'%d' % pParametrosControl_Logging.get( 'log_every_nth_transactions', 0)" />
+																<td align="right">
+																	<input style="font-size: 9pt;" size="8" name="#" id="#" value="#" 
+																		tal:attributes="name string:theLogging_log_every_nth_transactions; id string:cid_CtrlParms_Logging_log_every_nth_transactions; 
+																			value python: pParametrosControl_Logging.get( 'log_every_nth_transactions', 0)" />
+																</td>
+															</tr>
+														</tbody>
+													</tal:block>
+												</tal:block>
+												
+												
+													
+												
+												
+			
+												
+			
+												<tal:block tal:define="pParametrosControl_YieldProcessor python: pParametrosControl.get( 'YieldProcessor', None)" >
+													<tal:block tal:condition="python: pParametrosControl_YieldProcessor" >
+														<thead>
+															<tr>
+																<th colspan="3" align="left"  class="nosort">
+																	<strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_facility_YieldProcessor_label', 'Periodically Yield Processor-')" />
+																</th>
+															</tr>
+														</thead>
+														<tbody tal:define="global pRowIndex python: 0;
+															pParametrosControl_YieldProcessor_Enabled python: pParametrosControl_YieldProcessor.get( 'enabled', False)" >
+															<tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
+																<td tal:content="python: pLabelEnabled"/>
+																<td align="center" tal:content="python: ( pParametrosControl_YieldProcessor_Enabled and pLabelEnabled) or pLabelDisabled" />
+																<td align="center"  tal:define="pName string:theYieldProcessor_Enabled">
+																	<tal:block tal:condition="pParametrosControl_YieldProcessor_Enabled" >
+																		<span tal:content="python: pLabelEnabled"/> 
+																		&nbsp;
+																		<input type="radio" class="noborder" checked="checked" value="Enabled" name="#" id="#"
+																			tal:attributes="name pName; id string:cid_CtrlParms_YieldProcessor_Enabled_True" />
+																		&emsp;&emsp;
+																		<span tal:content="python: pLabelDisabled"/> 
+																		<input type="radio" class="noborder" value="Disabled" name="#" id="#"
+																			tal:attributes="name pName; id string:cid_CtrlParms_YieldProcessor_Enabled_False" />
+																	</tal:block>
+																	<tal:block tal:condition="not: pParametrosControl_YieldProcessor_Enabled" >
+																		<span tal:content="python: pLabelEnabled"/> 
+																		&nbsp;
+																		<input type="radio" class="noborder" value="Enabled" name="#" id="#"
+																			tal:attributes="name pName; id string:cid_CtrlParms_YieldProcessor_Enabled_True" />
+																		&emsp;&emsp;
+																		<span tal:content="python: pLabelDisabled"/> 
+																		<input type="radio" class="noborder" checked="checked"  value="Disabled" name="#" id="#"
+																			tal:attributes="name pName; id string:cid_CtrlParms_YieldProcessor_Enabled_False" />
+																	</tal:block>
+																</td>
+															</tr>
+															
+															<tr class="#" tal:define="
+																	global pRowIndex python: pRowIndex + 1;
+																	pParametrosControl_YieldProcessor_OnlyBetweenTransactions python: pParametrosControl_YieldProcessor.get( 'only_between_transactions', False)"  
+																tal:attributes="class python: pClasesFilas[ pRowIndex % 2]" >
+																
+																<td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_parametrosControl_only_between_transactions_label', 'only_between_transactions')"/>
+																<td align="center" tal:content="python: ( pParametrosControl_YieldProcessor_OnlyBetweenTransactions and pLabelYes) or pLabelNo" />
+																<td align="center"  tal:define="pName string:theYieldProcessor_only_between_transactions">
+																	<tal:block tal:condition="pParametrosControl_YieldProcessor_OnlyBetweenTransactions" >
+																		<span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_Yes', 'Yes')"/> 
+																		&nbsp;
+																		<input type="radio" class="noborder" checked="checked" value="Yes" name="#" id="#"
+																			tal:attributes="name pName; id string:cid_CtrlParms_YieldProcessor_only_between_transactions_Yes" />
+																		&emsp;&emsp;
+																		<span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_No', 'No')"/> 
+																		<input type="radio" class="noborder" value="No" name="#" id="#"
+																			tal:attributes="name pName; id string:cid_CtrlParms_YieldProcessor_only_between_transactions_No" />
+																	</tal:block>
+																	<tal:block tal:condition="not: pParametrosControl_YieldProcessor_OnlyBetweenTransactions" >
+																		<span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_Yes', 'Yes')"/> 
+																		&nbsp;
+																		<input type="radio" class="noborder" value="Yes" name="#" id="#"
+																			tal:attributes="name pName; id string:cid_CtrlParms_YieldProcessor_only_between_transactions_Yes" />
+																		&emsp;&emsp;
+																		<span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_No', 'No')"/> 
+																		<input type="radio" class="noborder" checked="checked"  value="No" name="#" id="#"
+																			tal:attributes="name pName; id string:cid_CtrlParms_YieldProcessor_only_between_transactions_No" />
+																	</tal:block>
+				
+																</td>
+																
+															</tr>
+															<tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
+																<td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_parametrosControl_max_milliseconds_label', 'max_milliseconds')"/>
+																<td align="right" tal:content="python:'%d' % pParametrosControl_YieldProcessor.get( 'max_milliseconds', 0)" />
+																<td align="right">
+																	<input style="font-size: 9pt;" size="8" name="#" id="#" value="#" 
+																		tal:attributes="name string:theYieldProcessor_max_milliseconds; id string:cid_CtrlParms_YieldProcessor_max_milliseconds; 
+																			value python: pParametrosControl_YieldProcessor.get( 'max_milliseconds', 0)" />
+																</td>
+															</tr>
+															<tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
+																<td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_parametrosControl_max_elements_traversed_label', 'max_elements_traversed')"/>
+																<td align="right" tal:content="python:'%d' % pParametrosControl_YieldProcessor.get( 'max_elements_traversed', 0)" />
+																<td align="right">
+																	<input style="font-size: 9pt;" size="8" name="#" id="#" value="#" 
+																		tal:attributes="name string:theYieldProcessor_max_elements_traversed; id string:cid_CtrlParms_YieldProcessor_max_elements_traversed; 
+																			value python: pParametrosControl_YieldProcessor.get( 'max_elements_traversed', 0)" />
+																</td>
+															</tr>
+															<tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
+																<td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_parametrosControl_max_elements_changed_label', 'max_elements_changed')"/>
+																<td align="right" tal:content="python:'%d' % pParametrosControl_YieldProcessor.get( 'max_elements_changed', 0)" />
+																<td align="right">
+																	<input style="font-size: 9pt;" size="8" name="#" id="#" value="#" 
+																		tal:attributes="name string:theYieldProcessor_max_elements_changed; id string:cid_CtrlParms_YieldProcessor_max_elements_changed; 
+																			value python: pParametrosControl_YieldProcessor.get( 'max_elements_changed', 0)" />
+																</td>
+															</tr>
+															<tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
+																<td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_parametrosControl_percent_active_time_label', 'percent_active_time')"/>
+																<td align="right" tal:content="python:'%d' % pParametrosControl_YieldProcessor.get( 'percent_active_time', 0)" />
+																<td align="right">
+																	<input style="font-size: 9pt;" size="8" name="#" id="#" value="#" 
+																		tal:attributes="name string:theYieldProcessor_percent_active_time; id string:cid_CtrlParms_YieldProcessor_percent_active_time; 
+																			value python: pParametrosControl_YieldProcessor.get( 'percent_active_time', 0)" />
+																</td>
+															</tr>
+														</tbody>
+													</tal:block>
+												</tal:block>
+											
+											
+											</table>
+											
+											<br/>
+											<input name="form_submit" style="font-size: 10pt; font-style: italic"  value="Save" i18n:domain="plone" i18n:attributes="value label_save" type="submit"/>
+											<br/>
+											 
+										</form>
+										<br/>               
+																	
+										
+										
+										
+			
+									 </tal:block>            
+								</tal:block>
+							</tal:block>
+						</tal:block>
+			
+					  
+						
+			
+						<tal:block tal:define="pEstadoControl python: here.TRAgvSIGi18n_tool.fEstadoControl( theContextualElement = here, )" >
+							<metal:block metal:use-macro="here/TRAProgreso_EstadoControl_i18n_view/macros/tProgreso_EstadoControl_i18n" />   
+							<br/>
+							<br/>
+						</tal:block>            
+							
+						
+						<tal:block tal:define="pContadoresControl python: here.TRAgvSIGi18n_tool.fContadoresControl( theContextualElement = here, )" >
+							<metal:block metal:use-macro="here/TRAProgreso_ContadoresControl_i18n_view/macros/tProgreso_ContadoresControl_i18n" />   
+							<br/>
+							<br/>
+						</tal:block>
+						
+					</tal:block>
+					
+				</tal:block>
+										 
+				<tal:block tal:define="dummy python: pExecutionRecord and here.TRAgvSIGi18n_tool.pEndExecution( here, pExecutionRecord)" />
+				
+				<metal:block metal:use-macro="here/TRAFooter_i18n_view/macros/tFooter_i18n" />
+		
+		
+				<tal:block tal:replace="structure python: pExecutionRecord and here.TRARenderExecutionDetails( pExecutionRecord)" />
+		 
+			</tal:block>
+         
+        </tal:block>
+
+    </tal:main-macro>
+</metal:main>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

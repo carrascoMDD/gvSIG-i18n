@@ -1,0 +1,91 @@
+<tal:block replace="nothing">
+# Copyright (c) 2008, 2009, 2010, 2011  by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+#
+# GNU General Public License (GPL)
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+#
+# Authors: 
+# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana 
+# Model Driven Development sl  Valencia (Spain) www.ModelDD.org 
+# Antonio Carrasco Valero                       carrasco@ModelDD.org
+#
+#</tal:block>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en">
+<body>
+
+
+
+
+
+    <div metal:define-macro="tCabeceraEnTabla_i18n" >
+        <tal:block tal:define="
+            pTrue python: True; 
+            pFalse python: False;
+            pPortalURL            python:   here.MDDModelDDvlPlone_tool.fPortalURL();
+            pElementBasicInfo     python:   here.TRAgvSIGi18n_tool.fBasicInfo( theContextualElement = here);
+            pPropietario          python:   here.TRAgvSIGi18n_tool.getPropietario( theContextualElement = here);
+            pPropietarioBasicInfo python:   here.TRAgvSIGi18n_tool.fBasicInfo( theContextualElement = pPropietario);
+            ">
+
+            <table width="100%" cellspacing="0" cellpadding="0" frame="void">
+                <tr>
+                    <td align="left" valigne="baseline" >
+                        <h5>
+                            <img src="#" tal:attributes="src python: '%s/%s' % ( pPortalURL, pElementBasicInfo.get( 'content_icon', ''))"  
+                                 alt="" title="content_icon icon" id="content_icon" />
+                            &nbsp;
+                            <span  i18n:domain="gvSIGi18n" i18n:translate="" tal:content="python: pElementBasicInfo.get( 'archetype_name_msgid', '')" ><tal:block tal:content="python: pElementBasicInfo.get( 'archetype_name', '')" /></span>
+                        </h5>
+                    </td>
+                    <td align="right" valign="baseline" >
+                        <a  href="#" tal:attributes="href python: '%s/' % pPropietarioBasicInfo.get( 'absolute_url', '')"
+                            tal:condition="python: not (pPropietario is here)"
+                            class="state-visible" title="">
+                            <span  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_volver_action_label"/>
+                            &nbsp;
+                            <span tal:content="python: pPropietarioBasicInfo.get( 'title', '')" />
+                            &nbsp;(
+                            <img src="#" tal:attributes="src python: '%s/%s' % ( pPortalURL, pPropietarioBasicInfo.get( 'content_icon', ''))"  
+                                 alt="" title="Propietario MetaType"  id="icon-propietario" />
+                            &nbsp;
+                            <span i18n:domain="gvSIGi18n"  i18n:translate="" tal:content="python: pPropietarioBasicInfo.get( 'archetype_name_msgid', '')" ><tal:block tal:content="python: pPropietarioBasicInfo.get( 'archetype_name', '')" /></span>
+                            )
+                        </a>
+                        
+                    </td>
+               </tr>
+               <tr tal:condition="python: pElementBasicInfo.get( 'typeDescMsgId', '') or pElementBasicInfo.get( 'typeDescription', '')" >
+                   <td class="formHelp" colspan="2" align="left"  i18n:domain="gvSIGi18n"  i18n:translate="" tal:content="python: pElementBasicInfo.get( 'typeDescMsgId', '')" ><tal:block tal:content="python: pElementBasicInfo.get( 'typeDescription', '')" /></td>
+               </tr>
+            </table>
+        
+            <p >
+               <strong  tal:content="python: pElementBasicInfo.get( 'description', '')" />
+            </p>
+        </tal:block>
+    </div>
+
+
+
+
+
+
+
+</body>
+</html>
+

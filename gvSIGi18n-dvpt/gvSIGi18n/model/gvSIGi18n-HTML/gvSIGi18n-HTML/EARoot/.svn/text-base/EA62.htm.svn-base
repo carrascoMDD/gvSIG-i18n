@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>gvSIGi18n::TRAConfiguracionVarios</title>
+<link href="../css/ea.css" rel="stylesheet" type="text/css" />
+<script>
+function initPage(src) {
+	if(parent==this&&(this.location+"").indexOf('EARoot')!=-1)
+		document.location=(this.location+"").substring(0,(this.location+"").indexOf('EARoot'))+"index"+(this.location+"").substring((this.location+"").lastIndexOf('.'))+"?goto="+((this.location+"").substring((this.location+"").indexOf('EARoot')+7,(this.location+"").lastIndexOf('.')).replace(/\//g,':').replace(/EA/g,""));
+	else
+		parent.initPage(src);
+}
+</script>
+</head>
+<body onload="initPage(this);" class="Content">
+<div class="pageHeader"></div>
+<div class="PageBody">
+	<span class="ObjectTitle">TRAConfiguracionVarios  : public   &lt;&lt;ordered&gt;&gt; class</span>
+	<table border="0" cellpadding="0" cellspacing="0" class="ObjectDetails">
+		<tr>
+			<td width="15%" class="ObjectDetailsTopic">Created:</td>
+			<td width="85%" class="ObjectDetailsValue">13/11/2008 16:15:54</td>
+		</tr>
+		<tr>
+			<td class="ObjectDetailsTopic">Modified:</td>
+			<td class="ObjectDetailsValue">10/10/2010 16:01:18</td>
+		</tr>
+		<tr style="height: 10px"><td colspan="2"></td></tr>
+		<tr>
+			<td class="ObjectDetailsTopic"><img src="../images/plus03.gif" align="absmiddle" id="proj" onclick="parent.toggleData(this.id)" />Project:</td>
+			<td class="ObjectDetailsValue"></td>
+		</tr>
+		<tr id="proj00" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Author:</td>
+			<td class="ObjectDetailsValue"></td>
+		</tr>
+		<tr id="proj01" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Version:</td>
+			<td class="ObjectDetailsValue">1.0</td>
+		</tr>
+		<tr id="proj02" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Phase:</td>
+			<td class="ObjectDetailsValue">1.0</td>
+		</tr>
+		<tr id="proj03" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Status:</td>
+			<td class="ObjectDetailsValue">Proposed</td>
+		</tr>
+		<tr id="proj04" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Complexity:</td>
+			<td class="ObjectDetailsValue">Easy</td>
+		</tr>
+		<tr>
+			<td class="ObjectDetailsTopic"><img src="../images/plus03.gif" align="absmiddle" id="adv" onclick="parent.toggleData(this.id)" />Advanced:</td>
+			<td class="ObjectDetailsValue"></td>
+		</tr>
+		<tr id="adv00" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">UUID:</td>
+			<td class="ObjectDetailsValue">{9950AC97-33D1-4acd-A711-A375262AA343}</td>
+		</tr>
+		<tr id="adv01" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Appears In:</td>
+			<td class="ObjectDetailsValue"><a href="EA15.htm">07 - gvSIGi18n - configuraciones</a>, <a href="EA17.htm">08 - gvSIGi18n - configuraciones - details</a>, <a href="EA1.htm">00 - gvSIGi18n - todos conceptos</a></td>
+		</tr>
+	</table>
+	
+	<div class="TableGroup" id="TableGroup">
+		<ul class="ItemTitle">
+			<li onClick="parent.toggleItem('Attributes');" id="AttributesTitle">Attributes</li>
+			<li onClick="parent.toggleItem('TaggedVal');" id="TaggedValTitle">Tagged Values</li>
+			<li onClick="parent.toggleItem('Links');" id="LinksTitle">Other Links</li>
+		</ul>
+<div class="ItemBody" id="AttributesTable">
+	<table border="0" cellspacing="0" cellpadding="0" class="Table">
+		<tr>
+			<td width="40%" class="TableHeading">Attribute</td>
+			<td width="60%" class="TableHeading">Details</td>
+		</tr>
+						<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public int</i><br /><strong>&nbsp;&nbsp;maximoNumeroCambiosRecientes</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> 5000<br></i>description=El sistema recordara cambios recientes de estados de traducciones, hasta este maximo, despreciando los cambios mas antiguos cuando se exceda el maximo.<br>description2=The system shall record recent Translation status changes, up to this maximum, discarding the oldest ones when the maximum is exceeded,<br>label=Maximo numero de Cambios Recientes<br>label2=Maximum number of Recent Changes<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public int</i><br /><strong>&nbsp;&nbsp;segundosParaConfirmarAccion</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> 120<br></i>description=Tiempo en segundos del que dispone el Usuario para confirmar lanzamiento de procesos de larga duracion. Si no confirma en este tiempo, el Usuario debera volver a solicitar la accion.<br>description2=Time in seconds for the User to confirm the launch of a long process. If the User does not confirm in this period of time, the user shall request the action again.<br>label=Tiempo en segundos para confirmar Accion<br>label2=Time in seconds to confirm launch of a long process<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public string</i><br /><strong>&nbsp;&nbsp;usuariosAdministradores</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> mcarrera vacevedo tcarrasco<br></i>description=Usuarios administradores, que aparecen al final de la lista de contribuidores, aunque hayan efectuado el mayor numero de cambios sobre el catalogo de traducciones.<br>description2=Administrator users, who shall appear at the bottom of the list of contributing users, even if they have performed a higher number of changes into the translations catalog.<br>label=Usuarios administradores<br>label2=Administrator users<br>searchable=0
+<br>&nbsp;</td>
+			</tr>
+		</table>
+</div><div class="ItemBody" id="TaggedValTable">
+	<table align="center" border="0" cellspacing="0" cellpadding="0" class="Table">
+	<tr>
+			<td width="30%" class="TableHeading">Tag</td>
+			<td width="30%" class="TableHeading">Value</td>
+			<td width="40%" class="TableHeading">Details</td>
+	</tr>
+					<tr>
+				<td width="30%" class="TableRow" valign="top">allow_discussion</td>
+				<td width="30%" class="TableRow" valign="top">False</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>			<tr>
+				<td width="30%" class="TableRow" valign="top">archetype_name</td>
+				<td width="30%" class="TableRow" valign="top">Configuracion Varios</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>			<tr>
+				<td width="30%" class="TableRow" valign="top">archetype_name2</td>
+				<td width="30%" class="TableRow" valign="top">Various Configuration</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>			<tr>
+				<td width="30%" class="TableRow" valign="top">content_icon</td>
+				<td width="30%" class="TableRow" valign="top">traconfiguracion.gif</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>			<tr>
+				<td width="30%" class="TableRow" valign="top">default_view</td>
+				<td width="30%" class="TableRow" valign="top">Tabular</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>			<tr>
+				<td width="30%" class="TableRow" valign="top">fields_order_1</td>
+				<td width="30%" class="TableRow" valign="top">['aspectoConfiguracion','maximoNumeroCambiosRecientes','segundosParaConfirmarAccion','usuariosAdministradores',]</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>			<tr>
+				<td width="30%" class="TableRow" valign="top">fields_order_3</td>
+				<td width="30%" class="TableRow" valign="top">['super',]</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>			<tr>
+				<td width="30%" class="TableRow" valign="top">global_allow</td>
+				<td width="30%" class="TableRow" valign="top">False</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>			<tr>
+				<td width="30%" class="TableRow" valign="top">hide_actions</td>
+				<td width="30%" class="TableRow" valign="top">metadata,sharing,folderContents</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>			<tr>
+				<td width="30%" class="TableRow" valign="top">hide_folder_tabs</td>
+				<td width="30%" class="TableRow" valign="top">False</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>			<tr>
+				<td width="30%" class="TableRow" valign="top">immediate_view</td>
+				<td width="30%" class="TableRow" valign="top">Tabular</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>			<tr>
+				<td width="30%" class="TableRow" valign="top">imports</td>
+				<td width="30%" class="TableRow" valign="top">from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import ReferenceBrowserWidget</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>			<tr>
+				<td width="30%" class="TableRow" valign="top">imports</td>
+				<td width="30%" class="TableRow" valign="top">from TRAElemento_Operaciones import TRAElemento_Operaciones
+
+</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>			<tr>
+				<td width="30%" class="TableRow" valign="top">suppl_views</td>
+				<td width="30%" class="TableRow" valign="top">['Tabular',]</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>			<tr>
+				<td width="30%" class="TableRow" valign="top">typeDescription</td>
+				<td width="30%" class="TableRow" valign="top">Configuracion del catalogo de traducciones, conparametros de varias operaciones sobre el catalogo.</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>			<tr>
+				<td width="30%" class="TableRow" valign="top">typeDescription2</td>
+				<td width="30%" class="TableRow" valign="top">Translations catalog configuration, with parameters controlling various operations on the catalog.</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>
+</table>
+</div>		<div class="ItemBody" id="LinksTable">
+			<table align="center" border="0" cellspacing="0" cellpadding="0" class="Table">
+				<tr>
+					<td width="30%" class="TableHeading">Object</td>
+					<td width="15%" class="TableHeading">Type</td>
+					<td width="15%" class="TableHeading">Connection</td>
+					<td width="40%" class="TableHeading">Notes</td>
+				</tr>
+				<tr>
+					<td width="30%" class="TableRow" valign="top"><a href="EA169.htm">«ordered» TRAConfiguracion</a></td>
+					<td width="15%" class="TableRow" valign="top">Class</td>
+					<td width="15%" class="TableRow" valign="top">Generalization</td>
+					<td width="40%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="30%" class="TableRow" valign="top"><a href="EA122.htm">«stub» TRAConfiguracionVarios_Operaciones</a></td>
+					<td width="15%" class="TableRow" valign="top">Class</td>
+					<td width="15%" class="TableRow" valign="top">Generalization</td>
+					<td width="40%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+
+			</table>
+		</div>
+	</div>
+<div class="pageFooter"></div>
+ 
+</body>
+</html>

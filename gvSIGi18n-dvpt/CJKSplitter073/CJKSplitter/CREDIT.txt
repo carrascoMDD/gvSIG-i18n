@@ -1,0 +1,13 @@
+Author
+=========
+
+panjunyong
+  panjy <at> zopechina dot com
+  www.zopechina.com
+
+Contributor
+===============
+
+Bjorn Stabell
+  bjorn at exoweb.neti. Some documentation
+

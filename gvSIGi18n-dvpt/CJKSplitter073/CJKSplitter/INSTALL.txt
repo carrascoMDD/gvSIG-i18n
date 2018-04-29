@@ -1,0 +1,36 @@
+Install
+==========
+
+1. Unzip to zope's Products dir
+
+2. Restart zope, and that is all!
+
+CJK native encodings(non-utf8) support
+========================================
+
+If you are using python 2.4 and above, CJK encodings are supported by default.
+Or, 
+
+- If you are use linux, you should install the extra-encoding package:
+
+  http://cjkpython.i18n.org/
+
+- If you use windows, then you can choose ZopeChinaPak
+
+  http://www.zope.org/Members/panjunyong/ZopeChinaPak
+
+Add to the catalog
+=========================
+
+1. add a ZCTextIndex Lexicon, select CJKSplitter
+
+2. add a ZCTextIndex, and select the Lexicon 
+
+Upgrade
+=========
+
+0.1 to 0.5
+     you should reindex all the ZCTextIndex in your catalog
+
+0.2 to 0.5
+     no exta upgrade needed. (not tested)

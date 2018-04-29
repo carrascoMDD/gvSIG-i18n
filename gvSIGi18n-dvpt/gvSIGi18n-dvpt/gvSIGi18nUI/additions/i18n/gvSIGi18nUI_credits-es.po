@@ -1,0 +1,303 @@
+# Copyright (c) 2008, 2009,2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+#
+# GNU General Public License (GPL)
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+#
+# Authors: 
+# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana 
+# Model Driven Development sl  Valencia (Spain) www.ModelDD.org 
+# Antonio Carrasco Valero                       carrasco@ModelDD.org
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gvSIGtraducciones\n"
+"POT-Creation-Date: Fri Mar 20 11:10:50 2009\n"
+"PO-Revision-Date: Fri Mar 20 11:10:50 2009\n"
+"Last-Translator: Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>\n"
+"Language-Team: Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: es\n"
+"Language-Name: Spanish\n"
+"Preferred-Encodings: latin1 utf-8\n"
+"Domain: gvSIGi18n_credits\n"
+"X-Is-Fallback-For: es-ar es-bo es-co es-cr es-cl es-do es-ec es-sv es-gt es-hn es-mx es-ni es-pa es-py es-pe es-pr es-es es-uy es-ve\n"
+
+
+
+
+#. Default: "Creditos"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_Title"
+msgstr "Creditos"
+
+#. Default: "Proyecto"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_ProjectTitle_PropertyName"
+msgstr "Proyecto"
+
+
+#. Default: "gvSIGi18n"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_ProjectTitle_PropertyValue"
+msgstr "gvSIGi18n"
+
+#. Default: "Aplicacion colaborativa para la traduccion de los textos de interfaz de usuario de la aplicacion gvSIG, sus extensiones, y aplicaciones colaborativas usadas por gvSIG, como esta misma."
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_ProjectTitle_Description_PropertyValue"
+msgstr "Aplicacion colaborativa para la traduccion de los textos de interfaz de usuario de la aplicacion gvSIG, sus extensiones, y aplicaciones colaborativas usadas por gvSIG, como esta misma."
+
+#. Default: "Copyright"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_Copyright_PropertyName"
+msgstr "Copyright"
+
+
+#. Default: "Licencia"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_License_PropertyName"
+msgstr "Licencia"
+
+
+
+
+
+
+#. Default: "Autores"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_Autores_PropertyName"
+msgstr "Autores"
+
+#. Default: "institucion del gobierno autonomico de la Comunidad Valenciana en España, Europa"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_Author_Conselleria_Institucion_PropertyValue"
+msgstr "conselleria del gobierno autonomico de la Comunidad Valenciana de España en Europa"
+
+
+#. Default: "empresa"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_Author_ModelDrivenDevelopmentSL_Empresa_PropertyValue"
+msgstr "empresa"
+
+
+
+#. Default: "desarrollador"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_Author_AntonioCarrascoValero_Desarrollador_PropertyValue"
+msgstr "desarrollador"
+
+
+
+#. Default: "Promotor y Director"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_SponsorProjectTitle_PropertyName"
+msgstr "Promotor y Director"
+
+
+
+
+#. Default: "gvSIG es un programa aplicado a la gestion de informacion geoespacial. Distribuida como programa libre y gratis en codigo abierto Free Libre Open Source Software (FLOSS). Desarrollado como una aplicación programada en el lenguage Java. Disponible en el sistema operativo libre y gratis en codigo abierto GNU/Linux, y los propietarios Apple Macintosh (R) y Microsoft Windows (R). Localizado a muchos idiomas y paises. gvSIg ahora facilita la disponibilidad en mas lenguages y paises, con esta aplicacion gvSIGtraducciones para traduccion colaborativa de textos del interfaz de usuario."
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_SponsorProjectTitle_Description_PropertyValue"
+msgstr "gvSIG es un programa aplicado a la gestion de informacion geoespacial. Distribuida como programa libre y gratis en codigo abierto Free Libre Open Source Software (FLOSS). Desarrollado como una aplicación programada en el lenguage Java. Disponible en el sistema operativo libre y gratis en codigo abierto GNU/Linux, y los propietarios Apple Macintosh (R) y Microsoft Windows (R). Localizado a muchos idiomas y paises. gvSIg ahora facilita la disponibilidad en mas lenguages y paises, con esta aplicacion gvSIGtraducciones para traduccion colaborativa de textos del interfaz de usuario."
+
+
+
+#. Default: "Estandares"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_Standards_PropertyName"
+msgstr "Estandares"
+
+#. Default: "desarrollado segun las practicas de desarrollo dirigido por modelos recomendados por la"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_Standards_Intro_PropertyValue"
+msgstr "desarrollado segun las practicas de desarrollo dirigido por modelos recomendados por la"
+
+
+
+#. Default: "Garantia"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_Warranty_PropertyName"
+msgstr "Garantia"
+
+#. Default: "Este programa es distribuido en la esperanza que sera util, pero sin ninguna garantia; sin ni siquera la garantia implicita de mercantibilidad o adecuacion a algun proposito particular. Por favor, vea la licencia 'GNU General Public License' (GPL) para mas detalles."
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_Warranty_PropertyValue"
+msgstr "Este programa es distribuido en la esperanza que sera util, pero sin ninguna garantia; sin ni siquera la garantia implicita de mercantibilidad o adecuacion a algun proposito particular. Por favor, vea la licencia 'GNU General Public License' (GPL) para mas detalles."
+
+#. Default: "Desarrollado siguiendo las recomendaciones en"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_Standards_Intro_PropertyName"
+msgstr "Desarrollado siguiendo las recomendaciones en"
+
+
+
+
+#. Default: "Coordinacion de Requisitos"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_RequirementsCoordination_PropertyName"
+msgstr "Coordinacion de Requisitos"
+
+
+#. Default: "Requisitos del Dominio de Traduccion"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_RequirementsCoordination_Business_Title"
+msgstr "Requisitos del Dominio de Traduccion"
+
+
+
+
+#. Default: "Requisitos de la Organizacion"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_RequirementsCoordination_Organization_Title"
+msgstr "Requisitos de la Organizacion"
+
+
+
+
+
+#. Default: "Requisitos de la Plataforma"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_RequirementsCoordination_Platform_Title"
+msgstr "Requisitos de la Plataforma"
+
+
+
+
+
+#. Default: "Requisitos para Administracion"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_RequirementsCoordination_Administration_Title"
+msgstr "Requisitos para Administracion"
+
+
+
+
+
+#. Default: "Jefe del Departamento de Organizacion e Informatica de la CIT"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_SponsorProjectTitle_Jefe_Title"
+msgstr "Jefe del Departamento de Organizacion e Informatica de la CIT"
+
+
+
+#. Default: "Coordinador General de gvSIG"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_SponsorProjectTitle_CoordinadorGeneral_Title"
+msgstr "Coordinador General de gvSIG"
+
+
+
+#. Default: "Coordinador Tecnico de gvSIG"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_SponsorProjectTitle_CoordinadorTecnico_Title"
+msgstr "Coordinador Tecnico de gvSIG"
+
+
+#. Default: "Technical Coordinator at project launch"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_SponsorProjectTitle_CoordinadorTecnicoAtProjectLaunch_Title"
+msgstr "Coordinador Tecnico al arranque del proyecto"
+
+
+#. Default: "por la"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_PorLa"
+msgstr "por la"
+
+
+#. Default: "por"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_por"
+msgstr "por"
+
+
+#. Default: "Plataforma"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_Platform_PropertyName"
+msgstr "Plataforma"
+
+
+
+#. Default: "Intercambio de traducciones de acuerdo con"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_Standards_Interchange_Intro_PropertyName"
+msgstr "Intercambio de traducciones de acuerdo con"
+
+
+
+#. Default: "Componentes"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_Components_PropertyName"
+msgstr "Componentes"
+
+
+
+
+#. Default: "Instalados"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_Components_Installed_PropertyName"
+msgstr "Instalados"
+
+
+#. Default: "No Instalados"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_Components_NotInstalled_PropertyName"
+msgstr "No Instalados"
+
+
+#. Default: "Ausentes"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_Components_Missing_PropertyName"
+msgstr "Ausentes"
+
+#. Default: "Erroneos"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_Components_Error_PropertyName"
+msgstr "Erroneos"
+
+
+#. Default: "Opcionales"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_Components_Optional_PropertyName"
+msgstr "Opcionales"
+
+#. Default: "De terceras partes"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_Components_ThirdParty_PropertyName"
+msgstr "De terceras partes"
+
+#. Default: "Desarrollados por"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_Components_DevelopedBy_PropertyName"
+msgstr "Desarrollados por"
+
+#. Default: "Desarrollado por"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_DevelopedBy_PropertyName"
+msgstr "Desarrollado por"
+
+
+
+
+
+#. Default: "Servidor de Aplicaciones, Gestor de Contenidos y Lenguage de Programacion"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_Platform_Intro_PropertyName"
+msgstr "Servidor de Aplicaciones, Gestor de Contenidos y Lenguage de Programacion"

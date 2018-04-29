@@ -1,0 +1,4994 @@
+# Copyright (c) 2008, 2009,2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+#
+# GNU General Public License (GPL)
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+#
+# Authors: 
+# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana 
+# Model Driven Development sl  Valencia (Spain) www.ModelDD.org 
+# Antonio Carrasco Valero                       carrasco@ModelDD.org
+#
+# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>, 2010.
+msgid ""
+msgstr ""
+"Project-Id-Version: gvSIGi18n\n"
+"Last-Translator: Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>\n"
+"Language-Team: Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: en\n"
+"Language-Name: English\n"
+"Preferred-Encodings: latin1 utf-8\n"
+"Domain: gvSIGi18n\n"
+"X-Is-Fallback-For: en-au en-bz en-ca en-ie en-jm en-nz en-ph en-za en-tt en-gb en-us en-zw\n"
+
+
+#. Default: "Access to the translations catalog failed.\nDo you have permission ?\nIf so, you may want to login first."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_AccessFailedAndPromptYouHavePermission_label"
+msgstr "Access to the translations catalog failed.\nDo you have permission ?\nIf so, you may want to login first."
+
+#. Default: "Before"
+#: TRAInformeIdiomas_i18n_view.pt
+msgid "gvSIGi18n_Antes_label"
+msgstr "Before"
+
+#. Default: "Applies immediately, no need to refresh the page to make it effective."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_AppliesImmediatelyNoNeedToRefresh_help"
+msgstr "Applies immediately, no need to refresh the page to make it effective."
+
+#. Default: "Applies as soon as you select a translation for edition, no need to refresh the page to make it effective."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_AppliesOnSelectonForEditionNoNeedToRefresh_help"
+msgstr "Applies as soon as you select a translation for edition, no need to refresh the page to make it effective."
+
+#. Default: "Apply"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_BatchNewStatus_Apply_ButtonLabel"
+msgstr "Apply"
+
+#. Default: "Batch Status Change"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_BatchNewStatus_title"
+msgstr "Batch Status Change"
+
+#. Default: "Batch Status changes"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_BatchStatusChanges_label"
+msgstr "Batch Status changes"
+
+#. Default: "Retrieval of Translations has failed:"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_BrowseTranslationsFailure_Condition_msg"
+msgstr "Retrieval of Translations has failed:"
+
+#. Default: "An exception occurred while retrieving translations."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_BrowseTranslationsFailure_Exception_msg"
+msgstr "An exception occurred while retrieving translations."
+
+#. Default: "Please make sure that you are properly logged as a user authorized for translations access, or contact your site administrator."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_BrowseTranslationsFailure_MakeSureYouAreLoggedOrContactSiteAdministrator_msg"
+msgstr "Please make sure that you are properly logged as a user authorized for translations access, or contact your site administrator."
+
+#. Default: "Before date"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_BusquedasPorEventos_antesDeFecha_title"
+msgstr "Before date"
+
+#. Default: "After date"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_BusquedasPorEventos_despuesDeFecha_title"
+msgstr "After date"
+
+#. Default: "Dates in ISO format YYYY-MM-DD HH:MM:SS"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_BusquedasPorEventos_formatoFechaISO_help"
+msgstr "Dates in ISO format YYYY-MM-DD HH:MM:SS"
+
+#. Default: "Incomplete dates and times are allowed."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_BusquedasPorEventos_sePermitenFechasParciales_help"
+msgstr "Incomplete dates and times are allowed."
+
+#. Default: "Filter by users and dates of status change events"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_BusquedasPorEventos_title"
+msgstr "Filter by users and dates of status change events"
+
+#. Default: "User"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_BusquedasPorEventos_usuario_title"
+msgstr "User"
+
+#. Default: "Search by exact string symbol id"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_BusquedasPorIdCadena_title"
+msgstr "Search by exact string symbol id"
+
+#. Default: "Filter by words in the symbol or the translation"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_BusquedasPorPalabrasContenidasEnSimboloOTraduccion_title"
+msgstr "Filter by words in the symbol or the translation"
+
+#. Default: "Click to hide this column."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ColumnaSimboloColapsable_Action_Hide_help"
+msgstr "Click to hide this column."
+
+#. Default: "Click here to show the column with symbols."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ColumnaSimboloColapsable_Action_Show_help"
+msgstr "Click here to hide show the column with symbols."
+
+#. Default: "Please confirm that you want to navigate away from this language into the selected string in a different language"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_Confirmar_NavegarAIdiomaPrincipalYSimbolo_msgid"
+msgstr "Please confirm that you want to navigate away from this language into the selected string in a different language"
+
+
+#. Default: "Solicitud en cola de espera."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_AsyncPhase_Queued_msgid"
+msgstr "Request Queued."
+
+
+#. Default: "Solicitud enviada."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_AsyncPhase_Sent_msgid"
+msgstr "Request Sent."
+
+
+
+#. Default: "Bloqueado"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_LanguageLocked_label"
+msgstr "Locked"
+
+#. Default: "Create missing Translations report"
+#: TRAImportar.pt
+msgid "gvSIGi18n_CreateMissingTranslationsReport_msgid"
+msgstr "Create missing Translations report"
+
+#. Default: "After"
+#: TRAInformeIdiomas_i18n_view.pt
+msgid "gvSIGi18n_Despues_label"
+msgstr "After"
+
+#. Default: "Advance"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_EditorKeyActions_action_avanzar_label"
+msgstr "Advance"
+
+#. Default: "Next tab"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_EditorKeyActions_action_nextTabIndex_label"
+msgstr "Next tab"
+
+#. Default: "Translate and Advance"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_EditorKeyActions_action_traducirYAvanzar_label"
+msgstr "Translate and Advance"
+
+#. Default: "Translate"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_EditorKeyActions_action_traducir_label"
+msgstr "Translate"
+
+#. Default: "Return key"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_EditorKey_CR_label"
+msgstr "Return key"
+
+#. Default: "Tab key"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_EditorKey_Tab_label"
+msgstr "Tab key"
+
+#. Default: "Replace with backslash escape and continue"
+#: TRAExportar.pt
+msgid "gvSIGi18n_EncodingErrorHandleMode_BackslashReplaceAndContinue"
+msgstr "Replace with backslash escape and continue"
+
+#. Default: "Cancel on first error"
+#: TRAExportar.pt
+msgid "gvSIGi18n_EncodingErrorHandleMode_CancelOnFirstError"
+msgstr "Cancel on first error"
+
+#. Default: "Count all errors and cancel"
+#: TRAExportar.pt
+msgid "gvSIGi18n_EncodingErrorHandleMode_CountAllErrorsAndCancel"
+msgstr "Count all errors and cancel"
+
+#. Default: "Ignore and continue"
+#: TRAExportar.pt
+msgid "gvSIGi18n_EncodingErrorHandleMode_IgnoreAndContinue"
+msgstr "Ignore and continue"
+
+#. Default: "Replace and continue"
+#: TRAExportar.pt
+msgid "gvSIGi18n_EncodingErrorHandleMode_ReplaceAndContinue"
+msgstr "Replace and continue"
+
+#. Default: "Replace as XML and continue"
+#: TRAExportar.pt
+msgid "gvSIGi18n_EncodingErrorHandleMode_XMLReplaceAndContinue"
+msgstr "Replace as XML and continue"
+
+#. Default: "How to react upon occurences of encoding errors errors during the translations export process."
+#: TRAExportar.pt
+msgid "gvSIGi18n_EncodingErrorHandleMode_help"
+msgstr "How to react upon occurences of encoding errors errors during the translations export process."
+
+#. Default: "Encoding errors handling mode"
+#: TRAExportar.pt
+msgid "gvSIGi18n_EncodingErrorHandleMode_label"
+msgstr "Encoding errors handling mode"
+
+#. Default: "Error"
+#: TRAExportar.pt
+msgid "gvSIGi18n_Error_label"
+msgstr "Error"
+
+#. Default: "Status"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_Estado_label"
+msgstr "Status"
+
+
+
+#. Default: "Archivo Descargable resultado de Exportacion"
+#: TRACatalogo_Exportacion.py
+msgid "gvSIGi18n_ExportDownloadFileName_title"
+msgstr "Download file from Export Result"
+
+
+
+#. Default: "Internal error while creating the downloadable .jar  or .zip file."
+#: TRACatalogo_Exportacion.py
+msgid "gvSIGi18n_ExportStatus_CanNotCreateZipFile"
+msgstr "Internal error while creating the downloadable .jar  or .zip file."
+
+#. Default: "An exceptional error condition ocurred during export."
+#: TRACatalogo_Exportacion.pt
+msgid "gvSIGi18n_ExportStatus_Exception"
+msgstr "An exceptional error condition ocurred during export."
+
+#. Default: "There are no languages available for the user to export."
+#: TRACatalogo_Exportacion.py
+msgid "gvSIGi18n_ExportStatus_NoAvailableLanguagesToExport"
+msgstr "There are no languages available for the user to export."
+
+#. Default: "There are no modules available for the user to export."
+#: TRACatalogo_Exportacion.py
+msgid "gvSIGi18n_ExportStatus_NoAvailableModulesToExport"
+msgstr "There are no modules available for the user to export."
+
+#. Default: "The user has not selected any languages for export. Please select some languages or cancel the export operation."
+#: TRACatalogo_Exportacion.py
+msgid "gvSIGi18n_ExportStatus_NoLanguagesRequestedForExport"
+msgstr "The user has not selected any languages for export. Please select some languages or cancel the export operation."
+
+#. Default: "The user has not selected any modules for export, not the strings with unspecified module. Please select some modules, or the strings with unspecified module, or cancel the export operation."
+#: TRACatalogo_Exportacion.py
+msgid "gvSIGi18n_ExportStatus_NoModulesRequestedForExport"
+msgstr "The user has not selected any modules for export, not the strings with unspecified module. Please select some modules, or the strings with unspecified module, or cancel the export operation."
+
+#. Default: "The user can not execute the export use case."
+#: TRACatalogo_Exportacion.py
+msgid "gvSIGi18n_ExportStatus_UseCaseAssessmentFailed"
+msgstr "The user can not execute the export use case."
+
+#. Default: "Edit the configuration parameters for the export process.\nSelect at least one language to export.\nYou may select additional languages to incldue as reference files, or as the Default line of GNU text PO files.\nYou may choose the the character encoding applied to write each language export file.\nYou must select at least one module to export, or the strings with unspecified module."
+#: TRAExportar.pt
+msgid "gvSIGi18n_Exportar_EditParameters_interaction_help"
+msgstr "Edit the configuration parameters for the export process.\nSelect at least one language to export.\nYou may select additional languages to incldue as reference files, or as the Default line of GNU text PO files.\nYou may choose the the character encoding applied to write each language export file.\nYou must select at least one module to export, or the strings with unspecified module."
+
+#. Default: "Please, review the estimations made by the system about the translations content to include in the exported download file.\nThen please decide if you want to execute the export process, or cancel."
+#: TRAExportar.pt
+msgid "gvSIGi18n_Exportar_EstimateContent_interaction_help"
+msgstr "Please, review the estimations made by the system about the translations content to include in the exported download file.\nThen please decide if you want to execute the export process, or cancel."
+
+#. Default: "If the export process fails, the system will report the errors found.\nIf sucessful, the export process will generate a download archive.\nYour internet browser may offer you the option of saving or opening the download archive.\nPlease save the file, for future use with gvSIG or translation tools."
+#: TRAExportar.pt
+msgid "gvSIGi18n_Exportar_ExportContent_interaction_help"
+msgstr "If the export process fails, the system will report the errors found.\nIf sucessful, the export process will generate a download archive.\nYour internet browser may offer you the option of saving or opening the download archive.\nPlease save the file, for future use with gvSIG or translation tools."
+
+#. Default: "Please, review the export parameters to make sure you will obtain the desired content and format.\nThen you may request an estimation of the content to be exported, for your review."
+#: TRAExportar.pt
+msgid "gvSIGi18n_Exportar_ReviewParameters_interaction_help"
+msgstr "Please, review the export parameters to make sure you will obtain the desired content and format.\nThen you may request an estimation of the content to be exported, for your review."
+
+#. Default: "To Export translations, you must:\n1 - Configure the parameters for the export operation.\n2- Review the parameters entered.\n3 - Review the estimation of content to export.\n4 - Confirm the execution of the export operation.\nYou may reset the configuration parameteres to their initial values.\nYou may cancel at any time."
+#: TRAExportar.pt
+msgid "gvSIGi18n_Exportar_coreography_help"
+msgstr "To Export translations, you must:\n1 - Configure the parameters for the export operation.\n2- Review the parameters entered.\n3 - Review the estimation of content to export.\n4 - Confirm the execution of the export operation.\nYou may reset the configuration parameteres to their initial values.\nYou may cancel at any time."
+
+#. Default: "Export module names"
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_ExportModuleNames_label"
+msgstr "Export module names"
+
+#. Default: "Exportar para cada cadena los nombres de sus modulos, como comentarios en el fichero .properties o GNUgettextPO."
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_ExportModuleNames_help"
+msgstr "Export for each string, the names of its modules, as comments in the .properties or GNUgettextPO file."
+
+#. Default: "Export string sources"
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_ExportStringSources_label"
+msgstr "Export string sources"
+
+#. Default: "Exportar para cada cadena los nombres de ficheros fuentes donde se usa la cadena, como comentarios en el fichero .properties o GNUgettextPO."
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_ExportStringSources_help"
+msgstr "Export for each string, the names  of the source files where the string is used, as comments in the .properties or GNUgettextPO file."
+
+#. Default: "Export strings with unspecified module"
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_ExportUnspecifiedModule_label"
+msgstr "Export strings with unspecified module"
+
+#. Default: "Export translations status"
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_ExportTranslationsStatus_label"
+msgstr "Export translations status"
+
+#. Default: "Exportar el estado de cada traduccion, como un comentario en el fichero .properties o GNUgettextPO."
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_ExportTranslationsStatus_help"
+msgstr "Export the translations status, as a comment in the .properties or GNUgettextPO file."
+
+
+
+
+#. Default: "Exportar fechas y usuarios contribuidores"
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_ExportContributions_label"
+msgstr "Export contributing dates and user names"
+
+#. Default: "Exportar para cada traduccion las fechas y nombres de usuario que la crearon, tradujeron, revisaron o marcaron como definitiva."
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_ExportContributions_help"
+msgstr "Export for each translation the dates and user names that created, translated, reviewed or marked it as definitive."
+
+
+#. Default: "Start date and time"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_FechaComienzo_label"
+msgstr "Start date and time"
+
+#. Default: "End date and time"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_FechaFin_label"
+msgstr "End date and time"
+
+#. Default: "Report date"
+#: TRAExportar.pt
+msgid "gvSIGi18n_FechaInforme_label"
+msgstr "Report date"
+
+#. Default: "Hide columns with Status change Buttons"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_HideStateTransitionColumns_label"
+msgstr "Hide columns with Status change Buttons"
+
+#. Default: "Show columns with Status change Buttons"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ShowStateTransitionColumns_label"
+msgstr "Show columns with Status change Buttons"
+
+#. Default: "Reporting the Modules and Languages Status is an intensive process. It is not performed at each user request, but rather after some lapsed time, or changes made, since it was last generated."
+#: TRAInformeModulos_i18n_view.pt
+msgid "gvSIGi18n_InformeModulosIntensiveWarning_msgid"
+msgstr "Reporting the Modules and Languages Status is an intensive process. It is not performed at each user request, but rather after some lapsed time, or changes made, since it was last generated."
+
+#. Default: "Send changes to server without refreshing the whole page, allowing continuation of work in the current page."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_InteractionMode_Asynchronous_help"
+msgstr "Send changes to server without refreshing the whole page, allowing continuation of work in the current page."
+
+#. Default: "Asynchronous"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_InteractionMode_Asynchronous_label"
+msgstr "Asynchronous"
+
+#. Default: "Send changes to server by loading a completely new page."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_InteractionMode_Synchronous_help"
+msgstr "Send changes to server by loading a completely new page."
+
+#. Default: "Synchronous"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_InteractionMode_Synchronous_label"
+msgstr "Synchronous"
+
+#. Default: "Server interaction mode"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_InteractionMode_label"
+msgstr "Server interaction mode"
+
+#. Default: "You are not allowed to access the selected language.-\nDo you have permission ?\nIf so, you may want to login first."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_LanguageNotAccessible_label"
+msgstr "You are not allowed to access the selected language.-\nDo you have permission ?\nIf so, you may want to login first."
+
+#. Default: "Expected"
+#: TRAExportar.pt
+msgid "gvSIGi18n_MetricaInformeProgreso_Esperado_label"
+msgstr "Expected"
+
+#. Default: "Metric"
+#: TRAExportar.pt
+msgid "gvSIGi18n_MetricaInformeProgreso_Nombre_label"
+msgstr "Metric"
+
+#. Default: "% Done"
+#: TRAExportar.pt
+msgid "gvSIGi18n_MetricaInformeProgreso_PorcentajeRealizado_label"
+msgstr "% Done"
+
+#. Default: "Done"
+#: TRAExportar.pt
+msgid "gvSIGi18n_MetricaInformeProgreso_Realizado_label"
+msgstr "Done"
+
+#. Default: "not specified"
+#: TRAExportar.pt
+msgid "gvSIGi18n_ModuloNoEspecificado_msgid"
+msgstr "not specified"
+
+#. Default: "Modules"
+#: Idioma.pt
+msgid "gvSIGi18n_Modulos_title"
+msgstr "Modules"
+
+#. Default: "The detailed Modules report is costly to ellaborate, you may need to wait a couple minutes to obtain the results."
+#: TRAModulosDetalles.pt
+msgid "gvSIGi18n_NoPermisoVerDetallesModulosPorNoManagerRol_msgid"
+msgstr "The detailed Modules report is costly to ellaborate, you may need to wait a couple minutes to obtain the results."
+
+#. Default: "No"
+#: TRACatalogo_Exportacion.py TRAExportar.pt
+msgid "gvSIGi18n_No_value"
+msgstr "No"
+
+#. Default: "Operations"
+#: TRAInformeProgreso.py TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_NombreMetricaInformeProgreso_expected_operations_label"
+msgstr "Operations"
+
+#. Default: "Languages to create"
+#: TRAExportar.pt
+msgid "gvSIGi18n_NombreMetricaInformeProgreso_languages_to_create_label"
+msgstr "Languages to create"
+
+#. Default: "Modules to create"
+#: TRAExportar.pt
+msgid "gvSIGi18n_NombreMetricaInformeProgreso_modules_to_create_label"
+msgstr "Modules to create"
+
+#. Default: "Modules strings changes"
+#: TRAExportar.pt
+msgid "gvSIGi18n_NombreMetricaInformeProgreso_string_module_changes_label"
+msgstr "Modules strings changes"
+
+#. Default: "Strings to complete"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_NombreMetricaInformeProgreso_strings_to_complete_label"
+msgstr "Strings to complete"
+
+#. Default: "Strings to create"
+#: TRAExportar.pt
+msgid "gvSIGi18n_NombreMetricaInformeProgreso_strings_to_create_label"
+msgstr "Strings to create"
+
+#. Default: "Strings to process"
+#: TRAExportar.pt
+msgid "gvSIGi18n_NombreMetricaInformeProgreso_strings_to_process_label"
+msgstr "Strings to process"
+
+#. Default: "Changed Translations"
+#: TRAExportar.pt
+msgid "gvSIGi18n_NombreMetricaInformeProgreso_translation_changes_label"
+msgstr "Changed Translations"
+
+#. Default: "Translation Status changes"
+#: TRAExportar.pt
+msgid "gvSIGi18n_NombreMetricaInformeProgreso_translation_status_changes_label"
+msgstr "Translation Status changes"
+
+#. Default: "String sources changes"
+#: TRAExportar.pt
+msgid "gvSIGi18n_NombreMetricaInformeProgreso_string_sources_changes_label"
+msgstr "String sources changes"
+
+
+
+#. Default: "Translations created as pending"
+#: TRAExportar.pt
+msgid "gvSIGi18n_NombreMetricaInformeProgreso_translation_creations_as_pending_label"
+msgstr "Translations created as pending"
+
+#. Default: "Translations created as translated"
+#: TRAExportar.pt
+msgid "gvSIGi18n_NombreMetricaInformeProgreso_translation_creations_label"
+msgstr "Translations created as translated"
+
+#. Default: "Translations created as pending in new languages for pre-existing strings"
+#: TRAExportar.pt
+msgid "gvSIGi18n_NombreMetricaInformeProgreso_translations_created_in_new_languages_for_preexisting_strings_label"
+msgstr "Translations created as pending in new languages for pre-existing strings"
+
+#. Default: "Translations created"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_NombreMetricaInformeProgreso_translations_created_label"
+msgstr "Translations created"
+
+#. Default: "Ignored Translations"
+#: TRAExportar.pt
+msgid "gvSIGi18n_NombreMetricaInformeProgreso_translations_ignored_label"
+msgstr "Ignored Translations"
+
+#. Default: "Translations to create as pending in new languages for pre-existing strings"
+#: TRAExportar.pt
+msgid "gvSIGi18n_NombreMetricaInformeProgreso_translations_to_create_in_new_languages_for_preexisting_strings_label"
+msgstr "Translations to create as pending in new languages for pre-existing strings"
+
+#. Default: "Translations to process"
+#: TRAExportar.pt
+msgid "gvSIGi18n_NombreMetricaInformeProgreso_translations_to_process_label"
+msgstr "Translations to process"
+
+#. Default: "Unchanged Translations"
+#: TRAExportar.pt
+msgid "gvSIGi18n_NombreMetricaInformeProgreso_translations_unchanged_label"
+msgstr "Unchanged Translations"
+
+#. Default: "The process will also create any missing translations to any language in all strings."
+#: TRAImportar.py TRAImportar.pt
+msgid "gvSIGi18n_ProcesoCrearaTraduccionesQueFaltan_help"
+msgstr "The process will also create any missing translations to any language in all strings."
+
+#. Default: "Will create missing Translations."
+#: TRAImportar.py TRAImportar.pt
+msgid "gvSIGi18n_ProcesoCrearaTraduccionesQueFaltan_msgid"
+msgstr "Will create missing Translations."
+
+#. Default: "Created"
+#: TRAContenidoArchivosDeEntrada_i18n_view.py
+msgid "gvSIGi18n_ReportLabel_Created_msgid"
+msgstr "Created"
+
+#. Default: "Error"
+#: TRAContenidoArchivosDeEntrada_i18n_view.py
+msgid "gvSIGi18n_ReportLabel_Error_msgid"
+msgstr "Error"
+
+#. Default: "New Strings"
+#: TRAContenidoArchivosDeEntrada_i18n_view.py
+msgid "gvSIGi18n_ReportLabel_NewStrings_msgid"
+msgstr "New Strings"
+
+#. Default: "#lines"
+#: TRAContenidoArchivosDeEntrada_i18n_view.py
+msgid "gvSIGi18n_ReportLabel_NumLines_msgid"
+msgstr "#lines"
+
+#. Default: "Processed records"
+#: TRAContenidoArchivosDeEntrada_i18n_view.py
+msgid "gvSIGi18n_ReportLabel_ProcessedRecords_msgid"
+msgstr "Processed records"
+
+#. Default: "Same"
+#: TRAContenidoArchivosDeEntrada_i18n_view.py
+msgid "gvSIGi18n_ReportLabel_Same_msgid"
+msgstr "Same"
+
+#. Default: "Updated"
+#: TRAContenidoArchivosDeEntrada_i18n_view.py
+msgid "gvSIGi18n_ReportLabel_Updated_msgid"
+msgstr "Updated"
+
+#. Default: "Exceptional condition: internal error."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ResultCondition_Internal_Exception"
+msgstr "Exceptional condition: internal error."
+
+#. Default: "Exceptional condition: internal parameters missing."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ResultCondition_Internal_MissingParameter"
+msgstr "Exceptional condition: internal parameters missing."
+
+#. Default: "Exceptional condition: the connected user is not authorized to browse translations in the selected language."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ResultCondition_LanguageNotAccessible"
+msgstr "Exceptional condition: the connected user is not authorized to browse translations in the selected language."
+
+#. Default: "Exceptional condition: missing parameters."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ResultCondition_MissingParameter"
+msgstr "Exceptional condition: missing parameters."
+
+#. Default: "Exceptional condition: missing language code parameter ."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ResultCondition_MissingParameter_CodigoIdioma"
+msgstr "Exceptional condition: missing language code parameter ."
+
+#. Default: "Exceptional condition: missing string identifier parameter."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ResultCondition_MissingParameter_IdCadena"
+msgstr "Exceptional condition: missing string identifier parameter."
+
+#. Default: "Exceptional condition: no translations found matching the specified criteria."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ResultCondition_NoMatchingTranslationsFound"
+msgstr "Exceptional condition: no translations found matching the specified criteria."
+
+#. Default: "Exceptional condition: the connected user is not authorized to browse translations in any module."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ResultCondition_NoModulesAccessible"
+msgstr "Exceptional condition: the connected user is not authorized to browse translations in any module."
+
+#. Default: "Exceptional condition: the connected user is not authorized to browse translations."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ResultCondition_UseCaseAssessmentFailure_BrowseTranslations"
+msgstr "Exceptional condition: the connected user is not authorized to browse translations."
+
+#. Default: "Display translation details in the editor"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ShowEditorDetails_label"
+msgstr "Display translation details in the editor"
+
+#. Default: "Unique identifier for a string, and its translations to any language."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TRACadena_attr_id_help"
+msgstr "Unique identifier for a string, and its translations to any language."
+
+#. Default: "String Id"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TRACadena_attr_id_label"
+msgstr "String Id"
+
+#. Default: "The export process shall halt on the first occurrence of an encoding error, and report the error to the connected user."
+#: TRAExportar.pt
+msgid "gvSIGi18n_TRACatalogo_attr_modoGestionErrorCodificacionExportacionPorDefecto_option_Cancelar al primer error_help"
+msgstr "The export process shall halt on the first occurrence of an encoding error, and report the error to the connected user."
+
+#. Default: "The export process shall count all occurrences of encoding errors, and if there are any errors the user will be informed of them, rather than receiving the file download."
+#: TRAExportar.pt
+msgid "gvSIGi18n_TRACatalogo_attr_modoGestionErrorCodificacionExportacionPorDefecto_option_Contar todos los errores y cancelar_help"
+msgstr "The export process shall count all occurrences of encoding errors, and if there are any errors the user will be informed of them, rather than receiving the file download."
+
+#. Default: "The export process shall ignore all encoding errors, removing the characters cause of the error, and finally sending to the connected user the file download with the export result."
+#: TRAExportar.pt
+msgid "gvSIGi18n_TRACatalogo_attr_modoGestionErrorCodificacionExportacionPorDefecto_option_Ignorar y continuar_help"
+msgstr "The export process shall ignore all encoding errors, removing the characters cause of the error, and finally sending to the connected user the file download with the export result."
+
+#. Default: "The export process shall replace the characters cause of the error for its equivalent XML character secuence, and finally sending to the connected user the file download with the export result."
+#: TRAExportar.pt
+msgid "gvSIGi18n_TRACatalogo_attr_modoGestionErrorCodificacionExportacionPorDefecto_option_Sustituir por XML y continuar_help"
+msgstr "The export process shall replace the characters cause of the error for its equivalent XML character secuence, and finally sending to the connected user the file download with the export result."
+
+#. Default: "The export process shall replace the characters cause of the error for its equivalent backslash escaped secuence, and finally sending to the connected user the file download with the export result."
+#: TRAExportar.pt
+msgid "gvSIGi18n_TRACatalogo_attr_modoGestionErrorCodificacionExportacionPorDefecto_option_Sustituir por escape y continuar_help"
+msgstr "The export process shall replace the characters cause of the error for its equivalent backslash escaped secuence, and finally sending to the connected user the file download with the export result."
+
+#. Default: "The export process shall replace the characters cause of the error for some character (i.e. '?'), and finally sending to the connected user the file download with the export result."
+#: TRAExportar.pt
+msgid "gvSIGi18n_TRACatalogo_attr_modoGestionErrorCodificacionExportacionPorDefecto_option_Sustituir y continuar_help"
+msgstr "The export process shall replace the characters cause of the error for some character (i.e. '?'), and finally sending to the connected user the file download with the export result."
+
+#. Default: "Enter data for a language not known yet to the gvSIG-i18n application"
+#: TRACrear_Idioma_i18n_view.pt
+msgid "gvSIGi18n_TRACrearIioma_otherLanguageData_label"
+msgstr "Enter data for a language not known yet to the gvSIG-i18n application"
+
+#. Default: "The following are languages well known to the gvSIG-i18n application. Leave the --- option to enter another language, in the fields below."
+#: TRACrear_Idioma_i18n_view.pt
+msgid "gvSIGi18n_TRACrearIioma_wellKnownLanguages_help"
+msgstr "The following are languages well known to the gvSIG-i18n application. Leave the --- option to enter another language, in the fields below."
+
+#. Default: "Well Known Languages"
+#: TRACrear_Idioma_i18n_view.pt
+msgid "gvSIGi18n_TRACrearIioma_wellKnownLanguages_label"
+msgstr "Well Known Languages"
+
+#. Default: "All Modules will be exported in a single file"
+#: TRAExportar.pt
+msgid "gvSIGi18n_TRAExportacion_AllModulesWillBeExportedInOneFile_label"
+msgstr "All Modules will be exported in a single file"
+
+#. Default: "It was not possible to perform the export content estimation."
+#: TRAExportar.pt
+msgid "gvSIGi18n_TRAExportacion_ErrorEnEstimacionDeContenido_msgid"
+msgstr "It was not possible to perform the export content estimation."
+
+#. Default: "It was not possible to export the translations"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TRAExportacion_ErrorEnExportacionContenido_msgid"
+msgstr "It was not possible to export the translations"
+
+#. Default: "Could not complete the export operation."
+#: TRAExportar.pt
+msgid "gvSIGi18n_TRAExportacion_ErrorEnExportacion_msgid"
+msgstr "Could not complete the export operation."
+
+#. Default: "The export process shall generate the following files, and shall pack them in a download file, according to the export configuration parameters."
+#: TRAExportar.pt
+msgid "gvSIGi18n_TRAExportacion_FilesToGenerate_help"
+msgstr "The export process shall generate the following files, and shall pack them in a download file, according to the export configuration parameters."
+
+#. Default: "Files to generate"
+#: TRAExportar.pt
+msgid "gvSIGi18n_TRAExportacion_FilesToGenerate_msgid"
+msgstr "Files to generate"
+
+#. Default: "Language Not Exported"
+#: TRACatalogo_Exportacion.py TRAExportar.pt
+msgid "gvSIGi18n_TRAExportacion_LanguageNotExported_label"
+msgstr "Language Not Exported"
+
+#. Default: "Characters encoding"
+#: TRAImportar.py TRAImportar.pt
+msgid "gvSIGi18n_TRAExportacion_codificacionDeCaracteres_label"
+msgstr "Characters encoding"
+
+#. Default: "as Reference"
+#: TRAExportar.pt
+msgid "gvSIGi18n_TRAExportacion_idiomasDeReferencia_label"
+msgstr "as Reference"
+
+#. Default: "to Translate"
+#: TRAExportar.pt
+msgid "gvSIGi18n_TRAExportacion_idiomasParaTraducir_label"
+msgstr "to Translate"
+
+#. Default: "You must select at least one language for export. Please edit the export configuration parameters."
+#: TRAExportar.pt
+msgid "gvSIGi18n_TRAExportacion_parameterError_NoLanguagesSelected"
+msgstr "You must select at least one language for export. Please edit the export configuration parameters."
+
+#. Default: "You must select for export at least one module or the strings with unspecified module. Please edit the export configuration parameters."
+#: TRAExportar.pt
+msgid "gvSIGi18n_TRAExportacion_parameterError_NoModulesSelected"
+msgstr "You must select for export at least one module or the strings with unspecified module. Please edit the export configuration parameters."
+
+#. Default: "Languages to Export"
+#: TRAExportar.pt
+msgid "gvSIGi18n_TRAExportacion_parm_codigosIdiomasAExportar_label"
+msgstr "Languages to Export"
+
+#. Default: "Modules to export"
+#: TRAExportar.pt
+msgid "gvSIGi18n_TRAExportacion_parm_nombresModulosAExportar_label"
+msgstr "Modules to export"
+
+#. Default: "Code"
+#: TRAIdioma codigoIdiomaEnGvSIG
+msgid "gvSIGi18n_TRAIdioma_attr_codigoIdiomaEnGvSIG_label_abbreviated"
+msgstr "Code"
+
+#. Default: "Intl. code"
+#: TRAIdioma codigoInternacionalDeIdioma
+msgid "gvSIGi18n_TRAIdioma_attr_codigoInternacionalDeIdioma_label_abbreviated"
+msgstr "Intl. code"
+
+#. Default: "Name"
+#: TRAIdioma nombreIdioma
+msgid "gvSIGi18n_TRAIdioma_attr_nombreIdioma_label_abbreviated"
+msgstr "Name"
+
+#. Default: "Native name"
+#: TRAIdioma nombreNativoDeIdioma
+msgid "gvSIGi18n_TRAIdioma_attr_nombreNativoDeIdioma_label_abbreviated"
+msgstr "Native name"
+
+#. Default: "Completed Strings"
+#: TRAContenidoArchivosDeEntrada_i18n_view.py
+msgid "gvSIGi18n_TRAImportacion_attr_StringsCompleted_label"
+msgstr "Completed Strings"
+
+#. Default: "Strings to complete"
+#: TRAContenidoArchivosDeEntrada_i18n_view.py
+msgid "gvSIGi18n_TRAImportacion_attr_StringsToComplete_label"
+msgstr "Strings to complete"
+
+#. Default: "Completed Translations"
+#: TRAContenidoArchivosDeEntrada_i18n_view.py
+msgid "gvSIGi18n_TRAImportacion_attr_TranslationsCompleted_label"
+msgstr "Completed Translations"
+
+#. Default: "Report about the combined contents of the interchange files to import."
+#: TRAExportar.pt
+msgid "gvSIGi18n_TRAImportacion_attr_contenidoIntercambioTraducciones_help"
+msgstr "Report about the combined contents of the interchange files to import."
+
+#. Default: "Contents report"
+#: TRAExportar.pt
+msgid "gvSIGi18n_TRAImportacion_attr_contenidosIntercambioTraducciones_label"
+msgstr "Contents report"
+
+#. Default: "Phase of the process completing the catalog, creating pending translations for the strings and languages without translation."
+#: TRAContenidoArchivosDeEntrada_i18n_view.py
+msgid "gvSIGi18n_TRAImportacion_attr_faseCompletar_help"
+msgstr "Phase of the process completing the catalog, creating pending translations for the strings and languages without translation."
+
+#. Default: "Completion phase"
+#: TRAContenidoArchivosDeEntrada_i18n_view.py
+msgid "gvSIGi18n_TRAImportacion_attr_faseCompletar_label"
+msgstr "Completion phase"
+
+#. Default: "Phase of the process reading the input archive files, and creating languages, modules, strings and translations."
+#: TRAContenidoArchivosDeEntrada_i18n_view.py
+msgid "gvSIGi18n_TRAImportacion_attr_faseImportar_help"
+msgstr "Phase of the process reading the input archive files, and creating languages, modules, strings and translations."
+
+#. Default: "Import phase"
+#: TRAContenidoArchivosDeEntrada_i18n_view.py
+msgid "gvSIGi18n_TRAImportacion_attr_faseImportar_label"
+msgstr "Import phase"
+
+#. Default: "Created"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TRATraduccion_Creada"
+msgstr "Created"
+
+#. Default: "Open"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationAction_Abrir"
+msgstr "Open"
+
+#. Default: "Lock"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationAction_Bloquear"
+msgstr "Lock"
+
+#. Default: "Delete"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationAction_Borrar"
+msgstr "Delete"
+
+#. Default: "Save"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationAction_Grabar"
+msgstr "Save"
+
+#. Default: "Review"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationAction_Revisar"
+msgstr "Review"
+
+#. Default: "Number of translations in each page"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationsPerPage_label"
+msgstr "Number of translations in each page"
+
+#. Default: "Yes"
+#: TRACatalogo_Exportacion.py TRAExportar.pt
+msgid "gvSIGi18n_Yes_value"
+msgstr "Yes"
+
+#. Default: "Abandon create"
+#: Crear_inner.pt
+msgid "gvSIGi18n_abandonarcreacion_action_label"
+msgstr "Abandon create"
+
+#. Default: "Abandon import operation"
+#: TRAImportar.pt
+msgid "gvSIGi18n_abandonarimportar_action_label"
+msgstr "Abandon import operation"
+
+#. Default: "Warning, imported elements will overwrite the existing elements with same identity (string symbol, language code)."
+#: TRAImportar.pt
+msgid "gvSIGi18n_avisonuevocontenidosobreescribeexistente_msgid"
+msgstr "Warning, imported elements will overwrite the existing elements with same identity (string symbol, language code)."
+
+#. Default: "Flag"
+#: Idioma.pt
+msgid "gvSIGi18n_bandera_label"
+msgstr "Flag"
+
+#. Default: "Flag"
+#: TRAExportar.pt
+msgid "gvSIGi18n_bandera_msgid"
+msgstr "Flag"
+
+#. Default: "block size"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_bloquesdea_parameter_label"
+msgstr "block size"
+
+#. Default: "Navigate to"
+#: Idioma.pt
+msgid "gvSIGi18n_botonesnavegacion_label"
+msgstr "Navigate to"
+
+#. Default: "Search for String"
+#: Idioma.pt
+msgid "gvSIGi18n_busquedacadena_parameter_label"
+msgstr "Search for String"
+
+#. Default: "Strings"
+#: TRAInformeModulos_i18n_view.pt
+msgid "gvSIGi18n_cadenas_msgid"
+msgstr "Strings"
+
+#. Default: "Blocks of"
+#: Idioma.pt
+msgid "gvSIGi18n_cadenasporpagina_parameter_label"
+msgstr "Blocks of"
+
+#. Default: "Cancel translations export and navigate back to translations catalog home page."
+#: TRAExportar.pt
+msgid "gvSIGi18n_cancelarExportacionYVolverACatalogo_help"
+msgstr "Cancel translations export and navigate back to translations catalog home page."
+
+#. Default: "Cancel Export"
+#: TRAExportar.pt
+msgid "gvSIGi18n_cancelarExportacionYVolverACatalogo_msgid"
+msgstr "Cancel Export"
+
+#. Default: "Cancel import of translations contents and navigate back to import tabular view"
+#: TRAImportar.py TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_cancelarImportacionYVolverATabular_help"
+msgstr "Cancel import of translations contents and navigate back to import tabular view"
+
+#. Default: "Cancel import of translations contents and navigate back to import tabular view"
+#: TRAImportar.py TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_cancelarImportacionYVolverATabular_msgid"
+msgstr "Cancel import of translations contents and navigate back to import tabular view"
+
+#. Default: "Catalog"
+#: Idioma.pt
+msgid "gvSIGi18n_catalogo_action_label"
+msgstr "Catalog"
+
+#. Default: "Code"
+#: Idioma.pt
+msgid "gvSIGi18n_codigo_label"
+msgstr "Code"
+
+#. Default: "Comment"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_comentar_action_label"
+msgstr "Comment"
+
+#. Default: "Starting"
+#: Idioma.pt
+msgid "gvSIGi18n_comenzandopor_parameter_label"
+msgstr "Starting"
+
+#. Default: "Test"
+#: TRAInformeModulos_i18n_view.pt
+msgid "gvSIGi18n_comprobacion_msgid"
+msgstr "Test"
+
+#. Default: "Change export configuration parameters: format, languages and modules to include"
+#: TRAExportar.pt
+msgid "gvSIGi18n_configurarExportacion_help"
+msgstr "Change export configuration parameters: format, languages and modules to include"
+
+#. Default: "Configure Export"
+#: TRAExportar.pt
+msgid "gvSIGi18n_configurarExportacion_msgid"
+msgstr "Configure Export"
+
+#. Default: "Confirm the launch of the export process with the contents detailed below."
+#: TRAExportar.pt
+msgid "gvSIGi18n_confirmarExportacion_help"
+msgstr "Confirm the launch of the export process with the contents detailed below."
+
+#. Default: "Confirm Export"
+#: TRAExportar.pt
+msgid "gvSIGi18n_confirmarExportacion_msgid"
+msgstr "Confirm Export"
+
+#. Default: "Confirm the launch of the process to import the translation interchange contents, possibly taking a long time and demanding significant server resources, according to the details in the contents report and operations estimation below."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_confirmarImportacion_help"
+msgstr "Confirm the launch of the process to import the translation interchange contents, possibly taking a long time and demanding significant server resources, according to the details in the contents report and operations estimation below."
+
+#. Default: "Confirm Import"
+#: TRAImportar.py TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_confirmarImportacion_msgid"
+msgstr "Confirm Import"
+
+#. Default: "Please, confirm that you want to perform an Initialization of the translations catalog"
+#: TRAVerificar_action.pt
+msgid "gvSIGi18n_confirmarInicializacion_msgid"
+msgstr "Please, confirm that you want to perform an Initialization of the translations catalog"
+
+#. Default: "You must confirm within the allowed time, or  if you need more time to review the impact of the requested action, take your time to do so, and request the action again later."
+#: TRAImportar.py TRAImportar.pt
+msgid "gvSIGi18n_confirmarTimeout_help"
+msgstr "You must confirm within the allowed time, or  if you need more time to review the impact of the requested action, take your time to do so, and request the action again later."
+
+#. Default: ".zip file contents"
+#: TRAImportar.pt
+msgid "gvSIGi18n_contenidoarchivozip_msgid"
+msgstr ".zip file contents"
+
+#. Default: "Contents of Input archive files"
+#: TRAContenidoArchivosDeEntrada_i18n_view.py
+msgid "gvSIGi18n_contenidosarchivos_msgid"
+msgstr "Contents of Input archive files"
+
+#. Default: "Translation sections"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_controlBusinessPresentacion_title"
+msgstr "Translation sections"
+
+#. Default: "Choose the behaviour when pressing the CR and Tab keys in the translations editor text area."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_controlEditorKeys_help"
+msgstr "Choose the behaviour when pressing the CR and Tab keys in the translations editor text area."
+
+#. Default: "Editor keys behaviour"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_controlEditorKeys_title"
+msgstr "Editor keys behaviour"
+
+#. Default: "Control of presentation options,\nto show or hide specific page sections."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_controlPresentacion_help"
+msgstr "Control of presentation options,\nto show or hide specific page sections."
+
+#. Default: "Presentation options"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_controlPresentacion_title"
+msgstr "Presentation options"
+
+#. Default: "Control to show or hide page sections relevant to the technology."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_controlTechnicalPresentacion_help"
+msgstr "Control to show or hide page sections relevant to the technology."
+
+#. Default: "Technical sections"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_controlTechnicalPresentacion_title"
+msgstr "Technical sections"
+
+#. Default: "Error: Failure during Creation of Import process to Copy Translations."
+#: TRACopiar_Traducciones_i18n_view.pt
+msgid "gvSIGi18n_copyTranslations_action_CreationOfImportProcessToCopyTranslationsFailed_error_msgid"
+msgstr "Error: Failure during Creation of Import process to Copy Translations."
+
+#. Default: "The System will create an Import. Please execute the created import process, to copy the source translations into this Language."
+#: TRACopiar_Traducciones_i18n_view.pt
+msgid "gvSIGi18n_copyTranslations_action_ExecuteImportProcess"
+msgstr "The System will create an Import. Please execute the created import process, to copy the source translations into this Language."
+
+#. Default: "You do not have permission to Copy Translations into this Language from other Language"
+#: TRACopiar_Traducciones_i18n_view.pt
+msgid "gvSIGi18n_copyTranslations_action_NoPermission_ErrorMsg"
+msgstr "You do not have permission to Copy Translations into this Language from other Language"
+
+#. Default: "One of the existing Languages, from which the Translations will be copied into this Language."
+#: TRACopiar_Traducciones_i18n_view.pt
+msgid "gvSIGi18n_copyTranslations_action_SourceLanguage_help"
+msgstr "One of the existing Languages, from which the Translations will be copied into this Language."
+
+#. Default: "Source Language"
+#: TRACopiar_Traducciones_i18n_view.pt
+msgid "gvSIGi18n_copyTranslations_action_SourceLanguage_label"
+msgstr "Source Language"
+
+#. Default: "The Translations will be copied indirectly through an Import process."
+#: TRACopiar_Traducciones_i18n_view.pt
+msgid "gvSIGi18n_copyTranslations_action_TranslationsImportedThroughImportprocess"
+msgstr "The Translations will be copied indirectly through an Import process."
+
+#. Default: "Copy Translations from another Language into this Language"
+#: TRACopiar_Traducciones_i18n_view.pt
+msgid "gvSIGi18n_copyTranslations_action_page_title"
+msgstr "Copy Translations from another Language into this Language"
+
+#. Default: "Select a source Language to  copy Translations from, and click on Save button."
+#: TRACopiar_Traducciones_i18n_view.pt
+msgid "gvSIGi18n_copyTranslations_action_selectLanguage"
+msgstr "Select a source Language to  copy Translations from, and click on Save button."
+
+#. Default: "You can not copy Translations, there are no available Languages to copy from."
+#: TRACopiar_Traducciones_i18n_view.pt
+msgid "gvSIGi18n_copyTranslations_action_warning_NoAvailableLanguagesToCopyFrom"
+msgstr "You can not copy Translations, there are no available Languages to copy from."
+
+#. Default: "Default language, if importing a .properties file not inside a '.zip' o '.jar' archive, or there is no MANIFEST.MF"
+#: TRAExportar.pt
+msgid "gvSIGi18n_crearContenidoAImportar_DefaultLanguage_help"
+msgstr "Default language, if importing a .properties file not inside a '.zip' o '.jar' archive, or there is no MANIFEST.MF"
+
+#. Default: "Default language"
+#: TRAExportar.pt
+msgid "gvSIGi18n_crearContenidoAImportar_DefaultLanguage_label"
+msgstr "Default language"
+
+#. Default: "Create translations interchange contents from file to import"
+#: TRAExportar.pt
+msgid "gvSIGi18n_crearContenidoAImportar_action_page_title"
+msgstr "Create translations interchange contents from file to import"
+
+#. Default: "Select the file with translations to import and click on the save button."
+#: TRAExportar.pt
+msgid "gvSIGi18n_crearContenidoAImportar_action_selectFile"
+msgstr "Select the file with translations to import and click on the save button."
+
+#. Default: "The file contents must comply with the format for localization files as Java .properties o GNU gettext .po"
+#: TRAExportar.pt
+msgid "gvSIGi18n_crearContenidoAImportar_action_selectFile2"
+msgstr "The file contents must comply with the format for localization files as Java .properties o GNU gettext .po"
+
+#. Default: "One or more of these files may be archived (and optionally compressed) with .zip format (por ejemplo, .zip o .jar)."
+#: TRAExportar.pt
+msgid "gvSIGi18n_crearContenidoAImportar_action_selectFile3"
+msgstr "One or more of these files may be archived (and optionally compressed) with .zip format (por ejemplo, .zip o .jar)."
+
+#. Default: "File to import"
+#: TRAExportar.pt
+msgid "gvSIGi18n_crearContenidoAImportar_fichero_label"
+msgstr "File to import"
+
+#. Default: "Select one of the known languages, or Enter the language code and name of the language in english. Optionally enter the international code (if different) and the native language name."
+#: TRACrear_Idioma_i18n_view.pt
+msgid "gvSIGi18n_crearIdioma_action_page_help"
+msgstr "Select one of the known languages, or Enter the language code and name of the language in english. Optionally enter the international code (if different) and the native language name."
+
+#. Default: "Create New Language"
+#: TRACrear_Idioma_i18n_view.pt
+msgid "gvSIGi18n_crearIdioma_action_page_title"
+msgstr "Create New Language"
+
+
+
+
+#. Default: "Excepcion creando nuevo Idioma"
+#: TRACrear_Modulo_i18n_view.pt
+msgid "gvSIGi18n_errorCreating_Idioma_Exception_msgid"
+msgstr "Exception while creating new Language"
+
+
+
+
+#. Default: "Crear nuevo Modulo"
+#: TRACrear_Modulo_i18n_view.pt
+msgid "gvSIGi18n_crearModulo_action_page_title"
+msgstr "Create New Module"
+
+
+
+#. Default: "Introduzca el nombre deseado para el nuevo modulo. El nombre no debe concidir con los de los modulos existentes"
+#: TRACrear_Modulo_i18n_view.pt
+msgid "gvSIGi18n_crearModulo_action_page_help"
+msgstr "Enter a name for the desired new Module name. The name must not be the same as one of the existing modules."
+
+#. Default: "Nombres de los modulos existentes"
+#: TRACrear_Modulo_i18n_view.pt
+msgid "gvSIGi18n_crearModulo_ModulosExistentes_title"
+msgstr "Names of already existing modules"
+
+#. Default: "No hay modulos en el catalogo de traducciones"
+#: TRACrear_Modulo_i18n_view.pt
+msgid "gvSIGi18n_crearModulo_NoHayModulosExistentes_msgid"
+msgstr "There are no modules in the translations catalog."
+
+#. Default: "Nombre para el nuevo modulo"
+#: TRACrear_Modulo_i18n_view.pt
+msgid "gvSIGi18n_TRAModulo_Nombre_label"
+msgstr "Name for the new Module"
+
+#. Default: "Excepcion creando nuevo modulo"
+#: TRACrear_Modulo_i18n_view.pt
+msgid "gvSIGi18n_errorCreating_Modulo_Exception_msgid"
+msgstr "Exception while creating new Module"
+
+
+
+
+
+#. Default: "Enter a translation of the new requested string symbol into the specified main language."
+#: TRACrear_SolicitudCadena_i18n_view.pt
+msgid "gvSIGi18n_crearSolicitudCadena_MainLanguage_help"
+msgstr "Enter a translation of the new requested string symbol into the specified main language."
+
+#. Default: "The Symbol for the requested new string must be unique and not already existing in the translations catalog, and not recently requested to be added."
+#: TRACrear_SolicitudCadena_i18n_view.pt
+msgid "gvSIGi18n_crearSolicitudCadena_NewRequestedStringSymbol_help"
+msgstr "The Symbol for the requested new string must be unique and not already existing in the translations catalog, and not recently requested to be added."
+
+#. Default: "New Requested String Symbol"
+#: TRACrear_SolicitudCadena_i18n_view.pt
+msgid "gvSIGi18n_crearSolicitudCadena_NewRequestedStringSymbol_label"
+msgstr "New Requested String Symbol"
+
+#. Default: "The language for which a reference translation is also supplied for the new requested string symbol."
+#: TRACrear_SolicitudCadena_i18n_view.pt
+msgid "gvSIGi18n_crearSolicitudCadena_ReferenceLanguage_help"
+msgstr "The language for which a reference translation is also supplied for the new requested string symbol."
+
+#. Default: "Reference Language"
+#: TRACrear_SolicitudCadena_i18n_view.pt
+msgid "gvSIGi18n_crearSolicitudCadena_ReferenceLanguage_label"
+msgstr "Reference Language"
+
+#. Default: "You must enter a symbol for the new requested string."
+#: TRACrear_SolicitudCadena_i18n_view.pt
+msgid "gvSIGi18n_crearSolicitudCadena_RequestedStringSymbol_IsRequired_error_message"
+msgstr "You must enter a symbol for the new requested string."
+
+#. Default: "You must enter a translation into the main language"
+#: TRACrear_SolicitudCadena_i18n_view.pt
+msgid "gvSIGi18n_crearSolicitudCadena_TranslationIntoMainLanguage_IsRequired_error_message"
+msgstr "You must enter a translation into the main language"
+
+#. Default: "Translation into the Main Language"
+#: TRACrear_SolicitudCadena_i18n_view.pt
+msgid "gvSIGi18n_crearSolicitudCadena_TranslationIntoMainLanguage_label"
+msgstr "Translation into the Main Language"
+
+#. Default: "Translation into the Reference Language"
+#: TRACrear_SolicitudCadena_i18n_view.pt
+msgid "gvSIGi18n_crearSolicitudCadena_TranslationIntoReferenceLanguage_label"
+msgstr "Translation into the Reference Language"
+
+#. Default: "You do not have permission to create a new String request"
+#: TRACrear_SolicitudCadena_i18n_view.pt
+msgid "gvSIGi18n_crearSolicitudCadena_action_NoPermissionToCreate_ErrorMsg"
+msgstr "You do not have permission to create a new String request"
+
+#. Default: "Enter the requested String symbol, and its translation to the main and reference languages."
+#: TRACrear_SolicitudCadena_i18n_view.pt
+msgid "gvSIGi18n_crearSolicitudCadena_action_page_help"
+msgstr "Enter the requested String symbol, and its translation to the main and reference languages."
+
+#. Default: "Create New String Request"
+#: TRACrear_SolicitudCadena_i18n_view.pt
+msgid "gvSIGi18n_crearSolicitudCadena_action_page_title"
+msgstr "Create New String Request"
+
+#. Default: "Create"
+#: ColeccionEnTabla_view.pt
+msgid "gvSIGi18n_crear_action_label"
+msgstr "Create"
+
+#. Default: "You have waited too long to confirm the import operation. Please, request the operation again if you wish to do so."
+#: TRAImportar.py TRAImportar.pt
+msgid "gvSIGi18n_demasiadaEsperaVuelvaASolicitarImportacion_help"
+msgstr "You have waited too long to confirm the import operation. Please, request the operation again if you wish to do so."
+
+#. Default: "Detail"
+#: Idioma.pt
+msgid "gvSIGi18n_detalle_label"
+msgstr "Detail"
+
+#. Default: "Details"
+#: TRACModulosDetalles.pt TRAModulosDetalles.pt
+msgid "gvSIGi18n_detalles_label"
+msgstr "Details"
+
+#. Default: "Edit"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_editar_action_label"
+msgstr "Edit"
+
+#. Default: "Editor"
+#: Idioma.pt
+msgid "gvSIGi18n_editor_label"
+msgstr "Editor"
+
+#. Default: "Editor"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_editor_section_label"
+msgstr "Editor"
+
+#. Default: "The system will execute the export process, and if sucessful, will produce a download archive."
+#: TRAExportar.pt
+msgid "gvSIGi18n_ejecutarExportacion_action_help"
+msgstr "The system will execute the export process, and if sucessful, will produce a download archive."
+
+#. Default: "Execute Export"
+#: TRAExportar.pt
+msgid "gvSIGi18n_ejecutarExportacion_action_label"
+msgstr "Execute Export"
+
+#. Default: "In gvSIG"
+#: Idioma.pt
+msgid "gvSIGi18n_engvsig_label"
+msgstr "In gvSIG"
+
+#. Default: "In"
+#: Crear_inner.pt
+msgid "gvSIGi18n_ensiguecontenedorcuandocreando"
+msgstr "In"
+
+#. Default: "Ensure initialization"
+#: TRACatalogoLayInit.pt
+msgid "gvSIGi18n_ensureInit_msgid"
+msgstr "Ensure initialization"
+
+#. Default: "Internal error while producing report of import operations."
+#: TRAImportar.py TRAImportar.pt
+msgid "gvSIGi18n_errorEstimatingImportOperations_warning_msgid"
+msgstr "Internal error while producing report of import operations."
+
+#. Default: "Invalid interchange file contents. Can not create an interchange contents element without an uploaded file with valid contents."
+#: TRAImportar.pt
+msgid "gvSIGi18n_errorcreacioncontenidointercambio_faltafichero_warning_msgid"
+msgstr "Invalid interchange file contents. Can not create an interchange contents element without an uploaded file with valid contents."
+
+#. Default: "Can not create an interchange contents element without an uploaded file."
+#: TRAImportar.py TRAImportar.pt
+msgid "gvSIGi18n_errorcreacioncontenidointercambio_ficherosincontenidovalido_warning_msgid"
+msgstr "Can not create an interchange contents element without an uploaded file."
+
+#. Default: "The system will estimate the content that will be included in the exported download file."
+#: TRAExportar.pt
+msgid "gvSIGi18n_estimarExportacion_action_help"
+msgstr "The system will estimate the content that will be included in the exported download file."
+
+#. Default: "Estimate export contents"
+#: TRAExportar.pt
+msgid "gvSIGi18n_estimarExportacion_action_label"
+msgstr "Estimate export contents"
+
+#. Default: "Estimate of verification or creation operations to perform during the import process."
+#: TRAImportar.py TRAImportar.pt
+msgid "gvSIGi18n_estimationOfImportOperations_help"
+msgstr "Estimate of verification or creation operations to perform during the import process."
+
+#. Default: "Estimate of import operations"
+#: TRAImportar.py TRAImportar.pt
+msgid "gvSIGi18n_estimationOfImportOperations_msgid"
+msgstr "Estimate of import operations"
+
+#. Default: "Exclude summary"
+#: Idioma.pt
+msgid "gvSIGi18n_excluirresumen_parameter_label"
+msgstr "Exclude summary"
+
+#. Default: "Date and time of export confirmation"
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportConfirmationDateAndTime_label"
+msgstr "Date and time of export confirmation"
+
+#. Default: "Date and time of export review"
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportReviewDateAndTime_label"
+msgstr "Date and time of export review"
+
+#. Default: "File to download"
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_FileToDownload_label"
+msgstr "File to download"
+
+#. Default: "Default language code"
+#: TRACatalogo_Exportacion.py
+msgid "gvSIGi18n_exportar_Parameter_DefaultLanguageCode_label"
+msgstr "Default language code"
+
+#. Default: "Al exportar en formato Java .properties, los ficheros exportados para este idioma no incluiran el codigo de idioma en el nombre del fichero Java .properties."
+#: TRACatalogo_Exportacion.py
+msgid "gvSIGi18n_exportar_Parameter_DefaultLanguageCode_help"
+msgstr "When exporting in Java .properties format, exported files for this language shall not include the language code in the Java .properties file name."
+
+#. Default: "Default module name"
+#: TRACatalogo_Exportacion.py
+msgid "gvSIGi18n_exportar_Parameter_DefaultModuleName_label"
+msgstr "Default module name"
+
+#. Default: "Cuando se exporta un fichero para cada modulo, es el nombre a utilizar en los nombres de archivos GNUgettext PO, o para las carpetas contenedoras de ficheros Java .properties, para las cadenas para las que no se ha especificado modulo."
+#: TRACatalogo_Exportacion.py
+msgid "gvSIGi18n_exportar_Parameter_DefaultModuleName_help"
+msgstr "When exporting a separate file for each module, it is the name to use in a GNUgettext .PO file name, or for the folder containing a Java .properties file."
+
+#. Default: "Dominio para cadenas sin modulo"
+#: TRACatalogo_Exportacion.py
+msgid "gvSIGi18n_exportar_Parameter_DefaultDomain_label"
+msgstr "Domain for strings not in a module"
+
+#. Default: "Dato que aparece en los ficheros de exportacion de tipo GNU gettext PO, cuando se exportan separadamente en su propio fichero cadenas que no pertenecen a un modulo, para identificar la aplicacion o modulo a que se aplican las traducciones."
+#: TRACatalogo_Exportacion.py
+msgid "gvSIGi18n_exportar_Parameter_DefaultDomain_help"
+msgstr "Information that appears in the exported files with GNU gettext PO format, when exporting separately in its own file strings that do not pertain to any module,  to indicate the application or module to which the translations apply."
+
+
+#. Default: "GNU gettext .PO format"
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_ExportAsGNUgettextPO_label"
+msgstr "GNU gettext .PO format"
+
+#. Default: "Java .properties format"
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_ExportAsJavaProperties_label"
+msgstr "Java .properties format"
+
+#. Default: "Export format"
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_ExportFormat_label"
+msgstr "Export format"
+
+
+#. Default: "Formato de los ficheros de exportacion de traducciones como Java .properties, o GNUtettext PO."
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_ExportFormat_help"
+msgstr "Format for the translations export files, as Java .properties or GNUgettext .PO."
+
+#. Default: "Include locales.csv file"
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_IncludeLocalesCSV_label"
+msgstr "Include locales.csv file"
+
+#. Default: "Incluir en el archivo descargable un fichero locales.csv declarando los ficheros de traducciones contenidos en el archivo (usado por gvSIG)."
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_IncludeLocalesCSV_help"
+msgstr "Include in the downloadable archive, a locales.csv file declaring the translations files contained in the archive (used by gvSIG)."
+
+#. Default: "Include MANIFEST.MF file"
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_IncludeManifest_label"
+msgstr "Include MANIFEST.MF file"
+
+
+#. Default: "Incluir en el archivo descargable un fichero MANIFEST.MF declarando los ficheros de traducciones contenidos en el archivo."
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_IncludeManifest_help"
+msgstr "Include in the downloadable archive, a MANIFEST.MF file declaring the translations files contained in the archive."
+
+#. Default: "Separate modules"
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_SeparatedModules_label"
+msgstr "Separate modules"
+
+
+
+#. Default: "Exportar cada modulo por separado en su propio fichero, todos ellos incluidos en el archivo descargable."
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_SeparatedModules_help"
+msgstr "Export each module in its own file, with all of them packed in the downloadable archive."
+
+
+#. Default: "Archive type (.jar or .zip)"
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_TipoArchivo_label"
+msgstr "Archive type (.jar or .zip)"
+
+
+#. Default: "Tipo de archivo en que se descargan el modulo o modulos exportados. Puede ser .jar o .zip."
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_TipoArchivo_help"
+msgstr "Type of the archive used to pack the module or modules for download. Options are .jar or .zip."
+
+
+#. Default: "Nombre de Fichero de Exportacion para gvSIG"
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_ExportFilenameForGvSIG_label"
+msgstr "Export Filename for gvSIG"
+
+
+
+#. Default: "Exportar elementos como XML"
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_ExportElementsAsXML_label"
+msgstr "Export elements as XML"
+
+
+
+#. Default: "Exportar Catalogo raiz"
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_ExportarTRACatalogo_label"
+msgstr "Export root TRACatalogo"
+
+
+#. Default: "Exportar Configuraciones"
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_ExportarTRAConfiguraciones_label"
+msgstr "Export Configurations"
+
+
+
+#. Default: "Exportar Parametros de Control de Progreso"
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_ExportarTRAParametrosControlProgreso_label"
+msgstr "Export Progress Control Parameters"
+
+
+#. Default: "Exportar Idiomas"
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_ExportarTRAIdiomas_label"
+msgstr "Export Languages"
+
+#. Default: "Exportar Solicitudes de Cadenas"
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_ExportarTRASolicitudesCadenas_label"
+msgstr "Export String Requests"
+
+
+#. Default: "Exportar Modulos"
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_ExportarTRAModulos_label"
+msgstr "Export Modules"
+
+
+#. Default: "Exportar Informes"
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_ExportarTRAInformes_label"
+msgstr "Export Reports"
+
+#. Default: "Exportar Importaciones"
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_ExportarTRAImportaciones_label"
+msgstr "Export Imports"
+
+#. Default: "Exportar Progresos"
+#: TRAExportar.pt
+msgid "gvSIGi18n_exportar_Parameter_ExportarTRAProgresos_label"
+msgstr "Export Progresses"
+
+
+
+
+
+
+#. Default: "Export"
+#: TRAExportar.pt Idioma.pt
+msgid "gvSIGi18n_exportar_action_label"
+msgstr "Export"
+
+#. Default: "Extra langs."
+#: Idioma.pt
+msgid "gvSIGi18n_extralangs_parameter_label"
+msgstr "Extra langs."
+
+#. Default: "Languages Report date"
+#: TRAInformeModulos_i18n_view.pt
+msgid "gvSIGi18n_fechaInformeIdiomas_label"
+msgstr "Languages Report date"
+
+#. Default: "Modules Report date"
+#: TRAInformeModulos_i18n_view.pt
+msgid "gvSIGi18n_fechaInformeModulos_label"
+msgstr "Modules Report date"
+
+#. Default: "Report date"
+#: TRAInformeModulos_i18n_view.pt
+msgid "gvSIGi18n_fechaInforme_label"
+msgstr "Report date"
+
+#. Default: "on"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_fecha_el"
+msgstr "on"
+
+#. Default: "File"
+#: TRAExportar.pt
+msgid "gvSIGi18n_fichero_msgid"
+msgstr "File"
+
+#. Default: "Filter"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_filtro_section_label"
+msgstr "Filter"
+
+#. Default: "Copyright 2008, 2009 Conselleria de Infraestructuras y Transporte de la Generalitat Valenciana, in Valencia, Spain"
+#: gvSIGtraduccionesFooter_view.pt
+msgid "gvSIGi18n_footer_copyright"
+msgstr "Copyright 2008, 2009 Conselleria de Infraestructuras y Transporte de la Generalitat Valenciana, in Valencia, Spain"
+
+#. Default: "gvSIG is a desktop application for management of geographic information, released as Free Libre Open Source Software (FLOSS)."
+#: gvSIGtraduccionesFooter_view.pt
+msgid "gvSIGi18n_footer_gvSIG_description"
+msgstr "gvSIG is a desktop application for management of geographic information, released as Free Libre Open Source Software (FLOSS)."
+
+#. Default: "Developed by Model Driven Development, sl and Antonio Carrasco Valero for the gvSIG project of the Conselleria de Infraestructuras y Transporte de la Generalitat Valenciana, , in Valencia, Spain."
+#: gvSIGtraduccionesFooter_view.pt
+msgid "gvSIGi18n_footer_gvSIGi18n_author"
+msgstr "Developed by Model Driven Development, sl and Antonio Carrasco Valero for the gvSIG project of the Conselleria de Infraestructuras y Transporte de la Generalitat Valenciana, , in Valencia, Spain."
+
+#. Default: "Application for the translation of user interface strings, in the program for geographic information management gvSIG, its extensions, and the collaborative applications (like this one) used by the gvSIG project."
+#: gvSIGtraduccionesFooter_view.pt
+msgid "gvSIGi18n_footer_gvSIGi18n_description"
+msgstr "Application for the translation of user interface strings, in the program for geographic information management gvSIG, its extensions, and the collaborative applications (like this one) used by the gvSIG project."
+
+#. Default: "gvSIG translations"
+#: gvSIGtraduccionesFooter_view.pt
+msgid "gvSIGi18n_footer_gvSIGi18n_title"
+msgstr "gvSIG translations"
+
+#. Default: "from"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_fromToIn_from_label"
+msgstr "from"
+
+#. Default: "of"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_fromToIn_in_label"
+msgstr "of"
+
+#. Default: "to"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_fromToIn_to_label"
+msgstr "to"
+
+#. Default: "Translation has been changed"
+#: TRAIdioma nombreNativoDeIdioma
+msgid "gvSIGi18n_haHabidoCambioTraduccion_msg"
+msgstr "Translation has been changed"
+
+#. Default: "History"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_historia_section_label"
+msgstr "History"
+
+#. Default: "Action date"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_historiafechaaccion_label"
+msgstr "Action date"
+
+#. Default: "Actor user"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_historiausuarioactor_label"
+msgstr "Actor user"
+
+#. Default: "I18N"
+#: Idioma.pt
+msgid "gvSIGi18n_i18n_label"
+msgstr "I18N"
+
+#. Default: "Language"
+#: TRAExportar.pt
+msgid "gvSIGi18n_idioma_msgid"
+msgstr "Language"
+
+#. Default: "Reference Language"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_idiomareferencia_parameter_label"
+msgstr "Reference Language"
+
+#. Default: "Reference Languages"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_idiomasSection_title"
+msgstr "Reference Languages"
+
+#. Default: "Languages in extension"
+#: TRAImportar.pt
+msgid "gvSIGi18n_idiomasextension_msgid"
+msgstr "Languages in extension"
+
+#. Default: "from .zip files previously created and uploaded to the server"
+#: TRAImportar.pt
+msgid "gvSIGi18n_importaciondesdezip_msgid"
+msgstr "from .zip files previously created and uploaded to the server"
+
+#. Default: "Import"
+#: TRAImportar.pt
+msgid "gvSIGi18n_importar_action_msgid"
+msgstr "Import"
+
+#. Default: "Include States"
+#: Idioma.pt
+msgid "gvSIGi18n_incluirestados_parameter_label"
+msgstr "Include States"
+
+#. Default: "Summary"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_informe_section_label"
+msgstr "Summary"
+
+#. Default: "Summary report about the translation state of all Strings in the Catalog."
+#: Catalogo.pt
+msgid "gvSIGi18n_informedeprogresocatalogo_section_help"
+msgstr "Summary report about the translation state of all Strings in the Catalog."
+
+#. Default: "Progress Report"
+#: Catalogo.pt
+msgid "gvSIGi18n_informedeprogresocatalogo_section_label"
+msgstr "Progress Report"
+
+#. Default: "Summary report about the translation state of strings into this language."
+#: Catalogo.pt
+msgid "gvSIGi18n_informedeprogresoidioma_section_help"
+msgstr "Summary report about the translation state of strings into this language."
+
+#. Default: "Progress report for translation into a Language"
+#: Idioma.pt
+msgid "gvSIGi18n_informedeprogresoidioma_section_label"
+msgstr "Progress report for translation into a Language"
+
+#. Default: "Modules Report"
+#: TRAInformeModulos_i18n_view.pt
+msgid "gvSIGi18n_informepormodulos_msgid"
+msgstr "Modules Report"
+
+#. Default: "Initialize the translations catalog"
+#: TRAVerificar_action.pt
+msgid "gvSIGi18n_inicializar_msgid"
+msgstr "Initialize the translations catalog"
+
+#. Default: "Last imported Archive"
+#: TRAContenidoArchivosDeEntrada_i18n_view.py
+msgid "gvSIGi18n_lastarchivename_msgid"
+msgstr "Last imported Archive"
+
+#. Default: "Last imported Module"
+#: TRAContenidoArchivosDeEntrada_i18n_view.py
+msgid "gvSIGi18n_lastmodulename_msgid"
+msgstr "Last imported Module"
+
+#. Default: "The maximum number of translations to explore in a single page is"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_limiteNumeroRegistrosExplorados_help"
+msgstr "The maximum number of translations to explore in a single page is"
+
+#. Default: "List"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_lista_section_label"
+msgstr "List"
+
+#. Default: "Select the modules with the translations you are interested in.\nIf no module is selected then there is no restriction on translation modules.\nThe not specified module represents those strings that are not associated with any specific module."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_modulesFilter_help"
+msgstr "Select the modules with the translations you are interested in.\nIf no module is selected then there is no restriction on translation modules.\nThe not specified module represents those strings that are not associated with any specific module."
+
+#. Default: "Filter by Modules"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_modulesFilter_title"
+msgstr "Filter by Modules"
+
+#. Default: "Module"
+#: TRAExportar.pt
+msgid "gvSIGi18n_modulo_msgid"
+msgstr "Module"
+
+#. Default: "Show translation History"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_mostrarSeccionHistoria_section_label"
+msgstr "Show translation History"
+
+#. Default: "Show summary Report"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_mostrarSeccionInforme_section_label"
+msgstr "Show summary Report"
+
+#. Default: "Show translations List"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_mostrarSeccionLista_section_label"
+msgstr "Show translations List"
+
+#. Default: "Summary"
+#: TRACatalogo.pt
+msgid "gvSIGi18n_mostrarinformedeestado_msgid"
+msgstr "Summary"
+
+#. Default: "Report"
+#: TRAInformeModulos_i18n_view.pt
+msgid "gvSIGi18n_mostrarinformepormodulos_msgid"
+msgstr "Report"
+
+#. Default: "New Status"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_newStatus_title"
+msgstr "New Status"
+
+#. Default: "None"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ningunLenguagesReferencia_action_label"
+msgstr "None"
+
+#. Default: "-"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ningunMinus_action_label"
+msgstr "-"
+
+#. Default: "No Languages Status Report available."
+#: TRAInformeModulos_i18n_view.pt
+msgid "gvSIGi18n_noHayInfomeIdiomas_msgid"
+msgstr "No Languages Status Report available."
+
+#. Default: "No Modules Status Report available."
+#: TRAInformeModulos_i18n_view.pt
+msgid "gvSIGi18n_noHayInfomeModulos_msgid"
+msgstr "No Modules Status Report available."
+
+#. Default: "You may not have the proper rights to launch an import process. If you do, please make sure that you are logged in the site with the proper user account. It is not allowed to launch again an import process that has already been started."
+#: TRAImportar.py TRAImportar.pt
+msgid "gvSIGi18n_noPuedeImportarYVolverATabular_help"
+msgstr "You may not have the proper rights to launch an import process. If you do, please make sure that you are logged in the site with the proper user account. It is not allowed to launch again an import process that has already been started."
+
+#. Default: "You can not import these translations contents. Please navigate back to import tabular view."
+#: TRAImportar.py TRAImportar.pt
+msgid "gvSIGi18n_noPuedeImportarYVolverATabular_msgid"
+msgstr "You can not import these translations contents. Please navigate back to import tabular view."
+
+#. Default: "There are no valid Input archive files."
+#: TRAContenidoArchivosDeEntrada_i18n_view.py
+msgid "gvSIGi18n_nohayarchivosdeentradavalidos_warning_msgid"
+msgstr "There are no valid Input archive files."
+
+#. Default: "NO .zip files available for import."
+#: TRAImportar.pt
+msgid "gvSIGi18n_nohayarchivoszipdisponibles_msgid"
+msgstr "NO .zip files available for import."
+
+#. Default: "There is no valid translation interchange content."
+#: TRAExportar.pt
+msgid "gvSIGi18n_nohaycontenidosintercambiotraducciones_warning_msgid"
+msgstr "There is no valid translation interchange content."
+
+#. Default: "There is no exception report available at this time"
+#: TRAContenidoArchivosDeEntrada_i18n_view.py
+msgid "gvSIGi18n_nohayinformeexcepcion_warning_msgid"
+msgstr "There is no exception report available at this time"
+
+#. Default: "There is no final progress report available at this time"
+#: TRAContenidoArchivosDeEntrada_i18n_view.py
+msgid "gvSIGi18n_nohayinformefinal_warning_msgid"
+msgstr "There is no final progress report available at this time"
+
+#. Default: "There is no progress report available at this time"
+#: TRAContenidoArchivosDeEntrada_i18n_view.py
+msgid "gvSIGi18n_nohayinformeprogreso_warning_msgid"
+msgstr "There is no progress report available at this time"
+
+#. Default: "There is no available Completion Phase report."
+#: TRAContenidoArchivosDeEntrada_i18n_view.py
+msgid "gvSIGi18n_nohayinformeprogresofasecompletar_warning_msgid"
+msgstr "There is no available Completion Phase report."
+
+#. Default: "There is no available Import Phase report."
+#: TRAContenidoArchivosDeEntrada_i18n_view.py
+msgid "gvSIGi18n_nohayinformeprogresofaseimportar_warning_msgid"
+msgstr "There is no available Import Phase report."
+
+#. Default: "Archive"
+#: TRAContenidoArchivosDeEntrada_i18n_view.py
+msgid "gvSIGi18n_nombrearchivo_msgid"
+msgstr "Archive"
+
+#. Default: "File name"
+#: TRAImportar.pt
+msgid "gvSIGi18n_nombrearchivozip_msgid"
+msgstr "File name"
+
+#. Default: "Extension name"
+#: TRAImportar.pt
+msgid "gvSIGi18n_nombreextension_msgid"
+msgstr "Extension name"
+
+#. Default: "Module"
+#: TRAContenidoArchivosDeEntrada_i18n_view.py
+msgid "gvSIGi18n_nombremodulo_msgid"
+msgstr "Module"
+
+#. Default: "Warning: you do not have read permission"
+#: Idioma.pt
+msgid "gvSIGi18n_noreadpermission_warning"
+msgstr "Warning: you do not have read permission"
+
+#. Default: "It has not been possible to create the new element."
+#: Crear_inner.pt
+msgid "gvSIGi18n_nosehacreadoelemento_info_msgid"
+msgstr "It has not been possible to create the new element."
+
+#. Default: "No translations have been found matching the specified criteria."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_nosehanencontradotraducciones_message"
+msgstr "No translations have been found matching the specified criteria."
+
+#. Default: "Warning: you do not have write permission"
+#: Idioma.pt
+msgid "gvSIGi18n_nowritepermission_warning"
+msgstr "Warning: you do not have write permission"
+
+#. Default: "New state"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_nuevoestado_action_label"
+msgstr "New state"
+
+#. Default: "New"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_nuevovalortraduccion_title"
+msgstr "New"
+
+#. Default: "Number of Strings"
+#: Catalogo.pt
+msgid "gvSIGi18n_numeroCadenas_property_label"
+msgstr "Number of Strings"
+
+#. Default: "# Encoding errors"
+#: TRAExportar.pt
+msgid "gvSIGi18n_numeroErroresCodificacionCaracteres_abbreviated_label"
+msgstr "# Encoding errors"
+
+#. Default: "divided by the number of reference languages selected plus one."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_numeroRegistrosDivididoPorNumerolenguages_help"
+msgstr "divided by the number of reference languages selected plus one."
+
+#. Default: "# Translations"
+#: TRARevisar_Exportacion.pt
+msgid "gvSIGi18n_numeroTraducciones_abbreviated_label"
+msgstr "# Translations"
+
+#. Default: "Number of path levels to ignore in extension names"
+#: TRAImportar.pt
+msgid "gvSIGi18n_numeronivelespathaignorarparanombresextension_msgid"
+msgstr "Number of path levels to ignore in extension names"
+
+#. Default: "Num.Strings"
+#: TRAContenidoArchivosDeEntrada_i18n_view.py
+msgid "gvSIGi18n_numlineas_msgid"
+msgstr "Num.Strings"
+
+#. Default: "Click on the link above to observe the progress of the import process."
+#: TRAImportar.py TRAImportar.pt
+msgid "gvSIGi18n_observarProgresoProcesoImportacion_help"
+msgstr "Click on the link above to observe the progress of the import process."
+
+#. Default: "Observe import progress"
+#: TRAImportar.py TRAImportar.pt
+msgid "gvSIGi18n_observarProgresoProcesoImportacion_msgid"
+msgstr "Observe import progress"
+
+#. Default: "Hide"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ocultar_action_label"
+msgstr "Hide"
+
+#. Default: "Before"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_opcioncomparacionfecha_Anterior"
+msgstr "Before"
+
+#. Default: "On the date"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_opcioncomparacionfecha_Igual"
+msgstr "On the date"
+
+#. Default: "After"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_opcioncomparacionfecha_Posterior"
+msgstr "After"
+
+#. Default: "Options"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_opcionesSection_title"
+msgstr "Options"
+
+#. Default: "Please confirm within the next (seconds)"
+#: TRAImportar.py TRAImportar.pt
+msgid "gvSIGi18n_periodoParaConfirmarEnSegundos_msgid"
+msgstr "Please confirm within the next (seconds)"
+
+#. Default: "You may observe the progress of the import process by clicking in the Progress action above or the Observe import progress link below."
+#: TRAImportar.py TRAImportar.pt
+msgid "gvSIGi18n_puedeObservarElProgresoDelProcesoDeImportacionEnTabProgreso_msgid"
+msgstr "You may observe the progress of the import process by clicking in the Progress action above or the Observe import progress link below."
+
+#. Default: "Records"
+#: TRAInformeArchivos_i18n_view.pt
+msgid "gvSIGi18n_records_msgid"
+msgstr "Records"
+
+#. Default: "Refresh"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_refrescar_action_label"
+msgstr "Refresh"
+
+#. Default: "Review the content selected for export, and then confirm or cancel the export."
+#: TRAExportar.pt
+msgid "gvSIGi18n_revisarExportacion_action_help"
+msgstr "Review the content selected for export, and then confirm or cancel the export."
+
+#. Default: "Review Export"
+#: TRAExportar.pt
+msgid "gvSIGi18n_revisarExportacion_action_label"
+msgstr "Review Export"
+
+#. Default: "Please, review the filter and search criteria."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_reviseLasCondicionesDeFiltroYBusqueda_message"
+msgstr "Please, review the filter and search criteria."
+
+#. Default: "Enter the exact identifier of the string to search for."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_searchById_help"
+msgstr "Enter the exact identifier of the string to search for."
+
+#. Default: "Enter words to search for in the string symbols. Wildcards (* and ?) are permitted."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_searchBySimbolo_help"
+msgstr "Enter words to search for in the string symbols. "
+
+#. Default: "Enter words  to search for in the translations into this language. Wildcards (* and ?) are permitted."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_searchByTranslation_help"
+msgstr "Enter words  to search for in the translations into this language."
+
+
+
+
+#. Default: "Wildcards (* and ?) are permitted, but not at the beginning of words.\nYou may use AND OR NOT between strings or groups of strings.\nYou may group a subcriteria between parenthesis.\nYou may specify exact sentences by surrounding them in double-quotes."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_searchByWords_help"
+msgstr "Wildcards (* and ?) are permitted, but not at the beginning of words.\nYou may use AND OR NOT between strings or groups of strings.\nYou may group a subcriteria between parenthesis.\nYou may specify exact sentences by surrounding them in double-quotes."
+
+
+#. Default: "You may enter conditions for translations to match.\nAll conditions shals be met (AND logic, set intersection).\nClick Refresh button to update the list."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationsFilter_help"
+msgstr "You may enter conditions for translations to match.\nAll conditions shall be met (AND logic, set intersection).\nClick Refresh button to update the list."
+
+#. Default: "You may retrieve all the translations,\nresetting the filter, by clicking on the All button."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationsFilter_Reset_help"
+msgstr "You may retrieve all the translations\nresetting the filter, by clicking on the All button."
+
+
+
+#. Default: "Filter"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_seccionFiltro_title"
+msgstr "Filter"
+
+#. Default: "History"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_seccionHistory_title"
+msgstr "History"
+
+#. Default: "Summary"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_seccionInformeSumario_title"
+msgstr "Summary"
+
+#. Default: "List"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_seccionList_title"
+msgstr "List"
+
+#. Default: "Sections"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_seccionesSection_title"
+msgstr "Sections"
+
+#. Default: "seconds"
+#: TRAImportar.py TRAImportar.pt
+msgid "gvSIGi18n_segundosPeriodoParaConfirmar_help"
+msgstr "seconds"
+
+#. Default: "None"
+#: TRAExportar.pt
+msgid "gvSIGi18n_seleccionarNinguno_label"
+msgstr "None"
+
+#. Default: "All"
+#: TRAExportar.pt
+msgid "gvSIGi18n_seleccionarTodos_label"
+msgstr "All"
+
+#. Default: "Select the languages you want to use as reference.\nA high number of languages will slow down page loading."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_selectorLenguagesReferencia_help"
+msgstr "Select the languages you want to use as reference.\nA high number of languages will slow down page loading."
+
+#. Default: "Reference Languages"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_selectorLenguagesReferencia_title"
+msgstr "Reference Languages"
+
+#. Default: "No reference language"
+#: TRAImportar.py TRAImportar.pt
+msgid "gvSIGi18n_sinIdiomaReferencia"
+msgstr "No reference language"
+
+#. Default: "Import request for Languages, Strings and Translations"
+#: TRAImportar.pt
+msgid "gvSIGi18n_solicitudimportacion_msgid"
+msgstr "Import request for Languages, Strings and Translations"
+
+#. Default: "Tabular"
+#: TRAContenidoArchivosDeEntrada_i18n_view.py
+msgid "gvSIGi18n_tabular_action_msgid"
+msgstr "Tabular"
+
+#. Default: "File length"
+#: TRAImportar.pt
+msgid "gvSIGi18n_tamanoarchivozip_msgid"
+msgstr "File length"
+
+#. Default: "A Title is required to create the new element."
+#: Crear_inner.pt
+msgid "gvSIGi18n_tituloesrequerido_info_msgid"
+msgstr "A Title is required to create the new element."
+
+#. Default: "List of .zip files available for import"
+#: TRAImportar.pt
+msgid "gvSIGi18n_titulolistaarchivoszipdisponibles_msgid"
+msgstr "List of .zip files available for import"
+
+#. Default: "All"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_todas_label"
+msgstr "All"
+
+#. Default: "Any status"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_todosEstados_action_label"
+msgstr "Any status"
+
+#. Default: "All"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_todosLenguagesReferencia_action_label"
+msgstr "All"
+
+#. Default: "+"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_todosPlus_action_label"
+msgstr "+"
+
+#. Default: "Total"
+#: Idioma.pt
+msgid "gvSIGi18n_total_label"
+msgstr "Total"
+
+#. Default: "Total"
+#: TRAContenidoArchivosDeEntrada_i18n_view.py
+msgid "gvSIGi18n_total_msgid"
+msgstr "Total"
+
+#. Default: "Encoding error"
+#: TRAExportar.pt
+msgid "gvSIGi18n_traduccion_conEncodingError"
+msgstr "Encoding error"
+
+#. Default: "In language"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_traduccionenidiomareferencia_title"
+msgstr "In language"
+
+#. Default: "Previous"
+#: Idioma.pt
+msgid "gvSIGi18n_traducciones_bloqueanterior_label"
+msgstr "Previous"
+
+#. Default: "First"
+#: Idioma.pt
+msgid "gvSIGi18n_traducciones_bloqueprimero_label"
+msgstr "First"
+
+#. Default: "Next"
+#: Idioma.pt
+msgid "gvSIGi18n_traducciones_bloquesiguiente_label"
+msgstr "Next"
+
+#. Default: "Last"
+#: Idioma.pt
+msgid "gvSIGi18n_traducciones_bloqueultimo_label"
+msgstr "Last"
+
+#. Default: "Go to Previous"
+#: Idioma.pt
+msgid "gvSIGi18n_traducciones_iraanterior_label"
+msgstr "Go to Previous"
+
+#. Default: "Go to First"
+#: Idioma.pt
+msgid "gvSIGi18n_traducciones_iraprimero_label"
+msgstr "Go to First"
+
+#. Default: "Go to Next"
+#: Idioma.pt
+msgid "gvSIGi18n_traducciones_irasiguiente_label"
+msgstr "Go to Next"
+
+#. Default: "Go to Last"
+#: Idioma.pt
+msgid "gvSIGi18n_traducciones_iraultimo_label"
+msgstr "Go to Last"
+
+#. Default: "Translations"
+#: TRAInformeArchivos_i18n_view.pt TRAExportar.pt
+msgid "gvSIGi18n_traducciones_msgid"
+msgstr "Translations"
+
+#. Default: "List of Strings to translate into the Language, and the translations already available."
+#: Catalogo.pt
+msgid "gvSIGi18n_traducciones_section_help"
+msgstr "List of Strings to translate into the Language, and the translations already available."
+
+#. Default: "Translations into the Language"
+#: Idioma.pt
+msgid "gvSIGi18n_traducciones_section_label"
+msgstr "Translations into the Language"
+
+#. Default: "of"
+#: Idioma.pt
+msgid "gvSIGi18n_traduccionesdeentre_parameter_label"
+msgstr "of"
+
+#. Default: "From"
+#: Idioma.pt
+msgid "gvSIGi18n_traduccionesdesde_parameter_label"
+msgstr "From"
+
+#. Default: "Filtered"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_traduccionesfiltradasidioma_label"
+msgstr "Filtered"
+
+#. Default: "To"
+#: Idioma.pt
+msgid "gvSIGi18n_traduccioneshasta_parameter_label"
+msgstr "To"
+
+#. Default: "Translate into"
+#: Idioma.pt
+msgid "gvSIGi18n_traduccira_label"
+msgstr "Translate into"
+
+#. Default: "You can not initialize the translations catalog."
+#: TRAVerificar_action.pt
+msgid "gvSIGi18n_userCanNotInitializeCatalogo_msgid"
+msgstr "You can not initialize the translations catalog."
+
+#. Default: "Verify the Translations Catalog"
+#: TRAVerificar_action.pt
+msgid "gvSIGi18n_VerifyTranslationsCatalog"
+msgstr "Verify the Translations Catalog"
+
+
+#. Default: "You can not verify the translations catalog."
+#: TRAVerificar_action.pt
+msgid "gvSIGi18n_userCanNotVerifyCatalogo_msgid"
+msgstr "You can not verify the translations catalog."
+
+#. Default: "User"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_usuario_label"
+msgstr "User"
+
+#. Default: "by"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_usuario_por"
+msgstr "by"
+
+#. Default: "Current"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_valoractualtraduccion_title"
+msgstr "Current"
+
+#. Default: "Discard any changes made to export configuration parameters, and start again with the values configured in the translations catalog and languages."
+#: TRACatalogo_Exportacion.py
+msgid "gvSIGi18n_valoresPorDefectoExportacion_help"
+msgstr "Discard any changes made to export configuration parameters, and start again with the values configured in the translations catalog and languages."
+
+#. Default: "Default export configuration"
+#: TRACatalogo_Exportacion.py
+msgid "gvSIGi18n_valoresPorDefectoExportacion_msgid"
+msgstr "Default export configuration"
+
+#. Default: "Details"
+#: TRAInformeIdiomas_i18n_view.pt
+msgid "gvSIGi18n_vistaAvanzada_msgid"
+msgstr "Details"
+
+#. Default: "View Detais"
+#: TRAInformeContenidosImportacion_action.pt
+msgid "gvSIGi18n_vista_detalles_label"
+msgstr "View Detais"
+
+#. Default: "Summary view"
+#: TRAInformeContenidosImportacion_action.pt
+msgid "gvSIGi18n_vista_sumario_label"
+msgstr "Summary view"
+
+#. Default: "Tabular view"
+#: TRAInformeContenidosImportacion_action.pt
+msgid "gvSIGi18n_vista_tabular_label"
+msgstr "Tabular view"
+
+#. Default: "View All"
+#: TRAInformeContenidosImportacion_action.pt
+msgid "gvSIGi18n_vista_todos_label"
+msgstr "View All"
+
+#. Default: "Back to"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_volver_action_label"
+msgstr "Back to"
+
+#. Default: "Back to catalog"
+#: TRACatalogoLayInit.pt
+msgid "gvSIGi18n_volveracatalogo_msgid"
+msgstr "Back to catalog"
+
+#. Default: "Back to Catalog Summary by languages"
+#: TRACModulosDetalles.pt TRAModulosDetalles.pt
+msgid "gvSIGi18n_volveraresumen_label"
+msgstr "Back to Catalog Summary by languages"
+
+                               
+#. Default: "Confirm locking of the translations catalog"
+#: TRAConfirmarDesbloquearCatalogo.pt
+msgid "gvSIGi18n_confirmarBloquearCatalogo_msgid"
+msgstr "Confirm locking the translations catalog"
+
+#. Default: "Confirm unlocking of the translations catalog"
+#: TRAConfirmarDesbloquearCatalogo.pt
+msgid "gvSIGi18n_confirmarDesbloquearCatalogo_msgid"
+msgstr "Confirm unlocking the translations catalog"
+
+
+#. Default: "You can not lock the translations catalog."
+#: TRAConfirmarDesbloquearCatalogo.pt
+msgid "gvSIGi18n_userCanNotLockCatalogo_msgid"
+msgstr "You can not lock the translations catalog."
+
+
+#. Default: "You can not unlock the translations catalog."
+#: TRAConfirmarDesbloquearCatalogo.pt
+msgid "gvSIGi18n_userCanNotUnlockCatalogo_msgid"
+msgstr "You can not unlock the translations catalog."
+
+
+#. Default: "You have waited too long to confirm the lock  operation. Please, request the operation again if you wish to do so."
+#: TRABloquearCatalogo.pt
+msgid "gvSIGi18n_demasiadaEsperaVuelvaASolicitarBloqueo_help"
+msgstr "You have waited too long to confirm the lock  operation. Please, request the operation again if you wish to do so."
+
+
+#. Default: "You have waited too long to confirm the unlock  operation. Please, request the operation again if you wish to do so."
+#: TRADesbloquearCatalogo.pt
+msgid "gvSIGi18n_demasiadaEsperaVuelvaASolicitarDesbloqueo_help"
+msgstr "You have waited too long to confirm the unock  operation. Please, request the operation again if you wish to do so."
+
+
+#. Default: "Cancel lock catalog  and navigate back to translations catalog home page."
+#: TRABloquearCatalogo.pt
+msgid "gvSIGi18n_cancelarBloqueoYVolverATabular_msgid"
+msgstr "Cancel lock catalog"
+
+
+
+#. Default: "Cancel unlock catalog  and navigate back to translations catalog home page."
+#: TRADesloquearCatalogo.pt
+msgid "gvSIGi18n_cancelarDesbloqueoYVolverATabular_msgid"
+msgstr "Cancel unlock catalog"
+
+
+#. Default: "Invalidate"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationAction_InvalidarTraduccionesCadena_label"
+msgstr "Invalidate"
+
+#. Default: "Invalidate String Translations into all languages"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationAction_InvalidarTraduccionesCadena_help"
+msgstr "Invalidate String Translations into all languages"
+
+
+#. Default: "Do you want to Invalidate String Translations into all languages ?"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ConfirmInvalidateStringTranslationsMsg"
+msgstr "Do you want to Invalidate String Translations into all languages ?"
+
+
+#. Default: "Do you REALLY want to Invalidate String Translations into all languages ?"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ReallyInvalidateStringTranslationsMsg"
+msgstr "Do you REALLY want to Invalidate String Translations into all languages ?"
+
+
+#. Default: "Batch"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_Batch_ButtonLabel"
+msgstr "Batch"
+
+
+#. Default: "Cancel reuse import"
+#: TRAReutilizarImportacion_action.py
+msgid "gvSIGi18n_cancelarReutilizarYVolverATabular_msgid"
+msgstr "Cancel reuse import"
+
+
+#. Default: "You can not reuse the import."
+#: TRAReutilizarImportacion_action.pt
+msgid "gvSIGi18n_userCanNotReuseImport_msgid"
+msgstr "You can not reuse the import."
+
+
+#. Default: "You can not reuse the import."
+#: TRAReutilizarImportacion_action.pt
+msgid "gvSIGi18n_userCanNotReuseImport_msgid"
+msgstr "You can not reuse the import."
+
+
+#. Default: "Traducir"
+#: TRAIdioma_Operaciones.py
+msgid "gvSIGi18n_Translate"
+msgstr "Translate"
+
+
+#. Default: "Al Raiz"
+#: TRAElemento_Operaciones.py
+msgid "gvSIGi18n_GoTo_Root"
+msgstr "Go Root"
+
+
+#. Default: "Mensaje de Estado de la Interaccion"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_InteracionStatusMessage"
+msgstr "Interacion Status Message"
+
+
+
+
+#. Default: "Confirmar Bloquear el Idioma"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_confirmarBloquearIdioma_msgid"
+msgstr "Confirm Lock the Language"
+
+
+#. Default: "Cancelar Bloquear el Idioma"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_cancelarBloquearIdioma_msgid"
+msgstr "Cancel Lock the Language"
+
+#. Default: "No Puede Bloquear el Idioma"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_userCanNotLockLanguage_msgid"
+msgstr "You Can Not Unlock the Language"
+
+#. Default: "Confirmar Desbloquear el Idioma"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_confirmarDesbloquearIdioma_msgid"
+msgstr "Confirm Unlock the Language"
+
+
+#. Default: "Cancelar Desbloquear el Idioma"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_cancelarDesbloquearIdioma_msgid"
+msgstr "Cancel Unlock the Language"
+
+
+#. Default: "No Puede Desbloquear el Idioma"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_userCanNotUnlockLanguage_msgid"
+msgstr "You Can Not Unlock the Language"
+
+
+
+#. Default: "El Catalogo de traduciones esta bloqueado contra modificationes."
+#: TRACatalogo.pt
+msgid "gvSIGi18n_TranslationsCatalogIsLockedAgainstModifications"
+msgstr "The Translations Catalog Is Locked Against Modifications"
+
+
+#. Default: "El Idioma seleccionado esta bloqueado contra modificationes."
+#: TRACatalogo.pt
+msgid "gvSIGi18n_SelectedLanguageIsLockedAgainstModifications"
+msgstr "The Selected Language Is Locked Against Modifications"
+
+#. Default: ": Idioma bloqueado contra modificationes."
+#: TRACatalogo.pt
+msgid "gvSIGi18n_LanguageIsLockedAgainstModifications"
+msgstr ": Language Locked Against Modifications."
+
+
+#. Default: "Desactivar Cadena"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationAction_DesactivarCadena_label"
+msgstr "Deactivate String"
+
+
+#. Default: "Ocultar la Cadena de toda la actividad de traduccion, y las exportaciones."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationAction_DesactivarCadena_help"
+msgstr "Hide String symbol from all translation activity and all exports."
+
+
+#. Default: "Activar Cadena"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationAction_ActivarCadena_label"
+msgstr "Activate String"
+
+
+#. Default: "Hacer la Cadena disponible para traduccion y exportacion."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationAction_ActivarCadena_help"
+msgstr "Make String symbol available for translation activity and exports."
+
+
+
+#. Default: "Mostrar solamente las Cadenas Inactivas"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_FiltroCadenasInactivas_title"
+msgstr "Show Only Inactive Strings"
+
+
+
+#. Default: "El sistema mostrara solamente las Cadenas en estado Inactivo."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_FiltroCadenasInactivas_help"
+msgstr "The system shall present only Strings in the Inactive state."
+
+ 
+
+#. Default: "Desea DESACTIVAR la Cadena, escondiendola de toda la actividad de traduccion, y exportaciones"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ConfirmDeactivateStringMsg"
+msgstr "Do you want to DEACTIVATE the String, hiding it from all Translation activity and exports"
+
+
+
+#. Default: "REALMENTE desea DESACTIVAR la Cadena, escondiendola de toda la actividad de traduccion, y exportaciones"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ReallyDeactivateStringMsg"
+msgstr "Do you REALLY want to DEACTIVATE the String, hiding it from all Translation activity and exports"
+
+      
+#. Default: "Desea ACTIVAR la Cadena, haciendola disponible paratraduccion y exportaciones"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ConfirmActivateStringMsg"
+msgstr "Do you want to ACTIVATE the String, making it available for Translation and export"
+
+
+
+#. Default: "REALMENTE desea ACTIVAR la Cadena, haciendola disponible paratraduccion y exportaciones"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ReallyActivateStringMsg"
+msgstr "Do you REALLY want to ACTIVATE the String, making it available for Translation and export"
+
+      
+
+#. Default: "Mostrando solamente las Cadenas Inactivas"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_BrowsingInactiveStrings_label"
+msgstr "Browsing Strings in Inactive State"
+
+#. Default: "Inactivas"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_BrowsingInactive_collapsibleListLabel"
+msgstr "Inactive"
+
+
+
+#. Default: "No esta permitido reutilizar la Importacion"
+#: TRAReutilizar_action.pt
+msgid "gvSIGi18n_userCanNotReuseImport_msgid"
+msgstr "You are not allowed to Reuse the Import"
+
+
+
+
+
+#. Default: "No esta permitido crear un Informe de Estado por Modulos e Idiomas."
+#: TRACrear_Idioma_i18n_view.pt
+msgid "gvSIGi18n_crearInforme_action_NoPermissionToCreate_ErrorMsg"
+msgstr "You are not allowed to create a Status Report by Modules and Languages."
+
+
+#. Default: "No esta permitido crear un Idioma."
+#: TRACrear_Modulo_i18n_view.pt
+msgid "gvSIGi18n_crearModulo_action_NoPermissionToCreate_ErrorMsg"
+msgstr "You are not allowed to create a new Language."
+
+
+#. Default: "No esta permitido crear un Modulo."
+#: TRACrear_Informe.pt
+msgid "gvSIGi18n_crearModulo_action_NoPermissionToCreate_ErrorMsg"
+msgstr "You are not allowed to create a new Module."
+
+
+#. Default: "Crear Informe de Estado por Modulos e Idiomas"
+#: TRACrear_Informe.pt
+msgid "gvSIGi18n_crearInforme_action_page_title"
+msgstr "Create Status Report by Modules and Languages"
+
+
+
+#. Default: "Sumario"
+#: TRAInformeModulos_inner.pt
+msgid "gvSIGi18n_summary_label"
+msgstr "Summary"
+
+
+
+#. Default: "Informe Detallado por Modulos e Idiomas"
+#: TRACatalogoInforme_inner.pt
+msgid "gvSIGi18n_DetailedReportByModulesAndLanguages_msgid"
+msgstr "Detailed Report by Modules and Languages"
+
+
+
+#. Default: "Sumario por Idiomas"
+#: TRACatalogoInforme_inner.pt
+msgid "gvSIGi18n_SummaryReportByLanguages_msgid"
+msgstr "Summary Report by Languages"
+
+
+
+#. Default: "No hay solicitudes pendientes para crear nuevas cadenas. No se ha creado proceso de importacion."
+#: TRACatalogoInforme_inner.pt
+msgid "gvSIGi18n_warningCreating_Strings_NoPendingNewStringRequests_msgid"
+msgstr "There are no Pending requests to create new strings. No Import process created."
+
+
+#. Default: "No hay solicitudes para crear nuevas cadenas. No se ha creado proceso de importacion."
+#: TRACatalogoInforme_inner.pt
+msgid "gvSIGi18n_warningCreating_Strings_NoStringRequestsToCreate_msgid"
+msgstr "There are no requests to create new strings. No Import process created."
+
+
+#. Default: "Informe de actividad ligeramente desactualizado por actividad reciente:"
+#: TRACatalogoInforme_inner.pt
+msgid "gvSIGi18n_ActivityReport_SlightlyObsoleteAfterChanges"
+msgstr "Activity Report slightly obsolete after recent activity:"
+
+
+#. Default: "Informe de estado ligeramente desactualizado por cambios a traduciones:"
+#: TRACatalogoInforme_inner.pt
+msgid "gvSIGi18n_StatusReport_SlightlyObsoleteAfterChanges"
+msgstr "Status Report slightly obsolete after changes to translations:"
+
+
+#. Default: "Informe detallado desactualizado por cambios a traduciones:"
+#: TRACatalogoInforme_inner.pt
+msgid "gvSIGi18n_DetailedStatusReport_SlightlyObsoleteAfterChanges"
+msgstr "Detailed Report slightly obsolete after changes to translations:"
+
+#. Default: "Sera regenerado tras cambios adicionales a traducciones:"
+#: TRACatalogoInforme_inner.pt
+msgid "gvSIGi18n_StatusReport_ShallBeRegeneratedAfterChanges"
+msgstr "Shall be refreshed after translation changes:"
+
+#. Default: "Sera regenerado tras actividad adicional:"
+#: TRACatalogoInforme_inner.pt
+msgid "gvSIGi18n_ActivityReport_ShallBeRegeneratedAfterActivity"
+msgstr "Shall be refreshed after additional activity:"
+
+#. Default: "o tras"
+#: TRACatalogoInforme_inner.pt
+msgid "gvSIGi18n_StatusReport_OrAfterTime"
+msgstr "or in"
+
+#. Default: "segundos"
+#: TRACatalogoInforme_inner.pt
+msgid "gvSIGi18n_Seconds"
+msgstr "seconds"
+
+
+#. Default: "Inspeccionar"
+#: TRACatalogoInforme_inner.pt
+msgid "gvSIGi18n_Inspect"
+msgstr "Inspect"
+
+
+#. Default: "Solicitud en espera."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_AsyncPhase_RequestQueued_msgid"
+msgstr "Request Queued."
+
+#. Default: "Solicitud enviada."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_AsyncPhase_RequestSent_msgid"
+msgstr "Request Sent."
+
+
+#. Default: "Respuesta recibida."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_AsyncPhase_ResponseReceived_msgid"
+msgstr "Response Received."
+
+
+#. Default: "Cambio guardado."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_AsyncPhase_ChangeSaved_msgid"
+msgstr "Change saved."
+
+
+
+#. Default: "No tiene permiso para exportar el lenguage para gvSIG."
+#: TRAExportarGvSIG_i18n_view.pt
+msgid "gvSIGi18n_exportForGvSIG_action_NoPermission_ErrorMsg"
+msgstr "You do not have permission to export the language for gvSIG."
+
+
+
+#. Default: "Parametros de exportacion especificos a gvSIG."
+#: TRAExportar.pt TRAExportarGvSIG_i18n_view
+msgid "gvSIGi18n_exportar_Parameter_ExportParameters_SpecificToGvSIG_label"
+msgstr "Export parameters specific to gvSIG."
+
+
+#. Default: "Nombre del Producto"
+#: TRAExportar.pt TRAExportarGvSIG_i18n_view
+msgid "gvSIGi18n_exportar_Parameter_ProductName_label"
+msgstr "Product Name"
+
+
+
+#. Default: "Version del Producto"
+#: TRAExportar.pt TRAExportarGvSIG_i18n_view
+msgid "gvSIGi18n_exportar_Parameter_ProductVersion_label"
+msgstr "Product Version"
+
+
+
+#. Default: "Version de la Localizacion"
+#: TRAExportar.pt TRAExportarGvSIG_i18n_view
+msgid "gvSIGi18n_exportar_Parameter_L10NVersion_label"
+msgstr "Localization Version"
+
+
+#. Default: "El proceso de importacion ha fracasado."
+#: TRAColeccionSolicitudersCadenas_Operaciones.py
+msgid "gvSIGi18n_errorImportProcessFailed"
+msgstr "Import process failed"
+
+
+#. Default: "Error limpiando las solicitudes de cadenas."
+#: TRAColeccionSolicitudersCadenas_Operaciones.py
+msgid "gvSIGi18n_errorCleaningUpStringsRequests"
+msgstr "Error cleaning up strings requests."
+
+
+#. Default: "No puede estar vacia."
+#: TRAColeccionSolicitudersCadenas_Operaciones.py
+msgid "gvSIGi18n_Warning_NewStringSymbol_Empty"
+msgstr "Can not be Empty."
+
+
+
+#. Default: "No se permiten blancos."
+#: TRAColeccionSolicitudersCadenas_Operaciones.py
+msgid "gvSIGi18n_Warning_NewStringSymbol_BlanksNotAllowed"
+msgstr "Blanks not allowed"
+
+
+#. Default: "Solo se permiten caracteres alfanumericos y "
+#: TRAColeccionSolicitudersCadenas_Operaciones.py
+msgid "gvSIGi18n_Warning_NewStringSymbol_OnlyAlphanumerocCharsAnd"
+msgstr "Only allowed alphanumeric chars and"
+
+
+
+#. Default: "Primer simbolo a mostrar en la lista"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_GoToParameters_title"
+msgstr "First symbol to show in the translations list"
+
+
+#. Default: "Principio"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_first_label"
+msgstr "First"
+
+
+
+
+#. Default: "Ir A"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_seccionGoTo_title"
+msgstr "Go To"
+
+
+
+#. Default: "Simbolo en ordinal #"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationsPage_GoTo_SymbolIndex_label"
+msgstr "Symbol at index #"
+
+
+
+#. Default: "de"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationsPage_GoTo_SymbolIndex_of"
+msgstr "of"
+
+
+#. Default: "La posicion del primer simbolo a mostrar"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationsPage_GoTo_SymbolIndex_help"
+msgstr "The index number of the first symbol to show"
+
+
+#. Default: "Pagina numero #"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationsPage_GoTo_PageIndex_label"
+msgstr "Page number #"
+
+
+#. Default: "de"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationsPage_GoTo_PageIndex_of"
+msgstr "of"
+
+
+#. Default: "El numero de la primera pagina a mostrar"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationsPage_GoTo_PageIndex_help"
+msgstr "The index number of the page to show"
+
+
+#. Default: "Simbolo comenzando con"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationsPage_GoTo_SymbolStartingWithChars_label"
+msgstr "Symbol beginning with"
+
+#. Default: "Las letras iniciales del primer simbolo a mostrar."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationsPage_GoTo_SymbolStartingWithChars_help"
+msgstr "Beginning letters of the first symbol to show."
+
+#. Default: "Filter link (for results now shown in the list)"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationsFilterLink_label"
+msgstr "Filter link (for results now shown in the list)"
+
+
+#. Default: "The User may bookmark or save the link as Favorites in the Internet browser,\nor drop the link as a Shortcut on the desktop,\nor just copy the URL, to reproduce the filter later."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationsFilterLink_help"
+msgstr "The User may bookmark or save the link as Favorites in the Internet browser,\nor drop the link as a Shortcut on the desktop,\nor just copy the URL, to reproduce the filter later."
+
+
+
+
+
+
+#. Default: "Actividad"
+#: TRACatalogoActividad_inner.pt
+msgid "gvSIGi18n_mostrarinformeactividad_msgid"
+msgstr "Activity"
+
+
+#. Default: "No hay Informe de Actividad disponible"
+#: TRACatalogoActividad_inner.pt
+msgid "gvSIGi18n_noHayInfomeActividad_msgid"
+msgstr "No Activity Report available"
+
+#. Default: "Actividad Reciente"
+#: TRACatalogoActividad_inner.pt
+msgid "gvSIGi18n_ActivityReport_label"
+msgstr "Recent Activity"
+
+#. Default: "Fecha de Informe de Actividad"
+#: TRACatalogoActividad_inner.pt
+msgid "gvSIGi18n_fechaInformeActividad_label"
+msgstr "Activity Report date"
+
+
+
+#. Default: "Cadenas"
+#: TRACatalogoActividad_inner.pt
+msgid "gvSIGi18n_cadenas_msgid"
+msgstr "Strings"
+
+
+#. Default: "Modulos"
+#: TRAContenidoIntercambio_i18n_view.pt
+msgid "gvSIGi18n_modulos_msgid"
+msgstr "Modules"
+
+
+
+
+#. Default: "Hoy"
+#: TRACatalogoActividad_inner.pt
+msgid "gvSIGi18n_ActivityReport_Period_Today"
+msgstr "Today"
+
+#. Default: "Ayer"
+#: TRACatalogoActividad_inner.pt
+msgid "gvSIGi18n_ActivityReport_Period_Yesterday"
+msgstr "Yesterday"
+
+#. Default: "Ultimos 7 dias"
+#: TRACatalogoActividad_inner.pt
+msgid "gvSIGi18n_ActivityReport_Period_Last7Days"
+msgstr "Last 7 Days"
+
+#. Default: "Ultimos 30 dias"
+#: TRACatalogoActividad_inner.pt
+msgid "gvSIGi18n_ActivityReport_Period_Last30Days"
+msgstr "Last 30 Days"
+
+
+#. Default: "Antes de 30 dias"
+#: TRACatalogoActividad_inner.pt
+msgid "gvSIGi18n_ActivityReport_Period_Before30Days"
+msgstr "Before 30 Days"
+
+#. Default: "Actividad Total"
+#: TRACatalogoActividad_inner.pt
+msgid "gvSIGi18n_ActivityTotals_label"
+msgstr "Activity Totals"
+
+
+#. Default: "Actividad por Idiomas"
+#: TRACatalogoActividad_inner.pt
+msgid "gvSIGi18n_ActivityByLanguages_label"
+msgstr "Activity by Languages"
+
+
+
+
+#. Default: "Ha tardado demasiado en confirmar el la creacion de nuevas cadenas solicitadas. Por favor, vuelva a solicitar la operacion si asi lo desea."
+#: TRAConfirmarCrearCadenas.pt
+msgid "gvSIGi18n_demasiadaEsperaVuelvaASolicitarCreacionCadenas_help"
+msgstr "You have waited too long to confirm the creation of the requested new strings. Please, request the operation again if you wish to do so."
+     
+#. Default: "Confirmar Creacion de Nuevas Cadenas solicitadas"
+#: TRAConfirmarCrearCadenas.pt
+msgid "gvSIGi18n_confirmarCrearCadenas_msgid"
+msgstr "Confirm Creation of requested New Strings"
+
+     
+
+#. Default: "Cancelar Creacion de Nuevas Cadenas solicitadas"
+#: TRAConfirmarCrearCadenas.pt
+msgid "gvSIGi18n_cancelarCrearCadenas_msgid"
+msgstr "Cancel creation of requested new strings"
+     
+
+#. Default: "Usted no puede crear nuevas cadenas solicitadas."
+#: TRAConfirmarCrearCadenas.pt
+msgid "gvSIGi18n_userCanNotCreateStrings_msgid"
+msgstr "You are not allowed to create requested new strings."
+
+#. Default: "No hay solicitudes de nuevas cadenas pendientes."
+#: TRAConfirmarCrearCadenas.pt
+msgid "gvSIGi18n_ThereAreNoPendingStringRequests_msgid"
+msgstr "There are no pending new strings requests."
+
+
+
+
+#. Default: "Ha tardado demasiado en confirmar la limpieza de solicitudes de nuevas nuevas cadenas ya procesadas. Por favor, vuelva a solicitar la operacion si asi lo desea."
+#: TRAConfirmarCrearCadenas.pt
+msgid "gvSIGi18n_demasiadaEsperaVuelvaASolicitarLimpiezaCadenas_help"
+msgstr "You have waited too long to confirm the Clean-up of the requested new strings. Please, request the operation again if you wish to do so."
+     
+
+
+
+
+
+
+
+     
+#. Default: "Confirmar Limpiar solicitudes ya procesadas de Nuevas Cadenas"
+#: TRAConfirmarLimpiarCadenas.pt
+msgid "gvSIGi18n_ConfirmarLimpiarCadenas_msgid"
+msgstr "Confirm Clean-up of already processed New String requests"
+
+     
+
+#. Default: "Cancelar Limpiar solicitudes ya procesadas de Nuevas Cadenas"
+#: TRAConfirmarLimpiarCadenas.pt
+msgid "gvSIGi18n_cancelarLimpiarCadenas_msgid"
+msgstr "Cancel Clean-up of already processed New String requests"
+     
+
+#. Default: "Usted no puede Limpiar solicitudes ya procesadas de Nuevas Cadenas."
+#: TRAConfirmarLimpiarCadenas.pt
+msgid "gvSIGi18n_userCanNotCleanUpStrings_msgid"
+msgstr "You are not allowed to Clean-up already processed New String requests."
+
+#. Default: "No hay solicitudes ya procesadas de nuevas cadenas para limpiar."
+#: TRAConfirmarLimpiarCadenas.pt
+msgid "gvSIGi18n_ThereAreNoStringRequestsAlreadyProcessedToCleanUp_msgid"
+msgstr "There are no already processed New String requests to Clean-up."
+
+
+
+#. Default: "No ha introducido un codigo de idioma para gvSIG. No es posible crear un nuevo idioma sin un codigo de idioma."
+#: TRAColeccionIdiomas_Operaciones.py
+msgid "gvSIGi18n_errorCreating_Idioma_missingParameter_CodigoIdiomaEnGvSIG_warning_msgid"
+msgstr "The code in gvSIG for the new language is missing. Can not create a new language without a language code."
+
+
+
+#. Default: "No ha introducido un codigo de idioma para gvSIG. No es posible crear un nuevo idioma sin un codigo de idioma."
+#: TRAColeccionIdiomas_Operaciones.py
+msgid "gvSIGi18n_errorCreating_Idioma_missingParameter_NewEnglishName_warning_msgid"
+msgstr "The language name expressed in english is missing. Can not create a new language without a language name expressed in english."
+
+
+#. Default: "Ya existe en el catalogo de traducciones un Idioma con el mismo codigo."
+#: TRAColeccionIdiomas_Operaciones.py
+msgid "gvSIGi18n_errorCreating_Idioma_LanguageCodeAlreadyExists_warning_msgid"
+msgstr "A language with same code already exists in the translations catalog."
+
+
+
+#. Default: "No ha introducido un nombre de Modulo. No es posible crear un nuevo modulo sin un codigo de idioma."
+#: TRAColeccionModulos_Operaciones.py
+msgid "gvSIGi18n_errorCreating_Modulo_missingParameter_Nombre_warning_msgid"
+msgstr "The name for the new module is missing. Can not create a new module without a name."
+
+
+#. Default: "Ya existe en el catalogo de traducciones un Modulo con el mismo nombre."
+#: TRAColeccionModulos_Operaciones.py
+msgid "gvSIGi18n_errorCreating_Modulo_ModuleNameAlreadyExists_warning_msgid"
+msgstr "A module with same name already exists in the translations catalog."
+
+
+
+#. Default: "Para crear Idioma"
+#: TRAColeccionIdiomas_Operaciones.py
+msgid "gvSIGi18n_crearIdioma_Importacion_prefix"
+msgstr "To Create Language"
+
+
+
+#. Default: "Para crear Modulo"
+#: TRAColeccionIdiomas_Operaciones.py
+msgid "gvSIGi18n_crearModulo_Importacion_prefix"
+msgstr "To Create Module"
+
+
+#. Default: "No hay Modulos"
+#: TRAContenidoIntercambio_i18n_view.py
+msgid "gvSIGi18n_NoHayModulos_msgid"
+msgstr "There are no Modules"
+
+
+
+#. Default: "Inventario del elemento y sus contenidos"
+#: TRAInventory_action.pt
+msgid "gvSIGi18n_InventoryOfAllElements"
+msgstr "Inventory of element and contents"
+
+
+#. Default: "No puede solicitar un Inventario de elementos en el Catalogo de traducciones."
+#: TRAInventory_action.pt
+msgid "gvSIGi18n_userCanNotInventoryCatalogo_msgid"
+msgstr "You are not allowed to request an inventory of elements in the translations catalog."
+
+
+#. Default: "Por favor, confirme su solicitud de un Inventario de elementos en el Catalogo de traducciones."
+#: TRAInventory_action.pt
+msgid "gvSIGi18n_confirmarInventario_msgid"
+msgstr "Please, confirm request for an inventory of elements in the translations catalog."
+
+#. Default: "Confirme para realizar un Inventario de elementos en el Catalogo de traducciones, posiblemente de larga duracion y consumiendo recursos considerables de servidor, dependiendo en el numero de elementos encontrados, usualmente con costes mas altos con numeros elevados de cadenas e idiomas (como se observa en la pagina raiz o informe sumario)."
+#: TRAInventory_action.pt
+msgid "gvSIGi18n_confirmarInventario_help"
+msgstr "Confirm to perform an Inventory of the elements in the translations Catalog, possibly taking a long time and demanding significant server resources, depending on the number of elements found, with usually higher cost with higher number of strings and languages (as seen in the root or summary report pages)."
+
+
+#. Default: "You have waited too long to confirm the action. Please, request the action again if you wish to do so."
+#: TRAInventory_action.pt
+msgid "gvSIGi18n_demasiadaEsperaVuelvaASolicitarAccion_help"
+msgstr "You have waited too long to confirm the action. Please, request the action again if you wish to do so."
+
+
+
+#. Default: "Cancel Action"
+#: TRAInventory_action.pt TRARecatalog_action.pt 
+msgid "gvSIGi18n_cancelarAccion_msgid"
+msgstr "Cancel Action"
+
+
+
+#. Default: "Re-catalogar y re-indexar los elementos"
+#: TRARecatalog_action.pt
+msgid "gvSIGi18n_RecatalogAllElements"
+msgstr "Re-catalog and re-index elements"
+
+
+#. Default: "Por favor, confirme su solicitud para re-catalogar y re-indexar elementos en el Catalogo de traducciones."
+#: TRARecatalog_action.pt
+msgid "gvSIGi18n_confirmarRecatalog_msgid"
+msgstr "Confirm request to re-catalog and re-index elements in the Translations Catalog."
+
+
+
+#. Default: "Confirme para re-catalogar y re-indexar  elementos en el Catalogo de traducciones, posiblemente de larga duracion y consumiendo recursos considerables de servidor, dependiendo en el numero de elementos encontrados, usualmente con costes mas altos con numeros elevados de cadenas e idiomas (como se observa en la pagina raiz o informe sumario)."
+#: TRARecatalog_action.pt
+msgid "gvSIGi18n_confirmarRecatalog_help"
+msgstr "Confirm to re-catalog and re-index elements in the translations Catalog, possibly taking a long time and demanding significant server resources, depending on the number of elements found, with usually higher cost with higher number of strings and languages (as seen in the root or summary report pages)."
+
+
+#. Default: "No puede re-catalogar y re-indexar elementos."
+#: TRARecatalog_action.pt
+msgid "gvSIGi18n_userCanNotReCatalog_msgid"
+msgstr "You are not allowed to re-catalog and re-index elements."
+
+
+#. Default: "Re-establecer permisos para todos los elementos"
+#: TRAResetPermissions_action.pt
+msgid "gvSIGi18n_ResetPermissionsOfAllElements"
+msgstr "Reset permissions for all elements"
+
+#. Default: "Verificar permisos para todos los elementos"
+#: TRAResetPermissions_action.pt
+msgid "gvSIGi18n_ResetPermissionsOfAllElements"
+msgstr "Verify permissions for all elements"
+
+
+#. Default: "No puede re-establecer los permisos de elementos del Catalogo de traducciones."
+#: TRARecatalog_action.pt
+msgid "gvSIGi18n_userCanNotResetPermissions_msgid"
+msgstr "You are not allowed to reset permissions for elements in the translations catalog."
+
+
+#. Default: "Por favor, confirme su solicitud para reestablecer permisos de elementos en el Catalogo de traducciones."
+#: TRARecatalog_action.pt
+msgid "gvSIGi18n_confirmarReestablecerPermisos_msgid"
+msgstr "Confirm request to reset permissions on elements in the Translations Catalog."
+
+
+
+#. Default: "Confirme para  re-establecer los permisos para elementos en el Catalogo de traducciones, posiblemente de larga duracion y consumiendo recursos considerables de servidor, dependiendo en el numero de elementos encontrados, usualmente con costes mas altos con numeros elevados de cadenas e idiomas (como se observa en la pagina raiz o informe sumario)."
+#: TRARecatalog_action.pt
+msgid "gvSIGi18n_confirmarReestablecerPermisos_help"
+msgstr "Confirm to reset permissions on elements in the translations Catalog, possibly taking a long time and demanding significant server resources, depending on the number of elements found, with usually higher cost with higher number of strings and languages (as seen in the root or summary report pages)."
+
+
+#. Default: "Por favor, confirme su solicitud para verificar permisos de elementos en el Catalogo de traducciones."
+#: TRARecatalog_action.pt
+msgid "gvSIGi18n_confirmarVerificarPermisos_msgid"
+msgstr "Confirm request to verify permissions onelements in the Translations Catalog."
+
+#. Default: "Confirme para  verificar los permisos para elementos en el Catalogo de traducciones, posiblemente de larga duracion y consumiendo recursos considerables de servidor, dependiendo en el numero de elementos encontrados, usualmente con costes mas altos con numeros elevados de cadenas e idiomas (como se observa en la pagina raiz o informe sumario)."
+#: TRARecatalog_action.pt
+msgid "gvSIGi18n_confirmarVerificarPermisos_help"
+msgstr "Confirm to verify permissions on elements in the translations Catalog, possibly taking a long time and demanding significant server resources, depending on the number of elements found, with usually higher cost with higher number of strings and languages (as seen in the root or summary report pages)."
+
+
+
+#. Default: "Por favor, confirme su solicitud para Verificar el Catalogo de traducciones"
+#: TRARecatalog_action.pt
+msgid "gvSIGi18n_confirmarVerificar_msgid"
+msgstr "Confirm request to Verify the Translations Catalog"
+
+
+#. Default: "Confirme para Verificar el Catalogo de traducciones, posiblemente de larga duracion y consumiendo recursos considerables de servidor, dependiendo en el numero de elementos encontrados, usualmente con costes mas altos con numeros elevados de cadenas e idiomas (como se observa en la pagina raiz o informe sumario)."
+#: TRARecatalog_action.pt
+msgid "gvSIGi18n_confirmarVerificar_help"
+msgstr "Confirm to Verify the translations Catalog, possibly taking a long time and demanding significant server resources, depending on the number of elements found, with usually higher cost with higher number of strings and languages (as seen in the root or summary report pages)."
+
+
+
+#. Default: "Inicializar el Catalogo de Traducciones"
+#: TRACatalogoLazyInit_action.pt
+msgid "gvSIGi18n_InitializeTranslationsCatalog"
+msgstr "Initialize the Translations Catalog"
+
+
+
+#. Default: "Por favor, confirme su solicitud para Inicializar el Catalogo de traducciones"
+#: TRARecatalog_action.pt
+msgid "gvSIGi18n_confirmarInicializar_msgid"
+msgstr "Confirm request to Initialize the Translations Catalog"
+
+
+#. Default: "Confirme para Inicializar el Catalogo de traducciones, posiblemente de larga duracion y consumiendo recursos considerables de servidor, dependiendo en el numero de elementos encontrados, usualmente con costes mas altos con numeros elevados de cadenas e idiomas (como se observa en la pagina raiz o informe sumario)."
+#: TRARecatalog_action.pt
+msgid "gvSIGi18n_confirmarInicializar_help"
+msgstr "Confirm to Initialize the translations Catalog, possibly taking a long time and demanding significant server resources, depending on the number of elements found, with usually higher cost with higher number of strings and languages (as seen in the root or summary report pages)."
+
+#. Default: "Puede seleccionar algunos modulos usando la nueva cadena solicitada, o no seleccionar ningun modulo."
+#: TRACrear_SolicitudCadena_i18n_view.pt
+msgid "gvSIGi18n_crearSolicitudCadena_ModulosCadena_help"
+msgstr "You may select some modules using the new requested string symbol, or no module at all."
+
+
+#. Default: "Debe seleccionar un idioma de referencia existente. Si no existe su idioma de referencia preferido, solicite a su coordinador que cree el idioma de referencia que necesita."
+#: TRACrear_SolicitudCadena_i18n_view.pt
+msgid "gvSIGi18n_crearSolicitudCadena_ReferenceLanguage_IsRequired_error_message"
+msgstr "You must select an existing reference language. If your preferred reference language does not exist, please ask your coordinator to create it for you."
+
+#. Default: "Introduzca una traduccion de la nueva cadena solicitada al idioma de referencia."
+#: TRACrear_SolicitudCadena_i18n_view.pt
+msgid "gvSIGi18n_crearSolicitudCadena_TranslationIntoReferenceLanguage_help"
+msgstr "Enter a translation of the new requested string symbol, into the specified reference language."
+
+#. Default: "Modulos que usan la cadena"
+#: TRACrear_SolicitudCadena_i18n_view.pt
+msgid "gvSIGi18n_crearSolicitudCadena_ModulosCadena_label"
+msgstr "Modules using the string"
+
+#. Default: "No ha seleccionado ningun modulo usando la nueva cadena solicitada. Asegurese que selecciona algunos modulos, o que efectivamente no desea asociar la cadena con ningun modulo. Si el modulo deseado no existe, por favor solicite a su Coordinador que cree el modulo, para poder crear cadenas asociadas al modulo."
+#: TRACrear_SolicitudCadena_i18n_view.pt
+msgid "gvSIGi18n_crearSolicitudCadena_ModulosCadena_NoneSelected_warning"
+msgstr "You have not selected any Module using the new requested string. Make sure that you select some modules, or that you actually do not want to associate the string with any module. If the module you desire does not exists, please ask your coordinator to create the module, before you can create strings associated with the module."
+
+#. Default: "Es necesario que suministre una traduccion del nuevo simbolo de cadena solicitado, al idioma de referencia seleccionado."
+#: TRACrear_SolicitudCadena_i18n_view.pt
+msgid "gvSIGi18n_crearSolicitudCadena_TranslationIntoReferenceLanguage_convenientToSupply_msgid"
+msgstr "It is required to enter a translation of the new requested string symbol, into the selected reference language."
+
+#. Default: "El idioma principal no existe, por favor solicite a su Coordinador que cree el idioma principal."
+#: TRACrear_SolicitudCadena_i18n_view.pt
+msgid "gvSIGi18n_crearSolicitudCadena_MainLanguage_IsRequired_error_message"
+msgstr "The main language does not exist. Please ask your coordinator to create the main language."
+
+
+#. Default: "No hay modulos disponibles en el catalogo de traducciones. Puede solicitar a su coordinador que cree un modulo, para permitir la creacion de cadenas asociadas al modulo."
+#: TRACrear_SolicitudCadena_i18n_view.pt
+msgid "gvSIGi18n_crearSolicitudCadena_ModulosCadena_NoModulesExist_warning"
+msgstr "There exist no Modules available in the translations catalog. You may ask your coordinator to create a module, to allow creation of strings as associated with the desired module."
+
+
+
+#. Default: "Eliminar Modulo"
+#: TRAEliminar_Modulo.pt
+msgid "gvSIGi18n_DeleteModule"
+msgstr "Delete Module"
+
+#. Default: "Renombrar Modulo"
+#: TRARenombrar_Modulo.pt
+msgid "gvSIGi18n_RenameModule"
+msgstr "Rename Module"
+ 
+
+#. Default: "en Catalogo de Traducciones"
+#: TRAEliminar_Modulo.pt
+msgid "gvSIGi18n_inTranslationsCatalog"
+msgstr "from translations Catalog"
+
+
+
+
+#. Default: "No puede eliminar el Modulo del Catalogo de Traducciones"
+#: TRAEliminar_Modulo.pt
+msgid "gvSIGi18n_userCanNotDeleteModule_msgid"
+msgstr "You are not allowed to delete a Module fromthe translations catalog."
+
+
+
+#. Default: "Confirme la solicitud para eliminar el Modulo del Catalogo de Traducciones"
+#: TRAEliminar_Modulo.pt
+msgid "gvSIGi18n_confirmarEliminarModulo_msgid"
+msgstr "Confirm request to Delete the Module from Translations Catalog"
+
+
+#. Default: "Confirme para Eliminar el Modulo del Catalogo de Traducciones, posiblemente tardando bastante tiempo y consumiendo recursos significantes del servidor, dependiendo del numero de cadenas asociadas con el modulo."
+#: TRAEliminar_Modulo.pt
+msgid "gvSIGi18n_confirmarEliminarModulo_help"
+msgstr "Confirm to Delete the Module from the translations Catalog, possibly taking a long time and demanding significant server resources, depending on the number of strings found associated with the Module."
+
+
+#. Default: "Editar"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ModulesEditor_Open"
+msgstr "Edit"
+
+
+#. Default: "Cancelar"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ModulesEditor_Close"
+msgstr "Cancel"
+
+
+
+#. Default: "Guardar Modulos de Cadena"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ModulesEditor_SaveStringModules"
+msgstr "Save String Modules"
+
+#. Default: "Numero de errores leyendo simbolos"
+#: TRAContenidoIntercambio_i18n_view.pt
+msgid "gvSIGi18n_TRAInformeContenido_NumSymbolErrors_label"
+msgstr "Number of errors reading symbols"
+
+
+#. Default: "Numero de errores leyendo informacion de cadenas (p.ej. nombres de modulos)"
+#: TRAContenidoIntercambio_i18n_view.pt
+msgid "gvSIGi18n_TRAInformeContenido_NumStringErrors_label"
+msgstr "Number of errors reading strings information (i.e. module names)"
+
+
+
+#. Default: "Comenzado"
+#: TRAProgreso_EstadoControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_estadoControl_started_label"
+msgstr "Started"
+
+
+#. Default: "Pausado"
+#: TRAProgreso_EstadoControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_estadoControl_paused_label"
+msgstr "Paused"
+
+
+#. Default: "Completado"
+#: TRAProgreso_EstadoControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_estadoControl_completed_label"
+msgstr "Completed"
+
+
+#. Default: "Terminado"
+#: TRAProgreso_EstadoControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_estadoControl_terminated_label"
+msgstr "Terminated"
+
+
+#. Default: "Error"
+#: TRAProgreso_EstadoControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_estadoControl_error_label"
+msgstr "Error"
+
+
+#. Default: "Excepcion"
+#: TRAProgreso_EstadoControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_estadoControl_exception_label"
+msgstr "Exception"
+
+
+
+
+
+#. Default: "Mensaje de error"
+#: TRAProgreso_EstadoControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_estadoControl_errorMessage_label"
+msgstr "Error Message"
+
+
+
+#. Default: "Detalles del error"
+#: TRAProgreso_EstadoControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_estadoControl_errorMessage_label"
+msgstr "Error Details"
+
+
+
+#. Default: "Mensaje de excepcion"
+#: TRAProgreso_EstadoControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_estadoControl_exceptionMessage_label"
+msgstr "Exception Message"
+
+
+#. Default: "Detalles de la excepcion"
+#: TRAProgreso_EstadoControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_estadoControl_exceptionMessage_label"
+msgstr "Exception Details"
+
+
+#. Default: "Si"
+#: TRACrear_ContenidoIntercambio_i18n_view.pt
+msgid "gvSIGi18n_Yes"
+msgstr "Yes"
+
+
+#. Default: "No"
+#: TRACrear_ContenidoIntercambio_i18n_view.pt
+msgid "gvSIGi18n_No"
+msgstr "No"
+
+
+#. Default: "Cancelar creacion de contenido de intercambio de traducciones y navegar de vuelta a la vista tabular"
+#: TRACrear_ContenidoIntercambio_i18n_view.pt
+msgid "gvSIGi18n_cancelarCreacionContenidoIntercambioYVolverATabular_msgid"
+msgstr "Cancel upload of translations interchange contents and navigate back to import tabular view"
+
+
+#. Default: "Ejecutar tras el anterior"
+#: TRAConfigureProgress_action.pt TRAProgreso_ParametrosControl_i18n_view
+msgid "gvSIGi18n_TRAProgreso_runAfterPrevious_label"
+msgstr "Run After Previous"
+
+
+#. Default: "Vista Tabular"
+#: TRAProgressResults.pt
+msgid "gvSIGi18n_vistaTabular_msgid"
+msgstr "Tabular View"
+
+
+
+#. Default: "Fechas y Horas de Progreso"
+#: TRAProgreso_DatosResultado_i18n_view.pt
+msgid "gvSIGi18n_DatesAndTimes"
+msgstr "Progress Dates and Times"
+
+
+#. Default: "Fechas y Horas de Progreso"
+#: TRAProgreso_DatosResultado_i18n_view.pt
+msgid "gvSIGi18n_ProgressDatesAndTimes"
+msgstr "Progress Dates and Times"
+
+
+#. Default: "Elementos en Progreso"
+#: TRAProgreso_DatosResultado_i18n_view.pt
+msgid "gvSIGi18n_ProgressElements"
+msgstr "Elements in Progress"
+
+#. Default: "Tipo"
+#: TRAProgreso_DatosResultado_i18n_view.pt
+msgid "gvSIGi18n_ElementType"
+msgstr "Type"
+
+#. Default: "Titulo"
+#: TRAProgreso_DatosResultado_i18n_view.pt
+msgid "gvSIGi18n_ElementTitle"
+msgstr "Title"
+
+#. Default: "Ruta"
+#: TRAProgreso_DatosResultado_i18n_view.pt
+msgid "gvSIGi18n_ElementPath"
+msgstr "Path"
+
+#. Default: "UID"
+#: TRAProgreso_DatosResultado_i18n_view.pt
+msgid "gvSIGi18n_ElementUID"
+msgstr "UID"
+
+
+#. Default: "Inicial"
+#: TRAProgreso_DatosResultado_i18n_view.pt
+msgid "gvSIGi18n_InitialElement_label"
+msgstr "Initial"
+
+
+#. Default: "Catalogo"
+#: TRAProgreso_DatosResultado_i18n_view.pt
+msgid "gvSIGi18n_CatalogElement_label"
+msgstr "Catalog"
+
+
+#. Default: "Ultimo"
+#: TRAProgreso_DatosResultado_i18n_view.pt
+msgid "gvSIGi18n_LastElement_label"
+msgstr "Last"
+
+
+#. Default: "Momento informe"
+#: TRAProgreso_DatosResultado_i18n_view.pt
+msgid "gvSIGi18n_Timestamp_msgid"
+msgstr "Timestamp"
+
+
+#. Default: "Resultado del Proceso"
+#: TRAProgreso_DatosResultado_i18n_view.pt
+msgid "gvSIGi18n_Procress_Outcome"
+msgstr "Procress Outcome"
+
+
+
+
+#. Default: "Exito"
+#: TRAProgreso_DatosResultado_i18n_view.pt
+msgid "gvSIGi18n_Progress_Success_label"
+msgstr "Success"
+
+
+#. Default: "Completo"
+#: TRAProgreso_DatosResultado_i18n_view.pt
+msgid "gvSIGi18n_Overall_msgid"
+msgstr "Overall"
+
+#. Default: "Tipo de Fallo"
+#: TRAProgreso_DatosResultado_i18n_view.pt
+msgid "gvSIGi18n_Progress_Condition_label"
+msgstr "Failure Kind"
+
+
+#. Default: "Fallido o Incompleto"
+#: TRAProgreso_DatosResultado_i18n_view.pt
+msgid "gvSIGi18n_Progress_FailedOrIncomplete_label"
+msgstr "Failed or Incomplete"
+
+
+
+#. Default: "Resultado Proceso"
+#: TRAProgreso_DatosResultado_i18n_view.pt
+msgid "gvSIGi18n_Process_Outcome"
+msgstr "Process Outcome"
+
+
+
+
+
+#. Default: "Mensaje de Error"
+#: TRAProgreso_DatosResultado_i18n_view.pt
+msgid "gvSIGi18n_Progress_ErrorMessage_label"
+msgstr "Error Message"
+
+
+
+#. Default: "Detalles del Error"
+#: TRAProgreso_DatosResultado_i18n_view.pt
+msgid "gvSIGi18n_Progress_ErrorDetails_label"
+msgstr "Error Details"
+
+#. Default: "Volcado del Error"
+#: TRAProgreso_DatosResultado_i18n_view.pt
+msgid "gvSIGi18n_Progress_ErrorTraceback_label"
+msgstr "Error Traceback"
+
+#. Default: "Informe de Excepcion"
+#: TRAProgreso_DatosResultado_i18n_view.pt
+msgid "gvSIGi18n_Progress_ExceptionReport_label"
+msgstr "Exception Report"
+
+
+
+#. Default: "Volcado de la Excepcion"
+#: TRAProgreso_DatosResultado_i18n_view.pt
+msgid "gvSIGi18n_Progress_ExceptionTraceback_label"
+msgstr "Exception Traceback"
+
+
+
+#. Default: "Usuario"
+#: TRAProgreso_DatosResultado_i18n_view.pt
+msgid "gvSIGi18n_User_label"
+msgstr "User"
+
+#. Default: "Fecha y Hora Actual"
+#: TRAProgreso_DatosResultado_i18n_view.pt
+msgid "gvSIGi18n_FechaNow_label"
+msgstr "Date and Time Now"
+
+#. Default: "Resultados de Proceso de Larga Duracion"
+#: TRAProgressResults_inner.pt
+msgid "gvSIGi18n_ProgressResults"
+msgstr "Results of long-lived process"
+
+
+
+
+#. Default: "Resultados de Verificar"
+#: TRAProgressResults_inner.pt
+msgid "gvSIGi18n_ProgressResults_Verificar_title"
+msgstr "Verify Results"
+
+
+#. Default: "Resultados de Inicializar"
+#: TRAProgressResults_inner.pt
+msgid "gvSIGi18n_ProgressResults_Inicializar_title"
+msgstr "Initialize Results"
+
+
+#. Default: "Resultados de Inventario (proceso de larga duracion)"
+#: TRAProgressResults_inner.pt
+msgid "gvSIGi18n_ProgressResults_Inventario_title"
+msgstr "Inventory Results (a long-lived process)"
+
+
+
+#. Default: "Resultados de Re-Catalogar (proceso de larga duracion)"
+#: TRAProgressResults_inner.pt
+msgid "gvSIGi18n_ProgressResults_ReCatalogar_title"
+msgstr "Re-Catalog Results (a long-lived process)"
+
+
+#. Default: "Resultados de Re-Establecer Permisos (proceso de larga duracion)"
+#: TRAProgressResults_inner.pt
+msgid "gvSIGi18n_ProgressResults_ReEstablecer_Permisos_title"
+msgstr "Reset Permissions Results (a long-lived process)"
+
+
+#. Default: "Resultados de Eliminar Modulo (proceso de larga duracion)"
+#: TRAProgressResults_inner.pt
+msgid "gvSIGi18n_ProgressResults_Eliminar_Modulo_title"
+msgstr "Delete Module Results (a long-lived process)"
+
+
+#. Default: "Resultados de Eliminar Idioma (proceso de larga duracion)"
+#: TRAProgressResults_inner.pt
+msgid "gvSIGi18n_ProgressResults_Eliminar_Idioma_title"
+msgstr "Delete Language Results (a long-lived process)"
+
+
+#. Default: "Resultados de Copia de Seguridad (proceso de larga duracion)"
+#: TRAProgressResults_inner.pt
+msgid "gvSIGi18n_ProgressResults_Copia_Seguridad_title"
+msgstr "Backup Results (a long-lived process)"
+
+
+#. Default: "Resultados de Exportar para gvSIG (proceso de larga duracion)"
+#: TRAProgressResults_inner.pt
+msgid "gvSIGi18n_ProgressResults_Exportar_para_gvSIG_title"
+msgstr "Export for gvSIG Results (a long-lived process)"
+
+#. Default: "Resultados de Exportar (proceso de larga duracion)"
+#: TRAProgressResults_inner.pt
+msgid "gvSIGi18n_ProgressResults_Exportar_title"
+msgstr "Export Results (a long-lived process)"
+
+#. Default: "Resultados de Importar (proceso de larga duracion)"
+#: TRAProgressResults_inner.pt
+msgid "gvSIGi18n_ProgressResults_Importar_title"
+msgstr "Import Results (a long-lived process)"
+
+
+#. Default: "Resultados de Informe de Contribuciones (proceso de larga duracion)"
+#: TRAProgressResults_inner.pt
+msgid "gvSIGi18n_ProgressResults_Contribuciones_title"
+msgstr "Contributions Report Results (a long-lived process)"
+
+
+#. Default: "Verificar"
+#: TRAProgressResults_inner.pt
+msgid "gvSIGi18n_ProcessType_Verificar_msgid"
+msgstr "Verify"
+
+#. Default: "Inicializar"
+#: TRAProgressResults_inner.pt
+msgid "gvSIGi18n_ProcessType_Inicializar_msgid"
+msgstr "Initialize"
+
+
+
+
+#. Default: "Inventario"
+#: TRAProgressResults_inner.pt
+msgid "gvSIGi18n_ProcessType_Inventario_msgid"
+msgstr "Inventory"
+
+#. Default: "ReCatalogar"
+#: TRAProgressResults_inner.pt
+msgid "gvSIGi18n_ProcessType_ReCatalogar_msgid"
+msgstr "Re-Catalog"
+
+#. Default: "Re-Establecer Permisos"
+#: TRAProgressResults_inner.pt
+msgid "gvSIGi18n_ProcessType_ReEstablecer_Permisos_msgid"
+msgstr "Reset Permissions"
+
+#. Default: "Eliminar Modulo"
+#: TRAProgressResults_inner.pt
+msgid "gvSIGi18n_ProcessType_Eliminar_Modulo_msgid"
+msgstr "Delete Module"
+
+#. Default: "Eliminar Idioma"
+#: TRAProgressResults_inner.pt
+msgid "gvSIGi18n_ProcessType_Eliminar_Idioma_msgid"
+msgstr "Delete Language"
+
+#. Default: "Copia de Seguridad"
+#: TRAProgressResults_inner.pt
+msgid "gvSIGi18n_ProcessType_Copia_Seguridad_msgid"
+msgstr "Backup"
+
+#. Default: "Exportar para gvSIG"
+#: TRAProgressResults_inner.pt
+msgid "gvSIGi18n_ProcessType_Exportar_para_gvSIG_msgid"
+msgstr "Export for gvSIG"
+
+
+
+
+#. Default: "Exportar"
+#: TRAProgressResults_inner.pt
+msgid "gvSIGi18n_ProcessType_Exportar_msgid"
+msgstr "Export"
+
+#. Default: "Importar"
+#: TRAProgressResults_inner.pt
+msgid "gvSIGi18n_ProcessType_Importar_msgid"
+msgstr "Import"
+
+
+
+#. Default: "Contribuciones"
+#: TRAProgressResults_inner.pt
+msgid "gvSIGi18n_ProcessType_Contribuciones_msgid"
+msgstr "Contributions"
+
+
+
+
+
+
+#. Default: "Total"
+#: TRAProgreso_DatosResultado_i18n_view.pt
+msgid "gvSIGi18n_TotalNumberOfElements"
+msgstr "Total"
+
+
+#. Default: "#elementos"
+#: TRAProgreso_DatosResultado_i18n_view.pt
+msgid "gvSIGi18n_NumElements"
+msgstr "#elements"
+
+
+#. Default: "Numero de elementos leidos"
+#: TRAProgreso_DatosResultado_i18n_view.pt
+msgid "gvSIGi18n_Progress_NumberOfElementsRead"
+msgstr "Number of elements read"
+
+
+
+#. Default: "Numero de elementos cambiados"
+#: TRAProgreso_DatosResultado_i18n_view.pt
+msgid "gvSIGi18n_Progress_NumberOfElementsChanged"
+msgstr "Number of elements changed"
+
+
+#. Default: "Parametros de Exportacion"
+#: TRAProgreso_DatosResultado_i18n_view.pt
+msgid "gvSIGi18n_Progress_ExportParameters"
+msgstr "Export Parameters"
+
+#. Default: "Numero de elementos afectados al eliminar el Idioma"
+#: TRAProgreso_DatosResultado_DeleteLanguage_i18n_view.pt
+msgid "gvSIGi18n_NumberOfElementsDeleteLanguage"
+msgstr "Number of elements affected by deleting the Language"
+
+
+
+
+#. Default: "Numero de elementos afectados al eliminar el Modulo"
+#: TRAProgreso_DatosResultado_DeleteModule_i18n_view.pt
+msgid "gvSIGi18n_NumberOfElementsDeleteModule"
+msgstr "Number of elements affected by deleting the module"
+
+
+#. Default: "Numero de elementos re-catalogados"
+#: TRAProgreso_DatosResultado_Recatalog_i18n_view.pt
+msgid "gvSIGi18n_NumberOfElementsReCataloged"
+msgstr "Number of elements Re-Cataloged"
+
+
+#. Default: "Numero de elementos con sus permisos re-establecidos"
+#: TRAProgreso_DatosResultado_ResetPermissions_i18n_view.pt
+msgid "gvSIGi18n_NumberOfElementsResetPermissions"
+msgstr "Number of elements with their Permissions Reset"
+
+
+#. Default: "Numero de elementos creados o modificados"
+#: TRAProgreso_DatosResultado_Import_i18n_view.pt
+msgid "gvSIGi18n_NumberOfElementsCreatedOrChanged"
+msgstr "Number of elements Created or Changed"
+
+
+
+
+#. Default: "Habilitado"
+#: TRAProgreso_ParametrosControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_parametrosControl_enabled_label"
+msgstr "Enabled"
+
+#. Default: "Deshabilitado"
+#: TRAProgreso_ParametrosControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_parametrosControl_disabled_label"
+msgstr "Disabled"
+
+
+
+#. Default: "Solo entre transacciones (si ambos habilitados)"
+#: TRAProgreso_ParametrosControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_parametrosControl_only_between_transactions_label"
+msgstr "Only between transactions (if both enabled)"
+
+
+
+
+#. Default: "Maximo de tiempo entre acciones (milisegundos)"
+#: TRAProgreso_ParametrosControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_parametrosControl_max_milliseconds_label"
+msgstr "Maximum time between actions (milliseconds)"
+
+#. Default: "Maximo numero de elementos Leidos entre acciones "
+#: TRAProgreso_ParametrosControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_parametrosControl_max_elements_traversed_label"
+msgstr "Maximum number of elements read between actions"
+
+#. Default: "Maximo numero de elementos Cambiados entre acciones "
+#: TRAProgreso_ParametrosControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_parametrosControl_max_elements_changed_label"
+msgstr "Maximum number of elements Changed between actions"
+
+#. Default: "Maximo numero de transacciones entre acciones de registro"
+#: TRAProgreso_ParametrosControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_parametrosControl_log_every_nth_transactions_label"
+msgstr "Maximum number of transactions between logging actions"
+
+
+#. Default: "Porcentaje de tiempo de uso activo del procesador"
+#: TRAProgreso_ParametrosControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_parametrosControl_percent_active_time_label"
+msgstr "Percentage of time actively using the processor"
+
+
+#. Default: "Control del progreso de proceso de larga duracion"
+#: TRAControlProgress_action.pt
+msgid "gvSIGi18n_ControlProcessProgress"
+msgstr "Control progress of long-lived process"
+
+
+#. Default: "Terminar Proceso"
+#: TRAControlProgress_action.pt
+msgid "gvSIGi18n_TerminateProcess_msgid"
+msgstr "Terminate Process"
+
+
+#. Default: "Pausar Proceso"
+#: TRAControlProgress_action.pt
+msgid "gvSIGi18n_PauseProcess_msgid"
+msgstr "Pause Process"
+
+
+#. Default: "Continuar Proceso"
+#: TRAControlProgress_action.pt
+msgid "gvSIGi18n_ResumeProcess_msgid"
+msgstr "Resume Process"
+
+
+#. Default: "Lanzar ejecucion del proceso"
+#: TRAControlProgress_action.pt
+msgid "gvSIGi18n_LaunchProcess_msgid"
+msgstr "Launch Process Execution"
+
+
+
+#. Default: "Estado de la interaccion"
+#: TRAControlProgress_action.pt
+msgid "gvSIGi18n_InteracionStatusMessage"
+msgstr "Interaction status"
+
+
+
+
+
+#. Default: "Almacenar resultados intermedios"
+#: TRAConfigureProgress_action.pt
+msgid "gvSIGi18n_TRAProgreso_facility_StoreResults_label"
+msgstr "Store intermediate results"
+
+
+#. Default: "Asegurar transacciones intermedias"
+#: TRAConfigureProgress_action.pt
+msgid "gvSIGi18n_TRAProgreso_facility_Transactional_label"
+msgstr "Commit Intermediate Transactions"
+
+
+#. Default: "Registrar actividades periodicamente"
+#: TRAConfigureProgress_action.pt
+msgid "gvSIGi18n_TRAProgreso_facility_Logging_label"
+msgstr "Periodical Logging of activities"
+
+#. Default: "Ceder procesador periodicamente"
+#: TRAConfigureProgress_action.pt
+msgid "gvSIGi18n_TRAProgreso_facility_YieldProcessor_label"
+msgstr "Periodically Yield Processor"
+
+
+
+
+
+
+
+#. Default: "Total Acciones"
+#: TRAProgreso_ContadoresControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_contadoresControl_total_actions_label"
+msgstr "Total Actions"
+
+#. Default: "Momento de ultima accion"
+#: TRAProgreso_ContadoresControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_contadoresControl_milliseconds_when_last_label"
+msgstr "Moment of last action"
+
+
+#. Default: "Tiempo desde ultima accion (milisegundos)"
+#: TRAProgreso_ContadoresControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_contadoresControl_milliseconds_since_last_label"
+msgstr "Time since last action (milliseconds)"
+
+
+
+#. Default: "Elementos Leidos desde ultima accion"
+#: TRAProgreso_ContadoresControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_contadoresControl_elements_traversed_since_last_label"
+msgstr "Elements Read since last action"
+
+
+
+#. Default: "Elementos Cambiados desde ultima accion"
+#: TRAProgreso_ContadoresControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_contadoresControl_elements_changed_since_last_label"
+msgstr "Elements Changed since last action"
+
+
+
+#. Default: "Transacciones aseguradas desde ultimo registro"
+#: TRAProgreso_ContadoresControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_contadoresControl_transactions_committed_since_last_label"
+msgstr "Transactions committed since last logging"
+
+
+#. Default: "Total de tiempo activo (milisegundos)"
+#: TRAProgreso_ContadoresControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_contadoresControl_total_activity_time_label"
+msgstr "Total Active Time (milliseconds)"
+
+
+#. Default: "Total de tiempo cedido (milisegundos)"
+#: TRAProgreso_ContadoresControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_contadoresControl_total_yield_time_label"
+msgstr "Total Yield Time (milliseconds)"
+
+
+#. Default: "Fechas y Horas de progreso"
+#: TRAProgreso_DatosResultado_i18n_view.pt
+msgid "gvSIGi18n_ProgressDatesAndTimes"
+msgstr "Progress Dates and Times"
+
+
+
+#. Default: "No hay estado de control del progreso disponible en este momento."
+#: TRAProgreso_EstadoControl_i18n_view.pt
+msgid "gvSIGi18n_nohayEstadoControl_warning_msgid"
+msgstr "There is no progress control status for the process available at this time."
+
+
+#. Default: "No hay contadores de control del progreso disponible en este momento."
+#: TRAProgreso_ContadoresControl_i18n_view.pt
+msgid "gvSIGi18n_nohaycontadorescontrol_warning_msgid"
+msgstr "There are no control counters for the process available at this time."
+
+
+#. Default: "No hay datos de resultado del progreso disponible en este momento."
+#: TRAProgreso_DatosResultado_i18n_view.pt
+msgid "gvSIGi18n_nohaydatosResultado_warning_msgid"
+msgstr "There is no data result from the process available at this time."
+
+
+#. Default: "No hay parametros de control del progreso disponible en este momento."
+#: TRAProgreso_ParametrosControl_i18n_view.pt
+msgid "gvSIGi18n_nohayparametroscontrol_warning_msgid"
+msgstr "There are no control parameters for the process available at this time."
+
+
+
+#. Default: "Se han CAMBIADO parametros de control del progreso."
+#: TRAConfigureProgress_action.pt
+msgid "gvSIGi18n_TRAProgreso_parametrosControl_changed_msgid"
+msgstr "Progress control parameters have been CHANGED."
+
+
+#. Default: "No se han cambiado parametros de control del progreso."
+#: TRAConfigureProgress_action.pt
+msgid "gvSIGi18n_TRAProgreso_parametrosControl_notChanged_msgid"
+msgstr "Progress control parameters have NOT been changed."
+
+
+
+
+
+
+
+
+
+#. Default: "No hay solicitudes de control Pendientes"
+#: TRAProgreso_EstadoControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_estadoControl_NoPendingControlRequests_label"
+msgstr "There are NO Pending Control Requests"
+
+
+
+
+#. Default: "No hay solicitudes de control Realizadas"
+#: TRAProgreso_EstadoControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_estadoControl_NoPerformedControlRequests_label"
+msgstr "There are NO Performed Control Requests"
+
+
+
+#. Default: "Solicitudes de control Ejecutadas"
+#: TRAProgreso_EstadoControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_estadoControl_performedControlRequests_label"
+msgstr "Performed Control Requests"
+
+#. Default: "Solicitudes de control que ya han sido aceptadas y ejecutadas por el proceso de larga duracion."
+#: TRAProgreso_EstadoControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_estadoControl_performedControlRequests_help"
+msgstr "Control requests already accepted and executed by the long-lived process."
+
+
+
+#. Default: "Solicitudes de control Pendientes"
+#: TRAProgreso_EstadoControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_estadoControl_pendingControlRequests_label"
+msgstr "Pending Control Requests"
+
+#. Default: "Solicitudes de control que aun no han sido aceptadas y ejecutadas por el proceso de larga duracion."
+#: TRAProgreso_EstadoControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_estadoControl_performedControlRequests_help"
+msgstr "Control requests not yet accepted and executed by the long-lived process."
+
+
+
+
+#. Default: "Usuario"
+#: TRAProgreso_EstadoControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_ControlRequest_RequestingUser_label"
+msgstr "User"
+
+#. Default: "Accion"
+#: TRAProgreso_EstadoControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_ControlRequest_Action_label"
+msgstr "Action"
+
+
+#. Default: "Hora solicitud"
+#: TRAProgreso_EstadoControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_ControlRequest_RequestedTime_label"
+msgstr "Request Time"
+
+
+#. Default: "Hora realizacion"
+#: TRAProgreso_EstadoControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_ControlRequest_PerformedTime_label"
+msgstr "Performed Time"
+
+
+
+#. Default: "Cambios aplicados"
+#: TRAProgreso_EstadoControl_i18n_view.pt
+msgid "gvSIGi18n_TRAProgreso_ControlRequest_ChangesApplied_label"
+msgstr "Changes applied"
+
+
+
+#. Default: "Estimar Importacion"
+#: TRAEstimarImportacion_action.pt
+msgid "gvSIGi18n_Estimate"
+msgstr "Estimate Import"
+
+
+#. Default: "Confirmar Estimacion del contenido de Importacion"
+#: TRAEstimarImportacion_action.pt
+msgid "gvSIGi18n_confirmarEstimarImportacion_msgid"
+msgstr "Confirm estimate of import for translations contents"
+
+
+#. Default: "Cancelar Estimacion del contenido de Importacion y navegar de vuelta a la vista tabular de la importacion"
+#: TRAEstimarImportacion_action.pt
+msgid "gvSIGi18n_cancelarEstimacionYVolverATabular_msgid"
+msgstr "Cancel estimate for import of translations contents and navigate back to import tabular view"
+
+#. Default: "Importar"
+#: TRAImportar_action.pt
+msgid "gvSIGi18n_Import"
+msgstr "Import"
+
+
+
+#. Default: "Exportar un archivo de Copia de Seguridad con todas las Cadenas y Traducciones"
+#: TRABackup_action.pt
+msgid "gvSIGi18n_BackupOfAllElements"
+msgstr "Export a Backup file with all Strings and Translations elements"
+
+#. Default: "Confirmar solicitud para Exportar un archivo de Copia de Seguridad con todas las Cadenas y Traducciones"
+#: TRABackup_action.pt
+msgid "gvSIGi18n_confirmarBackup_msgid"
+msgstr "Confirm request to Export a Backup file with all Strings and Translations elements in the Translations Catalog"
+
+
+#. Default: "Confirme para realizar una Copia de Seguridad de elementos en el catalogo de traducciones, posiblemente tardando bastante tiempo y utilizando considerables recursos del servidor, dependiendo del numero de elementos encontrados, usualmente con un coste mayor con numeros elevados de cadenas e idiomas (como se aprecian en la pagina raiz e informes de estado."
+#: TRABackup_action.pt
+msgid "gvSIGi18n_confirmarBackup_help"
+msgstr "Confirm to perform an Backup of the elements in the translations Catalog, possibly taking a long time and demanding significant server resources, depending on the number of elements found, with usually higher cost with higher number of strings and languages (as seen in the root or summary report pages)"
+
+
+
+
+#. Default: "Tipo Elemento"
+#: TRAVerificationReport_i18n_view.pt
+msgid "gvSIGi18n_VerifyOrInitialize_Element_MetaType_Label"
+msgstr "Element Type"
+
+#. Default: "Titulo Elemento"
+#: TRAVerificationReport_i18n_view.pt
+msgid "gvSIGi18n_VerifyOrInitialize_Element_Title_Label"
+msgstr "Element Title"
+
+#. Default: "Ruta Elemento"
+#: TRAVerificationReport_i18n_view.pt
+msgid "gvSIGi18n_VerifyOrInitialize_Element_Path_Label"
+msgstr "Element Path"
+
+
+
+
+#. Default: "Tipo Contenedor"
+#: TRAVerificationReport_i18n_view.pt
+msgid "gvSIGi18n_VerifyOrInitialize_Container_MetaType_Label"
+msgstr "Container Type"
+
+#. Default: "Titulo Contenedor"
+#: TRAVerificationReport_i18n_view.pt
+msgid "gvSIGi18n_VerifyOrInitialize_Container_Title_Label"
+msgstr "Container Title"
+
+#. Default: "Ruta Contenedor"
+#: TRAVerificationReport_i18n_view.pt
+msgid "gvSIGi18n_VerifyOrInitialize_Container_Path_Label"
+msgstr "Container Path"
+
+
+
+
+#. Default: "Sin Grupos de Usuarios"
+#: TRAVerificationReport_i18n_view.pt
+msgid "gvSIGi18n_Verification_NoUserGroups_msgid"
+msgstr "No User Groups"
+
+#. Default: "Grupos de Usuario"
+#: TRAVerificationReport_i18n_view.pt
+msgid "gvSIGi18n_Verification_UserGroupsNumber_msgid"
+msgstr "User Groups"
+
+#. Default: "Catalogos de Cadenas"
+#: TRAVerificationReport_i18n_view.pt
+msgid "gvSIGi18n_VerifyOrInitializeSectionTitle_CatalogsCadenas_msgid"
+msgstr "Catalogs for Strings"
+
+
+#. Default: "Sin Catalogos de Cadenas"
+#: TRAVerificationReport_i18n_view.pt
+msgid "gvSIGi18n_Verification_NoCatalogsCadenas_msgid"
+msgstr "No Catalogs for Strings"
+
+#. Default: "Sin Catalogos de Cadenas"
+#: TRAVerificationReport_i18n_view.pt
+msgid "gvSIGi18n_Verification_StringsCatalogsNumber_msgid"
+msgstr "Catalogs for Strings"
+
+
+#. Default: "Catalogos para Idiomas"
+#: TRAVerificationReport_i18n_view.pt
+msgid "gvSIGi18n_VerifyOrInitializeSectionTitle_CatalogsIdiomas_msgid"
+msgstr "Catalogs for Languages"
+
+
+
+#. Default: "Sin Catalogos para Idiomas"
+#: TRAVerificationReport_i18n_view.pt
+msgid "ModelDDvlPlone_Verification_NoCatalogsForLanguages_msgid"
+msgstr "No Catalogs for Languages"
+
+
+#. Default: "Catalogos para Idiomas"
+#: TRAVerificationReport_i18n_view.pt
+msgid "gvSIGi18n_Verification_CatalogsForLanguagesNumber_msgid"
+msgstr "Catalogs for Languages"
+
+
+
+
+#. Default: "Debe ejecutar Recatalogar Elementos"
+#: TRAVerificationReport_i18n_view.pt
+msgid "gvSIGi18n_VerifyOrInitialize_MustRunRecatalogElements_Label"
+msgstr "Must Run Recatalog Elements"
+
+#. Default: "Indices"
+#: TRAVerificationReport_i18n_view.pt
+msgid "gvSIGi18n_VerifyOrInitialize_Indexes_Label"
+msgstr "Indexes"
+
+
+#. Default: "Tipo Actual"
+#: TRAVerificationReport_i18n_view.pt
+msgid "gvSIGi18n_Verification_Index_CurrentType_msgid"
+msgstr "Current Type"
+
+
+#. Default: "Nombre"
+#: TRAVerificationReport_i18n_view.pt
+msgid "gvSIGi18n_Verification_Index_Name_msgid"
+msgstr "Name"
+
+
+#. Default: "Tipo"
+#: TRAVerificationReport_i18n_view.pt
+msgid "gvSIGi18n_Verification_Index_Type_msgid"
+msgstr "Type"
+
+
+#. Default: "Extras"
+#: TRAVerificationReport_i18n_view.pt
+msgid "gvSIGi18n_Verification_Index_Extras_msgid"
+msgstr "Extras"
+
+
+
+
+
+
+
+#. Default: "Tipo"
+#: TRAVerificationReport_i18n_view.pt
+msgid "gvSIGi18n_Verification_Singleton_Type_msgid"
+msgstr "Type"
+
+
+#. Default: "Id"
+#: TRAVerificationReport_i18n_view.pt
+msgid "gvSIGi18n_Verification_Singleton_Id_msgid"
+msgstr "Id"
+
+
+#. Default: "Titulo"
+#: TRAVerificationReport_i18n_view.pt
+msgid "gvSIGi18n_Verification_Singleton_Title_msgid"
+msgstr "Title"
+
+#. Default: "Adquirir Roles"
+#: TRAVerificationReport_i18n_view.pt
+msgid "gvSIGi18n_Verification_Singleton_AcquireRoleAssignments_msgid"
+msgstr "Acquire Role Assignments"
+
+#. Default: "Exito en Adquirir Roles"
+#: TRAVerificationReport_i18n_view.pt
+msgid "gvSIGi18n_Verification_Singleton_AcquireRoleAssignmentsSuccess_msgid"
+msgstr "Acquire Role Assignments Success"
+
+#. Default: "Estado de Adquirir Roles"
+#: TRAVerificationReport_i18n_view.pt
+msgid "gvSIGi18n_Verification_Singleton_AcquireRoleAssignmentsStatus_msgid"
+msgstr "Acquire Role Assignments Status"
+
+
+
+#. Default: "Estado"
+#: TRAVerificationReport_i18n_view.pt
+msgid "gvSIGi18n_VerifyOrInitialize_Status_Label"
+msgstr "Status"
+
+
+
+#. Default: "Condicion"
+#: TRAVerificationReport_i18n_view.pt
+msgid "gvSIGi18n_VerifyOrInitialize_Condition_Label"
+msgstr "Condition"
+
+
+#. Default: "Excepcion"
+#: TRAVerificationReport_i18n_view.pt
+msgid "gvSIGi18n_VerifyOrInitialize_Exception_Label"
+msgstr "Exception"
+
+
+
+
+
+#. Default: "Esquemas"
+#: TRAVerificationReport_i18n_view.pt
+msgid "gvSIGi18n_VerifyOrInitialize_Schemas_Label"
+msgstr "Schemas"
+
+
+#. Default: "Lexicos"
+#: TRAVerificationReport_i18n_view.pt
+msgid "gvSIGi18n_VerifyOrInitialize_Lexicons_Label"
+msgstr "Lexicons"
+
+
+
+#. Default: "Tipo Elemento"
+#: TRAVerificationReport_i18n_view.pt
+msgid "gvSIGi18n_Verification_UserGroup_ElementType_msgid"
+msgstr "Element Type"
+
+
+#. Default: "Titulo Elemento"
+#: TRAVerificationReport_i18n_view.pt
+msgid "gvSIGi18n_Verification_UserGroup_ElementTitle_msgid"
+msgstr "Element Title"
+
+#. Default: "Ruta Elemento"
+#: TRAVerificationReport_i18n_view.pt
+msgid "gvSIGi18n_Verification_UserGroup_ElementPath_msgid"
+msgstr "Element Path"
+
+#. Default: "Roles Anteriores"
+#: TRAVerificationReport_i18n_view.pt
+msgid "gvSIGi18n_Verification_UserGroup_ElementPath_msgid"
+msgstr "Previous Roles"
+
+#. Default: "Roles Nuevos"
+#: TRAVerificationReport_i18n_view.pt
+msgid "gvSIGi18n_Verification_UserGroup_ElementPath_msgid"
+msgstr "New Roles"
+
+#. Default: "Roles Fallados"
+#: TRAVerificationReport_i18n_view.pt
+msgid "gvSIGi18n_Verification_UserGroup_FailedRoles_msgid"
+msgstr "Failed Roles"
+
+#. Default: "Navegar al elemento de Progreso con Resultados de verificar o inicializar el catalogo de traducciones"
+#: TRAVerificar_action.pt TRAInicializar_action.pt
+msgid "gvSIGi18n_NavegarAElementoProgresoResultadosVerificacionOInicialization_msgid"
+msgstr "Navigate to Progress element with Results of Verifying or Initializing the Translations Catalog"
+
+#. Default: "Numero de elementos con Permisos incorrectos"
+#: TRAProgreso_DatosResultado_VerifyPermissions_i18n_view.pt
+msgid "gvSIGi18n_NumberOfElementsWrongPermissions"
+msgstr "Number of elements with Wrong Permissions"
+
+
+
+
+#. Default: "No hay elementos con Permisos incorrectos"
+#: TRAProgreso_DatosResultado_VerifyPermissions_i18n_view.pt
+msgid "gvSIGi18n_nohayElementosConPermisosIncorrectos_warning_msgid"
+msgstr "There are no elements with Wrong Permissions"
+
+
+
+#. Default: "No hay elementos con Permisos cambiados"
+#: TRAProgreso_DatosResultado_ResetPermissions_i18n_view.pt
+msgid "gvSIGi18n_nohayElementosConPermisosCambiados_warning_msgid"
+msgstr "There are no elements with Permissions changed"
+
+
+
+
+#. Default: "No hay elementos re-catalogados"
+#: TRAProgreso_DatosResultado_Recatalog_i18n_view.pt
+msgid "gvSIGi18n_nohayElementosRecatalogados_warning_msgid"
+msgstr "There are no Re-Catalogged elements"
+
+#. Default: "Pulse aqui para descargar el Archivo Exportado"
+#: TRAProgreso_DatosResultado_Export_i18n_view.pt
+msgid "gvSIGi18n_ClickToDownloadExportedFile_msgid"
+msgstr "Click here to Download Exported file"
+
+
+
+
+#. Default: "Crear Importacion para Recuperar Copia de Seguridad"
+#: TRACrearImportacion_RecuperarCopiaSeguridad_i18n_view.pt
+msgid "gvSIGi18n_crearImportToRestoreBackup_action_page_title"
+msgstr "Create Import to Restore Backup"
+
+#. Default: "Por favor, seleccione un archivo .zip conteniendo una copia de seguridad de catalogo de traducciones, y pulse en el boton grabar."
+#: TRACrearImportacion_RecuperarCopiaSeguridad_i18n_view.pt
+msgid "gvSIGi18n_crearImportToRestoreBackup_action_selectFile"
+msgstr "Please, select a .zip Archive containing a Backup of a Translations Catalog, and click the Save button."
+
+
+#. Default: "Fichero a importar para Recuperar Copia de Seguridad"
+#: TRACrearImportacion_RecuperarCopiaSeguridad_i18n_view.pt
+msgid "gvSIGi18n_crearImportToRestoreBackup_fichero_label"
+msgstr "File to Import to Restore Backup"
+
+
+#. Default: "Cancelar carga de copia de seguridad de catalogo de traducciones, y volver a la vista tabular."
+#: TRACrearImportacion_RecuperarCopiaSeguridad_i18n_view.pt
+msgid "gvSIGi18n_cancelarCreacionImportToRestoreBackupYVolverATabular_msgid"
+msgstr "Cancel upload of translations catalog Backup, and navigate back to tabular view"
+
+#. Default: "Contenido XML"
+#: TRAContenidoXML_inner.pt
+msgid "gvSIGi18n_TRAContenidoXML_informeXML_label"
+msgstr "XML Contents"
+
+
+#. Default: "Contenido de un fichero XML de una copia de seguridad de catalogo de traducciones"
+#: TRAContenidoXML_inner.pt
+msgid "gvSIGi18n_TRAContenidoXML_informeXML_help"
+msgstr "Contents of an XML file read from a backup of a translations catalog."
+
+
+#. Default: "No hay Contenido XML valido"
+#: TRAContenidoXML_inner.pt
+msgid "gvSIGi18n_nohaycontenidoXML_warning_msgid"
+msgstr "There is no valid XML content"
+
+
+
+
+
+#. Default: "Informe de Contenido XML"
+#: TRAContenidoXML_i18n_view.pt
+msgid "gvSIGi18n_InformeXMLContent_msgid"
+msgstr "XML content report"
+
+#. Default: "Error"
+#: TRAContenidoXML_i18n_view.pt
+msgid "gvSIGi18n_Error_msgid"
+msgstr "Error"
+
+#. Default: "Detalles del Error"
+#: TRAContenidoXML_i18n_view.pt
+msgid "gvSIGi18n_Error_Details_msgid"
+msgstr "Error details"
+
+
+#. Default: "Total"
+#: TRAContenidoXML_i18n_view.pt
+msgid "gvSIGi18n_Total_Row_label"
+msgstr "Total"
+
+
+#. Default: "No hay nodos XML"
+#: TRAContenidoXML_i18n_view.pt
+msgid "gvSIGi18n_InformeImportXML_NoNodesInXML_msgid"
+msgstr "No Nodes in XML"
+
+#. Default: "Nombre de nodo"
+#: TRAContenidoXML_i18n_view.pt
+msgid "gvSIGi18n_XMLContentsReport_NodeName_Column_label"
+msgstr "Node name"
+
+#. Default: "# nodos"
+#: TRAContenidoXML_i18n_view.pt
+msgid "gvSIGi18n_XMLContentsReport_NumberOfNodes_Column_label"
+msgstr "# nodes"
+
+#. Default: "Exportar el Idioma a un fichero para gvSIG con todas las cadenas y sus traducciones"
+#: TRAExportarGvSIG_action.pt
+msgid "gvSIGi18n_ExportGvSIGOfAllElements"
+msgstr "Export the Language as a ExportGvSIG file with all Strings and Translations elements"
+
+
+
+#. Default: "Exportar todos los Idiomas a un fichero para gvSIG con todas las cadenas y sus traducciones"
+#: TRAExportarTodosGvSIG_action.pt
+msgid "gvSIGi18n_ExportGvSIGAllLanguagesOfAllElements"
+msgstr "Export all Languages as a ExportGvSIG file with all Strings and Translations elements"
+
+
+#. Default: "Modificacion"
+#: TRAChangeAndBrowseTranslations.pt
+msgid "gvSIGi18n_Modificacion"
+msgstr "Modification"
+
+
+
+
+
+
+
+
+#. Default: "The Contributions report is not available yet, or failed"  
+#: TRAProgreso_DatosResultado_Contributions_i18n_view.pt
+msgid "gvSIGi18n_ContributionsReport_NotAvailableYet_orFailed"
+msgstr "The Contributions report is not available yet, or failed"  
+
+
+#. Default: "Number of elements affected by creating the Contributions report"  
+#: TRAProgreso_DatosResultado_Contributions_i18n_view.pt
+msgid "gvSIGi18n_NumberOfElementsAffected_ContributionsReport"
+msgstr "Number of elements affected by creating the Contributions report"  
+
+
+
+
+
+
+
+#. Default: "Create Contributions Report"  
+#: TRACrear_Contribuciones_i18n_view.pt
+msgid "gvSIGi18n_Create_Contributions_Report"
+msgstr "Create Contributions Report"  
+
+#. Default: "Confirm request to Create a Report of Contributions to the Translation Catalog"  
+#: TRACrear_Contribuciones_i18n_view.pt
+msgid "gvSIGi18n_confirmarCrearInformeContribuciones_msgid"
+msgstr "Confirm request to Create Report of Contributions to the Translation Catalog"
+
+
+#. Default: "Confirm to Create a Report of Contributions to the translations catalog by its users, possibly taking a long time and demanding significant server resources, depending on the number of elements found, with usually higher cost with higher number of strings and languages (as seen in the root or summary report pages)."
+#: TRACrear_Contribuciones_i18n_view.pt
+msgid "gvSIGi18n_confirmarCrearContribuciones_help"
+msgstr "Confirm to Create a Report of Contributions to the translations catalog by its users, possibly taking a long time and demanding significant server resources, depending on the number of elements found, with usually higher cost with higher number of strings and languages (as seen in the root or summary report pages)."
+
+
+
+
+
+
+
+
+#. Default: "Report for Contributions to the Translations Catalog"  
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsReport_label"
+msgstr "Report for Contributions to the Translations Catalog"  
+
+#. Default: "Contributions Report Date"  
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_fechaInformeContribuciones_label"
+msgstr "Contributions Report Date"  
+
+#. Default: "Today" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsReport_Period_Today"
+msgstr "Today" 
+
+#. Default: "Yesterday" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsReport_Period_Yesterday"
+msgstr "Yesterday" 
+
+#. Default: "Last 7 Days" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsReport_Period_Last7Days"
+msgstr "Last 7 Days" 
+
+#. Default: "Last 30 Days" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsReport_Period_Last30Days"
+msgstr "Last 30 Days" 
+
+#. Default: "Last 365 Days" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsReport_Period_Last365Days"
+msgstr "Last 365 Days" 
+
+#. Default: "Before 365 Days" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsReport_Period_Before365Days"
+msgstr "Before 365 Days" 
+
+
+#. Default: "Contributions Totals" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsTotals_label"
+msgstr "Contributions Totals" 
+
+#. Default: "Contributions by Languages" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsByLanguages_label"
+msgstr "Contributions by Languages" 
+
+#. Default: "Details of Contributions by Languages" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsByLanguagesDetails_label"
+msgstr "Details of Contributions by Languages" 
+
+#. Default: "Details" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsReport_Details"
+msgstr "Details" 
+
+#. Default: "Contributions Totals with Details"
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsTotals_WithDetails_label"
+msgstr "Contributions Totals with Details"
+
+
+#. Default: "Contributions by Languages with Details" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsByLanguages_WithDetails_label"
+msgstr "Contributions by Languages with Details" 
+
+
+#. Default: "Raw Contributions report (expression in Python language)" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsRaw_label"
+msgstr "Raw Contributions report (expression in Python language)" 
+
+
+#. Default: "Contributions from Users for all Languages" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsUsuarios_TodosIdiomas_label"
+msgstr "Contributions from Users for all Languages" 
+
+#. Default: "Contributions from Users for all Languages (with Details)" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsUsuarios_TodosIdiomas_WithDetails_label"
+msgstr "Contributions from Users for all Languages (with Details)" 
+
+
+#. Default: "Contributions from Administrators for all Languages" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsAdmins_TodosIdiomas_label"
+msgstr "Contributions from Administrators for all Languages" 
+
+#. Default: "Contributions from Administrators for all Languages (with Details)" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsAdmins_TodosIdiomas_WithDetails_label"
+msgstr "Contributions from Administrators for all Languages (with Details)" 
+
+
+#. Default: "Contributions for Language" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_Contributions_Idioma_label"
+msgstr "Contributions for Language" 
+
+#. Default: "Contributions for Language (with Details)" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_Contributions_Idioma_WithDetails_label"
+msgstr "Contributions for Language (with Details)" 
+
+#. Default: "Contributions from Users for Language" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsUsuarios_Idioma_label"
+msgstr "Contributions from Users for Language" 
+
+#. Default: "Contributions from Users for Language (with Details)" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsUsuarios_Idioma_WithDetails_label"
+msgstr "Contributions from Users for Language (with Details)" 
+
+#. Default: "Contributions from Administrators for Language" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsAdmins_Idioma_label"
+msgstr "Contributions from Administrators for Language" 
+
+#. Default: "Contributions from Administrators for Language  (with Details)" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsAdmins_Idioma_WithDetails_label"
+msgstr "Contributions from Administrators for Language  (with Details)" 
+
+
+#. Default: "No Report Available about Contributions for Language" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ContributionsUsuarios_NoReportForIdioma_label"
+msgstr "No Report Available about Contributions for Language" 
+
+#. Default: "Languages" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_Languages"
+msgstr "Languages" 
+  
+#. Default: "Member id" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_MemberId"
+msgstr "Member id" 
+
+#. Default: "User name" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_UserName"
+msgstr "User name" 
+
+#. Default: "Photo" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_UserPhoto"
+msgstr "Photo" 
+
+                                                                                                                                   
+
+#. Default: "Scroll Up To All Languages" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ScrollUpToAllLanguages"
+msgstr "Scroll Up To All Languages" 
+
+#. Default: "Scroll Up To All Users" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_ScrollUpToAllUsers"
+msgstr "Scroll Up To All Users" 
+
+                                                                                                                                                                                                                     
+
+#. Default: "Details legend: Cr=Created, Tr=Translated, Re=Reviewed, De=Definitive(locked)" 
+#: TRAInformeContribuciones_inner.pt
+msgid "gvSIGi18n_Details_help"
+msgstr "Details legend: Cr=Created, Tr=Translated, Re=Reviewed, De=Definitive(locked)" 
+
+
+
+
+
+#. Default: "Activity Report only reflects changes to the translations catalog performed since the time the web servers were last started, on:"
+#: TRACatalogoActividad_inner.pt
+msgid "gvSIGi18n_InformeActividadDesdeArranque_help"
+msgstr "Activity Report only reflects changes to the translations catalog performed since the time the web servers were last started, on:"
+
+
+#. Default: "Activity Report reflects the most recent changes, and is refreshed after just a short period of time, or a low number of changes."
+#: TRACatalogoActividad_inner.pt
+msgid "gvSIGi18n_InformeActividadHastaMasReciente_help"
+msgstr "Activity Report reflects the most recent changes, and is refreshed after just a short period of time, or a low number of changes."
+
+#. Default: "To review a more complete report of changes to the translations catalog, including changes made before the servers were started, please visit the last Contributions report."
+#: TRACatalogoActividad_inner.pt
+msgid "gvSIGi18n_InformeContribucionesMasCompleto_help"
+msgstr "To review a more complete report of changes to the translations catalog, including changes made before the servers were started, please visit the last Contributions report."
+
+#. Default: "The last Contributions report may not include the most recent changes, because it is generated on demand by translations Coordinators or authorized Users."
+#: TRACatalogoActividad_inner.pt
+msgid "gvSIGi18n_InformeContribucionesPuedeNoEstarAlDia_help"
+msgstr "The last Contributions report may not include the most recent changes, because it is generated on demand by translations Coordinators or authorized Users."
+                      
+#. Default: "For a recently updated Contributions report, please ask your translations Coordinator, or generate a new one yourself, if you have permission, by clicking on the create contributions report action on the actions menu."
+#: TRACatalogoActividad_inner.pt
+msgid "gvSIGi18n_InformeContribucionesSolicitarACoordinadorOGenerar_help"
+msgstr "For a recently updated Contributions report, please ask your translations Coordinator, or generate a new one yourself, if you have permission, by clicking on the create contributions report action on the actions menu."
+
+#. Default: "No Contributions Report Available for review."
+#: TRACatalogoActividad_inner.pt
+msgid "gvSIGi18n_InformeContribucionesNotAvailable_msgid"
+msgstr "No Contributions Report Available for review."
+
+#. Default: "Last Contributions Report"
+#: TRACatalogoActividad_inner.pt
+msgid "gvSIGi18n_LastContributionsReport_msgid"
+msgstr "Last Contributions Report"
+
+
+
+
+
+#. Default: "Options that do not require refreshing the page"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_PresentationOptions_NoNeedToRefresh_label"
+msgstr "Options that do not require refreshing the page"
+
+
+#. Default: "Options that require refreshing the page"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_PresentationOptions_MustRefresh_label"
+msgstr "Options that require refreshing the page"
+
+
+
+#. Default: "Import"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationHistoryAction_Importar"
+msgstr "Import"
+
+#. Default: "Ignore"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationHistoryAction_Ignorar"
+msgstr "Ignore"
+
+#. Default: "Translate"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationHistoryAction_Traducir"
+msgstr "Translate"
+
+#. Default: "Comment"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationHistoryAction_Comentar"
+msgstr "Comment"
+
+#. Default: "Change to Pending"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationHistoryAction_HacerPendiente"
+msgstr "Change to Pending"
+
+#. Default: "Change to Translated"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationHistoryAction_HacerTraducida"
+msgstr "Change to Translated"
+
+#. Default: "Change to Reviewed"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationHistoryAction_HacerRevisada"
+msgstr "Change to Reviewed"
+
+#. Default: "Change to Definitive (locked)"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationHistoryAction_HacerDefinitiva"
+msgstr "Change to Definitive (locked)"
+
+#. Default: "Invalidate"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationHistoryAction_Invalidar"
+msgstr "Invalidate"
+
+#. Default: "Collision with other simultaneus translation"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationHistoryAction_IntentarTraducirDifferentCounter"
+msgstr "Collision with other simultaneus translation"
+
+#. Default: "Unknown"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationHistoryAction_Desconocida"
+msgstr "Unknown"
+
+#. Default: "No History"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_NoTranslationsHistory"
+msgstr "No History"
+
+
+#. Default: "Do Not Confirm Translation Changes"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_NoConfirmTranslationChanges_label"
+msgstr "Do Not Confirm Translation Changes"
+
+#. Default: "Do Not Confirm Status Changes"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_NoConfirmStatusChanges_label"
+msgstr "Do Not Confirm Status Changes"
+
+#. Default: "Do Not Confirm Translation Delete"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_NoConfirmTranslationDelete_label"
+msgstr "Do Not Confirm Translation Delete"
+
+#. Default: "Changes Confirmation options"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_controlConfirmations_title"
+msgstr "Changes Confirmation options"
+
+#. Default: "You may optionally disable user interface dialog requests to confirm changes of translations or status."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_controlConfirmations_help"
+msgstr "You may optionally disable user interface dialog requests to confirm changes of translations or status."
+
+
+#. Default: "Do you want to CHANGE the string TRANSLATION ?"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ConfirmTranslateMsg"
+msgstr "Do you want to CHANGE the string TRANSLATION ?"
+
+#. Default: "Do you REALLY want to CHANGE the string Translation ?"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ReallyConfirmTranslateMsg"
+msgstr "Do you REALLY want to CHANGE the string Translation ?"
+
+
+
+#. Default: "Do you want to CHANGE STATUS ?"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ConfirmChangeStatusMsg"
+msgstr "Do you want to CHANGE STATUS ?"
+
+#. Default: "Do you REALLY want to CHANGE STATUS ?"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ReallyConfirmChangeStatusMsg"
+msgstr "Do you REALLY want to CHANGE STATUS ?"
+
+
+#. Default: "Do you want to DELETE the string Translation ?"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ConfirmDeleteMsg"
+msgstr "Do you want to DELETE the string Translation ?"
+
+#. Default: "Do you REALLY want to DELETE the string Translation ?"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ReallyConfirmDeleteMsg"
+msgstr "Do you REALLY want to DELETE the string Translation ?"
+
+#. Default: "Do you want to apply BATCH to ALL the SELECTED translations ?"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ConfirmBatchMsg"
+msgstr "Do you want to apply BATCH to ALL the SELECTED translations ?"
+
+#. Default: "Do you REALLY want to apply BATCH to ALL the SELECTED translations ?"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ReallyConfirmBatchMsg"
+msgstr "Do you REALLY want to apply BATCH to ALL the SELECTED translations ?"
+
+
+
+#. Default: "Error refreshing Activity Report"
+#: TRACatalogoActividad.pt
+msgid "gvSIGi18n_ActivityReport_ErrorRefreshing"
+msgstr "Error refreshing Activity Report"
+
+
+#. Default: "Shall Not be refreshed because you have no permission to ellaborate it."
+#: TRACatalogoActividad.pt
+msgid "gvSIGi18n_ActivityReport_WillNotBeRegeneratedForUsersWithoutPermission"
+msgstr "Shall Not be refreshed because you have no permission to ellaborate it."
+
+
+
+
+#. Default: "Fuentes"
+#: TRAChangeAndBrowseTranslations.pt
+msgid "gvSIGi18n_Fuentes_title"
+msgstr "Sources"
+
+
+
+#. Default: "Por favor, visite"
+#: TRAInformeIdiomas_CustomView.pt
+msgid "gvSIGi18n_PleaseVisit_msgid"
+msgstr "Please visit"
+
+
+
+
+
+#. Default: "Usted no esta autorizado para generar un Informe de Estado por Idiomas."
+#: TRACatalogoInforme.pt
+msgid "gvSIGi18n_CanNot_Generate_ReportByLanguages"
+msgstr "You are not authorized to produce a Status Report by Languages."
+
+
+#. Default: "Usted no esta autorizado para generar un Informe de Estado por Modulos."
+#: TRACatalogoDetalle.pt
+msgid "gvSIGi18n_CanNot_Generate_ReportByModules"
+msgstr "You are not authorized to produce a Status Report by Modules."
+
+
+#. Default: "Usted no esta autorizado para generar un Informe de Contribuciones por Usuarios."
+#: TRACatalogoActividad.pt
+msgid "gvSIGi18n_CanNot_Generate_ActivityReport"
+msgstr "You are not authorized to produce a Activity Report"
+
+
+#. Default: "Error refrescando Informe"
+#: TRACatalogoInforme.pt TRACatalogoDetalle.pt
+msgid "gvSIGi18n_StatusReport_ErrorRefreshing"
+msgstr "Error refreshing Report"
+
+
+
+#. Default: "Puede visitar el ultimo informe por Idiomas"
+#: TRACatalogoDetalle.pt
+msgid "gvSIGi18n_YouMayVisitLastReportByLanguages_label"
+msgstr "You may visit the last Report by Languages"
+
+
+
+#. Default: "Puede visitar el ultimo informe por Modulos"
+#: TRACatalogoInforme.pt 
+msgid "gvSIGi18n_YouMayVisitLastReportByModules_label"
+msgstr "You may visit the last Report by Modules"
+
+
+#. Default: "Puede visitar el ultimo informe de Contribuciones por Usuarios"
+#: TRACatalogoActividad.pt 
+msgid "gvSIGi18n_YouMayVisitLastContributionsByUsers_label"
+msgstr "You may visit the last Report of Contributions by Users"
+
+
+#. Default: "Informe de Actividad reciente por Usuarios Contribuidores"
+#: TRACatalogoActividad.pt 
+msgid "gvSIGi18n_ActivityReport_label"
+msgstr "Report the recent Activity by Contributor Users"
+
+
+
+#. Default: "Informe de Contribuciones desde"
+#: TRACatalogoActividad_inner.pt 
+msgid "gvSIGi18n_ActivityReportingContributionsSince_help"
+msgstr "Reporting contributions since"
+
+#. Default: "Puede visitar el ultimo Informe de Contribuciones por Usuarios"
+#: TRACatalogoActividad_inner.pt 
+msgid "gvSIGi18n_YouMayVisitReportWithHistoricContributionsByUsers_label"
+msgstr "You may visit the last Report of Contributions by Users"
+
+#. Default: "Usuarios Contribuidores"
+#: TRACatalogo_inner.pt 
+msgid "gvSIGi18n_ContributingUsers_label"
+msgstr "Contributing Users"
+
+#. Default: "Administradores"
+#: TRACatalogo_inner.pt 
+msgid "gvSIGi18n_AdminUsers_label"
+msgstr "Administrators"
+
+
+
+
+#. Default: "Idiomas y Modulos"
+#: TRACatalogo_inner.pt 
+msgid "gvSIGi18n_LanguagesAndModules_label"
+msgstr "Languages and Modules"
+
+
+#. Default: "Para evitar dialogos de confirmacion, seleccione la Opcion No Confirmar ..."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ToAvoidConfirmationDialogsCheckDoNotConfirmOptionMsg"
+msgstr "To avoid confirmation dialogs, check the Do not confirm ... box in Options"
+
+
+#. Default: "Desea cambiar el Estado de la Traduccion"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ConfirmStatusChangeMsg"
+msgstr "Do you want to CHANGE STATUS of the Translation"
+
+
+#. Default: "REALMENTE Desea cambiar el Estado de la Traduccion"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_ReallyConfirmStatusChangeMsg"
+msgstr "Do you REALLY want to CHANGE STATUS of the Translation"
+
+
+

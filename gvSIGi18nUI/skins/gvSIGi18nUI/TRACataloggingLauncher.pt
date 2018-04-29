@@ -1,0 +1,696 @@
+<tal:block replace="nothing">
+# -*- coding: utf-8 -*-
+#
+# File: TRACataloggingLauncher.pt
+#
+# Copyright (c) 2008,2009,2010 by Model Driven Development sl and Antonio Carrasco Valero
+#
+# GNU General Public License (GPL)
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+#
+# Authors: 
+# Model Driven Development sl  Valencia (Spain) www.ModelDD.org 
+# Antonio Carrasco Valero                       carrasco@ModelDD.org
+#
+</tal:block>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+    lang="en"
+    metal:use-macro="here/main_template/macros/master"
+    i18n:domain="plone">
+<body>                     
+
+<metal:main fill-slot="main">
+    <tal:main-macro metal:define-macro="main"
+        tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas."
+        i18n:domain="gvSIGi18n">
+
+
+        <div metal:use-macro="here/document_actions/macros/document_actions">
+            Document actions (print, sendto etc)
+        </div>
+    
+        <h1 tal:content="object_title" class="documentFirstHeading">
+            Title or id
+        </h1>
+    
+        <div metal:use-macro="here/document_byline/macros/byline">
+            Get the byline - contains details about author and modification date.
+        </div>
+    
+        <h2>
+            Catalogging elements
+        </h2>
+        <span class="formHelp">Remove from portal_catalog and uid_catalog a tree of elements.</span>
+        <br/>
+        <br/>
+        
+        
+        <tal:block tal:define="
+            pCataloggingTypesResult python: here.TRACatalogging( 
+                theContextualElement =here, 
+                theInitialId         ='',
+                theJustReportTypes   =True,
+                theCataloggingAction ='',
+            )" >
+
+            <tal:block tal:condition="python:  not ( pCataloggingTypesResult and pCataloggingTypesResult.get( 'success', False))" >
+                <p>
+                    <font size="3" color="red" >
+                        <strong>Error accessing the TRACatalogging external method to retrieve types to Catalogging</strong>
+                    </font>
+                    <br/>
+                    <span tal:content="python: 'Status: %s' % ( ( pCataloggingTypesResult or {}).get( 'status', ''))" />
+                    <br/>
+                    <span tal:content="python: 'Condition: %s' % ( ( pCataloggingTypesResult or {}).get( 'condition', ''))" />
+                </p>
+                <br/>
+                <br/>
+            </tal:block>
+            
+            <tal:block tal:condition="python: pCataloggingTypesResult and pCataloggingTypesResult.get( 'success', False)" >
+               
+                <tal:block tal:define="           
+					pTypesToCatalogging                    python: pCataloggingTypesResult.get( 'types_in_portal_catalog_reports', {});
+                  global pConfirmationValue                python: pCataloggingTypesResult.get( 'confirmation_value', '');
+                    pTypesInPortalCatalog                  python: pTypesToCatalogging.get( 'types_in_portal_catalog',  []);
+                    pTypesInPortalCatalogChildrenExcluded  python: pTypesToCatalogging.get( 'types_in_portal_catalog_children_excluded',    []);
+                    pTypesNotInUIDCatalog                  python: pTypesToCatalogging.get( 'types_not_en_uid_catalog', [])" >
+                    
+                    <h3>
+                        <strong>Types in Catalogging</strong>
+                    </h3>
+                    <p>
+                        <tal:block tal:repeat="pTypeName python: pTypesInPortalCatalog" >
+                            <span tal:content="pTypeName" />
+                            <br/>
+                        </tal:block>
+                    </p>
+                    <br/>   
+                    <br/>   
+                        
+                    <h3>
+                        <strong>Types to whose children shall not be Catalogged or UnCatalogged</strong>
+                    </h3>
+                    <p>
+                        <tal:block tal:repeat="pTypeName python: pTypesInPortalCatalogChildrenExcluded" >
+                            <span tal:content="pTypeName" />
+                            <br/>
+                        </tal:block>
+                     </p>
+                    <br/>   
+                    <br/>   
+                        
+                    <h3>
+                        <strong>Types not in uid_catalog</strong>
+                    </h3>
+                    <p>
+                        <tal:block tal:repeat="pTypeName python: pTypesNotInUIDCatalog" >
+                            <span tal:content="pTypeName" />
+                            <br/>
+                        </tal:block>
+                     </p>
+                    <br/>   
+                    <br/>   
+                        
+                </tal:block>
+
+
+                
+            
+                <tal:block tal:define="pAvailableIds   python: here.objectIds()" >
+
+                    <tal:block tal:condition="not: pAvailableIds" >
+                        <h3>
+                            <font color="red">
+                                <strong>NO Available content IDs</strong>
+                            </font>
+                        </h3>
+                        <br/>
+                    </tal:block>
+                    
+                    <tal:block tal:condition="pAvailableIds" >
+                        <h3>
+                            <strong>Available content IDs</strong>
+                        </h3>
+                        <br/>
+                        <p>
+                            <tal:block tal:repeat="pID pAvailableIds" >
+                                <span tal:content="pID" />
+                                <br/>
+                            </tal:block>
+                        </p>
+                        <br/>
+                        <br/>
+                
+                    
+                        <tal:block tal:define="
+                            pInitialId             request/theInitialId          | string:;
+							pInitialId             python: pInitialId or '';
+							pInitialId             python: pInitialId.strip();
+                            pCataloggingAction     request/theCataloggingAction  | string:;
+							pCataloggingConfirm    request/theCataloggingConfirm | string:" >
+                            
+                            
+                            <tal:block tal:condition="python: ( not pInitialId) or ( not ( pInitialId in pAvailableIds)) or ( not pCataloggingAction) or ( not ( pCataloggingAction in  [ 'DoCatalog', 'UnCatalog',]))">
+
+                                <tal:block tal:condition="python: ( not pCataloggingAction) or ( not ( pCataloggingAction in  [ 'DoCatalog', 'UnCatalog',]))">
+                                    <p>
+                                        <font size="3" color="red">
+                                            <strong>Please select a valid Catalogging action: DoCatalog, or UnCatalog</strong>
+                                        </font>
+                                    </p>
+                                    <br/>                                
+                                </tal:block>
+                                
+                                <tal:block tal:condition="python: ( not pInitialId) or ( not ( pInitialId in pAvailableIds))">
+                                    <p>
+                                        <font size="3" color="red">
+                                            <strong>Please select the Id of one of the children elements, for Catalogging it and all its contents of supported types</strong>
+                                        </font>
+                                    </p>
+                                    <br/>                                
+                                </tal:block>
+                            
+                                <form method="POST" name="cid_CataloggingLauncher_Options_form" id="cid_CataloggingLauncher_Options_form" >
+                                    
+ 
+                                    <h3>
+                                        <font size="2">
+                                            <strong>Select the action to perform</strong>
+                                        </font>
+                                        <br/>
+                                    </h3>
+                                    <p class="formHelp">DoCatalog shall add elements to the portal_catalog and the uid_catalog, while UnCatalog shall remove them from these catalogs.</p>
+									<br/>
+									
+									<tal:block tal:condition="python: pCataloggingAction == 'DoCatalog'" >
+										<span>DoCatalog</span> 
+										&nbsp;
+										<input type="radio" class="noborder" checked="checked" value="DoCatalog" 
+											name="theCataloggingAction" id="cid_theCataloggingAction_DoCatalog"/>
+										&emsp;&emsp;
+										<span>UnCatalog</span> 
+										<input type="radio" class="noborder" value="UnCatalog" 
+											name="theCataloggingAction" id="cid_theCataloggingAction_UnCatalog" />
+									</tal:block>
+									
+									<tal:block tal:condition="python: pCataloggingAction == 'UnCatalog'" >
+										<span>DoCatalog</span> 
+										&nbsp;
+										<input type="radio" class="noborder" value="DoCatalog" 
+											name="theCataloggingAction" id="cid_theCataloggingAction_DoCatalog"/>
+										&emsp;&emsp;
+										<span>UnCatalog</span> 
+										<input type="radio" class="noborder" checked="checked"  value="UnCatalog" 
+											name="theCataloggingAction" id="cid_theCataloggingAction_UnCatalog" />
+									</tal:block>
+                                    
+									
+									<tal:block tal:condition="python: not ( pCataloggingAction in [ 'DoCatalog', 'UnCatalog',])" >
+										<span>DoCatalog</span> 
+										&nbsp;
+										<input type="radio" class="noborder" value="DoCatalog" 
+											name="theCataloggingAction" id="cid_theCataloggingAction_DoCatalog"/>
+										&emsp;&emsp;
+										<span>UnCatalog</span> 
+										<input type="radio" class="noborder" value="UnCatalog" 
+											name="theCataloggingAction" id="cid_theCataloggingAction_UnCatalog" />
+									</tal:block>
+                                    									
+									<br/>
+									<br/>
+									
+                                    
+                                    <h3>
+                                        <font size="2">
+                                            <strong>Element Id for Catalogging (recursively)</strong>
+                                        </font>
+                                        <br/>
+                                    </h3>
+                                    <p class="formHelp">Enter the id of the element contained in the current one, for Catalogging, along with all its contained elements of the listed types</p>
+                                    <br/>
+                                    <input type="text" maxlength="128" size="64" id="cid_CataloggingLauncher_InitialId_field" name="theInitialId" value="#"
+										tal:attributes="value pInitialId" />
+                                    
+                                    <br/>
+                                    <br/>
+                                    
+                                    <input type="submit" name="submit" value="Execute Catalogging" />
+                                    <br/>
+                                    <br/>
+                                </form>        
+                                <br/>
+                    
+                                <br/>
+                            </tal:block>
+                            
+							
+                            
+                            <tal:block tal:condition="python: pInitialId and ( pInitialId in pAvailableIds) and pCataloggingAction and ( pCataloggingAction in  [ 'DoCatalog', 'UnCatalog',])" >
+                            
+							
+								<tal:block tal:define="pConfirmed python: len( pCataloggingConfirm)" >
+									
+									<tal:block tal:condition="not: pConfirmed">
+	
+								
+										<form method="POST" name="cid_CataloggingLauncher_Confirm_form" id="cid_CataloggingLauncher_Confirm_form" >
+											
+											<input type="hidden" name="theCataloggingAction"  value="#" tal:attributes="value pCataloggingAction" />
+											<input type="hidden" name="theInitialId"          value="#" tal:attributes="value pInitialId" />
+											<input type="hidden" name="theCataloggingConfirm" value="#" tal:attributes="value pConfirmationValue" />
+		 
+											<h3>
+												<font size="3">
+													<strong>Please, CONFIRM Action to perform on child element given its Id, and its contents</strong>
+												</font>
+												&ensp;
+												<font size="3" color="red" >
+													<strong tal:content="pCataloggingAction" />
+												</font>
+											</h3>
+											<br/>										
+											
+											<p>
+												<font size="3" color="red" >
+													Action
+													&ensp;
+													<strong tal:content="pCataloggingAction" />
+												</font>
+											</p>
+											<p class="formHelp">DoCatalog shall add elements to the portal_catalog and the uid_catalog, while UnCatalog shall remove them from these catalogs.</p>
+											<br/>
+											
+											<p>
+												<font size="3" color="red" >
+													Initial Id
+													&ensp;
+													<strong tal:content="pInitialId" />
+												</font>
+											</p>
+											<p class="formHelp">Enter the id of the element contained in the current one, for Catalogging, along with all its contained elements of the listed types</p>
+											<br/>
+	
+											<br/>
+											
+											<input type="submit" name="submit" value="Execute Catalogging" />
+											<br/>
+											<br/>
+										</form>        
+										<br/>
+							
+										<br/>
+									</tal:block>
+									
+									
+								
+								
+	
+									<tal:block tal:condition="pConfirmed">
+								
+										<tal:block tal:define="pCataloggingResult python: here.TRACatalogging( 
+											theContextualElement =here, 
+											theInitialId         =pInitialId,
+											theJustReportTypes   =False, 
+											theCataloggingAction =pCataloggingAction,
+											)" >            
+											
+											<tal:block tal:condition="not: pCataloggingResult" >
+												<p>
+													<font size="3" color="red" >
+														<strong>Unknown Failure during TRACatalogging</strong>
+													</font>
+												</p>
+											</tal:block>
+											
+											<tal:block tal:condition="pCataloggingResult" >
+		
+												<h2>
+													<font size="4" color="red">
+														<strong tal:content="python: 'Action: %s' % pCataloggingAction" />
+													</font>
+												</h2>
+												<br/>
+											
+												<p>
+													<font size="3" >
+														<strong>Catalogged (recursively) content element with id</strong>
+														<br/>
+														<strong tal:content="python: pCataloggingResult.get( 'initial_id', '')" />                                
+													</font>
+												</p>
+											
+												
+												<tal:block tal:condition="python: not pCataloggingResult.get( 'success', False)" >
+													<p>
+														<font size="3" color="red" >
+															<strong>Failure during TRACatalogging</strong>
+														</font>
+														<br/>
+														Status:
+														&nbsp;
+														<span tal:content="python: pCataloggingResult.get( 'status', '')" />
+														<br/>
+														Condition:
+														&nbsp;
+														<span tal:content="python: pCataloggingResult.get( 'condition', '')" />
+													</p>
+												</tal:block>
+												
+												
+												<tal:block tal:condition="python: pCataloggingResult.get( 'success', False)" >
+													<p>
+														<font size="3">
+															<strong>Catalogging result: SUCCESS</strong>
+														</font>
+													</p>
+													<br/>
+													<br/>
+													
+													
+													
+													<tal:block tal:define="pTypesAndNumElements python: pCataloggingResult.get( 'types_and_num_elements', False)" >            
+														
+														<tal:block tal:condition="not: pTypesAndNumElements" >
+															<p>
+																<font size="3">
+																	<strong>No Elements REorUNCatalogged from portal_catalog</strong>
+																</font>
+															</p>
+															<br/>
+														</tal:block>
+												
+														<tal:block tal:condition="pTypesAndNumElements" >
+														
+															<p>
+																<font size="3">
+																	<strong>Elements REorUNCatalogged from portal_catalog</strong>
+																</font>
+															</p>
+														
+															<table class="listing" tal:define="global pRowIndex python: 0">
+																<thead>
+																	<tr>
+																		<th class="sortable">
+																			<font size="1">
+																				<strong>Type</strong>
+																			</font>
+																		</th>
+																		<th class="sortable">
+																			<font size="1">
+																				<strong>#elems.</strong>
+																			</font>
+																		</th>
+																	</tr>
+																</thead>
+																<tbody>
+																	<tr tal:define="global pRowIndex python: pRowIndex + 1" class="#" tal:attributes="class python: [ 'odd', 'even',][ pRowIndex % 2]" >
+																		<td>
+																			<font size="1">
+																				<strong>_Total</strong>
+																			</font>
+																		</td>
+																		<td align="right" >
+																			<font size="1">
+																				<span tal:content="python: '%d' % pCataloggingResult.get( 'total_num_elements', 0)" />
+																			</font>
+																		</td>
+																	</tr>                                        
+																	<tal:block 
+																		tal:repeat="pTypeAndNumElements pTypesAndNumElements" >
+																		<tr class="#" tal:define="global pRowIndex python: pRowIndex + 1" tal:attributes="class python: [ 'odd', 'even',][ pRowIndex % 2]" >
+																			<td>
+																				<font size="1">
+																					<strong tal:content="python: pTypeAndNumElements[ 0]" />
+																				</font>
+																			</td>
+																			<td align="right" >
+																				<font size="1">
+																					<span tal:content="python: '%d' % pTypeAndNumElements[ 1]" />
+																				</font>
+																			</td>
+																		</tr>                                        
+																	</tal:block>
+																</tbody>
+															</table>
+															<br/>
+															<br/>
+															
+														</tal:block>
+													
+													</tal:block>
+													
+													
+													
+													
+													
+													<tal:block tal:define="pFailedTypesAndNumElements python: pCataloggingResult.get( 'failed_types_and_num_elements', False)" >            
+														
+														<tal:block tal:condition="not: pFailedTypesAndNumElements" >
+															<p>
+																<font size="2" color="green" >
+																	<strong>No Elements failed for Catalogging from portal_catalog</strong>
+																</font>
+															</p>
+															<br/>
+														</tal:block>
+												
+														<tal:block tal:condition="pFailedTypesAndNumElements" >
+														
+															<p>
+																<font size="3" color="red">
+																	<strong>Elements FAILED for Catalogging from portal_catalog</strong>
+																</font>
+															</p>
+														
+															<table class="listing" tal:define="global pRowIndex python: 0">
+																<thead>
+																	<tr>
+																		<th class="sortable">
+																			<font size="1">
+																				<strong>Type</strong>
+																			</font>
+																		</th>
+																		<th class="sortable">
+																			<font size="1">
+																				<strong>#elems.</strong>
+																			</font>
+																		</th>
+																	</tr>
+																</thead>
+																<tbody>
+																	<tr tal:define="global pRowIndex python: pRowIndex + 1" class="#" tal:attributes="class python: [ 'odd', 'even',][ pRowIndex % 2]" >
+																		<td>
+																			<font size="1">
+																				<strong>_Total</strong>
+																			</font>
+																		</td>
+																		<td align="right" >
+																			<font size="1">
+																				<span tal:content="python: '%d' % pCataloggingResult.get( 'failed_total_num_elements', 0)" />
+																			</font>
+																		</td>
+																	</tr>                                        
+																	<tal:block 
+																		tal:repeat="pTypeAndNumElements pFailedTypesAndNumElements" >
+																		<tr class="#" tal:define="global pRowIndex python: pRowIndex + 1" tal:attributes="class python: [ 'odd', 'even',][ pRowIndex % 2]" >
+																			<td>
+																				<font size="1">
+																					<strong tal:content="python: pTypeAndNumElements[ 0]" />
+																				</font>
+																			</td>
+																			<td align="right" >
+																				<font size="1">
+																					<span tal:content="python: '%d' % pTypeAndNumElements[ 1]" />
+																				</font>
+																			</td>
+																		</tr>                                        
+																	</tal:block>
+																</tbody>
+															</table>
+															<br/>
+							
+															
+														</tal:block>
+													
+													</tal:block>
+													
+													<br/>
+													<br/>                            
+													  
+													 
+													
+							
+													<tal:block tal:define="pUIDTypesAndNumElements python: pCataloggingResult.get( 'uid_types_and_num_elements', False)" >            
+														
+														<tal:block tal:condition="not: pUIDTypesAndNumElements" >
+															<p>
+																<font size="3">
+																	<strong>No Elements REorUNCatalogged from uid_catalog</strong>
+																</font>
+															</p>
+															<br/>
+														</tal:block>
+												
+														<tal:block tal:condition="pUIDTypesAndNumElements" >
+														
+															<p>
+																<font size="3">
+																	<strong>Elements REorUNCatalogged from uid_catalog</strong>
+																</font>
+															</p>
+														
+															<table class="listing" tal:define="global pRowIndex python: 0">
+																<thead>
+																	<tr>
+																		<th class="sortable">
+																			<font size="1">
+																				<strong>Type</strong>
+																			</font>
+																		</th>
+																		<th class="sortable">
+																			<font size="1">
+																				<strong>#elems.</strong>
+																			</font>
+																		</th>
+																	</tr>
+																</thead>
+																<tbody>
+																	<tr tal:define="global pRowIndex python: pRowIndex + 1" class="#" tal:attributes="class python: [ 'odd', 'even',][ pRowIndex % 2]" >
+																		<td>
+																			<font size="1">
+																				<strong>_Total</strong>
+																			</font>
+																		</td>
+																		<td align="right" >
+																			<font size="1">
+																				<span tal:content="python: '%d' % pCataloggingResult.get( 'uid_total_num_elements', 0)" />
+																			</font>
+																		</td>
+																	</tr>                                        
+																	<tal:block 
+																		tal:repeat="pUIDTypeAndNumElements pUIDTypesAndNumElements" >
+																		<tr class="#" tal:define="global pRowIndex python: pRowIndex + 1" tal:attributes="class python: [ 'odd', 'even',][ pRowIndex % 2]" >
+																			<td>
+																				<font size="1">
+																					<strong tal:content="python: pUIDTypeAndNumElements[ 0]" />
+																				</font>
+																			</td>
+																			<td align="right" >
+																				<font size="1">
+																					<span tal:content="python: '%d' % pUIDTypeAndNumElements[ 1]" />
+																				</font>
+																			</td>
+																		</tr>                                        
+																	</tal:block>
+																</tbody>
+															</table>
+															<br/>
+														</tal:block>
+													
+													</tal:block>                            
+													
+													
+													
+													
+													
+							
+													<tal:block tal:define="pFailedUIDTypesAndNumElements python: pCataloggingResult.get( 'failed_uid_types_and_num_elements', False)" >            
+														
+														<tal:block tal:condition="not: pFailedUIDTypesAndNumElements" >
+															<p>
+																<font size="2" color="green" >
+																	<strong>No Elements failed for Catalogging from uid_catalog</strong>
+																</font>
+															</p>
+															<br/>
+														</tal:block>
+												
+														<tal:block tal:condition="pFailedUIDTypesAndNumElements" >
+														
+															<p>
+																<font size="3" color="red" >
+																	<strong>Elements FAILED for Catalogging from uid_catalog</strong>
+																</font>
+															</p>
+														
+															<table class="listing" tal:define="global pRowIndex python: 0">
+																<thead>
+																	<tr>
+																		<th class="sortable">
+																			<font size="1">
+																				<strong>Type</strong>
+																			</font>
+																		</th>
+																		<th class="sortable">
+																			<font size="1">
+																				<strong>#elems.</strong>
+																			</font>
+																		</th>
+																	</tr>
+																</thead>
+																<tbody>
+																	<tr tal:define="global pRowIndex python: pRowIndex + 1" class="#" tal:attributes="class python: [ 'odd', 'even',][ pRowIndex % 2]" >
+																		<td>
+																			<font size="1">
+																				<strong>_Total</strong>
+																			</font>
+																		</td>
+																		<td align="right" >
+																			<font size="1">
+																				<span tal:content="python: '%d' % pCataloggingResult.get( 'failed_uid_total_num_elements', 0)" />
+																			</font>
+																		</td>
+																	</tr>                                        
+																	<tal:block 
+																		tal:repeat="pUIDTypeAndNumElements pFailedUIDTypesAndNumElements" >
+																		<tr class="#" tal:define="global pRowIndex python: pRowIndex + 1" tal:attributes="class python: [ 'odd', 'even',][ pRowIndex % 2]" >
+																			<td>
+																				<font size="1">
+																					<strong tal:content="python: pUIDTypeAndNumElements[ 0]" />
+																				</font>
+																			</td>
+																			<td align="right" >
+																				<font size="1">
+																					<span tal:content="python: '%d' % pUIDTypeAndNumElements[ 1]" />
+																				</font>
+																			</td>
+																		</tr>                                        
+																	</tal:block>
+																</tbody>
+															</table>
+															<br/>
+														</tal:block>
+													</tal:block>                            
+												</tal:block>
+											</tal:block>
+										</tal:block>
+									</tal:block>
+	                            </tal:block>
+                            </tal:block>
+                        </tal:block>
+                    </tal:block>
+                </tal:block>
+            </tal:block>
+        </tal:block>
+
+
+    </tal:main-macro>
+</metal:main>
+
+</body>
+</html>

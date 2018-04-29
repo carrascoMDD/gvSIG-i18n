@@ -1,0 +1,801 @@
+Instructions to migrate instances of gvSIGi18n application,
+from version 1.2.1 (or 1.x, in general),
+to version 2.0 (or 2.x).
+-----------------------------------------------------------
+
+Migration includes new code incompatible with all the pre-existing instances of gvSIGi18n.
+Because code changes affects to all the Plone sites of the Plone instance to migrate,
+all the gvSIGi18n instance in all the Plone sites of the affected Plone instance 
+must be exported, and then recreated as specified below.
+
+
+
+-----------------------------------------------------------
+
+The migration approach assumes that the instances to migrate
+exists in separate storage files.
+
+  --- See file ReadMe_Install_separate_storage.txt 
+      in the Plone product folder for the gvSIGi18n application,
+      or in OSOR repository at URL
+      https://forge.osor.eu/docman/view.php/136/264/ReadMe_Install_separate_storage_on_gvSIG.txt
+      Reachable by accessing inthe OSOR FORGE, the project gvSIGi18n,
+      tab "Docs", and path "Installation Instructions/ReadMe_Install_separate_storage_on_gvSIG.txt"
+
+
+The following strategy shall be applied to each separate storage file.
+
+You may inspect the storages mounted in the Plone instance,
+by navigating with Zope Management Interface to the root of the Plone site,
+and request with the drop-down menu at the top-right,
+to create a "ZODB Mount Point" 
+(be careful not to click the button to actually create mount points, although there should not be any pending to create).
+
+The entries displayed correspond to the 
+<zodb_db ...>  elements in the Data/etc/zope.conf file of the Plone instance.
+
+
+-----------------------------------------------------------
+
+The migration strategy consists in:
+1) Making Plone "forget" about the instances existing in the separate storage,
+2) Replacing the existing separate storage file 
+   with a new blank storage file, with same paths 
+   (identical plone site name and mounted folder name).
+
+-----------------------------------------------------------
+
+The migration is performed by executing the following steps:
+
+0) Install the patch for v.1.2.1 dated 20110125,
+   containing a new version of TRACatalogo_Exportacion.py.
+   Create the external method TRAExportAdditionalConfig
+
+
+1) Exporting all strings and translations to all languages from the instance to migrate.
+   Export can be done as "Export for gvSIG" from each language,
+   i.e. using an automated script with wget commands, or by hand.
+   Export can also be done in a single export with the advanced export action,
+   including all languages, whether in GNU gettext .PO format, or Java .properties format.
+
+
+2) Removing from portal_catalog and uid_catalog all elements (recursively)
+   of the translations catalog instance to migrate.
+
+   To do this, install in the Plone instance the uncatalog utility provided.
+   The uncatalog utility must be installed, by:
+
+   2.1) Creating in the plone site/portal_skins/custom a Page Template 
+        TRAUncatalogLauncher with the content of the TRAUncatalogLauncher.pt file.
+        The TRAUncatalogLauncher.pt file is available in the skins\gvSIGi18nUI folder
+        of the version 2.x of the gvSIGi18nUI product.
+
+   2.2) Creating in the plone site/portal_skins/custom a ExternalMethod, 
+        with all names as TRAUncatalog,
+        by copying to the Extensions folder
+        of the Plone instance the file TRAUncatalog.py,
+        available in the manualadditions\AsExternalMethodInSiteRoot folder 
+        of the version 2.x of the gvSIGi18nTool product.        
+
+
+
+   To execute the uncatalog utility, and make Plone "forget" about existing instance(s):
+
+   Navigate with Plone, logged as a user with Manager role,
+   to the folder that contains the instance(s) to migrate.
+   In general, this is the folder mounted from the separate storage.
+
+   Invoke the TRAUncatalogLauncher by appending /TRAUncatalogLauncher 
+   to the URL of the containing folder.
+
+   The TRAUncatalogLauncher template shall present a list of ids of elements inside the folder,
+   and a field where the user shall enter the ID of the translations catalog instance 
+   (i.e. copy/paste from the list)
+
+   You may notice that the containing folder no longer 
+   displays the instances "fogotten" in its "folder_contents" view -
+   even if the instances are actually still there !
+
+   EXTRA for FUN: You may enjoy yourself looking at the portal_catalog, and uid_catalog,
+   at root of the Pone site, to see how instances of element types in the gvSIGi18n
+   application, disappear from the catalogs' indexes after running the uncatalog utility.
+   The instances are still visible from the ZMI.
+
+
+
+--- REPEAT FOR ALL instances of gvSIGi18n in all the Plone sites of the Plone instance to migrate ---
+
+To make sure that all the instances of gvSIGi18n have been removed,
+inspect the portal_catalog and uid_catalog
+and verify that no element exist in the catalogs
+from the gvSIGi18n application, 
+that can be recognized with type names starting with TRA... .
+
+
+
+
+-------------------------
+
+NOTE: 
+BY NOT REMOVING THE USER GROUPS ASSOCIATED WITH THE DELETED INSTANCES OF THE APPLICATION,
+WHEN THE NEW INSTANCES ARE CREATED WITH SAME PATHS AND IDS,
+THE EXISTING GROUPS WILL BE USED AND ROLES ASSIGNED TO THEM IN EACH CORRESPONDING ELEMENT.
+(hopefully...!)
+
+
+-------------------------
+
+
+
+
+3) Shut-down the Plone instance.
+
+4) Delete the existing separate storage file from the Data/var folder of the Plone instance.
+
+5) Restart the Plone instance.
+
+6) Navigage with the Zope Management Interface,
+   to the container of the storage files that were mounted and have been deleted.
+   (generally, at the root of the Plone site).
+   The ZMI shall display zope (instead of Plone) folders, with no contents whatsoever,
+   at the mount points of the deleted storage files.
+
+7) Delete the mount point folders of the removed storage files.
+
+8) Shut-down the Plone instance.
+
+
+9) Add a new separate storage file with same names and paths,
+   to the Data/var folder of the Plone instance.
+   -- See file ReadMe_Install_separate_storage.txt 
+      in the Plone product folder for the gvSIGi18n application,
+      or in OSOR repository at URL
+      https://forge.osor.eu/docman/view.php/136/264/ReadMe_Install_separate_storage_on_gvSIG.txt
+      Reachable by accessing inthe OSOR FORGE, the project gvSIGi18n,
+      tab "Docs", and path "Installation Instructions/ReadMe_Install_separate_storage_on_gvSIG.txt"
+
+10) Start the Plone instance.
+
+11) Create a ZODB Mount Point,
+    navigating with Zope Management Interface to the root of the Plone site,
+    and request with the drop-down menu at the top-right,
+    to create a "ZODB Mount Point" 
+    there shall be a ZODB Mount Poing pending to create,
+    corresponding to the separate storage file deleted and added.
+    Select the check box "Create new folders if the mounted objects don't yet exist",
+    and click the button "Create selected mount points".
+    A Plone folder correspoding to the mount point shall appear in the 
+    ZMI page of the root of the Plone site.
+
+
+--- REPEAT FOR ALL separate storage files and mount points containing instances of gvSIGi18n ---
+
+
+12) From ZMI, Delete all templates, scripts and external methods,
+    corresponding to the ModelDDvlPlone or gvSIGi18n applications,
+    in the root of the Plone Site, or portal_skins/custom.
+    Same for ModelDDvlPlone_tool and ModelDDvlPlone_configuration tool instances.
+
+
+13) Shut-down the Plone instance.
+
+14) Delete all cached files in the Plone instance path Data\var\mddcache
+
+15) Delete the Plone products ModelDDvlPlone (and ModelDDvlPloneConfiguration and ModelDDvlPloneTool)
+    and gvSIGi18n, 
+    and the files in the Data\Extensions folder of the Plone instance,
+    corresponding to the ModelDDvlPlone or gvSIGi18n applications.
+
+16) Install the Plone products:
+    ModelDDvlPlone
+    ModelDDvlPloneConfiguration
+    ModelDDvlPloneTool
+
+    gvSIGi18n
+    gvSIGi18nTool
+    gvSIGi18nUI
+    
+    Make sure that the 3rd party products are installed :
+    ZopeChinaPak
+    CJKSplitter
+    Relations
+
+17) Copy to the Extensions folder of the Plone instance,
+    all external method files in each of the products' folder
+    manualadditions\AsExternalMethodInSiteRoot
+    from the products:
+    ModelDDvlPlone
+    ModelDDvlPloneTool
+
+    gvSIGi18nTool
+    gvSIGi18nUI
+
+
+    
+
+18) Start the Plone instance.
+
+19) From the Plone preferences control panel / add/remove products installer
+    install the  products
+
+    ModelDDvlPlone
+    gvSIGi18n
+    gvSIGi18nUI
+ 
+    Note that gvSIGi18nTool and ModelDDvlPloneTool and ModelDDvlPloneConfiguration 
+    are not Products, but tools,
+    and do not require installation with the Plone products installer.
+
+    If any of the products (most likely ModelDDvlPlone and gvSIGi18n)
+    appear as having been upgraded,
+    click to reinstall the newer version.
+
+20) From ZMI create in portal_skins/custom
+    the external method MDDInitialization (all names are MDDInitialization).
+    
+21) From Plone, logged in as a user with Manager role,
+    Invoke the template MDDInitTool.pt
+
+    Make sure that the result is Success.
+    and that a couple of tool instances and a number of external methods are created in portal_skins/custom.
+
+
+
+22) From ZMI create in portal_skins/custom
+    the external method TRAInitialization (all names are TRAInitialization).
+    
+23) From Plone, logged in as a user with Manager role,
+    Invoke the template TRAInitTool.pt
+
+    Make sure that the result is Success.
+    and that a tool instance and a number of external methods are created in portal_skins/custom.
+
+
+
+24) Navigate with Plone, to the mounted folder,
+   and create an instance of translations catalog with same title (and id) 
+   of the original migrated instance of translations catalog.
+
+   Note that to create successfully an instance of translations catalog,
+   the connected user must have the permission
+   gvSIGi18n: Add TRACatalogo 
+   granted in the folder where the instance is created
+   directly or acquired from container.
+
+   In general (after default initialization with TRAInitTool), 
+   the permission is granted to users with Manager or Owner roles
+   at the root of the Plone instance,
+   and acquired by contained elements including all the Plone sites in the instance,
+   and recursively in the folder (mounted point) where the translations catalog instance
+   is to be created.
+
+   In any case, make sure that users with manager role
+   have granted the gvSIGi18n: Add TRACatalogo permission
+   at the folder where the translations catalog instance is to be created.
+
+   (otherwise, the creation will not complete sucessfully).
+
+
+
+
+
+25) Run a Verification of the translations catalog.
+
+
+26) Run a reset permissions of the translations catalog.
+
+
+27) Run a Recatalog of the translations catalog.
+
+
+28) Run a Verification of the translations catalog.
+
+
+29) Import all translations exported from the original instance of translations catalog.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-----
+
+Id and path for the instance to test migration on ACVP06 server.
+
+http://192.168.1.11/modeldd/i18nowned3db/gvsig-i18n-1-9.1/manage_workspace
+
+-----
+
+
+
+
+
+
+
+
+
+
+
+
+---------------
+Sample Result of running MDDInitTool:
+
+Success
+
+  Tool Singletons   Success
+
+2   Tool Singletons
+Success 	Required 	Status 	Id 	Module 	Class 	Install Path
+True 	True 	created 	MDDModelDDvlPlone_tool 	Products.ModelDDvlPloneTool.ModelDDvlPloneTool 	ModelDDvlPloneTool 	portal_skins/ custom
+True 	True 	created 	MDDModelDDvlPlone_configuration 	Products.ModelDDvlPloneConfiguration.ModelDDvlPloneConfiguration 	ModelDDvlPloneConfiguration 	portal_skins/ custom
+
+
+
+Verify or Initialize-   External Methods-   Success
+
+12 External Methods
+Success 	Required 	Status 	Module 	Function 	Id 	Title 	Install Path
+Success 	True 	created 	MDDManageActions 	MDDManageActions 	MDDManageActions 	MDDManageActions 	portal_skins/ custom
+Success 	True 	created 	MDDInteractionTabular 	MDDInteractionTabular 	MDDInteractionTabular 	MDDInteractionTabular 	portal_skins/ custom
+Success 	True 	created 	MDDPresentationTabular 	MDDPresentationEmpty 	MDDPresentationEmpty 	MDDPresentationEmpty 	portal_skins/ custom
+Success 	True 	created 	MDDPresentationTabular 	MDDPresentationClipboard 	MDDPresentationClipboard 	MDDPresentationClipboard 	portal_skins/ custom
+Success 	True 	created 	MDDPresentationTabular 	MDDPresentationActionsResults 	MDDPresentationActionsResults 	MDDPresentationActionsResults 	portal_skins/ custom
+Success 	True 	created 	MDDPresentationTabular 	MDDPresentationTabular 	MDDPresentationTabular 	MDDPresentationTabular 	portal_skins/ custom
+Success 	True 	created 	MDDCacheDump 	MDDCacheDump 	MDDCacheDump 	MDDCacheDump 	portal_skins/ custom
+Success 	False 	created 	MDDLoadModules 	MDDLoadModules 	MDDLoadModules 	MDDLoadModules 	portal_skins/ custom
+Success 	False 	created 	MDDLoadModules 	MDDModulesList 	MDDModulesList 	MDDModulesList 	portal_skins/ custom
+Success 	False 	exists 	MDDInitialization 	MDDInitialization 	MDDInitialization 	MDDInitialization 	portal_skins/ custom
+Success 	False 	created 	MDDZipFileExpansionUtils 	MDDInformeContenidoZipFile 	MDDInformeContenidoZipFile 	MDDInformeContenidoZipFile 	portal_skins/ custom
+Success 	False 	created 	MDDZipFileExpansionUtils 	MDDDescomprimirContenidoZipFile 	MDDDescomprimirContenidoZipFile 	MDDDescomprimirContenidoZipFile 	portal_skins/ custom
+
+
+
+
+
+---------------
+Sample Result of running TRAInitTool:
+Success
+
+1   Tool Singletons
+Success 	Required 	Status 	Id 	Module 	Class 	Install Path
+True 	True 	created 	TRAgvSIGi18n_tool 	Products.gvSIGi18nTool.TRAgvSIGi18nTool 	TRAgvSIGi18nTool 	portal_skins/ custom
+
+
+
+Verify or Initialize-   External Methods-   Success
+
+
+
+
+Verify or Initialize-   Init gvSIGi18n UI in <portal_root>/portal_skins/custom Success
+
+  Tool Singletons   Success
+
+
+Verify or Initialize-   External Methods-   Success
+
+7 External Methods
+Success 	Required 	Status 	Module 	Function 	Id 	Title 	Install Path
+Success 	True 	created 	TRAChangeAndBrowseTranslations 	TRAChangeAndBrowseTranslations 	TRAChangeAndBrowseTranslations 	TRAChangeAndBrowseTranslations 	portal_skins/ custom
+Success 	True 	created 	TRAChangeAndBrowseTranslations 	TRASizesIdioma 	TRASizesIdioma 	TRASizesIdioma 	portal_skins/ custom
+Success 	True 	created 	TRARenderSecurity 	TRARenderPermissionDefinitions 	TRARenderPermissionDefinitions 	TRARenderPermissionDefinitions 	portal_skins/ custom
+Success 	True 	created 	TRARenderSecurity 	TRARenderLoggedUsedHere 	TRARenderLoggedUsedHere 	TRARenderLoggedUsedHere 	portal_skins/ custom
+Success 	True 	created 	TRARenderSecurity 	TRARenderGroupsRolesHere 	TRARenderGroupsRolesHere 	TRARenderGroupsRolesHere 	portal_skins/ custom
+Success 	True 	created 	TRARenderProfiling 	TRARenderExecutionDetails 	TRARenderExecutionDetails 	TRARenderExecutionDetails 	portal_skins/ custom
+Success 	True 	created 	TRAExport_ctrl 	TRAExport_ParametersCandidateValues 	TRAExport_ParametersCandidateValues 	TRAExport_ParametersCandidateValues 	portal_skins/ custom
+
+
+
+
+
+
+
+
+
+
+
+---------------
+Sample Result of running a translations catalog verification, just after creating the instance.
+Overall Success
+
+
+Verify   ModelDDvlPlone framework Success
+
+  Tool Singletons   Success
+
+2   Tool Singletons
+Success 	Required 	Status 	Id 	Module 	Class 	Install Path
+True 	True 	exists 	MDDModelDDvlPlone_tool 	Products.ModelDDvlPloneTool.ModelDDvlPloneTool 	ModelDDvlPloneTool 	portal_skins/ custom
+True 	True 	exists 	MDDModelDDvlPlone_configuration 	Products.ModelDDvlPloneConfiguration.ModelDDvlPloneConfiguration 	ModelDDvlPloneConfiguration 	portal_skins/ custom
+
+
+
+Verify   External Methods-   Success
+
+12 External Methods
+Success 	Required 	Status 	Module 	Function 	Id 	Title 	Install Path
+Success 	True 	exists 	MDDManageActions 	MDDManageActions 	MDDManageActions 	MDDManageActions 	portal_skins/ custom
+Success 	True 	exists 	MDDInteractionTabular 	MDDInteractionTabular 	MDDInteractionTabular 	MDDInteractionTabular 	portal_skins/ custom
+Success 	True 	exists 	MDDPresentationTabular 	MDDPresentationEmpty 	MDDPresentationEmpty 	MDDPresentationEmpty 	portal_skins/ custom
+Success 	True 	exists 	MDDPresentationTabular 	MDDPresentationClipboard 	MDDPresentationClipboard 	MDDPresentationClipboard 	portal_skins/ custom
+Success 	True 	exists 	MDDPresentationTabular 	MDDPresentationActionsResults 	MDDPresentationActionsResults 	MDDPresentationActionsResults 	portal_skins/ custom
+Success 	True 	exists 	MDDPresentationTabular 	MDDPresentationTabular 	MDDPresentationTabular 	MDDPresentationTabular 	portal_skins/ custom
+Success 	True 	exists 	MDDCacheDump 	MDDCacheDump 	MDDCacheDump 	MDDCacheDump 	portal_skins/ custom
+Success 	False 	exists 	MDDLoadModules 	MDDLoadModules 	MDDLoadModules 	MDDLoadModules 	portal_skins/ custom
+Success 	False 	exists 	MDDLoadModules 	MDDModulesList 	MDDModulesList 	MDDModulesList 	portal_skins/ custom
+Success 	False 	exists 	MDDInitialization 	MDDInitialization 	MDDInitialization 	MDDInitialization 	portal_skins/ custom
+Success 	False 	exists 	MDDZipFileExpansionUtils 	MDDInformeContenidoZipFile 	MDDInformeContenidoZipFile 	MDDInformeContenidoZipFile 	portal_skins/ custom
+Success 	False 	exists 	MDDZipFileExpansionUtils 	MDDDescomprimirContenidoZipFile 	MDDDescomprimirContenidoZipFile 	MDDDescomprimirContenidoZipFile 	portal_skins/ custom
+
+
+
+Verify   gvSIGi18n User Interface Success
+
+  Tool Singletons   Success
+
+
+Verify   External Methods-   Success
+
+7 External Methods
+Success 	Required 	Status 	Module 	Function 	Id 	Title 	Install Path
+Success 	True 	exists 	TRAChangeAndBrowseTranslations 	TRAChangeAndBrowseTranslations 	TRAChangeAndBrowseTranslations 	TRAChangeAndBrowseTranslations 	portal_skins/ custom
+Success 	True 	exists 	TRAChangeAndBrowseTranslations 	TRASizesIdioma 	TRASizesIdioma 	TRASizesIdioma 	portal_skins/ custom
+Success 	True 	exists 	TRARenderSecurity 	TRARenderPermissionDefinitions 	TRARenderPermissionDefinitions 	TRARenderPermissionDefinitions 	portal_skins/ custom
+Success 	True 	exists 	TRARenderSecurity 	TRARenderLoggedUsedHere 	TRARenderLoggedUsedHere 	TRARenderLoggedUsedHere 	portal_skins/ custom
+Success 	True 	exists 	TRARenderSecurity 	TRARenderGroupsRolesHere 	TRARenderGroupsRolesHere 	TRARenderGroupsRolesHere 	portal_skins/ custom
+Success 	True 	exists 	TRARenderProfiling 	TRARenderExecutionDetails 	TRARenderExecutionDetails 	TRARenderExecutionDetails 	portal_skins/ custom
+Success 	True 	exists 	TRAExport_ctrl 	TRAExport_ParametersCandidateValues 	TRAExport_ParametersCandidateValues 	TRAExport_ParametersCandidateValues 	portal_skins/ custom
+
+
+
+Verify   gvSIGi18n boundary Tool Success
+
+  Tool Singletons   Success
+
+1   Tool Singletons
+Success 	Required 	Status 	Id 	Module 	Class 	Install Path
+True 	True 	exists 	TRAgvSIGi18n_tool 	Products.gvSIGi18nTool.TRAgvSIGi18nTool 	TRAgvSIGi18nTool 	portal_skins/ custom
+
+
+
+Verify   External Methods-   Success
+
+
+Verify gvSIGi18n translations catalog root gvsig-i18n-1-9.1 : Overall Success
+
+Element Type 	TRACatalogo
+Element Title 	gvsig-i18n-1-9.1
+Element Path 	/modeldd/i18nowned3db/gvsig-i18n-1-9.1
+
+
+Must Run Recatalog Elements   False
+Verify gvSIGi18n translations catalog root Collections   Success
+Container Type 	TRACatalogo
+Container Title 	gvsig-i18n-1-9.1
+Container Path 	/ modeldd/ i18nowned3db/ gvsig-i18n-1-9.1
+
+
+7 Collections-
+Success 	Status 	Type- 	Id- 	Title- 	Acquire Roles- 	Acquire Roles Success- 	Acquire Roles Status-
+True 	exists 	TRAColeccionIdiomas 	idiomas 	Languages 	True 	True 	was_set
+True 	exists 	TRAColeccionModulos 	modulos 	Modules 	True 	True 	was_set
+True 	exists 	TRAColeccionCadenas 	cadenas 	Strings 	True 	True 	was_set
+True 	exists 	TRAColeccionImportaciones 	importaciones 	Imports 	True 	True 	was_set
+True 	exists 	TRAColeccionInformes 	informes 	Reports 	True 	True 	was_set
+True 	exists 	TRAColeccionSolicitudesCadenas 	solicitudescadenas 	String Requests 	True 	True 	was_set
+True 	exists 	TRAColeccionProgresos 	progresos 	Progresses 	True 	True 	was_set
+
+
+
+Verify gvSIGi18n translations catalog root Singletons   Success
+Container Type 	TRACatalogo
+Container Title 	gvsig-i18n-1-9.1
+Container Path 	/ modeldd/ i18nowned3db/ gvsig-i18n-1-9.1
+
+
+1 Singletons-
+Success 	Status 	Type 	Id 	Title 	Acquire Role Assignments 	Acquire Role Assignments Success 	Acquire Role Assignments Status
+True 	exists 	TRAConfiguracionPermisos 	configuracion-permisos 	Permissions Configuration 	False 	True 	was_set
+
+
+
+Verify gvSIGi18n translations catalog root Singletons   Success
+Container Type 	TRACatalogo
+Container Title 	gvsig-i18n-1-9.1
+Container Path 	/ modeldd/ i18nowned3db/ gvsig-i18n-1-9.1
+
+
+24 Singletons-
+Success 	Status 	Type 	Id 	Title 	Acquire Role Assignments 	Acquire Role Assignments Success 	Acquire Role Assignments Status
+True 	exists 	TRASimbolosOrdenados 	simbolosordenados 	Sorted Symbols 	True 	True 	was_set
+True 	exists 	TRAParametrosControlProgreso 	parametros-control-progreso-verificar 	Verify Progress Control Parameters 	True 	True 	was_set
+True 	exists 	TRAParametrosControlProgreso 	parametros-control-progreso-inicializar 	Initialize Progress Control Parameters 	True 	True 	was_set
+True 	exists 	TRAParametrosControlProgreso 	parametros-control-progreso-inventario 	Inventory Progress Control Parameters 	True 	True 	was_set
+True 	exists 	TRAParametrosControlProgreso 	parametros-control-progreso-recatalogar 	ReCatalog Progress Control Parameters 	True 	True 	was_set
+True 	exists 	TRAParametrosControlProgreso 	parametros-control-progreso-verificarpermisos 	Verify Permissions Progress Control Parameters 	True 	True 	was_set
+True 	exists 	TRAParametrosControlProgreso 	parametros-control-progreso-reestablecerpermisos 	Reset Permissions Progress Control Parameters 	True 	True 	was_set
+True 	exists 	TRAParametrosControlProgreso 	parametros-control-progreso-deletemodule 	Delete Module Progress Control Parameters 	True 	True 	was_set
+True 	exists 	TRAParametrosControlProgreso 	parametros-control-progreso-renamemodule 	Rename Module Progress Control Parameters 	True 	True 	was_set
+True 	exists 	TRAParametrosControlProgreso 	parametros-control-progreso-deletelanguage 	Delete Language Progress Control Parameters 	True 	True 	was_set
+True 	exists 	TRAParametrosControlProgreso 	parametros-control-progreso-backup 	Backup Progress Control Parameters 	True 	True 	was_set
+True 	exists 	TRAParametrosControlProgreso 	parametros-control-progreso-exportgvsig 	Export for gvSIG Progress Control Parameters 	True 	True 	was_set
+True 	exists 	TRAParametrosControlProgreso 	parametros-control-progreso-export 	Export Progress Control Parameters 	True 	True 	was_set
+True 	exists 	TRAParametrosControlProgreso 	parametros-control-progreso-import 	Import Progress Control Parameters 	True 	True 	was_set
+True 	exists 	TRAConfiguracionImportacion 	configuracion-importacion 	Import Configuration 	True 	True 	was_set
+True 	exists 	TRAConfiguracionImportacion 	configuracion-recuperar 	Restore Configuration 	True 	True 	was_set
+True 	exists 	TRAConfiguracionExportacion 	configuracion-exportacion 	Export Configuration 	True 	True 	was_set
+True 	exists 	TRAConfiguracionExportacion 	configuracion-exportacion-para-gvsig 	Export for gvSIG Configuration 	True 	True 	was_set
+True 	exists 	TRAConfiguracionExportacion 	configuracion-copiaseguridad 	Backup Configuration 	True 	True 	was_set
+True 	exists 	TRAConfiguracionSolicitudesCadenas 	configuracion-solicitudescadenas 	String Requests Configuration 	True 	True 	was_set
+True 	exists 	TRAConfiguracionAlmacenPaginas 	configuracion-almacenpaginas 	Pages Caching Configuration 	True 	True 	was_set
+True 	exists 	TRAConfiguracionPaginaTraducciones 	configuracion-paginatraducciones 	Translations Page Configuration 	True 	True 	was_set
+True 	exists 	TRAConfiguracionPerfilEjecucion 	configuracion-perfilejecucion 	Execution Profile Configuration 	True 	True 	was_set
+True 	exists 	TRAConfiguracionVarios 	configuracion-varios 	Various Configuration 	True 	True 	was_set
+
+
+
+Verify gvSIGi18n translations catalog root Catalogs for Strings   Success
+Container Type 	TRACatalogo
+Container Title 	gvsig-i18n-1-9.1
+Container Path 	/ modeldd/ i18nowned3db/ gvsig-i18n-1-9.1
+
+
+3 Catalogs for Strings
+
+TRACadenaBusqueda   Success
+
+    Status   exists
+
+    Must Run Recatalog Elements   False
+    3 Indexes
+    Success 	Status 	Current Type 	Name 	Type 	Extras
+    True 	exists 	FieldIndex 	getId 	FieldIndex 	
+    True 	exists 	FieldIndex 	getSimbolo 	FieldIndex 	
+    True 	exists 	KeywordIndex 	getEstadoCadena 	KeywordIndex 	
+
+
+    3 Schemas
+    Success 	Status 	Field Name-
+    True 	exists 	getId
+    True 	exists 	getSimbolo
+    True 	exists 	getEstadoCadena
+
+
+    0 Lexicons
+    Success 	Status 	Name- 	Pipeline-
+
+
+ 
+
+TRACadenaFiltro   Success
+
+    Status   exists
+
+    Must Run Recatalog Elements   False
+    6 Indexes
+    Success 	Status 	Current Type 	Name 	Type 	Extras
+    True 	exists 	FieldIndex 	getId 	FieldIndex 	
+    True 	exists 	FieldIndex 	getSimbolo 	FieldIndex 	
+    True 	exists 	KeywordIndex 	getEstadoCadena 	KeywordIndex 	
+    True 	exists 	FieldIndex 	getFechaCreacionTextual 	FieldIndex 	
+    True 	exists 	FieldIndex 	getUsuarioCreador 	FieldIndex 	
+    True 	exists 	FieldIndex 	getFechaCancelacionTextual 	FieldIndex 	
+
+
+    7 Schemas
+    Success 	Status 	Field Name-
+    True 	exists 	getId
+    True 	exists 	getSimbolo
+    True 	exists 	getEstadoCadena
+    True 	exists 	getFechaCreacionTextual
+    True 	exists 	getUsuarioCreador
+    True 	exists 	getFechaCancelacionTextual
+    True 	exists 	getNombresModulos
+
+
+    0 Lexicons
+    Success 	Status 	Name- 	Pipeline-
+
+
+ 
+
+TRACadenaTexto   Success
+
+    Status   exists
+
+    Must Run Recatalog Elements   False
+    1 Indexes
+    Success 	Status 	Current Type 	Name 	Type 	Extras
+    True 	exists 	ZCTextIndex 	getSimboloEnPalabras 	ZCTextIndex 	lexicon_id=plaintext_lexicon, index_type=Okapi BM25 Rank
+
+
+    2 Schemas
+    Success 	Status 	Field Name-
+    True 	exists 	getId
+    True 	exists 	getSimbolo
+
+
+    1 Lexicons
+    Success 	Status 	Name- 	Pipeline-
+    True 	exists 	plaintext_lexicon 	Splitter CaseNormalizer StopWordRemover
+
+
+ 
+
+
+
+Verify gvSIGi18n translations catalog root Catalogs for Languages   No Catalogs for Languages-
+
+
+Verify gvSIGi18n translations catalog root User Groups   Success
+
+6 User Groups
+
+TRA_i18nowned3db_gvsig-i18n-1-9.1_TRAManagers   Success
+
+    Status   existing
+    Success 	Status 	Condition- 	Committed 	Element Type 	Element Title 	New Roles 	Previous Roles- 	New Roles- 	Failed Roles
+    True 	all existing 		False 	TRACatalogo 	gvsig-i18n-1-9.1 	/modeldd/i18nowned3db/gvsig-i18n-1-9.1 	['TRAManager'] 	[] 	[]
+
+
+
+TRA_i18nowned3db_gvsig-i18n-1-9.1_TRACoordinators   Success
+
+    Status   existing
+    Success 	Status 	Condition- 	Committed 	Element Type 	Element Title 	New Roles 	Previous Roles- 	New Roles- 	Failed Roles
+    True 	all existing 		False 	TRACatalogo 	gvsig-i18n-1-9.1 	/modeldd/i18nowned3db/gvsig-i18n-1-9.1 	['TRACoordinator'] 	[] 	[]
+
+
+
+TRA_i18nowned3db_gvsig-i18n-1-9.1_TRADevelopers   Success
+
+    Status   existing
+    Success 	Status 	Condition- 	Committed 	Element Type 	Element Title 	New Roles 	Previous Roles- 	New Roles- 	Failed Roles
+    True 	all existing 		False 	TRACatalogo 	gvsig-i18n-1-9.1 	/modeldd/i18nowned3db/gvsig-i18n-1-9.1 	['TRADeveloper'] 	[] 	[]
+
+
+
+TRA_i18nowned3db_gvsig-i18n-1-9.1_TRAReviewers   Success
+
+    Status   existing
+    Success 	Status 	Condition- 	Committed 	Element Type 	Element Title 	New Roles 	Previous Roles- 	New Roles- 	Failed Roles
+    True 	all existing 		False 	TRACatalogo 	gvsig-i18n-1-9.1 	/modeldd/i18nowned3db/gvsig-i18n-1-9.1 	['TRAReviewer'] 	[] 	[]
+
+
+
+TRA_i18nowned3db_gvsig-i18n-1-9.1_TRATranslators   Success
+
+    Status   existing
+    Success 	Status 	Condition- 	Committed 	Element Type 	Element Title 	New Roles 	Previous Roles- 	New Roles- 	Failed Roles
+    True 	all existing 		False 	TRACatalogo 	gvsig-i18n-1-9.1 	/modeldd/i18nowned3db/gvsig-i18n-1-9.1 	['TRATranslator'] 	[] 	[]
+
+
+
+TRA_i18nowned3db_gvsig-i18n-1-9.1_TRAVisitors   Success
+
+    Status   existing
+    Success 	Status 	Condition- 	Committed 	Element Type 	Element Title 	New Roles 	Previous Roles- 	New Roles- 	Failed Roles
+    True 	all existing 		False 	TRACatalogo 	gvsig-i18n-1-9.1 	/modeldd/i18nowned3db/gvsig-i18n-1-9.1 	['TRAVisitor']
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---------------
+Sample Result of running a reset permissions of the translations catalog verification, just after creating the instance.
+
+
+Number of elements read
+Type 	#elements
+_Total 	37
+Translations Catalog 	1
+Strings collection 	1
+Languages collection 	1
+Import processes collection 	1
+Status Reports Collection 	1
+Modules collection 	1
+Progresses Collection 	1
+Strings creation request collection 	1
+Pages Cache Configuration 	1
+Export Configuration 	3
+Import Configuration 	2
+Translations Page Configuration 	1
+Execution Profile Configuration 	1
+Permissions Configuration 	1
+New String Requests Configuration 	1
+Various Configuration 	1
+Progress Control Parameters 	13
+Progress 	4
+Ordered Symbols 	1
+
+
+
+There are no elements with Permissions changed 
+
+
+
+
+
+
+
+
+
+
+
+---------------
+Sample Result of running a recatalog of the translations catalog verification, just after creating the instance.
+
+Number of elements read
+Type 	#elements
+_Total 	37
+Translations Catalog 	1
+Strings collection 	1
+Languages collection 	1
+Import processes collection 	1
+Status Reports Collection 	1
+Modules collection 	1
+Progresses Collection 	1
+Strings creation request collection 	1
+Pages Cache Configuration 	1
+Export Configuration 	3
+Import Configuration 	2
+Translations Page Configuration 	1
+Execution Profile Configuration 	1
+Permissions Configuration 	1
+New String Requests Configuration 	1
+Various Configuration 	1
+Progress Control Parameters 	13
+Progress 	4
+Ordered Symbols 	1
+
+
+
+Number of elements Re-Cataloged
+Type 	#elements
+_Total 	37
+Translations Catalog 	1
+Strings collection 	1
+Languages collection 	1
+Import processes collection 	1
+Status Reports Collection 	1
+Modules collection 	1
+Progresses Collection 	1
+Strings creation request collection 	1
+Pages Cache Configuration 	1
+Export Configuration 	3
+Import Configuration 	2
+Translations Page Configuration 	1
+Execution Profile Configuration 	1
+Permissions Configuration 	1
+New String Requests Configuration 	1
+Various Configuration 	1
+Progress Control Parameters 	13
+Progress 	4
+Ordered Symbols 	1
+
+
+
+
+
+
+

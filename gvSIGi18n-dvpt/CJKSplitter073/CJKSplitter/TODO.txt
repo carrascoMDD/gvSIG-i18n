@@ -1,0 +1,8 @@
+TODO
+
+  - Support TextIndexNG3
+
+  - better Chinese Splitter:
+
+    http://blog.autrijus.org/archives/000024.html
+

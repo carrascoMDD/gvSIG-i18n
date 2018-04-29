@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>62 - gvSIGi18n - arquetipos</title>
+<link href="../css/ea.css" rel="stylesheet" type="text/css" />
+<script>
+function initPage(src) {
+	if(parent==this&&(this.location+"").indexOf('EARoot')!=-1)
+		document.location=(this.location+"").substring(0,(this.location+"").indexOf('EARoot'))+"index"+(this.location+"").substring((this.location+"").lastIndexOf('.'))+"?goto="+((this.location+"").substring((this.location+"").indexOf('EARoot')+7,(this.location+"").lastIndexOf('.')).replace(/\//g,':').replace(/EA/g,""));
+	else
+		parent.initPage(src);
+}
+</script>
+</head>
+<body onload="initPage(this);" class="Content">
+<div class="PageBody">
+	
+<img src="EA30.png" usemap="#EA30" border="0" />
+
+<MAP NAME="EA30">
+<area shape="rect" coords="860,710,1094,744" href="EA132.htm">
+<area shape="rect" coords="669,708,829,745" href="EA63.htm">
+<area shape="rect" coords="855,294,1098,329" href="EA137.htm">
+<area shape="rect" coords="667,291,829,328" href="EA70.htm">
+<area shape="rect" coords="860,441,1094,475" href="EA126.htm">
+<area shape="rect" coords="664,437,833,475" href="EA64.htm">
+<area shape="rect" coords="411,147,588,183" href="EA117.htm">
+<area shape="rect" coords="408,99,585,135" href="EA118.htm">
+<area shape="rect" coords="407,56,584,92" href="EA115.htm">
+<area shape="rect" coords="407,16,584,52" href="EA116.htm">
+<area shape="rect" coords="397,306,609,342" href="EA111.htm">
+<area shape="rect" coords="400,258,617,294" href="EA112.htm">
+<area shape="rect" coords="860,612,1094,646" href="EA123.htm">
+<area shape="rect" coords="663,611,832,646" href="EA169.htm">
+<area shape="rect" coords="234,643,431,677" href="EA119.htm">
+<area shape="rect" coords="12,646,173,682" href="EA67.htm">
+<area shape="rect" coords="861,657,1095,696" href="EA124.htm">
+<area shape="rect" coords="664,657,833,694" href="EA65.htm">
+<area shape="rect" coords="643,248,832,282" href="EA184.htm">
+<area shape="rect" coords="860,245,1103,280" href="EA221.htm">
+<area shape="rect" coords="857,570,1091,604" href="EA219.htm">
+<area shape="rect" coords="660,569,829,603" href="EA179.htm">
+<area shape="rect" coords="182,331,359,367" href="EA113.htm">
+<area shape="rect" coords="860,4,1103,39" href="EA133.htm">
+<area shape="rect" coords="861,83,1104,118" href="EA134.htm">
+<area shape="rect" coords="860,39,1103,74" href="EA136.htm">
+<area shape="rect" coords="857,530,1091,564" href="EA125.htm">
+<area shape="rect" coords="660,529,829,563" href="EA66.htm">
+<area shape="rect" coords="860,125,1103,160" href="EA135.htm">
+<area shape="rect" coords="182,127,359,163" href="EA114.htm">
+<area shape="rect" coords="860,165,1103,200" href="EA220.htm">
+<area shape="rect" coords="860,203,1103,238" href="EA222.htm">
+<area shape="rect" coords="643,206,832,240" href="EA69.htm">
+<area shape="rect" coords="182,229,359,265" href="EA201.htm">
+<area shape="rect" coords="643,40,832,74" href="EA181.htm">
+<area shape="rect" coords="182,25,359,61" href="EA204.htm">
+<area shape="rect" coords="185,280,362,316" href="EA203.htm">
+<area shape="rect" coords="858,393,1092,427" href="EA216.htm">
+<area shape="rect" coords="661,394,830,427" href="EA177.htm">
+<area shape="rect" coords="643,125,832,159" href="EA68.htm">
+<area shape="rect" coords="858,486,1092,520" href="EA218.htm">
+<area shape="rect" coords="661,486,830,519" href="EA178.htm">
+<area shape="rect" coords="858,344,1092,378" href="EA217.htm">
+<area shape="rect" coords="234,466,431,500" href="EA215.htm">
+<area shape="rect" coords="644,84,833,118" href="EA183.htm">
+<area shape="rect" coords="12,469,173,502" href="EA168.htm">
+<area shape="rect" coords="661,346,830,379" href="EA176.htm">
+<area shape="rect" coords="234,584,431,618" href="EA209.htm">
+<area shape="rect" coords="234,525,431,559" href="EA208.htm">
+<area shape="rect" coords="234,407,431,441" href="EA207.htm">
+<area shape="rect" coords="182,76,359,112" href="EA205.htm">
+<area shape="rect" coords="182,178,359,214" href="EA202.htm">
+<area shape="rect" coords="16,706,440,781" href="EA141.htm">
+<area shape="rect" coords="643,168,832,202" href="EA180.htm">
+<area shape="rect" coords="14,14,112,373" href="EA164.htm">
+<area shape="rect" coords="12,528,173,561" href="EA166.htm">
+<area shape="rect" coords="12,410,173,443" href="EA165.htm">
+<area shape="rect" coords="12,587,173,620" href="EA167.htm">
+<area shape="rect" coords="10,12,129,82" href="EA182.htm">
+</MAP>
+
+	<div class="ObjectTitle">62 - gvSIGi18n - arquetipos : logical diagram</div>
+	<table border="0" cellpadding="0" cellspacing="0" class="ObjectDetails">
+		<tr>
+			<td width="15%" class="ObjectDetailsTopic">Created:</td>
+			<td width="85%" class="ObjectDetailsValue">24/10/2010 00:40:14</td>
+		</tr>
+		<tr>
+			<td width="15%" class="ObjectDetailsTopic">Modified:</td>
+			<td width="85%" class="ObjectDetailsValue">25/02/2011 22:41:42</td>
+		</tr>
+		<tr style="padding-top: 10px;">
+			<td width="15%" class="ObjectDetailsTopic"><img src="../images/plus03.gif" align="absmiddle" id="proj" onclick="parent.toggleData(this.id)" />Project:</td>
+			<td width="85%" class="ObjectDetailsValue"></td>			
+		</tr>
+		<tr id="proj00" style="display: none;">
+			<td width="15%" class="ObjectDetailsTopic" style="padding-left: 18px;">Author:</td>
+			<td width="85%" class="ObjectDetailsValue">Conselleria de Infaestructuras y Transporte (GVA), MDDsl y Antonio Carrasco</td>
+		</tr>
+		<tr id="proj01" style="display: none;">
+			<td width="15%" class="ObjectDetailsTopic" style="padding-left: 18px;">Version:</td>
+			<td width="85%" class="ObjectDetailsValue">1.0</td>
+		</tr>
+		<tr>
+			<td width="15%" class="ObjectDetailsTopic"><img src="../images/plus03.gif" align="absmiddle" id="adv" onclick="parent.toggleData(this.id)" />Advanced:</td>
+			<td width="85%" class="ObjectDetailsValue"></td>			
+		</tr>
+		<tr id="adv00" style="display: none;">
+			<td width="15%" class="ObjectDetailsTopic" style="padding-left: 18px;">ID:</td>
+			<td width="85%" class="ObjectDetailsValue">{E794078C-2D5A-4011-87C4-C7BE42FD29F8}</td>
+		</tr>
+	</table>
+	
+</div>
+ 
+</body>
+</html>

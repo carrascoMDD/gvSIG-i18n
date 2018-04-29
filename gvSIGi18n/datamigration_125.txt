@@ -1,0 +1,18 @@
+
+
+Delete all mdd and tra elements in custom. Initialize them by creating an instance of TRACatalogo (delete it when done).
+
+
+
+
+
+Initialize fechaModificacion and usuarioModificador in all TRATraduccion.
+
+Delete all TRAContenidoIntercambio, because the string representation is no longer compatible.
+
+Delete history from all translations, because the string representation is no longer compatible.
+  - alternatively, create a 
+
+Initialize codigoIdiomaReferencia de todos los lenguages como 'en' excepto el ingles con 'es'.
+
+
