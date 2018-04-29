@@ -1,5 +1,10 @@
-ÔªøgvSIG-i18n RELEASE NOTES
+gvSIG-i18n RELEASE NOTES
 ========================
+
+version 2.1RC
+------------------------------------------------
+Added year 2011 to Copyright notice.
+
 
 version 2.0.6
 ------------------------------------------------
@@ -766,7 +771,7 @@ Bug fix for error in TRAElemento_MappingConfig.py (undesired attempt to import a
 
 Fails to verify catalog when user has no write access  or the catalog is locked
 
-IDIO01 Valenci√° as a language distinct from Catal√°
+IDIO01 Valenci· as a language distinct from Catal·
 
 IMPO 08 Disable framework Use Case SUC 16 Import onto an element a Zipped archive with XML file and binary contents
 
