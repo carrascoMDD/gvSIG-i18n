@@ -2,7 +2,7 @@
 #
 # File: TRAColeccionImportaciones.py
 #
-# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
+# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
 # Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -32,6 +32,7 @@ __docformat__ = 'plaintext'
 from AccessControl import ClassSecurityInfo
 from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.TRAColeccionArquetipos import TRAColeccionArquetipos
+from Products.gvSIGi18n.TRAConRegistroActividad import TRAConRegistroActividad
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
@@ -75,16 +76,17 @@ schema = Schema((
 
 TRAColeccionImportaciones_schema = OrderedBaseFolderSchema.copy() + \
     getattr(TRAColeccionArquetipos, 'schema', Schema(())).copy() + \
+    getattr(TRAConRegistroActividad, 'schema', Schema(())).copy() + \
     schema.copy()
 
 ##code-section after-schema #fill in your manual code here
 ##/code-section after-schema
 
-class TRAColeccionImportaciones(OrderedBaseFolder, TRAColeccionArquetipos):
+class TRAColeccionImportaciones(OrderedBaseFolder, TRAColeccionArquetipos, TRAConRegistroActividad):
     """
     """
     security = ClassSecurityInfo()
-    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAColeccionArquetipos,'__implements__',()),)
+    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAColeccionArquetipos,'__implements__',()),) + (getattr(TRAConRegistroActividad,'__implements__',()),)
 
     # This name appears in the 'add' box
     archetype_name = 'Coleccion de Importaciones'
@@ -107,7 +109,7 @@ class TRAColeccionImportaciones(OrderedBaseFolder, TRAColeccionArquetipos):
 
 
 
-    allowed_content_types = ['TRAImportacion'] + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', []))
+    allowed_content_types = ['TRAImportacion'] + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', []))
     filter_content_types             = 1
     global_allow                     = 0
     #content_icon = 'TRAColeccionImportaciones.gif'
@@ -155,6 +157,15 @@ class TRAColeccionImportaciones(OrderedBaseFolder, TRAColeccionArquetipos):
        },
 
 
+       {'action': "string:${object_url}/MDDChanges",
+        'category': "object_buttons",
+        'id': 'mddchanges',
+        'name': 'Changes',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
        {'action': "string:$object_url/Editar",
         'category': "object",
         'id': 'edit',
@@ -191,6 +202,15 @@ class TRAColeccionImportaciones(OrderedBaseFolder, TRAColeccionArquetipos):
        },
 
 
+       {'action': "string:${object_url}/MDDCacheStatus/",
+        'category': "object_buttons",
+        'id': 'mddcachestatus',
+        'name': 'Cache',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
     )
 
     _at_rename_after_creation = True
@@ -201,13 +221,6 @@ class TRAColeccionImportaciones(OrderedBaseFolder, TRAColeccionArquetipos):
     ##/code-section class-header
 
     # Methods
-
-    security.declarePublic('cb_isMoveable')
-    def cb_isMoveable(self):
-        """
-        """
-        
-        return False
 
     security.declarePublic('manage_beforeDelete')
     def manage_beforeDelete(self,item,container):
@@ -223,19 +236,19 @@ class TRAColeccionImportaciones(OrderedBaseFolder, TRAColeccionArquetipos):
         
         return TRAColeccionArquetipos.manage_afterAdd( self, item, container)
 
-    security.declarePublic('manage_pasteObjects')
-    def manage_pasteObjects(self,cb_copy_data,REQUEST):
-        """
-        """
-        
-        return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
-
     security.declarePublic('cb_isCopyable')
     def cb_isCopyable(self):
         """
         """
         
         return False
+
+    security.declarePublic('manage_pasteObjects')
+    def manage_pasteObjects(self,cb_copy_data,REQUEST):
+        """
+        """
+        
+        return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
 
     security.declarePublic('displayContentsTab')
     def displayContentsTab(self):
@@ -250,6 +263,13 @@ class TRAColeccionImportaciones(OrderedBaseFolder, TRAColeccionArquetipos):
         """
         
         return TRAElemento_Operaciones.fExtraLinks( self)
+
+    security.declarePublic('fIsCacheable')
+    def fIsCacheable(self):
+        """
+        """
+        
+        return True
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

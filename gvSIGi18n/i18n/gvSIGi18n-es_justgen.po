@@ -1,4 +1,4 @@
-# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>, 2009.
+# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: gvSIGi18n\n"
@@ -184,6 +184,26 @@ msgstr "Dominio para cadenas sin modulo"
 msgid "gvSIGi18n_TRACatalogo_attr_dominioPorDefecto_help"
 msgstr "Dato que aparece en los ficheros de exportacion de tipo GNUgettext PO, cuando se exportan separadamente en su propio fichero cadenas que no pertenecen a un modulo, para identificar la aplicacion o modulo a que se aplican las traducciones."
 
+#. Default: "Export File for gvSIGby default"
+#: TRACatalogo exportarNombreFicheroParaGvSIGPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_exportarNombreFicheroParaGvSIGPorDefecto_label"
+msgstr "Export File for gvSIGby default"
+
+#. Default: "Exportar Fichero con nombre segun el estandar de gvSIG para ficheros de distribucion de localizaciones."
+#: TRACatalogo exportarNombreFicheroParaGvSIGPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_exportarNombreFicheroParaGvSIGPorDefecto_help"
+msgstr "Exportar Fichero con nombre segun el estandar de gvSIG para ficheros de distribucion de localizaciones."
+
+#. Default: "Si"
+#: TRACatalogo exportarNombreFicheroParaGvSIGPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_exportarNombreFicheroParaGvSIGPorDefecto_option_Si"
+msgstr "Si"
+
+#. Default: "No"
+#: TRACatalogo exportarNombreFicheroParaGvSIGPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_exportarNombreFicheroParaGvSIGPorDefecto_option_No"
+msgstr "No"
+
 #. Default: "Fecha de Ultima Importacion"
 #: TRACatalogo fechaUltimaImportacion
 msgid "gvSIGi18n_TRACatalogo_attr_fechaUltimaImportacion_label"
@@ -263,6 +283,16 @@ msgstr "Si"
 #: TRACatalogo incluirManifestPorDefecto
 msgid "gvSIGi18n_TRACatalogo_attr_incluirManifestPorDefecto_option_No"
 msgstr "No"
+
+#. Default: "Maximo numero de Cambios Recientes"
+#: TRACatalogo maximoNumeroCambiosRecientes
+msgid "gvSIGi18n_TRACatalogo_attr_maximoNumeroCambiosRecientes_label"
+msgstr "Maximo numero de Cambios Recientes"
+
+#. Default: "El sistema recordara cambios recientes de estados de traducciones, hasta este maximo, despreciando los cambios mas antiguos cuando se exceda el maximo."
+#: TRACatalogo maximoNumeroCambiosRecientes
+msgid "gvSIGi18n_TRACatalogo_attr_maximoNumeroCambiosRecientes_help"
+msgstr "El sistema recordara cambios recientes de estados de traducciones, hasta este maximo, despreciando los cambios mas antiguos cuando se exceda el maximo."
 
 #. Default: "Numero maximo de registros de traduccion por pagina por defecto"
 #: TRACatalogo maximoRegistrosExplorados
@@ -384,6 +414,26 @@ msgstr "Producto"
 msgid "gvSIGi18n_TRACatalogo_attr_nombreProducto_help"
 msgstr "Nombre del Producto cuyas traducciones se manejan con este Catalogo."
 
+#. Default: "Cambios para Anular Informe Idiomas"
+#: TRACatalogo numeroDeCambiosAnularInformeIdiomas
+msgid "gvSIGi18n_TRACatalogo_attr_numeroDeCambiosAnularInformeIdiomas_label"
+msgstr "Cambios para Anular Informe Idiomas"
+
+#. Default: "Numero de cambios de estado de Traducciones que causan la anulacion del Informe de Estado por Idiomas, incluso aunque no haya expirado el plazo de retencion del informe."
+#: TRACatalogo numeroDeCambiosAnularInformeIdiomas
+msgid "gvSIGi18n_TRACatalogo_attr_numeroDeCambiosAnularInformeIdiomas_help"
+msgstr "Numero de cambios de estado de Traducciones que causan la anulacion del Informe de Estado por Idiomas, incluso aunque no haya expirado el plazo de retencion del informe."
+
+#. Default: "Cambios para Anular Informe Modulos e Idiomas"
+#: TRACatalogo numeroDeCambiosAnularInformeModulosEIdiomas
+msgid "gvSIGi18n_TRACatalogo_attr_numeroDeCambiosAnularInformeModulosEIdiomas_label"
+msgstr "Cambios para Anular Informe Modulos e Idiomas"
+
+#. Default: "Numero de cambios de estado de Traducciones que causan la anulacion del Informe de Estado por Modulos e Idiomas, incluso aunque no haya expirado el plazo de retencion del informe."
+#: TRACatalogo numeroDeCambiosAnularInformeModulosEIdiomas
+msgid "gvSIGi18n_TRACatalogo_attr_numeroDeCambiosAnularInformeModulosEIdiomas_help"
+msgstr "Numero de cambios de estado de Traducciones que causan la anulacion del Informe de Estado por Modulos e Idiomas, incluso aunque no haya expirado el plazo de retencion del informe."
+
 #. Default: "Permite Modificar"
 #: TRACatalogo permiteModificar
 msgid "gvSIGi18n_TRACatalogo_attr_permiteModificar_label"
@@ -393,6 +443,26 @@ msgstr "Permite Modificar"
 #: TRACatalogo permiteModificar
 msgid "gvSIGi18n_TRACatalogo_attr_permiteModificar_help"
 msgstr "Si Verdadero, entonces los usuarios puede realizar los cambios a los que permite sus roles en la aplicacion. Si Falso, entonces no puede realizar cambios,  Puede ocurrir durante  procesos de importacion largos."
+
+#. Default: "Minimo Tiempo en segundos que se retiene el Informe de Estado por Idiomas"
+#: TRACatalogo segundosMinimosRetencionInformeIdiomas
+msgid "gvSIGi18n_TRACatalogo_attr_segundosMinimosRetencionInformeIdiomas_label"
+msgstr "Minimo Tiempo en segundos que se retiene el Informe de Estado por Idiomas"
+
+#. Default: "Tiempo en segundos que se retendra el Informe de Estado por Idiomas, aunque sus resultados sean inexactos por alguna modificacion del estado de traducciones, para evitar recalculo excesivo por cambios poco relevantes."
+#: TRACatalogo segundosMinimosRetencionInformeIdiomas
+msgid "gvSIGi18n_TRACatalogo_attr_segundosMinimosRetencionInformeIdiomas_help"
+msgstr "Tiempo en segundos que se retendra el Informe de Estado por Idiomas, aunque sus resultados sean inexactos por alguna modificacion del estado de traducciones, para evitar recalculo excesivo por cambios poco relevantes."
+
+#. Default: "Minimo Tiempo en segundos que se retiene el Informe de Estado por Modulos e Idiomas"
+#: TRACatalogo segundosMinimosRetencionInformeModulosEIdiomas
+msgid "gvSIGi18n_TRACatalogo_attr_segundosMinimosRetencionInformeModulosEIdiomas_label"
+msgstr "Minimo Tiempo en segundos que se retiene el Informe de Estado por Modulos e Idiomas"
+
+#. Default: "Tiempo en segundos que se retendra el Informe de Estado por Modulos e Idiomas, aunque sus resultados sean inexactos por alguna modificacion del estado de traducciones, para evitar recalculo excesivo por cambios poco relevantes."
+#: TRACatalogo segundosMinimosRetencionInformeModulosEIdiomas
+msgid "gvSIGi18n_TRACatalogo_attr_segundosMinimosRetencionInformeModulosEIdiomas_help"
+msgstr "Tiempo en segundos que se retendra el Informe de Estado por Modulos e Idiomas, aunque sus resultados sean inexactos por alguna modificacion del estado de traducciones, para evitar recalculo excesivo por cambios poco relevantes."
 
 #. Default: "Tiempo en segundos para confirmar Importacion"
 #: TRACatalogo segundosParaConfirmarImportacion
@@ -819,10 +889,10 @@ msgstr "Fecha y hora en que  completo o termino el proceso de carga del contenid
 msgid "gvSIGi18n_TRAContenidoIntercambio_attr_informeContenido_label"
 msgstr "Contenido Intercambio de Traducciones"
 
-#. Default: "Contenidos de los Archivos de intercambio de traducciones  incluyendo un numero de directorios de modulo con ficheros de cadenas y traducciones a un numero de idiomas,"
+#. Default: "Contenidos de los Archivos de intercambio de traducciones  incluyendo  cadenas (posiblemente asociadas a modulos)  y traducciones a un numero de idiomas,"
 #: TRAContenidoIntercambio informeContenido
 msgid "gvSIGi18n_TRAContenidoIntercambio_attr_informeContenido_help"
-msgstr "Contenidos de los Archivos de intercambio de traducciones  incluyendo un numero de directorios de modulo con ficheros de cadenas y traducciones a un numero de idiomas,"
+msgstr "Contenidos de los Archivos de intercambio de traducciones  incluyendo  cadenas (posiblemente asociadas a modulos)  y traducciones a un numero de idiomas,"
 
 #. Default: "Modulo"
 #: TRAContenidoIntercambio nombreModulo
@@ -1029,6 +1099,16 @@ msgstr "Es Idioma Principal"
 msgid "gvSIGi18n_TRAIdioma_attr_esIdiomaPrincipal_help"
 msgstr "Las traducciones del Idioma Principal se exportaran a un archivo sin sufijo de idioma, por ejemplo si el idioma principal es es, el nombre del fichero sera  text.properties y no text_es.properties."
 
+#. Default: "Bloqueado"
+#: TRAIdioma estaBloqueado
+msgid "gvSIGi18n_TRAIdioma_attr_estaBloqueado_label"
+msgstr "Bloqueado"
+
+#. Default: "Si Verdadero, entonces el usuario no puede realizar los cambios a los que permite sus roles en el idioma. Si Falso, entonces puede realizar cambios en el idioma,  Puede ocurrir durante  procesos de importacion largos, o por indicacion del coordinador."
+#: TRAIdioma estaBloqueado
+msgid "gvSIGi18n_TRAIdioma_attr_estaBloqueado_help"
+msgstr "Si Verdadero, entonces el usuario no puede realizar los cambios a los que permite sus roles en el idioma. Si Falso, entonces puede realizar cambios en el idioma,  Puede ocurrir durante  procesos de importacion largos, o por indicacion del coordinador."
+
 #. Default: "Fallback de idiomas"
 #: TRAIdioma fallbackDeIdiomas
 msgid "gvSIGi18n_TRAIdioma_attr_fallbackDeIdiomas_label"
@@ -1054,10 +1134,10 @@ msgstr "Dato que aparece en los ficheros de exportacion de tipo GNUgettext PO. U
 msgid "gvSIGi18n_TRAIdioma_attr_iconoBanderaIdioma_label"
 msgstr "Icono de la Bandera"
 
-#. Default: "Nombre del archivo grafico (usualmente .gif o .png) instalado en Plone, a utilizar como bandera para el idioma. Ha de ser de dimensiones iguales o menores a 16x16 pixels, preferentemente con fondo transparente."
+#. Default: "Nombre de una bandera displonible en  la plataforma Zope/Plone, o la identidad de una imagen adjunta al lenguage, a utilizar como bandera para el idioma. Ha de ser de dimensiones iguales o menores a 16x16 pixels, preferentemente con fondo transparente."
 #: TRAIdioma iconoBanderaIdioma
 msgid "gvSIGi18n_TRAIdioma_attr_iconoBanderaIdioma_help"
-msgstr "Nombre del archivo grafico (usualmente .gif o .png) instalado en Plone, a utilizar como bandera para el idioma. Ha de ser de dimensiones iguales o menores a 16x16 pixels, preferentemente con fondo transparente."
+msgstr "Nombre de una bandera displonible en  la plataforma Zope/Plone, o la identidad de una imagen adjunta al lenguage, a utilizar como bandera para el idioma. Ha de ser de dimensiones iguales o menores a 16x16 pixels, preferentemente con fondo transparente."
 
 #. Default: "Juego de caracteres para exportacion como Java Properties"
 #: TRAIdioma juegoDeCaracteresParaJavaProperties
@@ -1078,6 +1158,31 @@ msgstr "Juego de caracteres para exportacion como GNU gettext PO"
 #: TRAIdioma juegoDeCaracteresParaPO
 msgid "gvSIGi18n_TRAIdioma_attr_juegoDeCaracteresParaPO_help"
 msgstr "Juego de caracteres en que se han de codificar los ficheros exportados en formato GNUgettet PO.  Usualmente toma el valor=UTF-8."
+
+#. Default: "Modo seleccion Bandera"
+#: TRAIdioma modoSeleccionBandera
+msgid "gvSIGi18n_TRAIdioma_attr_modoSeleccionBandera_label"
+msgstr "Modo seleccion Bandera"
+
+#. Default: "Criterio para seleccion de la bandera especifica para este idioma: la bandera seleccionada por la plataforma Zope/Plone, una bandera Plone con nombre especifico, o una imagen adjunta."
+#: TRAIdioma modoSeleccionBandera
+msgid "gvSIGi18n_TRAIdioma_attr_modoSeleccionBandera_help"
+msgstr "Criterio para seleccion de la bandera especifica para este idioma: la bandera seleccionada por la plataforma Zope/Plone, una bandera Plone con nombre especifico, o una imagen adjunta."
+
+#. Default: "Plone"
+#: TRAIdioma modoSeleccionBandera
+msgid "gvSIGi18n_TRAIdioma_attr_modoSeleccionBandera_option_Plone"
+msgstr "Plone"
+
+#. Default: "Especifica"
+#: TRAIdioma modoSeleccionBandera
+msgid "gvSIGi18n_TRAIdioma_attr_modoSeleccionBandera_option_Especifica"
+msgstr "Especifica"
+
+#. Default: "Adjunta"
+#: TRAIdioma modoSeleccionBandera
+msgid "gvSIGi18n_TRAIdioma_attr_modoSeleccionBandera_option_Adjunta"
+msgstr "Adjunta"
 
 #. Default: "Nombre en ingles"
 #: TRAIdioma nombreEnInglesDeIdioma
@@ -1459,16 +1564,6 @@ msgstr "Informe de Estado"
 msgid "gvSIGi18n_TRAInforme_help"
 msgstr "Informe del estado en un momento determinado de Traducciones a Idiomas."
 
-#. Default: "Es Auto-Actualizable"
-#: TRAInforme esAutoActualizable
-msgid "gvSIGi18n_TRAInforme_attr_esAutoActualizable_label"
-msgstr "Es Auto-Actualizable"
-
-#. Default: "Si el informe se actualiza automaticamente bajo demanda, pero no mas frecuentemente que cierto intervalo de tiempo."
-#: TRAInforme esAutoActualizable
-msgid "gvSIGi18n_TRAInforme_attr_esAutoActualizable_help"
-msgstr "Si el informe se actualiza automaticamente bajo demanda, pero no mas frecuentemente que cierto intervalo de tiempo."
-
 #. Default: "Estado del Proceso"
 #: TRAInforme estadoProceso
 msgid "gvSIGi18n_TRAInforme_attr_estadoProceso_label"
@@ -1529,35 +1624,35 @@ msgstr "Exito?"
 msgid "gvSIGi18n_TRAInforme_attr_haCompletadoConExito_help"
 msgstr "Si el proceso de importacion ha completado exitosamente su ejecucion."
 
-#. Default: "Informe de Excepcion"
+#. Default: "Excepcion"
 #: TRAInforme informeExcepcion
 msgid "gvSIGi18n_TRAInforme_attr_informeExcepcion_label"
-msgstr "Informe de Excepcion"
+msgstr "Excepcion"
 
 #. Default: "Cuando la elaboracion del informe de estado finaliza con una condicion de error, contiene el informe del error de la aplicacion."
 #: TRAInforme informeExcepcion
 msgid "gvSIGi18n_TRAInforme_attr_informeExcepcion_help"
 msgstr "Cuando la elaboracion del informe de estado finaliza con una condicion de error, contiene el informe del error de la aplicacion."
 
-#. Default: "Excepcion en Informe Idiomas"
+#. Default: "Excepcion durante Informe por Idiomas"
 #: TRAInforme informeExcepcionIdiomas
 msgid "gvSIGi18n_TRAInforme_attr_informeExcepcionIdiomas_label"
-msgstr "Excepcion en Informe Idiomas"
+msgstr "Excepcion durante Informe por Idiomas"
 
 #. Default: "Cuando la elaboracion del informe de estado por idiomas finaliza con una condicion de error, contiene el informe del error de la aplicacion."
 #: TRAInforme informeExcepcionIdiomas
 msgid "gvSIGi18n_TRAInforme_attr_informeExcepcionIdiomas_help"
 msgstr "Cuando la elaboracion del informe de estado por idiomas finaliza con una condicion de error, contiene el informe del error de la aplicacion."
 
-#. Default: "Excepcion en Informe por Modulos"
+#. Default: "Excepcion durante Informe por Modulos e Idiomas"
 #: TRAInforme informeExcepcionModulos
 msgid "gvSIGi18n_TRAInforme_attr_informeExcepcionModulos_label"
-msgstr "Excepcion en Informe por Modulos"
+msgstr "Excepcion durante Informe por Modulos e Idiomas"
 
-#. Default: "Cuando la elaboracion del informe de estado por modulos finaliza con una condicion de error, contiene el informe del error de la aplicacion."
+#. Default: "Cuando la elaboracion del informe de estado por modulose idiomas  finaliza con una condicion de error, contiene el informe del error de la aplicacion."
 #: TRAInforme informeExcepcionModulos
 msgid "gvSIGi18n_TRAInforme_attr_informeExcepcionModulos_help"
-msgstr "Cuando la elaboracion del informe de estado por modulos finaliza con una condicion de error, contiene el informe del error de la aplicacion."
+msgstr "Cuando la elaboracion del informe de estado por modulose idiomas  finaliza con una condicion de error, contiene el informe del error de la aplicacion."
 
 #. Default: "Informe por Idiomas"
 #: TRAInforme informeIdiomas
@@ -1578,16 +1673,6 @@ msgstr "Informe por Modulos e Idiomas"
 #: TRAInforme informeModulos
 msgid "gvSIGi18n_TRAInforme_attr_informeModulos_help"
 msgstr "Informe del estado de traduccion por modulos y detallado por  idiomas."
-
-#. Default: "Intervalo minimo de actualizacion en Minutos"
-#: TRAInforme minimoIntervaloActualizacionEnMinutos
-msgid "gvSIGi18n_TRAInforme_attr_minimoIntervaloActualizacionEnMinutos_label"
-msgstr "Intervalo minimo de actualizacion en Minutos"
-
-#. Default: "Si es Auto-Actualizable, es el Intervalo minimo de tiempo en minutos a esperar antes de actualizar automaticamente el informe. Si el valor es 0, el informe se actualizara en todas las solilcitudes de los usuarios, posiblemente sobrecargando el eistema."
-#: TRAInforme minimoIntervaloActualizacionEnMinutos
-msgid "gvSIGi18n_TRAInforme_attr_minimoIntervaloActualizacionEnMinutos_help"
-msgstr "Si es Auto-Actualizable, es el Intervalo minimo de tiempo en minutos a esperar antes de actualizar automaticamente el informe. Si el valor es 0, el informe se actualizara en todas las solilcitudes de los usuarios, posiblemente sobrecargando el eistema."
 
 #. Default: "Usuario Informador"
 #: TRAInforme usuarioInformador
@@ -1823,6 +1908,16 @@ msgstr "Comentario"
 #: TRATraduccion comentario
 msgid "gvSIGi18n_TRATraduccion_attr_comentario_help"
 msgstr "Comentarios acerca de esta traduccion."
+
+#. Default: "Contador de Cambios"
+#: TRATraduccion contadorCambios
+msgid "gvSIGi18n_TRATraduccion_attr_contadorCambios_label"
+msgstr "Contador de Cambios"
+
+#. Default: "Contador de cambios realizados a lo largo del tiempo. Util para descubrir si han tenido lugar cambios desde que se leyeron los datos del elemento."
+#: TRATraduccion contadorCambios
+msgid "gvSIGi18n_TRATraduccion_attr_contadorCambios_help"
+msgstr "Contador de cambios realizados a lo largo del tiempo. Util para descubrir si han tenido lugar cambios desde que se leyeron los datos del elemento."
 
 #. Default: "Estado de la Cadena"
 #: TRATraduccion estadoCadena

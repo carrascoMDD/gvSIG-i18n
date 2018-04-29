@@ -37,6 +37,7 @@ from AccessControl import ClassSecurityInfo
 import sys
 import traceback
 import logging
+import transaction
 
 
 
@@ -44,7 +45,10 @@ from Products.Archetypes.public import DisplayList
 
 from Products.CMFCore           import permissions
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneTool import ModelDDvlPloneTool
+from Products.ModelDDvlPloneTool.ModelDDvlPloneTool          import ModelDDvlPloneTool
+from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import ModelDDvlPloneTool_Mutators, cModificationKind_ChangeValues
+from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import cModificationKind_CreateSubElement, cModificationKind_Create
+
 
 
 from TRAElemento_Constants          import *
@@ -56,7 +60,7 @@ from TRAElemento                    import TRAElemento
 from TRAImportarExportar_Constants  import cEncodingSeparatorSentinelName 
 
 
-from TRAElemento_Permission_Definitions import cUseCase_Copy_Translations
+from TRAElemento_Permission_Definitions import cUseCase_Copy_Translations, cUseCase_LockTRAIdioma, cUseCase_UnlockTRAIdioma
 from TRAElemento_Permission_Definitions import cBoundObject
 
 from TRAElemento_Operaciones  import TRAElemento_Operaciones
@@ -71,6 +75,10 @@ from TRAElemento_Operaciones  import TRAElemento_Operaciones
 
 
 ##code-section after-schema #fill in your manual code here
+
+cModoSeleccionBandera_Plone      = 'Plone'
+cModoSeleccionBandera_Especifica = 'Especifica'
+cModoSeleccionBandera_Adjunta    = 'Adjunta'
 
 # ACV20090519 removed
 # cLogTimeProfileCrearTraduccionesQueFaltanEnIdioma = True
@@ -89,8 +97,39 @@ class TRAIdioma_Operaciones:
         
 
 
-    
+    def fFlagAndURL( self,):
+        """cTRAFlagIdiomaDesconocida
+        
+        """
+        
+        unModoSeleccionBandera = self.getModoSeleccionBandera()
 
+        if ( unModoSeleccionBandera == cModoSeleccionBandera_Plone):
+            return [ '', '',]
+        
+        
+        unIconoBandera         = self.getIconoBanderaIdioma()
+
+        aFlag = unIconoBandera
+        aFlagURL = ''
+        
+        if ( unModoSeleccionBandera == cModoSeleccionBandera_Adjunta):
+            if unIconoBandera:
+                aFlagImage = self.getElementoPorID( unIconoBandera)
+                
+                if not ( aFlagImage == None):
+                    aFlagURL = aFlagImage.absolute_url()
+            
+            if not aFlagURL:
+                aFlag = ''
+            
+        if not aFlag:
+            aFlag    = cTRAFlagIdiomaDesconocida
+            aFlagURL = ''
+        
+        return [ aFlag, aFlagURL,]
+    
+    
                    
     
     security.declarePublic( 'fExtraLinks')    
@@ -413,6 +452,8 @@ class TRAIdioma_Operaciones:
                     'description':   '',
                 }
                 
+                unaColeccionImportaciones.pFlushCachedTemplates_All()                                            
+                
                 unaIdNuevaImportacion = unaColeccionImportaciones.invokeFactory( cNombreTipoTRAImportacion, aNewIdImportacion, **anAttrsDictImportacion)
                 if not unaIdNuevaImportacion:
                     anActionReport = { 'effect': 'error', 'failure': '%s' %   self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCreating_Strings_TRAImportacion_NotCreated_msgid', "Error creating strings: import not created.-"), }
@@ -432,6 +473,11 @@ class TRAIdioma_Operaciones:
                     'title':         unTitleContenidoIntercambio,
                     'description':   '',
                 }
+                
+                unaNuevaImportacion.setCodigoIdiomaPorDefecto( unCodigoIdioma)
+                unaNuevaImportacion.setNombreModuloPorDefecto( '')
+                
+                unaNuevaImportacion.pFlushCachedTemplates_All()                            
                 
                 unaIdNuevoContenidoIntercambio = unaNuevaImportacion.invokeFactory( cNombreTipoTRAContenidoIntercambio, aNewIdContenidoIntercambio, **anAttrsDictContenidoIntercambio)
                 if not unaIdNuevoContenidoIntercambio:
@@ -479,6 +525,47 @@ class TRAIdioma_Operaciones:
                     return anActionReport     
  
                 unStringsCreationReport = { 'effect': 'created', 'new_object_result': unResultadoNuevaImportacion, }
+                
+                
+               
+                aContenidoIntercambioTraversalResult = None
+                for aTraversalResult in unResultadoNuevaImportacion.get( 'traversals', []):
+                    if aTraversalResult.get( 'traversal_name', '') == cNombreTraversal_Importacion_ContenidosIntercambio:
+                        aContenidoIntercambioTraversalResult = aTraversalResult
+                        break
+                if aContenidoIntercambioTraversalResult: 
+                    someContenidoIntercambioResults = aContenidoIntercambioTraversalResult.get( 'elements', [])
+                    
+                    aModelDDvlPloneTool_Mutators = ModelDDvlPloneTool_Mutators()
+                    
+                    for aContenidoIntercambioResult in someContenidoIntercambioResults:
+                        
+                        unNuevoContenidoIntercambioElement = aContenidoIntercambioResult.get( 'object', None)
+                        if not ( unNuevoContenidoIntercambioElement == None):
+                            
+                            unNuevoContenidoIntercambioElement.pFlushCachedTemplates_All()                                                        
+                        
+                            aCreateElementReport = aModelDDvlPloneTool_Mutators.fNewVoidCreateElementReport()
+                            aCreateElementReport.update( { 'effect': 'created', 'new_object_result': aContenidoIntercambioResult, })
+                            
+                            someFieldReports    = aCreateElementReport[ 'field_reports']
+                            aFieldReportsByName = aCreateElementReport[ 'field_reports_by_name']
+                            
+                            aReportForField = { 'attribute_name': 'id',     'effect': 'changed', 'new_value': aContenidoIntercambioResult.get( 'id', ''),     'previous_value': '',}
+                            someFieldReports.append( aReportForField)            
+                            aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
+                            
+                            aReportForField = { 'attribute_name': 'title',  'effect': 'changed', 'new_value': aContenidoIntercambioResult.get( 'title', ''),  'previous_value': '',}
+                            someFieldReports.append( aReportForField)            
+                            
+                            aModelDDvlPloneTool_Mutators.pSetAudit_Creation( unaNuevaImportacion,                cModificationKind_CreateSubElement, aCreateElementReport, theUseCounter=True)       
+                            aModelDDvlPloneTool_Mutators.pSetAudit_Creation( unNuevoContenidoIntercambioElement, cModificationKind_Create,           aCreateElementReport)       
+                
+                
+                
+                unaColeccionImportaciones.pFlushCachedTemplates_All()                            
+                unaNuevaImportacion.pFlushCachedTemplates_All()                            
+                            
                         
                 return unStringsCreationReport
                 
@@ -510,7 +597,191 @@ class TRAIdioma_Operaciones:
             
             
             
+
+    
+    security.declareProtected( permissions.ModifyPortalContent, 'fBloquearIdioma')
+    def fBloquearIdioma( self , thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
+        
+        unExecutionRecord = self.fStartExecution( 'method',  'fBloquearIdioma', theParentExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
+
+        try:
+            
+            try:
                 
+                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
+                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+            
+                unUseCaseQueryResult = self.fUseCaseAssessment(  
+                    theUseCaseName          = cUseCase_LockTRAIdioma, 
+                    theElementsBindings     = { cBoundObject: self,},
+                    theRulesToCollect       = [ ], 
+                    thePermissionsCache     = unPermissionsCache, 
+                    theRolesCache           = unRolesCache, 
+                    theParentExecutionRecord= unExecutionRecord
+                )
+                if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
+                    return False
+                        
+                                    
+                unPermiteModificar = self.getPermiteModificar()
+                
+                if unPermiteModificar:
+                    self.setPermiteModificar( False)
+                    
+                    unCatalogo = self.getCatalogo()
+                    if not ( unCatalogo == None):
+                        unCatalogo.pFlushCachedTemplates_All()
+                    
+                    
+                    aModelDDvlPloneTool_Mutators = ModelDDvlPloneTool_Mutators()
+                   
+                    aReport = aModelDDvlPloneTool_Mutators.fNewVoidChangeValuesReport()
+                    someFieldReports    = aReport.get( 'field_reports')
+                    aFieldReportsByName = aReport.get( 'field_reports_by_name')       
+
+                    aReportForField = { 'attribute_name': 'permiteModificar', 'effect': 'changed', 'new_value': False, 'previous_value': True,}                                                                                                                        
+                    
+                    someFieldReports.append( aReportForField)
+                    aFieldReportsByName[ 'permiteModificar'] = aReportForField
+                    
+                    aModelDDvlPloneTool_Mutators.pSetAudit_Modification( self, cModificationKind_ChangeValues, aReport)       
+                    
+                    transaction.commit()
+                    logging.getLogger( 'gvSIGi18n').info( "COMMIT TRAIdioma::fBloquearIdioma %s" % '/'.join( self.getPhysicalPath()))
+                    
+                return True
+            
+            except:
+                unaExceptionInfo = sys.exc_info()
+                unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
+                
+                unInformeExcepcion = 'Exception during TRAIdioma::fBloquearIdioma %s \n'  % '/'.join( self.getPhysicalPath())
+                unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
+                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                unInformeExcepcion += unaExceptionFormattedTraceback   
+
+                unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
+
+                if cLogExceptions:
+                    logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
+                
+                return False
+        
+             
+        finally:
+            unExecutionRecord and unExecutionRecord.pEndExecution()
+            unExecutionRecord and unExecutionRecord.pClearLoggedAll()
+
+            
+ 
+            
+            
+            
+                
+    security.declareProtected( permissions.View, 'fExportarIdiomaParaGvSIG')    
+    def fExportarIdiomaParaGvSIG( self, 
+        theParametersInput               = None,
+        thePermissionsCache              = None,
+        theRolesCache                    = None,
+        theParentExecutionRecord         = None):
+        """Export Translations into this languages, in any Module, with the parameters prefered for gvSIG. 
+        
+        """
+        
+        
+        unCatalogo = self.getCatalogo()
+        if unCatalogo == None:
+            return None
+        
+        return unCatalogo.fExportarIdiomaParaGvSIG( 
+            self,
+            theParametersInput,
+            thePermissionsCache,
+            theRolesCache,
+            theParentExecutionRecord,
+        )
+    
+    
+    
+   
+
+    
+    security.declareProtected( permissions.ModifyPortalContent, 'fDesbloquearIdioma')
+    def fDesbloquearIdioma( self , thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
+        
+        unExecutionRecord = self.fStartExecution( 'method',  'fDesbloquearIdioma', theParentExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
+
+        try:
+            
+            try:
+                
+                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
+                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+            
+                unUseCaseQueryResult = self.fUseCaseAssessment(  
+                    theUseCaseName          = cUseCase_UnlockTRAIdioma, 
+                    theElementsBindings     = { cBoundObject: self,},
+                    theRulesToCollect       = [ ], 
+                    thePermissionsCache     = unPermissionsCache, 
+                    theRolesCache           = unRolesCache, 
+                    theParentExecutionRecord= unExecutionRecord
+                )
+                if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
+                    return False
+                        
+                                    
+                unPermiteModificar = self.getPermiteModificar()
+                
+                if not unPermiteModificar:
+                    self.setPermiteModificar( True)
+
+                    
+                    unCatalogo = self.getCatalogo()
+                    if not ( unCatalogo == None):
+                        unCatalogo.pFlushCachedTemplates_All()
+                    
+                    
+                    
+                    aModelDDvlPloneTool_Mutators = ModelDDvlPloneTool_Mutators()
+                   
+                    aReport = aModelDDvlPloneTool_Mutators.fNewVoidChangeValuesReport()
+                    someFieldReports    = aReport.get( 'field_reports')
+                    aFieldReportsByName = aReport.get( 'field_reports_by_name')       
+
+                    aReportForField = { 'attribute_name': 'permiteModificar', 'effect': 'changed', 'new_value': True, 'previous_value': False,}                                                                                                                        
+                    
+                    someFieldReports.append( aReportForField)
+                    aFieldReportsByName[ 'permiteModificar'] = aReportForField
+                    
+                    aModelDDvlPloneTool_Mutators.pSetAudit_Modification( self, cModificationKind_ChangeValues, aReport)       
+                    
+                    transaction.commit()
+                    logging.getLogger( 'gvSIGi18n').info( "COMMIT TRAIdioma::fDesbloquearIdioma %s" % '/'.join( self.getPhysicalPath()))
+                    
+                return True
+            
+            except:
+                unaExceptionInfo = sys.exc_info()
+                unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
+                
+                unInformeExcepcion = 'Exception during TRAIdioma::fDesbloquearIdioma %s \n'  % '/'.join( self.getPhysicalPath())
+                unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
+                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                unInformeExcepcion += unaExceptionFormattedTraceback   
+
+                unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
+
+                if cLogExceptions:
+                    logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
+                
+                return False
+        
+             
+        finally:
+            unExecutionRecord and unExecutionRecord.pEndExecution()
+            unExecutionRecord and unExecutionRecord.pClearLoggedAll()
+
+                            
     
     
     

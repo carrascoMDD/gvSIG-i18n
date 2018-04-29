@@ -70,8 +70,9 @@ from Products.Archetypes.atapi  import OrderedBaseFolder, BaseBTreeFolder
 from Products.PloneLanguageTool import availablelanguages as PloneLanguageToolAvailableLanguages
 
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneTool import cModelDDvlPloneToolName, ModelDDvlPloneTool
+from Products.ModelDDvlPloneTool.ModelDDvlPloneTool import cModelDDvlPloneToolId, ModelDDvlPloneTool
 
+from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fReprAsString, fMillisecondsNow, fDateTimeNow
 
 
 from TRAElemento_Constants              import *
@@ -242,7 +243,37 @@ class TRAExecutionRecord:
     
     def __init__( self, theContextualObject, theExecutedKind, theExecutedName, theParentExecutionRecord, theProfilingConfig={}, theExtraExecutionInfo=''):
         
+        self.vIsExecutionLoggingEnabled = False
+        self.vIsDetailedExecutionLoggingEnabled = False
+        self.vInitialized           = False
+        self.vIsExcluded            = False
+        self.vExtraExecutionInfo    = None
+        self.vContextualObject      = None
+        self.vContextualObjectClassName = None
+        self.vContextualObjectPath = None
+        self.vContextualObjectTitle = None
+        self.vExecutedKind          = None
+        self.vExecutedName          = None
+        self.vDetailLevel           = None
+        self.vExecutionStartTime    = None
+        self.vExecutionEndTime      = None
+        self.vParent                = None
+        
+        self.vChildren              = None
+        self.vProfilingConfig       = None
+        self.vExceptions            = None
+        self.vLogged                = False
+        self.vExceptionsInChildren  = False
+        
+        
+        
+        
         try:
+            
+            if not ( theContextualObject == None):
+                self.vIsExecutionLoggingEnabled = theContextualObject.getCatalogo().fIsExecutionLoggingEnabled()
+                self.vIsDetailedExecutionLoggingEnabled = theContextualObject.getCatalogo().fIsDetailedExecutionLoggingEnabled()
+            
             if cTimeStampingEnabled or cTimeProfilingEnabled:
                 
                 self.vInitialized           = True
@@ -254,7 +285,7 @@ class TRAExecutionRecord:
                     self.vExtraExecutionInfo.append( str( theExtraExecutionInfo))
                 
                 self.vContextualObject      = theContextualObject
-                if theContextualObject:
+                if not ( theContextualObject == None):
                     self.vContextualObjectClassName = theContextualObject.__class__.__name__
                     self.vContextualObjectPath      = theContextualObject.fDisplayPathString()
                     try:
@@ -410,15 +441,15 @@ class TRAExecutionRecord:
             if not self.vInitialized:
                 return self
             
-            if cExecutionLoggingEnabled:
+            if self.vIsExecutionLoggingEnabled:
                 aWhenToLog = self.vProfilingConfig.get( 'log_when', False)
                 if aWhenToLog == True or ( ( aWhenToLog == 'root') and not self.vParent):
                     
-                    if self.vProfilingConfig.get( 'log_what', '') == 'details' and cDetailedExecutionLoggingEnabled:
+                    if self.vProfilingConfig.get( 'log_what', '') == 'details' and self.vIsDetailedExecutionLoggingEnabled:
                         unPrintString = self.fPrintStringDetails( True)
                         if unPrintString:
                             unPrintString = '\n' + unPrintString
-                    elif cDetailedExecutionLoggingEnabled and self.vProfilingConfig.get( 'log_what', '') == 'dots':
+                    elif self.vIsDetailedExecutionLoggingEnabled and self.vProfilingConfig.get( 'log_what', '') == 'dots':
                         unPrintString = self.fPrintStringDots( True)
                     else:
                         unPrintString = self.fPrintString( )
@@ -713,13 +744,52 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
     security.declarePublic( 'pLog')    
     def pLog( self, theMessage):
         
-        logging.getLogger( 'gvSIGi18n').info( repr( theMessage))
+        logging.getLogger( 'gvSIGi18n').info( fReprAsString( theMessage))
         
         return self
     
     
+ 
+      
+    security.declarePrivate( 'fNewVoidLanguagesDetails')    
+    def fNewVoidLanguagesDetails( self,):
+        aLanguagesDetails = dict( [ [ aKey, '',] for aKey in cAcceptedLanguageDetailKeys])
+        return aLanguagesDetails
     
     
+    
+      
+    security.declarePrivate( 'fNewVoidUploadedContent')    
+    def fNewVoidUploadedContent( self,):
+        unUploadedContent = {
+            'import_report':                          None,
+            'uploaded_entries':                       [],
+            # ############################################
+            # languages is the list of language names to create 
+            'languages':                              [],
+            # ############################################
+            # module is the module to which the included strings are associated.
+            'module':                                 '',
+            # ############################################
+            # languages is a dict with language codes as keys, 
+            # and values are a dict holding details about the language to create, including
+            'languages_details':                      self.fNewVoidLanguagesDetails(),
+            # ############################################
+            # strings_and_translations is a dict
+            #   where keys are string symbols, 
+            #   and   values are dicts with languages a keys, and the values are the translations of the symbols for the key language.
+            'strings_and_translations':               {},
+            # ############################################
+            # strings_with_encoding_errors is a dict
+            #   where keys are string symbols, 
+            #   and   values are lists of the languages for which there was encountered an encoding error while reading the translations interchange file.            
+            'strings_with_encoding_errors':           {}, 
+            'strings_sources':                        {},
+        }
+        return unUploadedContent
+    
+    
+        
     
     security.declarePrivate( 'fNewVoidContenidoIntercambioReport')    
     def fNewVoidContenidoIntercambioReport( self):
@@ -1003,6 +1073,69 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
         aPloneLanguageTool = self.getPloneLanguageTool()
         unosLanguagesPorCodigo = aPloneLanguageTool.getAvailableLanguageInformation()
         
+        unosLanguagesPorCodigo = dict( [ [ unosLanguagesPorCodigo_Key, unosLanguagesPorCodigo_Value.copy(),] for unosLanguagesPorCodigo_Key, unosLanguagesPorCodigo_Value in unosLanguagesPorCodigo.items()])
+        
+        someCountrySpecificLanguagesPorCodigo = PloneLanguageToolAvailableLanguages.getCombined()
+        for aCountrySpecificLanguageCode in someCountrySpecificLanguagesPorCodigo.keys():
+            if not ( unosLanguagesPorCodigo.has_key( aCountrySpecificLanguageCode)):
+                unosLanguagesPorCodigo[ aCountrySpecificLanguageCode] = someCountrySpecificLanguagesPorCodigo[ aCountrySpecificLanguageCode].copy()   
+                unosLanguagesPorCodigo[ 'selected'] = False
+                
+        unCatalogo = self.getCatalogo()
+        unosIdiomas = unCatalogo.fObtenerTodosIdiomas()
+        
+        unPortalURL = self.fPortalURL()
+        
+        for unIdioma in unosIdiomas:
+            unCodigoIdiomaEnGvSIG         = unIdioma.getCodigoIdiomaEnGvSIG()
+            unCodigoInternacionalDeIdioma = unIdioma.getCodigoInternacionalDeIdioma()
+            aTitle                        = unIdioma.Title()
+            aNombreNativoDeIdioma         = unIdioma.getNombreNativoDeIdioma()
+            unFlag, unFlagURL             = unIdioma.fFlagAndURL()
+            
+            unosDatosIdioma = unosLanguagesPorCodigo.get( unCodigoIdiomaEnGvSIG, {})
+            
+            unosDatosIdioma[ 'english'] = aTitle
+            unosDatosIdioma[ 'native']  = aNombreNativoDeIdioma
+
+            if unFlag:
+                unosDatosIdioma[ 'flag'] = unFlag
+                
+                if unFlagURL:
+                    unosDatosIdioma[ 'flag_url'] = unFlagURL
+            
+                
+            unosLanguagesPorCodigo[ unCodigoIdiomaEnGvSIG] = unosDatosIdioma
+            
+        for unCodigoIdioma in unosLanguagesPorCodigo.keys():
+            
+            unosDatosIdioma = unosLanguagesPorCodigo.get( unCodigoIdioma, {})
+            if unosDatosIdioma:
+                
+                unFlag = unosDatosIdioma.get( 'flag', '')
+                
+                if not unFlag:
+                    unosDatosIdioma[ 'flag']     = cTRAFlagIdiomaDesconocida
+                    unFlagURL                    = '%s/%s' % ( unPortalURL, cTRAFlagIdiomaDesconocida,)
+                    unosDatosIdioma[ 'flag_url'] = unFlagURL
+                else:
+                    unFlagURL =  unosDatosIdioma.get( 'flag_url', '')
+                    if not unFlagURL:
+                        unFlagURL                    = '%s/%s' % ( unPortalURL, unFlag,)
+                        unosDatosIdioma[ 'flag_url'] = unFlagURL
+
+        return unosLanguagesPorCodigo.copy()
+    
+    
+    
+    
+    
+    security.declareProtected( permissions.View, 'fLanguagesNamesAndFlagsPorCodigo_AvailableInPlone')
+    def fLanguagesNamesAndFlagsPorCodigo_AvailableInPlone(self,):
+        
+        aPloneLanguageTool = self.getPloneLanguageTool()
+        unosLanguagesPorCodigo = aPloneLanguageTool.getAvailableLanguageInformation()
+        
         someCountrySpecificLanguagesPorCodigo = PloneLanguageToolAvailableLanguages.getCombined()
         for aCountrySpecificLanguageCode in someCountrySpecificLanguagesPorCodigo.keys():
             if not ( unosLanguagesPorCodigo.has_key( aCountrySpecificLanguageCode)):
@@ -1056,14 +1189,14 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
     
     """
     
-    security.declarePrivate( 'fUserGroupIdAllIdiomasFor')
-    def fUserGroupIdAllIdiomasFor(self, theGroupName):
-        return '%s_%s' % ( self.fPrefijoUserGroupsAllIdiomas(), theGroupName,)
+    #security.declarePrivate( 'fUserGroupIdAllIdiomasFor')
+    #def fUserGroupIdAllIdiomasFor(self, theGroupName):
+        #return '%s_%s' % ( self.fPrefijoUserGroupsAllIdiomas(), theGroupName,)
  
        
-    security.declarePrivate( 'fPrefijoUserGroupsAllIdiomas')
-    def fPrefijoUserGroupsAllIdiomas(self, ):
-        return 'TRA_%s_%s' % ( '_'.join( self.getCatalogo().getPhysicalPath()[2:]), cTRAUsersGroup_AllLanguages_postfix)
+    #security.declarePrivate( 'fPrefijoUserGroupsAllIdiomas')
+    #def fPrefijoUserGroupsAllIdiomas(self, ):
+        #return 'TRA_%s_%s' % ( '_'.join( self.getCatalogo().getPhysicalPath()[2:]), cTRAUsersGroup_AllLanguages_postfix)
  
     
     
@@ -1071,13 +1204,13 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
     # Language specific User Groups
     #
     
-    security.declarePrivate( 'fUserGroupIdIdiomaFor')
-    def fUserGroupIdIdiomaFor(self, theGroupName, theIdioma):
-        return '%s_%s' % ( self.fPrefijoUserGroupsIdioma( theIdioma), theGroupName, )
+    #security.declarePrivate( 'fUserGroupIdIdiomaFor')
+    #def fUserGroupIdIdiomaFor(self, theGroupName, theIdioma):
+        #return '%s_%s' % ( self.fPrefijoUserGroupsIdioma( theIdioma), theGroupName, )
  
-    security.declarePrivate( 'fPrefijoUserGroupsIdioma')
-    def fPrefijoUserGroupsIdioma(self, theIdioma):
-        return 'TRA_%s_%s' % ('_'.join( self.getCatalogo().getPhysicalPath()[2:]), theIdioma.getId(), )
+    #security.declarePrivate( 'fPrefijoUserGroupsIdioma')
+    #def fPrefijoUserGroupsIdioma(self, theIdioma):
+        #return 'TRA_%s_%s' % ('_'.join( self.getCatalogo().getPhysicalPath()[2:]), theIdioma.getId(), )
     
     
     # #################################################
@@ -1085,15 +1218,15 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
     #
      
  
-    security.declarePrivate( 'fUserGroupIdModuloFor')
-    def fUserGroupIdModuloFor(self, theGroupName, theModulo):
-        return '%s_%s' % ( self.fPrefijoUserGroupsModulo( theModulo), theGroupName, )
+    #security.declarePrivate( 'fUserGroupIdModuloFor')
+    #def fUserGroupIdModuloFor(self, theGroupName, theModulo):
+        #return '%s_%s' % ( self.fPrefijoUserGroupsModulo( theModulo), theGroupName, )
 
     
  
-    security.declarePrivate( 'fPrefijoUserGroupsModulo')
-    def fPrefijoUserGroupsModulo(self, theModulo):
-        return 'TRA_%s_%s' % ( '_'.join( self.getCatalogo().getPhysicalPath()[2:]), theModulo.getId().replace(' ', '-'), )
+    #security.declarePrivate( 'fPrefijoUserGroupsModulo')
+    #def fPrefijoUserGroupsModulo(self, theModulo):
+        #return 'TRA_%s_%s' % ( '_'.join( self.getCatalogo().getPhysicalPath()[2:]), theModulo.getId().replace(' ', '-'), )
  
        
     
@@ -1164,9 +1297,29 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
         return unPortal       
     
     
-    
-    
+
         
+    
+
+    security.declarePrivate('fPortalURL')
+    def fPortalURL(self, ):
+        
+        unPortalURLTool = getToolByName( self, 'portal_url', None)
+        if not unPortalURLTool:
+            return ''
+        
+        unPortalURL = ''
+        try:
+            unPortalURL = unPortalURLTool()
+        except: 
+            None
+        if not unPortalURL:
+            return ''
+        
+        return unPortalURL
+           
+        
+    
       
 # ####################################
 #  Initialize after creation
@@ -1198,7 +1351,122 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
          
         
     
-    
+
+   
+    # #############################################################
+    # Intercepting modification method for re-ordering an OrderedBaseFolder specialization
+    # used in to provide drag&drop functionality directly from Plone.
+    # does not hit the ModelDDvlPlone framework presentation layer
+    # and therefore the incalidation of cache entries must be triggered by intercepting the method
+    #
+
+    security.declareProtected(permissions.ModifyPortalContent, 'pHandle_moveObjectsByDelta')
+    def pHandle_moveObjectsByDelta(self, ids, delta, subset_ids=None): 
+        
+        unResult = None
+        
+        if self.__class__.__name__ == 'TRAColeccionCadenas':
+            
+            unResult = BaseBTreeFolder.moveObjectsByDelta(   self,  ids, delta, subset_ids=subset_ids)
+        
+        else:
+            unResult = OrderedBaseFolder.moveObjectsByDelta( self,  ids, delta, subset_ids=subset_ids)
+        
+        
+        if not unResult:
+            return self
+        
+        
+        unaModelDDvlPloneTool = getToolByName( self, 'ModelDDvlPlone_tool', None)
+        if not unaModelDDvlPloneTool:
+            return self
+        
+        someImpactedUIDs = []
+        
+        unaOwnUID = self.UID()
+        someImpactedUIDs.append( unaOwnUID)
+        
+        if shasattr( self, 'getContenedor'):
+            unContenedor = None
+            try:
+                unContenedor = self.getContenedor()
+            except:
+                None
+            if not ( unContenedor == None):
+                unContenedorUID = ''
+                if shasattr( self, 'UID'):
+                    unContenedorUID = ''
+                    try:
+                        unContenedorUID = unContenedor.UID()
+                    except:
+                        None
+                    if unContenedorUID and not ( unContenedorUID in someImpactedUIDs):
+                        someImpactedUIDs.append( unContenedorUID)
+            
+        if shasattr( self, 'getPropietario'):
+            unPropietario = None
+            try:
+                unPropietario = self.getPropietario()
+            except:
+                None
+            if not ( unPropietario == None) and not ( unPropietario == unContenedor):
+                unPropietarioUID = ''
+                if shasattr( self, 'UID'):
+                    unPropietarioUID = ''
+                    try:
+                        unPropietarioUID = unPropietario.UID()
+                    except:
+                        None
+                if unPropietarioUID and not ( unPropietarioUID in someImpactedUIDs):
+                    someImpactedUIDs.append( unPropietarioUID)
+            
+        someIds = ids
+        if not ( someIds.__class__.__name__ in [ 'list', 'tuple', 'set',]):
+            someIds = [ someIds,]
+
+        aMovedNewPosition = -1
+        someObjectValues = self.objectValues()
+        for anObjectIndex in range( len( someObjectValues)):
+            
+            anObject = someObjectValues[ anObjectIndex]
+            
+            anObjectId = anObject.getId()
+            if ( anObjectId in someIds):
+                aMovedNewPosition = anObjectIndex
+                
+            anObjectUID = anObject.UID()
+            if anObjectUID and not ( anObjectUID in someImpactedUIDs):
+                someImpactedUIDs.append( anObjectUID)
+
+                
+        anElementToReportUpon = None
+            
+        for anId in someIds:
+            for anObject in someObjectValues:
+                if anObject.getId() == anId:
+                    anElementToReportUpon = anObject
+                    break
+                
+        anElementResult = None
+        if not ( anElementToReportUpon == None):
+            anElementResult = unaModelDDvlPloneTool.fNewResultForElement( anElementToReportUpon)
+            
+            
+        unaModelDDvlPloneTool.pFlushCachedTemplatesForImpactedElementsUIDs( self, someImpactedUIDs)
+        
+        aMoveReport = {
+            'effect':                  'moved', 
+            'new_position':            aMovedNewPosition,
+            'delta':                   delta,
+            'moved_element':           anElementResult,
+            'parent_traversal_name':   '',
+            'impacted_objects_UIDs':   someImpactedUIDs,
+        } 
+        unaModelDDvlPloneTool._pSetAudit_Modification( self, 'Move Sub Object', aMoveReport)
+        
+        return unResult
+            
+        
     
         
       
@@ -1341,9 +1609,9 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
 
         return unMemberId
         
-
-
+   
     
+
     
 
     
@@ -1700,7 +1968,7 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
         if not aMilliseconds:
             return False
         
-        aMillisecondsNow = self.fMillisecondsNow() 
+        aMillisecondsNow = fMillisecondsNow() 
         
         anAllowed = ( aMillisecondsNow > aMilliseconds) and  ( (aMillisecondsNow - aMilliseconds) <= ( theAllowedSeconds * 1000))
         return anAllowed
@@ -1709,7 +1977,7 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
         
     security.declareProtected( permissions.View, 'fMagicMillisecondsNowString')
     def fMagicMillisecondsNowString(self):   
-        someMilliseconds = self.fMillisecondsNow()
+        someMilliseconds = fMillisecondsNow()
         unMillisecondsString = str( someMilliseconds)
         unMagicMillisecondsString = self.fMagicizeString( unMillisecondsString)
         return unMagicMillisecondsString
@@ -1738,21 +2006,21 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
              
 
     
-    security.declareProtected( permissions.View, 'fMillisecondsNow')
-    def fMillisecondsNow(self):   
-        return int( time() * 1000)
+    #security.declareProtected( permissions.View, 'fMillisecondsNow')
+    #def fMillisecondsNow(self):   
+        #return int( time() * 1000)
     
     
     
-    security.declareProtected( permissions.View, 'fDateTimeNow')
-    def fDateTimeNow(self):   
-        return DateTime()
+    #security.declareProtected( permissions.View, 'fDateTimeNow')
+    #def fDateTimeNow(self):   
+        #return DateTime()
     
     
     
     security.declareProtected( permissions.View, 'fDateTimeNowString')
     def fDateTimeNowString(self):   
-        return self.fDateTimeToString( self.fDateTimeNow())
+        return self.fDateTimeToString( fDateTimeNow())
     
     
     security.declareProtected( permissions.View, 'fDateTimeToString')
@@ -1767,7 +2035,7 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
     def fDateTimeNowTextual(self):   
         unYMDHMS = localtime()[:6]
         unDateStoreString = '%04d-%02d-%02d %02d:%02d:%02d' % unYMDHMS
-        return self.fDateToStoreString( self.fDateTimeNow())
+        return self.fDateToStoreString( fDateTimeNow())
 
 
 
@@ -3003,7 +3271,7 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
            
             #aModelDDvlPloneTool = None
             #try:
-                #aModelDDvlPloneTool = aq_get( unPortalRoot, cModelDDvlPloneToolName, None, 1)
+                #aModelDDvlPloneTool = aq_get( unPortalRoot, cModelDDvlPloneToolId, None, 1)
             #except:
                 #None  
             
@@ -3021,11 +3289,11 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
                 return None
              
             unaNuevaTool = ModelDDvlPloneTool( ) 
-            unPortalRoot._setObject( cModelDDvlPloneToolName,  unaNuevaTool)
+            unPortalRoot._setObject( cModelDDvlPloneToolId,  unaNuevaTool)
             aModelDDvlPloneTool = None
             
             #try:
-                #aModelDDvlPloneTool = aq_get( unPortalRoot, cModelDDvlPloneToolName, None, 1)
+                #aModelDDvlPloneTool = aq_get( unPortalRoot, cModelDDvlPloneToolId, None, 1)
             #except:
                 #None  
                 
@@ -3046,11 +3314,14 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
                      
      
             if cLogExceptions:
-                logging.getLogger( 'gvSIGbpd').error( unInformeExcepcion)
+                logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
     
             return None
              
 
+        
+            
+        
         
         
     security.declarePrivate( 'pHandle_manage_pasteObjects')        
@@ -3058,99 +3329,11 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
         """Trap and override behavior of manage_pasteObjects implementation in CopySupport.py 
         
         """
-        
-        # Get the list of objects to be copied into this (self) container
-        # Copied from class CopyContainer in file Zope lib python OFS  CopySupport.py
-        if cb_copy_data is not None:
-            cp = cb_copy_data
-        elif REQUEST is not None and REQUEST.has_key('__cp'):
-            cp = REQUEST['__cp']
-        else:
-            cp = None
-        if cp is None:
-            return CopyContainer.manage_objectPaste( self, cb_copy_data, REQUEST)
-             
-        try:
-            op, mdatas = loads(decompress(unquote(cp))) # _cb_decode(cp)
-        except:
-            return CopyContainer.manage_objectPaste( self, cb_copy_data, REQUEST)
-
+        return None
     
-        oblist = []
-        app = self.getPhysicalRoot()
-        for mdata in mdatas:
-            m = Moniker.loadMoniker(mdata)
-            try:
-                ob = m.bind(app)
-            except:
-                return CopyContainer.manage_objectPaste( self, cb_copy_data, REQUEST)
-            # Do not verify here
-            # self._verifyObjectPaste(ob, validate_src=op+1)
-            oblist.append(ob)
-        # End of code copied from class CopyContainer
-            
-        someObjectsToPaste = oblist[:]
-        
-        if not someObjectsToPaste:
-            return CopyContainer.manage_objectPaste( self, cb_copy_data, REQUEST)
-        
-        someAwareObjects = []
-        for anObjectToPaste in someObjectsToPaste:
-            anExportConfig = None
-            try:
-                anExportConfig = anObjectToPaste.exportConfig()
-            except:
-                None
-            if anExportConfig:
-                someAwareObjects.append( anObjectToPaste)
-                
-        if not someAwareObjects:
-            return CopyContainer.manage_objectPaste( self, cb_copy_data, REQUEST)
-        
-        
-        aRequest = REQUEST
-        if not aRequest:
-            try:
-                aRequest = self.REQUEST
-            except:
-                None
-        if not aRequest:
-            """Default to Plone behavior.
-            
-            """
-            return CopyContainer.manage_pasteObjects( self, cb_copy_data, REQUEST)
-        
-        
-        unModelDDvlPloneTool = self.fModelDDvlPloneTool( True)
-        if not unModelDDvlPloneTool:
-            return CopyContainer.manage_pasteObjects( self, cb_copy_data, REQUEST)
-        
-        return unModelDDvlPloneTool.fPaste( 
-            theTimeProfilingResults     =None,
-            theContainerObject          =self, 
-            theObjectsToPaste           =someObjectsToPaste,
-            theAdditionalParams         =None,
-        )
-    
-        # return CopyContainer.manage_pasteObjects( self, cb_copy_data, REQUEST)
-        # aRequest.response.redirect( '%s/MDDpaste' % self.absolute_url())
-        
-        
-        
-       
-         
-    # From CopySupport.py   
-    # class CopyContainer
-    #def manage_pasteObjects(self, cb_copy_data=None, REQUEST=None):
-        #"""Paste previously copied objects into the current object.
-
-        #If calling manage_pasteObjects from python code, pass the result of a
-        #previous call to manage_cutObjects or manage_copyObjects as the first
-        #argument.
-
-        #Also sends IObjectCopiedEvent and IObjectClonedEvent
-        #or IObjectWillBeMovedEvent and IObjectMovedEvent.
-        #"""
+        # ACV 20091216 Should not paste nothing on no TRA element
+        ## Get the list of objects to be copied into this (self) container
+        ## Copied from class CopyContainer in file Zope lib python OFS  CopySupport.py
         #if cb_copy_data is not None:
             #cp = cb_copy_data
         #elif REQUEST is not None and REQUEST.has_key('__cp'):
@@ -3158,139 +3341,172 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
         #else:
             #cp = None
         #if cp is None:
-            #raise CopyError, eNoData
-
+            #return CopyContainer.manage_objectPaste( self, cb_copy_data, REQUEST)
+             
         #try:
-            #op, mdatas = _cb_decode(cp)
+            #op, mdatas = loads(decompress(unquote(cp))) # _cb_decode(cp)
         #except:
-            #raise CopyError, eInvalid
+            #return CopyContainer.manage_objectPaste( self, cb_copy_data, REQUEST)
 
+    
         #oblist = []
         #app = self.getPhysicalRoot()
         #for mdata in mdatas:
             #m = Moniker.loadMoniker(mdata)
             #try:
                 #ob = m.bind(app)
-            #except ConflictError:
-                #raise
             #except:
-                #raise CopyError, eNotFound
-            #self._verifyObjectPaste(ob, validate_src=op+1)
+                #return CopyContainer.manage_objectPaste( self, cb_copy_data, REQUEST)
+            ## Do not verify here
+            ## self._verifyObjectPaste(ob, validate_src=op+1)
             #oblist.append(ob)
+        ## End of code copied from class CopyContainer
+            
+        #someObjectsToPaste = oblist[:]
+        
+        #if not someObjectsToPaste:
+            #return CopyContainer.manage_objectPaste( self, cb_copy_data, REQUEST)
+        
+        #someAwareObjects = []
+        #for anObjectToPaste in someObjectsToPaste:
+            #anExportConfig = None
+            #try:
+                #anExportConfig = anObjectToPaste.exportConfig()
+            #except:
+                #None
+            #if anExportConfig:
+                #someAwareObjects.append( anObjectToPaste)
+                
+        #if not someAwareObjects:
+            #return CopyContainer.manage_objectPaste( self, cb_copy_data, REQUEST)
+        
+        
+        #aRequest = REQUEST
+        #if not aRequest:
+            #try:
+                #aRequest = self.REQUEST
+            #except:
+                #None
+        #if not aRequest:
+            #"""Default to Plone behavior.
+            
+            #"""
+            #return CopyContainer.manage_pasteObjects( self, cb_copy_data, REQUEST)
+        
+        
+        #unModelDDvlPloneTool = self.fModelDDvlPloneTool( True)
+        #if not unModelDDvlPloneTool:
+            #return CopyContainer.manage_pasteObjects( self, cb_copy_data, REQUEST)
+        
+        #return unModelDDvlPloneTool.fPaste( 
+            #theTimeProfilingResults     =None,
+            #theContainerObject          =self, 
+            #theObjectsToPaste           =someObjectsToPaste,
+            #theAdditionalParams         =None,
+        #)
+    
+        ## return CopyContainer.manage_pasteObjects( self, cb_copy_data, REQUEST)
+        ## aRequest.response.redirect( '%s/MDDpaste' % self.absolute_url())
+        
+        
+        
+       
+        
+    
+        
+        
+    security.declarePrivate('pFlushCachedTemplates')
+    def pFlushCachedTemplates(self,  theViewsToFlush=[]):
+        unModelDDvlPloneTool = self.fModelDDvlPloneTool()
+        if not unModelDDvlPloneTool:
+            return self
+        
+        unModelDDvlPloneTool.pFlushCachedTemplatesForImpactedElementsUIDs( self, [ self.UID(),], theViewsToFlush=theViewsToFlush)
 
-        #result = []
-        #if op == 0:
-            ## Copy operation
-            #for ob in oblist:
-                #orig_id = ob.getId()
-                #if not ob.cb_isCopyable():
-                    #raise CopyError, eNotSupported % escape(orig_id)
+        return self
 
-                #try:
-                    #ob._notifyOfCopyTo(self, op=0)
-                #except ConflictError:
-                    #raise
-                #except:
-                    #raise CopyError, MessageDialog(
-                        #title="Copy Error",
-                        #message=sys.exc_info()[1],
-                        #action='manage_main')
+           
+    
+    
 
-                #id = self._get_id(orig_id)
-                #result.append({'id': orig_id, 'new_id': id})
+    security.declarePrivate('pFlushCachedTemplates_All')
+    def pFlushCachedTemplates_All(self, theViewsToFlush=[]):
+        
+        unModelDDvlPloneTool = self.fModelDDvlPloneTool()
+        if not unModelDDvlPloneTool:
+            return self
 
-                #orig_ob = ob
-                #ob = ob._getCopy(self)
-                #ob._setId(id)
-                #notify(ObjectCopiedEvent(ob, orig_ob))
+        someUIDs = self.fAllElementUIDs()
+        if someUIDs:        
+            unModelDDvlPloneTool.pFlushCachedTemplatesForImpactedElementsUIDs( self, someUIDs, theViewsToFlush=theViewsToFlush)
 
-                #self._setObject(id, ob)
-                #ob = self._getOb(id)
-                #ob.wl_clearLocks()
+        return self
+        
+    
+    
+   
+        
+    security.declarePrivate('fAllElementUIDs')
+    def fAllElementUIDs(self,):
+        
+        someUIDs = [ ]
+        
+        unPortalCatalog = getToolByName( self, 'portal_catalog')
+        
+        unPhysicalPath = self.fPhysicalPathString()
 
-                #ob._postCopy(self, op=0)
+        unaBusqueda = { 
+            'path' :    unPhysicalPath,
+        }
+ 
+        unosResultadosBusqueda = unPortalCatalog.searchResults( **unaBusqueda)
+        for unResultadoBusqueda in unosResultadosBusqueda:
+            if unResultadoBusqueda:
+                aFoundObject = unResultadoBusqueda.getObject()
+                if not ( aFoundObject == None):
+                    unaUID =  ''
+                    try:
+                        unaUID = aFoundObject.UID()
+                    except:
+                        None
+                    if unaUID:
+                        someUIDs.append( unaUID)        
 
-                #OFS.subscribers.compatibilityCall('manage_afterClone', ob, ob)
+        return someUIDs
+        
+      
+            
+    
 
-                #notify(ObjectClonedEvent(ob))
-
-            #if REQUEST is not None:
-                #return self.manage_main(self, REQUEST, update_menu=1,
-                                        #cb_dataValid=1)
-
-        #elif op == 1:
-            ## Move operation
-            #for ob in oblist:
-                #orig_id = ob.getId()
-                #if not ob.cb_isMoveable():
-                    #raise CopyError, eNotSupported % escape(orig_id)
-
-                #try:
-                    #ob._notifyOfCopyTo(self, op=1)
-                #except ConflictError:
-                    #raise
-                #except:
-                    #raise CopyError, MessageDialog(
-                        #title="Move Error",
-                        #message=sys.exc_info()[1],
-                        #action='manage_main')
-
-                #if not sanity_check(self, ob):
-                    #raise CopyError, "This object cannot be pasted into itself"
-
-                #orig_container = aq_parent(aq_inner(ob))
-                #if aq_base(orig_container) is aq_base(self):
-                    #id = orig_id
-                #else:
-                    #id = self._get_id(orig_id)
-                #result.append({'id': orig_id, 'new_id': id})
-
-                #notify(ObjectWillBeMovedEvent(ob, orig_container, orig_id,
-                                              #self, id))
-
-                ## try to make ownership explicit so that it gets carried
-                ## along to the new location if needed.
-                #ob.manage_changeOwnershipType(explicit=1)
-
-                #try:
-                    #orig_container._delObject(orig_id, suppress_events=True)
-                #except TypeError:
-                    ## BBB: removed in Zope 2.11
-                    #orig_container._delObject(orig_id)
-                    #warnings.warn(
-                        #"%s._delObject without suppress_events is deprecated "
-                        #"and will be removed in Zope 2.11." %
-                        #orig_container.__class__.__name__, DeprecationWarning)
-                #ob = aq_base(ob)
-                #ob._setId(id)
-
-                #try:
-                    #self._setObject(id, ob, set_owner=0, suppress_events=True)
-                #except TypeError:
-                    ## BBB: removed in Zope 2.11
-                    #self._setObject(id, ob, set_owner=0)
-                    #warnings.warn(
-                        #"%s._setObject without suppress_events is deprecated "
-                        #"and will be removed in Zope 2.11." %
-                        #self.__class__.__name__, DeprecationWarning)
-                #ob = self._getOb(id)
-
-                #notify(ObjectMovedEvent(ob, orig_container, orig_id, self, id))
-                #notifyContainerModified(orig_container)
-                #if aq_base(orig_container) is not aq_base(self):
-                    #notifyContainerModified(self)
-
-                #ob._postCopy(self, op=1)
-                ## try to make ownership implicit if possible
-                #ob.manage_changeOwnershipType(explicit=0)
-
-            #if REQUEST is not None:
-                #REQUEST['RESPONSE'].setCookie('__cp', 'deleted',
-                                    #path='%s' % cookie_path(REQUEST),
-                                    #expires='Wed, 31-Dec-97 23:59:59 GMT')
-                #REQUEST['__cp'] = None
-                #return self.manage_main(self, REQUEST, update_menu=1,
-                                        #cb_dataValid=0)
-
-        #return result
-                 
+    # ####################################################
+    """Methods for safe evaluation of strings.
+    
+    """
+        
+    
+    def fDefaultEvalStringGlobalsDict(self, ):
+        return { '__builtins__':None, 'True': True, 'False': False, 'None': None, 'DateTime': DateTime,}.copy()
+        
+    
+    
+    def fEvalString(self, theString, theExtraGlobals={}):
+        if not theString:
+            return None
+        
+        unGlobalsDict = self.fDefaultEvalStringGlobalsDict()
+        if not unGlobalsDict:
+            unGlobalsDict = { '__builtins__':None, }
+            
+        unGlobalsDict = unGlobalsDict.copy()
+        if theExtraGlobals:
+            unGlobalsDict.update( theExtraGlobals)
+            
+        unValue = None
+        try:
+            unValue = eval( theString, unGlobalsDict)
+        except:
+            unGlobalsString = str( unGlobalsDict.keys()).replace( '[', '').replace( ']', '')
+            logging.getLogger( 'ModelDDvlPlone').error( 'fEvalString( "%s", { %s })' % ( str( theString), unGlobalsString))
+            
+        return unValue
+     

@@ -35,41 +35,36 @@ __docformat__ = 'plaintext'
 
 
 
-cLazyCreateModelDDvlPloneTool   = True
+cLazyCreateModelDDvlPloneTool          = True
+cLazyCreateModelDDvlPloneConfiguration = True
 
 
 # #######################################
-# Interaction modes
-#
-
-cInteractionMode_Asynchronous       = 'Asincrono'
-cInteractionMode_Synchronous        = 'Sincrono'
-
-
-
-
-
-
-"""# #######################################
-Configuration of detailed execution logging.
-
-When true, the execution time profiling will be logged.
-
-Note that when enabled, the log file will grow very fast.
+"""Initial values for configuration of logging.
+Runtime values are held in globals in TRAElemento_Globals.
+Maintained through templates to change the enablement state.
 """
+
 cExecutionLoggingEnabled         = False
 
+cDetailedExecutionLoggingEnabled = True
 
-cLogTranslationChanges           = False
+cAllowRootProfileExecution       = True 
 
+
+
+# #######################################
+"""Configuration of detailed execution logging.
+When true, the execution time profiling will be logged.
+Note that when enabled, the log file will grow very fast.
+"""
 
 # ACV20090519 removed
 #cLogTimeProfile       = True
+cLogTranslationChanges           = False
 cLogExceptions                   = True
 cTimeStampingEnabled             = True
 cTimeProfilingEnabled            = True
-cDetailedExecutionLoggingEnabled = True
-
 
 
 
@@ -113,6 +108,16 @@ i.e., if there is no reference language slected, then a page can contain up to 1
 
 """
 cMaximoRegistrosExplorados   = 1000
+
+
+
+
+# #######################################
+# Interaction modes
+#
+
+cInteractionMode_Asynchronous       = 'Asincrono'
+cInteractionMode_Synchronous        = 'Sincrono'
 
 
 """# #######################################
@@ -199,15 +204,23 @@ fsISS = fsIsSomethingOrNonEmptyStringOrSequence
 # cCodigoNingunIdiomaReferencia = '--no_reference_language--'
 
 
-
+# #######################################
+# Keys used to supply specific language information when creating languages not well-known to Plone
+#   
+cAcceptedLanguageDetailKeys   = [
+    'codigo_internacional_idioma',
+    'english_name',
+    'nombre_nativo_de_idioma',
+]
+   
 
 # #######################################
 # UI actions
 #
-cAccion_Traducir = 'Traducir'
-cAccion_InvalidarTraduccionesCadena = 'InvalidarTraduccionesCadena'
-
-
+cAccion_Traducir                     = 'Traducir'
+cAccion_InvalidarTraduccionesCadena  = 'InvalidarTraduccionesCadena'
+cAccion_DesactivarCadena             = 'DesactivarCadena'
+cAccion_ActivarCadena                = 'ActivarCadena'
 
 
 
@@ -250,6 +263,12 @@ cEncodingUnicodeEscape   = 'unicode_escape'
 
 cMaxUnescapedCharOrdinal = 126
 
+
+
+
+
+cTranslationStatus_DifferentChangeCounter = 'DifferentChangeCounter'
+
 cRequestedChangeKind_IntentarTraducir   = 'TryToTranslate'
 cRequestedChangeKind_Comentar           = 'Comment'
 cRequestedChangeKind_HacerPendiente     = 'ChangeToPending'
@@ -258,6 +277,8 @@ cRequestedChangeKind_HacerRevisada      = 'ChangeToReviewed'
 cRequestedChangeKind_HacerDefinitiva    = 'ChangeToLocked'
 cRequestedChangeKind_BatchCambioEstado  = 'BatchStatusChange'
 cRequestedChangeKind_InvalidarTraduccionesCadena = 'InvalidarTraduccionesCadena'
+cRequestedChangeKind_DesactivarCadena   = 'DesactivarCadena'
+cRequestedChangeKind_ActivarCadena      = 'ActivarCadena'
 
 cRequestedChangeKinds = [
     cRequestedChangeKind_IntentarTraducir,  
@@ -266,7 +287,9 @@ cRequestedChangeKinds = [
     cRequestedChangeKind_HacerTraducida,    
     cRequestedChangeKind_HacerRevisada,     
     cRequestedChangeKind_HacerDefinitiva,     
-    cRequestedChangeKind_InvalidarTraduccionesCadena,             
+    cRequestedChangeKind_InvalidarTraduccionesCadena,       
+    cRequestedChangeKind_DesactivarCadena,
+    cRequestedChangeKind_ActivarCadena,
 ]
 
 
@@ -355,6 +378,10 @@ cTodosNombresTiposWithoutChildren = [
 cTodosNombresTipos = cPreferredTypesOrder
 
 
+
+cNombreTraversal_Importacion_ContenidosIntercambio = 'contenido'
+
+
 cCadenaIdPrefix = 'ca-'
 cIdiomaIdPrefix = 'la-'
 cModuloIdPrefix = 'mo-'
@@ -418,3 +445,40 @@ cFirstMinuteForSearches      = 0
 cLastMinuteForSearches       = 59
 cFirstSecondForSearches      = 0
 cLastSecondForSearches       = 59
+
+
+
+
+
+
+
+
+
+
+# ##############################################
+"""Actions recorded in the history of changes of each translation.
+
+"""
+cTranslationHistoryAction_Importar       = 'Importar'
+cTranslationHistoryAction_Ignorar        = 'Ignorar'
+cTranslationHistoryAction_Traducir       = 'Traducir'
+cTranslationHistoryAction_Comentar       = 'Comentar'
+cTranslationHistoryAction_HacerPendiente = 'HacerPendiente'
+cTranslationHistoryAction_HacerTraducida = 'HacerTraducida'
+cTranslationHistoryAction_HacerRevisada  = 'HacerRevisada'
+cTranslationHistoryAction_HacerDefinitiva= 'HacerDefinitiva'
+cTranslationHistoryAction_Invalidar      = 'Invalidar'
+cTranslationHistoryAction_IntentarTraducirDifferentCounter       = 'IntentarTraducirDifferentCounter'
+
+cTranslationHistoryActions = [
+    cTranslationHistoryAction_Importar,       
+    cTranslationHistoryAction_Ignorar ,       
+    cTranslationHistoryAction_Traducir,       
+    cTranslationHistoryAction_Comentar,       
+    cTranslationHistoryAction_HacerPendiente, 
+    cTranslationHistoryAction_HacerTraducida, 
+    cTranslationHistoryAction_HacerRevisada,  
+    cTranslationHistoryAction_HacerDefinitiva,
+    cTranslationHistoryAction_Invalidar,      
+]
+

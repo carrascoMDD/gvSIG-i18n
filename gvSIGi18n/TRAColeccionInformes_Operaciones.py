@@ -2,7 +2,7 @@
 #
 # File: TRAColeccionInformes_Operaciones.py
 #
-# Copyright (c) 2008, 2009, 2010, 2011  by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -43,33 +43,16 @@ import transaction
 from Products.CMFCore       import permissions
 from Products.CMFCore.utils  import getToolByName
 
+from Products.ModelDDvlPloneTool.ModelDDvlPloneTool          import ModelDDvlPloneTool
+from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import ModelDDvlPloneTool_Mutators,cModificationKind_CreateSubElement, cModificationKind_Create
 
 
-from TRAElemento_Constants                 import *
-from TRAElemento_Constants_Activity        import *
-from TRAElemento_Constants_Configurations  import *
-from TRAElemento_Constants_Contributions   import *
-from TRAElemento_Constants_Dates           import *
-from TRAElemento_Constants_Encoding        import *
-from TRAElemento_Constants_Import          import *
-from TRAElemento_Constants_Languages       import *
-from TRAElemento_Constants_Logging         import *
-from TRAElemento_Constants_Modules         import *
-from TRAElemento_Constants_Profiling       import *
-from TRAElemento_Constants_Progress        import *
-from TRAElemento_Constants_String          import *
-from TRAElemento_Constants_StringRequests  import *
-from TRAElemento_Constants_Translate       import *
-from TRAElemento_Constants_Translation     import *
-from TRAElemento_Constants_TypeNames       import *
-from TRAElemento_Constants_Views           import *
-from TRAElemento_Constants_Vocabularies    import *
-from TRAUtils                              import *
+from TRAElemento_Constants import *
 
 from TRAImportarExportar_Constants import *
 
+from TRAElemento_Permission_Definitions import cUseCase_CreateTRAInforme
 from TRAElemento_Permission_Definitions import cBoundObject
-from TRAElemento_Permission_Definitions_UseCaseNames import cUseCase_CreateTRAInforme
 
 
 ##/code-section module-header
@@ -99,57 +82,9 @@ class TRAColeccionInformes_Operaciones:
     
     
         
-
-    security.declarePrivate( 'pAllSubElements_into')    
-    def pAllSubElements_into( self, theCollection, theAdditionalParams=None):
-        if theCollection == None:
-            return self
-        theCollection.append( self)
-        
-        
-        unosElementos = self.fObtenerTodosInformes()
-        if unosElementos:
-            for unElemento in unosElementos:
-                unElemento.pAllSubElements_into( theCollection,theAdditionalParams=theAdditionalParams)
-        
-        return self
-            
     
     
 
-
-
-    security.declarePrivate( 'pForAllElementsDo_recursive')    
-    def pForAllElementsDo_recursive( self, theLambda=None, thePloneLambda=None,):
-        if not theLambda:
-            return self
-        
-        theLambda( self)
-
-        unosElementos = self.fObtenerTodosInformes()
-        if unosElementos:
-            for unElemento in unosElementos:
-                unElemento.pForAllElementsDo_recursive( theLambda, thePloneLambda)
-                
-        if thePloneLambda:
-            self.pForAllElementsPloneDo( thePloneLambda)
-        
-        return self
-            
-            
-        
-        
-        
-    
-    security.declareProtected( permissions.View, 'fObtenerTodosInformes')
-    def fObtenerTodosInformes( self, ):
-        """Retrieve all contained elements of type TRAInforme.
-        
-        """
-        unosElementos = self.fObjectValues( cNombreTipoTRAInforme) 
-        return unosElementos
-         
-          
     
 
     security.declareProtected( permissions.AddPortalContent, 'fCrearInforme')
@@ -159,33 +94,39 @@ class TRAColeccionInformes_Operaciones:
         thePermissionsCache     =None, 
         theRolesCache           =None, 
         theParentExecutionRecord=None):
-        """Create a new instance of TRAInforme, capturing a summary of translations by languages and detailed report by modules and languages.
+        """TRAInforme private factory method that does not check security constraints, that must have laready been checked by caller.
         
         """
-        
         unExecutionRecord = self.fStartExecution( 'method',  'fCrearInforme', theParentExecutionRecord,  True, { 'log_what': 'details', 'log_when': True, }, ) 
-        
-        from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import cModificationKind_CreateSubElement, cModificationKind_Create
         
         try:
         
-            aReport = self.fModelDDvlPloneTool().fModelDDvlPloneTool_Mutators( self).fNewVoidCreateElementReport()
+            aReport = ModelDDvlPloneTool_Mutators().fNewVoidCreateElementReport()
             
-            unPermissionsCache = fDictOrNew( thePermissionsCache)
-            unRolesCache       = fDictOrNew( theRolesCache)
+            unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
+            unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
             
             
-            unUseCaseQueryResult = self.fUseCaseAssessment(  
-                theUseCaseName          = cUseCase_CreateTRAInforme, 
-                theElementsBindings     = { cBoundObject: self,},
-                theRulesToCollect       = [ 'languages', 'modules',], 
-                thePermissionsCache     = unPermissionsCache, 
-                theRolesCache           = unRolesCache, 
-                theParentExecutionRecord= unExecutionRecord
-            ) 
-            if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
-                return aReport
+            unUseCaseQueryResult = theUseCaseQueryResult
+            if theCheckPermissions or not unUseCaseQueryResult or not ( unUseCaseQueryResult.get( 'use_case_name', '') == cUseCase_CreateTRAInforme):
+                unUseCaseQueryResult = self.fUseCaseAssessment(  
+                    theUseCaseName          = cUseCase_CreateTRAInforme, 
+                    theElementsBindings     = { cBoundObject: self,},
+                    theRulesToCollect       = [ 'languages', 'modules',], 
+                    thePermissionsCache     = unPermissionsCache, 
+                    theRolesCache           = unRolesCache, 
+                    theParentExecutionRecord= unExecutionRecord
+                ) 
 
+            if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
+                return unInforme
+
+            
+            
+            if not theUseCaseQueryResult or not theUseCaseQueryResult.get( 'success', False):
+                aReport.update( { 'effect': 'error', 'failure': 'use_case_query_failed', })
+                return aReport    
+            
             
             unAhoraString = self.fDateTimeNowTextual()
             unAhoraParaId = unAhoraString.replace( ':', '-').replace( ' ', '-')
@@ -257,7 +198,7 @@ class TRAColeccionInformes_Operaciones:
             )
             
             
-            aModelDDvlPloneTool_Mutators = self.fModelDDvlPloneTool().fModelDDvlPloneTool_Mutators( self)
+            aModelDDvlPloneTool_Mutators = ModelDDvlPloneTool_Mutators()
                 
             aCreateElementReport = aModelDDvlPloneTool_Mutators.fNewVoidCreateElementReport()
             aCreateElementReport.update( { 'effect': 'created', 'new_object_result': unResultadoNuevoInforme, })
@@ -281,13 +222,14 @@ class TRAColeccionInformes_Operaciones:
                 
             unCatalogo = self.getCatalogo()
             if not ( unCatalogo == None):
+                unCatalogo.setUltimoInforme( unNuevoInforme)
                 unCatalogo.pFlushCachedTemplates()            
                         
             aReport.update( { 'effect': 'created', 'new_object_result': unResultadoNuevoInforme, })
 
             transaction.commit( )
 
-            logging.getLogger( 'gvSIGi18n').info("COMMIT") 
+            logging.getLogger( 'gvSIGi18n::fCrearInforme').info("COMMIT") 
             
             return aReport
         
@@ -303,7 +245,7 @@ class TRAColeccionInformes_Operaciones:
     
                                 
 
-# end of class TRAColeccionInformes_Operaciones
+# end of class TRAColeccionSolicitudesCadenas_Operaciones
 
 ##code-section module-footer #fill in your manual code here
 ##/code-section module-footer

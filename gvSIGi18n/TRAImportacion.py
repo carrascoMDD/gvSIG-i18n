@@ -2,7 +2,7 @@
 #
 # File: TRAImportacion.py
 #
-# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
+# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
 # Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -37,8 +37,8 @@ from Products.gvSIGi18n.TRAConRegistroActividad import TRAConRegistroActividad
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
-from TRAElemento_Operaciones import TRAElemento_Operaciones
 from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import ReferenceBrowserWidget
+from TRAElemento_Operaciones import TRAElemento_Operaciones
 
 ##code-section module-header #fill in your manual code here
 ##/code-section module-header
@@ -309,7 +309,7 @@ schema = Schema((
         label="Intervalo de Refresco en Minutos",
         length="0",
         containment="Not Specified",
-        position="10",
+        position="9",
         owner_class_name="TRAImportacion"
     ),
 
@@ -339,7 +339,7 @@ schema = Schema((
         label="Intervalo de Refresco en Numero de Escrituras",
         length="0",
         containment="Not Specified",
-        position="11",
+        position="10",
         owner_class_name="TRAImportacion"
     ),
 
@@ -369,7 +369,7 @@ schema = Schema((
         label="Segundos de Espera entre Transacciones",
         length="0",
         containment="Not Specified",
-        position="9",
+        position="8",
         owner_class_name="TRAImportacion"
     ),
 
@@ -399,7 +399,7 @@ schema = Schema((
         label="Numero de Refrescos por Escritura en Log",
         length="0",
         containment="Not Specified",
-        position="12",
+        position="11",
         owner_class_name="TRAImportacion"
     ),
 
@@ -430,7 +430,7 @@ schema = Schema((
         label="Comenzo a ejecutar",
         length="0",
         containment="Not Specified",
-        position="14",
+        position="13",
         owner_class_name="TRAImportacion"
     ),
 
@@ -460,7 +460,7 @@ schema = Schema((
         label="Usuario Importador",
         length="0",
         containment="Not Specified",
-        position="17",
+        position="16",
         owner_class_name="TRAImportacion"
     ),
 
@@ -494,8 +494,34 @@ schema = Schema((
         label="Estado del Proceso",
         length="0",
         containment="Not Specified",
-        position="13",
+        position="12",
         owner_class_name="TRAImportacion"
+    ),
+
+    ComputedField(
+        name='contenido',
+        widget=ComputedWidget(
+            label="Contenido Intercambio Traducciones",
+            label2="Translations Interchange Contents",
+            description="Contiene cadenas y traducciones contribuidas por un usuario, para su importacion.",
+            description2="Contains strings and translations contributed by a user, and to be imported.",
+            label_msgid='gvSIGi18n_TRAImportacion_contents_contenido_label',
+            description_msgid='gvSIGi18n_TRAImportacion_contents_contenido_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        contains_collections=False,
+        label2='Translations Interchange Contents',
+        additional_columns=['excluirDeImportacion', 'nombreModulo'],
+        label='Contenido Intercambio Traducciones',
+        represents_aggregation=True,
+        description2='Contains strings and translations contributed by a user, and to be imported.',
+        multiValued=1,
+        factory_views={ 'TRAContenidoIntercambio' : 'TRACrear_ContenidoIntercambio',},
+        owner_class_name="TRAImportacion",
+        expression="context.objectValues(['TRAContenidoIntercambio'])",
+        computed_types=['TRAContenidoIntercambio'],
+        non_framework_elements=False,
+        description='Contiene cadenas y traducciones contribuidas por un usuario, para su importacion.'
     ),
 
     TextField(
@@ -525,9 +551,9 @@ schema = Schema((
         label="Informe de Progreso",
         length="0",
         containment="Not Specified",
-        position="15",
+        position="14",
         owner_class_name="TRAImportacion",
-        custom_presentation_view="TRAInformeProgreso_i18n_view"
+        custom_presentation_view="TRAImportacionProgreso_CustomView"
     ),
 
     BooleanField(
@@ -557,7 +583,7 @@ schema = Schema((
         label="Exito?",
         length="0",
         containment="Not Specified",
-        position="16",
+        position="15",
         owner_class_name="TRAImportacion"
     ),
 
@@ -587,7 +613,7 @@ schema = Schema((
         label="Fecha y Hora de Comienzo",
         length="0",
         containment="Not Specified",
-        position="18",
+        position="17",
         owner_class_name="TRAImportacion"
     ),
 
@@ -617,7 +643,7 @@ schema = Schema((
         label="Fecha y Hora de Fin",
         length="0",
         containment="Not Specified",
-        position="20",
+        position="19",
         owner_class_name="TRAImportacion"
     ),
 
@@ -644,11 +670,11 @@ schema = Schema((
         ea_guid="{7AC90C2B-BEF7-4b27-9713-6C6444B45750}",
         read_only="True",
         scale="0",
-        custom_presentation_view="TRAInformeFinal_i18n_view",
+        custom_presentation_view="TRAInformeFinal_CustomView",
         label="Informe de Final",
         length="0",
         containment="Not Specified",
-        position="21",
+        position="20",
         owner_class_name="TRAImportacion",
         exclude_from_views="[ 'Textual',   'General', ]"
     ),
@@ -679,98 +705,8 @@ schema = Schema((
         label="Informe de Excepcion",
         length="0",
         containment="Not Specified",
-        position="22",
+        position="21",
         owner_class_name="TRAImportacion"
-    ),
-
-    ComputedField(
-        name='contenido',
-        widget=ComputedWidget(
-            label="Contenido Intercambio Traducciones",
-            label2="Translations Interchange Contents",
-            description="Contiene cadenas y traducciones contribuidas por un usuario, para su importacion.",
-            description2="Contains strings and translations contributed by a user, and to be imported.",
-            label_msgid='gvSIGi18n_TRAImportacion_contents_contenido_label',
-            description_msgid='gvSIGi18n_TRAImportacion_contents_contenido_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        contains_collections=False,
-        label2='Translations Interchange Contents',
-        additional_columns=['excluirDeImportacion', 'nombreModulo'],
-        label='Contenido Intercambio Traducciones',
-        represents_aggregation=True,
-        description2='Contains strings and translations contributed by a user, and to be imported.',
-        multiValued=1,
-        factory_views={ 'TRAContenidoIntercambio' : 'TRACrear_ContenidoIntercambio',},
-        owner_class_name="TRAImportacion",
-        expression="context.objectValues(['TRAContenidoIntercambio'])",
-        computed_types=['TRAContenidoIntercambio'],
-        non_framework_elements=False,
-        description='Contiene cadenas y traducciones contribuidas por un usuario, para su importacion.'
-    ),
-
-    DateTimeField(
-        name='fechaUltimoInformeProgreso',
-        widget=CalendarWidget(
-            label="Fecha y Hora del ultimo informe de Progreso",
-            label2="Last Progress report Date and time",
-            description="Fecha y hora en que se refreco al ultimo informe de progreso.",
-            description2="Date and time when last progress report was updated.",
-            label_msgid='gvSIGi18n_TRAImportacion_attr_fechaUltimoInformeProgreso_label',
-            description_msgid='gvSIGi18n_TRAImportacion_attr_fechaUltimoInformeProgreso_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        description="Fecha y hora en que se refreco al ultimo informe de progreso.",
-        duplicates="0",
-        label2="Last Progress report Date and time",
-        ea_localid="623",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        description2="Date and time when last progress report was updated.",
-        ea_guid="{29206842-8FED-4bf3-AD8D-868FBA6FF99A}",
-        read_only="True",
-        scale="0",
-        label="Fecha y Hora del ultimo informe de Progreso",
-        length="0",
-        containment="Not Specified",
-        position="19",
-        owner_class_name="TRAImportacion"
-    ),
-
-    ComputedField(
-        name='informeContenidosImportacion',
-        widget=ComputedField._properties['widget'](
-            label="Contenidos Importacion",
-            label2="Import contents",
-            description="Informe de lenguajes, cadenas y traducciones en los archivos de intercambio de traducciones.",
-            description2="Report with languages, strings and translations in the translations interchange archives.",
-            label_msgid='gvSIGi18n_TRAImportacion_attr_informeContenidosImportacion_label',
-            description_msgid='gvSIGi18n_TRAImportacion_attr_informeContenidosImportacion_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        custom_presentation_view="TRAInformeContenidosImportacion_i18n_view",
-        description="Informe de lenguajes, cadenas y traducciones en los archivos de intercambio de traducciones.",
-        duplicates="0",
-        label2="Import contents",
-        ea_localid="1005",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        description2="Report with languages, strings and translations in the translations interchange archives.",
-        ea_guid="{E334DFD5-961C-4b12-8949-2FD10D84E453}",
-        exclude_from_values_form="True",
-        scale="0",
-        expression="context.fInformeContenidosImportacion()",
-        label="Contenidos Importacion",
-        length="0",
-        containment="Not Specified",
-        position="8",
-        owner_class_name="TRAImportacion",
-        exclude_from_views="[ 'Textual', 'Tabular', ]",
-        computed_types="text"
     ),
 
     ComputedField(
@@ -802,8 +738,75 @@ schema = Schema((
         containment="Not Specified",
         position="23",
         owner_class_name="TRAImportacion",
-        exclude_from_views="[ 'Textual',   'General', ]",
+        exclude_from_views="[ 'Textual', 'General', ]",
         computed_types="[ 'TRAInforme',]"
+    ),
+
+    ComputedField(
+        name='informeEstadoIdiomasAntes',
+        widget=ComputedField._properties['widget'](
+            label="Informe por Idiomas Antes de la Importacion.",
+            label2="Languages Report Before Import",
+            description="Informe del estado de traduccion por idiomas, antes de la Importacion.",
+            description2="Report or the translation status, summarized by languages, before the export operation.",
+            label_msgid='gvSIGi18n_TRAImportacion_attr_informeEstadoIdiomasAntes_label',
+            description_msgid='gvSIGi18n_TRAImportacion_attr_informeEstadoIdiomasAntes_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        custom_presentation_view="TRAInformeEstadoIdiomasAntes_CustomView",
+        description="Informe del estado de traduccion por idiomas, antes de la Importacion.",
+        duplicates="0",
+        label2="Languages Report Before Import",
+        ea_localid="923",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="Report or the translation status, summarized by languages, before the export operation.",
+        ea_guid="{DC88F36F-DB90-4f49-86CE-4D3A34B90648}",
+        read_only="True",
+        scale="0",
+        expression="context.fDeriveInformeEstadoIdiomasAntes()",
+        label="Informe por Idiomas Antes de la Importacion.",
+        length="0",
+        containment="Not Specified",
+        position="24",
+        owner_class_name="TRAImportacion",
+        exclude_from_views="[ 'Textual',    'Tabular', 'General', ]",
+        computed_types="text"
+    ),
+
+    ComputedField(
+        name='informeEstadoModulosAntes',
+        exclude_from_views="[ 'Textual',   'Tabular',  'General', ]",
+        widget=ComputedField._properties['widget'](
+            label="Informe por Modulos e Idiomas Antes de Importar",
+            label2="Modules and Languages Report Before Import",
+            description="Informe del estado de traduccion por modulos y detallado por  idiomas, antes de la exportacion.",
+            description2="Report or the translation status, summarized by modules and detailed by languages, before the import operation.",
+            label_msgid='gvSIGi18n_TRAImportacion_attr_informeEstadoModulosAntes_label',
+            description_msgid='gvSIGi18n_TRAImportacion_attr_informeEstadoModulosAntes_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Informe del estado de traduccion por modulos y detallado por  idiomas, antes de la exportacion.",
+        duplicates="0",
+        label2="Modules and Languages Report Before Import",
+        ea_localid="926",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="Report or the translation status, summarized by modules and detailed by languages, before the import operation.",
+        ea_guid="{9D37A306-2FBC-4270-99CA-483739FE7193}",
+        read_only="True",
+        scale="0",
+        expression="context.fDeriveInformeEstadoModulosAntes()",
+        label="Informe por Modulos e Idiomas Antes de Importar",
+        length="0",
+        containment="Not Specified",
+        position="25",
+        owner_class_name="TRAImportacion",
+        custom_presentation_view="TRAInformeEstadoModulosAntes_CustomView"
     ),
 
     ComputedField(
@@ -840,40 +843,6 @@ schema = Schema((
     ),
 
     ComputedField(
-        name='informeEstadoIdiomasAntes',
-        widget=ComputedField._properties['widget'](
-            label="Informe por Idiomas Antes de la Importacion.",
-            label2="Languages Report Before Import",
-            description="Informe del estado de traduccion por idiomas, antes de la Importacion.",
-            description2="Report or the translation status, summarized by languages, before the export operation.",
-            label_msgid='gvSIGi18n_TRAImportacion_attr_informeEstadoIdiomasAntes_label',
-            description_msgid='gvSIGi18n_TRAImportacion_attr_informeEstadoIdiomasAntes_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        custom_presentation_view="TRAInformeEstadoIdiomasAntes_i18n_view",
-        description="Informe del estado de traduccion por idiomas, antes de la Importacion.",
-        duplicates="0",
-        label2="Languages Report Before Import",
-        ea_localid="923",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        description2="Report or the translation status, summarized by languages, before the export operation.",
-        ea_guid="{DC88F36F-DB90-4f49-86CE-4D3A34B90648}",
-        read_only="True",
-        scale="0",
-        expression="context.fDeriveInformeEstadoIdiomasAntes()",
-        label="Informe por Idiomas Antes de la Importacion.",
-        length="0",
-        containment="Not Specified",
-        position="24",
-        owner_class_name="TRAImportacion",
-        exclude_from_views="[ 'Textual',   'General', ]",
-        computed_types="text"
-    ),
-
-    ComputedField(
         name='informeEstadoIdiomasDespues',
         widget=ComputedField._properties['widget'](
             label="Informe por Idiomas Despues de Importar",
@@ -896,48 +865,15 @@ schema = Schema((
         ea_guid="{78448E9D-6A53-4be6-ABE6-A3A539B2E8BE}",
         read_only="True",
         scale="0",
-        exclude_from_views="[ 'Textual',   'General', ]",
+        exclude_from_views="[ 'Textual',    'Tabular', 'General', ]",
         label="Informe por Idiomas Despues de Importar",
         length="0",
         expression="context.fDeriveInformeEstadoIdiomasDespues()",
         containment="Not Specified",
         position="27",
         owner_class_name="TRAImportacion",
-        custom_presentation_view="TRAInformeEstadoIdiomasDespues_i18n_view",
+        custom_presentation_view="TRAInformeEstadoIdiomasDespues_CustomView",
         computed_types="text"
-    ),
-
-    ComputedField(
-        name='informeEstadoModulosAntes',
-        exclude_from_views="[ 'Textual',   'General', ]",
-        widget=ComputedField._properties['widget'](
-            label="Informe por Modulos e Idiomas Antes de Importar",
-            label2="Modules and Languages Report Before Import",
-            description="Informe del estado de traduccion por modulos y detallado por  idiomas, antes de la exportacion.",
-            description2="Report or the translation status, summarized by modules and detailed by languages, before the import operation.",
-            label_msgid='gvSIGi18n_TRAImportacion_attr_informeEstadoModulosAntes_label',
-            description_msgid='gvSIGi18n_TRAImportacion_attr_informeEstadoModulosAntes_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        description="Informe del estado de traduccion por modulos y detallado por  idiomas, antes de la exportacion.",
-        duplicates="0",
-        label2="Modules and Languages Report Before Import",
-        ea_localid="926",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        description2="Report or the translation status, summarized by modules and detailed by languages, before the import operation.",
-        ea_guid="{9D37A306-2FBC-4270-99CA-483739FE7193}",
-        read_only="True",
-        scale="0",
-        expression="context.fDeriveInformeEstadoModulosAntes()",
-        label="Informe por Modulos e Idiomas Antes de Importar",
-        length="0",
-        containment="Not Specified",
-        position="25",
-        owner_class_name="TRAImportacion",
-        custom_presentation_view="TRAInformeEstadoModulosAntes_i18n_view"
     ),
 
     ComputedField(
@@ -951,7 +887,7 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRAImportacion_attr_informeEstadoModulosDespues_help',
             i18n_domain='gvSIGi18n',
         ),
-        custom_presentation_view="TRAInformeEstadoModulosDespues_i18n_view",
+        custom_presentation_view="TRAInformeEstadoModulosDespues_CustomView",
         description="Informe del estado de traduccion por modulos y detallado por  idiomas, despues de la importacion.",
         duplicates="0",
         label2="Modules and Languages Report After Import",
@@ -970,7 +906,71 @@ schema = Schema((
         containment="Not Specified",
         position="28",
         owner_class_name="TRAImportacion",
-        exclude_from_views="[ 'Textual',   'General', ]"
+        exclude_from_views="[ 'Textual',   'Tabular',  'General', ]"
+    ),
+
+    DateTimeField(
+        name='fechaUltimoInformeProgreso',
+        widget=CalendarWidget(
+            label="Fecha y Hora del ultimo informe de Progreso",
+            label2="Last Progress report Date and time",
+            description="Fecha y hora en que se refreco al ultimo informe de progreso.",
+            description2="Date and time when last progress report was updated.",
+            label_msgid='gvSIGi18n_TRAImportacion_attr_fechaUltimoInformeProgreso_label',
+            description_msgid='gvSIGi18n_TRAImportacion_attr_fechaUltimoInformeProgreso_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Fecha y hora en que se refreco al ultimo informe de progreso.",
+        duplicates="0",
+        label2="Last Progress report Date and time",
+        ea_localid="623",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="Date and time when last progress report was updated.",
+        ea_guid="{29206842-8FED-4bf3-AD8D-868FBA6FF99A}",
+        read_only="True",
+        scale="0",
+        label="Fecha y Hora del ultimo informe de Progreso",
+        length="0",
+        containment="Not Specified",
+        position="18",
+        owner_class_name="TRAImportacion"
+    ),
+
+    ComputedField(
+        name='informeContenidosImportacion',
+        widget=ComputedField._properties['widget'](
+            label="Contenidos Importacion",
+            label2="Import contents",
+            description="Informe de lenguajes, cadenas y traducciones en los archivos de intercambio de traducciones.",
+            description2="Report with languages, strings and translations in the translations interchange archives.",
+            label_msgid='gvSIGi18n_TRAImportacion_attr_informeContenidosImportacion_label',
+            description_msgid='gvSIGi18n_TRAImportacion_attr_informeContenidosImportacion_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        custom_presentation_view="TRAInformeContenidosImportacion_CustomView",
+        description="Informe de lenguajes, cadenas y traducciones en los archivos de intercambio de traducciones.",
+        duplicates="0",
+        label2="Import contents",
+        ea_localid="1005",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="Report with languages, strings and translations in the translations interchange archives.",
+        ea_guid="{E334DFD5-961C-4b12-8949-2FD10D84E453}",
+        exclude_from_values_form="True",
+        scale="0",
+        expression="context.fInformeContenidosImportacion()",
+        label="Contenidos Importacion",
+        length="0",
+        containment="Not Specified",
+        position="22",
+        owner_class_name="TRAImportacion",
+        exclude_from_views="[ 'Textual', 'Tabular', ]",
+        computed_types="text"
     ),
 
     ComputedField(
@@ -986,7 +986,7 @@ schema = Schema((
         ),
         contains_collections=False,
         label2='Status Reports Before and After',
-        additional_columns=['esAutoActualizable', 'haCompletadoConExito'],
+        additional_columns=['haCompletadoConExito'],
         label='Informes Estado Antes y Despues',
         represents_aggregation=True,
         description2='Catalog Status Reports, its Languages, Modules, Strings and Translations, at the beginning of the import process, and after termination of the process.',
@@ -1081,25 +1081,43 @@ class TRAImportacion(OrderedBaseFolder, TRAArquetipo, TRAImportacion_Operaciones
 
        {'action': "string:${object_url}/TRAImportar",
         'category': "object_buttons",
-        'id': 'Import',
+        'id': 'TRAImport',
         'name': 'Import',
         'permissions': ("Modify portal content",),
         'condition': """python:object.fUseCaseCheckDoable( 'Import_TRAImportacion')  and object.fNoHaComenzadoOEnDevelopmentODebug()"""
        },
 
 
-       {'action': "string:${object_url}/TRAInformeContenidosImportacion_action",
-        'category': "object",
-        'id': 'ContenidosIntercambio',
-        'name': 'Data',
-        'permissions': ("View",),
-        'condition': """python:object.fRoleQuery_IsManagerOrCoordinator()"""
+       {'action': "string:${object_url}/TRAReutilizar_action",
+        'category': "object_buttons",
+        'id': 'TRAReuse',
+        'name': 'Reuse',
+        'permissions': ("Modify portal content",),
+        'condition': """python:object.fUseCaseCheckDoable( 'Reuse_TRAImportacion') and object.getHaComenzado()"""
        },
 
 
-       {'action': "string:${object_url}/TRAInformeProgreso_action",
+       {'action': "string:${object_url}/TRAImportacionContenidosSumario",
         'category': "object",
-        'id': 'InformeProgreso',
+        'id': 'TRASumarioContenidosImportacion',
+        'name': 'Summary',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:${object_url}/TRAImportacionContenidosDetalle",
+        'category': "object",
+        'id': 'TRADetalleContenidosImportacion',
+        'name': 'Details',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:${object_url}/TRAImportacionProgreso",
+        'category': "object",
+        'id': 'TRAInformeProgreso',
         'name': 'Progress',
         'permissions': ("View",),
         'condition': """python:object.fRoleQuery_IsManagerOrCoordinator()"""
@@ -1121,6 +1139,15 @@ class TRAImportacion(OrderedBaseFolder, TRAArquetipo, TRAImportacion_Operaciones
         'name': 'Folder Listing',
         'permissions': ("View",),
         'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/MDDChanges",
+        'category': "object_buttons",
+        'id': 'mddchanges',
+        'name': 'Changes',
+        'permissions': ("View",),
+        'condition': """python:1"""
        },
 
 
@@ -1151,6 +1178,15 @@ class TRAImportacion(OrderedBaseFolder, TRAArquetipo, TRAImportacion_Operaciones
        },
 
 
+       {'action': "string:${object_url}/MDDCacheStatus/",
+        'category': "object_buttons",
+        'id': 'mddcachestatus',
+        'name': 'Cache',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
     )
 
     _at_rename_after_creation = True
@@ -1167,7 +1203,7 @@ class TRAImportacion(OrderedBaseFolder, TRAArquetipo, TRAImportacion_Operaciones
         """
         """
         
-        return False
+        return True
 
     security.declarePublic('manage_beforeDelete')
     def manage_beforeDelete(self,item,container):
@@ -1176,12 +1212,12 @@ class TRAImportacion(OrderedBaseFolder, TRAArquetipo, TRAImportacion_Operaciones
         
         return TRAArquetipo.manage_beforeDelete( self, item, container)
 
-    security.declarePublic('cb_isMoveable')
-    def cb_isMoveable(self):
+    security.declarePublic('fIsCacheable')
+    def fIsCacheable(self):
         """
         """
         
-        return False
+        return True
 
     security.declarePublic('displayContentsTab')
     def displayContentsTab(self):
@@ -1209,7 +1245,7 @@ class TRAImportacion(OrderedBaseFolder, TRAArquetipo, TRAImportacion_Operaciones
         """
         """
         
-        return TRAElemento_Operaciones.fExtraLinks( self)
+        return TRAImportacion_Operaciones.fExtraLinks( self)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

@@ -40,9 +40,12 @@
         global pStartTime       pStartTime | python: here.ModelDDvlPlone_tool.fMillisecondsNow()" 
         i18n:domain="gvSIGi18n">
 
+        <metal:block metal:use-macro="here/TRAProfileExecution/macros/tSetupProfileExecution" />   
+
+
         <tal:block tal:define="
         
-            pExecutionRecord python: here.fStartExecution( 'template', 'TRATraducir.pt', None, True, { 'log_what': 'details', 'log_when': True, })" >
+            pExecutionRecord python: here.fStartExecution( 'template', 'TRATraducir.pt', None, pAllowRootProfileExecution, { 'log_what': 'details', 'log_when': True, })" >
     
         
             <tal:docactions      

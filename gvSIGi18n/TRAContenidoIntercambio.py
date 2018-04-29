@@ -2,7 +2,7 @@
 #
 # File: TRAContenidoIntercambio.py
 #
-# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
+# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
 # Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -37,8 +37,8 @@ from TRAContenidoIntercambio_Operaciones import TRAContenidoIntercambio_Operacio
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
-from TRAElemento_Operaciones import TRAElemento_Operaciones
 from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import ReferenceBrowserWidget
+from TRAElemento_Operaciones import TRAElemento_Operaciones
 
 ##code-section module-header #fill in your manual code here
 ##/code-section module-header
@@ -201,22 +201,22 @@ schema = Schema((
         name='informeContenido',
         widget=ComputedField._properties['widget'](
             label="Contenido Intercambio de Traducciones",
-            label2="Content in Trasnslations Interchange",
-            description="Contenidos de los Archivos de intercambio de traducciones  incluyendo un numero de directorios de modulo con ficheros de cadenas y traducciones a un numero de idiomas,",
-            description2="Contents of translations interchange Archive files, including a number of module directories with files with strings and translations to a number of languages.",
+            label2="Content in Translations Interchange",
+            description="Contenidos de los Archivos de intercambio de traducciones  incluyendo  cadenas (posiblemente asociadas a modulos)  y traducciones a un numero de idiomas,",
+            description2="Contents of translations interchange Archive files, including strings (possibly associated with modules) and translations to a number of languages.",
             label_msgid='gvSIGi18n_TRAContenidoIntercambio_attr_informeContenido_label',
             description_msgid='gvSIGi18n_TRAContenidoIntercambio_attr_informeContenido_help',
             i18n_domain='gvSIGi18n',
         ),
-        description="Contenidos de los Archivos de intercambio de traducciones  incluyendo un numero de directorios de modulo con ficheros de cadenas y traducciones a un numero de idiomas,",
+        description="Contenidos de los Archivos de intercambio de traducciones  incluyendo  cadenas (posiblemente asociadas a modulos)  y traducciones a un numero de idiomas,",
         duplicates="0",
-        label2="Content in Trasnslations Interchange",
+        label2="Content in Translations Interchange",
         ea_localid="993",
         derived="0",
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        description2="Contents of translations interchange Archive files, including a number of module directories with files with strings and translations to a number of languages.",
+        description2="Contents of translations interchange Archive files, including strings (possibly associated with modules) and translations to a number of languages.",
         ea_guid="{6E839E35-1227-4081-9397-0F4CF172D96A}",
         exclude_from_values_form="True",
         scale="0",
@@ -345,9 +345,9 @@ class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAConRegistroAct
        },
 
 
-       {'action': "string:${object_url}/TRAInformeContenidoIntercambio_action",
+       {'action': "string:${object_url}/TRAContenidoIntercambioDatos",
         'category': "object",
-        'id': 'ContenidoIntercambio',
+        'id': 'TRAContenidoIntercambioDatos',
         'name': 'Data',
         'permissions': ("View",),
         'condition': """python:1"""
@@ -369,6 +369,15 @@ class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAConRegistroAct
         'name': 'Folder Listing',
         'permissions': ("View",),
         'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/MDDChanges",
+        'category': "object_buttons",
+        'id': 'mddchanges',
+        'name': 'Changes',
+        'permissions': ("View",),
+        'condition': """python:1"""
        },
 
 
@@ -399,6 +408,15 @@ class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAConRegistroAct
        },
 
 
+       {'action': "string:${object_url}/MDDCacheStatus/",
+        'category': "object_buttons",
+        'id': 'mddcachestatus',
+        'name': 'Cache',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
     )
 
     _at_rename_after_creation = True
@@ -424,19 +442,12 @@ class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAConRegistroAct
         
         return TRAArquetipo.manage_afterAdd( self, item, container)
 
-    security.declarePublic('cb_isCopyable')
-    def cb_isCopyable(self):
+    security.declarePublic('fIsCacheable')
+    def fIsCacheable(self):
         """
         """
         
-        return False
-
-    security.declarePublic('cb_isMoveable')
-    def cb_isMoveable(self):
-        """
-        """
-        
-        return False
+        return True
 
     security.declarePublic('displayContentsTab')
     def displayContentsTab(self):
@@ -444,6 +455,13 @@ class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAConRegistroAct
         """
         
         return False
+
+    security.declarePublic('cb_isCopyable')
+    def cb_isCopyable(self):
+        """
+        """
+        
+        return True
 
     security.declarePublic('manage_pasteObjects')
     def manage_pasteObjects(self,cb_copy_data,REQUEST):
@@ -457,7 +475,7 @@ class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAConRegistroAct
         """
         """
         
-        return TRAElemento_Operaciones.fExtraLinks( self)
+        return TRAContenidoIntercambio_Operaciones.fExtraLinks( self)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

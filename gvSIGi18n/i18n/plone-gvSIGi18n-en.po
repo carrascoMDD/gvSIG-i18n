@@ -1,4 +1,4 @@
-# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>, 2009.
+# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: gvSIGi18n\n"
@@ -178,7 +178,7 @@ msgid "Unlock Catalog"
 msgstr "Unlock Catalog"
 
 
-#. Default: "Permissions"
+#. Default: "Permisos"
 #: TRACatalogo
 msgid "Permissions"
 msgstr "Permissions"
@@ -191,7 +191,50 @@ msgstr "Create Language"
 
 
 
+#. Default: "Reutilizar"
+#: TRAImportacion
+msgid "Reuse"
+msgstr "Reuse"
 
+
+
+#. Default: "Resumen"
+#: TRAImportacion
+msgid "Summary"
+msgstr "Summary"
+
+
+
+#. Default: "Detalle"
+#: TRAImportacion
+msgid "Details"
+msgstr "Details"
+
+
+#. Default: "Vista avanzada"
+#: TRACatalogo
+msgid "Advanced View"
+msgstr "Advanced View"
+
+
+
+#. Default: "Informe"
+#: TRACatalogo
+msgid "Report"
+msgstr "Report"
+
+
+#. Default: "Exportar para gvSIG"
+#: TRACatalogo
+msgid "Export for gvSIG"
+msgstr "Export for gvSIG"
+
+
+
+#. Default: "Bloquear Idioma"
+#: TRAIdioma
+msgid "Lock Language"
+msgstr "Lock Language"
 
 
 

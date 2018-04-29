@@ -122,7 +122,7 @@ def fExecutionRecordPrintString( theExecutionRecord, ):
     
 
 
-def TRARenderExecutionDetails( theExecutionRecord, theOutput=None):
+def TRARenderExecutionDetails( theExecutionRecord, theCollapsible=True, theOutput=None):
     """Render Performance profiling information.
     
     """
@@ -143,7 +143,8 @@ def TRARenderExecutionDetails( theExecutionRecord, theOutput=None):
         
         pWriteScriptsForExecutionRecordPrintString( theOutput)
         
-        theOutput.write( cCollapsibleBlock_open % ( 'TRAExecutionProfiling_id', '%d ms. - Execution Profile' % unDuration,))
+        if theCollapsible:
+            theOutput.write( cCollapsibleBlock_open % ( 'TRAExecutionProfiling_id', '%d ms. - Execution Profile' % unDuration,))
             
         
         theOutput.write( """
@@ -166,7 +167,8 @@ def TRARenderExecutionDetails( theExecutionRecord, theOutput=None):
             \n"""
         )
         
-        theOutput.write( cCollapsibleBlock_close)
+        if theCollapsible:
+            theOutput.write( cCollapsibleBlock_close)
         
         unString = theOutput.getvalue()
         return unString
@@ -317,9 +319,8 @@ def pWriteScriptsForExecutionRecordPrintString( theOutput, ):
                 }
                 return true;
             }
-        </script>
-        <script type="text/javascript">
-             function pTRAExpandOrCollapseAllChildren( theElementId) {
+
+            function pTRAExpandOrCollapseAllChildren( theElementId) {
                 // this function toggles the display of execution profiling records
                 
                 var unElement = document.getElementById( theElementId);
@@ -351,8 +352,7 @@ def pWriteScriptsForExecutionRecordPrintString( theOutput, ):
                 }
                 return true;
             }
-        </script>
-        <script type="text/javascript">
+            
             function fTRAApplyDisplay( theElement, theRowClassCounter) {
                 // Set class as Display for children of expanded elements and NoDisplay for children of collapsed elements
                 
@@ -441,8 +441,7 @@ def pWriteScriptsForExecutionRecordPrintString( theOutput, ):
                 }                    
                 return unRowClassCounter;
             }
-        </script>
-        <script type="text/javascript">
+
             function pTRAChangeClassInChildren( theElement, theExistingClass, theNewClass, theRecurse) {
                 // changes element's children class, optionally recursively
                 

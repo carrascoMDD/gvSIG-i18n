@@ -2,7 +2,7 @@
 #
 # File: TRAColeccionInformes.py
 #
-# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
+# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
 # Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -31,7 +31,9 @@ __docformat__ = 'plaintext'
 
 from AccessControl import ClassSecurityInfo
 from Products.Archetypes.atapi import *
+from TRAColeccionInformes_Operaciones import TRAColeccionInformes_Operaciones
 from Products.gvSIGi18n.TRAColeccionArquetipos import TRAColeccionArquetipos
+from Products.gvSIGi18n.TRAConRegistroActividad import TRAConRegistroActividad
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
@@ -55,11 +57,12 @@ schema = Schema((
         ),
         contains_collections=False,
         label2='Reports',
-        additional_columns=['esAutoActualizable', 'haCompletadoConExito'],
+        additional_columns=['haCompletadoConExito'],
         label='Informes',
         represents_aggregation=True,
         description2='Status Reports of Translations to  Languages and Modules',
         multiValued=1,
+        factory_views={ 'TRAInforme' : 'TRACrear_Informe',},
         owner_class_name="TRAColeccionInformes",
         expression="context.objectValues(['TRAInforme'])",
         computed_types=['TRAInforme'],
@@ -74,17 +77,19 @@ schema = Schema((
 ##/code-section after-local-schema
 
 TRAColeccionInformes_schema = OrderedBaseFolderSchema.copy() + \
+    getattr(TRAColeccionInformes_Operaciones, 'schema', Schema(())).copy() + \
     getattr(TRAColeccionArquetipos, 'schema', Schema(())).copy() + \
+    getattr(TRAConRegistroActividad, 'schema', Schema(())).copy() + \
     schema.copy()
 
 ##code-section after-schema #fill in your manual code here
 ##/code-section after-schema
 
-class TRAColeccionInformes(OrderedBaseFolder, TRAColeccionArquetipos):
+class TRAColeccionInformes(OrderedBaseFolder, TRAColeccionInformes_Operaciones, TRAColeccionArquetipos, TRAConRegistroActividad):
     """
     """
     security = ClassSecurityInfo()
-    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAColeccionArquetipos,'__implements__',()),)
+    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAColeccionInformes_Operaciones,'__implements__',()),) + (getattr(TRAColeccionArquetipos,'__implements__',()),) + (getattr(TRAConRegistroActividad,'__implements__',()),)
 
     # This name appears in the 'add' box
     archetype_name = 'Coleccion de Informes de Estado'
@@ -109,7 +114,7 @@ class TRAColeccionInformes(OrderedBaseFolder, TRAColeccionArquetipos):
 
     use_folder_tabs = 0
 
-    allowed_content_types = ['TRAInforme'] + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', []))
+    allowed_content_types = ['TRAInforme'] + list(getattr(TRAColeccionInformes_Operaciones, 'allowed_content_types', [])) + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', []))
     filter_content_types             = 1
     global_allow                     = 0
     #content_icon = 'TRAColeccionInformes.gif'
@@ -121,13 +126,22 @@ class TRAColeccionInformes(OrderedBaseFolder, TRAColeccionArquetipos):
     archetype_name2                  = 'Status Reports Collection'
     typeDescription2                 = '''Collection of Status Reports of Translations to  Languages and Modules'''
     archetype_name_msgid             = 'gvSIGi18n_TRAColeccionInformes_label'
-    factory_methods                  = None
-    factory_enablers                 = { 'TRAInforme' : [ 'fUseCaseCheckDoableFactory', 'Generate_TRAInforme_by_Modules_and_Languages',]}
+    factory_methods                  = { 'TRAInforme' : 'fCrearInforme',}
+    factory_enablers                 = { 'TRAInforme' : [ 'fUseCaseCheckDoableFactory', 'Create_TRAInforme',]}
     propagate_delete_impact_to       = None
     allow_discussion = False
 
 
     actions =  (
+
+
+       {'action': "string:${object_url}/TRACrear_Informe",
+        'category': "object_buttons",
+        'id': 'TRACreateInforme',
+        'name': 'Create Report',
+        'permissions': ("Modify portal content",),
+        'condition': """python:object.fUseCaseCheckDoable( 'Create_TRAInforme')"""
+       },
 
 
        {'action': "string:${object_url}/folder_listing",
@@ -152,6 +166,15 @@ class TRAColeccionInformes(OrderedBaseFolder, TRAColeccionArquetipos):
         'category': "object",
         'id': 'view',
         'name': 'View',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:${object_url}/MDDChanges",
+        'category': "object_buttons",
+        'id': 'mddchanges',
+        'name': 'Changes',
         'permissions': ("View",),
         'condition': """python:1"""
        },
@@ -193,6 +216,15 @@ class TRAColeccionInformes(OrderedBaseFolder, TRAColeccionArquetipos):
        },
 
 
+       {'action': "string:${object_url}/MDDCacheStatus/",
+        'category': "object_buttons",
+        'id': 'mddcachestatus',
+        'name': 'Cache',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
     )
 
     _at_rename_after_creation = True
@@ -218,13 +250,6 @@ class TRAColeccionInformes(OrderedBaseFolder, TRAColeccionArquetipos):
         
         return False
 
-    security.declarePublic('cb_isMoveable')
-    def cb_isMoveable(self):
-        """
-        """
-        
-        return False
-
     security.declarePublic('manage_afterAdd')
     def manage_afterAdd(self,item,container):
         """
@@ -232,12 +257,12 @@ class TRAColeccionInformes(OrderedBaseFolder, TRAColeccionArquetipos):
         
         return TRAColeccionArquetipos.manage_afterAdd( self, item, container)
 
-    security.declarePublic('cb_isCopyable')
-    def cb_isCopyable(self):
+    security.declarePublic('fIsCacheable')
+    def fIsCacheable(self):
         """
         """
         
-        return False
+        return True
 
     security.declarePublic('manage_pasteObjects')
     def manage_pasteObjects(self,cb_copy_data,REQUEST):
@@ -252,6 +277,13 @@ class TRAColeccionInformes(OrderedBaseFolder, TRAColeccionArquetipos):
         """
         
         return TRAElemento_Operaciones.fExtraLinks( self)
+
+    security.declarePublic('cb_isCopyable')
+    def cb_isCopyable(self):
+        """
+        """
+        
+        return False
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

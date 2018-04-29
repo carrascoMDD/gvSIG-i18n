@@ -2,7 +2,7 @@
 #
 # File: TRAElemento_CopyConfig.py
 #
-# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
+# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
 # Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -188,10 +188,22 @@ class TRAElemento_CopyConfig:
             {   'name': 'incluirManifestPorDefecto',
                 'type': 'selection',
             },
-            {   'name': 'modulosPorSeparadoPorDefecto',
-                'type': 'selection',
+            {   'name': 'segundosMinimosRetencionInformeIdiomas',
+                'type': 'Number',
             },
-            {   'name': 'tipoArchivoExportacionPorDefecto',
+            {   'name': 'numeroDeCambiosAnularInformeIdiomas',
+                'type': 'Number',
+            },
+            {   'name': 'segundosMinimosRetencionInformeModulosEIdiomas',
+                'type': 'Number',
+            },
+            {   'name': 'numeroDeCambiosAnularInformeModulosEIdiomas',
+                'type': 'Number',
+            },
+            {   'name': 'maximoNumeroCambiosRecientes',
+                'type': 'Number',
+            },
+            {   'name': 'exportarNombreFicheroParaGvSIGPorDefecto',
                 'type': 'selection',
             },
             {   'name': 'modoGestionErrorCodificacionExportacionPorDefecto',
@@ -200,11 +212,17 @@ class TRAElemento_CopyConfig:
             {   'name': 'modoInteraccionPorDefecto',
                 'type': 'selection',
             },
+            {   'name': 'modulosPorSeparadoPorDefecto',
+                'type': 'selection',
+            },
             {   'name': 'modulosYSimbolosCadenasOrdenados',
                 'type': 'Text',
             },
             {   'name': 'simbolosCadenasOrdenados',
                 'type': 'Text',
+            },
+            {   'name': 'tipoArchivoExportacionPorDefecto',
+                'type': 'selection',
             },
         ],
         'traversals':   [
@@ -585,6 +603,8 @@ class TRAElemento_CopyConfig:
             {   'aggregation_name':     'informes',
                 'contains_collections': False,
                 'tabular_tree':         False,
+                'factory_views':                        {   'TRAInforme': 'TRACrear_Informe',
+                },
                 'subitems':             [
                     {   'portal_types': [ 'TRAInforme', ],
                         'reuse_config': 'Default',
@@ -843,6 +863,9 @@ class TRAElemento_CopyConfig:
             {   'name': 'nombreNativoDeIdioma',
                 'type': 'string',
             },
+            {   'name': 'modoSeleccionBandera',
+                'type': 'selection',
+            },
             {   'name': 'iconoBanderaIdioma',
                 'type': 'string',
             },
@@ -1005,15 +1028,6 @@ class TRAElemento_CopyConfig:
             },
         ],
         'traversals':   [
-            {   'aggregation_name':     'archivos',
-                'contains_collections': False,
-                'tabular_tree':         False,
-                'subitems':             [
-                    {   'portal_types': [ 'File', ],
-                        'reuse_config': 'Default',
-                    },
-                ],
-            },
             {   'aggregation_name':     'contenido',
                 'contains_collections': False,
                 'tabular_tree':         False,
@@ -1021,6 +1035,15 @@ class TRAElemento_CopyConfig:
                 },
                 'subitems':             [
                     {   'portal_types': [ 'TRAContenidoIntercambio', ],
+                        'reuse_config': 'Default',
+                    },
+                ],
+            },
+            {   'aggregation_name':     'archivos',
+                'contains_collections': False,
+                'tabular_tree':         False,
+                'subitems':             [
+                    {   'portal_types': [ 'File', ],
                         'reuse_config': 'Default',
                     },
                 ],
@@ -1084,9 +1107,6 @@ class TRAElemento_CopyConfig:
             {   'name': 'text',
                 'type': 'Text',
             },
-            {   'name': 'esAutoActualizable',
-                'type': 'Boolean',
-            },
             {   'name': 'estadoProceso',
                 'type': 'selection',
             },
@@ -1119,9 +1139,6 @@ class TRAElemento_CopyConfig:
             },
             {   'name': 'informeExcepcionModulos',
                 'type': 'Text',
-            },
-            {   'name': 'minimoIntervaloActualizacionEnMinutos',
-                'type': 'Number',
             },
         ],
         'traversals':   [

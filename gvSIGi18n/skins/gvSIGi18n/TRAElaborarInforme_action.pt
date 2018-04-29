@@ -40,8 +40,11 @@
         global pStartTime       pStartTime | python: here.ModelDDvlPlone_tool.fMillisecondsNow()" 
         i18n:domain="gvSIGi18n">
 
+        <metal:block metal:use-macro="here/TRAProfileExecution/macros/tSetupProfileExecution" />   
+
+
         <tal:block tal:define="
-            global pExecutionRecord python: here.fStartExecution( 'template', 'TRAElaborarInforme_action.pt', None, True, { 'log_when': True, });
+            global pExecutionRecord python: here.fStartExecution( 'template', 'TRAElaborarInforme_action.pt', None, pAllowRootProfileExecution, { 'log_when': True, });
             global pPermissionsCache python: {};
             global pRolesCache python: {}" />
 
@@ -57,6 +60,12 @@
           Get the byline - contains details about author and modification date.
         </div>
         
+            
+        <tal:block tal:condition="python: not here.fAllowWrite()" >
+            <div class="portalMessage" >
+                <span tal:content="python: here.ModelDDvlPlone_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TranslationsCatalogIsLockedAgainstModifications', 'The Translations Catalog Is Locked Against Modifications')" />
+            </div>
+        </tal:block>
           
         <tal:block tal:define="pPermiteEditar python: False; pPermiteEliminar python: False; pShowOrHideTrees python: False">
             <metal:block metal:use-macro="here/TRACabeceraEnTabla_i18n_view/macros/tCabeceraEnTabla_i18n" />   
@@ -64,11 +73,12 @@
           
         
         <tal:block tal:define="dummy python:here.fElaborarInforme( 
+            theUseCaseQueryResult       =None,
             theForceEllaboration        =True, 
             theCheckPermissions         =True, 
             thePermissionsCache         =pPermissionsCache, 
             theRolesCache               =pRolesCache, 
-            theParentExecutionRecord    =pExecutionRecord" />
+            theParentExecutionRecord    =pExecutionRecord)" />
 
         <tal:block tal:define="dummy python: pExecutionRecord and here.pEndExecution( pExecutionRecord)" />
             

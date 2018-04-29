@@ -186,7 +186,7 @@
 							
 							<p><strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAIdioma_attr_codigoInternacionalDeIdioma_label">International language code-</strong></p>
 							<p  class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAIdioma_attr_codigoInternacionalDeIdioma_help">Standard international language code,according to I18N conventions.-</p>
-							<input name="theCodigoInternacionalDeIdioma" id="theCodigoInternacionalDeIdioma" type="text" size="10" maxlength="10"  tabindex="2" 
+							<input name="theNewCodigoInternacionalDeIdioma" id="theNewCodigoInternacionalDeIdioma" type="text" size="10" maxlength="10"  tabindex="2" 
 								value="" tal:attributes="value pNewCodigoInternacionalDeIdioma"/> 					
 							<br/>			    
 							<br/>

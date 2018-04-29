@@ -41,115 +41,85 @@
         global pStartTime       pStartTime | python: here.ModelDDvlPlone_tool.fMillisecondsNow()" 
         i18n:domain="gvSIGi18n">
 
-        <tal:block tal:define="
-            pExecutionRecord python: here.fStartExecution( 'template', 'TRACatalogoInforme.pt', None, True, { 'log_what': 'details', 'log_when': True, });
-            pPermissionsCache python: {};
-            pRolesCache python: {}" >
-    
-            <div metal:use-macro="here/document_actions/macros/document_actions">
-                Document actions (print, sendto etc)
-            </div>
-    
-            <h1 tal:content="object_title" class="documentFirstHeading">
-              Title or id
-            </h1>
-    
-            <div metal:use-macro="here/document_byline/macros/byline">
-              Get the byline - contains details about author and modification date.
-            </div>
+        <metal:block metal:use-macro="here/TRAProfileExecution/macros/tSetupProfileExecution" />   
+
+
+		<div metal:use-macro="here/document_actions/macros/document_actions">
+			Document actions (print, sendto etc)
+		</div>
+		
+		<h1 tal:content="object_title" class="documentFirstHeading">
+		  Title or id
+		</h1>
+		
+		<div metal:use-macro="here/document_byline/macros/byline">
+		  Get the byline - contains details about author and modification date.
+		</div>
             
-            
-    
-            <tal:block tal:define="pPermiteEditar python: False; pPermiteEliminar python: False; pShowOrHideTrees python: False">
-                <metal:block metal:use-macro="here/TRACabeceraEnTabla_i18n_view/macros/tCabeceraEnTabla_i18n" />   
-            </tal:block>
+		<tal:block tal:define="
+			pFlushCacheCode request/theFlushCacheCode | string:;pNoCacheCode request/theNoCacheCode | string:;
+			pFlushDiskCache          request/theFlushDiskCache | string:;
+			pNoCache                 request/theNoCache | string:;pNoCacheAllowed  python: pNoCache and pNoCacheCode and here.ModelDDvlPlone_tool.fNoCacheIdAllowsRender( here, pNoCacheCode, 'TRACatalogoInforme_NoHeaderNoFooter',);" >
+			
+			
+		    <tal:block tal:condition="pFlushCacheCode">
+				<tal:block tal:define="dummy python: here.ModelDDvlPlone_tool.fFlushCachedTemplateForElement( here, pFlushCacheCode,  'TRACatalogoInforme_NoHeaderNoFooter', pFlushDiskCache)" />
+			</tal:block>
+			
+			
+			
+			<tal:block tal:condition="pNoCacheAllowed" >
+			
+				<tal:block tal:condition="python: not here.fAllowWrite()" >
+					<div class="portalMessage" >
+						<span tal:content="python: here.ModelDDvlPlone_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TranslationsCatalogIsLockedAgainstModifications', 'The Translations Catalog Is Locked Against Modifications')" />
+					</div>
+				</tal:block>
                 
-            <table width="100%%" cellspacing="0" cellpadding="0" frame="void" >
-                <tr>
-                    <td width="25%" align="left" valign="baseline" >
-                        <font size="2">
-                            <em><span tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TRACatalogo_attr_nombreProducto_label',   'Product Name-' )" /></em>
-                         </font>        
-                        <font size="3">
-                            <strong><span tal:content="python: here.fAsUnicode( here.getNombreProducto())" /></strong>
-                         </font>
-                    </td>         
-                    <td width="25%" align="right" valign="baseline">                    
-                        <strong>
-                            <a href="#" title="#"
-                                tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_refrescar_action_label',   'Refresh-' )"
-                                tal:attributes="
-                                    title aLinkTitle;
-                                    href python: '%s/TRACatalogoInforme/' % here.getCatalogo().absolute_url()">
-                                <img src="#" alt="#" title="#" 
-                                     tal:attributes="src string:${portal_url}/refrescar.gif; alt aLinkTitle; title aLinkTitle" 
-                                     id="icon-refrescar" />
-                                <span tal:content="aLinkTitle" />
-                            </a>
-                        </strong>
-                    </td>
-                    <td width="25" align="center" valign="baseline">
-                    
-                        <tal:block tal:define="pUseCaseAsessmentResult python: here.fUseCaseAssessment(
-                            theUseCaseName          = 'View_any_TRA_element', 
-                            theElementsBindings     = { 'object': here,},
-                            theRulesToCollect       = None, 
-                            thePermissionsCache     = pPermissionsCache, 
-                            theRolesCache           = pRolesCache, 
-                            theParentExecutionRecord= pExecutionRecord)" 
-                            tal:condition="python: pUseCaseAsessmentResult and pUseCaseAsessmentResult.get( 'success', False)">
-                            <strong>
-                                <a href="#" title="#" 
-                                    tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_vistaAvanzada_msgid',   'Advanced view-')"
-                                    tal:attributes="
-                                        title aLinkTitle;
-                                        href python: '%s/Tabular/' % here.getCatalogo().absolute_url()">
-                                    <img src="#" alt="#" title="#" 
-                                         tal:attributes="src string:${portal_url}/tabular.gif; alt aLinkTitle; title aLinkTitle" 
-                                         id="icon-tabular" />
-                                    <span tal:content="aLinkTitle" />
-                                </a>
-                            </strong>
-                        </tal:block>
-                    </td>
-                    <td width="25%" align="right" valign="baseline">                    
-                        <strong>
-                            <a href="#" title="#"
-                                tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_ocultarinformedeestado_msgid',   'HideStatus Report-' )"
-                                tal:attributes="
-                                    title aLinkTitle;
-                                    href python: '%s/TRACatalogo/' % here.getCatalogo().absolute_url()">
-                                <img src="#" alt="#" title="#" 
-                                     tal:attributes="src string:${portal_url}/trainforme.gif; alt aLinkTitle; title aLinkTitle" 
-                                     id="icon-informe" />
-                                <span tal:content="aLinkTitle" />
-                            </a>
-                        </strong>
-                    </td>
-                </tr>
-            </table>
-                     
-         
-            
-            <br/>
-            <tal:block tal:define="
-                pInformeIdiomas        python: here.fElaborarInformeIdiomas(
-                    theInformeIdiomasUseCaseQueryResult  =None, 
-                    theCheckPermissions         =True, 
-                    thePermissionsCache         =pPermissionsCache, 
-                    theRolesCache               =pRolesCache, 
-                    theParentExecutionRecord    =pExecutionRecord)" >
-                <metal:block metal:use-macro="here/TRAInformeIdiomas_inner/macros/tInformeIdiomas_inner" />
-            </tal:block>
-            <br/>      
-           
-    
-            <tal:block tal:define="dummy python: pExecutionRecord and here.pEndExecution( pExecutionRecord)" />
-    
-            <metal:block metal:use-macro="here/TRAFooter_i18n_view/macros/tFooter_i18n" />
+			
+				<metal:block metal:use-macro="here/TRACatalogoInforme_inner/macros/tTRACatalogoInformeInner" />
+			</tal:block>
+			
+			
+			<tal:block tal:condition="not: pNoCacheAllowed">
+
+			    <tal:block tal:define="pInvalidateObsoleteReport python: here.getCatalogo().fInvalidateObsoleteStatusReportByLanguages()">
+					<div class="portalMessage" tal:condition="python: (not pInvalidateObsoleteReport.get( 'invalidated', False)) and pInvalidateObsoleteReport.get( 'changes_recorded', 0)">					
+					    <span tal:content="python: '%s %s.' % ( here.ModelDDvlPlone_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_StatusReport_SlightlyObsoleteAfterChanges', 'Status Report slightly obsolete after changes to translations:-'), pInvalidateObsoleteReport.get( 'changes_recorded', 0),)" />
+						<br/>
+						<span tal:content="python: '%s %d' % ( 
+							here.ModelDDvlPlone_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_StatusReport_ShallBeRegeneratedAfterChanges', 'Shall be refreshed after translation changes: -'), 
+							pInvalidateObsoleteReport.get( 'changes_threshold', 0) - pInvalidateObsoleteReport.get( 'changes_recorded', 0), 
+						)" /> 
+						<span tal:content="python: ', %s %d %s.' % ( 
+							here.ModelDDvlPlone_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_StatusReport_OrAfterTime', 'or in-'), 
+							pInvalidateObsoleteReport.get( 'seconds_threshold', 0) - pInvalidateObsoleteReport.get( 'seconds_lapsed', 0), 
+							here.ModelDDvlPlone_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_Seconds', 'Seconds-'), 							
+						)" /> 
+					</div>
+				    <br>
+
+				</tal:block>
+				
+				
+				<tal:block tal:condition="python: not here.fAllowWrite()" >
+					<div class="portalMessage" >
+						<span tal:content="python: here.ModelDDvlPlone_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TranslationsCatalogIsLockedAgainstModifications', 'The Translations Catalog Is Locked Against Modifications')" />
+					</div>
+				</tal:block>
+                
+				
+				<div tal:replace="structure python: here.ModelDDvlPlone_tool.fRenderTemplateOrCachedForElement( here, 'TRACatalogoInforme_NoHeaderNoFooter' )" />
+			
+		     </tal:block>
+		</tal:block>
+		
+		<br/>        
+
+		<metal:block metal:use-macro="here/TRAFooter_i18n_view/macros/tFooter_i18n" />
+		
+		
      
-            <tal:block tal:replace="structure python: pExecutionRecord and here.TRARenderExecutionDetails( pExecutionRecord)" />
-        </tal:block>
     </tal:main-macro>
 </metal:main>
 

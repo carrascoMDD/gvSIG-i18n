@@ -65,7 +65,7 @@ from Products.CMFCore.utils                 import getToolByName
 
 from Products.Archetypes.atapi              import OrderedBaseFolder
 
-
+from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow
 
 
 
@@ -1306,7 +1306,7 @@ class TRAElemento_Permissions:
         """
         unExecutionRecord = self.fStartExecution( 'method',  'fUseCaseAssessment', theParentExecutionRecord, False, None, 'usecase %s' % (theUseCaseName or 'unknown')) 
 
-        unStartTime = self.fMillisecondsNow() 
+        unStartTime = fMillisecondsNow() 
         unUseCaseAssesment = None
 
         try:
@@ -1449,7 +1449,7 @@ class TRAElemento_Permissions:
                  
                 
         finally:
-            unEndTime = self.fMillisecondsNow() 
+            unEndTime = fMillisecondsNow() 
             if unUseCaseAssesment:
                 unUseCaseAssesment[ 'duration']  = unEndTime - unStartTime
  
@@ -2729,15 +2729,57 @@ class TRAElemento_Permissions:
    
 
     # #############################################################
-    """Global to hold the rule handler jump table on rule mode.
+    """Initialization of Global to hold the rule handler jump table on rule mode.
     
     """    
     gUseCaseRuleModeHandlers = { 
-        cUseCaseRuleMode_ForAll:                    fUseCaseRuleAssessment_ForAll,
-        cUseCaseRuleMode_Filter:                    fUseCaseRuleAssessment_Filter,
-        cUseCaseRuleMode_EmptyOrAll:           fUseCaseRuleAssessment_EmptyOrAll,
+        cUseCaseRuleMode_ForAll:        fUseCaseRuleAssessment_ForAll,
+        cUseCaseRuleMode_Filter:        fUseCaseRuleAssessment_Filter,
+        cUseCaseRuleMode_EmptyOrAll:    fUseCaseRuleAssessment_EmptyOrAll,
         cUseCaseRuleMode_EmptyOrAny:    fUseCaseRuleAssessment_EmptyOrAny,
     }       
     
          
             
+
+    
+    
+    
+    
+        
+    security.declarePrivate( 'fApplicationRolesAndRoleKinds')
+    def fApplicationRolesAndRoleKinds(self, ):
+        """Deep copy the array, to avoid clients modifiying the constant.
+        
+        """
+        
+        if not cTRAApplicationRolesAndRoleKinds:
+            return []
+        
+        unosRolesAndKinds = [ ]
+        for someRolesAndKind in cTRAApplicationRolesAndRoleKinds:
+            unosRolesAndKinds.append( [ someRolesAndKind[0][:], someRolesAndKind[1],])
+
+        return unosRolesAndKinds
+    
+    
+    
+    
+    
+    
+    
+
+    # #############################################################
+    """Configuration method.
+    
+    """
+        
+    security.declarePrivate( 'fIsPrivateCacheViewForNonAnonymousUsers')
+    def fIsPrivateCacheViewForQualifiedUsers(self , theTemplateName):
+        """Shall return true when the template name is for a view sensitive to write user permissions ( modify portal content, delete, add folders, ) on rendered objects, in addition to the permissions required by Zope/Plone to deliver data to the requester (view, list folder contents, access content information,).
+        
+        """
+        return  theTemplateName in cTRAPrivateCacheViewsForQualifiedUsers
+        
+    
+   

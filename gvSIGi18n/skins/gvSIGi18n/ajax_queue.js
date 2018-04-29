@@ -592,6 +592,90 @@ c_ajax_object.prototype.Enqueue = function ( ) {
 		}
 };
 
+
+
+
+
+
+/******************************************************************
+	Dequeue and execute, without setting up a callcak handler, as the current page is abandoned
+*/
+
+c_ajax_object.prototype.Dequeue_NoCallbacks = function ( ) {
+	var command = null;
+	var ret=false;
+	
+	if ( this._dm_queue.length && this._dm_queue_state ) {
+		command = this._dm_queue[0];
+		
+		var url = command[0];
+		this._dm_callback_function = command[1];	// The basic callback
+		var method = command[2];
+		this._dm_param = command[3];	// If there is a parameter, we get it here.
+		this._dm_partialcallback_function = command[4];	// If there is a partial callback, we get it here.
+		this._dm_param2 = command[5];	// If there is a second parameter, we get it here.
+		this._dm_phase = command[6];	// If there is a second parameter, we get it here.
+		
+		for ( var counter = 1; counter < this._dm_queue.length; counter++ ) {
+			this._dm_queue[counter - 1] = this._dm_queue[counter];
+			}
+		
+		this._dm_queue.length = counter - 1;
+		}
+	
+	if ( url && method ) {
+		ret = this._CallXMLHTTPObject_NoCallbacks ( url, method );
+		}
+	
+	return ret;
+};
+
+/******************************************************************
+	Basic low-level Ajax Call without setting up a callcak handler, as the current page is abandoned
+	
+	Params:
+		in_url: 			The URL to call
+		in_callback:	A function to be called upon completion
+		in_method:		The HTTP method to use (default is GET).
+*/
+
+c_ajax_object.prototype._CallXMLHTTPObject_NoCallbacks = function ( in_url, in_method ) {
+	try {
+		var sVars = null;
+		
+		// Split the URL up, if this is a POST.
+		if ( in_method == "POST" ) {
+			var rmatch = /^([^\?]*)\?(.*)$/.exec ( in_url );
+			in_url = rmatch[1];
+			sVars = unescape ( rmatch[2] );
+			}
+		
+		this._dm_committed = false;
+		this.GetNewRequestObject();
+		this._dm_xmlhttprequestobject.open(in_method, in_url, true);
+		
+		if ( in_method == "POST" ) {
+		  this._dm_xmlhttprequestobject.setRequestHeader("Method", "POST "+in_url+" HTTP/1.1");
+		  this._dm_xmlhttprequestobject.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+			}
+		
+		this._dm_xmlhttprequestobject.onreadystatechange = Void_Handle_HTTP_Response;
+		this._dm_xmlhttprequestobject.send(sVars);
+		
+		return true;
+		}
+	catch ( z ) { }
+	
+	return false;
+};
+
+function Void_Handle_HTTP_Response() {
+    return true;
+}
+
+
+
+
 /******************************************************************
 	Dequeue and execute
 */

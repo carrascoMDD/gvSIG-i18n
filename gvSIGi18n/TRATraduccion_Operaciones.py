@@ -540,15 +540,20 @@ class TRATraduccion_Operaciones:
    
     """
     # method located in TRAElemento_Operationes
+    #
     #security.declarePrivate( 'fNewVoidChangeTranslationResult')
     #def fNewVoidChangeTranslationResult( self,):
         #aResult = {
             #'success':                          False,
+            #'exception':                        '',
             #'status':                           '',
+            #'condition':                         '',
             #'found':                            False,
             #'changed':                          False,
+            #'changed_comment':                  False,
             #'simboloCadena':                    '',
             #'idCadena':                         '',
+            #'memberid':                         '',
             #'cadenaTraducida_previousValue':    '',
             #'cadenaTraducida_newValue':         '',
             #'estadoTraduccion_previousValue':   '',
@@ -557,7 +562,7 @@ class TRATraduccion_Operaciones:
             #'comentario_newValue':              '',
         #}
         #return aResult
-    
+        
     
  
     security.declarePrivate( 'fStripInnerBlanks')
@@ -585,11 +590,12 @@ class TRATraduccion_Operaciones:
     def fIntentarTraducir( self, 
         theCadenaTraducida, 
         theComentario, 
-        theUseCaseQueryResult=None, 
-        theRegistrarHistoria=True, 
-        thePermissionsCache=None, 
-        theRolesCache=None, 
-        theParentExecutionRecord=None):
+        theAdditionalParams      =None,
+        theUseCaseQueryResult    =None, 
+        theRegistrarHistoria     =True, 
+        thePermissionsCache      =None, 
+        theRolesCache            =None, 
+        theParentExecutionRecord =None):
         """Set the string translation and change the state from pending to translated and comment to the supplied values. 
 
         """
@@ -598,6 +604,31 @@ class TRATraduccion_Operaciones:
         
         try:
             aResult = self.fNewVoidChangeTranslationResult()
+            
+            
+            unContadorCambiosString = theAdditionalParams.get( 'theContadorCambios', None)
+            if unContadorCambiosString:
+                unContadorCambios = -1
+                try:
+                    unContadorCambios = int( unContadorCambiosString)
+                except:
+                    None
+                if unContadorCambios >= 0:
+                    unContadorCambiosActual = self.getContadorCambios()
+                    if not( unContadorCambios == None):
+                        if not ( unContadorCambios == unContadorCambiosActual):
+                            return self.fResultForChangeCounterDetectedOverwrite(
+                                theCadenaTraducida       =theCadenaTraducida, 
+                                theComentario            =theComentario, 
+                                theAdditionalParams      =theAdditionalParams,
+                                theUseCaseQueryResult    =theUseCaseQueryResult, 
+                                theRegistrarHistoria     =theRegistrarHistoria, 
+                                thePermissionsCache      =thePermissionsCache, 
+                                theRolesCache            =theRolesCache, 
+                                theParentExecutionRecord =theParentExecutionRecord,
+                            )
+                
+                
             
             unaCadena = self.getCadena()
             if not unaCadena:
@@ -613,23 +644,10 @@ class TRATraduccion_Operaciones:
             if not theCadenaTraducida:
                 return aResult      
             
-            unaNuevaCadenaTraducida = theCadenaTraducida.strip()
+            unaNuevaCadenaTraducida = theCadenaTraducida.strip().replace( '\n', ' ').replace( '\t', '').replace( '\r', ' ')
             if not unaNuevaCadenaTraducida:
                 return aResult
-            unaNuevaCadenaTraducida = ' '.join( [ unaLine.strip() for unaLine in unaNuevaCadenaTraducida.split( '\n')])
-            if not unaNuevaCadenaTraducida:
-                return aResult
-            unaNuevaCadenaTraducida = ' '.join( [ unaLine.strip() for unaLine in unaNuevaCadenaTraducida.split( '\r')])
-            if not unaNuevaCadenaTraducida:
-                return aResult
-            unaNuevaCadenaTraducida = ' '.join( [ unaLine.strip() for unaLine in unaNuevaCadenaTraducida.split( '\t')])
-            if not unaNuevaCadenaTraducida:
-                return aResult
-            
-                
-            unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-            unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
-                            
+                 
             unaCadenaTraducida          = self.getCadenaTraducida()            
             unComentarioTraduccion      = self.getComentario() 
             unaHistoriaTraduccion       = self.getHistoria()
@@ -647,6 +665,26 @@ class TRATraduccion_Operaciones:
             aResult[ 'estadoTraduccion_newValue']      = unEstadoTraduccion
             aResult[ 'cadenaTraducida_newValue']       = unaCadenaTraducida
 
+
+            
+             
+            aTranslationService = getToolByName( self, 'translation_service', None)            
+            if not aTranslationService:
+                aResult.update({
+                    'status': 'No_TranslationService',
+                })
+                return aResult
+                
+            
+            unaEncodedNuevaCadenaTraducida = aTranslationService.encode( unaNuevaCadenaTraducida)            
+            
+            
+            
+            
+            
+            unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
+            unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+                            
             unUseCaseQueryResult = theUseCaseQueryResult
             if not unUseCaseQueryResult or not ( unUseCaseQueryResult.get( 'use_case_name', '') == cUseCase_TRATraduccionStateChange):
                 unUseCaseQueryResult = self.fUseCaseAssessment(  
@@ -673,21 +711,9 @@ class TRATraduccion_Operaciones:
                     'status': 'fCanChangeToNuevoEstadoTraduccion_failed',
                 })
                 return aResult
-             
-            aTranslationService = getToolByName( self, 'translation_service', None)            
-            if not aTranslationService:
-                aResult.update({
-                    'status': 'No_TranslationService',
-                })
-                return aResult
-                
-            unHayCambio = False
-            
-            unaEncodedNuevaCadenaTraducida = aTranslationService.encode( unaNuevaCadenaTraducida)            
-            
             
     
-            if not ( unEstadoTraduccion in [ "Pendiente", "Traducida", ]):
+            if not ( unEstadoTraduccion in [ cEstadoTraduccionPendiente, cEstadoTraduccionTraducida, ]):
                 aResult.update({
                     'status': 'CurrentStateNot_Pendiente_or_Traducida',
                 })
@@ -719,7 +745,9 @@ class TRATraduccion_Operaciones:
                 return aResult
     
             aResult[ 'memberid'] = unMemberId
-         
+            
+            unHayCambio = False
+
             try:
                 if not ( unNuevoComentario == unComentarioTraduccion):
                     unComentarioParaHistoria = unNuevoComentario
@@ -734,7 +762,7 @@ class TRATraduccion_Operaciones:
          
                 unAhoraStoreString = self.fDateTimeNowTextual()
 
-                if  ( unEstadoTraduccion and not  ( unEstadoTraduccion in [ "Pendiente", "Traducida"])):
+                if  ( unEstadoTraduccion and not  ( unEstadoTraduccion in [ cEstadoTraduccionPendiente, cEstadoTraduccionTraducida])):
                     aResult.update({
                         'status': 'CurrentStatePreventsChange',
                     })
@@ -744,7 +772,7 @@ class TRATraduccion_Operaciones:
                     })
                 else:     
                                           
-                    if ( not unEstadoTraduccion) or ( unEstadoTraduccion == "Pendiente"):
+                    if ( not unEstadoTraduccion) or ( unEstadoTraduccion == cEstadoTraduccionPendiente):
                         self.setEstadoTraduccion(  cEstadoTraduccionTraducida)    
                         aResult.update({
                             'estadoTraduccion_newValue':      cEstadoTraduccionTraducida,
@@ -772,11 +800,18 @@ class TRATraduccion_Operaciones:
                         self.setFechaDefinitivoTextual(   None)    
                                                             
                     if  unUsuarioCoordinador:
-                        self.setUsuarioCoordinador(  None)   
+                        self.setUsuarioCoordinador(  None)  
+                        
+                    unContadorCambiosActual = self.getContadorCambios()
+                    if not unContadorCambiosActual:
+                        unContadorCambiosActual = 0
+
+                    unNuevoContadorCambios = unContadorCambiosActual + 1
+                    self.setContadorCambios( unNuevoContadorCambios)
                         
                     if theRegistrarHistoria:
                         self.pRegistrarHistoria( 
-                            theAccion                   = 'Traducir', 
+                            theAccion                   = cTranslationHistoryAction_Traducir, 
                             theFechaAccionTextual       = unAhoraStoreString, 
                             theUsuarioActor             = unMemberId, 
                             theEstadoTraduccion         = cEstadoTraduccionTraducida, 
@@ -798,20 +833,21 @@ class TRATraduccion_Operaciones:
                     return aResult
                    
                 if not( unNuevoComentario == unComentarioTraduccion):
-                    self.pRegistrarHistoria( 
-                        theAccion                   = 'Comentar', 
-                        theFechaAccionTextual       = unAhoraStoreString, 
-                        theUsuarioActor             = unMemberId, 
-                        theEstadoTraduccion         = None, 
-                        theFechaTraduccionTextual   = None, 
-                        theUsuarioTraductor         = None, 
-                        theCadenaTraducida          = None, 
-                        theFechaRevisionTextual     = None, 
-                        theUsuarioRevisor           = None, 
-                        theFechaDefinitivoTextual   = None, 
-                        theUsuarioCoordinador       = None, 
-                        theComentario               = unComentarioParaHistoria,                            
-                    )
+                    if theRegistrarHistoria:
+                        self.pRegistrarHistoria( 
+                            theAccion                   = cTranslationHistoryAction_Comentar, 
+                            theFechaAccionTextual       = unAhoraStoreString, 
+                            theUsuarioActor             = unMemberId, 
+                            theEstadoTraduccion         = None, 
+                            theFechaTraduccionTextual   = None, 
+                            theUsuarioTraductor         = None, 
+                            theCadenaTraducida          = None, 
+                            theFechaRevisionTextual     = None, 
+                            theUsuarioRevisor           = None, 
+                            theFechaDefinitivoTextual   = None, 
+                            theUsuarioCoordinador       = None, 
+                            theComentario               = unComentarioParaHistoria,                            
+                        )
                     aResult.update({
                         'comentario_previousValue': unComentarioTraduccion,
                         'comentario_newValue':      unNuevoComentario,
@@ -826,6 +862,11 @@ class TRATraduccion_Operaciones:
                 if unHayCambio:
                     self.pRecatalogTraduccion( unExecutionRecord)
                     
+                    unCatalogo = self.getCatalogo()
+                    if not ( unCatalogo == None):
+                        unTranslationChange = { }
+                        unCatalogo.pTranslationHasChanged( unTranslationChange)
+                    
                     if cLogTranslationChanges:
                         logging.getLogger( 'gvSIGi18n::fIntentarTraducir').info( "CHANGED")               
             
@@ -838,23 +879,124 @@ class TRATraduccion_Operaciones:
             
     
         
+ 
+    security.declarePrivate( 'fResultForChangeCounterDetectedOverwrite')
+    def fResultForChangeCounterDetectedOverwrite( self, 
+        theAdditionalParams      =None,
+        theUseCaseQueryResult    =None, 
+        theRegistrarHistoria     =True, 
+        thePermissionsCache      =None, 
+        theRolesCache            =None, 
+        theParentExecutionRecord =None):
+        """The ChangeCounter received in the user requests, reflecting the moment in the history of changes to the translation, when the user received the string to translate.
+        Can not Set the string translation and overwrite newer translation.
+        Can not change the state-
+        If the intended change is the same as the current translation (i.e., two users submitted the exactly same translation) we'll report the operation as sucessful, for the benefit of users interacting Asynchronously. 
+        Translator user and translation date remains reflecting the user who trasnslated first.
+
+        """
+        
+        unExecutionRecord = self.fStartExecution( 'method',  'fResultForChangeCounterDetectedOverwrite', theParentExecutionRecord,  False) 
+        
+        try:
+            aResult = self.fNewVoidChangeTranslationResult()
+            
+            aResult.update( {
+                'success': False,
+                'status':  cTranslationStatus_DifferentChangeCounter,
+            }) 
+           
+            unaCadena = self.getCadena()
+            if not unaCadena:
+                return aResult
+            
+            aResult.update({
+                'simboloCadena': unaCadena.getSimbolo(),
+                'idCadena':      unaCadena.getId(),
+                   
+            })
+            aResult[ 'found'] = True
+            
+
+            unaCadenaTraducida          = self.getCadenaTraducida()            
+            unComentarioTraduccion      = self.getComentario() 
+            unaHistoriaTraduccion       = self.getHistoria()
+            unEstadoTraduccion          = self.getEstadoTraduccion()  
+            unaFechaTraduccionTextual   = self.getFechaTraduccionTextual()  
+            unUsuarioTraductor          = self.getUsuarioTraductor()  
+            unaFechaRevisionTextual     = self.getFechaRevisionTextual()  
+            unUsuarioRevisor            = self.getUsuarioRevisor()  
+            unaFechaDefinitivoTextual   = self.getFechaDefinitivoTextual()  
+            unUsuarioCoordinador        = self.getUsuarioCoordinador()  
+            
+            aResult[ 'estadoTraduccion_previousValue'] = unEstadoTraduccion
+            aResult[ 'cadenaTraducida_previousValue']  = unaCadenaTraducida
+            
+            aResult[ 'estadoTraduccion_newValue']      = unEstadoTraduccion
+            aResult[ 'cadenaTraducida_newValue']       = unaCadenaTraducida
+
+            aMembershipTool = getToolByName( self, 'portal_membership', None)
+            unMember = aMembershipTool.getAuthenticatedMember()   
+            if not unMember:
+                return aResult                
+            if unMember.getUserName() == 'Anonymous User':
+                unMemberId = unMember.getUserName()
+            else:
+                unMemberId = unMember.getMemberId()   
+            if not unMemberId:
+                return aResult
     
+            aResult[ 'memberid'] = unMemberId
+            
+            return aResult
+            
+        finally:
+            unExecutionRecord and unExecutionRecord.pEndExecution()
+            
+  
+            
+                
     
              
 
     security.declarePrivate( 'fComentar')
     def fComentar( self, 
         theComentario, 
-        theUseCaseQueryResult=None,         
-        thePermissionsCache=None, 
-        theRolesCache=None, 
-        theParentExecutionRecord=None):
+        theAdditionalParams      =None,
+        theUseCaseQueryResult    =None,         
+        theRegistrarHistoria     =True, 
+        thePermissionsCache      =None, 
+        theRolesCache            =None, 
+        theParentExecutionRecord =None):
 
         unExecutionRecord = self.fStartExecution( 'method',  'fComentar', theParentExecutionRecord, False) 
         
         try:
             aResult = self.fNewVoidChangeTranslationResult()
             
+            # Allow to append to comments
+            #
+            #unContadorCambiosString = theAdditionalParams.get( 'theContadorCambios', None)
+            #if unContadorCambiosString:
+                #unContadorCambios = -1
+                #try:
+                    #unContadorCambios = int( unContadorCambiosString)
+                #except:
+                    #None
+                #if unContadorCambios >= 0:
+                    #unContadorCambiosActual = self.getContadorCambios()
+                    #if not( unContadorCambios == None):
+                        #if not ( unContadorCambios == unContadorCambiosActual):
+                            #return self.fResultForChangeCounterDetectedOverwrite(
+                                #theAdditionalParams      =theAdditionalParams,
+                                #theUseCaseQueryResult    =theUseCaseQueryResult, 
+                                #theRegistrarHistoria     =theRegistrarHistoria, 
+                                #thePermissionsCache      =thePermissionsCache, 
+                                #theRolesCache            =theRolesCache, 
+                                #theParentExecutionRecord =theParentExecutionRecord,
+                            #)
+
+                        
             unaCadena = self.getCadena()
             if not unaCadena:
                 return aResult
@@ -949,20 +1091,21 @@ class TRATraduccion_Operaciones:
             try:
                 self.setComentario(  unNuevoComentario)  
                     
-                self.pRegistrarHistoria( 
-                    theAccion                   = 'Comentar', 
-                    theFechaAccionTextual       = unAhoraStoreString, 
-                    theUsuarioActor             = unMemberId, 
-                    theEstadoTraduccion         = None, 
-                    theFechaTraduccionTextual   = None, 
-                    theUsuarioTraductor         = None, 
-                    theCadenaTraducida          = None, 
-                    theFechaRevisionTextual     = None, 
-                    theUsuarioRevisor           = None, 
-                    theFechaDefinitivoTextual   = None, 
-                    theUsuarioCoordinador       = None, 
-                    theComentario               = unNuevoComentario, 
-                )
+                if theRegistrarHistoria:
+                    self.pRegistrarHistoria( 
+                        theAccion                   = cTranslationHistoryAction_Comentar, 
+                        theFechaAccionTextual       = unAhoraStoreString, 
+                        theUsuarioActor             = unMemberId, 
+                        theEstadoTraduccion         = None, 
+                        theFechaTraduccionTextual   = None, 
+                        theUsuarioTraductor         = None, 
+                        theCadenaTraducida          = None, 
+                        theFechaRevisionTextual     = None, 
+                        theUsuarioRevisor           = None, 
+                        theFechaDefinitivoTextual   = None, 
+                        theUsuarioCoordinador       = None, 
+                        theComentario               = unNuevoComentario, 
+                    )
                 
                 unHayCambio = True
                 aResult.update({
@@ -979,6 +1122,10 @@ class TRATraduccion_Operaciones:
                     # ACV 20090406 no recatalog for comment, as comment is not indexed 
                     # will enable if we ever index the comment
                     # self.pRecatalogTraduccion( unExecutionRecord)
+                    unCatalogo = self.getCatalogo()
+                    if not ( unCatalogo == None):
+                        unTranslationChange = { }
+                        unCatalogo.pTranslationHasChanged( unTranslationChange)
                         
                     if cLogTranslationChanges:
                         logging.getLogger( 'gvSIGi18n::fComentar').info( "CHANGED")               
@@ -996,15 +1143,38 @@ class TRATraduccion_Operaciones:
     security.declarePrivate( 'fInvalidar')
     def fInvalidar( self, 
         theComentario, 
-        thePermissionsCache=None, 
-        theRolesCache=None, 
-        theParentExecutionRecord=None):
+        theAdditionalParams      =None,
+        theRegistrarHistoria     =True, 
+        thePermissionsCache      =None, 
+        theRolesCache            =None, 
+        theParentExecutionRecord =None):
     
         unExecutionRecord = self.fStartExecution( 'method',  'fHacerPendiente', theParentExecutionRecord,  False)  
         
         try:
             aResult = self.fNewVoidChangeTranslationResult()
             
+            
+            unContadorCambiosString = theAdditionalParams.get( 'theContadorCambios', None)
+            if unContadorCambiosString:
+                unContadorCambios = -1
+                try:
+                    unContadorCambios = int( unContadorCambiosString)
+                except:
+                    None
+                if unContadorCambios >= 0:
+                    unContadorCambiosActual = self.getContadorCambios()
+                    if not( unContadorCambios == None):
+                        if not ( unContadorCambios == unContadorCambiosActual):
+                            return self.fResultForChangeCounterDetectedOverwrite(
+                                theAdditionalParams      =theAdditionalParams,
+                                theUseCaseQueryResult    =theUseCaseQueryResult, 
+                                theRegistrarHistoria     =theRegistrarHistoria, 
+                                thePermissionsCache      =thePermissionsCache, 
+                                theRolesCache            =theRolesCache, 
+                                theParentExecutionRecord =theParentExecutionRecord,
+                            )
+
             unaCadena = self.getCadena()
             if not unaCadena:
                 return aResult
@@ -1102,20 +1272,30 @@ class TRATraduccion_Operaciones:
                     unComentarioParaHistoria = unNuevoComentario
                     self.setComentario(  unNuevoComentario)       
         
-                self.pRegistrarHistoria( 
-                    theAccion                   = 'Dejar como Pendiente', 
-                    theFechaAccionTextual       = unAhoraStoreString, 
-                    theUsuarioActor             = unMemberId, 
-                    theEstadoTraduccion         = cEstadoTraduccionPendiente, 
-                    theFechaTraduccionTextual   = None, 
-                    theUsuarioTraductor         = None, 
-                    theCadenaTraducida          = unaCadenaTraducida, 
-                    theFechaRevisionTextual     = None, 
-                    theUsuarioRevisor           = None, 
-                    theFechaDefinitivoTextual   = None, 
-                    theUsuarioCoordinador       = None, 
-                    theComentario               = unComentarioParaHistoria,                   
-                )
+        
+                        
+                unContadorCambiosActual = self.getContadorCambios()
+                if not unContadorCambiosActual:
+                    unContadorCambiosActual = 0
+
+                unNuevoContadorCambios = unContadorCambiosActual + 1
+                self.setContadorCambios( unNuevoContadorCambios)
+
+                if theRegistrarHistoria:
+                    self.pRegistrarHistoria( 
+                        theAccion                   = cTranslationHistoryAction_Invalidar, 
+                        theFechaAccionTextual       = unAhoraStoreString, 
+                        theUsuarioActor             = unMemberId, 
+                        theEstadoTraduccion         = cEstadoTraduccionPendiente, 
+                        theFechaTraduccionTextual   = None, 
+                        theUsuarioTraductor         = None, 
+                        theCadenaTraducida          = unaCadenaTraducida, 
+                        theFechaRevisionTextual     = None, 
+                        theUsuarioRevisor           = None, 
+                        theFechaDefinitivoTextual   = None, 
+                        theUsuarioCoordinador       = None, 
+                        theComentario               = unComentarioParaHistoria,                   
+                    )
                                        
                 unHayCambio = True
                 aResult.update({
@@ -1129,6 +1309,11 @@ class TRATraduccion_Operaciones:
                 if unHayCambio:
                     self.pRecatalogTraduccion( unExecutionRecord)
                         
+                    unCatalogo = self.getCatalogo()
+                    if not ( unCatalogo == None):
+                        unTranslationChange = { }
+                        unCatalogo.pTranslationHasChanged( unTranslationChange)
+
                     if cLogTranslationChanges:
                         logging.getLogger( 'gvSIGi18n::fHacerPendiente').info( "CHANGED")               
        
@@ -1147,16 +1332,39 @@ class TRATraduccion_Operaciones:
     security.declarePrivate( 'fHacerPendiente')
     def fHacerPendiente( self, 
         theComentario, 
-        theUseCaseQueryResult=None, 
-        thePermissionsCache=None, 
-        theRolesCache=None, 
-        theParentExecutionRecord=None):
+        theAdditionalParams      =None,
+        theUseCaseQueryResult    =None, 
+        theRegistrarHistoria     =True, 
+        thePermissionsCache      =None, 
+        theRolesCache            =None, 
+        theParentExecutionRecord =None):
     
         unExecutionRecord = self.fStartExecution( 'method',  'fHacerPendiente', theParentExecutionRecord,  False)  
         
         try:
             aResult = self.fNewVoidChangeTranslationResult()
             
+            
+            unContadorCambiosString = theAdditionalParams.get( 'theContadorCambios', None)
+            if unContadorCambiosString:
+                unContadorCambios = -1
+                try:
+                    unContadorCambios = int( unContadorCambiosString)
+                except:
+                    None
+                if unContadorCambios >= 0:
+                    unContadorCambiosActual = self.getContadorCambios()
+                    if not( unContadorCambios == None):
+                        if not ( unContadorCambios == unContadorCambiosActual):
+                            return self.fResultForChangeCounterDetectedOverwrite(
+                                theAdditionalParams      =theAdditionalParams,
+                                theUseCaseQueryResult    =theUseCaseQueryResult, 
+                                theRegistrarHistoria     =theRegistrarHistoria, 
+                                thePermissionsCache      =thePermissionsCache, 
+                                theRolesCache            =theRolesCache, 
+                                theParentExecutionRecord =theParentExecutionRecord,
+                            )
+                        
             unaCadena = self.getCadena()
             if not unaCadena:
                 return aResult
@@ -1275,20 +1483,30 @@ class TRATraduccion_Operaciones:
                     unComentarioParaHistoria = unNuevoComentario
                     self.setComentario(  unNuevoComentario)       
         
-                self.pRegistrarHistoria( 
-                    theAccion                   = 'Dejar como Pendiente', 
-                    theFechaAccionTextual       = unAhoraStoreString, 
-                    theUsuarioActor             = unMemberId, 
-                    theEstadoTraduccion         = cEstadoTraduccionPendiente, 
-                    theFechaTraduccionTextual   = None, 
-                    theUsuarioTraductor         = None, 
-                    theCadenaTraducida          = unaCadenaTraducida, 
-                    theFechaRevisionTextual     = None, 
-                    theUsuarioRevisor           = None, 
-                    theFechaDefinitivoTextual   = None, 
-                    theUsuarioCoordinador       = None, 
-                    theComentario               = unComentarioParaHistoria,                   
-                )
+                        
+                unContadorCambiosActual = self.getContadorCambios()
+                if not unContadorCambiosActual:
+                    unContadorCambiosActual = 0
+
+                unNuevoContadorCambios = unContadorCambiosActual + 1
+                self.setContadorCambios( unNuevoContadorCambios)
+
+        
+                if theRegistrarHistoria:
+                    self.pRegistrarHistoria( 
+                        theAccion                   = cTranslationHistoryAction_HacerPendiente, 
+                        theFechaAccionTextual       = unAhoraStoreString, 
+                        theUsuarioActor             = unMemberId, 
+                        theEstadoTraduccion         = cEstadoTraduccionPendiente, 
+                        theFechaTraduccionTextual   = None, 
+                        theUsuarioTraductor         = None, 
+                        theCadenaTraducida          = unaCadenaTraducida, 
+                        theFechaRevisionTextual     = None, 
+                        theUsuarioRevisor           = None, 
+                        theFechaDefinitivoTextual   = None, 
+                        theUsuarioCoordinador       = None, 
+                        theComentario               = unComentarioParaHistoria,                   
+                    )
                                        
                 unHayCambio = True
                 aResult.update({
@@ -1302,6 +1520,12 @@ class TRATraduccion_Operaciones:
                 if unHayCambio:
                     self.pRecatalogTraduccion( unExecutionRecord)
                         
+                        
+                    unCatalogo = self.getCatalogo()
+                    if not ( unCatalogo == None):
+                        unTranslationChange = { }
+                        unCatalogo.pTranslationHasChanged( unTranslationChange)
+
                     if cLogTranslationChanges:
                         logging.getLogger( 'gvSIGi18n::fHacerPendiente').info( "CHANGED")               
        
@@ -1321,16 +1545,39 @@ class TRATraduccion_Operaciones:
     security.declarePrivate( 'fHacerTraducida')
     def fHacerTraducida( self, 
         theComentario, 
-        theUseCaseQueryResult=None,         
-        thePermissionsCache=None, 
-        theRolesCache=None, 
-        theParentExecutionRecord=None):
+        theAdditionalParams      =None,
+        theUseCaseQueryResult    =None,         
+        theRegistrarHistoria     =True, 
+        thePermissionsCache      =None, 
+        theRolesCache            =None, 
+        theParentExecutionRecord =None):
     
         unExecutionRecord = self.fStartExecution( 'method',  'fHacerTraducida', theParentExecutionRecord,  False) 
         
         try:
             aResult = self.fNewVoidChangeTranslationResult()
             
+            
+            unContadorCambiosString = theAdditionalParams.get( 'theContadorCambios', None)
+            if unContadorCambiosString:
+                unContadorCambios = -1
+                try:
+                    unContadorCambios = int( unContadorCambiosString)
+                except:
+                    None
+                if unContadorCambios >= 0:
+                    unContadorCambiosActual = self.getContadorCambios()
+                    if not( unContadorCambios == None):
+                        if not ( unContadorCambios == unContadorCambiosActual):
+                            return self.fResultForChangeCounterDetectedOverwrite(
+                                theAdditionalParams      =theAdditionalParams,
+                                theUseCaseQueryResult    =theUseCaseQueryResult, 
+                                theRegistrarHistoria     =theRegistrarHistoria, 
+                                thePermissionsCache      =thePermissionsCache, 
+                                theRolesCache            =theRolesCache, 
+                                theParentExecutionRecord =theParentExecutionRecord,
+                            )
+                        
             unaCadena = self.getCadena()
             if not unaCadena:
                 return aResult
@@ -1448,20 +1695,30 @@ class TRATraduccion_Operaciones:
                     unComentarioParaHistoria = unNuevoComentario
                     self.setComentario(  unNuevoComentario)       
         
-                self.pRegistrarHistoria( 
-                    theAccion                   = 'Dejar como Traducida',      
-                    theFechaAccionTextual       = unAhoraStoreString,         
-                    theUsuarioActor             = unMemberId,                 
-                    theEstadoTraduccion         = cEstadoTraduccionTraducida,  
-                    theFechaTraduccionTextual   = unaFechaTraduccionTextual,  
-                    theUsuarioTraductor         = unUsuarioTraductor,         
-                    theCadenaTraducida          = unaCadenaTraducida ,        
-                    theFechaRevisionTextual     = None,                       
-                    theUsuarioRevisor           = None,                       
-                    theFechaDefinitivoTextual   = None,                       
-                    theUsuarioCoordinador       = None,                       
-                    theComentario               = unComentarioParaHistoria,                   
-                )
+        
+                        
+                unContadorCambiosActual = self.getContadorCambios()
+                if not unContadorCambiosActual:
+                    unContadorCambiosActual = 0
+
+                unNuevoContadorCambios = unContadorCambiosActual + 1
+                self.setContadorCambios( unNuevoContadorCambios)
+
+                if theRegistrarHistoria:
+                    self.pRegistrarHistoria( 
+                        theAccion                   = cTranslationHistoryAction_HacerTraducida,      
+                        theFechaAccionTextual       = unAhoraStoreString,         
+                        theUsuarioActor             = unMemberId,                 
+                        theEstadoTraduccion         = cEstadoTraduccionTraducida,  
+                        theFechaTraduccionTextual   = unaFechaTraduccionTextual,  
+                        theUsuarioTraductor         = unUsuarioTraductor,         
+                        theCadenaTraducida          = unaCadenaTraducida ,        
+                        theFechaRevisionTextual     = None,                       
+                        theUsuarioRevisor           = None,                       
+                        theFechaDefinitivoTextual   = None,                       
+                        theUsuarioCoordinador       = None,                       
+                        theComentario               = unComentarioParaHistoria,                   
+                    )
                                        
                 unHayCambio = True
                 aResult.update({
@@ -1475,6 +1732,12 @@ class TRATraduccion_Operaciones:
                 if unHayCambio:
                     self.pRecatalogTraduccion( unExecutionRecord)
                         
+                        
+                    unCatalogo = self.getCatalogo()
+                    if not ( unCatalogo == None):
+                        unTranslationChange = { }
+                        unCatalogo.pTranslationHasChanged( unTranslationChange)
+
                     if cLogTranslationChanges:
                         logging.getLogger( 'gvSIGi18n::fHacerTraducida').info( "CHANGED")    
                         
@@ -1494,16 +1757,39 @@ class TRATraduccion_Operaciones:
     security.declarePrivate( 'fHacerRevisada')
     def fHacerRevisada( self, 
         theComentario, 
-        theUseCaseQueryResult=None,         
-        thePermissionsCache=None, 
-        theRolesCache=None, 
-        theParentExecutionRecord=None):
+        theAdditionalParams      =None,
+        theUseCaseQueryResult    =None,         
+        theRegistrarHistoria     =True, 
+        thePermissionsCache      =None, 
+        theRolesCache            =None, 
+        theParentExecutionRecord =None):
 
         unExecutionRecord = self.fStartExecution( 'method',  'fHacerRevisada', theParentExecutionRecord,  False) 
         
         try:
             aResult = self.fNewVoidChangeTranslationResult()
             
+            
+            unContadorCambiosString = theAdditionalParams.get( 'theContadorCambios', None)
+            if unContadorCambiosString:
+                unContadorCambios = -1
+                try:
+                    unContadorCambios = int( unContadorCambiosString)
+                except:
+                    None
+                if unContadorCambios >= 0:
+                    unContadorCambiosActual = self.getContadorCambios()
+                    if not( unContadorCambios == None):
+                        if not ( unContadorCambios == unContadorCambiosActual):
+                            return self.fResultForChangeCounterDetectedOverwrite(
+                                theAdditionalParams      =theAdditionalParams,
+                                theUseCaseQueryResult    =theUseCaseQueryResult, 
+                                theRegistrarHistoria     =theRegistrarHistoria, 
+                                thePermissionsCache      =thePermissionsCache, 
+                                theRolesCache            =theRolesCache, 
+                                theParentExecutionRecord =theParentExecutionRecord,
+                            )
+                        
             unaCadena = self.getCadena()
             if not unaCadena:
                 return aResult
@@ -1615,21 +1901,31 @@ class TRATraduccion_Operaciones:
                     unComentarioParaHistoria = unNuevoComentario
                     self.setComentario(  unNuevoComentario)       
         
-                self.pRegistrarHistoria( 
-                    theAccion                   = 'Revisar', 
-                    theFechaAccionTextual       = unAhoraStoreString, 
-                    theUsuarioActor             = unMemberId, 
-                    theEstadoTraduccion         = cEstadoTraduccionRevisada, 
-                    theFechaTraduccionTextual   = unaFechaTraduccionTextual, 
-                    theUsuarioTraductor         = unUsuarioTraductor, 
-                    theCadenaTraducida          = unaCadenaTraducida, 
-                    theFechaRevisionTextual     = unAhoraStoreString, 
-                    theUsuarioRevisor           = unMemberId, 
-                    theFechaDefinitivoTextual   = None, 
-                    theUsuarioCoordinador       = None, 
-                    theComentario               = unComentarioParaHistoria,
-                )
-                                
+        
+                        
+                unContadorCambiosActual = self.getContadorCambios()
+                if not unContadorCambiosActual:
+                    unContadorCambiosActual = 0
+
+                unNuevoContadorCambios = unContadorCambiosActual + 1
+                self.setContadorCambios( unNuevoContadorCambios)
+
+                if theRegistrarHistoria:
+                    self.pRegistrarHistoria( 
+                        theAccion                   = cTranslationHistoryAction_HacerRevisada, 
+                        theFechaAccionTextual       = unAhoraStoreString, 
+                        theUsuarioActor             = unMemberId, 
+                        theEstadoTraduccion         = cEstadoTraduccionRevisada, 
+                        theFechaTraduccionTextual   = unaFechaTraduccionTextual, 
+                        theUsuarioTraductor         = unUsuarioTraductor, 
+                        theCadenaTraducida          = unaCadenaTraducida, 
+                        theFechaRevisionTextual     = unAhoraStoreString, 
+                        theUsuarioRevisor           = unMemberId, 
+                        theFechaDefinitivoTextual   = None, 
+                        theUsuarioCoordinador       = None, 
+                        theComentario               = unComentarioParaHistoria,
+                    )
+                    
                 unHayCambio = True
                 aResult.update({
                     'success': True,
@@ -1642,6 +1938,12 @@ class TRATraduccion_Operaciones:
                 if unHayCambio:
                     self.pRecatalogTraduccion( unExecutionRecord)
                         
+                        
+                    unCatalogo = self.getCatalogo()
+                    if not ( unCatalogo == None):
+                        unTranslationChange = { }
+                        unCatalogo.pTranslationHasChanged( unTranslationChange)
+
                     if cLogTranslationChanges:
                         logging.getLogger( 'gvSIGi18n::fHacerRevisada').info( "CHANGED")               
 
@@ -1659,16 +1961,39 @@ class TRATraduccion_Operaciones:
     security.declarePrivate( 'fHacerDefinitiva')
     def fHacerDefinitiva( self, 
         theComentario, 
-        theUseCaseQueryResult=None,         
-        thePermissionsCache=None, 
-        theRolesCache=None, 
-        theParentExecutionRecord=None):
+        theAdditionalParams      =None,
+        theUseCaseQueryResult    =None,         
+        theRegistrarHistoria     =True, 
+        thePermissionsCache      =None, 
+        theRolesCache            =None, 
+        theParentExecutionRecord =None):
 
         unExecutionRecord = self.fStartExecution( 'method',  'fHacerDefinitiva', theParentExecutionRecord,  False) 
         
         try:
             aResult = self.fNewVoidChangeTranslationResult()
             
+            
+            unContadorCambiosString = theAdditionalParams.get( 'theContadorCambios', None)
+            if unContadorCambiosString:
+                unContadorCambios = -1
+                try:
+                    unContadorCambios = int( unContadorCambiosString)
+                except:
+                    None
+                if unContadorCambios >= 0:
+                    unContadorCambiosActual = self.getContadorCambios()
+                    if not( unContadorCambios == None):
+                        if not ( unContadorCambios == unContadorCambiosActual):
+                            return self.fResultForChangeCounterDetectedOverwrite(
+                                theAdditionalParams      =theAdditionalParams,
+                                theUseCaseQueryResult    =theUseCaseQueryResult, 
+                                theRegistrarHistoria     =theRegistrarHistoria, 
+                                thePermissionsCache      =thePermissionsCache, 
+                                theRolesCache            =theRolesCache, 
+                                theParentExecutionRecord =theParentExecutionRecord,
+                            )
+                        
             unaCadena = self.getCadena()
             if not unaCadena:
                 return aResult
@@ -1775,20 +2100,29 @@ class TRATraduccion_Operaciones:
                     unComentarioParaHistoria = unNuevoComentario        
                     self.setComentario(  unNuevoComentario)       
         
-                self.pRegistrarHistoria( 
-                    theAccion                   = 'Hacer Definitiva', 
-                    theFechaAccionTextual       = unAhoraStoreString, 
-                    theUsuarioActor             = unMemberId, 
-                    theEstadoTraduccion         = cEstadoTraduccionDefinitiva, 
-                    theFechaTraduccionTextual   = unaFechaTraduccionTextual, 
-                    theUsuarioTraductor         = unUsuarioTraductor, 
-                    theCadenaTraducida          = unaCadenaTraducida, 
-                    theFechaRevisionTextual     = unaFechaRevisionTextual, 
-                    theUsuarioRevisor           = unUsuarioRevisor, 
-                    theFechaDefinitivoTextual   = unAhoraStoreString, 
-                    theUsuarioCoordinador       = unMemberId, 
-                    theComentario               = unComentarioParaHistoria               
-                )
+                        
+                unContadorCambiosActual = self.getContadorCambios()
+                if not unContadorCambiosActual:
+                    unContadorCambiosActual = 0
+
+                unNuevoContadorCambios = unContadorCambiosActual + 1
+                self.setContadorCambios( unNuevoContadorCambios)
+
+                if theRegistrarHistoria:
+                    self.pRegistrarHistoria( 
+                        theAccion                   = cTranslationHistoryAction_HacerDefinitiva, 
+                        theFechaAccionTextual       = unAhoraStoreString, 
+                        theUsuarioActor             = unMemberId, 
+                        theEstadoTraduccion         = cEstadoTraduccionDefinitiva, 
+                        theFechaTraduccionTextual   = unaFechaTraduccionTextual, 
+                        theUsuarioTraductor         = unUsuarioTraductor, 
+                        theCadenaTraducida          = unaCadenaTraducida, 
+                        theFechaRevisionTextual     = unaFechaRevisionTextual, 
+                        theUsuarioRevisor           = unUsuarioRevisor, 
+                        theFechaDefinitivoTextual   = unAhoraStoreString, 
+                        theUsuarioCoordinador       = unMemberId, 
+                        theComentario               = unComentarioParaHistoria               
+                    )
                
                 unHayCambio = True
                 aResult.update({
@@ -1802,6 +2136,12 @@ class TRATraduccion_Operaciones:
                 if unHayCambio:
                     self.pRecatalogTraduccion( unExecutionRecord)
                         
+                        
+                    unCatalogo = self.getCatalogo()
+                    if not ( unCatalogo == None):
+                        unTranslationChange = { }
+                        unCatalogo.pTranslationHasChanged( unTranslationChange)
+
                     if cLogTranslationChanges:
                         logging.getLogger( 'gvSIGi18n::fHacerDefinitiva').info( "CHANGED")               
     
@@ -2222,9 +2562,9 @@ class TRATraduccion_Operaciones:
             return self
 
         if self.getCadenaTraducida().strip():
-            self.setEstadoTraduccion( "Traducida")
+            self.setEstadoTraduccion( cEstadoTraduccionTraducida)
         else:
-            self.setEstadoTraduccion( "Pendiente")
+            self.setEstadoTraduccion( cEstadoTraduccionPendiente)
             
         self.setComentario("")
         self.setHistoria( "")        

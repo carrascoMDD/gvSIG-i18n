@@ -2,7 +2,7 @@
 #
 # File: TRASolicitudCadena.py
 #
-# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
+# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
 # Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -473,6 +473,15 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActivida
        },
 
 
+       {'action': "string:${object_url}/MDDChanges",
+        'category': "object_buttons",
+        'id': 'mddchanges',
+        'name': 'Changes',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
        {'action': "string:${object_url}/reference_graph",
         'category': "object",
         'id': 'references',
@@ -500,6 +509,15 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActivida
        },
 
 
+       {'action': "string:${object_url}/MDDCacheStatus/",
+        'category': "object_buttons",
+        'id': 'mddcachestatus',
+        'name': 'Cache',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
     )
 
     _at_rename_after_creation = True
@@ -518,12 +536,12 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActivida
         
         return TRAArquetipo.manage_afterAdd( self, item, container)
 
-    security.declarePublic('cb_isMoveable')
-    def cb_isMoveable(self):
+    security.declarePublic('fIsCacheable')
+    def fIsCacheable(self):
         """
         """
         
-        return False
+        return True
 
     security.declarePublic('manage_beforeDelete')
     def manage_beforeDelete(self,item,container):
@@ -531,20 +549,6 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActivida
         """
         
         return TRAArquetipo.manage_beforeDelete( self, item, container)
-
-    security.declarePublic('cb_isCopyable')
-    def cb_isCopyable(self):
-        """
-        """
-        
-        return False
-
-    security.declarePublic('displayContentsTab')
-    def displayContentsTab(self):
-        """
-        """
-        
-        return False
 
     security.declarePublic('manage_pasteObjects')
     def manage_pasteObjects(self,cb_copy_data,REQUEST):
@@ -559,6 +563,20 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActivida
         """
         
         return TRAElemento_Operaciones.fExtraLinks( self)
+
+    security.declarePublic('displayContentsTab')
+    def displayContentsTab(self):
+        """
+        """
+        
+        return False
+
+    security.declarePublic('cb_isCopyable')
+    def cb_isCopyable(self):
+        """
+        """
+        
+        return False
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

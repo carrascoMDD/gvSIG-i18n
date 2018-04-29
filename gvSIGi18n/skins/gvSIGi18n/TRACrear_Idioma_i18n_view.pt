@@ -46,6 +46,9 @@
 				pNewCodigoInternacionalDeIdioma		request/theNewCodigoInternacionalDeIdioma   | pNewCodigoIdioma;
 				pNewEnglishName						request/theNewEnglishName                   | pNewCodigoIdioma;
 				pNewNombreNativoDeIdioma			request/theNewNombreNativoDeIdioma                    | pNewEnglishName;
+				
+				pCopyFromLanguageCode		        request/theCopyFromLanguageCode   | string:;	
+
 		 global pMostrarFormulario					python: (( not pNewKnownCodigoIdioma) or ( pNewKnownCodigoIdioma == '---' )) and ( (not pNewCodigoIdiomaEnGvSIG) or (not pNewEnglishName));
 				pNewEnglishName						python: pNewEnglishName or pNewCodigoIdioma;
 				pNewNombreNativoDeIdioma			python: pNewNombreNativoDeIdioma or pNewEnglishName;
@@ -88,6 +91,7 @@
 								'theCodigoInternacionalDeIdioma'        :pNewCodigoInternacionalDeIdioma, 
 								'theEnglishName'						:pNewEnglishName,
 								'theNombreNativoDeIdioma'				:pNewNombreNativoDeIdioma,  
+								'theCopyFromLanguageCode'               :pCopyFromLanguageCode,
 							}; 
 							unosArgs python: {
 								'theTimeProfilingResults' :pProfilingResults,
@@ -135,7 +139,9 @@
 					
 					<tal:block tal:condition="pMostrarFormulario" >
 						<form name="Crear_TRAIdioma" method="post" enctype="multipart/form-data"
-							tal:define="pIdiomasCodesAndDisplayNames python: here.fNonExistingKnownIdiomasCodesAndDisplayNames()">
+							tal:define="
+							    pIdiomasCodesAndDisplayNames python: here.fNonExistingKnownIdiomasCodesAndDisplayNames();
+								pExistingIdiomasCodesAndDisplayNames python: here.fTodosIdiomasCodesAndDisplayNames()">
 							
 							<tal:block tal:condition="pIdiomasCodesAndDisplayNames">
 								<h3  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearIdioma_action_page_title">Create New Language-</h3>
@@ -186,7 +192,7 @@
 							
 							<p><strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAIdioma_attr_codigoInternacionalDeIdioma_label">International language code-</strong></p>
 							<p  class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAIdioma_attr_codigoInternacionalDeIdioma_help">Standard international language code,according to I18N conventions.-</p>
-							<input name="theCodigoInternacionalDeIdioma" id="theCodigoInternacionalDeIdioma" type="text" size="10" maxlength="10"  tabindex="2" 
+							<input name="theNewCodigoInternacionalDeIdioma" id="theNewCodigoInternacionalDeIdioma" type="text" size="10" maxlength="10"  tabindex="2" 
 								value="" tal:attributes="value pNewCodigoInternacionalDeIdioma"/> 					
 							<br/>			    
 							<br/>
@@ -207,6 +213,38 @@
 							<br/>
 							<br/>
 		
+							
+							<h3  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_copyTranslations_action_page_title">Copy Translations from another Language into this Language-</h3>
+							<br/>
+							<p  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_copyTranslations_action_TranslationsImportedThroughImportprocess">The Translations will be copied indirectly through an Import process.-</p>
+							<p  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_copyTranslations_action_selectLanguage">Select a source Language to  copy Translations from, and click on Save button.-</p>
+							<p  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_copyTranslations_action_ExecuteImportProcess">The System will create an Import. Please execute the created import process, to copy the source translations into this Language.-</p>
+							<br/>			    
+								
+							<p><strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_copyTranslations_action_SourceLanguage_label">Source Language-</strong></p>
+							<p  class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_copyTranslations_action_SourceLanguage_help">One of the existing Languages, from which the Translations will be copied into this Language.-</p>
+							
+							<select  style="font-size: 9pt;" name="theCopyFromLanguageCode" id="theCopyFromLanguageCode" >
+								<option 
+									id="cid_CopyFromLanguageCode_None" value="---"
+									tal:content="string:---" />
+								<tal:block tal:repeat="unIdiomaIndex python: range( len(  pExistingIdiomasCodesAndDisplayNames))">
+									<tal:block tal:define="
+										unCodeAndDisplayname     python: pExistingIdiomasCodesAndDisplayNames[ unIdiomaIndex];
+										pCodigoIdioma            python: unCodeAndDisplayname[ 0];
+										pTituloIdioma            python: unCodeAndDisplayname[ 1]" >                                                            
+										<option 
+											id="#" value="#"
+											tal:content="pTituloIdioma"
+											tal:attributes="value python: pCodigoIdioma;
+												id python: 'cid_CopyFromLanguageCode_%d' % ( unIdiomaIndex, )"/>
+									</tal:block>
+								</tal:block>
+							</select>
+							
+							<br/>
+							<br/>
+							
 							<input class="context" name="form_submit"  type="submit"  value="Save" tabindex="5" i18n:domain="plone" i18n:attributes="value label_save" />                                                        
 						</form>
 					</tal:block>				

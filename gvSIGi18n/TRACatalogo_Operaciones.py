@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# File: Catalogo_operations.py
+# File: TRACatalogo_Operaciones.py
 #
 # Copyright (c) 2008, 2009 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
 #
@@ -57,7 +57,9 @@ from Products.CMFCore.utils         import getToolByName
 
 
 
+from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import ModelDDvlPloneTool_Mutators,cModificationKind_CreateSubElement, cModificationKind_Create, cModificationKind_ChangeValues
 
+from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow
 
 
 from TRAElemento_Constants import *
@@ -67,7 +69,7 @@ from TRACatalogo_Inicializacion import cNombreCatalogoBusquedaCadenas, cNombreCa
 from TRAElemento import TRAElemento
 
 from TRAElemento_Permission_Definitions import cUseCase_VerifyTRACatalogo, cUseCase_InitializeTRACatalogo, cUseCase_Export, cUseCase_ConfigureTRACatalogo
-from TRAElemento_Permission_Definitions import cUseCase_LockTRACatalogo, cUseCase_UnlockTRACatalogo
+from TRAElemento_Permission_Definitions import cUseCase_LockTRACatalogo, cUseCase_UnlockTRACatalogo, cUseCase_CreateTRAInforme
 # ACV 20090924 Unused, REmoved
 #
 #from TRAElemento_Permission_Definitions import cUseCase_AuthorizeUsers, cUseCase_ReviewUsersAuthorizations
@@ -84,6 +86,12 @@ from TRAArquetipo import TRAArquetipo
 
 cBusquedaTodasCadenasOrdenadasPorSimbolo = { 
         'getEstadoCadena':  cEstadoCadenaActiva, 
+        'sort_on':          'getSimbolo',  
+        'sort_order':       'ascending',
+}           
+
+cBusquedaCadenasInactivasOrdenadasPorSimbolo = { 
+        'getEstadoCadena':  cEstadoCadenaInactiva, 
         'sort_on':          'getSimbolo',  
         'sort_order':       'ascending',
 }           
@@ -139,9 +147,13 @@ class TRACatalogo_Operaciones:
         return unResult
         
     
+    
+    
+    
+    
 
     
-    security.declareProtected( permissions.AddPortalFolders, 'fBloquearCatalogo')
+    security.declareProtected( permissions.ModifyPortalContent, 'fBloquearCatalogo')
     def fBloquearCatalogo( self , thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
         
         unExecutionRecord = self.fStartExecution( 'method',  'fBloquearCatalogo', theParentExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
@@ -169,6 +181,23 @@ class TRACatalogo_Operaciones:
                 
                 if unPermiteModificar:
                     self.setPermiteModificar( False)
+                    
+                    self.pFlushCachedTemplates_All()                            
+                    
+                    
+                    aModelDDvlPloneTool_Mutators = ModelDDvlPloneTool_Mutators()
+                   
+                    aReport = aModelDDvlPloneTool_Mutators.fNewVoidChangeValuesReport()
+                    someFieldReports    = aReport.get( 'field_reports')
+                    aFieldReportsByName = aReport.get( 'field_reports_by_name')       
+
+                    aReportForField = { 'attribute_name': 'permiteModificar', 'effect': 'changed', 'new_value': False, 'previous_value': True,}                                                                                                                        
+                    
+                    someFieldReports.append( aReportForField)
+                    aFieldReportsByName[ 'permiteModificar'] = aReportForField
+                    
+                    aModelDDvlPloneTool_Mutators.pSetAudit_Modification( self, cModificationKind_ChangeValues, aReport)       
+                    
                     transaction.commit()
                     logging.getLogger( 'gvSIGi18n').info( "COMMIT TRACatalogo::fBloquearCatalogo %s" % '/'.join( self.getPhysicalPath()))
                     
@@ -228,6 +257,22 @@ class TRACatalogo_Operaciones:
                 
                 if not unPermiteModificar:
                     self.setPermiteModificar( True)
+                    
+                    self.pFlushCachedTemplates_All()                            
+                    
+                    aModelDDvlPloneTool_Mutators = ModelDDvlPloneTool_Mutators()
+                   
+                    aReport = aModelDDvlPloneTool_Mutators.fNewVoidChangeValuesReport()
+                    someFieldReports    = aReport.get( 'field_reports')
+                    aFieldReportsByName = aReport.get( 'field_reports_by_name')       
+
+                    aReportForField = { 'attribute_name': 'permiteModificar', 'effect': 'changed', 'new_value': True, 'previous_value': False,}                                                                                                                        
+                    
+                    someFieldReports.append( aReportForField)
+                    aFieldReportsByName[ 'permiteModificar'] = aReportForField
+                    
+                    aModelDDvlPloneTool_Mutators.pSetAudit_Modification( self, cModificationKind_ChangeValues, aReport)       
+                    
                     transaction.commit()
                     logging.getLogger( 'gvSIGi18n').info( "COMMIT TRACatalogo::fDesbloquearCatalogo %s" % '/'.join( self.getPhysicalPath()))
                     
@@ -1038,7 +1083,7 @@ class TRACatalogo_Operaciones:
     security.declareProtected( permissions.View, 'fObtenerColeccionCadenas')
     def fObtenerColeccionCadenas( self, ):
    
-        unasColecciones = self.objectValues( cNombreTipoTRAColeccionCadenas) #
+        unasColecciones = self.objectValues( cNombreTipoTRAColeccionCadenas)
         if not unasColecciones:
             return None
         return unasColecciones[ 0]
@@ -1046,7 +1091,16 @@ class TRACatalogo_Operaciones:
     
     
     
+    security.declareProtected( permissions.View, 'fObtenerColeccionSolicitudesCadenas')
+    def fObtenerColeccionSolicitudesCadenas( self, ):
+   
+        unasColecciones = self.objectValues( cNombreTipoTRAColeccionSolicitudesCadenas)
+        if not unasColecciones:
+            return None
+        return unasColecciones[ 0]
+         
     
+        
     
     
     
@@ -1170,7 +1224,34 @@ class TRACatalogo_Operaciones:
         return unaCadena
         
         
+
+    
+    
+    
         
+    security.declareProtected( permissions.View, 'fGetCadenaInactivaPorSimbolo')    
+    def fGetCadenaInactivaPorSimbolo(self, theSimboloCadena):
+        if not theSimboloCadena:
+            return None                   
+
+        unCatalog = self.fCatalogBusquedaCadenas() 
+        if ( unCatalog == None):
+            return None
+        unaBusqueda = { 
+            'getSimbolo' :      theSimboloCadena,
+            'getEstadoCadena':  cEstadoCadenaInactiva
+        }
+            
+        unosResultadosBusqueda = unCatalog.searchResults(**unaBusqueda)
+        if len( unosResultadosBusqueda) < 1:
+            return None
+
+        unaCadena = unosResultadosBusqueda[ 0].getObject() 
+        return unaCadena
+                
+    
+    
+    
     
             
     security.declarePrivate( 'getHighestCadenaIdNumber')    
@@ -1444,6 +1525,58 @@ class TRACatalogo_Operaciones:
             if not self.fSetLocalRolesEnIdiomaForCatalogUserGroups( unNuevoIdioma):
                 return None
             
+            
+            unResultadoNuevoIdioma = self.fModelDDvlPloneTool().fRetrieveTypeConfig( 
+                theTimeProfilingResults     =None,
+                theElement                  =unNuevoIdioma, 
+                theParent                   =None,
+                theParentTraversalName      ='',
+                theTypeConfig               =None, 
+                theAllTypeConfigs           =None, 
+                theViewName                 ='', 
+                theRetrievalExtents         =[ 'traversals', ],
+                theWritePermissions         =None,
+                theFeatureFilters           ={ 'attrs': [ 'title',], 'relations': [], 'do_not_recurse_collections': True,}, 
+                theInstanceFilters          =None,
+                theTranslationsCaches       =None,
+                theCheckedPermissionsCache  =thePermissionsCache,
+                theAdditionalParams         =None                
+            )
+            if unResultadoNuevoIdioma:
+            
+                aModelDDvlPloneTool_Mutators = ModelDDvlPloneTool_Mutators()
+                    
+                aCreateElementReport = aModelDDvlPloneTool_Mutators.fNewVoidCreateElementReport()
+                aCreateElementReport.update( { 'effect': 'created', 'new_object_result': unResultadoNuevoIdioma, })
+                
+                someFieldReports    = aCreateElementReport[ 'field_reports']
+                aFieldReportsByName = aCreateElementReport[ 'field_reports_by_name']
+                
+                aReportForField = { 'attribute_name': 'id',          'effect': 'changed', 'new_value': unaIdIdioma, 'previous_value': '',}
+                someFieldReports.append( aReportForField)            
+                aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
+                
+                aReportForField = { 'attribute_name': 'title',       'effect': 'changed', 'new_value': unTitle,           'previous_value': '',}
+                someFieldReports.append( aReportForField)            
+                aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
+                
+                aReportForField = { 'attribute_name': 'codigoIdiomaEnGvSIG', 'effect': 'changed', 'new_value': theCodigoIdiomaEnGvSIG,    'previous_value': '',}
+                someFieldReports.append( aReportForField)            
+                aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
+                                   
+                aReportForField = { 'attribute_name': 'codigoInternacionalDeIdioma', 'effect': 'changed', 'new_value': theCodigoInternacionalDeIdioma,    'previous_value': '',}
+                someFieldReports.append( aReportForField)            
+                aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
+                                   
+                aReportForField = { 'attribute_name': 'nombreNativoDeIdioma', 'effect': 'changed', 'new_value': unNombreNativoIdioma,    'previous_value': '',}
+                someFieldReports.append( aReportForField)            
+                aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
+                                   
+                aModelDDvlPloneTool_Mutators.pSetAudit_Creation( unaColeccionIdiomas, cModificationKind_CreateSubElement, aCreateElementReport, theUseCounter=True)       
+                aModelDDvlPloneTool_Mutators.pSetAudit_Creation( unNuevoIdioma,       cModificationKind_Create,           aCreateElementReport)       
+             
+            
+            
                                                              
             unIndexIdiomaAnterior = -1
             for unIndexIdioma in range( len( unosCodigosIdioma)):
@@ -1531,6 +1664,45 @@ class TRACatalogo_Operaciones:
             if not self.fSetLocalRolesEnModuloForCatalogUserGroups( unNuevoModulo):
                 return None
             
+            
+            
+            unResultadoNuevoModulo = self.fModelDDvlPloneTool().fRetrieveTypeConfig( 
+                theTimeProfilingResults     =None,
+                theElement                  =unNuevoModulo, 
+                theParent                   =None,
+                theParentTraversalName      ='',
+                theTypeConfig               =None, 
+                theAllTypeConfigs           =None, 
+                theViewName                 ='', 
+                theRetrievalExtents         =[ 'traversals', ],
+                theWritePermissions         =None,
+                theFeatureFilters           ={ 'attrs': [ 'title',], 'relations': [], 'do_not_recurse_collections': True,}, 
+                theInstanceFilters          =None,
+                theTranslationsCaches       =None,
+                theCheckedPermissionsCache  =thePermissionsCache,
+                theAdditionalParams         =None                
+            )
+            if unResultadoNuevoModulo:
+            
+                aModelDDvlPloneTool_Mutators = ModelDDvlPloneTool_Mutators()
+                    
+                aCreateElementReport = aModelDDvlPloneTool_Mutators.fNewVoidCreateElementReport()
+                aCreateElementReport.update( { 'effect': 'created', 'new_object_result': unResultadoNuevoModulo, })
+                
+                someFieldReports    = aCreateElementReport[ 'field_reports']
+                aFieldReportsByName = aCreateElementReport[ 'field_reports_by_name']
+                
+                aReportForField = { 'attribute_name': 'id',          'effect': 'changed', 'new_value': unaIdModulo, 'previous_value': '',}
+                someFieldReports.append( aReportForField)            
+                aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
+                
+                aReportForField = { 'attribute_name': 'title',       'effect': 'changed', 'new_value': theNombreModulo,           'previous_value': '',}
+                someFieldReports.append( aReportForField)            
+                aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
+
+                aModelDDvlPloneTool_Mutators.pSetAudit_Creation( unaColeccionModulos, cModificationKind_CreateSubElement, aCreateElementReport, theUseCounter=True)       
+                aModelDDvlPloneTool_Mutators.pSetAudit_Creation( unNuevoModulo,       cModificationKind_Create,           aCreateElementReport)       
+             
             
            
             unIndexModuloAnterior = -1
@@ -1655,9 +1827,10 @@ class TRACatalogo_Operaciones:
         theCodigoIdioma, 
         theCadenaTraducida, 
         theComentario, 
-        thePermissionsCache=None, 
-        theRolesCache=None, 
-        theParentExecutionRecord=None):
+        theAdditionalParams      =None,
+        thePermissionsCache      =None, 
+        theRolesCache            =None, 
+        theParentExecutionRecord =None):
         """Service exposed to UI Set the string translation and change the state from pending to translated and comment to the supplied values. 
 
         Delegate in the TRACadena found by its symbol
@@ -1678,13 +1851,14 @@ class TRACatalogo_Operaciones:
                 return self.fNewVoidChangeTranslationResult()
             
             unResultado = unaCadena.fIntentarTraducirTraduccion( 
-                unIdioma, 
-                theCadenaTraducida, 
-                theComentario, 
-                theRegistrarHistoria    = True, 
-                thePermissionsCache     =thePermissionsCache, 
-                theRolesCache           =theRolesCache, 
-                theParentExecutionRecord=unExecutionRecord
+                theIdioma                =unIdioma, 
+                theCadenaTraducida       =theCadenaTraducida, 
+                theComentario            =theComentario, 
+                theAdditionalParams      =theAdditionalParams,
+                theRegistrarHistoria     =True, 
+                thePermissionsCache      =thePermissionsCache, 
+                theRolesCache            =theRolesCache, 
+                theParentExecutionRecord =unExecutionRecord,
             )
                 
             return unResultado
@@ -1702,6 +1876,7 @@ class TRACatalogo_Operaciones:
         theSimboloCadena, 
         theCodigoIdioma, 
         theComentario, 
+        theAdditionalParams         =None,
         thePermissionsCache         =None, 
         theRolesCache               =None, 
         theParentExecutionRecord=None):
@@ -1721,11 +1896,13 @@ class TRACatalogo_Operaciones:
                 return self.fNewVoidChangeTranslationResult()
     
             unResultado = unaCadena.fComentarTraduccion( 
-                unIdioma, 
-                theComentario, 
-                thePermissionsCache     =thePermissionsCache, 
-                theRolesCache           =theRolesCache, 
-                theParentExecutionRecord=unExecutionRecord
+                theIdioma                =unIdioma, 
+                theComentario            =theComentario, 
+                theAdditionalParams      =theAdditionalParams,
+                theRegistrarHistoria     =True, 
+                thePermissionsCache      =thePermissionsCache, 
+                theRolesCache            =theRolesCache, 
+                theParentExecutionRecord =unExecutionRecord,
             )
                  
             return unResultado        
@@ -1745,6 +1922,7 @@ class TRACatalogo_Operaciones:
         theSimboloCadena, 
         theCodigoIdioma, 
         theComentario, 
+        theAdditionalParams         =None,
         thePermissionsCache         =None, 
         theRolesCache               =None, 
         theParentExecutionRecord=None):
@@ -1764,11 +1942,13 @@ class TRACatalogo_Operaciones:
                 return self.fNewVoidChangeTranslationResult()
                 
             unResultado = unaCadena.fHacerPendienteTraduccion( 
-                unIdioma, 
-                theComentario, 
-                thePermissionsCache     =thePermissionsCache, 
-                theRolesCache           =theRolesCache, 
-                theParentExecutionRecord=unExecutionRecord
+                theIdioma                =unIdioma, 
+                theComentario            =theComentario, 
+                theAdditionalParams      =theAdditionalParams,
+                theRegistrarHistoria     =True, 
+                thePermissionsCache      =thePermissionsCache, 
+                theRolesCache            =theRolesCache, 
+                theParentExecutionRecord =unExecutionRecord,
             )
                  
             return unResultado        
@@ -1787,6 +1967,7 @@ class TRACatalogo_Operaciones:
         theSimboloCadena, 
         theCodigoIdioma, 
         theComentario, 
+        theAdditionalParams         =None,
         thePermissionsCache         =None, 
         theRolesCache               =None, 
         theParentExecutionRecord=None):
@@ -1806,11 +1987,13 @@ class TRACatalogo_Operaciones:
                 return self.fNewVoidChangeTranslationResult()
                 
             unResultado = unaCadena.fHacerTraducidaTraduccion( 
-                unIdioma, 
-                theComentario, 
-                thePermissionsCache     =thePermissionsCache, 
-                theRolesCache           =theRolesCache, 
-                theParentExecutionRecord=unExecutionRecord
+                theIdioma                =unIdioma, 
+                theComentario            =theComentario, 
+                theAdditionalParams      =theAdditionalParams,
+                theRegistrarHistoria     =True, 
+                thePermissionsCache      =thePermissionsCache, 
+                theRolesCache            =theRolesCache, 
+                theParentExecutionRecord =unExecutionRecord,
             )
                             
             return unResultado                 
@@ -1830,6 +2013,7 @@ class TRACatalogo_Operaciones:
         theSimboloCadena, 
         theCodigoIdioma, 
         theComentario, 
+        theAdditionalParams         =None,
         thePermissionsCache         =None, 
         theRolesCache               =None, 
         theParentExecutionRecord=None):
@@ -1849,11 +2033,13 @@ class TRACatalogo_Operaciones:
                 return self.fNewVoidChangeTranslationResult()
                 
             unResultado = unaCadena.fHacerRevisadaTraduccion( 
-                unIdioma, 
-                theComentario, 
-                thePermissionsCache     =thePermissionsCache, 
-                theRolesCache           =theRolesCache, 
-                theParentExecutionRecord=unExecutionRecord
+                theIdioma                =unIdioma, 
+                theComentario            =theComentario, 
+                theAdditionalParams      =theAdditionalParams,
+                theRegistrarHistoria     =True, 
+                thePermissionsCache      =thePermissionsCache, 
+                theRolesCache            =theRolesCache, 
+                theParentExecutionRecord =unExecutionRecord,
             )
             
             return unResultado        
@@ -1873,6 +2059,7 @@ class TRACatalogo_Operaciones:
         theSimboloCadena, 
         theCodigoIdioma, 
         theComentario, 
+        theAdditionalParams         =None,
         thePermissionsCache         =None, 
         theRolesCache               =None, 
         theParentExecutionRecord=None):
@@ -1892,11 +2079,13 @@ class TRACatalogo_Operaciones:
                 return self.fNewVoidChangeTranslationResult()
                 
             unResultado = unaCadena.fHacerDefinitivaTraduccion(  
-                unIdioma, 
-                theComentario, 
-                thePermissionsCache     =thePermissionsCache, 
-                theRolesCache           =theRolesCache, 
-                theParentExecutionRecord=unExecutionRecord
+                theIdioma                =unIdioma, 
+                theComentario            =theComentario, 
+                theAdditionalParams      =theAdditionalParams,
+                theRegistrarHistoria     =True, 
+                thePermissionsCache      =thePermissionsCache, 
+                theRolesCache            =theRolesCache, 
+                theParentExecutionRecord =unExecutionRecord,
             )
                  
             return unResultado        
@@ -1912,6 +2101,7 @@ class TRACatalogo_Operaciones:
     def fInvalidarTraduccionesCadenas( self, 
         theSimboloCadena, 
         theComentario, 
+        theAdditionalParams         =None,
         thePermissionsCache         =None, 
         theRolesCache               =None, 
         theParentExecutionRecord=None):
@@ -1928,6 +2118,46 @@ class TRACatalogo_Operaciones:
                 
             unResultado = unaCadena.fInvalidarTraducciones(  
                 theComentario, 
+                theAdditionalParams     =theAdditionalParams,
+                theRegistrarHistoria    =True, 
+                thePermissionsCache     =thePermissionsCache, 
+                theRolesCache           =theRolesCache, 
+                theParentExecutionRecord=unExecutionRecord
+            )
+                 
+            return unResultado        
+       
+        finally:
+            unExecutionRecord and unExecutionRecord.pEndExecution()
+            
+  
+  
+
+
+
+    security.declarePrivate( 'fDesactivarCadena')    
+    def fDesactivarCadena( self, 
+        theSimboloCadena, 
+        theComentario, 
+        theAdditionalParams         =None,
+        thePermissionsCache         =None, 
+        theRolesCache               =None, 
+        theParentExecutionRecord=None):
+
+        unExecutionRecord = self.fStartExecution( 'method',  'fDesactivarCadena', theParentExecutionRecord, False) 
+        
+        try:
+            if  not theSimboloCadena:
+                return self.fNewVoidChangeTranslationResult()
+                
+            unaCadena = self.fGetCadenaPorSimbolo( theSimboloCadena)
+            if not unaCadena:
+                return self.fNewVoidChangeTranslationResult()
+                
+            unResultado = unaCadena.fDesactivar(  
+                theComentario, 
+                theAdditionalParams     =theAdditionalParams,
+                theRegistrarHistoria    =True, 
                 thePermissionsCache     =thePermissionsCache, 
                 theRolesCache           =theRolesCache, 
                 theParentExecutionRecord=unExecutionRecord
@@ -1941,12 +2171,58 @@ class TRACatalogo_Operaciones:
   
 
 
+
+
+
+    security.declarePrivate( 'fActivarCadena')    
+    def fActivarCadena( self, 
+        theSimboloCadena, 
+        theComentario, 
+        theAdditionalParams         =None,
+        thePermissionsCache         =None, 
+        theRolesCache               =None, 
+        theParentExecutionRecord=None):
+
+        unExecutionRecord = self.fStartExecution( 'method',  'fActivarCadena', theParentExecutionRecord, False) 
+        
+        try:
+            if  not theSimboloCadena:
+                return self.fNewVoidChangeTranslationResult()
+                
+            unaCadena = self.fGetCadenaInactivaPorSimbolo( theSimboloCadena)
+            if not unaCadena:
+                return self.fNewVoidChangeTranslationResult()
+                
+            unResultado = unaCadena.fActivar(  
+                theComentario, 
+                theAdditionalParams     =theAdditionalParams,
+                theRegistrarHistoria    =True, 
+                thePermissionsCache     =thePermissionsCache, 
+                theRolesCache           =theRolesCache, 
+                theParentExecutionRecord=unExecutionRecord
+            )
+                 
+            return unResultado        
+       
+        finally:
+            unExecutionRecord and unExecutionRecord.pEndExecution()
+            
+  
+
+
+            
+            
+            
+            
+            
+            
     security.declarePrivate( 'fLoteCambiosEstadoTraduccionesCadenas')    
     def fLoteCambiosEstadoTraduccionesCadenas( self, 
         theBatchIds_Traducida, 
         theBatchIds_Revisada,
         theBatchIds_Definitiva,        
         theCodigoIdioma, 
+        theAdditionalParams         =None,
         thePermissionsCache         =None, 
         theRolesCache               =None, 
         theParentExecutionRecord=None):
@@ -1974,11 +2250,13 @@ class TRACatalogo_Operaciones:
                 if unaCadena:
                     
                     unResultado = unaCadena.fHacerTraducidaTraduccion(  
-                        unIdioma, 
-                        '', 
-                        thePermissionsCache     =unPermissionsCache, 
-                        theRolesCache           =unRolesCache, 
-                        theParentExecutionRecord=unExecutionRecord
+                        theIdioma                =unIdioma, 
+                        theComentario            ='', 
+                        theAdditionalParams      =theAdditionalParams,
+                        theRegistrarHistoria     =True, 
+                        thePermissionsCache      =unPermissionsCache, 
+                        theRolesCache            =unRolesCache, 
+                        theParentExecutionRecord =unExecutionRecord,
                     )
                      
                     if unResultado.get( 'success', False):
@@ -1994,11 +2272,13 @@ class TRACatalogo_Operaciones:
                 if unaCadena:
                     
                     unResultado = unaCadena.fHacerRevisadaTraduccion(  
-                        unIdioma, 
-                        '', 
-                        thePermissionsCache     =unPermissionsCache, 
-                        theRolesCache           =unRolesCache, 
-                        theParentExecutionRecord=unExecutionRecord
+                        theIdioma                =unIdioma, 
+                        theComentario            ='', 
+                        theAdditionalParams      =theAdditionalParams,
+                        theRegistrarHistoria     =True, 
+                        thePermissionsCache      =unPermissionsCache, 
+                        theRolesCache            =unRolesCache, 
+                        theParentExecutionRecord =unExecutionRecord,
                     )
                      
                     if unResultado.get( 'success', False):
@@ -2014,11 +2294,13 @@ class TRACatalogo_Operaciones:
                 if unaCadena:
                     
                     unResultado = unaCadena.fHacerDefinitivaTraduccion(  
-                        unIdioma, 
-                        '', 
-                        thePermissionsCache     =unPermissionsCache, 
-                        theRolesCache           =unRolesCache, 
-                        theParentExecutionRecord=unExecutionRecord
+                        theIdioma                =unIdioma, 
+                        theComentario            ='', 
+                        theAdditionalParams      =theAdditionalParams,
+                        theRegistrarHistoria     =True, 
+                        thePermissionsCache      =unPermissionsCache, 
+                        theRolesCache            =unRolesCache, 
+                        theParentExecutionRecord =unExecutionRecord,
                     )
                      
                     if unResultado.get( 'success', False):
@@ -2104,11 +2386,53 @@ class TRACatalogo_Operaciones:
     
     
     
-    
-         
+        
+    # #######################################################################
+    #   Simbolos cadenas in Inactive state
+    #   not cached
+    #
+    # #######################################################################
+
+     
+
+    security.declarePrivate( 'fListaSimbolosCadenasInactivasOrdenados')
+    def fListaSimbolosCadenasInactivasOrdenados( self,theParentExecutionRecord=None):
+        
+
+        unExecutionRecord = self.fStartExecution( 'method',  'fListaSimbolosCadenasInactivasOrdenados', theParentExecutionRecord, False) 
+
+        if cLogInicializarSimbolosCadenasOrdenados:
+            unStartTime = fMillisecondsNow()
+        
+        try:
+            unaBusqueda = cBusquedaCadenasInactivasOrdenadasPorSimbolo.copy()
+
+            unCatalogBusquedaCadenas = self.fCatalogBusquedaCadenas()
+            if ( unCatalogBusquedaCadenas == None):
+                return self
+            unosDatosCadenas = unCatalogBusquedaCadenas.searchResults( **unaBusqueda ) 
+            
+            if not unosDatosCadenas or len( unosDatosCadenas) < 1:
+                return [ ]
+            
+            unosSimbolos = [ ]
+            
+            for unosDatosCadena in unosDatosCadenas:
+                unSimbolo =  unosDatosCadena[ 'getSimbolo']
+                if unSimbolo:
+                    unosSimbolos.append( unSimbolo)
+                    
+            return unosSimbolos
+
+        
+        finally:
+            unExecutionRecord and unExecutionRecord.pEndExecution()
+
 
     
     
+            
+            
         
     # #######################################################################
     #   Cached sorted simbolos cadenas
@@ -2128,6 +2452,11 @@ class TRACatalogo_Operaciones:
         unosSimbolos = unTextoSimbolos.splitlines()
         return unosSimbolos
         
+    
+    
+    
+    
+    
         
     security.declarePrivate( 'fListaSimbolosCadenasOrdenadosEnModulo')
     def fListaSimbolosCadenasOrdenadosEnModulo( self, theNombreModulo,  theParentExecutionRecord=None):
@@ -2299,7 +2628,7 @@ class TRACatalogo_Operaciones:
         unExecutionRecord = self.fStartExecution( 'method',  'pInicializarModulosYSimbolosCadenasOrdenados', theParentExecutionRecord, False) 
 
         if cLogInicializarSimbolosCadenasOrdenados:
-            unStartTime = self.fMillisecondsNow()
+            unStartTime = fMillisecondsNow()
         
         try:
             unaBusqueda = cBusquedaTodasCadenasOrdenadasPorSimbolo.copy()
@@ -2372,7 +2701,7 @@ class TRACatalogo_Operaciones:
             unExecutionRecord and unExecutionRecord.pEndExecution()
 
             if cLogInicializarSimbolosCadenasOrdenados:
-                unEndTime = self.fMillisecondsNow()
+                unEndTime = fMillisecondsNow()
                 logging.getLogger( 'gvSIGi18n').info( 'pInicializarModulosYSimbolosCadenasOrdenados::TOTAL milliseconds=%d' % ( unEndTime - unStartTime))
         
         
@@ -2486,55 +2815,7 @@ class TRACatalogo_Operaciones:
 
      
         
-   
-        
-   
 
-    
-    
-    
-    
-    
-    
-    
-    
-         
-        
-        
-        
-# ################################
-#  Only used when migrating version that derived traduccion field from cadena
-#  to the new implementation where traducciones hold storage for those values
-    
-    #security.declareProtected( permissions.ModifyPortalContent,  'pInitTraduccionesPreviouslyComputedFields')    
-    #def pInitTraduccionesPreviouslyComputedFields( self):
-        
- 
-        #unPathDelRaiz = self.fPathDelRaiz()
-        
-        #unCatalogBusquedaTraducciones = self.fCatalogBusquedaTraducciones()   
-        #unaBusqueda = { 
-            #'Type' :                   'Traduccion', 
-        #}      
-        #unosResultadosBusquedaTraducciones      = unCatalogBusquedaTraducciones.searchResults(**unaBusqueda)
-        #for unResultadoTraduccion in unosResultadosBusquedaTraducciones:
-            #unaTraduccion = unResultadoTraduccion.getObject()
-            #unaTraduccion.setPathDelRaiz( unPathDelRaiz)
+   
+              
 
-        #unCatalogBusquedaCadenas = self.fCatalogBusquedaCadenas()   
-        #unaBusqueda = { 
-            #'Type' :                   'Cadena', 
-        #}            
-        #unosResultadosBusquedaCadenas      = unCatalogBusquedaCadenas.searchResults(**unaBusqueda)
-        #for unResultadoCadena in unosResultadosBusquedaCadenas:
-            #unaCadena = unResultadoCadena.getObject()
-            #unaCadena.setPathDelRaiz( unPathDelRaiz)
-            
-        #return self
-    
-        
-        
-        
-            
-            
-            

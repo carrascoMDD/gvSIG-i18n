@@ -2,7 +2,7 @@
 #
 # File: TRAColeccionModulos.py
 #
-# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
+# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
 # Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -30,6 +30,7 @@ __docformat__ = 'plaintext'
 from AccessControl import ClassSecurityInfo
 from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.TRAColeccionArquetipos import TRAColeccionArquetipos
+from Products.gvSIGi18n.TRAConRegistroActividad import TRAConRegistroActividad
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
@@ -72,16 +73,17 @@ schema = Schema((
 
 TRAColeccionModulos_schema = OrderedBaseFolderSchema.copy() + \
     getattr(TRAColeccionArquetipos, 'schema', Schema(())).copy() + \
+    getattr(TRAConRegistroActividad, 'schema', Schema(())).copy() + \
     schema.copy()
 
 ##code-section after-schema #fill in your manual code here
 ##/code-section after-schema
 
-class TRAColeccionModulos(OrderedBaseFolder, TRAColeccionArquetipos):
+class TRAColeccionModulos(OrderedBaseFolder, TRAColeccionArquetipos, TRAConRegistroActividad):
     """
     """
     security = ClassSecurityInfo()
-    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAColeccionArquetipos,'__implements__',()),)
+    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAColeccionArquetipos,'__implements__',()),) + (getattr(TRAConRegistroActividad,'__implements__',()),)
 
     # This name appears in the 'add' box
     archetype_name = 'Coleccion de Modulos'
@@ -104,7 +106,7 @@ class TRAColeccionModulos(OrderedBaseFolder, TRAColeccionArquetipos):
 
 
 
-    allowed_content_types = ['TRAModulo'] + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', []))
+    allowed_content_types = ['TRAModulo'] + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', []))
     filter_content_types             = 1
     global_allow                     = 0
     #content_icon = 'TRAColeccionModulos.gif'
@@ -161,6 +163,15 @@ class TRAColeccionModulos(OrderedBaseFolder, TRAColeccionArquetipos):
        },
 
 
+       {'action': "string:${object_url}/MDDChanges",
+        'category': "object_buttons",
+        'id': 'mddchanges',
+        'name': 'Changes',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
        {'action': "string:$object_url/Editar",
         'category': "object",
         'id': 'edit',
@@ -188,6 +199,15 @@ class TRAColeccionModulos(OrderedBaseFolder, TRAColeccionArquetipos):
        },
 
 
+       {'action': "string:${object_url}/MDDCacheStatus/",
+        'category': "object_buttons",
+        'id': 'mddcachestatus',
+        'name': 'Cache',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
     )
 
     _at_rename_after_creation = True
@@ -206,19 +226,19 @@ class TRAColeccionModulos(OrderedBaseFolder, TRAColeccionArquetipos):
         
         return TRAColeccionArquetipos.manage_afterAdd( self, item, container)
 
-    security.declarePublic('cb_isMoveable')
-    def cb_isMoveable(self):
-        """
-        """
-        
-        return False
-
     security.declarePublic('manage_beforeDelete')
     def manage_beforeDelete(self,item,container):
         """
         """
         
         return TRAColeccionArquetipos.manage_beforeDelete( self, item, container)
+
+    security.declarePublic('cb_isCopyable')
+    def cb_isCopyable(self):
+        """
+        """
+        
+        return False
 
     security.declarePublic('manage_pasteObjects')
     def manage_pasteObjects(self,cb_copy_data,REQUEST):
@@ -234,12 +254,12 @@ class TRAColeccionModulos(OrderedBaseFolder, TRAColeccionArquetipos):
         
         return False
 
-    security.declarePublic('cb_isCopyable')
-    def cb_isCopyable(self):
+    security.declarePublic('fIsCacheable')
+    def fIsCacheable(self):
         """
         """
         
-        return False
+        return True
 
     security.declarePublic('fExtraLinks')
     def fExtraLinks(self):

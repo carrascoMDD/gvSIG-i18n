@@ -2,7 +2,7 @@
 #
 # File: TRAColeccionSolicitudesCadenas.py
 #
-# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
+# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
 # Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -32,6 +32,7 @@ __docformat__ = 'plaintext'
 from AccessControl import ClassSecurityInfo
 from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.TRAColeccionArquetipos import TRAColeccionArquetipos
+from Products.gvSIGi18n.TRAConRegistroActividad import TRAConRegistroActividad
 from TRAColeccionSolicitudesCadenas_Operaciones import TRAColeccionSolicitudesCadenas_Operaciones
 from Products.gvSIGi18n.config import *
 
@@ -77,17 +78,18 @@ schema = Schema((
 
 TRAColeccionSolicitudesCadenas_schema = OrderedBaseFolderSchema.copy() + \
     getattr(TRAColeccionArquetipos, 'schema', Schema(())).copy() + \
+    getattr(TRAConRegistroActividad, 'schema', Schema(())).copy() + \
     getattr(TRAColeccionSolicitudesCadenas_Operaciones, 'schema', Schema(())).copy() + \
     schema.copy()
 
 ##code-section after-schema #fill in your manual code here
 ##/code-section after-schema
 
-class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccionSolicitudesCadenas_Operaciones):
+class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, TRAConRegistroActividad, TRAColeccionSolicitudesCadenas_Operaciones):
     """
     """
     security = ClassSecurityInfo()
-    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAColeccionArquetipos,'__implements__',()),) + (getattr(TRAColeccionSolicitudesCadenas_Operaciones,'__implements__',()),)
+    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAColeccionArquetipos,'__implements__',()),) + (getattr(TRAConRegistroActividad,'__implements__',()),) + (getattr(TRAColeccionSolicitudesCadenas_Operaciones,'__implements__',()),)
 
     # This name appears in the 'add' box
     archetype_name = 'Coleccion de Solicitudes de creacion de Cadenas'
@@ -110,7 +112,7 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
 
 
 
-    allowed_content_types = ['TRASolicitudCadena'] + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', [])) + list(getattr(TRAColeccionSolicitudesCadenas_Operaciones, 'allowed_content_types', []))
+    allowed_content_types = ['TRASolicitudCadena'] + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', [])) + list(getattr(TRAColeccionSolicitudesCadenas_Operaciones, 'allowed_content_types', []))
     filter_content_types             = 1
     global_allow                     = 0
     #content_icon = 'TRAColeccionSolicitudesCadenas.gif'
@@ -133,7 +135,7 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
 
        {'action': "string:${object_url}/TRACrearCadenas_action",
         'category': "object_buttons",
-        'id': 'CreateStrings',
+        'id': 'TRACreateStrings',
         'name': 'Create Strings',
         'permissions': ("Modify portal content",),
         'condition': """python:object.fUseCaseCheckDoable( 'Create_TRASolicitudCadena')"""
@@ -142,7 +144,7 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
 
        {'action': "string:${object_url}/TRALimpiarCadenas_action",
         'category': "object_buttons",
-        'id': 'CleanupStrings',
+        'id': 'TRACleanupStrings',
         'name': 'Clean-up Strings',
         'permissions': ("Modify portal content",),
         'condition': """python:object.fUseCaseCheckDoable( 'Cleanup_TRAColeccionSolicitudesCadenas')"""
@@ -171,6 +173,15 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
         'category': "object",
         'id': 'view',
         'name': 'View',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:${object_url}/MDDChanges",
+        'category': "object_buttons",
+        'id': 'mddchanges',
+        'name': 'Changes',
         'permissions': ("View",),
         'condition': """python:1"""
        },
@@ -212,6 +223,15 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
        },
 
 
+       {'action': "string:${object_url}/MDDCacheStatus/",
+        'category': "object_buttons",
+        'id': 'mddcachestatus',
+        'name': 'Cache',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
     )
 
     _at_rename_after_creation = True
@@ -237,8 +257,8 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
         
         return TRAColeccionArquetipos.manage_afterAdd( self, item, container)
 
-    security.declarePublic('cb_isMoveable')
-    def cb_isMoveable(self):
+    security.declarePublic('cb_isCopyable')
+    def cb_isCopyable(self):
         """
         """
         
@@ -251,12 +271,12 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
         
         return False
 
-    security.declarePublic('cb_isCopyable')
-    def cb_isCopyable(self):
+    security.declarePublic('fIsCacheable')
+    def fIsCacheable(self):
         """
         """
         
-        return False
+        return True
 
     security.declarePublic('fExtraLinks')
     def fExtraLinks(self):

@@ -279,3 +279,6 @@ msgstr "Developed by"
 #: gvSIGi18n_creditos_i18n_view
 msgid "gvSIGi18n_credits_Platform_Intro_PropertyName"
 msgstr "Application Server, Content Management System and Programming Language"
+
+
+

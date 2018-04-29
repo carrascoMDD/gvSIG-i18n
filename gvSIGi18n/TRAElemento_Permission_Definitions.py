@@ -40,8 +40,45 @@ from Products.PluggableAuthService.permissions import ManageGroups              
 from AccessControl.Permissions                 import access_contents_information   as perm_AccessContentsInformation
 from AccessControl.Permissions                 import copy_or_move                  as perm_CopyOrMove
 
+
+from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Cache import cRoleKind_UserSpecific
+
+
 from TRARoles               import *
 from TRAElemento_Constants  import *
+
+
+
+
+
+
+# ##########################################################################
+"""Classification of roles into a subset of role kinds, for the cache to figure out whther to serve a cached page generic for the role kind, or specific to the user.
+
+"""
+
+
+cTRAApplicationRolesAndRoleKinds = [
+    [ [ cTRAManager_role, ],    cRoleKind_UserSpecific],
+    [ [ cTRACoordinator_role,], cRoleKind_UserSpecific],
+    [ [ cTRADeveloper_role,],   cRoleKind_UserSpecific],
+    [ [ cTRAReviewer_role, ],   cRoleKind_UserSpecific],
+    [ [ cTRATranslator_role, ], cRoleKind_UserSpecific],
+    [ [ cTRAVisitor_role,],     cRoleKind_UserSpecific],
+]
+
+
+
+
+# #######################################################
+"""Configuration of views that require private caches for qualified users.
+   For example all users may not have access to all languages.
+
+"""
+cTRAPrivateCacheViewsForQualifiedUsers = [ 'TRACatalogo', 'TRACatalogo_NoHeaderNoFooter', 'TRACatalogoInforme', 'TRACatalogoInforme_NoHeaderNoFooter', 'TRACatalogoDetalle', 'TRACatalogoDetalle_NoHeaderNoFooter',]
+
+
+
 
 
 
@@ -141,7 +178,7 @@ cPreferredRolesOrder   = [ 'Manager', 'Owner',] + TRARoles_list
 
 cTRAManagers_group       = "TRAManagers"
 cTRACoordinators_group   = "TRACoordinators"
-cTRADevelopers_group       = "TRADevelopers"
+cTRADevelopers_group     = "TRADevelopers"
 cTRAReviewers_group      = "TRAReviewers"
 cTRATranslators_group    = "TRATranslators"
 cTRAVisitors_group       = "TRAVisitors"
@@ -192,30 +229,6 @@ cTRAUserGroups_Catalogo_AuthorizedOnIndividualModulos = [
     cTRADevelopers_group,
 ]
 
-# ACV 20090914 Simpler security schema: no user groups for languages or modules, shall assign local roles to users directly on the language or module element
-#cTRAUserGroups_AllIdiomas = [
-    #[ cTRACoordinators_group,   [ cTRACoordinator_role,   ], ],
-    #[ cTRADevelopers_group,     [ cTRADeveloper_role,   ], ],
-    #[ cTRAReviewers_group,      [ cTRAReviewer_role,      ], ],
-    #[ cTRATranslators_group,    [ cTRATranslator_role,    ], ],
-    #[ cTRAVisitors_group,       [ cTRAVisitor_role,       ], ],
-#]
-
-#cTRAUserGroups_AllIdiomas_AuthorizedOnColeccionIdiomas  = [ unGrAndRs[ 0] for unGrAndRs in cTRAUserGroups_AllIdiomas] 
-#cTRAUserGroups_AllIdiomas_AuthorizedOnIndividualIdiomas = [ unGrAndRs[ 0] for unGrAndRs in cTRAUserGroups_AllIdiomas] 
-
-
-
-#cTRAUserGroups_AllModulos = [
-    #[ cTRACoordinators_group,   [ cTRACoordinator_role,   ], ],
-    #[ cTRADevelopers_group,     [ cTRADeveloper_role,   ], ],
-    #[ cTRAReviewers_group,      [ cTRAReviewer_role,      ], ],
-    #[ cTRATranslators_group,    [ cTRATranslator_role,    ], ],
-    #[ cTRAVisitors_group,       [ cTRAVisitor_role,       ], ],
-#]
-
-#cTRAUserGroups_AllModulos_AuthorizedOnColeccionModulos = [ unGrAndRs[ 0] for unGrAndRs in cTRAUserGroups_AllModulos] 
-
 
 
 
@@ -254,7 +267,7 @@ cTypesAcquiringRoleAssignments =  [
     cNombreTipoTRACatalogo,   
     cNombreTipoTRAColeccionIdiomas,
     cNombreTipoTRAIdioma,                 
-    cNombreTipoTRAColeccionModulos, # To be removed to enable module management by specific user groups
+    cNombreTipoTRAColeccionModulos, 
     cNombreTipoTRAModulo,                 
     cNombreTipoTRAColeccionCadenas,       
     cNombreTipoTRACadena,                 
@@ -340,6 +353,8 @@ cStateChangeActionRoles = {
 cInvalidateStringTranslationsRoles = [ cTRACoordinator_role, cTRADeveloper_role, ] +  cUbiquitousWriterRoles
 
 
+cDeactivateStringsRoles            = [ cTRACoordinator_role, ] +  cUbiquitousWriterRoles
+cActivateStringsRoles              = cDeactivateStringsRoles
 
 
 
@@ -352,7 +367,6 @@ cUseCase_VerifyTRACatalogo              = 'Verify_TRACatalogo'
 cUseCase_InitializeTRACatalogo          = 'Initialize_TRACatalogo'   
 cUseCase_LockTRACatalogo                = 'Lock_TRACatalogo'   
 cUseCase_UnlockTRACatalogo              = 'Unlock_TRACatalogo'   
-cUseCase_ReuseTRAImport                 = 'Reuse_TRAImport'   
 cUseCase_CreateMissingTRATraduccion     = 'Create_missing_TRATraduccion'   
 cUseCase_ConfigureTRACatalogo           = 'Configure_TRACatalogo'   
 cUseCase_CreateTRAImportacion           = 'Create_TRAImportacion'
@@ -361,8 +375,8 @@ cUseCase_CreateTRAContenidoIntercambio  = 'Create_TRAContenidoIntercambio'
 cUseCase_DeleteTRAContenidoIntercambio  = 'Delete_TRAContenidoIntercambio'
 cUseCase_ImportTRAImportacion           = 'Import_TRAImportacion'
 cUseCase_Export                         = 'Export'
-cUseCase_GenerateTRAInformeLanguages    = 'Generate_TRAInforme_by_Languages'
-cUseCase_GenerateTRAInformeModules      = 'Generate_TRAInforme_by_Modules_and_Languages'
+cUseCase_EllaborateInformeLanguages     = 'EllaborateInformeLanguages'
+cUseCase_EllaborateInformeModulesAndLanguages      = 'EllaborateInformeModulesAndLanguages'
 cUseCase_CreateAndDeleteTRAInformeInTRAImportacion = 'Generate_TRAInforme_before_and_after_import'
 cUseCase_DeleteTRAInforme               = 'Delete_TRAInforme'
 cUseCase_View                           = 'View_any_TRA_element'
@@ -371,18 +385,18 @@ cUseCase_ListLanguagesAndModules        = 'List_Languages_And_Modules'
 cUseCase_BrowseTranslations             = 'Browse_Translations'
 cUseCase_TRATraduccionStateChange       = 'Change_TRATraduccion_State'
 cUseCase_TRATraduccionComment           = 'Comment_on_TRATraduccion'
-# ACV 20090924 Unused, REmoved
-
-#cUseCase_ReviewUsersAuthorizations      = 'Review_Users_Authorizations'
-#cUseCase_AuthorizeUsers                 = 'Authorize_Users'
-
 cUseCase_CreateTRASolicitudCadena       = 'Create_TRASolicitudCadena'
 cUseCase_InvalidateStringTranslations   = 'Invalidate_String_Translations'
 cUseCase_CreateTRAIdioma                = 'Create_TRAIdioma'
 cUseCase_CreateTRACadena                = 'Create_TRACadena'
 cUseCase_CleanupTRAColeccionSolicitudesCadenas = 'Cleanup_TRAColeccionSolicitudesCadenas'
 cUseCase_Copy_Translations              = 'Copy_Translations'
-
+cUseCase_DeactivateTRACadena            = 'Deactivate_TRACadena'
+cUseCase_ActivateTRACadena              = 'Activate_TRACadena'
+cUseCase_LockTRAIdioma                  = 'Lock_TRAIdioma'
+cUseCase_UnlockTRAIdioma                = 'Unlock_TRAIdioma'
+cUseCase_ReuseTRAImportacion            = 'Reuse_TRAImportacion'
+cUseCase_CreateTRAInforme               = 'Create_TRAInforme'
 
                                                                 
 cTRAUseCaseNames = [
@@ -398,8 +412,8 @@ cTRAUseCaseNames = [
     cUseCase_DeleteTRAContenidoIntercambio,
     cUseCase_ImportTRAImportacion,         
     cUseCase_Export,                        
-    cUseCase_GenerateTRAInformeLanguages,   
-    cUseCase_GenerateTRAInformeModules,  
+    cUseCase_EllaborateInformeLanguages,   
+    cUseCase_EllaborateInformeModulesAndLanguages,  
     cUseCase_CreateAndDeleteTRAInformeInTRAImportacion,
     cUseCase_View,
     cUseCase_AdvancedView,
@@ -413,6 +427,12 @@ cTRAUseCaseNames = [
     cUseCase_CreateTRACadena,
     cUseCase_CleanupTRAColeccionSolicitudesCadenas,
     cUseCase_Copy_Translations,
+    cUseCase_DeactivateTRACadena,
+    cUseCase_ActivateTRACadena,
+    cUseCase_LockTRAIdioma,
+    cUseCase_UnlockTRAIdioma,
+    cUseCase_ReuseTRAImportacion,
+    cUseCase_CreateTRAInforme,
 ]
 
 
@@ -471,29 +491,6 @@ cPermissionsAbbreviatedFor_ViewElementAndChildren  = [   'VIE', 'ACI', 'LFC', ]
 
 
 
-# ##########################################################################
-"""Accessors used by their abbreviated name
-
-"""
-
-#cTraversalAccessorsSpecificacions = [
-    #[ cAllTypes,        'catalogo',          'method',      'getCatalogo'],  
-    #[ [ 'TRACatalogo',  'modulos', 'method', 'fObtenerTodosModulos', None, 'TRAModulo', [0, 'n'], ], # None is for no parameters
-    
-    #[ 'coleccionCadenas',           'TRACatalogo', 'method', 'fObtenerColeccionCadenas:TRAColeccionCadenas'],              
-    #[ 'coleccionIdiomas',           'TRACatalogo', 'method', 'fObtenerColeccionIdiomas:TRAColeccionIdiomas'],              
-    #[ 'coleccionModulos',           'TRACatalogo', 'method', 'fObtenerColeccionModulos:TRAColeccionModulos'],              
-    #[ 'coleccionInformes',          'TRACatalogo', 'method', 'fObtenerColeccionInformes:TRAColeccionInformes'],              
-    #[ 'coleccionImportaciones',     'TRACatalogo', 'method', 'fObtenerColeccionImportaciones:TRAColeccionImportaciones'],              
-    #[ 'coleccionIdiomas',           'TRACatalogo', 'method', 'fObtenerColeccionIdiomas:TRAColeccionIdiomas'],              
-    #[ 'modulos',                    'TRACatalogo', 'method', 'fObtenerModulos:TRAModulos'],              
-    #[ 'informes',                   'TRACatalogo', 'method', 'fObtenerInformes:TRAInformes'],              
-    #[ 'importaciones',              'TRACatalogo', 'method', 'fObtenerImportaciones:TRAImportaciones'],              
-      
-#]
-
-
-
 
 
 
@@ -546,7 +543,7 @@ cTRAUseCasesWithAbbreviatedPermissions =  {
             {   'path':   [ 'object', ],  
                 'types':  cTodosNombresTiposWithoutChildren,    
                 'roles':  cUbiquitousReaderRoles, 
-                'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren, # ListFolderContents is not required for TRATraducion that will never have contents,but we force it set just in case Plone would throw out to login screen even managers, if hitting the tab contents, or even trying
+                'perms':  cPermissionsAbbreviatedFor_ViewElement, # ListFolderContents is not required for TRATraducion that will never have contents,but we force it set just in case Plone would throw out to login screen even managers, if hitting the tab contents, or even trying
             },
         ],  
         [
@@ -712,7 +709,6 @@ cTRAUseCasesWithAbbreviatedPermissions =  {
                 'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren, 
             },
             {   'title':  'Modifiable TRACatalogo',
-                'name':   'catalogo',
                 'path':   [ 'object', 'getCatalogo',],  
                 'types':  [ cNombreTipoTRACatalogo,],    
                 'pred':   [ 'fAllowWrite',],
@@ -764,7 +760,6 @@ cTRAUseCasesWithAbbreviatedPermissions =  {
                 'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren,
             },
             {   'title':  'Modifiable TRACatalogo',
-                'name':   'catalogo',
                 'path':   [ 'object', 'getCatalogo',],  
                 'types':  [ cNombreTipoTRACatalogo,],    
                 'pred':   [ 'fAllowWrite',],
@@ -797,7 +792,6 @@ cTRAUseCasesWithAbbreviatedPermissions =  {
                 'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren,
             },
             {   'title':  'Modifiable TRACatalogo',
-                'name':   'catalogo',
                 'path':   [ 'object', 'getCatalogo',],  
                 'types':  [ cNombreTipoTRACatalogo,],    
                 'pred':   [ 'fAllowWrite',],
@@ -815,7 +809,7 @@ cTRAUseCasesWithAbbreviatedPermissions =  {
                 'types':  [ cNombreTipoTRAContenidoIntercambio, ],     
                 'mode':   cUseCaseRuleMode_EmptyOrAll,
                 'roles':  [  cTRACoordinator_role,] +  cUbiquitousWriterRoles, 
-                'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren + [ 'MPC', 'DOB', ],
+                'perms':  cPermissionsAbbreviatedFor_ViewElement + [ 'MPC', 'DOB', ],
             }, 
         ],  
         [      
@@ -837,7 +831,6 @@ cTRAUseCasesWithAbbreviatedPermissions =  {
                 'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren,
             },
             {   'title':  'Modifiable TRACatalogo',
-                'name':   'catalogo',
                 'path':   [ 'object', 'getCatalogo',],  
                 'types':  [ cNombreTipoTRACatalogo,],    
                 'pred':   [ 'fAllowWrite',],
@@ -852,7 +845,7 @@ cTRAUseCasesWithAbbreviatedPermissions =  {
             }, 
         ],  
         [
-            [ [ cNombreTipoTRAContenidoIntercambio,]   ,cPermissionsAbbreviatedFor_ViewElementAndChildren + [ 'MPC', ],  [ cTRACoordinator_role, cTRATranslator_role,] +  cUbiquitousWriterRoles,], 
+            [ [ cNombreTipoTRAContenidoIntercambio,]   ,cPermissionsAbbreviatedFor_ViewElement + [ 'MPC', ],  [ cTRACoordinator_role, cTRATranslator_role,] +  cUbiquitousWriterRoles,], 
         ],                                                                                           
     ],                                                                                                  
     cUseCase_DeleteTRAContenidoIntercambio: [ 
@@ -870,7 +863,6 @@ cTRAUseCasesWithAbbreviatedPermissions =  {
                 'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren,
             },
             {   'title':  'Modifiable TRACatalogo',
-                'name':   'catalogo',
                 'path':   [ 'object', 'getCatalogo',],  
                 'types':  [ cNombreTipoTRACatalogo,],    
                 'pred':   [ 'fAllowWrite',],
@@ -891,8 +883,7 @@ cTRAUseCasesWithAbbreviatedPermissions =  {
             }, 
         ],  
         [
-            [ [ cNombreTipoTRAColeccionImportaciones,] ,cPermissionsAbbreviatedFor_ViewElementAndChildren,                                [ cTRACoordinator_role, cTRATranslator_role,] +  cUbiquitousWriterRoles,],
-            [ [ cNombreTipoTRAContenidoIntercambio,]   ,cPermissionsAbbreviatedFor_ViewElementAndChildren + [ 'APC', 'APF', 'DOB', 'MPC',  ],  [ cTRACoordinator_role, cTRATranslator_role,] +  cUbiquitousWriterRoles,], 
+            [ [ cNombreTipoTRAContenidoIntercambio,]   ,cPermissionsAbbreviatedFor_ViewElement + [ 'DOB', 'MPC',  ],  [ cTRACoordinator_role, ] +  cUbiquitousWriterRoles,], 
         ],                                                                                           
     ],                                                                                                  
     cUseCase_ImportTRAImportacion: [ 
@@ -910,7 +901,6 @@ cTRAUseCasesWithAbbreviatedPermissions =  {
                 'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren,
             },
             {   'title':  'Modifiable TRACatalogo',
-                'name':   'catalogo',
                 'path':   [ 'object', 'getCatalogo',],  
                 'types':  [ cNombreTipoTRACatalogo,],    
                 'pred':   [ 'fAllowWrite',],
@@ -922,7 +912,7 @@ cTRAUseCasesWithAbbreviatedPermissions =  {
                 'path':   [ 'object', 'getContenido',],
                 'types':  [ cNombreTipoTRAContenidoIntercambio,],     
                 'roles':  [ cTRACoordinator_role,] +  cUbiquitousWriterRoles, 
-                'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren,
+                'perms':  cPermissionsAbbreviatedFor_ViewElement,
             }, 
             {   'title':  'Without TRAInforme before import or can be deleted',
                 'mode':   cUseCaseRuleMode_EmptyOrAll,
@@ -974,10 +964,57 @@ cTRAUseCasesWithAbbreviatedPermissions =  {
             [ [ cNombreTipoTRACadena,]                  ,cPermissionsAbbreviatedFor_ViewElementAndChildren + [ 'APC', 'APF', 'MPC', ],  [ cTRACoordinator_role,] +  cUbiquitousWriterRoles,],         
             [ [ cNombreTipoTRATraduccion,]              ,cPermissionsAbbreviatedFor_ViewElement + [           'MPC', ],         [ cTRACoordinator_role,] +  cUbiquitousWriterRoles,],
         ],                                                                                           
-    ],                                                                                                  
+    ],   
+    cUseCase_ReuseTRAImportacion: [ 
+        [   {   'title':  'Es TRAImportacion',
+                'path':   [ 'object', ],
+                'types':  [ cNombreTipoTRAImportacion,],     
+                'roles':  [  cTRACoordinator_role,] +  cUbiquitousWriterRoles, 
+                'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren + [ 'APC', 'APF', 'MPC', ],
+            }, 
+            {   'title':  'Modifiable TRAImportacion',
+                'path':   [ 'object', ],
+                'types':  [ cNombreTipoTRAImportacion,],     
+                'pred':   [ 'fAllowWrite',],
+                'roles':  [  cTRACoordinator_role,] +  cUbiquitousWriterRoles, 
+                'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren + [ 'APC', 'APF', 'MPC', ],
+            }, 
+            {   'title':  'Already started TRAImportacion',
+                'path':   [ 'object', ],
+                'types':  [ cNombreTipoTRAImportacion,],     
+                'pred':   [ 'getHaComenzado',],
+                'roles':  [  cTRACoordinator_role,] +  cUbiquitousWriterRoles, 
+                'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren + [ 'APC', 'APF', 'MPC', ],
+            }, 
+            {   'title':  'Accessible TRACatalogo',
+                'name':   'catalogo',
+                'path':   [ 'object', 'getCatalogo',],  
+                'types':  [ cNombreTipoTRACatalogo,],    
+                'roles':  [ cTRACoordinator_role,] +  cUbiquitousWriterRoles, 
+                'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren,
+            },
+            {   'title':  'Modifiable TRACatalogo',
+                'path':   [ 'object', 'getCatalogo',],  
+                'types':  [ cNombreTipoTRACatalogo,],    
+                'pred':   [ 'fAllowWrite',],
+                'roles':  [ cTRACoordinator_role,] +  cUbiquitousWriterRoles, 
+                'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren,
+            },
+        ],  
+        [
+        ],                                                                                           
+    ],    
     cUseCase_Export: [    
-        [   {   'title':  'Es TRACatalogo',
+        [   {   'title':  'Si TRACatalogo',
+                'root':   [ cNombreTipoTRACatalogo],
                 'path':   [ 'object',],  
+                'types':  [ cNombreTipoTRACatalogo,],    
+                'roles':  [ cTRACoordinator_role,] +  cUbiquitousReaderRoles, 
+                'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren, 
+            },
+            {   'title':  'Si TRAIdioma',
+                'root':   [ cNombreTipoTRAIdioma],
+                'path':   [ 'object', 'getCatalogo',],  
                 'types':  [ cNombreTipoTRACatalogo,],    
                 'roles':  [ cTRACoordinator_role,] +  cUbiquitousReaderRoles, 
                 'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren, 
@@ -1006,81 +1043,76 @@ cTRAUseCasesWithAbbreviatedPermissions =  {
             [ [ cNombreTipoTRATraduccion,]               ,cPermissionsAbbreviatedFor_ViewElement + [ ],          [ cTRACoordinator_role,] +  cUbiquitousReaderRoles,],
         ],                                                                                           
     ],                                                                                                  
-    cUseCase_GenerateTRAInformeLanguages: [   
+    cUseCase_EllaborateInformeLanguages: [   
         [   {   'title':  'Si TRACatalogo',
                 'root':   [ cNombreTipoTRACatalogo],
                 'path':   [ 'object', ],  
                 'types':  [ cNombreTipoTRACatalogo,],    
-                'roles':  [ cTRACoordinator_role, cTRAReviewer_role, cTRATranslator_role,cTRAVisitor_role, ] +  cUbiquitousReaderRoles, 
+                'roles':  [ cTRACoordinator_role, cTRAReviewer_role, ] +  cUbiquitousReaderRoles, 
                 'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren , 
             },
-            {   'title':  'Si TRAColeccionInformes',
-                'root':   [ cNombreTipoTRAColeccionInformes],
+            {   'title':  'Si TRAInforme',
+                'root':   [ cNombreTipoTRAInforme],
                 'path':   [ 'object', ],  
-                'types':  [ cNombreTipoTRAColeccionInformes],    
-                'roles':  [ cTRACoordinator_role, ] +  cUbiquitousWriterRoles, 
-                'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren + [ 'APC', 'APF', 'MPC',], 
+                'types':  [ cNombreTipoTRAInforme],    
+                'roles':  [ cTRACoordinator_role, cTRAReviewer_role, ] +  cUbiquitousWriterRoles, 
+                'perms':  cPermissionsAbbreviatedFor_ViewElement + [ 'MPC',], 
             },
             {   'title':  'Accesible TRACatalogo',
                 'name':   'catalogo',
                 'path':   [ 'object', 'getCatalogo',],  
                 'types':  [ cNombreTipoTRACatalogo,],    
-                'roles':  [ cTRACoordinator_role, cTRAReviewer_role, cTRATranslator_role,cTRAVisitor_role, ] +  cUbiquitousReaderRoles, 
+                'roles':  [ cTRACoordinator_role, cTRAReviewer_role, ] +  cUbiquitousReaderRoles, 
                 'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren, 
             },
-            # ACV 20090925 Report by languages is requested from catalog status link, and does not create entities, so we do not need to check for modifiable.
-            #{   'title':  'Modifiable TRACatalogo',
-                #'name':   'catalogo',
-                #'path':   [ 'object', 'getCatalogo',],  
-                #'pred':   [ 'fAllowWrite',],
-                #'types':  [ cNombreTipoTRACatalogo,],    
-                #'roles':  [ cTRACoordinator_role, cTRAReviewer_role, cTRATranslator_role,cTRAVisitor_role, ] +  cUbiquitousReaderRoles, 
-                #'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren, 
-            #},
+            {   'title':  'Modifiable TRACatalogo',
+                'path':   [ 'object', 'getCatalogo',],  
+                'pred':   [ 'fAllowWrite',],
+                'types':  [ cNombreTipoTRACatalogo,],    
+                'roles':  [ cTRACoordinator_role, cTRAReviewer_role, ] +  cUbiquitousReaderRoles, 
+                'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren, 
+            },
             {   'title':  'Filtro TRAIdioma accesibles',
                 'name':   'languages',
                 'mode':   cUseCaseRuleMode_Filter,
                 'path':   [ 'object', 'getCatalogo', 'fObtenerTodosIdiomas', ],  
                 'types':  [ cNombreTipoTRAIdioma,],    
                 'pred':   [ 'fAllowRead',],
-                'roles':  [ cTRACoordinator_role, cTRAReviewer_role, cTRATranslator_role,cTRAVisitor_role, ] +  cUbiquitousReaderRoles,    
+                'roles':  [ cTRACoordinator_role, cTRAReviewer_role, ] +  cUbiquitousReaderRoles,    
                 'perms':  cPermissionsAbbreviatedFor_ViewElement, 
             },
         ],  
         [
-            [ [ cNombreTipoTRAInforme,]                  ,cPermissionsAbbreviatedFor_ViewElement + [ 'MPC', 'DOB',],           [ cTRACoordinator_role] +  cUbiquitousReaderRoles,], 
-            [ [ cNombreTipoTRACadena,]                   ,cPermissionsAbbreviatedFor_ViewElementAndChildren,                [ cTRACoordinator_role,] +  cUbiquitousReaderRoles,],         
-            [ [ cNombreTipoTRATraduccion,]               ,cPermissionsAbbreviatedFor_ViewElement,                         [ cTRACoordinator_role,] +  cUbiquitousReaderRoles,], 
         ],                                                                                           
     ],                                                                                                  
-    cUseCase_GenerateTRAInformeModules: [     
+    cUseCase_EllaborateInformeModulesAndLanguages: [     
         [   {   'title':  'Si TRACatalogo',
                 'root':   [ cNombreTipoTRACatalogo],
                 'path':   [ 'object', ],  
                 'types':  [ cNombreTipoTRACatalogo,],    
-                'roles':  [ cTRACoordinator_role, cTRAReviewer_role, cTRATranslator_role,cTRAVisitor_role, ] +  cUbiquitousReaderRoles, 
+                'roles':  [ cTRACoordinator_role, cTRAReviewer_role, ] +  cUbiquitousReaderRoles, 
                 'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren , 
             },
-            {   'title':  'Si TRAColeccionInformes',
-                'root':   [ cNombreTipoTRAColeccionInformes],
+            {   'title':  'Si TRAInforme',
+                'root':   [ cNombreTipoTRAInforme],
                 'path':   [ 'object', ],  
-                'types':  [ cNombreTipoTRAColeccionInformes],    
-                'roles':  [ cTRACoordinator_role, ] +  cUbiquitousWriterRoles, 
-                'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren + [ 'APC', 'APF', 'MPC',], 
+                'types':  [ cNombreTipoTRAInforme],    
+                'roles':  [ cTRACoordinator_role, cTRAReviewer_role, ] +  cUbiquitousWriterRoles, 
+                'perms':  cPermissionsAbbreviatedFor_ViewElement+ [ 'MPC',], 
             },
             {   'title':  'Accessible TRACatalogo',
                 'name':   'catalogo',
                 'path':   [ 'object', 'getCatalogo',],  
                 'types':  [ cNombreTipoTRACatalogo,],    
-                'roles':  [ cTRACoordinator_role,] +  cUbiquitousReaderRoles, 
+                'roles':  [ cTRACoordinator_role, cTRAReviewer_role,] +  cUbiquitousReaderRoles, 
                 'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren, 
             },
             {   'title':  'Modifiable TRACatalogo',
-                'name':   'catalogo',
+                'name':   'Modifiable TRACatalogo',
                 'path':   [ 'object', 'getCatalogo',],  
                 'types':  [ cNombreTipoTRACatalogo,],    
                 'pred':   [ 'fAllowWrite',],
-                'roles':  [ cTRACoordinator_role,] +  cUbiquitousReaderRoles, 
+                'roles':  [ cTRACoordinator_role, cTRAReviewer_role,] +  cUbiquitousReaderRoles, 
                 'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren, 
             },
             {   'title':  'Filtro TRAIdioma accesibles',
@@ -1089,7 +1121,7 @@ cTRAUseCasesWithAbbreviatedPermissions =  {
                 'path':   [ 'object', 'getCatalogo', 'fObtenerTodosIdiomas', ],  
                 'types':  [ cNombreTipoTRAIdioma,],    
                 'pred':   [ 'fAllowRead',],
-                'roles':  [ cTRACoordinator_role,] +  cUbiquitousReaderRoles, 
+                'roles':  [ cTRACoordinator_role, cTRAReviewer_role,] +  cUbiquitousReaderRoles, 
                 'perms':  cPermissionsAbbreviatedFor_ViewElement, 
             },
             {   'title':  'Filtro TRAModulo accesibles',
@@ -1098,22 +1130,63 @@ cTRAUseCasesWithAbbreviatedPermissions =  {
                 'path':   [ 'object', 'getCatalogo', 'fObtenerTodosModulos', ],  
                 'types':  [ cNombreTipoTRAModulo,],    
                 'pred':   [ 'fAllowRead',],
-                'roles':  [ cTRACoordinator_role,] +  cUbiquitousReaderRoles, 
+                'roles':  [ cTRACoordinator_role, cTRAReviewer_role,] +  cUbiquitousReaderRoles, 
                 'perms':  cPermissionsAbbreviatedFor_ViewElement, 
             },
         ],  
         [
-            [ [ cNombreTipoTRAInforme,]                  ,cPermissionsAbbreviatedFor_ViewElement + [ 'MPC', 'DOB',],           [ cTRACoordinator_role] +  cUbiquitousReaderRoles,], 
-            [ [ cNombreTipoTRACadena,]                   ,cPermissionsAbbreviatedFor_ViewElementAndChildren,                [ cTRACoordinator_role,] +  cUbiquitousReaderRoles,],         
-            [ [ cNombreTipoTRATraduccion,]               ,cPermissionsAbbreviatedFor_ViewElement,                         [ cTRACoordinator_role,] +  cUbiquitousReaderRoles,], 
-          ],                                                                                           
-    ],                                                                                                                                                   
+        ],                                                                                           
+    ],       
+    cUseCase_CreateTRAInforme: [     
+        [   {   'title':  'Es TRAColeccionInformes',
+                'path':   [ 'object', ],
+                'types':  [ cNombreTipoTRAColeccionInformes,],     
+                'roles':  [ cTRACoordinator_role, cTRAReviewer_role,] +  cUbiquitousWriterRoles, 
+                'perms':  cPermissionsAbbreviatedFor_ViewElement + [ 'APC', 'APF', 'MPC',  ],
+            }, 
+            {   'title':  'Accessible TRACatalogo',
+                'name':   'catalogo',
+                'path':   [ 'object', 'getCatalogo',],  
+                'types':  [ cNombreTipoTRACatalogo,],    
+                'roles':  [ cTRACoordinator_role, cTRAReviewer_role, ] +  cUbiquitousWriterRoles, 
+                'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren,
+            },
+            {   'title':  'Modifiable TRACatalogo',
+                'path':   [ 'object', 'getCatalogo',],  
+                'types':  [ cNombreTipoTRACatalogo,],    
+                'pred':   [ 'fAllowWrite',],
+                'roles':  [ cTRACoordinator_role, cTRAReviewer_role, ] +  cUbiquitousWriterRoles, 
+                'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren,
+            },
+            {   'title':  'Filtro TRAIdioma accesibles',
+                'name':   'languages',
+                'mode':   cUseCaseRuleMode_Filter,
+                'path':   [ 'object', 'getCatalogo', 'fObtenerTodosIdiomas', ],  
+                'types':  [ cNombreTipoTRAIdioma,],    
+                'pred':   [ 'fAllowRead',],
+                'roles':  [ cTRACoordinator_role, cTRAReviewer_role,] +  cUbiquitousReaderRoles, 
+                'perms':  cPermissionsAbbreviatedFor_ViewElement, 
+            },
+            {   'title':  'Filtro TRAModulo accesibles',
+                'name':   'modules',
+                'mode':   cUseCaseRuleMode_Filter,
+                'path':   [ 'object', 'getCatalogo', 'fObtenerTodosModulos', ],  
+                'types':  [ cNombreTipoTRAModulo,],    
+                'pred':   [ 'fAllowRead',],
+                'roles':  [ cTRACoordinator_role, cTRAReviewer_role,] +  cUbiquitousReaderRoles, 
+                'perms':  cPermissionsAbbreviatedFor_ViewElement, 
+            },
+        ],  
+        [
+            [ [ cNombreTipoTRAInforme,]                  ,cPermissionsAbbreviatedFor_ViewElement + [ 'MPC', 'DOB',],           [ cTRACoordinator_role, cTRAReviewer_role,] +  cUbiquitousWriterRoles,], 
+        ],                                                                                           
+    ],       
     cUseCase_CreateAndDeleteTRAInformeInTRAImportacion: [     
         [   {   'title':  'Es TRAImportacion',
                 'path':   [ 'object', ], 
                 'types':  [ cNombreTipoTRAImportacion,],    
                 'roles':  [ cTRACoordinator_role,] +  cUbiquitousWriterRoles, 
-                'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren + [ 'APC', 'APF', 'MPC'], 
+                'perms':  cPermissionsAbbreviatedFor_ViewElement + [ 'APC', 'APF', 'MPC'], 
             },
             {   'title':  'Accessible TRACatalogo',
                 'name':   'catalogo',
@@ -1123,7 +1196,6 @@ cTRAUseCasesWithAbbreviatedPermissions =  {
                 'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren, 
             },
             {   'title':  'Modifiable TRACatalogo',
-                'name':   'catalogo',
                 'path':   [ 'object', 'getCatalogo',],  
                 'types':  [ cNombreTipoTRACatalogo,],    
                 'pred':   [ 'fAllowWrite',],
@@ -1138,11 +1210,27 @@ cTRAUseCasesWithAbbreviatedPermissions =  {
                 'roles':  [ cTRACoordinator_role,] +  cUbiquitousWriterRoles, 
                 'perms':  cPermissionsAbbreviatedFor_ViewElement + [ 'MPC','DOB',], 
             },
+            {   'title':  'Filtro TRAIdioma accesibles',
+                'name':   'languages',
+                'mode':   cUseCaseRuleMode_Filter,
+                'path':   [ 'object', 'getCatalogo', 'fObtenerTodosIdiomas', ],  
+                'types':  [ cNombreTipoTRAIdioma,],    
+                'pred':   [ 'fAllowRead',],
+                'roles':  [ cTRACoordinator_role, cTRAReviewer_role,] +  cUbiquitousReaderRoles, 
+                'perms':  cPermissionsAbbreviatedFor_ViewElement, 
+            },
+            {   'title':  'Filtro TRAModulo accesibles',
+                'name':   'modules',
+                'mode':   cUseCaseRuleMode_Filter,
+                'path':   [ 'object', 'getCatalogo', 'fObtenerTodosModulos', ],  
+                'types':  [ cNombreTipoTRAModulo,],    
+                'pred':   [ 'fAllowRead',],
+                'roles':  [ cTRACoordinator_role, cTRAReviewer_role,] +  cUbiquitousReaderRoles, 
+                'perms':  cPermissionsAbbreviatedFor_ViewElement, 
+            },
         ],  
         [
-            [ [ cNombreTipoTRAInforme,]                  ,cPermissionsAbbreviatedFor_ViewElement + [ 'MPC', 'DOB',],           [ cTRACoordinator_role] +  cUbiquitousReaderRoles,], 
-            [ [ cNombreTipoTRACadena,]                   ,cPermissionsAbbreviatedFor_ViewElementAndChildren,                [ cTRACoordinator_role,] +  cUbiquitousReaderRoles,],         
-            [ [ cNombreTipoTRATraduccion,]               ,cPermissionsAbbreviatedFor_ViewElement,                         [ cTRACoordinator_role,] +  cUbiquitousReaderRoles,], 
+            [ [ cNombreTipoTRAInforme,]                  ,cPermissionsAbbreviatedFor_ViewElement + [ 'MPC', 'DOB',],     [ cTRACoordinator_role] +  cUbiquitousWriterRoles,], 
           ],                                                                                           
     ],                                                                                                                                                   
     cUseCase_ListLanguagesAndModules: [                      
@@ -1343,7 +1431,7 @@ cTRAUseCasesWithAbbreviatedPermissions =  {
                 'path':   [ 'object', 'getContenedor',],  
                 'types':  [ cNombreTipoTRAImportacion,],    
                 'roles':  [ cTRACoordinator_role, cTRADeveloper_role, cTRAReviewer_role, cTRATranslator_role,cTRAVisitor_role, ] + cUbiquitousReaderRoles, 
-                'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren, 
+                'perms':  cPermissionsAbbreviatedFor_ViewElement, 
             },
             {   'title':  'If TRAColeccionInformes',
                 'root':   [ cNombreTipoTRAColeccionInformes,],
@@ -1364,14 +1452,14 @@ cTRAUseCasesWithAbbreviatedPermissions =  {
                 'path':   [ 'object', 'getContenedor',],  
                 'types':  [ cNombreTipoTRAColeccionInformes,],    
                 'roles':  [ cTRACoordinator_role, cTRADeveloper_role, cTRAReviewer_role, cTRATranslator_role,cTRAVisitor_role, ] + cUbiquitousReaderRoles, 
-                'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren, 
+                'perms':  cPermissionsAbbreviatedFor_ViewElement, 
             },
             {   'title':  'IF TRAInforme accesible TRAColeccionInformes desde TRACatalogo',
                 'root':   [ cNombreTipoTRAInforme,],
                 'path':   [ 'object', 'getCatalogo', 'fObtenerColeccionInformes', ],  
                 'types':  [ cNombreTipoTRAColeccionInformes,],    
                 'roles':  [ cTRACoordinator_role, cTRADeveloper_role, cTRAReviewer_role, cTRATranslator_role,cTRAVisitor_role, ] + cUbiquitousReaderRoles, 
-                'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren, 
+                'perms':  cPermissionsAbbreviatedFor_ViewElement, 
             },
             {   'title':  'If TRAColeccionSolicitudesCadenas',
                 'root':   [ cNombreTipoTRAColeccionSolicitudesCadenas,],
@@ -1452,6 +1540,74 @@ cTRAUseCasesWithAbbreviatedPermissions =  {
         [
         ],                                                                                 
     ],                                                                                         
+    cUseCase_DeactivateTRACadena: [                     
+        [   {   'title':  'Es TRACadena',
+                'name':   'cadena',
+                'path':   [ 'object', ],   
+                'types':  [ cNombreTipoTRACadena,],       
+                'roles':  [ cTRACoordinator_role, ] + cUbiquitousWriterRoles,
+                'perms':  cPermissionsAbbreviatedFor_ViewElement + [ 'MPC',],    
+            },
+            {   'title':  'Active TRACadena',
+                'path':   [ 'object', ],   
+                'types':  [ cNombreTipoTRACadena,],       
+                'pred':   [ 'fIsActive',],
+                'roles':  [ cTRACoordinator_role, ] + cUbiquitousWriterRoles,
+                'perms':  cPermissionsAbbreviatedFor_ViewElement + [ 'MPC',],    
+            },
+            {   'title':  'Accessible TRACatalogo',
+                'name':   'catalogo',
+                'path':   [ 'object', 'getCatalogo',], 
+                'types':  [ cNombreTipoTRACatalogo,],     
+                'roles':  [ cTRACoordinator_role, ] + cUbiquitousWriterRoles,
+                'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren,                 
+            },
+            {   'title':  'Modifiable TRACatalogo',
+                'name':   'catalogo',
+                'path':   [ 'object', 'getCatalogo',], 
+                'types':  [ cNombreTipoTRACatalogo,],     
+                'pred':   [ 'fAllowWrite',],
+                'roles':  [ cTRACoordinator_role, ] + cUbiquitousWriterRoles,
+                'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren,                 
+            },
+        ],
+        [
+        ],                                                                                 
+    ],            
+    cUseCase_ActivateTRACadena: [                     
+        [   {   'title':  'Es TRACadena',
+                'name':   'cadena',
+                'path':   [ 'object', ],   
+                'types':  [ cNombreTipoTRACadena,],       
+                'roles':  [ cTRACoordinator_role, ] + cUbiquitousWriterRoles,
+                'perms':  cPermissionsAbbreviatedFor_ViewElement + [ 'MPC',],    
+            },
+            {   'title':  'Inactive TRACadena',
+                'path':   [ 'object', ],   
+                'types':  [ cNombreTipoTRACadena,],       
+                'pred':   [ 'fIsInactive',],
+                'roles':  [ cTRACoordinator_role, ] + cUbiquitousWriterRoles,
+                'perms':  cPermissionsAbbreviatedFor_ViewElement + [ 'MPC',],    
+            },
+            {   'title':  'Accessible TRACatalogo',
+                'name':   'catalogo',
+                'path':   [ 'object', 'getCatalogo',], 
+                'types':  [ cNombreTipoTRACatalogo,],     
+                'roles':  [ cTRACoordinator_role, ] + cUbiquitousWriterRoles,
+                'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren,                 
+            },
+            {   'title':  'Modifiable TRACatalogo',
+                'name':   'catalogo',
+                'path':   [ 'object', 'getCatalogo',], 
+                'types':  [ cNombreTipoTRACatalogo,],     
+                'pred':   [ 'fAllowWrite',],
+                'roles':  [ cTRACoordinator_role, ] + cUbiquitousWriterRoles,
+                'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren,                 
+            },
+        ],
+        [
+        ],                                                                                 
+    ],            
     cUseCase_TRATraduccionStateChange: [                     
         [   {   'title':  'Es TRATraduccion',
                 'name':   'traduccion',
@@ -1545,7 +1701,7 @@ cTRAUseCasesWithAbbreviatedPermissions =  {
                 'mode':   cUseCaseRuleMode_EmptyOrAny,
                 'path':   [ 'object', 'getCadena','getModulos',],   
                 'types':  [ cNombreTipoTRAModulo,], 
-                'roles':  [ cTRACoordinator_role, cTRAReviewer_role, cTRATranslator_role,] + cUbiquitousWriterRoles,
+                'roles':  [ cTRACoordinator_role, cTRADeveloper_role,] + cUbiquitousWriterRoles,
                 'perms':  cPermissionsAbbreviatedFor_ViewElement + [ 'MPC',],    
             },
         ],
@@ -1642,6 +1798,14 @@ cTRAUseCasesWithAbbreviatedPermissions =  {
                 'types':  [ cNombreTipoTRAColeccionIdiomas,],     
                 'roles':  [  cTRACoordinator_role, ] +  cUbiquitousWriterRoles, 
                 'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren + [ 'APC', 'APF', 'MPC',  ],
+            }, 
+            {   'title':  'Filtro todos TRAIdioma accesibles',
+                'name':   'languages',
+                'mode':   cUseCaseRuleMode_Filter,                
+                'path':   [ 'object', 'fObtenerTodosIdiomas',],
+                'types':  [ cNombreTipoTRAIdioma,],     
+                'roles':  [  cTRACoordinator_role, ] +  cUbiquitousWriterRoles, 
+                'perms':  cPermissionsAbbreviatedFor_ViewElement,
             }, 
             {   'title':  'Accessible TRACatalogo',
                 'name':   'catalogo',
@@ -1760,6 +1924,85 @@ cTRAUseCasesWithAbbreviatedPermissions =  {
                 'types':  [ cNombreTipoTRAIdioma,],    
                 'roles':  [ cTRACoordinator_role,] +  cUbiquitousWriterRoles, 
                 'perms':  cPermissionsAbbreviatedFor_ViewElement , 
+            },
+        ],  
+        [
+        ],  
+    ],
+    cUseCase_UnlockTRAIdioma: [ 
+        [   {   'title':  'Es TRAIdioma',
+                'path':   [ 'object', ],
+                'types':  [ cNombreTipoTRAIdioma,],     
+                'roles':  [  cTRACoordinator_role, ] +  cUbiquitousWriterRoles, 
+                'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren + [ 'MPC', ],
+            }, 
+            {   'title':  'Locked TRAIdioma',
+                'path':   [ 'object', ],
+                'types':  [ cNombreTipoTRAIdioma,],   
+                'pred':   [ 'fIsLocked',],                
+                'roles':  [  cTRACoordinator_role, ] +  cUbiquitousWriterRoles, 
+                'perms':  cPermissionsAbbreviatedFor_ViewElement + [ 'MPC', ],
+            }, 
+            {   'title':  'Acessible TRAIdioma',
+                'path':   [ 'object', ],
+                'types':  [ cNombreTipoTRAIdioma,],   
+                'pred':   [ 'fAllowRead',],                
+                'roles':  [  cTRACoordinator_role, ] +  cUbiquitousWriterRoles, 
+                'perms':  cPermissionsAbbreviatedFor_ViewElement + [ 'MPC', ],
+            }, 
+            {   'title':  'Accessible TRACatalogo',
+                'name':   'catalogo',
+                'path':   [ 'object', 'getCatalogo',],  
+                'types':  [ cNombreTipoTRACatalogo,],    
+                'roles':  [ cTRACoordinator_role, ] +  cUbiquitousWriterRoles, 
+                'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren,
+            },
+            {   'title':  'Modifiable TRACatalogo',
+                'name':   'catalogo',
+                'path':   [ 'object', 'getCatalogo',],  
+                'types':  [ cNombreTipoTRACatalogo,],    
+                'pred':   [ 'fAllowWrite',],
+                'roles':  [ cTRACoordinator_role, ] +  cUbiquitousWriterRoles, 
+                'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren,
+            },
+        ],  
+        [
+        ],  
+    ],
+    cUseCase_LockTRAIdioma: [ 
+        [   {   'title':  'Es TRAIdioma',
+                'path':   [ 'object', ],
+                'types':  [ cNombreTipoTRAIdioma,],     
+                'roles':  [  cTRACoordinator_role, ] +  cUbiquitousWriterRoles, 
+                'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren + [ 'APC', 'APF', 'MPC', ],
+            }, 
+            {   'title':  'Unlocked TRAIdioma',
+                'path':   [ 'object', ],
+                'types':  [ cNombreTipoTRAIdioma,],   
+                'pred':   [ 'fIsUnlocked',],                
+                'roles':  [  cTRACoordinator_role, ] +  cUbiquitousWriterRoles, 
+                'perms':  cPermissionsAbbreviatedFor_ViewElement + [ 'MPC', ],
+            }, 
+            {   'title':  'Modificable TRAIdioma',
+                'path':   [ 'object', ],
+                'types':  [ cNombreTipoTRAIdioma,],   
+                'pred':   [ 'fAllowRead', 'fAllowWrite',],                
+                'roles':  [  cTRACoordinator_role, ] +  cUbiquitousWriterRoles, 
+                'perms':  cPermissionsAbbreviatedFor_ViewElement + [ 'MPC', ],
+            }, 
+            {   'title':  'Accessible TRACatalogo',
+                'name':   'catalogo',
+                'path':   [ 'object', 'getCatalogo',],  
+                'types':  [ cNombreTipoTRACatalogo,],    
+                'roles':  [ cTRACoordinator_role, ] +  cUbiquitousWriterRoles, 
+                'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren,
+            },
+            {   'title':  'Modifiable TRACatalogo',
+                'path':   [ 'object', 'getCatalogo',],  
+                'types':  [ cNombreTipoTRACatalogo,],    
+                'pred':   [ 'fAllowWrite',],
+                'roles':  [ cTRACoordinator_role, ] +  cUbiquitousWriterRoles, 
+                'perms':  cPermissionsAbbreviatedFor_ViewElementAndChildren,
             },
         ],  
         [
