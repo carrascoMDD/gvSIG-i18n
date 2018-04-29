@@ -1,7 +1,9 @@
-# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>, 2013.
+# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: gvSIGi18n\n"
+"POT-Creation-Date: Tue Oct 27 03:29:17 2009\n"
+"PO-Revision-Date: Tue Oct 27 03:29:17 2009\n"
 "Last-Translator: Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>\n"
 "Language-Team: Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>\n"
 "MIME-Version: 1.0\n"
@@ -29,11 +31,6 @@ msgstr "Catalogo de Traducciones"
 msgid "Coleccion de Cadenas"
 msgstr "Coleccion de Cadenas"
 
-#. Default: "Coleccion de Contribuciones"
-#: TRAColeccionContribuciones
-msgid "Coleccion de Contribuciones"
-msgstr "Coleccion de Contribuciones"
-
 #. Default: "Coleccion de Idiomas"
 #: TRAColeccionIdiomas
 msgid "Coleccion de Idiomas"
@@ -54,70 +51,15 @@ msgstr "Coleccion de Informes de Estado"
 msgid "Coleccion de Modulos"
 msgstr "Coleccion de Modulos"
 
-#. Default: "Coleccion de Progresos"
-#: TRAColeccionProgresos
-msgid "Coleccion de Progresos"
-msgstr "Coleccion de Progresos"
-
 #. Default: "Coleccion de Solicitudes de creacion de Cadenas"
 #: TRAColeccionSolicitudesCadenas
 msgid "Coleccion de Solicitudes de creacion de Cadenas"
 msgstr "Coleccion de Solicitudes de creacion de Cadenas"
 
-#. Default: "Configuracion Exportacion"
-#: TRAConfiguracionExportacion
-msgid "Configuracion Exportacion"
-msgstr "Configuracion Exportacion"
-
-#. Default: "Configuracion Importacion"
-#: TRAConfiguracionImportacion
-msgid "Configuracion Importacion"
-msgstr "Configuracion Importacion"
-
-#. Default: "Configuracion Invalidacion Informes"
-#: TRAConfiguracionInvalidacionInformes
-msgid "Configuracion Invalidacion Informes"
-msgstr "Configuracion Invalidacion Informes"
-
-#. Default: "Configuracion Pagina Traducciones"
-#: TRAConfiguracionPaginaTraducciones
-msgid "Configuracion Pagina Traducciones"
-msgstr "Configuracion Pagina Traducciones"
-
-#. Default: "Configuracion Perfil Ejecucion"
-#: TRAConfiguracionPerfilEjecucion
-msgid "Configuracion Perfil Ejecucion"
-msgstr "Configuracion Perfil Ejecucion"
-
-#. Default: "Configuracion Permisos"
-#: TRAConfiguracionPermisos
-msgid "Configuracion Permisos"
-msgstr "Configuracion Permisos"
-
-#. Default: "Configuracion Solicitudes Cadenas"
-#: TRAConfiguracionSolicitudesCadenas
-msgid "Configuracion Solicitudes Cadenas"
-msgstr "Configuracion Solicitudes Cadenas"
-
-#. Default: "Configuracion Varios"
-#: TRAConfiguracionVarios
-msgid "Configuracion Varios"
-msgstr "Configuracion Varios"
-
 #. Default: "Contenido de Intercambio"
 #: TRAContenidoIntercambio
 msgid "Contenido de Intercambio"
 msgstr "Contenido de Intercambio"
-
-#. Default: "Contenido XML"
-#: TRAContenidoXML
-msgid "Contenido XML"
-msgstr "Contenido XML"
-
-#. Default: "Informe de Contribuciones"
-#: TRAContribuciones
-msgid "Informe de Contribuciones"
-msgstr "Informe de Contribuciones"
 
 #. Default: "Idioma"
 #: TRAIdioma
@@ -139,21 +81,6 @@ msgstr "Informe de Estado"
 msgid "Modulo"
 msgstr "Modulo"
 
-#. Default: "Parametros Control de Progreso"
-#: TRAParametrosControlProgreso
-msgid "Parametros Control de Progreso"
-msgstr "Parametros Control de Progreso"
-
-#. Default: "Progreso"
-#: TRAProgreso
-msgid "Progreso"
-msgstr "Progreso"
-
-#. Default: "Simbolos Ordenados"
-#: TRASimbolosOrdenados
-msgid "Simbolos Ordenados"
-msgstr "Simbolos Ordenados"
-
 #. Default: "Solicitud Creacion Cadena"
 #: TRASolicitudCadena
 msgid "Solicitud Creacion Cadena"
@@ -163,3 +90,102 @@ msgstr "Solicitud Creacion Cadena"
 #: TRATraduccion
 msgid "Traduccion"
 msgstr "Traduccion"
+
+
+
+
+
+
+
+
+
+
+
+#. Default: "Build Report"
+#: TRAInforme
+msgid "Build Report"
+msgstr "Elaborar Informe"
+
+
+
+
+#. Default: "Verify"
+#: TRACatalogo
+msgid "Verify"
+msgstr "Verificar"
+
+#. Default: "Initialize"
+#: TRAArquetipo
+msgid "Initialize"
+msgstr "Inicializar"
+
+#. Default: "Export"
+#: TRAArquetipo
+msgid "Export"
+msgstr "Exportar"
+
+#. Default: "Import"
+#: TRAArquetipo
+msgid "Import"
+msgstr "Importar"
+
+#. Default: "Configure"
+#: TRAArquetipo
+msgid "Configure"
+msgstr "Configurar"
+
+
+#. Default: "Content"
+#: TRAContenidoIntercambio
+msgid "Content"
+msgstr "Contenido"
+
+#. Default: "Contents"
+#: TRAImportacion
+msgid "Contents"
+msgstr "Contenidos"
+
+#. Default: "Data"
+#: TRAContenidoIntercambio TRAImportacion
+msgid "Data"
+msgstr "Datos"
+
+#. Default: "Progress"
+#: TRAImportacion
+msgid "Progress"
+msgstr "Progreso"
+
+#. Default: "Copy Translations"
+#: TRAIdioma
+msgid "Copy Translations"
+msgstr "Copiar Traducciones"
+
+#. Default: "Create Strings"
+#: TRAIdioma
+msgid "Create Strings"
+msgstr "Crear Cadenas"
+
+#. Default: "Clean-up Strings"
+#: TRAIdioma
+msgid "Clean-up Strings"
+msgstr "Limpiar Cadenas"
+
+
+#. Default: "Lock Catalog"
+#: TRACatalogo
+msgid "Lock Catalog"
+msgstr "Bloquear Catalogo"
+
+
+#. Default: "Unlock Catalog"
+#: TRACatalogo
+msgid "Unlock Catalog"
+msgstr "Desbloquear Catalogo"
+
+
+
+#. Default: "Permissions"
+#: TRACatalogo
+msgid "Permissions"
+msgstr "Permisos"
+

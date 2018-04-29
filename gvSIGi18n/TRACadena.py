@@ -2,8 +2,8 @@
 #
 # File: TRACadena.py
 #
-# Copyright (c) 2013 by 2008, 2009, 2010, 2011 Conselleria de Infraestructuras
-# y Transporte de la Generalidad Valenciana
+# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
+# Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -37,7 +37,6 @@ from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
 from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import ReferenceBrowserWidget
-from TRAElemento_Operaciones import TRAElemento_Operaciones
 
 ##code-section module-header #fill in your manual code here
 ##/code-section module-header
@@ -55,8 +54,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRACadena_attr_simbolo_help',
             i18n_domain='gvSIGi18n',
         ),
+        scale="0",
         description="El simbolo original que identifica la Cadena a traducir.",
-        searchable=0,
         duplicates="0",
         label2="Symbol",
         ea_localid="297",
@@ -64,14 +63,13 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        description2="The original symbol identifying the string to be translated.",
-        ea_guid="{D7A26052-9642-4336-9E66-D7C7AAD9D7E6}",
-        scale="0",
-        label="Simbolo",
         length="0",
+        description2="The original symbol identifying the string to be translated.",
         containment="Not Specified",
-        position="5",
-        owner_class_name="TRACadena"
+        ea_guid="{D7A26052-9642-4336-9E66-D7C7AAD9D7E6}",
+        position="0",
+        owner_class_name="TRACadena",
+        label="Simbolo"
     ),
 
     StringField(
@@ -103,7 +101,7 @@ schema = Schema((
         label="Estado de la Cadena",
         length="0",
         containment="Not Specified",
-        position="0",
+        position="3",
         owner_class_name="TRACadena"
     ),
 
@@ -118,8 +116,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRACadena_attr_fechaCreacionTextual_help',
             i18n_domain='gvSIGi18n',
         ),
+        scale="0",
         description="Representacion textual de la fecha en que se creo la cadena a traducir.",
-        searchable=0,
         duplicates="0",
         label2="Creation Date as text",
         ea_localid="1334",
@@ -127,14 +125,13 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        description2="Textual representation of the date when the String was first created.",
-        ea_guid="{37522DDE-9593-4f36-8686-C889D5C6B928}",
-        scale="0",
-        label="Fecha de Creacion como texto",
         length="0",
+        description2="Textual representation of the date when the String was first created.",
         containment="Not Specified",
-        position="2",
-        owner_class_name="TRACadena"
+        ea_guid="{37522DDE-9593-4f36-8686-C889D5C6B928}",
+        position="4",
+        owner_class_name="TRACadena",
+        label="Fecha de Creacion como texto"
     ),
 
     StringField(
@@ -148,8 +145,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRACadena_attr_usuarioCreador_help',
             i18n_domain='gvSIGi18n',
         ),
+        scale="0",
         description="Usuario que creo o importo la cadena a traducir.",
-        searchable=0,
         duplicates="0",
         label2="Creator user",
         ea_localid="300",
@@ -157,14 +154,13 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        description2="User who created or imported the string to be translated.",
-        ea_guid="{419A6822-511F-48d5-9D48-A75E8E596478}",
-        scale="0",
-        label="Usuario Creador",
         length="0",
+        description2="User who created or imported the string to be translated.",
         containment="Not Specified",
-        position="6",
-        owner_class_name="TRACadena"
+        ea_guid="{419A6822-511F-48d5-9D48-A75E8E596478}",
+        position="5",
+        owner_class_name="TRACadena",
+        label="Usuario Creador"
     ),
 
     StringField(
@@ -178,8 +174,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRACadena_attr_fechaCancelacionTextual_help',
             i18n_domain='gvSIGi18n',
         ),
+        scale="0",
         description="La fecha en que la cadena fue cancelada, de forma que no vuelva a ser considerada para su traduccion.",
-        searchable=0,
         duplicates="0",
         label2="Cancelation Date",
         ea_localid="1338",
@@ -187,14 +183,13 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        description2="The date when the String was cancelled, such that the string won't be considered again for translation.",
-        ea_guid="{897F7F5D-B75C-4084-8D79-B7639A72865C}",
-        scale="0",
-        label="Fecha de Cancelacion",
         length="0",
+        description2="The date when the String was cancelled, such that the string won't be considered again for translation.",
         containment="Not Specified",
-        position="1",
-        owner_class_name="TRACadena"
+        ea_guid="{897F7F5D-B75C-4084-8D79-B7639A72865C}",
+        position="6",
+        owner_class_name="TRACadena",
+        label="Fecha de Cancelacion"
     ),
 
     StringField(
@@ -208,8 +203,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRACadena_attr_nombresModulos_help',
             i18n_domain='gvSIGi18n',
         ),
+        scale="0",
         description="Nombres de los Modulos en los que se usa esta cadena.",
-        searchable=0,
         duplicates="0",
         label2="Modules",
         ea_localid="757",
@@ -217,14 +212,13 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        description2="Names of the Modules using this String.",
-        ea_guid="{0CFE460B-2B53-47e7-A1D9-72BDFAC41336}",
-        scale="0",
-        label="Modulos",
         length="0",
+        description2="Names of the Modules using this String.",
         containment="Not Specified",
-        position="3",
-        owner_class_name="TRACadena"
+        ea_guid="{0CFE460B-2B53-47e7-A1D9-72BDFAC41336}",
+        position="7",
+        owner_class_name="TRACadena",
+        label="Modulos"
     ),
 
     StringField(
@@ -238,8 +232,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRACadena_attr_referenciasFuentes_help',
             i18n_domain='gvSIGi18n',
         ),
+        scale="0",
         description="Referencias a codigo fuente donde aparece esta cadena.",
-        searchable=0,
         duplicates="0",
         label2="Source references",
         ea_localid="1491",
@@ -247,14 +241,13 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        description2="References to source code where the string is used.",
-        ea_guid="{11E67965-20C0-4a3e-B113-5A320582937E}",
-        scale="0",
-        label="Referencias a fuentes",
         length="0",
+        description2="References to source code where the string is used.",
         containment="Not Specified",
-        position="4",
-        owner_class_name="TRACadena"
+        ea_guid="{11E67965-20C0-4a3e-B113-5A320582937E}",
+        position="8",
+        owner_class_name="TRACadena",
+        label="Referencias a fuentes"
     ),
 
     ComputedField(
@@ -280,6 +273,37 @@ schema = Schema((
         computed_types=['TRATraduccion'],
         non_framework_elements=False,
         description='Traducciones de una de las Cadenas los varios Idiomas.'
+    ),
+
+    ComputedField(
+        name='simboloEnPalabras',
+        widget=ComputedField._properties['widget'](
+            label="Simbolo (fragmentos para busqueda textual)",
+            label2="Symbol (fragments for textual search)",
+            description="El simbolo original que identifica la Cadena a traducir, descompuesto en multiples palabras para facilitar las busquedas por texto.",
+            description2="The original symbol identifying the string to be translated, fragmented into multiple words to facilitate searches.",
+            label_msgid='gvSIGi18n_TRACadena_attr_simboloEnPalabras_label',
+            description_msgid='gvSIGi18n_TRACadena_attr_simboloEnPalabras_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="El simbolo original que identifica la Cadena a traducir, descompuesto en multiples palabras para facilitar las busquedas por texto.",
+        duplicates="0",
+        label2="Symbol (fragments for textual search)",
+        ea_localid="1301",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="The original symbol identifying the string to be translated, fragmented into multiple words to facilitate searches.",
+        ea_guid="{C891BC5D-23A7-4478-9CCB-93F0B0048DF9}",
+        scale="0",
+        label="Simbolo (fragmentos para busqueda textual)",
+        length="0",
+        containment="Not Specified",
+        position="1",
+        owner_class_name="TRACadena",
+        expression="context.fGetSimboloEnPalabras()",
+        computed_types="string"
     ),
 
 ),
@@ -310,20 +334,19 @@ class TRACadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones):
     use_folder_tabs = 0
 
     allowed_content_types = ['TRATraduccion'] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRACadena_Operaciones, 'allowed_content_types', []))
-    filter_content_types             = 1
-    global_allow                     = 0
+    filter_content_types = 1
+    global_allow = 0
     content_icon = 'tracadena.gif'
-    immediate_view                   = 'Tabular'
-    default_view                     = 'Tabular'
-    suppl_views                      = ['Tabular',]
-    typeDescription                  = "Una de las cadenas originales del producto a traducir, identificada por el simbolo original."
-    typeDescMsgId                    =  'gvSIGi18n_TRACadena_help'
-    archetype_name2                  = 'String to translate'
-    typeDescription2                 = '''One of the original product strings to translate, identified by a the original symbol string.'''
-    archetype_name_msgid             = 'gvSIGi18n_TRACadena_label'
-    factory_methods                  = None
-    factory_enablers                 = None
-    propagate_delete_impact_to       = None
+    immediate_view = 'Tabular'
+    default_view = 'Tabular'
+    suppl_views = ['Tabular',]
+    typeDescription = "Una de las cadenas originales del producto a traducir, identificada por el simbolo original."
+    typeDescMsgId =  'gvSIGi18n_TRACadena_help'
+    archetype_name2 = 'String to translate'
+    typeDescription2 = '''One of the original product strings to translate, identified by a the original symbol string.'''
+    archetype_name_msgid = 'gvSIGi18n_TRACadena_label'
+    factory_methods = None
+    factory_enablers = None
     allow_discussion = 0
 
 
@@ -335,7 +358,7 @@ class TRACadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones):
         'id': 'view',
         'name': 'View',
         'permissions': ("View",),
-        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'View_any_TRA_element')"""
+        'condition': """python:1"""
        },
 
 
@@ -348,60 +371,6 @@ class TRACadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones):
        },
 
 
-       {'action': "string:${object_url}/MDDCacheStatus/",
-        'category': "object_buttons",
-        'id': 'mddcachestatus',
-        'name': 'Cache',
-        'permissions': ("View",),
-        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'CacheStatus_on_any_TRA_element')"""
-       },
-
-
-       {'action': "string:${object_url}/MDDChanges",
-        'category': "object_buttons",
-        'id': 'mddchanges',
-        'name': 'Changes',
-        'permissions': ("View",),
-        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Changes_on_any_TRA_element')"""
-       },
-
-
-       {'action': "string:$object_url/content_status_history",
-        'category': "object",
-        'id': 'content_status_history',
-        'name': 'State',
-        'permissions': ("View",),
-        'condition': """python:0"""
-       },
-
-
-       {'action': "string:${object_url}/TRAFlushCache_action",
-        'category': "object_buttons",
-        'id': 'tra_flushcache',
-        'name': 'FlushCache',
-        'permissions': ("View",),
-        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fRoleQuery_IsAnyRol( object, [ 'Manager', 'Owner', 'TRACreator', 'TRAManager', 'TRACoordinator',])"""
-       },
-
-
-       {'action': "string:${object_url}/folder_listing",
-        'category': "folder",
-        'id': 'folderlisting',
-        'name': 'Folder Listing',
-        'permissions': ("View",),
-        'condition': """python:0"""
-       },
-
-
-       {'action': "string:${object_url}/TRAInventory_action",
-        'category': "object_buttons",
-        'id': 'TRA_inventario',
-        'name': 'Inventory',
-        'permissions': ("View",),
-        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Inventory_TRAElemento')"""
-       },
-
-
        {'action': "string:${object_url}/sharing",
         'category': "object",
         'id': 'local_roles',
@@ -411,30 +380,12 @@ class TRACadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones):
        },
 
 
-       {'action': "string:${object_url}/TRARecatalog_action",
-        'category': "object_buttons",
-        'id': 'TRA_recatalogar',
-        'name': 'ReCatalog',
+       {'action': "string:${object_url}/folder_listing",
+        'category': "folder",
+        'id': 'folderlisting',
+        'name': 'Folder Listing',
         'permissions': ("View",),
-        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'ReCatalog_TRAElemento')"""
-       },
-
-
-       {'action': "string:${object_url}/TRAResetPermissions_action",
-        'category': "object_buttons",
-        'id': 'TRA_reestablecerpermisos',
-        'name': 'Reset Permissions',
-        'permissions': ("View",),
-        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'ResetPermissions_TRAElemento')"""
-       },
-
-
-       {'action': "string:${object_url}/TRAVerifyPermissions_action",
-        'category': "object_buttons",
-        'id': 'TRA_verificarpermisos',
-        'name': 'Verify Permissions',
-        'permissions': ("View",),
-        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'VerifyPermissions_TRAElemento')"""
+        'condition': """python:0"""
        },
 
 
@@ -452,7 +403,16 @@ class TRACadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones):
         'id': 'TRA_SeguridadUsuarioConectado',
         'name': 'Permissions',
         'permissions': ("View",),
-        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Permissions_on_any_TRA_element')"""
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:$object_url/content_status_history",
+        'category': "object",
+        'id': 'content_status_history',
+        'name': 'State',
+        'permissions': ("View",),
+        'condition': """python:0"""
        },
 
 
@@ -481,20 +441,6 @@ class TRACadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones):
         
         return False
 
-    security.declarePublic('fIsActive')
-    def fIsActive(self):
-        """
-        """
-        
-        return self.getEstadoCadena() =='Activa'
-
-    security.declarePublic('fIsInactive')
-    def fIsInactive(self):
-        """
-        """
-        
-        return self.getEstadoCadena() =='Inactiva'
-
     security.declarePublic('manage_afterAdd')
     def manage_afterAdd(self,item,container):
         """
@@ -516,13 +462,6 @@ class TRACadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones):
         
         return False
 
-    security.declarePublic('fVocabulary_NombresModulos')
-    def fVocabulary_NombresModulos(self):
-        """
-        """
-        
-        return self.getCatalogo().fTodosModulosVocabulary()
-
     security.declarePublic('manage_beforeDelete')
     def manage_beforeDelete(self,item,container):
         """
@@ -530,15 +469,8 @@ class TRACadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones):
         
         return TRAArquetipo.manage_beforeDelete( self, item, container)
 
-    security.declarePublic('fAllowExport')
-    def fAllowExport(self):
-        """
-        """
-        
-        return False
-
-    security.declarePublic('fAllowImport')
-    def fAllowImport(self):
+    security.declarePublic('cb_isMoveable')
+    def cb_isMoveable(self):
         """
         """
         
@@ -549,14 +481,7 @@ class TRACadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones):
         """
         """
         
-        return self
-
-    security.declarePublic('fExtraLinks')
-    def fExtraLinks(self):
-        """
-        """
-        
-        return TRAElemento_Operaciones.fExtraLinks( self)
+        return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

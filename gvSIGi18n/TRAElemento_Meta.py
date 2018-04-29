@@ -1,6 +1,6 @@
 
-# Copyright (c) 2013 by 2008, 2009, 2010, 2011 Conselleria de Infraestructuras
-# y Transporte de la Generalidad Valenciana
+# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
+# Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -36,19 +36,6 @@ from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.config import *
 
 
-# Classes added here during runtime will be acceptable roots,
-# after invocation of the fParentArchetypeClassNames_ResetCache method
-#
-gAdditionalParentArchetypeClassNames = [ ]
-
-
-
-# Private Cache of class names
-# 
-gParentArchetypeClassNamesCache      = [ ]
-
-
-
 
 class TRAElemento_Meta:            
 
@@ -56,48 +43,6 @@ class TRAElemento_Meta:
     """
     security = ClassSecurityInfo()
 
-
-    
-
-
-
-  
-  
-  
-    security.declarePrivate('fParentArchetypeClassNames')
-    def fParentArchetypeClassNames( self):
-    
-        if gParentArchetypeClassNamesCache:
-            return gParentArchetypeClassNamesCache
-        
-        return self.fParentArchetypeClassNames_ResetCache()
-        
-        
-        
-        
-        
-        
-        
-    security.declarePrivate('fParentArchetypeClassNames_ResetCache')
-    def fParentArchetypeClassNames_ResetCache( self):
-    
-        aWorkingCopy = self.fArchetypeClassNames()[:]
-        
-        # Thread safety to be assured here for cases when simultaneusly:
-        #
-        # Others may be adding to the gAdditionalParentArchetypeClassNames
-        # Others may also invoke this method
-        #
-        if gAdditionalParentArchetypeClassNames:
-            aWorkingCopy += gAdditionalParentArchetypeClassNames
-        
-        gParentArchetypeClassNamesCache = aWorkingCopy
-        
-        return gParentArchetypeClassNamesCache
-        
-            
-    
-    
     
     security.declarePrivate('fArchetypeSchemaByName')
     def fArchetypeSchemaByName( self, theMetaTypeName):
@@ -116,31 +61,16 @@ class TRAElemento_Meta:
             'TRACadena',
             'TRACatalogo',
             'TRAColeccionCadenas',
-            'TRAColeccionContribuciones',
             'TRAColeccionIdiomas',
             'TRAColeccionImportaciones',
             'TRAColeccionInformes',
             'TRAColeccionModulos',
-            'TRAColeccionProgresos',
             'TRAColeccionSolicitudesCadenas',
-            'TRAConfiguracionExportacion',
-            'TRAConfiguracionImportacion',
-            'TRAConfiguracionInvalidacionInformes',
-            'TRAConfiguracionPaginaTraducciones',
-            'TRAConfiguracionPerfilEjecucion',
-            'TRAConfiguracionPermisos',
-            'TRAConfiguracionSolicitudesCadenas',
-            'TRAConfiguracionVarios',
             'TRAContenidoIntercambio',
-            'TRAContenidoXML',
-            'TRAContribuciones',
             'TRAIdioma',
             'TRAImportacion',
             'TRAInforme',
             'TRAModulo',
-            'TRAParametrosControlProgreso',
-            'TRAProgreso',
-            'TRASimbolosOrdenados',
             'TRASolicitudCadena',
             'TRATraduccion',
  
@@ -167,10 +97,6 @@ class TRAElemento_Meta:
                 from Products.gvSIGi18n.TRAColeccionCadenas         import TRAColeccionCadenas
                 return TRAColeccionCadenas            
 
-            if theMetaTypeName == 'TRAColeccionContribuciones':
-                from Products.gvSIGi18n.TRAColeccionContribuciones         import TRAColeccionContribuciones
-                return TRAColeccionContribuciones            
-
             if theMetaTypeName == 'TRAColeccionIdiomas':
                 from Products.gvSIGi18n.TRAColeccionIdiomas         import TRAColeccionIdiomas
                 return TRAColeccionIdiomas            
@@ -187,57 +113,13 @@ class TRAElemento_Meta:
                 from Products.gvSIGi18n.TRAColeccionModulos         import TRAColeccionModulos
                 return TRAColeccionModulos            
 
-            if theMetaTypeName == 'TRAColeccionProgresos':
-                from Products.gvSIGi18n.TRAColeccionProgresos         import TRAColeccionProgresos
-                return TRAColeccionProgresos            
-
             if theMetaTypeName == 'TRAColeccionSolicitudesCadenas':
                 from Products.gvSIGi18n.TRAColeccionSolicitudesCadenas         import TRAColeccionSolicitudesCadenas
                 return TRAColeccionSolicitudesCadenas            
 
-            if theMetaTypeName == 'TRAConfiguracionExportacion':
-                from Products.gvSIGi18n.TRAConfiguracionExportacion         import TRAConfiguracionExportacion
-                return TRAConfiguracionExportacion            
-
-            if theMetaTypeName == 'TRAConfiguracionImportacion':
-                from Products.gvSIGi18n.TRAConfiguracionImportacion         import TRAConfiguracionImportacion
-                return TRAConfiguracionImportacion            
-
-            if theMetaTypeName == 'TRAConfiguracionInvalidacionInformes':
-                from Products.gvSIGi18n.TRAConfiguracionInvalidacionInformes         import TRAConfiguracionInvalidacionInformes
-                return TRAConfiguracionInvalidacionInformes            
-
-            if theMetaTypeName == 'TRAConfiguracionPaginaTraducciones':
-                from Products.gvSIGi18n.TRAConfiguracionPaginaTraducciones         import TRAConfiguracionPaginaTraducciones
-                return TRAConfiguracionPaginaTraducciones            
-
-            if theMetaTypeName == 'TRAConfiguracionPerfilEjecucion':
-                from Products.gvSIGi18n.TRAConfiguracionPerfilEjecucion         import TRAConfiguracionPerfilEjecucion
-                return TRAConfiguracionPerfilEjecucion            
-
-            if theMetaTypeName == 'TRAConfiguracionPermisos':
-                from Products.gvSIGi18n.TRAConfiguracionPermisos         import TRAConfiguracionPermisos
-                return TRAConfiguracionPermisos            
-
-            if theMetaTypeName == 'TRAConfiguracionSolicitudesCadenas':
-                from Products.gvSIGi18n.TRAConfiguracionSolicitudesCadenas         import TRAConfiguracionSolicitudesCadenas
-                return TRAConfiguracionSolicitudesCadenas            
-
-            if theMetaTypeName == 'TRAConfiguracionVarios':
-                from Products.gvSIGi18n.TRAConfiguracionVarios         import TRAConfiguracionVarios
-                return TRAConfiguracionVarios            
-
             if theMetaTypeName == 'TRAContenidoIntercambio':
                 from Products.gvSIGi18n.TRAContenidoIntercambio         import TRAContenidoIntercambio
                 return TRAContenidoIntercambio            
-
-            if theMetaTypeName == 'TRAContenidoXML':
-                from Products.gvSIGi18n.TRAContenidoXML         import TRAContenidoXML
-                return TRAContenidoXML            
-
-            if theMetaTypeName == 'TRAContribuciones':
-                from Products.gvSIGi18n.TRAContribuciones         import TRAContribuciones
-                return TRAContribuciones            
 
             if theMetaTypeName == 'TRAIdioma':
                 from Products.gvSIGi18n.TRAIdioma         import TRAIdioma
@@ -254,18 +136,6 @@ class TRAElemento_Meta:
             if theMetaTypeName == 'TRAModulo':
                 from Products.gvSIGi18n.TRAModulo         import TRAModulo
                 return TRAModulo            
-
-            if theMetaTypeName == 'TRAParametrosControlProgreso':
-                from Products.gvSIGi18n.TRAParametrosControlProgreso         import TRAParametrosControlProgreso
-                return TRAParametrosControlProgreso            
-
-            if theMetaTypeName == 'TRAProgreso':
-                from Products.gvSIGi18n.TRAProgreso         import TRAProgreso
-                return TRAProgreso            
-
-            if theMetaTypeName == 'TRASimbolosOrdenados':
-                from Products.gvSIGi18n.TRASimbolosOrdenados         import TRASimbolosOrdenados
-                return TRASimbolosOrdenados            
 
             if theMetaTypeName == 'TRASolicitudCadena':
                 from Products.gvSIGi18n.TRASolicitudCadena         import TRASolicitudCadena

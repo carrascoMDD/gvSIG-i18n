@@ -1,0 +1,138 @@
+<tal:block replace="nothing">
+# File: TRAImportar_i18n_view.pt
+#
+# Copyright (c) 2008, 2009 by Conselleria de Infraestructuras y Transporte de la
+# Generalidad Valenciana
+#
+# GNU General Public License (GPL)
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+#
+# Authors: 
+# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana 
+# Model Driven Development sl  Valencia (Spain) www.ModelDD.org 
+# Antonio Carrasco Valero                       carrasco@ModelDD.org
+#
+</tal:block>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en">
+<body>
+
+
+    <div metal:define-macro="tInformeArchivos_i18n" >
+
+
+        
+        <tal:block tal:define="
+            global unIndexClassFila python: 0; 
+            global unasClasesFilas  python: ('odd','even');
+            global pInformeKind pInformeKind | string:" />
+                
+        <tal:block tal:define="pInformes pInformes | nothing"
+            tal:condition="pInformes" >
+            <tal:block tal:condition="python: not ( pInformes and pInformes[ 'archives'] and pInformes[ 'languages_by_name'] and pInformes[ 'language_names'])">
+                 <p i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_nogendephayarchivosdeentradavalidos_warning_msgid">There are  no valid Input archive files-</p>
+            </tal:block>
+            <tal:block  tal:condition="python: ( pInformes and pInformes[ 'archives']  and pInformes[ 'languages_by_name'] and pInformes[ 'language_names'])" >
+            
+                <table class="listing" summary="ArchiveFileContents" id="#" tal:attributes="id python: 'Report-%s' % pInformeKind">
+                    <thead>
+                        <tr>
+                            <th class="nosort" align="left">
+                                <span i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_nombrearchivo_msgid">Archive-</span>
+                                -
+                                <span i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_nombremodulo_msgid">Module-</span> 
+                                -
+                                <span i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_cadenas_msgid">Strings-</span> 
+                                -
+                                <span i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_traducciones_msgid">Translations-</span>                                 
+                            </th>
+                            <th class="nosort" align="right">
+                                <span i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_total_msgid">Total-</span>
+                            </th>
+                            <th tal:repeat="aLanguage pInformes/language_names" class="nosort" align="center" valign="top" >
+                                <tal:block tal:content="python: here.fAsUnicode( aLanguage)" />
+                                <br/>
+                                <tal:block tal:define="aFlag python: here.portal_languages.getFlagForLanguageCode( aLanguage)">
+                                    <img tal:condition="aFlag"
+                                        width="14" height="11" alt="" tal:attributes="src python: '%s/%s' % ( here.absolute_url(), aFlag);title python: aLanguage" />
+                                    <img tal:condition="not: aFlag"
+                                        width="14" height="11" alt="" tal:attributes="src python: '%s/tra_flag-ninguna.gif' % here.absolute_url();title python: aLanguage" />                                
+                                </tal:block>                            
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>                       
+                        <tal:block tal:repeat="pInformeArchivo pInformes/archives">
+                            <tr class="#" id="#" tal:attributes="class python: unasClasesFilas[unIndexClassFila % 2];
+                                id python: 'archive-%s' % pInformeArchivo['archive_name']" >                        
+        
+                                <td  align="left"  valign="baseline">
+                                    <strong tal:content="python: here.fAsUnicode( pInformeArchivo[ 'archive_name'])" />
+                                </td>
+                                <tal:block tal:condition="pInformeArchivo/valid">
+                                    <td  align="right"  valign="baseline">
+                                        <strong tal:content="python: pInformeArchivo[ 'total']" />
+                                    </td>
+                                    <td tal:repeat="aLanguage pInformes/language_names" class="nosort" align="right" valign="top" >
+                                        <strong tal:condition="python: pInformeArchivo['languages_by_name'].has_key( aLanguage) and pInformeArchivo['languages_by_name'][ aLanguage] > 0"
+                                            tal:content="python: str( pInformeArchivo['languages_by_name'][ aLanguage])" />
+                                    </td>
+                                </tal:block>
+                                <tal:block tal:condition="not: pInformeArchivo/valid">
+                                    <td colspan="#" tal:attributes="colspan python: len( pInformes[ 'language_names']) + 1" >
+                                        ERROR <tal:block tal:content="python: here.fAsUnicode( str( pInformeArchivo[ 'error']))" />
+                                    </td>
+                                </tal:block>   
+                                <tal tal:define="global  unIndexClassFila   python: unIndexClassFila + 1" />                                                     
+                            </tr>
+                            <tr tal:repeat="pNombreModulo pInformeArchivo/module_names"
+                                class="#" id="#" 
+                                tal:attributes="class python: unasClasesFilas[unIndexClassFila % 2];
+                                    id python: 'archive-%s-%s' % ( pInformeArchivo['archive_name'], pNombreModulo)" >
+                                <tal:block tal:define="pInformeModulo python: pInformeArchivo[ 'modules_by_name'][ pNombreModulo]" >
+                                    <td  align="left"  valign="baseline" >
+                                        &nbsp;&nbsp;&nbsp;&nbsp;                                
+                                        <tal:block tal:content="python: here.fAsUnicode( pInformeModulo[ 'module_name'])" />
+                                    </td>
+                                    <tal:block tal:condition="not: pInformeModulo/valid">
+                                        <td colspan="#" tal:attributes="colspan python: len( pInformes[ 'language_names']) + 1" >
+                                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                            ERROR <tal:block tal:content="python: here.fAsUnicode( str( pInformeModulo[ 'error']))" />
+                                        </td>
+                                    </tal:block>                            
+                                    <td  align="right"  valign="baseline" >
+                                        <tal:block tal:content="python: pInformeModulo[ 'total']" />
+                                    </td>
+                                    <tal:block tal:condition="pInformeModulo/valid">
+                                        <td tal:repeat="aLanguage pInformes/language_names" class="nosort" align="right" valign="top" >
+                                            <tal:block tal:condition="python: pInformeModulo['languages_by_name'].has_key( aLanguage) and pInformeModulo['languages_by_name'][ aLanguage] > 0"
+                                                tal:content="python: str( pInformeModulo['languages_by_name'][ aLanguage])" />
+                                        </td>
+                                    </tal:block>
+                                    <tal tal:define="global  unIndexClassFila   python: unIndexClassFila + 1" />
+                                </tal:block>
+                            </tr>   
+                        </tal:block>
+                    </tbody>
+                </table>
+            </tal:block>
+        </tal:block>
+        <br/>
+        
+    </div>        
+ 

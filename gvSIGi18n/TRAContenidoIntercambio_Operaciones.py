@@ -2,7 +2,7 @@
 #
 # File: TRAContenidoIntercambio_Operaciones.py
 #
-# Copyright (c) 2008, 2009, 2010, 2011  by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+# Copyright (c) 2008, 2009 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -33,8 +33,6 @@ Antonio Carrasco Valero <carrasco@ModelDD.org>"""
 __docformat__ = 'plaintext'
 
 
-from base64 import b64encode, b64decode
-
 from AccessControl import ClassSecurityInfo
 
 
@@ -58,34 +56,45 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore       import permissions
 
 
-from TRAElemento_Constants                 import *
-from TRAElemento_Constants_Activity        import *
-from TRAElemento_Constants_Configurations  import *
-from TRAElemento_Constants_Contributions   import *
-from TRAElemento_Constants_Dates           import *
-from TRAElemento_Constants_Encoding        import *
-from TRAElemento_Constants_Import          import *
-from TRAElemento_Constants_Languages       import *
-from TRAElemento_Constants_Logging         import *
-from TRAElemento_Constants_Modules         import *
-from TRAElemento_Constants_Profiling       import *
-from TRAElemento_Constants_Progress        import *
-from TRAElemento_Constants_String          import *
-from TRAElemento_Constants_StringRequests  import *
-from TRAElemento_Constants_Translate       import *
-from TRAElemento_Constants_Translation     import *
-from TRAElemento_Constants_TypeNames       import *
-from TRAElemento_Constants_Views           import *
-from TRAElemento_Constants_Vocabularies    import *
-from TRAUtils                              import *
-
-from TRAImportarExportar_Constants import cScannedKeys_String_Symbol, cScannedKeys_String_Errors, cScannedKeys_String_Translations, cScannedKeys_Translation_Errors, cScannedKeys_Translation_Translation
+from TRAElemento_Constants import *
 
 
-from TRAArquetipo                   import TRAArquetipo
+cElementAttributeQuote          = u'"'
+cElementDelimiterGT             = u'>'
+cElementTranslationsInterchangeOpen           = u'<translationsinterchange>'   
+cElementTranslationsInterchangeClose           = u'</translationsinterchange>'   
+cElementLanguagesOpen           = u'<languages>'   
+cElementLanguagesClose          = u'</languages>'
+cElementLanguagePrefix          = u'<language code="'
+cElementLanguagePostfix         = u'%s" />'
+cElementLanguage                = cElementLanguagePrefix + cElementLanguagePostfix
+cElementModulesOpen             = u'<modules>'
+cElementModulesClose            = u'</modules>'
+cElementModuleOpen              = u'<module>'
+cElementModuleClose             = u'</module>'
+cElementStringsOpen             = u'<strings>'
+cElementStringsClose            = u'</strings>'
+cElementStringPrefix            = u'<str sym="'
+cElementStringPostfix           = u'%s" >'
+cElementStringOpen              = cElementStringPrefix + cElementStringPostfix
+cElementStringClose             = u'</str>'
+cElementSourcesOpen             = u'<sou>'
+cElementSourcesClose            = u'</sou>'
+cElementEncodingErrorPrefix     = u'<tra err="'
+cElementEncodingErrorPostfix    = u'%s"/>'
+cElementEncodingError           = cElementEncodingErrorPrefix + cElementEncodingErrorPostfix
+cElementTranslationPrefix       = u'<tra code="'
+cElementTranslationClose      = u'</tra>'
+cElementTranslation             = cElementTranslationPrefix + u'%s' + cElementAttributeQuote + cElementDelimiterGT + u'%s' + cElementTranslationClose
+ 
 
-
-
+cEstadoExpectTranslationsInterchange        = 'ExpectTranslationsInterchange'
+cEstadoExpectLanguagesOrModulesOrStringsOrTranslationsInterchangeClose    = 'ExpectLanguagesOrModulesOrStringsOrTranslationsInterchangeClose'
+cEstadoExpectLanguageOrLanguagesClose       = 'ExpectLanguageOrLanguagesClose'
+cEstadoExpectModuleOrModulesClose           = 'ExpectModuleOrModulesClose'
+cEstadoExpectStringOrStringsClose           = 'ExpectStringOrStringsClose'
+cEstadoExpectTraduccionOrStringClose        = 'ExpectTraduccionOrStringClose'
+cEstadoFinal                                = 'Final'
 
 
 class TRAContenidoIntercambio_Operaciones:
@@ -94,306 +103,7 @@ class TRAContenidoIntercambio_Operaciones:
     security = ClassSecurityInfo()
  
     
-
     
-    security.declarePrivate('pHandle_manage_afterAdd')
-    def pHandle_manage_afterAdd(self, theItem, theContainer):   
-        """ Complete initialization after creation.
-        
-        """
-        
-        TRAArquetipo.manage_afterAdd(  self, theItem, theContainer)
-        
-        self.pInitDefaultAttributesFromImport( theItem, theContainer)
-        
-        return self
-    
-    
-    
-
-    
-    
-    security.declarePrivate('pInitDefaultAttributesFromImport')
-    def pInitDefaultAttributesFromImport(self, theItem, theContainer):   
-
-        unaImportacion = theContainer
-        #try:
-            #unaImportacion = self.getContenedor()
-        #except:
-            #None
-        if unaImportacion == None:
-            return self
-        
-        unValue = unaImportacion.getNombreModuloPorDefecto()        
-        theItem.setNombreModuloPorDefecto( unValue)
-        
-        unValue = unaImportacion.getImportarConNombreModuloConfigurado()        
-        theItem.setImportarConNombreModuloConfigurado( unValue)
-        
-        unValue = unaImportacion.getImportarFuentesDesdeComentarios()        
-        theItem.setImportarFuentesDesdeComentarios( unValue)
-        
-        unValue = unaImportacion.getImportarNombreModuloDesdeDominioONombreFichero()        
-        theItem.setImportarNombreModuloDesdeDominioONombreFichero( unValue)
-        
-        unValue = unaImportacion.getImportarNombresModulosDesdeComentarios()        
-        theItem.setImportarNombresModulosDesdeComentarios( unValue)
-        
-        unValue = unaImportacion.getImportarContribucionesDesdeComentarios()        
-        theItem.setImportarContribucionesDesdeComentarios( unValue)
-        
-        unValue = unaImportacion.getImportarStatusDesdeComentarios()        
-        theItem.setImportarStatusDesdeComentarios( unValue)
-        
-        return self
-        
-    
-    
-    
-    
-    
-    
-
-    
-    
-    security.declarePrivate('fInitial_CrearInformeAntes')
-    def fInitial_CrearInformeAntes(self, ):   
-
-        unaImportacion = None
-        try:
-            unaImportacion = self.getContenedor()
-        except:
-            None
-        if not unaImportacion:
-            return False
-        
-        unValue = unaImportacion.getCrearInformeAntesPorDefecto()        
-        return unValue
-    
-    
-    
-    
-    
-    security.declarePrivate('fInitial_CrearInformeDespues')
-    def fInitial_CrearInformeDespues(self, ):   
-
-        unaImportacion = None
-        try:
-            unaImportacion = self.getContenedor()
-        except:
-            None
-        if not unaImportacion:
-            return False
-        
-        unValue = unaImportacion.getCrearInformeDespuesPorDefecto()        
-        return unValue
-    
-    
-    
-    
-   
-    security.declarePrivate('fInitial_CodigoIdiomaPorDefecto')
-    def fInitial_CodigoIdiomaPorDefecto(self, ):   
-
-        unaImportacion = None
-        try:
-            unaImportacion = self.getContenedor()
-        except:
-            None
-        if not unaImportacion:
-            return ''
-        
-        unValue = unaImportacion.getCodigoIdiomaPorDefecto()        
-        return unValue
-        
-    
-    
-    
-    security.declarePrivate('fInitial_NombreModuloPorDefecto')
-    def fInitial_NombreModuloPorDefecto(self, ):   
-
-        unaImportacion = None
-        try:
-            unaImportacion = self.getContenedor()
-        except:
-            None
-        if not unaImportacion:
-            return ''
-        
-        unValue = unaImportacion.getNombreModuloPorDefecto()        
-        return unValue
-    
-    
-    
-    
-    
-    security.declarePrivate('fInitial_ImportarConNombreModuloConfigurado')
-    def fInitial_ImportarConNombreModuloConfigurado(self, ):   
-
-        unaImportacion = None
-        try:
-            unaImportacion = self.getContenedor()
-        except:
-            None
-        if not unaImportacion:
-            return False
-        
-        unValue = unaImportacion.getImportarConNombreModuloConfigurado()        
-        return unValue
-    
-    
-
- 
-  
- 
-    
-    security.declarePrivate('fInitial_ImportarNombreModuloDesdeDominioONombreFichero')
-    def fInitial_ImportarNombreModuloDesdeDominioONombreFichero(self, ):   
-
-        unaImportacion = None
-        try:
-            unaImportacion = self.getContenedor()
-        except:
-            None
-        if not unaImportacion:
-            return False
-        
-        unValue = unaImportacion.getImportarNombreModuloDesdeDominioONombreFichero()        
-        return unValue
-    
-    
-
- 
-    
-    security.declarePrivate('fInitial_ImportarNombresModulosDesdeComentarios')
-    def fInitial_ImportarNombresModulosDesdeComentarios(self, ):   
-
-        unaImportacion = None
-        try:
-            unaImportacion = self.getContenedor()
-        except:
-            None
-        if not unaImportacion:
-            return False
-        
-        unValue = unaImportacion.getImportarNombresModulosDesdeComentarios()        
-        return unValue
-    
-    
-    
-    
-  
-    security.declarePrivate('fInitial_ImportarFuentesDesdeComentarios')
-    def fInitial_ImportarFuentesDesdeComentarios(self, ):   
-
-        unaImportacion = None
-        try:
-            unaImportacion = self.getContenedor()
-        except:
-            None
-        if not unaImportacion:
-            return False
-        
-        unValue = unaImportacion.getImportarFuentesDesdeComentarios()        
-        return unValue
-    
-    
-
- 
-    
-    security.declarePrivate('fInitial_ImportarStatusDesdeComentarios')
-    def fInitial_ImportarStatusDesdeComentarios(self, ):   
-
-        unaImportacion = None
-        try:
-            unaImportacion = self.getContenedor()
-        except:
-            None
-        if not unaImportacion:
-            return False
-        
-        unValue = unaImportacion.getImportarStatusDesdeComentarios()        
-        return unValue
-    
-    
-
- 
-    
-    security.declarePrivate('fInitial_ImportarContribucionesDesdeComentarios')
-    def fInitial_ImportarContribucionesDesdeComentarios(self, ):   
-
-        unaImportacion = None
-        try:
-            unaImportacion = self.getContenedor()
-        except:
-            None
-        if not unaImportacion:
-            return False
-        
-        unValue = unaImportacion.getImportarContribucionesDesdeComentarios()        
-        return unValue
-    
-    
-    
-    
- 
-    
-    security.declarePrivate('fInitial_NumeroMaximoLineasAExplorar')
-    def fInitial_NumeroMaximoLineasAExplorar(self, ):   
-
-        unaImportacion = None
-        try:
-            unaImportacion = self.getContenedor()
-        except:
-            None
-        if not unaImportacion:
-            return 0
-        
-        unValue = unaImportacion.getNumeroMaximoLineasAExplorar()        
-        return unValue
-    
-    
-     
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-    security.declarePrivate( 'pAllSubElements_into')    
-    def pAllSubElements_into( self, theCollection, theAdditionalParams=None):
-        if theCollection == None:
-            return self
-        theCollection.append( self)
-        
-         
-        return self
-        
-        
-    
-
-
-    security.declarePrivate( 'pForAllElementsDo_recursive')    
-    def pForAllElementsDo_recursive( self, theLambda=None, thePloneLambda=None,):
-        if not theLambda:
-            return self
-        
-        theLambda( self)
-                
-        if thePloneLambda:
-            self.pForAllElementsPloneDo( thePloneLambda)
-
-        return self
     
     
     
@@ -406,32 +116,19 @@ class TRAContenidoIntercambio_Operaciones:
     
     security.declarePrivate( 'pSetContenido')    
     def pSetContenido( self, theContenido):
+
+        unAhora = self.fDateTimeNow()
         
         if not theContenido:
             self.setContenido( '')
-            self.setFechaContenido( self.fDateTimeNow())
+            self.setFechaContenido( unAhora)
             return self
-        
-        unContenido = theContenido.copy()
-        if unContenido:
-            aScannedData = unContenido.get( 'content_data', None)
-            if aScannedData:
-                if aScannedData.has_key( 'symbols_dict'):
-                    aScannedData.pop( 'symbols_dict')
-                    
-        unContenidoString = self.fStringFromContenidoDeUploadedFile( unContenido)
-        
-        aBase64XMLSource = ''
-        try:
-            aBase64XMLSource = b64encode( unContenidoString)
-        except:
-            None
-        
+    
+        unContenidoString = self.fStringFromContenidoDeUploadedFile( theContenido)
         unContenidoActual = self.getContenido()
-        if not ( aBase64XMLSource ==  unContenidoActual):
-            self.setContenido( aBase64XMLSource)
-            self.setFechaContenido( self.fDateTimeNow())
-        
+        if not ( unContenidoString ==  unContenidoActual):
+            self.setContenido( unContenidoString)
+            self.setFechaContenido( unAhora)
         
         return self
     
@@ -440,71 +137,303 @@ class TRAContenidoIntercambio_Operaciones:
             
     security.declarePrivate( 'fStringFromContenidoDeUploadedFile')    
     def fStringFromContenidoDeUploadedFile( self, theContenidoUploadedFile):
-
-        from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fReprAsString        
         
-        unStringContenido = fReprAsString( theContenidoUploadedFile)
+        aTranslationService = getToolByName( self, 'translation_service', None)
+
+        unStreamContenido = StringIO( u'')
         
-        return unStringContenido
-    
+        unStreamContenido.write( u'%s\n' % cElementTranslationsInterchangeOpen)
+        
+        someLanguages = theContenidoUploadedFile.get( 'languages', [])
+        unStreamContenido.write( u'%s\n' % cElementLanguagesOpen)
+        for unLenguage in someLanguages:
+            unStreamContenido.write( u'%s\n' % (cElementLanguage % unLenguage))
+        unStreamContenido.write( u'%s\n' % cElementLanguagesClose)
+             
+        someModules = theContenidoUploadedFile.get( 'modules', [])
+        unStreamContenido.write(  u'%s\n' % cElementModulesOpen)
+        for unModule in someModules:
+            unStreamContenido.write( u'%s%s%s\n' % ( cElementModuleOpen, unModule, cElementModuleClose, ) )
+        unStreamContenido.write( u'%s\n' % cElementModulesClose)
+        
+        someStringsAndTranslations = theContenidoUploadedFile.get( 'strings_and_translations', {})
+        someStringsWithEncodingErrors = theContenidoUploadedFile.get( 'strings_with_encoding_errors', {})
+        someStringsSources = theContenidoUploadedFile.get( 'strings_sources', {})
 
-
-
-
-    
+        unStreamContenido.write( u'%s\n' % cElementStringsOpen)
+        
+        someSymbols = someStringsAndTranslations.keys()
+        for unSimbolo in someSymbols:
+            unStreamContenido.write( u'%s\n' %  ( cElementStringOpen % aTranslationService.asunicodetype( unSimbolo, errors="strict")))
+            unasTranslations = someStringsAndTranslations.get( unSimbolo, {})
+            unosLenguagesWithEncodingErrors = someStringsWithEncodingErrors.get( unSimbolo, [])
+            unosLanguages = unasTranslations.keys()
+            for unLenguage in unosLanguages:
+                unLenguageUnicode = aTranslationService.asunicodetype( unLenguage, errors="strict")
+                if ( unLenguage in unosLenguagesWithEncodingErrors):
+                    unStreamContenido.write( cElementEncodingError % unLenguageUnicode )
+                else:
+                    unaTranslation = unasTranslations.get( unLenguage, '')
+                    if unaTranslation:
+                        unaTranslation = unaTranslation.replace('\n', '').replace( '\t', '')
+                        unaTranslationUnicode = ''
+                        try:
+                            unaTranslationUnicode = aTranslationService.asunicodetype( unaTranslation, errors="strict")
+                        except:
+                            None
+                        if unaTranslationUnicode:
+                            try:
+                                unaStringElementTraduccion = cElementTranslation % ( unLenguageUnicode, unaTranslationUnicode,)
+                                unStreamContenido.write( u'%s\n' % unaStringElementTraduccion)
+                            except:
+                                None
             
+            unString_Sources = someStringsSources.get( unSimbolo, '').strip()
+            if unString_Sources:
+                try:
+                    unStreamContenido.write( u'%s%s%s\n' % ( cElementSourcesOpen, unString_Sources, cElementSourcesClose,))
+                except:
+                    None
+                
+            
+                                
+            unStreamContenido.write( u'%s\n' % cElementStringClose)
+                    
+        unStreamContenido.write( u'%s\n' % cElementStringsClose)
+            
+        unStreamContenido.write( u'%s\n' % cElementTranslationsInterchangeClose)
+
+        unStringContenidoUnicode = unStreamContenido.getvalue()
+
+        unStringContenidoEncoded = aTranslationService.encode( unStringContenidoUnicode) 
+        
+        return unStringContenidoEncoded
+    
 
 
+
+
+    
+    
     
     
             
     security.declarePrivate( 'fContenido')    
-    def fContenido( self, ):
+    def fContenido( self, theParentExecutionRecord=None):
 
-        unContenidoBase64 = self.getContenido()
-        if not unContenidoBase64:
-            return self.fNewVoidScannedData()
+        unExecutionRecord = self.fStartExecution( 'method',  'fContenido', theParentExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
         
-        unContenidoString = self.fContenidoStringFromBase64( unContenidoBase64,)
-        if not unContenidoString:
-            return self.fNewVoidScannedData()
-        
-        unContenido = self.fContenidoFromString( unContenidoString,)
-        
-        return unContenido
+        try:
+            
+            unContenidoString = self[ 'contenido']()
+            if not unContenidoString:
+                return self.fNewVoidUploadedContent()
+            
+            unContenido = self.fContenidoFromString( unContenidoString, unExecutionRecord)
+            return unContenido
              
+        finally:
+            unExecutionRecord and unExecutionRecord.pEndExecution()
+            unExecutionRecord and unExecutionRecord.pClearLoggedAll()
 
             
             
                                            
-
-    security.declarePrivate( 'fContenidoFromString')    
-    def fContenidoFromString( self, theContenidoString, ):
-        
-        if not theContenidoString:
-            return None
-        
-        from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fEvalString
-        
-        aContenido = fEvalString( theContenidoString, theRaiseExceptions=False)
-        
-        return aContenido
-    
+                     
             
 
-    security.declarePrivate( 'fContenidoStringFromBase64')    
-    def fContenidoStringFromBase64( self, theBase64String, ):
+    security.declarePrivate( 'fContenidoFromString')    
+    def fContenidoFromString( self, theContenidoString, theParentExecutionRecord=None):
         
-        if not theBase64String:
-            return ''
+        unExecutionRecord = self.fStartExecution( 'method',  'fContenidoFromString', theParentExecutionRecord,  False, ) 
         
-        unContenidoString = ''
         try:
-            unContenidoString = b64decode( theBase64String)
-        except:
-            None
+            
+            unContenido = self.fNewVoidUploadedContent()
+            
+            if not theContenidoString:
+                return unContenido
+    
+            aTranslationService = getToolByName( self, 'translation_service', None)
+            unContenidoUnicodeString = ''
+            try:
+                unContenidoUnicodeString = aTranslationService.asunicodetype( theContenidoString, errors="strict")
+            except:
+                None
+            if not unContenidoUnicodeString:
+                return unContenido
+    
+            
+            someLines = unContenidoUnicodeString.split( '\n')
+            unNumLines = len( someLines)
+            unLineIndex = 0
+            
+            unEstado = cEstadoExpectTranslationsInterchange
+            unEstadoError = ''
+            unCurrentLineIndex = -1
+            unCurrentSymbol = ''
+            
+            while( unLineIndex < unNumLines):
+                unaLine = someLines[ unLineIndex].strip()
+                unCurrentLineIndex = unLineIndex
+                unLineIndex += 1
+                if unaLine:
+    
+                    if unEstado == cEstadoExpectTranslationsInterchange:
+                        if unaLine.startswith( cElementTranslationsInterchangeOpen):
+                            unEstado = cEstadoExpectLanguagesOrModulesOrStringsOrTranslationsInterchangeClose    
+                            continue
+     
+                        if unaLine.startswith( cElementTranslationsInterchangeClose):
+                            unEstado = cEstadoFinal    
+                            continue
+    
+                        else:
+                            unEstadoError = unEstado
+                            break
+    
+                    elif unEstado == cEstadoExpectLanguagesOrModulesOrStringsOrTranslationsInterchangeClose:
+                        if unaLine.startswith( cElementLanguagesOpen):
+                            unEstado = cEstadoExpectLanguageOrLanguagesClose    
+                            continue
+                        
+                        elif unaLine.startswith( cElementModulesOpen):
+                            unEstado = cEstadoExpectModuleOrModulesClose    
+                            continue
+                                           
+                        elif unaLine.startswith( cElementStringsOpen):
+                            unEstado = cEstadoExpectStringOrStringsClose    
+                            continue
+                            
+                        else:
+                            unEstadoError = unEstado
+                            break
+                     
+                    elif unEstado == cEstadoExpectLanguageOrLanguagesClose:
+                        if unaLine.startswith( cElementLanguagePrefix):
+                            unQuoteIndex = unaLine.find( cElementAttributeQuote, len( cElementLanguagePrefix))
+                            if unQuoteIndex:
+                                unLanguageCode = unaLine[ len( cElementLanguagePrefix): unQuoteIndex]
+                                if unLanguageCode:
+                                    unEncodedLanguageCode = aTranslationService.encode( unLanguageCode)
+                                    if unEncodedLanguageCode:
+                                        unContenido[ 'languages'].append( unEncodedLanguageCode)
+                            unEstado = cEstadoExpectLanguageOrLanguagesClose
+                            continue
+    
+                        elif unaLine.startswith( cElementLanguagesClose):
+                            unEstado = cEstadoExpectLanguagesOrModulesOrStringsOrTranslationsInterchangeClose
+                            continue
+                        
+                    elif unEstado == cEstadoExpectModuleOrModulesClose:
+                        if unaLine.startswith( cElementModuleOpen):
+                            unCloseIndex = unaLine.find( cElementModuleClose, len( cElementModuleOpen))
+                            if unCloseIndex:
+                                unModuleName = unaLine[ len( cElementModuleOpen): unCloseIndex]
+                                if unModuleName:
+                                    unEncodedModuleName = aTranslationService.encode( unModuleName)
+                                    if unEncodedModuleName:
+                                        unContenido[ 'modules'].append( unEncodedModuleName)
+                            unEstado = cEstadoExpectModuleOrModulesClose
+                            continue
+    
+                        elif unaLine.startswith( cElementModulesClose):
+                            unEstado = cEstadoExpectLanguagesOrModulesOrStringsOrTranslationsInterchangeClose
+                            continue
+    
+                    elif unEstado == cEstadoExpectStringOrStringsClose:
+                        if unaLine.startswith( cElementStringPrefix):
+                            unQuoteIndex = unaLine.find( '"', len( cElementStringPrefix))
+                            if unQuoteIndex:
+                                unSymbol = unaLine[ len( cElementStringPrefix): unQuoteIndex]
+                                if unSymbol:
+                                    unEncodedSymbol = aTranslationService.encode( unSymbol)
+                                    unCurrentSymbol = unEncodedSymbol
+                                    if not ( unContenido[ 'strings_and_translations'].has_key( unCurrentSymbol)):
+                                        unContenido[ 'strings_and_translations'][ unCurrentSymbol] = {}
+                            unEstado = cEstadoExpectTraduccionOrStringClose
+                            continue
+    
+                        elif unaLine.startswith( cElementStringsClose):
+                            unEstado = cEstadoExpectLanguagesOrModulesOrStringsOrTranslationsInterchangeClose
+                            continue
+    
+                    elif unEstado == cEstadoExpectTraduccionOrStringClose:
+                        if not unCurrentSymbol:
+                            unEstadoError = unEstado
+                            break
+                             
+                        if unaLine.startswith( cElementTranslationPrefix):
+                            unQuoteIndex = unaLine.find( cElementAttributeQuote, len( cElementTranslationPrefix))
+                            if unQuoteIndex:
+                                unLanguage = unaLine[ len( cElementTranslationPrefix): unQuoteIndex]
+                                if unLanguage:
+                                    unEncodedLanguage = aTranslationService.encode( unLanguage)
+                                    unGTIndex = unaLine.find( cElementDelimiterGT, unQuoteIndex + 1)
+                                    if unGTIndex:
+                                        unCloseIndex = unaLine.find( cElementTranslationClose, unGTIndex + 1)
+                                        if unCloseIndex:
+                                            unaUnicodeTranslation = unaLine[ unGTIndex + 1: unCloseIndex]
+                                            if unaUnicodeTranslation:
+                                                unaEncodedTranslation = aTranslationService.encode( unaUnicodeTranslation)
+                                                if unaEncodedTranslation:
+                                                    unContenido[ 'strings_and_translations'][ unCurrentSymbol][ unEncodedLanguage] = unaEncodedTranslation
+                                                
+                            unEstado = cEstadoExpectTraduccionOrStringClose
+                            continue
+                        
+                        elif unaLine.startswith( cElementEncodingErrorPrefix):
+                            
+                            unQuoteIndex = unaLine.find( cElementAttributeQuote, len( cElementEncodingErrorPrefix))
+                            if unQuoteIndex:
+                                unLanguage = unaLine[ len( cElementEncodingErrorPrefix): unQuoteIndex]
+                                if unLanguage:
+                                    if unContenido[ 'strings_with_encoding_errors'].has_key( unCurrentSymbol):
+                                        unContenido[ 'strings_with_encoding_errors'][ unCurrentSymbol].append( unLanguage)   
+                                    else:
+                                        unContenido[ 'strings_with_encoding_errors'][ unCurrentSymbol] = [  unLanguage, ]
+                            unEstado = cEstadoExpectTraduccionOrStringClose
+                            continue # ACV OJO 200904012058 (should not matter much having a continue or not, as there is nothing after this in the loop
+
+                        
+                        
+                        
+                        elif unaLine.startswith( cElementSourcesOpen):
+                            
+                            unCloseIndex = unaLine.find( cElementSourcesClose, len( cElementSourcesOpen))
+                            if unCloseIndex:
+                                unSources = unaLine[ len( cElementSourcesOpen): unCloseIndex]
+                                if unSources:
+                                    unStringSources = unContenido[ 'strings_sources'].get( unCurrentSymbol, '').strip()
+                                    if not unStringSources:
+                                        unStringSources = unSources
+                                    else:
+                                        if not ( unStringSources.find( unSources) >= 0):
+                                            unStringSources = '%s %s' % ( unStringSources, unSources, )
+                                    if unStringSources:
+                                        unContenido[ 'strings_sources'][ unCurrentSymbol] = unStringSources  
+                                        
+                            unEstado = cEstadoExpectTraduccionOrStringClose
+                            continue 
+                        
+                        elif unaLine.startswith( cElementStringClose):
+                            unEstado = cEstadoExpectStringOrStringsClose
+                            continue
+    
+                    elif unEstado == cEstadoFinal:
+                        break
                     
-        return unContenidoString
+                    else:
+                        unEstadoError = unEstado
+                        break
+                        
+            return unContenido
+        finally:
+            unExecutionRecord and unExecutionRecord.pEndExecution()
+       
+        
+      
+            
         
     
     
@@ -522,129 +451,53 @@ class TRAContenidoIntercambio_Operaciones:
         unExecutionRecord = self.fStartExecution( 'method',  'fInformeContenidoIntercambios', theParentExecutionRecord,  False, ) 
         
         try:
-            unContenido = self.fContenido()
+            unContenido = self.fContenido( unExecutionRecord)
+    
             if not unContenido:
                 return None
             
-            
             unInforme = self.fNewVoidContenidoIntercambioReport()
             
-            unInforme.update( {
-                'title':                            self.Title(),
-                'description':                      self.Description(),
-                'absolute_url':                     self.absolute_url(),
-            })
-
+            unInforme[ 'language_names_and_flags'] = self.fLanguagesNamesAndFlagsPorCodigo() 
             
+            unasStringsAndTranslations = unContenido[ 'strings_and_translations']
+            if not unasStringsAndTranslations:
+                return unInforme
             
-            
-            aScannedData = unContenido.get( 'content_data', None)
-            if not aScannedData:
-                return None
-            
-            
-            
-            unasScannedStrings           = aScannedData[ 'symbols']
-            unosScannedLanguages         = aScannedData[ 'languages']
+            unasStringsAndEncodingErrors = unContenido[ 'strings_with_encoding_errors']
+            if not unasStringsAndEncodingErrors:
+                unasStringsAndEncodingErrors = {}
                 
- 
-            someLanguageNamesAndFlags = self.fLanguagesNamesAndFlagsPorCodigo().copy()
-            
-            unInforme[ 'language_names_and_flags'] = someLanguageNamesAndFlags
-            
-            
-            someLanguagesDetails = aScannedData.get( 'languages_details', None)
-            if someLanguagesDetails:
-                
-                for aLanguageDetailCode in someLanguagesDetails.keys():
-                    
-                    if not someLanguageNamesAndFlags.has_key( aLanguageDetailCode):
-                        
-                        aLanguageDetail = someLanguagesDetails.get( aLanguageDetailCode, None)
-                        if aLanguageDetail:
-                            unLanguageNamesAndFlag = {
-                                'english'       :  aLanguageDetail.get( 'english_name', aLanguageDetailCode), 
-                                'native'        :  aLanguageDetail.get(  'nombre_nativo_de_idioma', aLanguageDetail.get( 'english_name', aLanguageDetailCode)), 
-                            }
-                            someLanguageNamesAndFlags[ aLanguageDetailCode] = unLanguageNamesAndFlag
-            
-                            
-                            
-                            
-            unInforme[ 'languages'] = sorted( unosScannedLanguages)
-            unInforme[ 'modules']   = sorted( aScannedData[ 'modules'])            
-
-           
-            unInforme[ 'num_symbol_errors'] = aScannedData[ 'num_symbol_errors']
-            
-            
-            
-            unosNumTranslationsByLanguage   = unInforme[ 'num_translated_by_language']
-            unosNumEncodingErrorsByLanguage = unInforme[ 'num_encoding_errors_by_language']
-            
-            
-            
-            
-            for unLanguage in unosScannedLanguages:
-                unosNumTranslationsByLanguage[      unLanguage] = 0    
-                unosNumEncodingErrorsByLanguage[    unLanguage] = 0   
-                   
-                
-                
-            unNumStrings = 0   
-                
-            for unaScannedString in unasScannedStrings:
-                
-                if unaScannedString:
-                    
-                    unStringSymbol  = unaScannedString.get( cScannedKeys_String_Symbol, None)
-                    if unStringSymbol:
-                        
-                        unNumStrings += 1
-                        
-                        unosStringErrors       = unaScannedString.get( cScannedKeys_String_Errors, None)
-                        if unosStringErrors:
-                            unInforme[ 'num_string_errors'] += 1
-                            
-        
-                        unasScannedTranslations = unaScannedString[ cScannedKeys_String_Translations]
-                        
-                        unosStringLenguages    = unasScannedTranslations.keys()   
-                        
-                        for unLenguage in unosStringLenguages:
-                            
-                            unaScannedTranslation = unasScannedTranslations.get( unLenguage, None)
-                            if unaScannedTranslation:
-                                
-                                aTranslation          = unaScannedTranslation.get( cScannedKeys_Translation_Translation, None)
-                                unosTranslationErrors = unaScannedTranslation.get( cScannedKeys_Translation_Errors, None)
-                                
-                                if aTranslation:
-                                    unosNumTranslationsByLanguage[ unLenguage]   = unosNumTranslationsByLanguage.get( unLenguage, 0) + 1
-                            
-                                if unosTranslationErrors:
-                                    unosNumEncodingErrorsByLanguage[ unLenguage] = unosNumEncodingErrorsByLanguage.get( unLenguage, 0) + 1
-               
-                 
-                            
+    
+            unasStrings = unasStringsAndTranslations.keys()
+            unNumStrings = len( unasStrings)
             unInforme[ 'num_strings'] = unNumStrings
-                            
-            unPercentStringErrors = 100
-            if unNumStrings:
-                unPercentStringErrors =  int( ( ( 0.0 + unInforme[ 'num_string_errors']) / unNumStrings) * 100)
-                
-            unInforme[ 'percent_string_errors'] =  unPercentStringErrors   
-                
-            
-            for unLenguage in unosScannedLanguages:
-                
-                unNumeroTraducciones = unosNumTranslationsByLanguage[ unLenguage]
-                
-                if not unNumeroTraducciones:
-                    unPercentTranslated  = 0
-                    unPercentPending     = 100
-                    unPercentEncodingErrors = 0
+           
+            unosNumTranslationsByLanguage = unInforme[ 'num_translated_by_language']
+            unosNumEncodingErrorsByLanguage = unInforme[ 'num_encoding_errors_by_language']
+            for unLanguage in unContenido[ 'languages']:
+                unosNumTranslationsByLanguage[      unLanguage] = 0    
+                unosNumEncodingErrorsByLanguage[    unLanguage] = 0    
+    
+            for unaString in unasStrings:
+                unasTranslations = unasStringsAndTranslations[ unaString]
+                unosLenguages = unasTranslations.keys()
+                for unLenguage in unosLenguages:
+                    unosNumTranslationsByLanguage[ unLenguage] = unosNumTranslationsByLanguage.get( unLenguage, 0) + 1  
+                unosLenguajesConEncodingErrors = unasStringsAndEncodingErrors.get( unaString, [])
+                for unLenguage in unosLenguajesConEncodingErrors:
+                    if not (unLenguage in unosLenguages):
+                        unosNumEncodingErrorsByLanguage[ unLenguage] = unosNumEncodingErrorsByLanguage.get( unLenguage, 0) + 1  
                     
+            unosLenguages =  sorted( unContenido[ 'languages'])
+            unInforme[ 'languages'] = unosLenguages
+            
+            for unLenguage in unosLenguages:
+                unNumeroTraducciones = unosNumTranslationsByLanguage[ unLenguage]
+                if not unNumeroTraducciones:
+                    unPercentPending     = 100
+                    unPercentTranslated  = 0
+                    unPercentEncodingErrors = 0
                 else:
                     unPercentTranslated = int( ( ( 0.0 + unNumeroTraducciones) / unNumStrings) * 100)
                     if not unPercentTranslated:
@@ -652,11 +505,13 @@ class TRAContenidoIntercambio_Operaciones:
                     unPercentPending = 100 - unPercentTranslated
                     unPercentEncodingErrors = int( ( ( 0.0 + unosNumEncodingErrorsByLanguage[ unLenguage]) / unNumStrings) * 100)
                     
-                unInforme[ 'num_pending_by_language'][             unLenguage] = unNumStrings - unNumeroTraducciones
-                unInforme[ 'percent_pending_by_language'][         unLenguage] = unPercentPending
-                unInforme[ 'percent_translated_by_language'][      unLenguage] = unPercentTranslated
+                unInforme[ 'num_pending_by_language'][        unLenguage] = unNumStrings - unNumeroTraducciones
+                unInforme[ 'percent_pending_by_language'][    unLenguage] = unPercentPending
+                unInforme[ 'percent_translated_by_language'][ unLenguage] = unPercentTranslated
+                unInforme[ 'num_encoding_errors_by_language'][unLenguage] = unosNumEncodingErrorsByLanguage[ unLenguage]
                 unInforme[ 'percent_encoding_errors_by_language'][ unLenguage] = unPercentEncodingErrors
                         
+                
             return unInforme
          
         finally:
@@ -677,16 +532,14 @@ class TRAContenidoIntercambio_Operaciones:
         unExecutionRecord = self.fStartExecution( 'method',  'fSumarioContenido', theParentExecutionRecord,  False, ) 
         
         try:
-            unInformeContenido = self.fInformeContenidoIntercambio( unExecutionRecord)
+            unInformeContenido = self.fInformeContenido( unExecutionRecord)
             if not unInformeContenido:
                 return ''
             
             unNumeroCadenas = unInformeContenido.get( 'num_strings', 0)
             unLanguageNames = ','.join( unInformeContenido.get( 'languages', []))
-            unModuleNames   = ','.join( sorted( unInformeContenido.get( 'modules', set())))
             
-            unSumario = '#%d  %s  %s' % (  unNumeroCadenas,  unLanguageNames, unModuleNames)
-            
+            unSumario = '#%d  %s' % (  unNumeroCadenas,  unLanguageNames)
             
             return unSumario
     
@@ -699,86 +552,11 @@ class TRAContenidoIntercambio_Operaciones:
 
     
   
- 
     
     
-            
     
-    security.declarePublic( 'fExtraLinks')    
-    def fExtraLinks( self):
-        
-        unosExtraLinks = TRAArquetipo.fExtraLinks( self)
-        if not unosExtraLinks:
-            unosExtraLinks = [ ]
-        
-        unaURL = self.absolute_url()
-        if not unaURL:
-            return unosExtraLinks
-        
-
-        unExtraLink = self.fNewVoidExtraLink()
-        unExtraLink.update( {
-            'label'   : self.fTranslateI18N( 'plone', 'Data', 'Data-',),
-            'href'    : '%s/TRAContenidoIntercambioDatos/' % unaURL,
-            'icon'    : '',
-            'domain'  : 'plone',
-            'msgid'   : 'Data',
-        })
-        unosExtraLinks.append( unExtraLink)      
-        
-        unaImportacion = self.getContenedor()
-        if not ( unaImportacion == None):
-            
-            unImportacionURL = unaImportacion.absolute_url()
-            if unImportacionURL:
-        
-                unExtraLink = self.fNewVoidExtraLink()
-                unExtraLink.update( {
-                    'label'   : self.fTranslateI18N( 'plone', 'Summary', 'Summary-',),
-                    'href'    : '%s/TRAImportacionContenidosSumario/' % unImportacionURL,
-                    'icon'    : '',
-                    'domain'  : 'plone',
-                    'msgid'   : 'Summary',
-                })
-                unosExtraLinks.append( unExtraLink)
-                                    
-                unExtraLink = self.fNewVoidExtraLink()
-                unExtraLink.update( {
-                    'label'   : self.fTranslateI18N( 'plone', 'Details', 'Details-',),
-                    'href'    : '%s/TRAImportacionContenidosDetalle/' % unImportacionURL,
-                    'icon'    : '',
-                    'domain'  : 'plone',
-                    'msgid'   : 'Details',
-                })
-                unosExtraLinks.append( unExtraLink)
-                                    
-            unElementoContenidoXML = unaImportacion.fObtenerContenidoXML()
-            if not ( unElementoContenidoXML == None):
-                unExtraLink = self.fNewVoidExtraLink()
-                unExtraLink.update( {
-                    'label'   : self.fTranslateI18N( 'plone', 'XML Data', 'XML Data-',),
-                    'href'    : '%s/Tabular/' % unElementoContenidoXML.absolute_url(),
-                    'icon'    : 'tracontenidoxml.gif',
-                    'domain'  : 'plone',
-                    'msgid'   : 'XML Data',
-                })
-                unosExtraLinks.append( unExtraLink)        
-                
-            unElementoProgreso = unaImportacion.fDeriveElementoProgreso()
-            if not ( unElementoProgreso == None):
-                unExtraLink = self.fNewVoidExtraLink()
-                unExtraLink.update( {
-                    'label'   : self.fTranslateI18N( 'plone', 'Progress', 'Progress-',),
-                    'href'    : '%s/TRAProgressResults/' % unElementoProgreso.absolute_url(),
-                    'icon'    : 'traprogreso.gif',
-                    'domain'  : 'plone',
-                    'msgid'   : 'Progress',
-                })
-                unosExtraLinks.append( unExtraLink)        
-                
-            
-        return unosExtraLinks
-        
+    
+    
     
  
 

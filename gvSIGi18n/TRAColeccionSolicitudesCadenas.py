@@ -2,8 +2,8 @@
 #
 # File: TRAColeccionSolicitudesCadenas.py
 #
-# Copyright (c) 2013 by 2008, 2009, 2010, 2011 Conselleria de Infraestructuras
-# y Transporte de la Generalidad Valenciana
+# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
+# Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -32,12 +32,8 @@ __docformat__ = 'plaintext'
 from AccessControl import ClassSecurityInfo
 from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.TRAColeccionArquetipos import TRAColeccionArquetipos
-from Products.gvSIGi18n.TRAConRegistroActividad import TRAConRegistroActividad
 from TRAColeccionSolicitudesCadenas_Operaciones import TRAColeccionSolicitudesCadenas_Operaciones
 from Products.gvSIGi18n.config import *
-
-# additional imports from tagged value 'import'
-from TRAElemento_Operaciones import TRAElemento_Operaciones
 
 ##code-section module-header #fill in your manual code here
 ##/code-section module-header
@@ -57,7 +53,7 @@ schema = Schema((
         ),
         contains_collections=False,
         label2='String creation Requests',
-        additional_columns=['simbolo', 'estadoSolicitudCadena', 'nombresModulos'],
+        additional_columns=['simbolo', 'estadoSolicitudCadena', 'codigoIdiomaPrincipal', 'cadenaTraducidaAIdiomaPrincipal', 'codigoIdiomaReferencia', 'cadenaTraducidaAIdiomaReferencia'],
         label='Solicitudes de creacion de Cadenas',
         represents_aggregation=True,
         description2='Requests by developers to create new strings.',
@@ -78,18 +74,17 @@ schema = Schema((
 
 TRAColeccionSolicitudesCadenas_schema = OrderedBaseFolderSchema.copy() + \
     getattr(TRAColeccionArquetipos, 'schema', Schema(())).copy() + \
-    getattr(TRAConRegistroActividad, 'schema', Schema(())).copy() + \
     getattr(TRAColeccionSolicitudesCadenas_Operaciones, 'schema', Schema(())).copy() + \
     schema.copy()
 
 ##code-section after-schema #fill in your manual code here
 ##/code-section after-schema
 
-class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, TRAConRegistroActividad, TRAColeccionSolicitudesCadenas_Operaciones):
+class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccionSolicitudesCadenas_Operaciones):
     """
     """
     security = ClassSecurityInfo()
-    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAColeccionArquetipos,'__implements__',()),) + (getattr(TRAConRegistroActividad,'__implements__',()),) + (getattr(TRAColeccionSolicitudesCadenas_Operaciones,'__implements__',()),)
+    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAColeccionArquetipos,'__implements__',()),) + (getattr(TRAColeccionSolicitudesCadenas_Operaciones,'__implements__',()),)
 
     # This name appears in the 'add' box
     archetype_name = 'Coleccion de Solicitudes de creacion de Cadenas'
@@ -112,51 +107,41 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
 
 
 
-    allowed_content_types = ['TRASolicitudCadena'] + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', [])) + list(getattr(TRAColeccionSolicitudesCadenas_Operaciones, 'allowed_content_types', []))
-    filter_content_types             = 1
-    global_allow                     = 0
+    allowed_content_types = ['TRASolicitudCadena'] + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', [])) + list(getattr(TRAColeccionSolicitudesCadenas_Operaciones, 'allowed_content_types', []))
+    filter_content_types = 1
+    global_allow = 0
     #content_icon = 'TRAColeccionSolicitudesCadenas.gif'
-    immediate_view                   = 'Tabular'
-    default_view                     = 'Tabular'
-    suppl_views                      = ['Tabular',]
-    typeDescription                  = "Coleccion de solicitudes realizadas por los desarrolladores, para crear nuevas cadenas."
-    typeDescMsgId                    =  'gvSIGi18n_TRAColeccionSolicitudesCadenas_help'
-    archetype_name2                  = 'Strings creation request collection'
-    typeDescription2                 = '''Collection of requests by developers to create new strings.'''
-    archetype_name_msgid             = 'gvSIGi18n_TRAColeccionSolicitudesCadenas_label'
-    factory_methods                  = { 'TRASolicitudCadena' : 'fCrearSolicitudCadena',}
-    factory_enablers                 = { 'TRASolicitudCadena' : [ 'fUseCaseCheckDoableFactory', 'Create_TRASolicitudCadena',]}
-    propagate_delete_impact_to       = None
+    immediate_view = 'Tabular'
+    default_view = 'Tabular'
+    suppl_views = ['Tabular',]
+    typeDescription = "Coleccion de solicitudes realizadas por los desarrolladores, para crear nuevas cadenas."
+    typeDescMsgId =  'gvSIGi18n_TRAColeccionSolicitudesCadenas_help'
+    archetype_name2 = 'Strings creation request collection'
+    typeDescription2 = '''Collection of requests by developers to create new strings.'''
+    archetype_name_msgid = 'gvSIGi18n_TRAColeccionSolicitudesCadenas_label'
+    factory_methods = { 'TRASolicitudCadena' : 'fCrearSolicitudCadena',}
+    factory_enablers = { 'TRASolicitudCadena' : [ 'fUseCaseCheckDoableFactory', 'Create_TRASolicitudCadena',]}
     allow_discussion = False
 
 
     actions =  (
 
 
-       {'action': "string:${object_url}/TRAConfirmarCrearCadenas",
+       {'action': "string:${object_url}/TRACrearCadenas_action",
         'category': "object_buttons",
-        'id': 'TRACreateStrings',
+        'id': 'CreateStrings',
         'name': 'Create Strings',
         'permissions': ("Modify portal content",),
-        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Create_TRASolicitudCadena')"""
+        'condition': """python:object.fUseCaseCheckDoable( 'Create_TRASolicitudCadena')"""
        },
 
 
-       {'action': "string:${object_url}/TRAConfirmarLimpiarCadenas",
+       {'action': "string:${object_url}/TRALimpiarCadenas_action",
         'category': "object_buttons",
-        'id': 'TRACleanupStrings',
+        'id': 'CleanupStrings',
         'name': 'Clean-up Strings',
         'permissions': ("Modify portal content",),
-        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Cleanup_TRAColeccionSolicitudesCadenas')"""
-       },
-
-
-       {'action': "string:${object_url}/TRACrear_SolicitudCadena/?theNewTypeName=TRASolicitudCadena&theAggregationName=solicitudesCadenas",
-        'category': "object_buttons",
-        'id': 'TRACreateSolicitudCadena',
-        'name': 'Create New String Request',
-        'permissions': ("View",),
-        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable(object, 'Create_TRASolicitudCadena')"""
+        'condition': """python:object.fUseCaseCheckDoable( 'Cleanup_TRAColeccionSolicitudesCadenas')"""
        },
 
 
@@ -183,16 +168,7 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
         'id': 'view',
         'name': 'View',
         'permissions': ("View",),
-        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'View_any_TRA_element')"""
-       },
-
-
-       {'action': "string:${object_url}/MDDChanges",
-        'category': "object_buttons",
-        'id': 'mddchanges',
-        'name': 'Changes',
-        'permissions': ("View",),
-        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Changes_on_any_TRA_element')"""
+        'condition': """python:1"""
        },
 
 
@@ -201,25 +177,7 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
         'id': 'edit',
         'name': 'Edit',
         'permissions': ("Modify portal content",),
-        'condition': """python:object.fAllowWrite() and object.TRAgvSIGi18n_tool.fRoleQuery_IsAnyRol( object, [ 'Manager', 'Owner', 'TRACreator', 'TRAManager', 'TRACoordinator',])"""
-       },
-
-
-       {'action': "string:${object_url}/TRAFlushCache_action",
-        'category': "object_buttons",
-        'id': 'tra_flushcache',
-        'name': 'Flush',
-        'permissions': ("View",),
-        'condition': """python:object.TRAgvSIGi18n_tool.fRoleQuery_IsAnyRol( object, [ 'Manager', 'Owner', 'TRACreator', 'TRAManager', 'TRACoordinator',])"""
-       },
-
-
-       {'action': "string:${object_url}/TRAInventory_action",
-        'category': "object_buttons",
-        'id': 'TRA_inventario',
-        'name': 'Inventory',
-        'permissions': ("View",),
-        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Inventory_TRAElemento')"""
+        'condition': """python:object.fAllowWrite()"""
        },
 
 
@@ -237,7 +195,7 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
         'id': 'TRA_SeguridadUsuarioConectado',
         'name': 'Permissions',
         'permissions': ("View",),
-        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Permissions_on_any_TRA_element')"""
+        'condition': """python:1"""
        },
 
 
@@ -247,42 +205,6 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
         'name': 'State',
         'permissions': ("View",),
         'condition': """python:0"""
-       },
-
-
-       {'action': "string:${object_url}/TRARecatalog_action",
-        'category': "object_buttons",
-        'id': 'TRA_recatalogar',
-        'name': 'ReCatalog',
-        'permissions': ("View",),
-        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'ReCatalog_TRAElemento')"""
-       },
-
-
-       {'action': "string:${object_url}/MDDCacheStatus/",
-        'category': "object_buttons",
-        'id': 'mddcachestatus',
-        'name': 'Cache',
-        'permissions': ("View",),
-        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'CacheStatus_on_any_TRA_element')"""
-       },
-
-
-       {'action': "string:${object_url}/TRAResetPermissions_action",
-        'category': "object_buttons",
-        'id': 'TRA_reestablecerpermisos',
-        'name': 'Reset Permissions',
-        'permissions': ("View",),
-        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'ResetPermissions_TRAElemento')"""
-       },
-
-
-       {'action': "string:${object_url}/TRAVerifyPermissions_action",
-        'category': "object_buttons",
-        'id': 'TRA_verificarpermisos',
-        'name': 'Verify Permissions',
-        'permissions': ("View",),
-        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'VerifyPermissions_TRAElemento')"""
        },
 
 
@@ -311,8 +233,8 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
         
         return TRAColeccionArquetipos.manage_afterAdd( self, item, container)
 
-    security.declarePublic('cb_isCopyable')
-    def cb_isCopyable(self):
+    security.declarePublic('cb_isMoveable')
+    def cb_isMoveable(self):
         """
         """
         
@@ -325,26 +247,19 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
         
         return False
 
-    security.declarePublic('fIsCacheable')
-    def fIsCacheable(self):
+    security.declarePublic('cb_isCopyable')
+    def cb_isCopyable(self):
         """
         """
         
-        return True
-
-    security.declarePublic('fExtraLinks')
-    def fExtraLinks(self):
-        """
-        """
-        
-        return TRAElemento_Operaciones.fExtraLinks( self)
+        return False
 
     security.declarePublic('manage_pasteObjects')
     def manage_pasteObjects(self,cb_copy_data,REQUEST):
         """
         """
         
-        return self
+        return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

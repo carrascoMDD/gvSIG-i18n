@@ -2,7 +2,8 @@
 #
 # File: TRARoles.py
 #
-# Copyright (c) 2008, 2009, 2010, 2011  by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
+# Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -37,32 +38,8 @@ from AccessControl import ModuleSecurityInfo
 
 security = ModuleSecurityInfo('Products.gvSIGi18n.TRARoles')
 
-# #########################################
-"""Creation of new instances of TRACatalogo (the root element) requires the user to have been granted the 
-"gvSIGi18n: Add TRACatalogo" permission on the containing folder.
-This is achieved by granting to the TRACreator role 
-    through the Zope Management Interface security tab of the containing folder  
-    the permissions below:
-    [   'ACI', perm_AccessContentsInformation,],
-    [   'APC', permissions.AddPortalContent,],  
-    [   'APF', permissions.AddPortalFolders,],  
-    [   'CHP', permissions.ChangePermissions,],
-    [   'DOB', permissions.DeleteObjects,],     
-    [   'LFC', permissions.ListFolderContents,],
-    [   'MGR', perm_ManageGroups, ],
-    [   'MPR', permissions.ManageProperties,], 
-    [   'MPC', permissions.ModifyPortalContent,],
-    [   'VIE', permissions.View,],              
-    [   'ADC', cPermission_gvSIGi18nAddTRACatalogo,],
-
-The user that shall be able to create root catalogs in the containing folder
-shall be assigned the in the containing folder the local role TRACreator 
-by using the Plone sharing tab in the containing folder (must be logged as Manager).
-
-"""
 
 
-security.declarePublic('cTRACreator_role')
 security.declarePublic('cTRAManager_role')
 security.declarePublic('cTRACoordinator_role')
 security.declarePublic('cTRAVisitor_role')
@@ -71,7 +48,6 @@ security.declarePublic('cTRAReviewer_role')
 security.declarePublic('TRARoles_list')
 
 
-cTRACreator_role        = 'TRACreator'
 cTRAManager_role        = 'TRAManager'
 cTRACoordinator_role    = 'TRACoordinator'
 cTRADeveloper_role      = 'TRADeveloper'
@@ -80,8 +56,8 @@ cTRATranslator_role     = 'TRATranslator'
 cTRAVisitor_role        = 'TRAVisitor'
 
 
+
 TRARoles_list = [
-    cTRACreator_role,
     cTRAManager_role,
     cTRACoordinator_role,    
     cTRADeveloper_role,
@@ -91,23 +67,3 @@ TRARoles_list = [
 ]
 
 
-
-cZopeAnonymous_role     = 'Anonymous'
-cZopeAuthenticated_role = 'Authenticated'
-cZopeMember_role        = 'Member'
-cZopeReviewer_role      = 'Reviewer'
-cZopeOwner_role         = 'Owner'
-cZopeManager_role       = 'Manager'
-
-
-cZopeRoles_list = [
-    cZopeManager_role,
-    cZopeOwner_role,
-    cZopeReviewer_role,
-    cZopeMember_role,    
-    cZopeAuthenticated_role,
-    cZopeAnonymous_role,
-]
-
-
-cZopeManagerAndOwnerRoles = [ cZopeManager_role, cZopeOwner_role,]

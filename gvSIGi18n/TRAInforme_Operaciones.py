@@ -2,7 +2,8 @@
 #
 # File: TRAInforme_Operaciones.py
 #
-# Copyright (c) 2008, 2009, 2010, 2011  by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+# Copyright (c) 2008, 2009 by Conselleria de Infraestructuras y Transporte de la
+# Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -61,31 +62,15 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore       import permissions
 
 
-from TRAElemento_Constants                 import *
-from TRAElemento_Constants_Activity        import *
-from TRAElemento_Constants_Configurations  import *
-from TRAElemento_Constants_Contributions   import *
-from TRAElemento_Constants_Dates           import *
-from TRAElemento_Constants_Encoding        import *
-from TRAElemento_Constants_Import          import *
-from TRAElemento_Constants_Languages       import *
-from TRAElemento_Constants_Logging         import *
-from TRAElemento_Constants_Modules         import *
-from TRAElemento_Constants_Profiling       import *
-from TRAElemento_Constants_Progress        import *
-from TRAElemento_Constants_String          import *
-from TRAElemento_Constants_StringRequests  import *
-from TRAElemento_Constants_Translate       import *
-from TRAElemento_Constants_Translation     import *
-from TRAElemento_Constants_TypeNames       import *
-from TRAElemento_Constants_Views           import *
-from TRAElemento_Constants_Vocabularies    import *
-from TRAUtils                              import *
 
-from TRAElemento_Permission_Definitions import cBoundObject
-from TRAElemento_Permission_Definitions_UseCaseNames import cUseCase_EllaborateInformeModulesAndLanguages, cUseCase_CreateTRAInforme
 
-from TRAArquetipo import TRAArquetipo
+from TRAElemento_Constants              import *
+
+from TRATraduccion_Operaciones          import cMarcaDeComentarioSinCambios
+
+from TRAElemento_Permission_Definitions import cUseCase_GenerateTRAInformeLanguages, cUseCase_GenerateTRAInformeModules, cBoundObject
+
+
 
 
 class TRAInforme_Operaciones:
@@ -96,89 +81,9 @@ class TRAInforme_Operaciones:
 
 
 
-    security.declarePrivate( 'pAllSubElements_into')    
-    def pAllSubElements_into( self, theCollection, theAdditionalParams=None):
-        if theCollection == None:
-            return self
-        theCollection.append( self)
-        
-         
-        return self
-        
-    
-
-    security.declarePrivate( 'pForAllElementsDo_recursive')    
-    def pForAllElementsDo_recursive( self, theLambda=None, thePloneLambda=None,):
-        if not theLambda:
-            return self
-        
-        theLambda( self)        
-                
-        if thePloneLambda:
-            self.pForAllElementsPloneDo( thePloneLambda)
-    
-        return self
-
-    
-    
-    
-    
-    
-    
-    
-    
-
-            
-    
-    security.declarePublic( 'fExtraLinks')    
-    def fExtraLinks( self):
-        
-        unosExtraLinks = TRAArquetipo.fExtraLinks( self)
-        if not unosExtraLinks:
-            unosExtraLinks = [ ]
-        
-        unaURL = self.absolute_url()
-        if not unaURL:
-            return unosExtraLinks
-        
-
-        unExtraLink = self.fNewVoidExtraLink()
-        unExtraLink.update( {
-            'label'   : self.fTranslateI18N( 'plone', 'By Languages', 'By Languages-',),
-            'href'    : '%s/TRAInforme_Idiomas/' % unaURL,
-            'icon'    : '',
-            'domain'  : 'plone',
-            'msgid'   : 'By Languages',
-        })
-        unosExtraLinks.append( unExtraLink)
-                            
-        unExtraLink = self.fNewVoidExtraLink()
-        unExtraLink.update( {
-            'label'   : self.fTranslateI18N( 'plone', 'By Modules', 'By Modules-',),
-            'href'    : '%s/TRAInforme_Modulos/' % unaURL,
-            'icon'    : '',
-            'domain'  : 'plone',
-            'msgid'   : 'By Modules',
-        })
-        unosExtraLinks.append( unExtraLink)
-                            
-
-        return unosExtraLinks
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
     
     security.declareProtected( permissions.ModifyPortalContent, 'fElaborarInforme')
     def fElaborarInforme( self, 
-        theUseCaseQueryResult       =None,
         theForceEllaboration        =False, 
         theCheckPermissions         =False, 
         thePermissionsCache         =None, 
@@ -191,39 +96,42 @@ class TRAInforme_Operaciones:
        
         unExecutionRecord = self.fStartExecution( 'method',  'fElaborarInforme', theParentExecutionRecord, False) 
         
-        from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import  fReprAsString, fDateTimeNow
-
         try:
             if ( not theForceEllaboration) and self.getHaComenzado():
                 return False
             
-            unPermissionsCache = fDictOrNew( thePermissionsCache)
-            unRolesCache       = fDictOrNew( theRolesCache)
+            unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
+            unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
                
-            
+            unInformeIdiomasUseCaseQueryResult = None
+            unInformeModulosUseCaseQueryResult = None
             if theCheckPermissions:
-                if ( not theUseCaseQueryResult) or ( not theUseCaseQueryResult.get( 'success', False)) or not ( theUseCaseQueryResult.get( 'use_case_name', '') in [ cUseCase_EllaborateInformeModulesAndLanguages, cUseCase_CreateTRAInforme, ]):
-                    
-                    unUseCaseQueryResult = self.fUseCaseAssessment(  
-                        theUseCaseName          = cUseCase_EllaborateInformeModulesAndLanguages,        
-                        theElementsBindings     = { cBoundObject: self,},                                    
-                        theRulesToCollect       = None,
-                        thePermissionsCache     = unPermissionsCache,                                        
-                        theRolesCache           = unRolesCache,                                              
-                        theParentExecutionRecord= unExecutionRecord,                                          
-                    )
-                    if ( not unUseCaseQueryResult) or not unUseCaseQueryResult.get( 'success', False):
-                        return False
+                unInformeIdiomasUseCaseQueryResult = self.fUseCaseAssessment(  
+                    theUseCaseName          = cUseCase_GenerateTRAInformeLanguages,        
+                    theElementsBindings     = { cBoundObject: self,},                                    
+                    theRulesToCollect       = None,                                                      
+                    thePermissionsCache     = unPermissionsCache,                                        
+                    theRolesCache           = unRolesCache,                                              
+                    theParentExecutionRecord= unExecutionRecord,                                          
+                )
                  
+                unInformeModulosUseCaseQueryResult = self.fUseCaseAssessment( 
+                    theUseCaseName          = cUseCase_GenerateTRAInformeModules,        
+                    theElementsBindings     = { cBoundObject: self,},                                    
+                    theRulesToCollect       = None,                                                      
+                    thePermissionsCache     = unPermissionsCache,                                        
+                    theRolesCache           = unRolesCache,                                              
+                    theParentExecutionRecord= unExecutionRecord,                                          
+                )
     
             unCatalogo = self.getCatalogo()
-            if unCatalogo == None:
+            if not unCatalogo:
                 self.setInformeExcepcion( "No containing Catalog found - possibly an instance of TRAInforme that has not been properly created")
                 return False
     
      
             unMemberId = self.fGetMemberId()                
-            unAhora    = fDateTimeNow()
+            unAhora    = self.fDateTimeNow()
             
             self.setHaComenzado( True)
             self.setEstadoProceso( 'Activo')
@@ -235,110 +143,111 @@ class TRAInforme_Operaciones:
             self.setInformeExcepcionIdiomas( '')
             self.setInformeExcepcionModulos( '')
              
+                    
+            transaction.commit( )
+    
+            logging.getLogger( 'gvSIGi18n::fElaborarInforme').info("COMMIT") 
+    
             unInformeIdiomasEllaborated = False
             unInformeModulosEllaborated = False
+            
+            unFechaFinProceso = None
+            unaException = None
+            try:     
+                
+                try:
+    
+                    if unInformeIdiomasUseCaseQueryResult and unInformeIdiomasUseCaseQueryResult.get( 'success', False):
+                        unInformeIdiomas = unCatalogo.fElaborarInformeIdiomas( 
+                            unInformeIdiomasUseCaseQueryResult, 
+                            unPermissionsCache, 
+                            unRolesCache, 
+                            unExecutionRecord
+                        )
+                        if not unInformeIdiomas:
+                            unInformeExceptionIdiomas = "No Languages Report produced from Catalog - possibly an error in the reporting process."
+                        unInformeExceptionIdiomas = unInformeIdiomas.get( 'exception', '')
+                        if unInformeExceptionIdiomas:
+                            self.setInformeExcepcionIdiomas( unInformeExceptionIdiomas)
+                            self.setInformeExcepcion( "Exception during Languages Report Generation")
+                             
+                        if unInformeIdiomas.get( 'success', False):
+                            unInformeIdiomas[ 'report_date'] = self.fDateTimeToString( self.fDateTimeNow())
+                            unInformeIdiomasString = ''
+                            try:
+                                unInformeIdiomasString = str( unInformeIdiomas)
+                            except:
+                                None
+                            if not unInformeIdiomasString:
+                                self.setInformeExcepcionIdiomas( "Error converting Report to a String representation")
+                                self.setInformeExcepcion( "Exception during Languages Report storage")
+                                return False
                             
-            try:
-
-                unInformeIdiomas = unCatalogo.fElaborarInformeIdiomas( 
-                    theCheckPermissions         =False, 
-                    thePermissionsCache         =unPermissionsCache, 
-                    theRolesCache               =unRolesCache, 
-                    theParentExecutionRecord    =unExecutionRecord,
-                )
-
-                if not unInformeIdiomas:
-                    unInformeExceptionIdiomas = "No Languages Report produced from Catalog - possibly an error in the reporting process."
-                else:
-                    unInformeExceptionIdiomas = unInformeIdiomas.get( 'exception', '')
-                    
-                if unInformeExceptionIdiomas:
-                    self.setInformeExcepcionIdiomas( unInformeExceptionIdiomas)
-                    self.setInformeExcepcion( "Exception during Languages Report Generation")
-                     
-                if unInformeIdiomas.get( 'success', False):
-                    unInformeIdiomas[ 'report_date'] = self.fDateTimeToString( fDateTimeNow())
-                    unInformeIdiomasString = ''
-                    try:
-                        unInformeIdiomasString = fReprAsString( unInformeIdiomas)
-                    except:
-                        None
-                    if not unInformeIdiomasString:
-                        self.setInformeExcepcionIdiomas( "Error converting Report to a String representation")
-                        self.setInformeExcepcion( "Exception during Languages Report storage")
-                        return False
-                    
-                    self.setInformeIdiomas( unInformeIdiomasString)
-                    unInformeIdiomasEllaborated = True
+                            self.setInformeIdiomas( unInformeIdiomasString)
+                            unInformeIdiomasEllaborated = True
 
                     
+                    if unInformeModulosUseCaseQueryResult and unInformeModulosUseCaseQueryResult.get( 'success', False):
+                        unInformeModulos = unCatalogo.fElaborarInformeModulos( 
+                            unInformeModulosUseCaseQueryResult, 
+                            unPermissionsCache, 
+                            unRolesCache, 
+                            unExecutionRecord
+                        )
+                        if not unInformeModulos:
+                            unInformeExceptionModulos = "No Modules Report produced from Catalog - possibly an error in the reporting process."
+                        unInformeExceptionModulos = unInformeModulos.get( 'exception', '')
+                        if unInformeExceptionModulos:
+                            self.setInformeExcepcionModulos( unInformeExceptionModulos)
+                            self.setInformeExcepcion( "Exception during Modules Report Generation")
+                             
+                        if unInformeModulos.get( 'success', False):
+                            unInformeModulos[ 'report_date'] = self.fDateTimeToString( self.fDateTimeNow())
+                            unInformeModulosString = ''
+                            try:
+                                unInformeModulosString = str( unInformeModulos)
+                            except:
+                                None
+                            if not unInformeModulosString:
+                                self.setInformeExcepcionModulos( "Error converting Report to a String representation")
+                                self.setInformeExcepcion( "Exception during Languages Report storage")
+                                return False
+                      
+                        
+                            self.setInformeModulos( unInformeModulosString)
+                            unInformeModulosEllaborated = True
                     
+                    return True
                 
-                unInformeModulos = unCatalogo.fElaborarInformeModulos( 
-                    theCheckPermissions         =False, 
-                    thePermissionsCache         =unPermissionsCache, 
-                    theRolesCache               =unRolesCache, 
-                    theParentExecutionRecord    =unExecutionRecord,
-                )
-
-                if not unInformeModulos:
-                    unInformeExceptionModulos = "No Modules Report produced from Catalog - possibly an error in the reporting process."
-                else:
-                    unInformeExceptionModulos = unInformeModulos.get( 'exception', '')
-
-                if unInformeExceptionModulos:
-                    self.setInformeExcepcionModulos( unInformeExceptionModulos)
-                    self.setInformeExcepcion( "Exception during Modules Report Generation")
-                     
-                if unInformeModulos.get( 'success', False):
-                    unInformeModulos[ 'report_date'] = self.fDateTimeToString( fDateTimeNow())
-                    unInformeModulosString = ''
-                    try:
-                        unInformeModulosString = fReprAsString( unInformeModulos)
-                    except:
-                        None
-                    if not unInformeModulosString:
-                        self.setInformeExcepcionModulos( "Error converting Report to a String representation")
-                        self.setInformeExcepcion( "Exception during Languages Report storage")
-                        return False
-              
-                
-                    self.setInformeModulos( unInformeModulosString)
-                    unInformeModulosEllaborated = True
-                
+                except:
+                    unaExceptionInfo = sys.exc_info()
+                    unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
                     
+                    unInformeExcepcion = 'Exception during fElaborarInforme\n' 
+                    unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
+                    unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                    unInformeExcepcion += unaExceptionFormattedTraceback   
+                             
+                       
+                    unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
+    
+                    if cLogExceptions:
+                        logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
                     
+                    return False
+    
+            finally:
                 self.setEstadoProceso( 'Inactivo')
 
-                self.setFechaFinProceso( fDateTimeNow())
+                self.setFechaFinProceso( self.fDateTimeNow())
+                self.setHaCompletadoConExito( unInformeIdiomasEllaborated and unInformeModulosEllaborated)
                 
-                self.pFlushCachedTemplates()
-                
-                unHaCompletadoConExito = unInformeIdiomasEllaborated and unInformeModulosEllaborated
-                self.setHaCompletadoConExito( unHaCompletadoConExito)
-                    
-                return True
-            
-            except:
-                unaExceptionInfo = sys.exc_info()
-                unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
-                
-                unInformeExcepcion = 'Exception during fElaborarInforme\n' 
-                unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-                try:
-                    unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
-                except:
-                    None
-                unInformeExcepcion += unaExceptionFormattedTraceback   
-                         
-                   
-                unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
-
-                if cLogExceptions:
-                    logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
-                
-                return False
-
+                unCatalogo.setUltimoInforme( self)
+    
+                transaction.commit( )
+    
+                logging.getLogger( 'gvSIGi18n::fElaborarInforme').info("COMMIT") 
+            return True
         
         finally:
             unExecutionRecord and unExecutionRecord.pEndExecution()
@@ -347,6 +256,45 @@ class TRAInforme_Operaciones:
        
     
     
+
+    security.declareProtected( permissions.View, 'fAutoUpdateIfNeeded')
+    def fAutoUpdateIfNeeded( self, 
+        theForceEllaboration        =False, 
+        theCheckPermissions         =False, 
+        thePermissionsCache         =None, 
+        theRolesCache               =None, 
+        theParentExecutionRecord    =None):
+        """Generate the report if it has never been generated, or if it is auto-updatable and enough time has lapsed.
+        
+        """
+        unExecutionRecord = self.fStartExecution( 'method',  'fAutoUpdateIfNeeded', theParentExecutionRecord, False) 
+        
+        try:
+        
+            if ( self.getEstadoProceso() == 'Activo') and not theForceEllaboration:
+                return False
+            
+            unaUltimaFechaInforme = None
+            if self.getHaComenzado() and self.getHaCompletadoConExito():
+                unaUltimaFechaInforme =  self.getFechaFinProceso()
+                
+            if unaUltimaFechaInforme:
+                unMinimoIntervaloActualizacionEnMinutos = self.getMinimoIntervaloActualizacionEnMinutos()
+                if unMinimoIntervaloActualizacionEnMinutos and ( int(( self.fMillisecondsNow() - unaUltimaFechaInforme.millis()) / 60000) < unMinimoIntervaloActualizacionEnMinutos):
+                    return False
+                
+            self.fElaborarInforme( 
+                theForceEllaboration        = True, 
+                theCheckPermissions         = theCheckPermissions, 
+                thePermissionsCache         = thePermissionsCache, 
+                theRolesCache               = theRolesCache, 
+                theParentExecutionRecord    = unExecutionRecord)
+        
+            return True
+        
+        finally:
+            unExecutionRecord and unExecutionRecord.pEndExecution()
+             
         
         
 
@@ -355,16 +303,44 @@ class TRAInforme_Operaciones:
         
         
     security.declareProtected( permissions.View, 'fInformeIdiomas')
-    def fInformeIdiomas( self,):
-        """Create report objects structure from the instance stored internally as the content of a string field.
+    def fInformeIdiomas( self, 
+        theForceEllaboration        =False, 
+        theCheckPermissions         =False, 
+        thePermissionsCache         =None, 
+        theRolesCache               =None, 
+        theParentExecutionRecord    =None):
+        """Lazy access the Languages report.
         
+        Generate if never generated, or give a chance to update if auto-updatable.
+        
+        Create report objects structure from the instance stored internally as the content of a string field.
         """
                          
-        unInformeString = self.getInformeIdiomas()
-                
-        unInforme = self.fEvalString( unInformeString)
-        return unInforme
+        unExecutionRecord = self.fStartExecution( 'method',  'fInformeIdiomas', theParentExecutionRecord, False) 
         
+        try:
+        
+            unDummy = self.fAutoUpdateIfNeeded( 
+                theForceEllaboration, 
+                theCheckPermissions, 
+                thePermissionsCache, 
+                theRolesCache, 
+                unExecutionRecord,
+            )
+    
+            unInformeIdiomasString = self.getInformeIdiomas()
+            if not unInformeIdiomasString:
+                return None
+                
+            unInformeIdiomas = None
+            try:
+                unInformeIdiomas = eval( unInformeIdiomasString)
+            except:
+                None
+            return unInformeIdiomas
+        
+        finally:
+            unExecutionRecord and unExecutionRecord.pEndExecution()
              
                  
     
@@ -374,17 +350,47 @@ class TRAInforme_Operaciones:
        
         
     security.declareProtected( permissions.View, 'fInformeModulos')
-    def fInformeModulos( self,):                        
-        """Create report objects structure from the instance stored internally as the content of a string field.
+    def fInformeModulos( self,
+        theForceEllaboration        =False, 
+        theCheckPermissions         =False, 
+        thePermissionsCache         =None, 
+        theRolesCache               =None, 
+        theParentExecutionRecord    =None):                        
+        """Lazy access the Modules report.
         
+        Generate if never generated, or give a chance to update if auto-updatable.
+        
+        Create report objects structure from the instance stored internally as the content of a string field.
         """
         
-        unInformeString = self.getInformeModulos()
-                
-        unInforme = self.fEvalString( unInformeString)
-        return unInforme
+        unExecutionRecord = self.fStartExecution( 'method',  'fInformeModulos', theParentExecutionRecord, False) 
         
+        try:
+        
+            unDummy = self.fAutoUpdateIfNeeded( 
+                theForceEllaboration, 
+                theCheckPermissions, 
+                thePermissionsCache, 
+                theRolesCache, 
+                unExecutionRecord,
+            )
     
+            unInformeModulosString = self.getInformeModulos()
+            if not unInformeModulosString:
+                return None
+                
+            unInformeModulos = None
+            try:
+                unInformeModulos = eval( unInformeModulosString)
+            except:
+                None
+            return unInformeModulos
+             
+
+        finally:
+            unExecutionRecord and unExecutionRecord.pEndExecution()
+             
+        
 
     
 

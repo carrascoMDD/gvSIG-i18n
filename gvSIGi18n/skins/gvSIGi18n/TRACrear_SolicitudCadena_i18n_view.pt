@@ -1,0 +1,231 @@
+<tal:block replace="nothing">
+# File: TRACrear_SolicitudCadena_i18n_view.pt
+# Copyright (c) 2008, 2009 by Conselleria de Infraestructuras y Transporte de la
+# Generalidad Valenciana
+#
+# GNU General Public License (GPL)
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+#
+# Authors: 
+# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana 
+# Model Driven Development sl  Valencia (Spain) www.ModelDD.org 
+# Antonio Carrasco Valero                       carrasco@ModelDD.org
+#
+</tal:block>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en">
+<body>
+
+
+	<div metal:define-macro="tTRACrear_SolicitudCadena_i18n_view" >
+	
+	
+		<metal:block metal:use-macro="here/PerformanceAnalysis/macros/tSetupPerformanceAnalysis" />   
+	
+		
+		<tal:block tal:define="
+				pMainLanguage				python: here.getCatalogo().getCodigoIdiomaRequeridoSolicitudesNuevasCadenas() or 'en';
+				pMainLanguageCodeAndDisplayName	python: pMainLanguage and here.getCatalogo().fKnownIdiomaCodeAndDisplayName( pMainLanguage);
+				pDefaultReferenceLanguage				python: here.getCatalogo().getCodigoIdiomaReferenciaSolicitudesNuevasCadenas() or 'en';
+				pDefaultReferenceCodeAndDisplayNames	python: pDefaultReferenceLanguage and here.getCatalogo().fKnownIdiomaCodeAndDisplayName( pDefaultReferenceLanguage);
+				pNewTypeName				request/theNewTypeName        | string:;		
+				pAggregationName			request/theAggregationName    | string:;
+				pNewSymbol				    request/form/theNewSymbol			| python: None;
+				pTranslationIntoMainLanguage		request/form/theTranslationIntoMainLanguage			| string:;
+				pReferenceLanguage					request/form/theReferenceLanguage					| pDefaultReferenceLanguage;
+				pTranslationIntoReferenceLanguage	request/form/theTranslationIntoReferenceLanguage	| string:;
+		 global pMostrarFormulario			python: (not pNewSymbol) or (not pTranslationIntoMainLanguage) or (not pReferenceLanguage) or (not pTranslationIntoReferenceLanguage);
+				pTrue						python: True;
+				pFalse						python: False;
+				pPermissionsCache			python: { };
+				pRolesCache					python: { };
+				pParentExecutionRecord		pExecutionRecord | nothing;">
+				
+			<tal:block tal:define="
+				pUseCaseAssessmentResult python: here.fUseCaseAssessment( 
+					theUseCaseName          = 'Create_TRASolicitudCadena', 
+					theElementsBindings     = { 'object': here,},
+					theRulesToCollect       = None, 
+					thePermissionsCache     = pPermissionsCache, 
+					theRolesCache           = pRolesCache, 
+					theParentExecutionRecord= pExecutionRecord);
+				pPermiteCrear python: pUseCaseAssessmentResult and pUseCaseAssessmentResult.get( 'success', False)" >
+				
+				
+				<tal:block tal:condition="not: pPermiteCrear" >
+					<br>
+					<h2 > 
+						<a  href="#" tal:attributes="href python: '%s/Tabular' % here.getCatalogo().absolute_url()" class="state-visible" title="">
+							<font color="Red">                    
+								<span  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearSolicitudCadena_action_NoPermissionToCreate_ErrorMsg">You do not have permission to create a new String request-</span>
+							</font>
+						</a>                
+					</h2>      
+				</tal:block>				
+	
+				
+				<tal:block tal:condition="pPermiteCrear" >	
+				
+					<tal:block tal:condition="not: pMostrarFormulario" >
+						<tal:block tal:define="
+							pProfilingResults python: (pPerformanceAnalysis or {}).get( 'profiling_results', None);
+							someAdditionalParams python: {
+								'theNewSymbol'							:pNewSymbol,  
+								'theMainLanguage'			    		:pMainLanguage,  
+								'theTranslationIntoMainLanguage'        :pTranslationIntoMainLanguage,  
+								'theReferenceLanguage'					:pReferenceLanguage,  
+								'theTranslationIntoReferenceLanguage'   :pTranslationIntoReferenceLanguage,  
+								
+							}; 
+							unosArgs python: {
+								'theTimeProfilingResults' :pProfilingResults,
+								'theContainerElement'     :here, 
+								'theTypeName'             :pNewTypeName, 
+								'theTitle'                :'A Sustituir', 
+								'theDescription'          :'',
+								'theAdditionalParams'     :someAdditionalParams,
+								'theAllowFactoryMethods'  :True,};   
+							pCrearResult python: here.ModelDDvlPlone_tool.fCrearElementoDeTipo( **unosArgs)" >
+							<tal:block tal:condition="python: pCrearResult and ( pCrearResult[ 'effect'] == 'created')" >
+								<tal:block tal:define="
+									dummy python:request.response.redirect( '%s/Editar' % pCrearResult[ 'new_object_result'][ 'url']);" />
+							</tal:block>
+							<tal:block tal:condition="python: not ( pCrearResult) or not ( pCrearResult[ 'effect'] == 'created')" >
+								<tal:block tal:define="global pMostrarFormulario python: True" />
+								<h4>
+									<font color="Red">
+										<span i18n:domain="ModelDDvlPlone"  i18n:translate="ModelDDvlPlone_nosehacreadoelemento_info_msgid" >ModelDDvlPlone_nosehacreadoelemento_info_msgid</span>
+									</font>
+								</h4>
+								<p>
+									<font color="Red">
+										<span tal:condition="python: pCrearResult[ 'failure'] in [ 'duplicate_title',]"
+											i18n:domain="ModelDDvlPlone"  i18n:translate="ModelDDvlPlone_tituloduplicado_error_msgid" >ModelDDvlPlone_tituloduplicado_error_msgid
+											<tal:block tal:define="global pMostrarFormulario pTrue" />
+										</span>
+										<span tal:condition="python: pCrearResult[ 'failure'] in [ 'read_permission', 'write_permission',]"
+											i18n:domain="ModelDDvlPlone"  i18n:translate="ModelDDvlPlone_sinpermisoparacrear_error_message" >ModelDDvlPlone_sinpermisoparacrear_error_message</span>
+										<span tal:condition="python: pCrearResult[ 'failure'] in [ 'content_type_not_allowed', ]"
+											i18n:domain="ModelDDvlPlone"  i18n:translate="ModelDDvlPlone_nosepuedecreartipocontenido_error_message" >ModelDDvlPlone_nosepuedecreartipocontenido_error_message</span>
+										<span tal:condition="python: pCrearResult[ 'failure'] in [ 'factory_failure', ]"
+											i18n:domain="ModelDDvlPlone"  i18n:translate="ModelDDvlPlone_creandocontenido_error_message" >ModelDDvlPlone_creandocontenido_error_message</span>
+										<span tal:condition="python: not( pCrearResult[ 'failure'] in [ 'duplicate_title', 'factory_failure', 'read_permission', 'write_permission',  'content_type_not_allowed',  'factory_failure', ])"
+											i18n:domain="ModelDDvlPlone"  i18n:translate="" tal:content="pCrearResult/failure" />
+	
+									</font>
+								</p>
+								<br/>
+							</tal:block>
+						</tal:block>
+					</tal:block>
+				
+					
+					<tal:block tal:condition="pMostrarFormulario" >
+						<form name="Crear_TRASolicitudCadena" method="post" enctype="multipart/form-data"
+							tal:define="pIdiomasCodesAndDisplayNames python: here.fKnownIdiomasCodesAndDisplayNames()">
+											   
+							<input originalvalue="#" name="theNewTypeName" value="#" type="hidden"
+								tal:attributes="originalvalue python: pNewTypeName;value python: pNewTypeName" />
+								
+							<input originalvalue="#" name="theAggregationName" value="#" type="hidden"
+								tal:attributes="originalvalue python: pAggregationName;value python: pAggregationName" />
+								
+							<h3  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearSolicitudCadena_action_page_title">Create New String Request-</h3>
+							<br/>
+							<p class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearSolicitudCadena_action_page_help">Enter the requested String symbol, and its translation to the main and reference languages.-</p>
+							<br/>			    
+							<br/>			    
+		
+							<p><strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearSolicitudCadena_NewRequestedStringSymbol_label">New Requested String Symbol-</strong></p>
+							<p  class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearSolicitudCadena_NewRequestedStringSymbol_help">The Symbol for the requested new string must be unique and not already existing in the translations catalog, and not recently requested to be added.-</p>
+							<tal:block tal:condition="not: pNewSymbol">
+								<p>
+									<font color="Red">
+										<span i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_crearSolicitudCadena_RequestedStringSymbol_IsRequired_error_message" >You must enter a symbol for the new requested string.-</span>
+									</font>
+								</p>
+							</tal:block>
+							<input name="theNewSymbol" id="theNewSymbol" tabindex="1" type="text" size="64" maxlength="128"
+								value="#" tal:attributes="value pNewSymbol" /> 					
+							<br/>			    
+							<br/>			    
+		
+							<p>
+								<strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearSolicitudCadena_TranslationIntoMainLanguage_label">Translation into the Main Language-</strong>
+								&nbsp;
+								<strong tal:content="python: '[%s] %s' % ( pMainLanguage, pMainLanguageCodeAndDisplayName[ 1],)" />
+							</p>
+							<p  class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearSolicitudCadena_MainLanguage_help">Enter a translation of the new requested string symbol, into the specified main language.-</p>
+							<tal:block tal:condition="not: pTranslationIntoMainLanguage">
+								<p>
+									<font color="Red">
+										<span i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_crearSolicitudCadena_TranslationIntoMainLanguage_IsRequired_error_message" >You must enter a translation into the default language.-</span>
+									</font>
+								</p>
+							</tal:block>
+							<textarea name="theTranslationIntoMainLanguage" id="theTranslationIntoMainLanguage" rows="3" cols="60"  tabindex="2"><tal:block tal:content="pTranslationIntoMainLanguage" /></textarea>
+							<br/>			    
+							<br/>			    
+							
+							<p><strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearSolicitudCadena_ReferenceLanguage_label">Reference Language-</strong></p>
+							<p  class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearSolicitudCadena_ReferenceLanguage_help">Enter a translation of the new requested string symbol, into the specified reference language.-</p>
+							<select  style="font-size: 9pt;" name="theReferenceLanguage" id="theReferenceLanguage" tabindex="3">
+								<tal:block tal:repeat="unIdiomaIndex python: range( len(  pIdiomasCodesAndDisplayNames))">
+									<tal:block tal:define="
+										unValorYEtiquetaReferencia     python: pIdiomasCodesAndDisplayNames[ unIdiomaIndex];
+										pCodeIdioma                    python: unValorYEtiquetaReferencia[ 0];
+										pTitleIdioma                   python: unValorYEtiquetaReferencia[ 1]" >                                                            
+										<option 
+											tal:condition="python: pCodeIdioma == pReferenceLanguage"
+											selected="selected"
+											id="#" value="#"
+											tal:content="pTitleIdioma"
+											tal:attributes="value python: pCodeIdioma;
+												id python: 'cid_ReferenceLanguageCode_%d' % ( unIdiomaIndex, )"/>
+										<option 
+											id="#" value="#"
+											tal:condition="python: not( pCodeIdioma == pReferenceLanguage)"
+											tal:content="pTitleIdioma"
+											tal:attributes="value python: pCodeIdioma;
+												id python: 'cid_ReferenceLanguageCode_%d' % ( unIdiomaIndex, )"/>
+									</tal:block>
+								</tal:block>
+							</select>
+							
+							<p><strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearSolicitudCadena_TranslationIntoReferenceLanguage_label">Translation into the Reference Language-</strong></p>
+							<textarea name="theTranslationIntoReferenceLanguage" id="theTranslationIntoReferenceLanguage" rows="3" cols="60"  tabindex="4" ><tal:block tal:content="pTranslationIntoReferenceLanguage" /></textarea>
+							<br/>			    
+		
+							<br/>
+							<br/>
+		
+								
+							<input class="context" name="form_submit"  type="submit"  value="Save" tabindex="6" i18n:domain="plone" i18n:attributes="value label_save" />                                                        
+						</form>
+					</tal:block>				
+				</tal:block>
+			</tal:block>
+		</tal:block>
+		
+		<metal:block metal:use-macro="here/PerformanceAnalysis/macros/tRenderProcessingTime_HTML" />   
+			 
+	</div>
+    
+
+</body>
+</html>
+

@@ -2,7 +2,7 @@
 #
 # File: TRAElemento_MappingConfig.py
 #
-# Copyright (c) 2008, 2009, 2010, 2011  by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+# Copyright (c) 2008, 2009 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -35,6 +35,8 @@ __docformat__ = 'plaintext'
 
 
 from AccessControl                  import ClassSecurityInfo
+from Products.Archetypes.atapi import *
+from Products.gvSIGi18n.config import *
 
 
 

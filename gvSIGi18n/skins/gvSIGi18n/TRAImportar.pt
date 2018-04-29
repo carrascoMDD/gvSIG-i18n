@@ -1,0 +1,216 @@
+<tal:block replace="nothing">
+# File: TRAImportar.pt
+#
+# Copyright (c) 2008, 2009 by Conselleria de Infraestructuras y Transporte de la
+# Generalidad Valenciana
+#
+# GNU General Public License (GPL)
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+#
+# Authors: 
+# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana 
+# Model Driven Development sl  Valencia (Spain) www.ModelDD.org 
+# Antonio Carrasco Valero                       carrasco@ModelDD.org
+#
+#
+</tal:block>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+<body>                     
+
+                             
+<metal:main fill-slot="main">
+    <tal:main-macro metal:define-macro="main"
+        tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas." 
+        i18n:domain="gvSIGi18n">
+
+        <tal:block tal:define="
+            pExecutionRecord python: here.fStartExecution( 'template', 'TRAImportar.pt', None, True, { 'log_what': 'details', 'log_when': True, });
+            pPermissionsCache python: {};
+            pRolesCache python: {}" >
+            
+            <div metal:use-macro="here/document_actions/macros/document_actions">
+                Document actions (print, sendto etc)
+            </div>
+    
+            <h1 tal:content="object_title" class="documentFirstHeading">
+              Title or id
+            </h1>
+    
+            <div metal:use-macro="here/document_byline/macros/byline">
+              Get the byline - contains details about author and modification date.
+            </div>
+            
+            
+    
+            <tal:block tal:define="pPermiteEditar python: False; pPermiteEliminar python: False; pShowOrHideTrees python: False">
+                <metal:block metal:use-macro="here/TRACabeceraEnTabla_i18n_view/macros/tCabeceraEnTabla_i18n" />   
+            </tal:block>
+
+            <tal:block tal:define="pPuedeImportar python: here.fRoleQuery_IsManagerOrCoordinator() and here.fNoHaComenzadoOEnDevelopmentODebug()">
+                <tal:block tal:condition="not: pPuedeImportar">
+                   <font size="3">
+                        <strong>
+                            <a href="#" title="#"  
+                                tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_noPuedeImportarYVolverATabular_msgid',   'You can not import translations contents. Please navigate back to import tabular view.-' )"
+                                tal:attributes="
+                                    title aLinkTitle;
+                                    href python: '%s/Tabular' % here.absolute_url()">
+                                <span tal:content="aLinkTitle" />
+                            </a>
+                        </strong>
+                    </font>
+                    <p class="formHelp" tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_noPuedeImportarYVolverATabular_help', 'You may not have the proper rights to launch an import process. If you do, please make sure that you are logged in the site with the proper user account. It is not allowed to launch again an import process that has already been started.')" />
+                    <br/>
+                </tal:block>
+                
+                <tal:block tal:condition="pPuedeImportar">
+                
+                    <a href="#" title="#"  
+                        tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_cancelarImportacionYVolverATabular_msgid',   'Cancel Import-' )"
+                        tal:attributes="
+                            title aLinkTitle;
+                            href python: '%s/Tabular' % here.absolute_url()">
+                        <font size="3">
+                            <strong>
+                            <span tal:content="aLinkTitle" />
+                            </strong>
+                        </font>
+                    </a>
+                    <p class="formHelp" tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_cancelarImportacionYVolverATabular_help', 'Cancel import of translations contents and navigate back to import tabular view.')" />
+                    <br/>
+                    <br/>
+                    <br/>
+                    
+                    
+                    <a href="#" title="#" 
+                       tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_confirmarImportacion_msgid',   'Confirm import of translations contents-' )"                                    
+                       tal:attributes="
+                           title aLinkTitle;
+                           href python: '%s/TRAImportar_action?theConfirm=%s' % ( here.absolute_url(), here.fMagicMillisecondsNowString())">
+                        <font size="3" color="red">
+                            <strong>
+                                <span tal:content="aLinkTitle" />
+                            </strong>
+                        </font>
+                    </a>
+                    &ensp;
+                    <span tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_periodoParaConfirmarEnSegundos_msgid', 'If you wish to launch the import process, please confirm within the next-')" />
+                    <span tal:content="python: str( here.getSegundosParaConfirmarImportacion() or 120)" />
+                    <span tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_segundosPeriodoParaConfirmar_help', 'seconds')" />
+                    <br/>
+                    <p class="formHelp">
+                        <span tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_confirmarImportacion_help', 'Confirm the launch of the process to import the translation interchange contents, possibly taking a long time and demanding significant server resources, according to the details in the contents report and operations estimation below.-')" />
+                        <br/>
+                        <span tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_confirmarTimeout_help', 'You must confirm in the allocated period of time. If you need more time to review the extent or impact of the import, please request import again.-')" />
+                        <br/>
+                        <span tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_puedeObservarElProgresoDelProcesoDeImportacionEnTabProgreso_msgid', 'You may observe the progress of the import process by clicking in the Progress action above or the Observe import progress link below.-')" />
+                    </p>            
+                    <br/>            
+                    <br/>
+                    <br/>
+                    
+                    <a href="#" title="#" 
+                        tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_observarProgresoProcesoImportacion_msgid',   'Observe import progress-' )"                                    
+                        tal:attributes="
+                            title aLinkTitle;
+                            href python: '%s/TRAInformeProgreso_action' % here.absolute_url()">
+                        <font size="2" color="black">
+                            <strong tal:content="aLinkTitle" />
+                        </font>
+                    </a>
+                    <br/>            
+                    <p class="formHelp" tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_observarProgresoProcesoImportacion_help', 'Click on the link above to observe the progress of the import process.-')" />
+                    <br/>            
+                    <br/>
+                    <br/>
+                        
+                    <tal:block tal:condition="python: here.getDebeCrearTraduccionesQueFaltan()">
+                        <p>
+                            <font size="3">
+                                <strong 
+                                    tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_ProcesoCrearaTraduccionesQueFaltan_msgid', 'Will create missing Translations.-')" />                               
+                            </font>
+                        </p>                    
+                        <p class="formHelp" tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_ProcesoCrearaTraduccionesQueFaltan_help', 'The process will create as pending any missing translations to any language in all strings (may be because the undesired interruption of a previous import process).-')" />
+                    </tal:block>
+                    <br/>            
+                    <br/>
+                  
+                    <h2>
+                        <span tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TRAImportacion_attr_contenidosIntercambioTraducciones_label', 'All translations interchange archive contents report-')" />
+                        &ensp;
+                        &ensp;
+                        &ensp;
+                        &ensp;
+                         <font size="2">
+                            <a href="#" title="#" 
+                                tal:define="aLinkTitle python: '%s' % here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_vista_detalles_label',   'View Details-')"
+                                tal:attributes="
+                                    title aLinkTitle;
+                                    href python: '%s/TRAInformeTodosContenidosIntercambio_action' % here.absolute_url()">
+                                <span tal:content="aLinkTitle" />
+                            </a>
+                        </font>
+                     </h2>
+                     <p class="formHelp" i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_TRAImportacion_attr_contenidoIntercambioTraducciones_help" />
+             
+                    <tal:block tal:define="pInforme python: here.fInformeContenidosImportacion( pExecutionRecord)">
+                        <tal:block tal:condition="not: pInforme">
+                             <p i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_nohaycontenidosintercambiotraducciones_warning_msgid">There is no valid translation interchange content-</p>
+                        </tal:block>
+                        <tal:block  tal:condition="pInforme" >
+                            <metal:block metal:use-macro="here/TRAContenidoIntercambio_i18n_view/macros/tInformeContenidoIntercambio_i18n" />   
+                        </tal:block>
+                    </tal:block>
+                    <br/>
+                    <br/>
+                    <br/>
+                        
+                    
+                    <h2>
+                         <span i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_estimationOfImportOperations_msgid">Estimation of import operations-</span>
+                         &nbsp;
+                    </h2>
+                    <p class="formHelp" i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_estimationOfImportOperations_help" />
+        
+                    <tal:block tal:define="pInforme python: here.fImportarContenidosIntercambio( True, pPermissionsCache, pRolesCache, pExecutionRecord)" >
+                        <tal:block tal:condition="python: not pInforme">
+                             <p i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_errorEstimatingImportOperations_warning_msgid">Internal error while producing report of import operations.-</p>
+                        </tal:block>
+                        <tal:block tal:condition="pInforme">
+                            <metal:block metal:use-macro="here/TRAInformeImportacion_i18n_view/macros/tInformeEstimacionImportacion_i18n" />   
+                        </tal:block>
+                    </tal:block>
+            
+                </tal:block>
+            </tal:block>
+            
+            <tal:block tal:define="dummy python: pExecutionRecord and here.pEndExecution( pExecutionRecord)" />
+    
+            <metal:block metal:use-macro="here/TRAFooter_i18n_view/macros/tFooter_i18n" />
+    
+            <tal:block tal:replace="structure python: pExecutionRecord and here.TRARenderExecutionDetails( pExecutionRecord)" />
+
+        </tal:block>
+     </tal:main-macro>
+</metal:main>
+
+</body>
+</html>

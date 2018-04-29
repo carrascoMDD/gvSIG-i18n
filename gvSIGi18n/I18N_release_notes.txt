@@ -1,0 +1,891 @@
+﻿gvSIG-i18n RELEASE NOTES
+========================
+
+
+|
+|
+
+
+Summary of use cases implemented after delivery of version 1.0.0.2 (build200907281654)
+======================================================================================
+
+- Recipe to create and mount separate file storages for translation catalogs,
+  to reduce the performance impact on other Plone content,
+  of growing data files with lots of translations.
+  
+- Distribution of Releases shall include the dlivery of downloadable files also in .gz format.
+
+- Users with TRADeveloper role may Create Strings requested to be translated.
+  Later, user with TRACoordinator role actually incorporates the requested strings to the catalog,
+  by launching a strings creation process.
+  
+- Users with TRACoordinator role may Create new Languages.
+
+- Users with TRACoordinator role may Copy Translations into a Language from another Language.
+
+- Translations exported in Java .properties format and unicode escape encoding,
+  now properly escape also chars between 127 and 255.
+  
+- The products in support of searches in oriental languages,
+  (ZopeChinaPak and CJKSplitter) are now optional,
+  and the application works without them installed.
+  
+- Simpler security model, where there are no User Groups to manage
+  user access to all languages or specific languages: 
+  now the control is enforced by assigning local roles to users
+  directly on the Languages, and disabling the role acquisition for the element.
+  
+- Users may now observe the security permission they hold on each element,
+  the permissions held by key user groups in each element,
+  and the specification of required permissions expected in each element type.
+  
+- The translations catalog can now be locked by a TRACoordinator to avoid modifications.
+
+- The translations catalog is locked for modifications upon start of import processes,
+  and is unlocked upon the process termination.
+
+- TRACoordinator users may now specify that an import process is to be launched automatically
+  when the previous one terminates.
+
+- If an exception occurs during an import process,  
+  the exception shall be displayed (on the next refresh of) the import process progress page.
+  (until now, the exception appeared only in the tabular view for the import).
+  
+- Users shall hold the permission "gvSIGi18n: Add TRACatalogo" on container elements
+  for the users to be able to create translation catalogs in the container.
+  This means that the administrator must add this permission to the Plone Site,
+  or to specific folder(s), to allow the creation of translation catalogs.
+  
+- Users can now apply Batch translation status changes with a very high number of translations.
+  For example, 4000 in gvSIG 1.9 can be submitted in a single click.
+  
+- TRADeveloper users can now Invalidate a String translations into all languages.
+
+- Users can now observe (or hide) the execution time profiling results for translation page synchronous requests.
+
+- Standard Plone actions are intercepted or aliased to maintain a tight contron on application instances.
+
+- Textual view now works, even on catalogs with languages in non latin characters.
+  (previously, it used to crash).
+  
+
+
+|
+|  
+
+
+
+
+
+version 1.2.0.9
+---------------
+
+|
+|
+
+
+**RESOLVED**
+
+
+BUG UI Textual view should work  or not be available in root TRACatalog element (now raises an exception)
+
+Does not redirect to created import when Creating strings in  UC21 Use Case Add String to be translated
+
+Error creating import contents exchange element
+
+Error creating root translations catalog instance
+
+Error in TRAElemento_MappingConfig.py trying to import a class from other project: ModelDDploneMOF
+
+Error Table titles one more column than body when element not changeable
+
+Error when attempting to cut and the catalog is locked agains modifications
+
+gvSIG crashes loading after importing Unicode Escaped chars &lt; 256 without leading zeroes when EXPO01 Export with unicode escape also for chars between 127 and 255
+
+
+|
+|
+
+**KNOWN BUGS**
+
+Error in template when manually creating an status report
+
+Error Table titles one more column than body when element not changeable
+ 
+Error when rendering the page informing that the Export has been performed
+
+IBWR01 Opera: Translations Screen error in columns layout because lack of support for HTML rowspan
+
+IMPO 08 Does not initialize or present Status Reports before and after import
+
+IMPO Copy Language : Estimate correctly the number of expected write operations
+
+IMPO Create missing Translations : Report the number of created translations
+
+Reflective method invocation should not retrieve the callable method with []
+
+UITR Translations page::Reference Language Selector::Names of languages not wekk known to Plone are not shown
+
+
+|
+|
+
+
+**POSTPONED**
+
+TEST02 Stress Test application
+
+TEST01 Test complete application
+
+DOCU03 Edit and publish gvSIG-i18n administration documentation
+
+DOCU01 Edit and publish gvSIG-i18n user documentation
+
+COMU02 Edit and publish pages gvSIG-i18n product to communities
+
+DOCU02 Edit and publish gvSIG-i18n install documentation
+
+ADMI07 Add Action to Rebuild Plone catalogs
+
+EXPO02 Export translations with archive name ...
+
+EXPO03 Detect if translations into a language have changed lately
+
+UC15-2 Use Case Extension Change Translation detecting multiuser
+
+ADMI01 Upon translations catalog deletion  delete...
+
+ADMI02 Uninstall gvSIG-i18n Plone Product
+
+Reflective method invocation should not retrieve the callable method with []
+
+UC 22x01 Add Aynchronous interaction mode to Use Case &quot;Invalidate String translations to all languages&quot;
+
+IMPL 01v2 If External methods nto found  invoke methods in modules
+
+SUC 28 Use Case De-Activate and Activate a String
+
+ADMI 10 Use Case to view actual threads running import processes  and kill the import processes
+
+Error in template when manually creating an status report
+
+IMPO 08 Does not initialize or present Status Reports before and after import
+
+SUC 31 Block and Unblock changes to a specific module
+
+Error when attempting to cut and the catalog is locked agains modifications
+
+IDIO02 Show flags including the ones not pre-defined in Plone
+
+TEST03 Test complete application
+
+TEST04 Stress Test application
+
+UITR07 Add to translations screen a note for color shading
+
+UITR08 Send pending changes to server
+
+UITR10v2 Batch status changes
+
+UITR14 Remove go-to-translation action when clicking ...
+
+IMPO 06 Present duration estimations in the Import Progress report
+
+SUC 30 Block and Unblock access to a specific language
+
+SUC 32zextension01 Store in a python class as code the Credits to Display about the application sponsor  developer  copyright holder and author
+
+SUC33x1 Match acute variations with plain ascii vowel leters when Filter translations into a language by words in the translation
+
+USEX 03 Add to catalog and translations pages a legend with the roles held by the user at the catalog and selected language
+
+SUC 32zextension02 Serve in some cacheable form (script  css  image)  the Credits to Display about the application sponsor  developer  copyright holder and author
+
+USEX 04 Add to Advanced View pages (Tabular view) a link to the TRACatalogo view on the root
+
+USEX 02 Add to Advanced View a link to return to the default catalog view
+
+UI 01 Avoid Delete of some types of elements
+
+EXPO04 Export translations in XLIFF format
+
+IMPO04 Import translations in XLIFF format
+
+TEST05 Test complete application
+
+TEST06 Stress Test application
+
+EXPO05 Export Translation Memories in TMX format
+
+FEAT01 Use Cases in support of Translation Memories
+
+IMPO05 Import Translation Memories in TMX format
+
+TEST07 Test complete application
+
+TEST08 Stress Test application
+
+
+|
+|
+
+------------------------------
+
+|
+|
+
+
+
+version 1.2.0.8
+---------------
+
+|
+|
+
+
+**RESOLVED**
+
+
+
+ADMI 11 Present the security assessment on the connected user: permissions  roles  use cases
+
+Bug fix for error in TRAElemento_MappingConfig.py (undesired attempt to import a class from other project: ModelDDploneMOF).
+
+Fails to verify catalog when user has no write access  or the catalog is locked
+
+IDIO01 Valenciá as a language distinct from Catalá
+
+IMPO 08 Disable framework Use Case SUC 16 Import onto an element a Zipped archive with XML file and binary contents
+
+IMPO 09 Disable framework Use Case SUC 15 Export an element and its contens a Zipped archive with XML file and binary contents
+
+IMPO 10 Add exception field to importprocess progress report page
+
+IMPO03 Block/unblock changes to translations while importing
+
+SECU 01 zextension01 Add predicate to Rules in Use Case driven Security assessment for connected Users
+
+SECU 01 zextension02 Allow to bypass certain rules in Use Case driven Security assessment for connected Users
+
+SUC 29 Block and Unblock changes to the catalog
+
+UC01v2 Use Case &quot;Verify Translations Catalog Initialization&quot;  must enforce  permission gvSIGi18n: Add TRACatalogo
+
+UC02v2 Use Case &quot;Initialize Translations Catalog&quot; must enforce  permission gvSIGi18n: Add TRACatalogo
+
+UC18 Use Case &quot;Examine User Role assignments for All languages&quot;
+
+UC19 Use Case Establish User Role assignments
+
+UC22 Use Case Invalidate String translations to all languages
+
+UC27 Use Case Examine and Establish User Role assignments for a single Language or a single Module
+
+UITR Translation details and Invalidate String button are not sho
+
+UITR10v3 Batch status changes shall submit as POST
+
+UITR17x01 Add option to show or hide the Time profiling inspector to Translation screen
+
+USEX 01 Conflicting default Plone actions must be intercepted  aliased  or disabled
+
+
+|
+|
+
+**KNOWN BUGS**
+
+
+BUG UI Textual view should not be available in root TRACatalog element (now raises an exception)
+
+Error in template when manually creating an status report
+
+Fails to verify catalog when user has no write access, or the catalog is locked
+
+IBWR01 Opera: Translations Screen error in columns layout because lack of support for HTML &quot;rowspan&quot;
+
+IMPO 08 Does not initialize or present Status Reports before and after import
+
+IMPO Copy Language : Estimate correctly the number of expected write operations
+
+IMPO Create missing Translations : Report the number of created translations
+
+Reflective method invocation should not retrieve the callable method with []
+
+UITR Translations page::Reference Language Selector::Names of languages not wekk known to Plone are not shown
+
+
+
+|
+|
+
+
+**POSTPONED**
+
+ADMI 10 Use Case to view actual threads running import processes  and kill the import processes
+
+ADMI01 Upon translations catalog deletion  delete...
+
+ADMI02 Uninstall gvSIG-i18n Plone Product
+
+ADMI07 Add Action to Rebuild Plone catalogs
+
+COMU02 Edit and publish pages gvSIG-i18n product to communities
+
+DOCU01 Edit and publish gvSIG-i18n user documentation
+
+DOCU02 Edit and publish gvSIG-i18n install documentation
+
+DOCU03 Edit and publish gvSIG-i18n administration documentation
+
+Error in template when manually creating an status report
+
+EXPO02 Export translations with archive name ...
+
+EXPO03 Detect if translations into a language have changed lately
+
+EXPO04 Export translations in XLIFF format
+
+EXPO05 Export Translation Memories in TMX format
+
+FEAT01 Use Cases in support of Translation Memories
+
+IDIO02 Show flags including the ones not pre-defined in Plone
+
+IMPL 01v2 If External methods nto found  invoke methods in modules
+
+IMPO 06 Present duration estimations in the Import Progress report
+
+IMPO 08 Does not initialize or present Status Reports before and after import
+
+IMPO04 Import translations in XLIFF format
+
+IMPO05 Import Translation Memories in TMX format
+
+Reflective method invocation should not retrieve the callable method with []
+
+SUC 28 Use Case De-Activate and Activate a String
+
+SUC 30 Block and Unblock access to a specific language
+
+SUC 31 Block and Unblock changes to a specific module
+
+SUC 32zextension01 Store in a python class as code the Credits to Display about the application sponsor  developer  copyright holder and author
+
+SUC 32zextension02 Serve in some cacheable form (script  css  image)  the Credits to Display about the application sponsor  developer  copyright holder and author
+
+TEST01 Test complete application
+
+TEST02 Stress Test application
+
+TEST03 Test complete application
+
+TEST04 Stress Test application
+
+TEST05 Test complete application
+
+TEST06 Stress Test application
+
+TEST07 Test complete application
+
+TEST08 Stress Test application
+
+UC 22x01 Add Aynchronous interaction mode to Use Case &quot;Invalidate String translations to all languages&quot;
+
+UC15-2 Use Case Extension Change Translation detecting multiuser
+
+UI 01 Avoid Delete of some types of elements
+
+UITR07 Add to translations screen a note for color shading
+
+UITR08 Send pending changes to server
+
+UITR10v2 Batch status changes
+
+UITR14 Remove go-to-translation action when clicking ...
+
+USEX 02 Add to Advanced View a link to return to the default catalog view
+
+USEX 03 Add to catalog and translations pages a legend with the roles held by the user at the catalog and selected language
+
+USEX 04 Add to Advanced View pages (Tabular view) a link to the TRACatalogo view on the root
+
+
+
+|
+|
+
+------------------------------
+
+|
+|
+
+
+version 1.2.0.7
+---------------
+
+|
+|
+
+
+**RESOLVED**
+
+
+ETTY02-2 TRAIdioma: Remove unused relationships referenceLanguages  baseLanguages
+
+EXPO01 Export with unicode escape also for chars 127 - 255
+
+I10N 01 Localize user interface screens for UC Create Language  Create Strings  Copy Transalations  into languages ES and EN
+
+INTL 01 Make optional the availability of Plone products ZopeChinaPak and CJKSplitter
+
+SECU04 Alternative  optinal  simpler security model that does not create so many Zope User Groups
+
+UC 25 Plone paste : do not allow
+
+UC26 Plone copy: do not allow
+
+
+
+|
+|
+
+**KNOWN BUGS**
+
+IBWR01 Opera: Translations Screen error in columns layout because lack of support for HTML rowspan
+
+BUG UI Textual view should not be available in root TRACatalog element (now raises an exception)
+
+IMPO Create missing Translations : Report the number of created translations
+
+IMPO Copy Language : Estimate correctly the number of expected write operations
+
+UITR Translations page::Reference Language Selector::Names of languages not wekk known to Plone are not shown
+
+UITR Translation details are not shown in editor, if the connected user does not have role TRATraductor or TRAReviewer, or TRACoordinator, or TRAManager
+
+
+
+|
+|
+
+
+**POSTPONED**
+
+ADMI01 Upon translations catalog deletion, delete user groups controlling accesses to the translations catalog
+
+ADMI02 Uninstall gvSIG-i18n Plone Product
+
+ADMI07 Add Action to Rebuild strings and translations Plone catalogs
+
+COMU02 Edit and publish pages to present the gvSIG-i18n product to OSOR communities
+
+DOCU01 Edit and publish gvSIG-i18n user documentation
+
+DOCU02 Edit and publish gvSIG-i18n install documentation
+
+DOCU03 Edit and publish gvSIG-i18n administration documentation
+
+EXPO02 Export translations with archive name matching the gvSIG standard format for localization archives
+
+EXPO03 Detect if translations into a language have been changed lately
+
+EXPO04 Export translations in XLIFF format
+
+EXPO05 Export Translation Memories in TMX format
+
+FEAT01 Use Cases in support of Translation Memories
+
+IDIO02 Show flags including the ones not pre-defined in Plone
+
+IMPO03 Block/unblock changes to translations while importing
+
+IMPO04 Import translations in XLIFF format
+
+IMPO05 Import Translation Memories in TMX format
+
+IMPO 06 Present duration estimations in the Import Progress report
+
+IMPO 07 Automatically refresh import process progress report page
+
+IMPO 08 Disable framework Use Case SUC 16 Import onto an element a Zipped archive with XML file and binary contents
+
+IMPO 09 Disable framework Use Case SUC 15 Export an element and its contens a Zipped archive with XML file and binary contents
+
+Place the external methods inside the custom folder in portal_skins
+
+PLAT01 Port to Plone 3.x
+
+UC15-2  Use Case Extension &quot;Change Translation and/or Translation Status  detecting unintended multiuser translation overwrites 
+
+UC18 Use Case &quot;Examine User Role assignments for All languages and specific languages&quot;
+
+UC19 Use Case &quot;Establish User Role assignments for All languages and specific languages&quot;
+
+UC22 Use Case &quot;Invalidate String translations to all languages&quot;
+
+UI 01 Avoid Delete of some types of elements
+
+UITR07 Add to translations screen an informative note for color shading
+
+UITR08 Send pending changes to server
+
+UITR10v2 Batch status changes
+
+UITR13 Show translations statuses as letters not just as icons
+
+UITR14 Remove go-to-translation action when clicking on a translation's main language flag
+
+
+
+
+|
+|
+
+------------------------------
+
+|
+|
+
+
+version 1.2.0.6
+---------------
+
+|
+|
+
+
+**RESOLVED**
+
+EATR01 Remove Attribute pathDelRaiz from all entities
+
+EATR02 Remove the Type attribute from catalog schemas
+
+UC24 Use Case Copy Translations from Language	
+
+
+|
+|
+
+------------------------------
+
+|
+|
+
+
+version 1.2.0.5
+---------------
+
+|
+|
+
+
+**RESOLVED**
+  
+
+ADMI08 Describe recipe to create and mount an additional file to store the translations
+
+ADMI09 Downloadable in tar.gz format	
+
+BUG AttributeError TRARenderExecutionDetails	
+
+BUG Security access error message prints also a Python dict	
+
+BUG TRACatalogo is not initialized when supplying an id	
+
+UC21 Use Case Add String to be translated	
+
+UC23 Create Language	
+
+
+
+|
+|
+
+------------------------------
+
+|
+|
+
+
+version 1.2.0.4
+---------------
+
+|
+|
+
+
+**RESOLVED**
+  
+
+Same as 1.2.0.2 with the right version number in file version.txt	
+
+
+|
+|
+
+------------------------------
+
+|
+|
+
+
+version 1.2.0.3
+---------------
+
+|
+|
+
+
+**VOID AND NOT RELEASED**
+ 
+
+
+|
+|
+
+------------------------------
+
+|
+|
+
+
+version 1.2.0.2
+---------------
+
+|
+|
+
+NOte: this version release has been removed from distribution, as it was built with the wrong version number in version.txt
+
+
+**RESOLVED**
+  
+
+BUG Init role acquisition for TRAColeccionCadenas fails
+
+ETTY13 TRAColeccionSolicitudesCadenas
+
+ETTY14 TRASolicitudCadena
+
+
+|
+|
+
+------------------------------
+
+|
+|
+
+
+version 1.2.0.1
+---------------
+
+|
+|
+
+
+**RESOLVED**
+  
+
+SECU03 Add Developer Role
+
+|
+|
+
+------------------------------
+
+|
+|
+
+
+version 1.2
+---------------
+
+|
+|
+
+
+**RESOLVED**
+  
+BUG ADMI05 Complete elimination of TRACatalogo instances
+
+BUG ADMI06 Avoid re-catalogging TRACadena and TRATraduccion
+
+UITR01 Label of Reference Language selector menu
+
+UITR02 Do not color-shade translation rows in reference languages
+
+UITR03 Remove go-to-translation in language action on ....
+
+UITR04 Blink when clicking on Save button  and there is no translation change
+
+UITR05 Remove &amp;quot orange&amp;quot  error shading for translations sent with changes consisting in leading or trailing spaces
+
+UITR06 Show es  en as reference languages  by default  when opening translations page
+
+UITR12 Add cursor buttons at the bottom of the translations page
+
+ZMNG02 Meeting to evaluate v 1.2 and plan for next iterations
+
+ZMNG03 Edit Iteration Progress Report
+
+ZMNG04 Edit Iteration plans for versions 1.2.1  1.2.2  1.3
+ 
+
+|
+|
+
+------------------------------
+
+|
+|
+
+
+version 1.1
+---------------
+
+|
+|
+
+
+**RESOLVED**
+  
+
+PERF06 Do not add any index to portal_catalog
+
+PERF02 Move TRACadena and TRATraduccion instances out of portal_catalog
+
+PERF01 Detailed Deterministic Time Profiling
+
+PERF04 Search TRATraduccion instances in language-specific performance-tuned catalogs
+
+PERF03 Search TRACadena instances in their own performance-tuned catalogs
+
+PERF05 Scale to 70 languages and 7000 strings per language with sub-second translation interactions
+
+UITR17 Time profiling inspector
+
+ZMNG01 Meeting to evaluate v 1.1 and plan for next iterations
+
+
+|
+|
+
+------------------------------
+
+|
+|
+
+
+version 1.0
+---------------
+
+|
+|
+
+
+**RESOLVED**
+  
+UITR16 Translate with Asynchronous interactions  without page refresh
+
+SECU01 Use Case driven Security assessment for connected Users
+
+UC17-2 Use Case extension Export with encodings
+
+UITR18 Change the translations screen layout to ressemble that of famous desktop translation tools. 
+
+
+|
+|
+
+------------------------------
+
+|
+|
+
+
+version 0.9
+---------------
+
+|
+|
+
+
+**RESOLVED**
+  
+ETTY00 TRACatalogo
+
+ETTY01 TRAColeccionIdiomas
+
+ETTY02 TRAIdioma
+
+ETTY03 TRAColeccionModulos
+
+ETTY04 TRAModulo
+
+ETTY05 TRAColeccionCadenas
+
+ETTY06 TRACadena
+
+ETTY07 TRATraduccion
+
+ETTY08 TRAColeccionInformes
+
+ETTY09 TRAInforme
+
+ETTY10 TRAColeccionImportaciones
+
+ETTY11 TRAImportacion
+
+ETTY12 TRAContenidoIntercambio
+
+INFO01 Information structure: Catalog  Language  Module  ...
+
+SECU02 Actor Roles Manager  Coordinator  ...
+
+UC01 Use Case Verify Translations Catalog Initialization
+
+UC02 Use Case Initialize Translations Catalog
+
+UC03 Use Case Configure Translations Catalog
+
+UC04 Use Case View the properties of an Element
+
+UC05 Use Case Advanced View on an Element...
+
+UC06 Use Case Create Import Batch
+
+UC07 Add content to Import Batch
+
+UC08 Use Case Delete content from Import Batch
+
+UC09 Use Case Verify Impoty Batch content and Import parameters
+
+UC10 Use Case Import
+
+UC11 Use Case Show list of Languages in translations catalog
+
+UC12 Use Case Create missing Translations
+
+UC13 Use Case Generate Status Report by Languages
+
+UC14 Use Case Browse Translations
+
+UC15 Use Case Change Translation and/or Translation Status
+
+UC16 Use Case Comment on Translation
+
+UC17 Use Case Export
+
+UC20 Use Case Delete Import Batch
+
+
+|
+|
+
+------------------------------
+
+
+ 

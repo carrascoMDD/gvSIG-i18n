@@ -1,0 +1,92 @@
+# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: gvSIGi18n\n"
+"POT-Creation-Date: Tue Oct 27 03:29:17 2009\n"
+"PO-Revision-Date: Tue Oct 27 03:29:17 2009\n"
+"Last-Translator: Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>\n"
+"Language-Team: Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: es\n"
+"Language-Name: Spanish\n"
+"Preferred-Encodings: latin1 utf-8\n"
+"Domain: plone\n"
+"X-Is-Fallback-For: es-ar es-bo es-co es-cr es-cl es-do es-ec es-sv es-gt es-hn es-mx es-ni es-pa es-py es-pe es-pr es-es es-uy es-ve\n"
+
+#. Default: "Cadena"
+#: TRACadena
+msgid "Cadena"
+msgstr "Cadena"
+
+#. Default: "Catalogo de Traducciones"
+#: TRACatalogo
+msgid "Catalogo de Traducciones"
+msgstr "Catalogo de Traducciones"
+
+#. Default: "Coleccion de Cadenas"
+#: TRAColeccionCadenas
+msgid "Coleccion de Cadenas"
+msgstr "Coleccion de Cadenas"
+
+#. Default: "Coleccion de Idiomas"
+#: TRAColeccionIdiomas
+msgid "Coleccion de Idiomas"
+msgstr "Coleccion de Idiomas"
+
+#. Default: "Coleccion de Importaciones"
+#: TRAColeccionImportaciones
+msgid "Coleccion de Importaciones"
+msgstr "Coleccion de Importaciones"
+
+#. Default: "Coleccion de Informes de Estado"
+#: TRAColeccionInformes
+msgid "Coleccion de Informes de Estado"
+msgstr "Coleccion de Informes de Estado"
+
+#. Default: "Coleccion de Modulos"
+#: TRAColeccionModulos
+msgid "Coleccion de Modulos"
+msgstr "Coleccion de Modulos"
+
+#. Default: "Coleccion de Solicitudes de creacion de Cadenas"
+#: TRAColeccionSolicitudesCadenas
+msgid "Coleccion de Solicitudes de creacion de Cadenas"
+msgstr "Coleccion de Solicitudes de creacion de Cadenas"
+
+#. Default: "Contenido de Intercambio"
+#: TRAContenidoIntercambio
+msgid "Contenido de Intercambio"
+msgstr "Contenido de Intercambio"
+
+#. Default: "Idioma"
+#: TRAIdioma
+msgid "Idioma"
+msgstr "Idioma"
+
+#. Default: "Importacion"
+#: TRAImportacion
+msgid "Importacion"
+msgstr "Importacion"
+
+#. Default: "Informe de Estado"
+#: TRAInforme
+msgid "Informe de Estado"
+msgstr "Informe de Estado"
+
+#. Default: "Modulo"
+#: TRAModulo
+msgid "Modulo"
+msgstr "Modulo"
+
+#. Default: "Solicitud Creacion Cadena"
+#: TRASolicitudCadena
+msgid "Solicitud Creacion Cadena"
+msgstr "Solicitud Creacion Cadena"
+
+#. Default: "Traduccion"
+#: TRATraduccion
+msgid "Traduccion"
+msgstr "Traduccion"

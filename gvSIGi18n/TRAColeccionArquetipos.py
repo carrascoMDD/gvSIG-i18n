@@ -2,8 +2,8 @@
 #
 # File: TRAColeccionArquetipos.py
 #
-# Copyright (c) 2013 by 2008, 2009, 2010, 2011 Conselleria de Infraestructuras
-# y Transporte de la Generalidad Valenciana
+# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
+# Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -32,6 +32,7 @@ __docformat__ = 'plaintext'
 from AccessControl import ClassSecurityInfo
 from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.TRAElemento import TRAElemento
+from Products.gvSIGi18n.TRAConRegistroActividad import TRAConRegistroActividad
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
@@ -49,18 +50,35 @@ schema = Schema((
 ##/code-section after-local-schema
 
 TRAColeccionArquetipos_schema = getattr(TRAElemento, 'schema', Schema(())).copy() + \
+    getattr(TRAConRegistroActividad, 'schema', Schema(())).copy() + \
     schema.copy()
 
 ##code-section after-schema #fill in your manual code here
 ##/code-section after-schema
 
-class TRAColeccionArquetipos(TRAElemento):
+class TRAColeccionArquetipos(TRAElemento, TRAConRegistroActividad):
     """
     """
     security = ClassSecurityInfo()
-    __implements__ = (getattr(TRAElemento,'__implements__',()),)
+    __implements__ = (getattr(TRAElemento,'__implements__',()),) + (getattr(TRAConRegistroActividad,'__implements__',()),)
 
-    allowed_content_types = [] + list(getattr(TRAElemento, 'allowed_content_types', []))
+
+
+    # Change Audit fields
+
+    creation_date_field = 'fechaCreacion'
+    creation_user_field = 'usuarioCreador'
+    modification_date_field = 'fechaModificacion'
+    modification_user_field = 'usuarioModificador'
+    deletion_date_field = 'fechaEliminacion'
+    deletion_user_field = 'usuarioEliminador'
+    is_inactive_field = 'estaInactivo'
+    change_counter_field = 'contadorCambios'
+    change_log_field = 'registroDeCambios'
+
+
+
+    allowed_content_types = [] + list(getattr(TRAElemento, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', []))
 
     actions =  (
 
@@ -88,16 +106,7 @@ class TRAColeccionArquetipos(TRAElemento):
         'id': 'view',
         'name': 'View',
         'permissions': ("View",),
-        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'View_any_TRA_element')"""
-       },
-
-
-       {'action': "string:${object_url}/MDDChanges",
-        'category': "object_buttons",
-        'id': 'mddchanges',
-        'name': 'Changes',
-        'permissions': ("View",),
-        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Changes_on_any_TRA_element')"""
+        'condition': """python:1"""
        },
 
 
@@ -106,25 +115,7 @@ class TRAColeccionArquetipos(TRAElemento):
         'id': 'edit',
         'name': 'Edit',
         'permissions': ("Modify portal content",),
-        'condition': """python:object.fAllowWrite() and object.TRAgvSIGi18n_tool.fRoleQuery_IsAnyRol( object, [ 'Manager', 'Owner', 'TRACreator', 'TRAManager', 'TRACoordinator',])"""
-       },
-
-
-       {'action': "string:${object_url}/TRAFlushCache_action",
-        'category': "object_buttons",
-        'id': 'tra_flushcache',
-        'name': 'Flush',
-        'permissions': ("View",),
-        'condition': """python:object.TRAgvSIGi18n_tool.fRoleQuery_IsAnyRol( object, [ 'Manager', 'Owner', 'TRACreator', 'TRAManager', 'TRACoordinator',])"""
-       },
-
-
-       {'action': "string:${object_url}/TRAInventory_action",
-        'category': "object_buttons",
-        'id': 'TRA_inventario',
-        'name': 'Inventory',
-        'permissions': ("View",),
-        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Inventory_TRAElemento')"""
+        'condition': """python:object.fAllowWrite()"""
        },
 
 
@@ -142,7 +133,7 @@ class TRAColeccionArquetipos(TRAElemento):
         'id': 'TRA_SeguridadUsuarioConectado',
         'name': 'Permissions',
         'permissions': ("View",),
-        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Permissions_on_any_TRA_element')"""
+        'condition': """python:1"""
        },
 
 
@@ -152,42 +143,6 @@ class TRAColeccionArquetipos(TRAElemento):
         'name': 'State',
         'permissions': ("View",),
         'condition': """python:0"""
-       },
-
-
-       {'action': "string:${object_url}/TRARecatalog_action",
-        'category': "object_buttons",
-        'id': 'TRA_recatalogar',
-        'name': 'ReCatalog',
-        'permissions': ("View",),
-        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'ReCatalog_TRAElemento')"""
-       },
-
-
-       {'action': "string:${object_url}/MDDCacheStatus/",
-        'category': "object_buttons",
-        'id': 'mddcachestatus',
-        'name': 'Cache',
-        'permissions': ("View",),
-        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'CacheStatus_on_any_TRA_element')"""
-       },
-
-
-       {'action': "string:${object_url}/TRAResetPermissions_action",
-        'category': "object_buttons",
-        'id': 'TRA_reestablecerpermisos',
-        'name': 'Reset Permissions',
-        'permissions': ("View",),
-        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'ResetPermissions_TRAElemento')"""
-       },
-
-
-       {'action': "string:${object_url}/TRAVerifyPermissions_action",
-        'category': "object_buttons",
-        'id': 'TRA_verificarpermisos',
-        'name': 'Verify Permissions',
-        'permissions': ("View",),
-        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'VerifyPermissions_TRAElemento')"""
        },
 
 
@@ -202,36 +157,8 @@ class TRAColeccionArquetipos(TRAElemento):
 
     # Methods
 
-    security.declarePublic('fMethodNameSetPermissions')
-    def fMethodNameSetPermissions(self):
-        """
-        """
-        
-        return 'pSetPermissions'
-
-    security.declarePublic('fAllowExport')
-    def fAllowExport(self):
-        """
-        """
-        
-        return True
-
     security.declarePublic('getEsColeccion')
     def getEsColeccion(self):
-        """
-        """
-        
-        return True
-
-    security.declarePublic('cb_isCopyable')
-    def cb_isCopyable(self):
-        """
-        """
-        
-        return False
-
-    security.declarePublic('fAllowImport')
-    def fAllowImport(self):
         """
         """
         
@@ -264,13 +191,6 @@ class TRAColeccionArquetipos(TRAElemento):
         """
         
         return TRAElemento.manage_beforeDelete( self, item, container)
-
-    security.declarePublic('cb_isMoveable')
-    def cb_isMoveable(self):
-        """
-        """
-        
-        return False
 # end of class TRAColeccionArquetipos
 
 ##code-section module-footer #fill in your manual code here

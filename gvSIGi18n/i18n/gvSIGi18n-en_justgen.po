@@ -1,0 +1,1977 @@
+# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: gvSIGi18n\n"
+"POT-Creation-Date: Tue Oct 27 03:29:17 2009\n"
+"PO-Revision-Date: Tue Oct 27 03:29:17 2009\n"
+"Last-Translator: Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>\n"
+"Language-Team: Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: en\n"
+"Language-Name: English\n"
+"Preferred-Encodings: latin1 utf-8\n"
+"Domain: gvSIGi18n\n"
+"X-Is-Fallback-For: en-au en-bz en-ca en-ie en-jm en-nz en-ph en-za en-tt en-gb en-us en-zw\n"
+
+#. Default: "TRAArquetipo"
+#: TRAArquetipo
+msgid "gvSIGi18n_TRAArquetipo_label"
+msgstr "TRAArquetipo"
+
+#. Default: "TRAArquetipo"
+#: TRAArquetipo
+msgid "gvSIGi18n_TRAArquetipo_help"
+msgstr "TRAArquetipo"
+
+#. Default: "Cadena"
+#: TRACadena
+msgid "gvSIGi18n_TRACadena_label"
+msgstr "String to translate"
+
+#. Default: "Una de las cadenas originales del producto a traducir, identificada por el simbolo original."
+#: TRACadena
+msgid "gvSIGi18n_TRACadena_help"
+msgstr "One of the original product strings to translate, identified by a the original symbol string."
+
+#. Default: "Estado de la Cadena"
+#: TRACadena estadoCadena
+msgid "gvSIGi18n_TRACadena_attr_estadoCadena_label"
+msgstr "String State"
+
+#. Default: "Estado de la Cadena, como Activa o Inactiva."
+#: TRACadena estadoCadena
+msgid "gvSIGi18n_TRACadena_attr_estadoCadena_help"
+msgstr "String State, as Active or Inactive."
+
+#. Default: "Inactiva"
+#: TRACadena estadoCadena
+msgid "gvSIGi18n_TRACadena_attr_estadoCadena_option_Inactiva"
+msgstr "Inactive"
+
+#. Default: "Activa"
+#: TRACadena estadoCadena
+msgid "gvSIGi18n_TRACadena_attr_estadoCadena_option_Activa"
+msgstr "Active"
+
+#. Default: "Fecha de Cancelacion"
+#: TRACadena fechaCancelacionTextual
+msgid "gvSIGi18n_TRACadena_attr_fechaCancelacionTextual_label"
+msgstr "Cancelation Date"
+
+#. Default: "La fecha en que la cadena fue cancelada, de forma que no vuelva a ser considerada para su traduccion."
+#: TRACadena fechaCancelacionTextual
+msgid "gvSIGi18n_TRACadena_attr_fechaCancelacionTextual_help"
+msgstr "The date when the String was cancelled, such that the string won't be considered again for translation."
+
+#. Default: "Fecha de Creacion como texto"
+#: TRACadena fechaCreacionTextual
+msgid "gvSIGi18n_TRACadena_attr_fechaCreacionTextual_label"
+msgstr "Creation Date as text"
+
+#. Default: "Representacion textual de la fecha en que se creo la cadena a traducir."
+#: TRACadena fechaCreacionTextual
+msgid "gvSIGi18n_TRACadena_attr_fechaCreacionTextual_help"
+msgstr "Textual representation of the date when the String was first created."
+
+#. Default: "Modulos"
+#: TRACadena nombresModulos
+msgid "gvSIGi18n_TRACadena_attr_nombresModulos_label"
+msgstr "Modules"
+
+#. Default: "Nombres de los Modulos en los que se usa esta cadena."
+#: TRACadena nombresModulos
+msgid "gvSIGi18n_TRACadena_attr_nombresModulos_help"
+msgstr "Names of the Modules using this String."
+
+#. Default: "Referencias a fuentes"
+#: TRACadena referenciasFuentes
+msgid "gvSIGi18n_TRACadena_attr_referenciasFuentes_label"
+msgstr "Source references"
+
+#. Default: "Referencias a codigo fuente donde aparece esta cadena."
+#: TRACadena referenciasFuentes
+msgid "gvSIGi18n_TRACadena_attr_referenciasFuentes_help"
+msgstr "References to source code where the string is used."
+
+#. Default: "Simbolo"
+#: TRACadena simbolo
+msgid "gvSIGi18n_TRACadena_attr_simbolo_label"
+msgstr "Symbol"
+
+#. Default: "El simbolo original que identifica la Cadena a traducir."
+#: TRACadena simbolo
+msgid "gvSIGi18n_TRACadena_attr_simbolo_help"
+msgstr "The original symbol identifying the string to be translated."
+
+#. Default: "Simbolo (fragmentos para busqueda textual)"
+#: TRACadena simboloEnPalabras
+msgid "gvSIGi18n_TRACadena_attr_simboloEnPalabras_label"
+msgstr "Symbol (fragments for textual search)"
+
+#. Default: "El simbolo original que identifica la Cadena a traducir, descompuesto en multiples palabras para facilitar las busquedas por texto."
+#: TRACadena simboloEnPalabras
+msgid "gvSIGi18n_TRACadena_attr_simboloEnPalabras_help"
+msgstr "The original symbol identifying the string to be translated, fragmented into multiple words to facilitate searches."
+
+#. Default: "Usuario Creador"
+#: TRACadena usuarioCreador
+msgid "gvSIGi18n_TRACadena_attr_usuarioCreador_label"
+msgstr "Creator user"
+
+#. Default: "Usuario que creo o importo la cadena a traducir."
+#: TRACadena usuarioCreador
+msgid "gvSIGi18n_TRACadena_attr_usuarioCreador_help"
+msgstr "User who created or imported the string to be translated."
+
+#. Default: "Traducciones"
+#: TRACadena traducciones
+msgid "gvSIGi18n_TRACadena_contents_traducciones_label"
+msgstr "Translations"
+
+#. Default: "Traducciones de una de las Cadenas los varios Idiomas."
+#: TRACadena traducciones
+msgid "gvSIGi18n_TRACadena_contents_traducciones_help"
+msgstr "Translations of one string to the various languages."
+
+#. Default: "Catalogo de Traducciones"
+#: TRACatalogo
+msgid "gvSIGi18n_TRACatalogo_label"
+msgstr "Translations Catalog"
+
+#. Default: "Contiene los Idiomas, Cadenas y Traducciones de las cadenas a multiples idiomas."
+#: TRACatalogo
+msgid "gvSIGi18n_TRACatalogo_help"
+msgstr "Containing a number of languages, strings to translate, and their translations to the the languages."
+
+#. Default: "Codigo de Idioma por defecto"
+#: TRACatalogo codigoIdiomaPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_codigoIdiomaPorDefecto_label"
+msgstr "Default Language Code"
+
+#. Default: "Codigo del lenguage para el que los ficheros de importacion o exportacion Java .properties no incorporan el codigo del lenguage como sufijo en el nombre del fichero."
+#: TRACatalogo codigoIdiomaPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_codigoIdiomaPorDefecto_help"
+msgstr "Code of the language whose Java .properties import or export files do not contain the language code in the file name as a suffix."
+
+#. Default: "Codigo de Idioma de Referencia  para Solicitudes de Nuevas Cadenas"
+#: TRACatalogo codigoIdiomaReferenciaSolicitudesNuevasCadenas
+msgid "gvSIGi18n_TRACatalogo_attr_codigoIdiomaReferenciaSolicitudesNuevasCadenas_label"
+msgstr "Reference Language Code for new String Requests"
+
+#. Default: "Codigo del lenguage para el que el desarrollador puede proporcionar una traduccion de referencia, cuando se solicitan nuevas cadenas."
+#: TRACatalogo codigoIdiomaReferenciaSolicitudesNuevasCadenas
+msgid "gvSIGi18n_TRACatalogo_attr_codigoIdiomaReferenciaSolicitudesNuevasCadenas_help"
+msgstr "Code of the language for which the developer may provide a reference  translation when requesting creation of new strings."
+
+#. Default: "Codigo de Idioma para Solicitudes de Nuevas Cadenas"
+#: TRACatalogo codigoIdiomaRequeridoSolicitudesNuevasCadenas
+msgid "gvSIGi18n_TRACatalogo_attr_codigoIdiomaRequeridoSolicitudesNuevasCadenas_label"
+msgstr "Language Code  for new String Requests"
+
+#. Default: "Codigo del lenguage en el que se requiere una traduccion cuando se solicitan nuevas cadenas."
+#: TRACatalogo codigoIdiomaRequeridoSolicitudesNuevasCadenas
+msgid "gvSIGi18n_TRACatalogo_attr_codigoIdiomaRequeridoSolicitudesNuevasCadenas_help"
+msgstr "Code of the language for which a translation is requiered when requesting creation of new strings."
+
+#. Default: "Dominio para cadenas sin modulo"
+#: TRACatalogo dominioPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_dominioPorDefecto_label"
+msgstr "Domain for strings not in a module"
+
+#. Default: "Dato que aparece en los ficheros de exportacion de tipo GNUgettext PO, cuando se exportan separadamente en su propio fichero cadenas que no pertenecen a un modulo, para identificar la aplicacion o modulo a que se aplican las traducciones."
+#: TRACatalogo dominioPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_dominioPorDefecto_help"
+msgstr "Iinformation that appears in the exported files of GNUgettext PO format, when exporting separately in its own file strings that do not pertain to any module,  to indicate the application or module to which the translations apply."
+
+#. Default: "Fecha de Ultima Importacion"
+#: TRACatalogo fechaUltimaImportacion
+msgid "gvSIGi18n_TRACatalogo_attr_fechaUltimaImportacion_label"
+msgstr "Last Import process Date"
+
+#. Default: "Fecha y hora de fin del Ultimo proceso de Importacion"
+#: TRACatalogo fechaUltimaImportacion
+msgid "gvSIGi18n_TRACatalogo_attr_fechaUltimaImportacion_help"
+msgstr "Data and time when the ast Import process terminated."
+
+#. Default: "Fecha del Ultimo Informe de Estado"
+#: TRACatalogo fechaUltimoInforme
+msgid "gvSIGi18n_TRACatalogo_attr_fechaUltimoInforme_label"
+msgstr "Last Status Report Date"
+
+#. Default: "Fecha y Hora en que se elaboro el ultimo informe de estado de traduccion del catalogo."
+#: TRACatalogo fechaUltimoInforme
+msgid "gvSIGi18n_TRACatalogo_attr_fechaUltimoInforme_help"
+msgstr "Data and time when the last Status Report was ellaborated from the catalog."
+
+#. Default: "Formato de exportacion por defecto"
+#: TRACatalogo formatoExportacionPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_formatoExportacionPorDefecto_label"
+msgstr "Default Export format"
+
+#. Default: "Formato de los ficheros de exportacion de traducciones como Java .properties, o GNUtettext PO."
+#: TRACatalogo formatoExportacionPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_formatoExportacionPorDefecto_help"
+msgstr "Format for the translations export files, as Java .properties or GNUgettext .PO."
+
+#. Default: "Java .properties"
+#: TRACatalogo formatoExportacionPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_formatoExportacionPorDefecto_option_Java .properties"
+msgstr "Java .properties"
+
+#. Default: "GNU gettext PO"
+#: TRACatalogo formatoExportacionPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_formatoExportacionPorDefecto_option_GNU gettext PO"
+msgstr "GNU gettext PO"
+
+#. Default: "Incluir fichero locales.csv"
+#: TRACatalogo incluirLocalesCSVPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_incluirLocalesCSVPorDefecto_label"
+msgstr "Include locales.csv file"
+
+#. Default: "Incluir en el archivo descargable un fichero locales.csv declarando los ficheros de traducciones contenidos en el archivo (usado por gvSIG)."
+#: TRACatalogo incluirLocalesCSVPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_incluirLocalesCSVPorDefecto_help"
+msgstr "Include in the downloadable archive, a locales.csv file declaring the translations files contained in the archive (used by gvSIG)."
+
+#. Default: "Si"
+#: TRACatalogo incluirLocalesCSVPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_incluirLocalesCSVPorDefecto_option_Si"
+msgstr "Yes"
+
+#. Default: "No"
+#: TRACatalogo incluirLocalesCSVPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_incluirLocalesCSVPorDefecto_option_No"
+msgstr "No"
+
+#. Default: "Incluir fichero MANIFEST.MF"
+#: TRACatalogo incluirManifestPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_incluirManifestPorDefecto_label"
+msgstr "Include MANIFEST.MF file"
+
+#. Default: "Incluir en el archivo descargable un fichero MANIFEST.MF declarando los ficheros de traducciones contenidos en el archivo."
+#: TRACatalogo incluirManifestPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_incluirManifestPorDefecto_help"
+msgstr "Include in the downloadable archive, a MANIFEST.MF file declaring the translations files contained in the archive."
+
+#. Default: "Si"
+#: TRACatalogo incluirManifestPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_incluirManifestPorDefecto_option_Si"
+msgstr "Yes"
+
+#. Default: "No"
+#: TRACatalogo incluirManifestPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_incluirManifestPorDefecto_option_No"
+msgstr "No"
+
+#. Default: "Numero maximo de registros de traduccion por pagina por defecto"
+#: TRACatalogo maximoRegistrosExplorados
+msgid "gvSIGi18n_TRACatalogo_attr_maximoRegistrosExplorados_label"
+msgstr "Default Maximum number of translations records per page"
+
+#. Default: "Numero maximo por defecto de Traducciones a presentar en las paginas de exploracion de traducciones, incluyendo traducciones al idioma a traducir y los idiomas de referencia."
+#: TRACatalogo maximoRegistrosExplorados
+msgid "gvSIGi18n_TRACatalogo_attr_maximoRegistrosExplorados_help"
+msgstr "Default maximum  number of Translations to display in the Browse Translations page, including the language to translate and the reference languages."
+
+#. Default: "Modo de gestion de errores de codificacion"
+#: TRACatalogo modoGestionErrorCodificacionExportacionPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_modoGestionErrorCodificacionExportacionPorDefecto_label"
+msgstr "Encoding errors handling mode"
+
+#. Default: "Como reaccionar ante la ocurrencia de errores de codificacion de caracteres durante la exportacion de traducciones."
+#: TRACatalogo modoGestionErrorCodificacionExportacionPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_modoGestionErrorCodificacionExportacionPorDefecto_help"
+msgstr "How to react upon occurences of encoding errors errors during the translations export process."
+
+#. Default: "Cancelar al primer error"
+#: TRACatalogo modoGestionErrorCodificacionExportacionPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_modoGestionErrorCodificacionExportacionPorDefecto_option_Cancelar al primer error"
+msgstr "Cancel on first error"
+
+#. Default: "Contar todos los errores y cancelar"
+#: TRACatalogo modoGestionErrorCodificacionExportacionPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_modoGestionErrorCodificacionExportacionPorDefecto_option_Contar todos los errores y cancelar"
+msgstr "Count all errors and cancel"
+
+#. Default: "Ignorar y continuar"
+#: TRACatalogo modoGestionErrorCodificacionExportacionPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_modoGestionErrorCodificacionExportacionPorDefecto_option_Ignorar y continuar"
+msgstr "Ignore and continue"
+
+#. Default: "Sustituir y continuar"
+#: TRACatalogo modoGestionErrorCodificacionExportacionPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_modoGestionErrorCodificacionExportacionPorDefecto_option_Sustituir y continuar"
+msgstr "Replace and continue"
+
+#. Default: "Sustituir por XML y continuar"
+#: TRACatalogo modoGestionErrorCodificacionExportacionPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_modoGestionErrorCodificacionExportacionPorDefecto_option_Sustituir por XML y continuar"
+msgstr "XML replace and continue"
+
+#. Default: "Sustituir por escape y continuar"
+#: TRACatalogo modoGestionErrorCodificacionExportacionPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_modoGestionErrorCodificacionExportacionPorDefecto_option_Sustituir por escape y continuar"
+msgstr "Backslash replace and continue"
+
+#. Default: "Modo de Interaccion con el Servidor por defecto"
+#: TRACatalogo modoInteraccionPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_modoInteraccionPorDefecto_label"
+msgstr "Default Server Interaction mode"
+
+#. Default: "Cuando sea Asincrono el navegador de internet enviara los cambios al servidor sin refrescar toda la pagina, permitiendo continuar el trabajo en la pagina actual. Cuando Sincrono, enviara cambios al servidor cargando una pagina completamente nueva."
+#: TRACatalogo modoInteraccionPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_modoInteraccionPorDefecto_help"
+msgstr "When Asynchronous the internet browser will send changes to server without refreshing the whole page, allowing continuation of work in the current page. When Synchronous the internet browser will send changes to server by loading a completely new page."
+
+#. Default: "Asincrono"
+#: TRACatalogo modoInteraccionPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_modoInteraccionPorDefecto_option_Asincrono"
+msgstr "Asynchronous"
+
+#. Default: "Sincrono"
+#: TRACatalogo modoInteraccionPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_modoInteraccionPorDefecto_option_Sincrono"
+msgstr "Syncronous"
+
+#. Default: "Exportar modulos por separado"
+#: TRACatalogo modulosPorSeparadoPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_modulosPorSeparadoPorDefecto_label"
+msgstr "Export separated modules"
+
+#. Default: "Exportar cada modulo por separado en su propio fichero, todos ellos incluidos en el archivo descargable."
+#: TRACatalogo modulosPorSeparadoPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_modulosPorSeparadoPorDefecto_help"
+msgstr "Exprot each module in its own file, with all of them packed in the downloadable archive."
+
+#. Default: "Si"
+#: TRACatalogo modulosPorSeparadoPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_modulosPorSeparadoPorDefecto_option_Si"
+msgstr "Yes"
+
+#. Default: "No"
+#: TRACatalogo modulosPorSeparadoPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_modulosPorSeparadoPorDefecto_option_No"
+msgstr "No"
+
+#. Default: "Modulos y Simbolos Cadenas ordenados"
+#: TRACatalogo modulosYSimbolosCadenasOrdenados
+msgid "gvSIGi18n_TRACatalogo_attr_modulosYSimbolosCadenasOrdenados_label"
+msgstr "Module names and Sorted String symbols"
+
+#. Default: "Nombres de Modulos y los Simbolos de las cadenas a traducir en el modulo, ordenados."
+#: TRACatalogo modulosYSimbolosCadenasOrdenados
+msgid "gvSIGi18n_TRACatalogo_attr_modulosYSimbolosCadenasOrdenados_help"
+msgstr "Module names and the Symbols of strings to be translated in the module, sorted."
+
+#. Default: "Nombre de Modulo por defecto"
+#: TRACatalogo nombreModuloPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_nombreModuloPorDefecto_label"
+msgstr "Default Module Name"
+
+#. Default: "Cuando se exporta un fichero para cada modulo, es el nombre a utilizar en los nombres de archivos GNUgettext PO, o para las carpetas contenedoras de ficheros Java .properties, para las cadenas para las que no se ha especificado modulo."
+#: TRACatalogo nombreModuloPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_nombreModuloPorDefecto_help"
+msgstr "When exporting a separate file for each module, it is the name to use in a GNUgettext .PO file name, or for the folder containing a Java .properties file."
+
+#. Default: "Producto"
+#: TRACatalogo nombreProducto
+msgid "gvSIGi18n_TRACatalogo_attr_nombreProducto_label"
+msgstr "Product"
+
+#. Default: "Nombre del Producto cuyas traducciones se manejan con este Catalogo."
+#: TRACatalogo nombreProducto
+msgid "gvSIGi18n_TRACatalogo_attr_nombreProducto_help"
+msgstr "Name of the Product translated in this Catalog."
+
+#. Default: "Permite Modificar"
+#: TRACatalogo permiteModificar
+msgid "gvSIGi18n_TRACatalogo_attr_permiteModificar_label"
+msgstr "Allow Changes"
+
+#. Default: "Si Verdadero, entonces los usuarios puede realizar los cambios a los que permite sus roles en la aplicacion. Si Falso, entonces no puede realizar cambios,  Puede ocurrir durante  procesos de importacion largos."
+#: TRACatalogo permiteModificar
+msgid "gvSIGi18n_TRACatalogo_attr_permiteModificar_help"
+msgstr "If True, then the users may perform the changes authorized by granted roles. If False, then the user can not make changes. This may happen during long import processe."
+
+#. Default: "Tiempo en segundos para confirmar Importacion"
+#: TRACatalogo segundosParaConfirmarImportacion
+msgid "gvSIGi18n_TRACatalogo_attr_segundosParaConfirmarImportacion_label"
+msgstr "Time in seconds to confirm Import process"
+
+#. Default: "Tiempo en segundos del que dispone el Usuario para confirmar lanzamiento de proceso de Importacion. Si no confirma en este tiempo, y desea importar, el Usuario debera volver a solicitar la importacion."
+#: TRACatalogo segundosParaConfirmarImportacion
+msgid "gvSIGi18n_TRACatalogo_attr_segundosParaConfirmarImportacion_help"
+msgstr "Time in seconds for the User to confirm launching the Import process. If the User does not confirm in this period of time, and he wishes to perform the import, the user shall request Import again."
+
+#. Default: "Simbolos Cadenas ordenados"
+#: TRACatalogo simbolosCadenasOrdenados
+msgid "gvSIGi18n_TRACatalogo_attr_simbolosCadenasOrdenados_label"
+msgstr "Sorted String symbols"
+
+#. Default: "Simbolos de las cadenas a traducir, ordenados."
+#: TRACatalogo simbolosCadenasOrdenados
+msgid "gvSIGi18n_TRACatalogo_attr_simbolosCadenasOrdenados_help"
+msgstr "Symbols of strings to be translated, sorted."
+
+#. Default: "Tipo de archivo descargable por defecto"
+#: TRACatalogo tipoArchivoExportacionPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_tipoArchivoExportacionPorDefecto_label"
+msgstr "Default downladable archive kind"
+
+#. Default: "Tipo de archivo en que se descargan el modulo o modulos exportados. Puede ser .jar o .zip."
+#: TRACatalogo tipoArchivoExportacionPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_tipoArchivoExportacionPorDefecto_help"
+msgstr "Type of the archive used to pack the module or modules for download."
+
+#. Default: ".jar"
+#: TRACatalogo tipoArchivoExportacionPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_tipoArchivoExportacionPorDefecto_option_.jar"
+msgstr ".jar"
+
+#. Default: ".zip"
+#: TRACatalogo tipoArchivoExportacionPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_tipoArchivoExportacionPorDefecto_option_.zip"
+msgstr ".zip"
+
+#. Default: "Numero de Traducciones en pagina por defecto"
+#: TRACatalogo traduccionesPorPaginaPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_traduccionesPorPaginaPorDefecto_label"
+msgstr "Default Translations per page"
+
+#. Default: "Numero de Traducciones por defecto a presentar en las paginas de exploracion sin contar las traducciones a los idiomas de referencia."
+#: TRACatalogo traduccionesPorPaginaPorDefecto
+msgid "gvSIGi18n_TRACatalogo_attr_traduccionesPorPaginaPorDefecto_help"
+msgstr "Default number of Translations to display in the Browse Translations page, not counting the translations into the reference languages."
+
+#. Default: "Ultima importacion"
+#: TRACatalogo ultimaImportacion
+msgid "gvSIGi18n_TRACatalogo_attr_ultimaImportacion_label"
+msgstr "Last Import process"
+
+#. Default: "Ultima Importacion de modulos, idiomas, cadenas y traducciones del producto."
+#: TRACatalogo ultimaImportacion
+msgid "gvSIGi18n_TRACatalogo_attr_ultimaImportacion_help"
+msgstr "Last process importing modules, languages, strings and translations."
+
+#. Default: "Ultima Version importada del producto"
+#: TRACatalogo ultimaVersionImportada
+msgid "gvSIGi18n_TRACatalogo_attr_ultimaVersionImportada_label"
+msgstr "Last Imported Product Version"
+
+#. Default: "Ultima Version del Producto que se ha importado."
+#: TRACatalogo ultimaVersionImportada
+msgid "gvSIGi18n_TRACatalogo_attr_ultimaVersionImportada_help"
+msgstr "Last Imported Product Version."
+
+#. Default: "Identificador del Ultimo Build Importado"
+#: TRACatalogo ultimoBuildImportado
+msgid "gvSIGi18n_TRACatalogo_attr_ultimoBuildImportado_label"
+msgstr "Last Imported Product Build identifier"
+
+#. Default: "Identificador del Ultimo Build del Producto que ha sido importado."
+#: TRACatalogo ultimoBuildImportado
+msgid "gvSIGi18n_TRACatalogo_attr_ultimoBuildImportado_help"
+msgstr "Last Imported Product Build identifier."
+
+#. Default: "Ultimo Informe de Estado"
+#: TRACatalogo ultimoInforme
+msgid "gvSIGi18n_TRACatalogo_attr_ultimoInforme_label"
+msgstr "Last Status Report"
+
+#. Default: "Ultimo Informe de Estado elaborado en el catalogo."
+#: TRACatalogo ultimoInforme
+msgid "gvSIGi18n_TRACatalogo_attr_ultimoInforme_help"
+msgstr "Last Status report ellaborated from the catalog."
+
+#. Default: "Coleccion de Cadenas"
+#: TRACatalogo coleccionCadenas
+msgid "gvSIGi18n_TRACatalogo_contents_coleccionCadenas_label"
+msgstr "Strings collection"
+
+#. Default: "Coleccion de Cadenas a traducir a los varios idiomas."
+#: TRACatalogo coleccionCadenas
+msgid "gvSIGi18n_TRACatalogo_contents_coleccionCadenas_help"
+msgstr "Collection of strings to translate to a number of languages."
+
+#. Default: "Coleccion de Idiomas"
+#: TRACatalogo coleccionIdiomas
+msgid "gvSIGi18n_TRACatalogo_contents_coleccionIdiomas_label"
+msgstr "Languages collection"
+
+#. Default: "Coleccion de idiomas a los que se desea traducir las cadenas."
+#: TRACatalogo coleccionIdiomas
+msgid "gvSIGi18n_TRACatalogo_contents_coleccionIdiomas_help"
+msgstr "Collection of languages to translate the strings into."
+
+#. Default: "Coleccion de Importaciones"
+#: TRACatalogo coleccionImportaciones
+msgid "gvSIGi18n_TRACatalogo_contents_coleccionImportaciones_label"
+msgstr "Import processes collection"
+
+#. Default: "Coleccion de procesos de Importacion para cargar modulos, idiomas, cadenas y traducciones."
+#: TRACatalogo coleccionImportaciones
+msgid "gvSIGi18n_TRACatalogo_contents_coleccionImportaciones_help"
+msgstr "Collection of Import processes to load modules,  languages, strings and translations."
+
+#. Default: "Coleccion de Informes de Estado"
+#: TRACatalogo coleccionInformes
+msgid "gvSIGi18n_TRACatalogo_contents_coleccionInformes_label"
+msgstr "Status Reports collection"
+
+#. Default: "Coleccion de Informes del Estado de traducciones en Modulos e Idiomas."
+#: TRACatalogo coleccionInformes
+msgid "gvSIGi18n_TRACatalogo_contents_coleccionInformes_help"
+msgstr "Collection of Status Reports of Translations to  Languages and Modules"
+
+#. Default: "Coleccion de Modulos"
+#: TRACatalogo coleccionModulos
+msgid "gvSIGi18n_TRACatalogo_contents_coleccionModulos_label"
+msgstr "Modules collection"
+
+#. Default: "Coleccion de Modulos en el Producto a traducir."
+#: TRACatalogo coleccionModulos
+msgid "gvSIGi18n_TRACatalogo_contents_coleccionModulos_help"
+msgstr "Collection of Modules in the Product to Translate"
+
+#. Default: "Coleccion de Solicitudes de Cadenas"
+#: TRACatalogo coleccionSolicitudesCadenas
+msgid "gvSIGi18n_TRACatalogo_contents_coleccionSolicitudesCadenas_label"
+msgstr "String Requests Collection"
+
+#. Default: "Coleccion de solicitudes realizadas por los desarrolladores, para crear nuevas cadenas."
+#: TRACatalogo coleccionSolicitudesCadenas
+msgid "gvSIGi18n_TRACatalogo_contents_coleccionSolicitudesCadenas_help"
+msgstr "Collection of requests by developers to create new strings."
+
+#. Default: "TRAColeccionArquetipos"
+#: TRAColeccionArquetipos
+msgid "gvSIGi18n_TRAColeccionArquetipos_label"
+msgstr "TRAColeccionArquetipos"
+
+#. Default: "TRAColeccionArquetipos"
+#: TRAColeccionArquetipos
+msgid "gvSIGi18n_TRAColeccionArquetipos_help"
+msgstr "TRAColeccionArquetipos"
+
+#. Default: "Coleccion de Cadenas"
+#: TRAColeccionCadenas
+msgid "gvSIGi18n_TRAColeccionCadenas_label"
+msgstr "Strings collection"
+
+#. Default: "Coleccion de cadenas a traducir a los varios idiomas."
+#: TRAColeccionCadenas
+msgid "gvSIGi18n_TRAColeccionCadenas_help"
+msgstr "Collection of strings to translate to a number of languages."
+
+#. Default: "Cadenas a traducir"
+#: TRAColeccionCadenas cadenas
+msgid "gvSIGi18n_TRAColeccionCadenas_contents_cadenas_label"
+msgstr "Strings to translate"
+
+#. Default: "Cadenas para ser traducidas a los varios idiomas."
+#: TRAColeccionCadenas cadenas
+msgid "gvSIGi18n_TRAColeccionCadenas_contents_cadenas_help"
+msgstr "Strings to translate to the various languages."
+
+#. Default: "Coleccion de Idiomas"
+#: TRAColeccionIdiomas
+msgid "gvSIGi18n_TRAColeccionIdiomas_label"
+msgstr "Languages collection"
+
+#. Default: "Coleccion de idiomas a los que se desea traducir las cadenas."
+#: TRAColeccionIdiomas
+msgid "gvSIGi18n_TRAColeccionIdiomas_help"
+msgstr "Collection of languages to translate the strings into."
+
+#. Default: "Idiomas"
+#: TRAColeccionIdiomas idiomas
+msgid "gvSIGi18n_TRAColeccionIdiomas_contents_idiomas_label"
+msgstr "Languages"
+
+#. Default: "Idiomas a los que se desea traducir las cadena."
+#: TRAColeccionIdiomas idiomas
+msgid "gvSIGi18n_TRAColeccionIdiomas_contents_idiomas_help"
+msgstr "Languages to translate the strings into."
+
+#. Default: "Coleccion de Importaciones"
+#: TRAColeccionImportaciones
+msgid "gvSIGi18n_TRAColeccionImportaciones_label"
+msgstr "Import processes collection"
+
+#. Default: "Coleccion de procesos de Importacion para grabar modulos, idiomas, cadenas y traducciones."
+#: TRAColeccionImportaciones
+msgid "gvSIGi18n_TRAColeccionImportaciones_help"
+msgstr "Collection of Import processes to save modules,  languages, strings and translations."
+
+#. Default: "Importaciones"
+#: TRAColeccionImportaciones importaciones
+msgid "gvSIGi18n_TRAColeccionImportaciones_contents_importaciones_label"
+msgstr "Import processes"
+
+#. Default: "Operaciones de importacion de modulos,  idiomas,  cadenas y traducciones."
+#: TRAColeccionImportaciones importaciones
+msgid "gvSIGi18n_TRAColeccionImportaciones_contents_importaciones_help"
+msgstr "Import operations to load modules, languages,  strings and translations."
+
+#. Default: "Coleccion de Informes de Estado"
+#: TRAColeccionInformes
+msgid "gvSIGi18n_TRAColeccionInformes_label"
+msgstr "Status Reports Collection"
+
+#. Default: "Coleccion de informes del Estado de Traducciones a Idiomas y Modulos"
+#: TRAColeccionInformes
+msgid "gvSIGi18n_TRAColeccionInformes_help"
+msgstr "Collection of Status Reports of Translations to  Languages and Modules"
+
+#. Default: "Informes"
+#: TRAColeccionInformes informes
+msgid "gvSIGi18n_TRAColeccionInformes_contents_informes_label"
+msgstr "Reports"
+
+#. Default: "Informes del estado de Traducciones a Idiomas y Modulos"
+#: TRAColeccionInformes informes
+msgid "gvSIGi18n_TRAColeccionInformes_contents_informes_help"
+msgstr "Status Reports of Translations to  Languages and Modules"
+
+#. Default: "Coleccion de Modulos"
+#: TRAColeccionModulos
+msgid "gvSIGi18n_TRAColeccionModulos_label"
+msgstr "Modules collection"
+
+#. Default: "Colecicon de Modulos en el producto a traducir."
+#: TRAColeccionModulos
+msgid "gvSIGi18n_TRAColeccionModulos_help"
+msgstr "Collection of Modules in the product to translate."
+
+#. Default: "Modulos"
+#: TRAColeccionModulos modulos
+msgid "gvSIGi18n_TRAColeccionModulos_contents_modulos_label"
+msgstr "Modules"
+
+#. Default: "Modulos en el Producto a traducir."
+#: TRAColeccionModulos modulos
+msgid "gvSIGi18n_TRAColeccionModulos_contents_modulos_help"
+msgstr "Modules in the Product to translate."
+
+#. Default: "Coleccion de Solicitudes de creacion de Cadenas"
+#: TRAColeccionSolicitudesCadenas
+msgid "gvSIGi18n_TRAColeccionSolicitudesCadenas_label"
+msgstr "Strings creation request collection"
+
+#. Default: "Coleccion de solicitudes realizadas por los desarrolladores, para crear nuevas cadenas."
+#: TRAColeccionSolicitudesCadenas
+msgid "gvSIGi18n_TRAColeccionSolicitudesCadenas_help"
+msgstr "Collection of requests by developers to create new strings."
+
+#. Default: "Solicitudes de creacion de Cadenas"
+#: TRAColeccionSolicitudesCadenas solicitudesCadenas
+msgid "gvSIGi18n_TRAColeccionSolicitudesCadenas_contents_solicitudesCadenas_label"
+msgstr "String creation Requests"
+
+#. Default: "Solicitudes realizadas por los desarrolladores, para crear nuevas cadenas."
+#: TRAColeccionSolicitudesCadenas solicitudesCadenas
+msgid "gvSIGi18n_TRAColeccionSolicitudesCadenas_contents_solicitudesCadenas_help"
+msgstr "Requests by developers to create new strings."
+
+#. Default: "TRAConRegistroActividad"
+#: TRAConRegistroActividad
+msgid "gvSIGi18n_TRAConRegistroActividad_label"
+msgstr "TRAConRegistroActividad"
+
+#. Default: "TRAConRegistroActividad"
+#: TRAConRegistroActividad
+msgid "gvSIGi18n_TRAConRegistroActividad_help"
+msgstr "TRAConRegistroActividad"
+
+#. Default: "Contador de Cambios"
+#: TRAConRegistroActividad contadorCambios
+msgid "gvSIGi18n_TRAConRegistroActividad_attr_contadorCambios_label"
+msgstr "Change Counter"
+
+#. Default: "Contador de cambios realizados a lo largo del tiempo. Util para descubrir si han tenido lugar cambios desde que se leyeron los datos del elemento."
+#: TRAConRegistroActividad contadorCambios
+msgid "gvSIGi18n_TRAConRegistroActividad_attr_contadorCambios_help"
+msgstr "Counter of changes over time. Useful to learn if any changes happened since the reading of the element information."
+
+#. Default: "El Elemento esta Inactivo"
+#: TRAConRegistroActividad estaInactivo
+msgid "gvSIGi18n_TRAConRegistroActividad_attr_estaInactivo_label"
+msgstr "Element is Inactive"
+
+#. Default: "Si Verdadero, entonces el elemento esta inactivo porque ha sido eliminado. Los elementos eliminados no se presentan a los usuario en los usos normales de la aplicacion, y se reservan a funciones especiales de administracion."
+#: TRAConRegistroActividad estaInactivo
+msgid "gvSIGi18n_TRAConRegistroActividad_attr_estaInactivo_help"
+msgstr "If True, then the element is inactive because it has been delete. Deleted elements are not presented to users in the usual application use cases, and reserved for specialized administration functions."
+
+#. Default: "Fecha de Creacion"
+#: TRAConRegistroActividad fechaCreacion
+msgid "gvSIGi18n_TRAConRegistroActividad_attr_fechaCreacion_label"
+msgstr "Creation Date"
+
+#. Default: "Fecha en que se creo el elemento."
+#: TRAConRegistroActividad fechaCreacion
+msgid "gvSIGi18n_TRAConRegistroActividad_attr_fechaCreacion_help"
+msgstr "Date when the element was created."
+
+#. Default: "Fecha de Eliminacion"
+#: TRAConRegistroActividad fechaEliminacion
+msgid "gvSIGi18n_TRAConRegistroActividad_attr_fechaEliminacion_label"
+msgstr "Deletion Date"
+
+#. Default: "Fecha en que se elimino el elemento."
+#: TRAConRegistroActividad fechaEliminacion
+msgid "gvSIGi18n_TRAConRegistroActividad_attr_fechaEliminacion_help"
+msgstr "Date when the element was deleted."
+
+#. Default: "Fecha de Modificacion"
+#: TRAConRegistroActividad fechaModificacion
+msgid "gvSIGi18n_TRAConRegistroActividad_attr_fechaModificacion_label"
+msgstr "Modification Date"
+
+#. Default: "Fecha en que se modifico el elemento."
+#: TRAConRegistroActividad fechaModificacion
+msgid "gvSIGi18n_TRAConRegistroActividad_attr_fechaModificacion_help"
+msgstr "Date when the element was modified."
+
+#. Default: "Historia de Cambios"
+#: TRAConRegistroActividad registroDeCambios
+msgid "gvSIGi18n_TRAConRegistroActividad_attr_registroDeCambios_label"
+msgstr "Change Log"
+
+#. Default: "Regitro de los cambios efectuados sobre el elemento a lo largo del tiempo por diferentes usuarios."
+#: TRAConRegistroActividad registroDeCambios
+msgid "gvSIGi18n_TRAConRegistroActividad_attr_registroDeCambios_help"
+msgstr "Record of changes made to the element over time by different users."
+
+#. Default: "Usuario Creador"
+#: TRAConRegistroActividad usuarioCreador
+msgid "gvSIGi18n_TRAConRegistroActividad_attr_usuarioCreador_label"
+msgstr "Creator User"
+
+#. Default: "Usuario que creo el elemento."
+#: TRAConRegistroActividad usuarioCreador
+msgid "gvSIGi18n_TRAConRegistroActividad_attr_usuarioCreador_help"
+msgstr "User who created the element."
+
+#. Default: "Usuario Eliminador"
+#: TRAConRegistroActividad usuarioEliminador
+msgid "gvSIGi18n_TRAConRegistroActividad_attr_usuarioEliminador_label"
+msgstr "Deletion User"
+
+#. Default: "Usuario que elimino el elemento."
+#: TRAConRegistroActividad usuarioEliminador
+msgid "gvSIGi18n_TRAConRegistroActividad_attr_usuarioEliminador_help"
+msgstr "User who deleted the element."
+
+#. Default: "Usuario Modificador"
+#: TRAConRegistroActividad usuarioModificador
+msgid "gvSIGi18n_TRAConRegistroActividad_attr_usuarioModificador_label"
+msgstr "Modification User"
+
+#. Default: "Usuario que modifico el elemento."
+#: TRAConRegistroActividad usuarioModificador
+msgid "gvSIGi18n_TRAConRegistroActividad_attr_usuarioModificador_help"
+msgstr "User who modified the element."
+
+#. Default: "Contenido de Intercambio"
+#: TRAContenidoIntercambio
+msgid "gvSIGi18n_TRAContenidoIntercambio_label"
+msgstr "Interchange Content"
+
+#. Default: "Contenido de un intercambio de Importacion de traducciones de cadenas a uno o mas idiomas."
+#: TRAContenidoIntercambio
+msgid "gvSIGi18n_TRAContenidoIntercambio_help"
+msgstr "Contents of an Import interchange of string translations to a number od languages"
+
+#. Default: "Contenido"
+#: TRAContenidoIntercambio contenido
+msgid "gvSIGi18n_TRAContenidoIntercambio_attr_contenido_label"
+msgstr "Contents"
+
+#. Default: "Contenido ya analizado del intercambio de traducciones de cadenas a idiomas."
+#: TRAContenidoIntercambio contenido
+msgid "gvSIGi18n_TRAContenidoIntercambio_attr_contenido_help"
+msgstr "Already analised contents of the interchange of string translations into languages."
+
+#. Default: "Excluir de Importacion"
+#: TRAContenidoIntercambio excluirDeImportacion
+msgid "gvSIGi18n_TRAContenidoIntercambio_attr_excluirDeImportacion_label"
+msgstr "Exclude from Import"
+
+#. Default: "Si es Verdadero, entonces este contenido de intercambio no se incluye en la importacion, ni en el sumario of vista detallada."
+#: TRAContenidoIntercambio excluirDeImportacion
+msgid "gvSIGi18n_TRAContenidoIntercambio_attr_excluirDeImportacion_help"
+msgstr "If True, then this translations interchange contents will not be included in the import process, the summary or the detailed view."
+
+#. Default: "Fecha y Hora de Carga"
+#: TRAContenidoIntercambio fechaContenido
+msgid "gvSIGi18n_TRAContenidoIntercambio_attr_fechaContenido_label"
+msgstr "Upload Date and Time"
+
+#. Default: "Fecha y hora en que  completo o termino el proceso de carga del contenido de intercambio de traducciones."
+#: TRAContenidoIntercambio fechaContenido
+msgid "gvSIGi18n_TRAContenidoIntercambio_attr_fechaContenido_help"
+msgstr "Date and Time when the process to  analise translations interchange archives was completed or terminated."
+
+#. Default: "Contenido Intercambio de Traducciones"
+#: TRAContenidoIntercambio informeContenido
+msgid "gvSIGi18n_TRAContenidoIntercambio_attr_informeContenido_label"
+msgstr "Content in Trasnslations Interchange"
+
+#. Default: "Contenidos de los Archivos de intercambio de traducciones  incluyendo un numero de directorios de modulo con ficheros de cadenas y traducciones a un numero de idiomas,"
+#: TRAContenidoIntercambio informeContenido
+msgid "gvSIGi18n_TRAContenidoIntercambio_attr_informeContenido_help"
+msgstr "Contents of translations interchange Archive files, including a number of module directories with files with strings and translations to a number of languages."
+
+#. Default: "Modulo"
+#: TRAContenidoIntercambio nombreModulo
+msgid "gvSIGi18n_TRAContenidoIntercambio_attr_nombreModulo_label"
+msgstr "Module"
+
+#. Default: "Nombre del Modulo en que se usa o resuelve esta cadena (base por defecto)."
+#: TRAContenidoIntercambio nombreModulo
+msgid "gvSIGi18n_TRAContenidoIntercambio_attr_nombreModulo_help"
+msgstr "Name of the Module where this String is used or resolved (base, by default)."
+
+#. Default: "Sumario del contenido"
+#: TRAContenidoIntercambio sumarioContenido
+msgid "gvSIGi18n_TRAContenidoIntercambio_attr_sumarioContenido_label"
+msgstr "Contents summary"
+
+#. Default: "Sumario del contenido, con el Numero de Cadenas en el contenido de intercambio de cadenas. y los idiomas incluidos"
+#: TRAContenidoIntercambio sumarioContenido
+msgid "gvSIGi18n_TRAContenidoIntercambio_attr_sumarioContenido_help"
+msgstr "Contents summary with the Number of strings in the translations interchange content, and the Languages included."
+
+#. Default: "Usuario Contribuidor"
+#: TRAContenidoIntercambio usuarioContribuidor
+msgid "gvSIGi18n_TRAContenidoIntercambio_attr_usuarioContribuidor_label"
+msgstr "Contributor User"
+
+#. Default: "Usuario que ha subido al servidor el archivo de intercambio del contenido de traducciones de cadenas a idiomas."
+#: TRAContenidoIntercambio usuarioContribuidor
+msgid "gvSIGi18n_TRAContenidoIntercambio_attr_usuarioContribuidor_help"
+msgstr "User who uploaded the interchange archive content string translations into languages."
+
+#. Default: "TRAElemento"
+#: TRAElemento
+msgid "gvSIGi18n_TRAElemento_label"
+msgstr "TRAElemento"
+
+#. Default: "TRAElemento"
+#: TRAElemento
+msgid "gvSIGi18n_TRAElemento_help"
+msgstr "TRAElemento"
+
+#. Default: "Texto"
+#: TRAElemento text
+msgid "gvSIGi18n_TRAElemento_attr_text_label"
+msgstr "Text"
+
+#. Default: "Una descripcion textual extensa del elemento."
+#: TRAElemento text
+msgid "gvSIGi18n_TRAElemento_attr_text_help"
+msgstr "Extended textual description of the element."
+
+#. Default: "Ficheros"
+#: TRAElemento archivos
+msgid "gvSIGi18n_TRAElemento_contents_archivos_label"
+msgstr "Files"
+
+#. Default: "Elementos Plone convencionales conteniendo un Fichero de contenido arbitrario."
+#: TRAElemento archivos
+msgid "gvSIGi18n_TRAElemento_contents_archivos_help"
+msgstr "Conventional Plone elements containing a File of arbitrary contents."
+
+#. Default: "Documentos"
+#: TRAElemento documentos
+msgid "gvSIGi18n_TRAElemento_contents_documentos_label"
+msgstr "Documents"
+
+#. Default: "Elementos del tipo documento convencional en Plone."
+#: TRAElemento documentos
+msgid "gvSIGi18n_TRAElemento_contents_documentos_help"
+msgstr "Elements of the Plone Document type."
+
+#. Default: "Enlace"
+#: TRAElemento enlaces
+msgid "gvSIGi18n_TRAElemento_contents_enlaces_label"
+msgstr "Link"
+
+#. Default: "Elementos Plone conteniendo una referencia a una pagina Web (URLs como http://www.gvSIG.org)"
+#: TRAElemento enlaces
+msgid "gvSIGi18n_TRAElemento_contents_enlaces_help"
+msgstr "Plone Elements containing a reference to a Web page (URLs like http://www.gvSIG.org)"
+
+#. Default: "Imagenes"
+#: TRAElemento imagenes
+msgid "gvSIGi18n_TRAElemento_contents_imagenes_label"
+msgstr "Images"
+
+#. Default: "Elementos Plone convencionales conteniendo una Imagen."
+#: TRAElemento imagenes
+msgid "gvSIGi18n_TRAElemento_contents_imagenes_help"
+msgstr "Conventional Plone elements containing an Image."
+
+#. Default: "Noticias"
+#: TRAElemento noticias
+msgid "gvSIGi18n_TRAElemento_contents_noticias_label"
+msgstr "News Items"
+
+#. Default: "Elementos de Plone conteniendo una Noticia."
+#: TRAElemento noticias
+msgid "gvSIGi18n_TRAElemento_contents_noticias_help"
+msgstr "Plone Elements containing a news posting."
+
+#. Default: "Idioma"
+#: TRAIdioma
+msgid "gvSIGi18n_TRAIdioma_label"
+msgstr "Language"
+
+#. Default: "Uno de los Idiomas a los que se han de traducir las cadenas."
+#: TRAIdioma
+msgid "gvSIGi18n_TRAIdioma_help"
+msgstr "One of the languages to translate the strings into."
+
+#. Default: "Ambito"
+#: TRAIdioma ambitoDelIdioma
+msgid "gvSIGi18n_TRAIdioma_attr_ambitoDelIdioma_label"
+msgstr "Scope"
+
+#. Default: "Indica si el idioma es de uso general, o es un caso especial en de otro idioma en un Pais, o si es una variacion de otro idioma de un pais. Si no es de uso general, debera referenciar a un idioma base."
+#: TRAIdioma ambitoDelIdioma
+msgid "gvSIGi18n_TRAIdioma_attr_ambitoDelIdioma_help"
+msgstr "Whether the language is of genral use, or is a special use of a language in a given country, or  a variation of a country specific Language.  If not of general use, the language must refer to a base language."
+
+#. Default: "General"
+#: TRAIdioma ambitoDelIdioma
+msgid "gvSIGi18n_TRAIdioma_attr_ambitoDelIdioma_option_General"
+msgstr "General"
+
+#. Default: "Pais"
+#: TRAIdioma ambitoDelIdioma
+msgid "gvSIGi18n_TRAIdioma_attr_ambitoDelIdioma_option_Pais"
+msgstr "Country"
+
+#. Default: "Variacion"
+#: TRAIdioma ambitoDelIdioma
+msgid "gvSIGi18n_TRAIdioma_attr_ambitoDelIdioma_option_Variacion"
+msgstr "Variation"
+
+#. Default: "Codificacion de transferencia de contenido"
+#: TRAIdioma codificacionTransferenciaContenido
+msgid "gvSIGi18n_TRAIdioma_attr_codificacionTransferenciaContenido_label"
+msgstr "Content transfer encoding"
+
+#. Default: "Equipo a cargo de traducir al idioma. Este dato aparece en los ficheros de exportacion de tipo GNUgettext PO. Usualmente toma el valor=8bit"
+#: TRAIdioma codificacionTransferenciaContenido
+msgid "gvSIGi18n_TRAIdioma_attr_codificacionTransferenciaContenido_help"
+msgstr "Iinformation that appears in the exported files with GNUgettext PO format. Usually takes the value=8bit"
+
+#. Default: "Codificaciones preferidas"
+#: TRAIdioma codificacionesPreferidas
+msgid "gvSIGi18n_TRAIdioma_attr_codificacionesPreferidas_label"
+msgstr "Preferred encodings"
+
+#. Default: "Dato que aparece en los ficheros de exportacion de tipo GNUgettext PO. Usualmente toma el valor=latin1 utf-8"
+#: TRAIdioma codificacionesPreferidas
+msgid "gvSIGi18n_TRAIdioma_attr_codificacionesPreferidas_help"
+msgstr "Iinformation that appears in the exported files of GNUgettext PO format. Usually takes the value=latin1 utf-8"
+
+#. Default: "Codigo de Idioma en gvSIG"
+#: TRAIdioma codigoIdiomaEnGvSIG
+msgid "gvSIGi18n_TRAIdioma_attr_codigoIdiomaEnGvSIG_label"
+msgstr "Language code in gvSIG"
+
+#. Default: "Codigo de Idioma en gvSIG, que soporta algunos idiomas para los que no existe (todavia) un codigo internacional."
+#: TRAIdioma codigoIdiomaEnGvSIG
+msgid "gvSIGi18n_TRAIdioma_attr_codigoIdiomaEnGvSIG_help"
+msgstr "Language code in gvSIG, as gvSIG supports some languages for which there is no international code (yet)."
+
+#. Default: "Codigo de Idioma de referencia"
+#: TRAIdioma codigoIdiomaReferencia
+msgid "gvSIGi18n_TRAIdioma_attr_codigoIdiomaReferencia_label"
+msgstr "Reference Language code"
+
+#. Default: "Codigo de Idioma de referencia, que se incluira por defecto en exportaciones en formato Java .properties, y cuyas traducciones se incluyen como linea Default en exportaciones GNUgettext PO."
+#: TRAIdioma codigoIdiomaReferencia
+msgid "gvSIGi18n_TRAIdioma_attr_codigoIdiomaReferencia_help"
+msgstr "Reference Language code, to be included by default when exporting as Java .properties, and to be included in the Default line when exporting GNUgettext PO."
+
+#. Default: "Codigo internacional de Idioma"
+#: TRAIdioma codigoInternacionalDeIdioma
+msgid "gvSIGi18n_TRAIdioma_attr_codigoInternacionalDeIdioma_label"
+msgstr "International language code"
+
+#. Default: "Codigo internacional estandard de Idioma, segun las convenciones I18N."
+#: TRAIdioma codigoInternacionalDeIdioma
+msgid "gvSIGi18n_TRAIdioma_attr_codigoInternacionalDeIdioma_help"
+msgstr "Standard international language code,according to the I18N conventions."
+
+#. Default: "Equipo del idioma"
+#: TRAIdioma equipoTraductor
+msgid "gvSIGi18n_TRAIdioma_attr_equipoTraductor_label"
+msgstr "Language team"
+
+#. Default: "Equipo a cargo de traducir al idioma. Este dato aparece en los ficheros de exportacion de tipo GNUgettext PO."
+#: TRAIdioma equipoTraductor
+msgid "gvSIGi18n_TRAIdioma_attr_equipoTraductor_help"
+msgstr "Team in charge of translations to the language. This information appears in the exported files of GNUgettext PO format."
+
+#. Default: "Es Idioma Principal"
+#: TRAIdioma esIdiomaPrincipal
+msgid "gvSIGi18n_TRAIdioma_attr_esIdiomaPrincipal_label"
+msgstr "Is Main Language"
+
+#. Default: "Las traducciones del Idioma Principal se exportaran a un archivo sin sufijo de idioma, por ejemplo si el idioma principal es es, el nombre del fichero sera  text.properties y no text_es.properties."
+#: TRAIdioma esIdiomaPrincipal
+msgid "gvSIGi18n_TRAIdioma_attr_esIdiomaPrincipal_help"
+msgstr "The translations to the main language will be exported to files without language postfix, for example if the main language is en, the filename will be text.properties but not text_en.properties."
+
+#. Default: "Fallback de idiomas"
+#: TRAIdioma fallbackDeIdiomas
+msgid "gvSIGi18n_TRAIdioma_attr_fallbackDeIdiomas_label"
+msgstr "Is fall back for languages"
+
+#. Default: "Idiomas para los que este es una sustitucion aceptable, en ausencia de una traduccion propia. Este dato aparece en los ficheros exportados en formato GNUgettext PO."
+#: TRAIdioma fallbackDeIdiomas
+msgid "gvSIGi18n_TRAIdioma_attr_fallbackDeIdiomas_help"
+msgstr "Languages for which this is an acceptable fallback, in case they lack their own tranlation. This information appears in the files exported as GNU gettext PO format."
+
+#. Default: "Formas plurales"
+#: TRAIdioma formasPlurales
+msgid "gvSIGi18n_TRAIdioma_attr_formasPlurales_label"
+msgstr "Plural forms"
+
+#. Default: "Dato que aparece en los ficheros de exportacion de tipo GNUgettext PO. Usualmente toma el valor=nplurals=1; plural=0"
+#: TRAIdioma formasPlurales
+msgid "gvSIGi18n_TRAIdioma_attr_formasPlurales_help"
+msgstr "Information to be included in the files exported with GNU gettext PO format."
+
+#. Default: "Juego de caracteres para exportacion como Java Properties"
+#: TRAIdioma juegoDeCaracteresParaJavaProperties
+msgid "gvSIGi18n_TRAIdioma_attr_juegoDeCaracteresParaJavaProperties_label"
+msgstr "Char set for export as Java Properties files"
+
+#. Default: "Juego de caracteres en que se han de codificar los ficheros exportados en formatoJava .properties.  Usualmente toma el valor=UTF-8"
+#: TRAIdioma juegoDeCaracteresParaJavaProperties
+msgid "gvSIGi18n_TRAIdioma_attr_juegoDeCaracteresParaJavaProperties_help"
+msgstr "Charset to be used to encode exported files in Java Properties format. Usually takes the value=UTF-8."
+
+#. Default: "Juego de caracteres para exportacion como GNU gettext PO"
+#: TRAIdioma juegoDeCaracteresParaPO
+msgid "gvSIGi18n_TRAIdioma_attr_juegoDeCaracteresParaPO_label"
+msgstr "Char set for export as PO files"
+
+#. Default: "Juego de caracteres en que se han de codificar los ficheros exportados en formato GNUgettet PO.  Usualmente toma el valor=UTF-8."
+#: TRAIdioma juegoDeCaracteresParaPO
+msgid "gvSIGi18n_TRAIdioma_attr_juegoDeCaracteresParaPO_help"
+msgstr "Charset to be used to encode exported files in GNUgettext PO format. Usually takes the value=UTF-8"
+
+#. Default: "Nombre en ingles"
+#: TRAIdioma nombreEnInglesDeIdioma
+msgid "gvSIGi18n_TRAIdioma_attr_nombreEnInglesDeIdioma_label"
+msgstr "English name"
+
+#. Default: "Nombre del idioma, expresado en idioma ingles."
+#: TRAIdioma nombreEnInglesDeIdioma
+msgid "gvSIGi18n_TRAIdioma_attr_nombreEnInglesDeIdioma_help"
+msgstr "Language name, expressed in english language."
+
+#. Default: "Nombre propio del idioma"
+#: TRAIdioma nombreNativoDeIdioma
+msgid "gvSIGi18n_TRAIdioma_attr_nombreNativoDeIdioma_label"
+msgstr "Native language name"
+
+#. Default: "Nombre del idioma expresado en su idioma."
+#: TRAIdioma nombreNativoDeIdioma
+msgid "gvSIGi18n_TRAIdioma_attr_nombreNativoDeIdioma_help"
+msgstr "Language name expressed in the native language."
+
+#. Default: "Permite ver Idioma"
+#: TRAIdioma permiteLeer
+msgid "gvSIGi18n_TRAIdioma_attr_permiteLeer_label"
+msgstr "Allow to see Language"
+
+#. Default: "Si Verdadero, entonces los usuarios puede ver el idioma. Puede ser Falso durante  procesos de importacion largos, o por indicacion del coordinador."
+#: TRAIdioma permiteLeer
+msgid "gvSIGi18n_TRAIdioma_attr_permiteLeer_help"
+msgstr "If True, then the users may see  the language. It may be False during long import processes or by coordinator request."
+
+#. Default: "Permite Modificar Idioma"
+#: TRAIdioma permiteModificar
+msgid "gvSIGi18n_TRAIdioma_attr_permiteModificar_label"
+msgstr "Allow Changes to Language"
+
+#. Default: "Si Verdadero, entonces el usuario puede realizar los cambios a los que permite sus roles en el idioma. Si Falso, entonces no puede realizar cambios en el idioma,  Puede ocurrir durante  procesos de importacion largos, o por indicacion del coordinador."
+#: TRAIdioma permiteModificar
+msgid "gvSIGi18n_TRAIdioma_attr_permiteModificar_help"
+msgstr "If True, then the user may perform  the changes authorized by the roles held on the language. If False, then the user can not make changes to the language. This may happen during long import processes or coordinator request."
+
+#. Default: "Importacion"
+#: TRAImportacion
+msgid "gvSIGi18n_TRAImportacion_label"
+msgstr "Import process"
+
+#. Default: "Instancia de Proceso de Importacion, a partir de un fichero de entrada."
+#: TRAImportacion
+msgid "gvSIGi18n_TRAImportacion_help"
+msgstr "Import process instance, from a given input archive."
+
+#. Default: "Identificador del Build"
+#: TRAImportacion buildDelProducto
+msgid "gvSIGi18n_TRAImportacion_attr_buildDelProducto_label"
+msgstr "Product Build identifier"
+
+#. Default: "Identificador del Build del Producto que se importa en este proceso."
+#: TRAImportacion buildDelProducto
+msgid "gvSIGi18n_TRAImportacion_attr_buildDelProducto_help"
+msgstr "Product Build identifier imported in this process."
+
+#. Default: "Codigo de Idioma por defecto"
+#: TRAImportacion codigoIdiomaPorDefecto
+msgid "gvSIGi18n_TRAImportacion_attr_codigoIdiomaPorDefecto_label"
+msgstr "Default Language Code"
+
+#. Default: "Codigo del lenguage para importar plantillas de traduccion GNUgettext .POT, o para Java .properties que no tienen el codigo del lenguage como sufijo en el nombre del fichero."
+#: TRAImportacion codigoIdiomaPorDefecto
+msgid "gvSIGi18n_TRAImportacion_attr_codigoIdiomaPorDefecto_help"
+msgstr "Code of the language to import GNU gettext .POT translation templates whose Java .properties import or export files do not contain the language code in the file name as a suffix."
+
+#. Default: "Comenzar cuando acabe el anterior"
+#: TRAImportacion comenzarAlFinalizarAnterior
+msgid "gvSIGi18n_TRAImportacion_attr_comenzarAlFinalizarAnterior_label"
+msgstr "Launch when previous one terminates"
+
+#. Default: "Si Verdadero, y el proceso aun no ha sido ejecutado, el proceso sera ejecutado cuando acaba de ejecutarse el anterior"
+#: TRAImportacion comenzarAlFinalizarAnterior
+msgid "gvSIGi18n_TRAImportacion_attr_comenzarAlFinalizarAnterior_help"
+msgstr "If True, and the process has not been executed, then the process shall be executed when the previous one terminates."
+
+#. Default: "Debe crear Traducciones que falten"
+#: TRAImportacion debeCrearTraduccionesQueFaltan
+msgid "gvSIGi18n_TRAImportacion_attr_debeCrearTraduccionesQueFaltan_label"
+msgstr "Must create missing Translations"
+
+#. Default: "Crear las Traducciones que faltan para las cadenas e idiomas existentes, quiza por interrupcion indeseada de procesos de importacion anteriores."
+#: TRAImportacion debeCrearTraduccionesQueFaltan
+msgid "gvSIGi18n_TRAImportacion_attr_debeCrearTraduccionesQueFaltan_help"
+msgstr "Create missing Translations in the existing strings and languages, may be because of unintended interruption of past import processes."
+
+#. Default: "Estado del Proceso"
+#: TRAImportacion estadoProceso
+msgid "gvSIGi18n_TRAImportacion_attr_estadoProceso_label"
+msgstr "Process State"
+
+#. Default: "El estado del proceso de importacion, como activo o inactivo."
+#: TRAImportacion estadoProceso
+msgid "gvSIGi18n_TRAImportacion_attr_estadoProceso_help"
+msgstr "Import process state, as active or inactive."
+
+#. Default: "Inactivo"
+#: TRAImportacion estadoProceso
+msgid "gvSIGi18n_TRAImportacion_attr_estadoProceso_option_Inactivo"
+msgstr "Inactive"
+
+#. Default: "Activo"
+#: TRAImportacion estadoProceso
+msgid "gvSIGi18n_TRAImportacion_attr_estadoProceso_option_Activo"
+msgstr "Active"
+
+#. Default: "Fecha y Hora de Comienzo"
+#: TRAImportacion fechaComienzoProceso
+msgid "gvSIGi18n_TRAImportacion_attr_fechaComienzoProceso_label"
+msgstr "Startup Date and time"
+
+#. Default: "Fecha y hora en que se comenzo a ejecutar el proceso de importacion."
+#: TRAImportacion fechaComienzoProceso
+msgid "gvSIGi18n_TRAImportacion_attr_fechaComienzoProceso_help"
+msgstr "Date and time when the import process started."
+
+#. Default: "Fecha y Hora de Fin"
+#: TRAImportacion fechaFinProceso
+msgid "gvSIGi18n_TRAImportacion_attr_fechaFinProceso_label"
+msgstr "End Date and Time"
+
+#. Default: "Fecha y hora en que termino el proceso de importacion."
+#: TRAImportacion fechaFinProceso
+msgid "gvSIGi18n_TRAImportacion_attr_fechaFinProceso_help"
+msgstr "Date and Time when the import process terminated."
+
+#. Default: "Fecha y Hora del ultimo informe de Progreso"
+#: TRAImportacion fechaUltimoInformeProgreso
+msgid "gvSIGi18n_TRAImportacion_attr_fechaUltimoInformeProgreso_label"
+msgstr "Last Progress report Date and time"
+
+#. Default: "Fecha y hora en que se refreco al ultimo informe de progreso."
+#: TRAImportacion fechaUltimoInformeProgreso
+msgid "gvSIGi18n_TRAImportacion_attr_fechaUltimoInformeProgreso_help"
+msgstr "Date and time when last progress report was updated."
+
+#. Default: "Comenzo a ejecutar"
+#: TRAImportacion haComenzado
+msgid "gvSIGi18n_TRAImportacion_attr_haComenzado_label"
+msgstr "Begun execution"
+
+#. Default: "Si el proceso de importacion ha comenzado alguna vez a ejecutarse."
+#: TRAImportacion haComenzado
+msgid "gvSIGi18n_TRAImportacion_attr_haComenzado_help"
+msgstr "Whether the import process has ever started to execute."
+
+#. Default: "Exito?"
+#: TRAImportacion haCompletadoConExito
+msgid "gvSIGi18n_TRAImportacion_attr_haCompletadoConExito_label"
+msgstr "Success?"
+
+#. Default: "Si el proceso de importacion ha completado exitosamente su ejecucion."
+#: TRAImportacion haCompletadoConExito
+msgid "gvSIGi18n_TRAImportacion_attr_haCompletadoConExito_help"
+msgstr "Whether the import process has sucessfully completed execution."
+
+#. Default: "Contenidos Importacion"
+#: TRAImportacion informeContenidosImportacion
+msgid "gvSIGi18n_TRAImportacion_attr_informeContenidosImportacion_label"
+msgstr "Import contents"
+
+#. Default: "Informe de lenguajes, cadenas y traducciones en los archivos de intercambio de traducciones."
+#: TRAImportacion informeContenidosImportacion
+msgid "gvSIGi18n_TRAImportacion_attr_informeContenidosImportacion_help"
+msgstr "Report with languages, strings and translations in the translations interchange archives."
+
+#. Default: "Informe Antes de la Importacion."
+#: TRAImportacion informeEstadoAntes
+msgid "gvSIGi18n_TRAImportacion_attr_informeEstadoAntes_label"
+msgstr "Report Before Import"
+
+#. Default: "Informe del estado de traduccion, antes de la Importacion."
+#: TRAImportacion informeEstadoAntes
+msgid "gvSIGi18n_TRAImportacion_attr_informeEstadoAntes_help"
+msgstr "Report or the translation status, before the export operation."
+
+#. Default: "Informe Despues de Importar"
+#: TRAImportacion informeEstadoDespues
+msgid "gvSIGi18n_TRAImportacion_attr_informeEstadoDespues_label"
+msgstr "Report After Import"
+
+#. Default: "Informe del estado de traduccion, despues de la importacion."
+#: TRAImportacion informeEstadoDespues
+msgid "gvSIGi18n_TRAImportacion_attr_informeEstadoDespues_help"
+msgstr "Report or the translation status, after the import operation."
+
+#. Default: "Informe por Idiomas Antes de la Importacion."
+#: TRAImportacion informeEstadoIdiomasAntes
+msgid "gvSIGi18n_TRAImportacion_attr_informeEstadoIdiomasAntes_label"
+msgstr "Languages Report Before Import"
+
+#. Default: "Informe del estado de traduccion por idiomas, antes de la Importacion."
+#: TRAImportacion informeEstadoIdiomasAntes
+msgid "gvSIGi18n_TRAImportacion_attr_informeEstadoIdiomasAntes_help"
+msgstr "Report or the translation status, summarized by languages, before the export operation."
+
+#. Default: "Informe por Idiomas Despues de Importar"
+#: TRAImportacion informeEstadoIdiomasDespues
+msgid "gvSIGi18n_TRAImportacion_attr_informeEstadoIdiomasDespues_label"
+msgstr "Languages Report After Import"
+
+#. Default: "Informe del estado de traduccion por idiomas, despues de la importacion."
+#: TRAImportacion informeEstadoIdiomasDespues
+msgid "gvSIGi18n_TRAImportacion_attr_informeEstadoIdiomasDespues_help"
+msgstr "Report or the translation status, summarized by languages, after the import operation."
+
+#. Default: "Informe por Modulos e Idiomas Antes de Importar"
+#: TRAImportacion informeEstadoModulosAntes
+msgid "gvSIGi18n_TRAImportacion_attr_informeEstadoModulosAntes_label"
+msgstr "Modules and Languages Report Before Import"
+
+#. Default: "Informe del estado de traduccion por modulos y detallado por  idiomas, antes de la exportacion."
+#: TRAImportacion informeEstadoModulosAntes
+msgid "gvSIGi18n_TRAImportacion_attr_informeEstadoModulosAntes_help"
+msgstr "Report or the translation status, summarized by modules and detailed by languages, before the import operation."
+
+#. Default: "Informe por Modulos e Idiomas Despues de Importar"
+#: TRAImportacion informeEstadoModulosDespues
+msgid "gvSIGi18n_TRAImportacion_attr_informeEstadoModulosDespues_label"
+msgstr "Modules and Languages Report After Import"
+
+#. Default: "Informe del estado de traduccion por modulos y detallado por  idiomas, despues de la importacion."
+#: TRAImportacion informeEstadoModulosDespues
+msgid "gvSIGi18n_TRAImportacion_attr_informeEstadoModulosDespues_help"
+msgstr "Report or the translation status, summarized by modules and detailed by languages, after the import operation."
+
+#. Default: "Informe de Excepcion"
+#: TRAImportacion informeExcepcion
+msgid "gvSIGi18n_TRAImportacion_attr_informeExcepcion_label"
+msgstr "Exception report"
+
+#. Default: "Cuando el proceso de importacion finaliza con una condicion de error, contiene el informe del error de la aplicacion."
+#: TRAImportacion informeExcepcion
+msgid "gvSIGi18n_TRAImportacion_attr_informeExcepcion_help"
+msgstr "When the import process terminates with an error, contains the applicacion exception report."
+
+#. Default: "Informe de Final"
+#: TRAImportacion informeFinal
+msgid "gvSIGi18n_TRAImportacion_attr_informeFinal_label"
+msgstr "Final report"
+
+#. Default: "Cuando el proceso de importacion finaliza con una condicion de error, contiene el informe de idiomas, cadenas y traducciones cargados."
+#: TRAImportacion informeFinal
+msgid "gvSIGi18n_TRAImportacion_attr_informeFinal_help"
+msgstr "When the import process terminates, contains a report about the loaded languages, strings and translations."
+
+#. Default: "Informe de Progreso"
+#: TRAImportacion informeProgreso
+msgid "gvSIGi18n_TRAImportacion_attr_informeProgreso_label"
+msgstr "Progress report"
+
+#. Default: "Cuando el proceso de importacion se esta ejecutando, informa del progreso alcanzado."
+#: TRAImportacion informeProgreso
+msgid "gvSIGi18n_TRAImportacion_attr_informeProgreso_help"
+msgstr "When the import process is executing, reports the progress made."
+
+#. Default: "Intervalo de Refresco en Minutos"
+#: TRAImportacion intervaloRefrescoEnMinutos
+msgid "gvSIGi18n_TRAImportacion_attr_intervaloRefrescoEnMinutos_label"
+msgstr "Refresh Interval in Minutes"
+
+#. Default: "Intervalo de tiempo en minutos tras las que se requiere que se actualize el estado e informe de progreso."
+#: TRAImportacion intervaloRefrescoEnMinutos
+msgid "gvSIGi18n_TRAImportacion_attr_intervaloRefrescoEnMinutos_help"
+msgstr "Time interval in minutes after which it is required to update the progress state and report."
+
+#. Default: "Intervalo de Refresco en Numero de Escrituras"
+#: TRAImportacion intervaloRefrescoEnNumeroEscrituras
+msgid "gvSIGi18n_TRAImportacion_attr_intervaloRefrescoEnNumeroEscrituras_label"
+msgstr "Refresh Interval in number of Writes"
+
+#. Default: "Numero de escrituras de cadenas o traducciones tras las que se requiere que se actualize el estado e informe de progreso."
+#: TRAImportacion intervaloRefrescoEnNumeroEscrituras
+msgid "gvSIGi18n_TRAImportacion_attr_intervaloRefrescoEnNumeroEscrituras_help"
+msgstr "Number of string or translation writes after which it is required to update the progress state and report."
+
+#. Default: "Max #  lineas .PO"
+#: TRAImportacion maximoLineasAImportarGNUgettextPO
+msgid "gvSIGi18n_TRAImportacion_attr_maximoLineasAImportarGNUgettextPO_label"
+msgstr "Max #  lines .PO"
+
+#. Default: "Limita el numero de lineas a importar de ficheros GNU gettext .PO para evitar procesos de importacion demasiado largos, quiza por errores en los archivos de entrada."
+#: TRAImportacion maximoLineasAImportarGNUgettextPO
+msgid "gvSIGi18n_TRAImportacion_attr_maximoLineasAImportarGNUgettextPO_help"
+msgstr "Limits the number of lines to import from GNUgettext .PO files, to avoid excessively long import processes, may be because of errors in the input files."
+
+#. Default: "Max #  lineas .properties"
+#: TRAImportacion maximoLineasAImportarJavaProperties
+msgid "gvSIGi18n_TRAImportacion_attr_maximoLineasAImportarJavaProperties_label"
+msgstr "Max #  lines .properties"
+
+#. Default: "Limita el numero de lineas a importar de ficheros Java .properties para evitar procesos de importacion demasiado largos, quiza por errores en los archivos de entrada."
+#: TRAImportacion maximoLineasAImportarJavaProperties
+msgid "gvSIGi18n_TRAImportacion_attr_maximoLineasAImportarJavaProperties_help"
+msgstr "Limits the number of lines to import from Java .properties files, to avoid excessively long import processes, may be because of errors in the input files."
+
+#. Default: "Nombre de Modulo por defecto"
+#: TRAImportacion nombreModuloPorDefecto
+msgid "gvSIGi18n_TRAImportacion_attr_nombreModuloPorDefecto_label"
+msgstr "Default Module Name"
+
+#. Default: "Nombre del modulo a utilizar cuando no se puede obtener, bien del nombre del dominio en ficheros GNU gettext .PO, o de la estructura de carpetas si el contenido a importar es una archivo .jar o .zip."
+#: TRAImportacion nombreModuloPorDefecto
+msgid "gvSIGi18n_TRAImportacion_attr_nombreModuloPorDefecto_help"
+msgstr "Name of the Module to use when no module name can be obtained, whether from domain name in the GNUgettext .POfile header, or from the folder structure if the uploaded content is a .jar or .zip archive file."
+
+#. Default: "Usuario Importador"
+#: TRAImportacion usuarioImportador
+msgid "gvSIGi18n_TRAImportacion_attr_usuarioImportador_label"
+msgstr "Importer User"
+
+#. Default: "Usuario que ha realizado la importacion."
+#: TRAImportacion usuarioImportador
+msgid "gvSIGi18n_TRAImportacion_attr_usuarioImportador_help"
+msgstr "User who performed the import operation."
+
+#. Default: "Version del producto"
+#: TRAImportacion versionDelProducto
+msgid "gvSIGi18n_TRAImportacion_attr_versionDelProducto_label"
+msgstr "Product Version"
+
+#. Default: "Version del Producto que se importa en este proceso."
+#: TRAImportacion versionDelProducto
+msgid "gvSIGi18n_TRAImportacion_attr_versionDelProducto_help"
+msgstr "Product Version imported in this process."
+
+#. Default: "Contenido Intercambio Traducciones"
+#: TRAImportacion contenido
+msgid "gvSIGi18n_TRAImportacion_contents_contenido_label"
+msgstr "Translations Interchange Contents"
+
+#. Default: "Contiene cadenas y traducciones contribuidas por un usuario, para su importacion."
+#: TRAImportacion contenido
+msgid "gvSIGi18n_TRAImportacion_contents_contenido_help"
+msgstr "Contains strings and translations contributed by a user, and to be imported."
+
+#. Default: "Informes Estado Antes y Despues"
+#: TRAImportacion informesEstado
+msgid "gvSIGi18n_TRAImportacion_contents_informesEstado_label"
+msgstr "Status Reports Before and After"
+
+#. Default: "Informes del Estado del Catalogo, sus Idiomas, Modulos, Cadenas y Traducciones, al comenzar el proceso de importacion, y tras terminar el proceso de importacion."
+#: TRAImportacion informesEstado
+msgid "gvSIGi18n_TRAImportacion_contents_informesEstado_help"
+msgstr "Catalog Status Reports, its Languages, Modules, Strings and Translations, at the beginning of the import process, and after termination of the process."
+
+#. Default: "Informe de Estado"
+#: TRAInforme
+msgid "gvSIGi18n_TRAInforme_label"
+msgstr "Status Report"
+
+#. Default: "Informe del estado en un momento determinado de Traducciones a Idiomas."
+#: TRAInforme
+msgid "gvSIGi18n_TRAInforme_help"
+msgstr "Status at the Report time, of Translations to  Languages."
+
+#. Default: "Es Auto-Actualizable"
+#: TRAInforme esAutoActualizable
+msgid "gvSIGi18n_TRAInforme_attr_esAutoActualizable_label"
+msgstr "Is Auto-Updated"
+
+#. Default: "Si el informe se actualiza automaticamente bajo demanda, pero no mas frecuentemente que cierto intervalo de tiempo."
+#: TRAInforme esAutoActualizable
+msgid "gvSIGi18n_TRAInforme_attr_esAutoActualizable_help"
+msgstr "Whether the report is automatically updated upon demand (but not more frequently than a certain time period)."
+
+#. Default: "Estado del Proceso"
+#: TRAInforme estadoProceso
+msgid "gvSIGi18n_TRAInforme_attr_estadoProceso_label"
+msgstr "Process State"
+
+#. Default: "InactivoEl estado del proceso de importacion, como activo o inactivo."
+#: TRAInforme estadoProceso
+msgid "gvSIGi18n_TRAInforme_attr_estadoProceso_help"
+msgstr "Import process state, as active or inactive."
+
+#. Default: "Inactivo"
+#: TRAInforme estadoProceso
+msgid "gvSIGi18n_TRAInforme_attr_estadoProceso_option_Inactivo"
+msgstr "Inactive"
+
+#. Default: "Activo"
+#: TRAInforme estadoProceso
+msgid "gvSIGi18n_TRAInforme_attr_estadoProceso_option_Activo"
+msgstr "Active"
+
+#. Default: "Fecha y Hora de Comienzo"
+#: TRAInforme fechaComienzoProceso
+msgid "gvSIGi18n_TRAInforme_attr_fechaComienzoProceso_label"
+msgstr "Startup Date and time"
+
+#. Default: "Fecha y hora en que se comenzo a elaborar el informe de estado."
+#: TRAInforme fechaComienzoProceso
+msgid "gvSIGi18n_TRAInforme_attr_fechaComienzoProceso_help"
+msgstr "Date and time when the status report ellaboration started."
+
+#. Default: "Fecha y Hora de Fin"
+#: TRAInforme fechaFinProceso
+msgid "gvSIGi18n_TRAInforme_attr_fechaFinProceso_label"
+msgstr "End Date and Time"
+
+#. Default: "Fecha y hora en que termino la elaboracion del informe de estado."
+#: TRAInforme fechaFinProceso
+msgid "gvSIGi18n_TRAInforme_attr_fechaFinProceso_help"
+msgstr "Date and Time when the ellaboration of the status report was terminated."
+
+#. Default: "Comenzo a ejecutar"
+#: TRAInforme haComenzado
+msgid "gvSIGi18n_TRAInforme_attr_haComenzado_label"
+msgstr "Begun execution"
+
+#. Default: "Si el proceso de importacion ha comenzado alguna vez a ejecutarse."
+#: TRAInforme haComenzado
+msgid "gvSIGi18n_TRAInforme_attr_haComenzado_help"
+msgstr "Whether the import process has ever started to execute."
+
+#. Default: "Exito?"
+#: TRAInforme haCompletadoConExito
+msgid "gvSIGi18n_TRAInforme_attr_haCompletadoConExito_label"
+msgstr "Success?"
+
+#. Default: "Si el proceso de importacion ha completado exitosamente su ejecucion."
+#: TRAInforme haCompletadoConExito
+msgid "gvSIGi18n_TRAInforme_attr_haCompletadoConExito_help"
+msgstr "Whether the import process has sucessfully completed execution."
+
+#. Default: "Informe de Excepcion"
+#: TRAInforme informeExcepcion
+msgid "gvSIGi18n_TRAInforme_attr_informeExcepcion_label"
+msgstr "Exception report"
+
+#. Default: "Cuando la elaboracion del informe de estado finaliza con una condicion de error, contiene el informe del error de la aplicacion."
+#: TRAInforme informeExcepcion
+msgid "gvSIGi18n_TRAInforme_attr_informeExcepcion_help"
+msgstr "When the ellaboration of the status report terminates with an error, contains the applicacion exception report."
+
+#. Default: "Excepcion en Informe Idiomas"
+#: TRAInforme informeExcepcionIdiomas
+msgid "gvSIGi18n_TRAInforme_attr_informeExcepcionIdiomas_label"
+msgstr "Exception report"
+
+#. Default: "Cuando la elaboracion del informe de estado por idiomas finaliza con una condicion de error, contiene el informe del error de la aplicacion."
+#: TRAInforme informeExcepcionIdiomas
+msgid "gvSIGi18n_TRAInforme_attr_informeExcepcionIdiomas_help"
+msgstr "When the ellaboration of the Languages status report terminates with an error, contains the applicacion exception report."
+
+#. Default: "Excepcion en Informe por Modulos"
+#: TRAInforme informeExcepcionModulos
+msgid "gvSIGi18n_TRAInforme_attr_informeExcepcionModulos_label"
+msgstr "Exception report"
+
+#. Default: "Cuando la elaboracion del informe de estado por modulos finaliza con una condicion de error, contiene el informe del error de la aplicacion."
+#: TRAInforme informeExcepcionModulos
+msgid "gvSIGi18n_TRAInforme_attr_informeExcepcionModulos_help"
+msgstr "When the ellaboration of the Modules status report terminates with an error, contains the applicacion exception report."
+
+#. Default: "Informe por Idiomas"
+#: TRAInforme informeIdiomas
+msgid "gvSIGi18n_TRAInforme_attr_informeIdiomas_label"
+msgstr "Languages Report"
+
+#. Default: "Informe del estado de traduccion por idiomas."
+#: TRAInforme informeIdiomas
+msgid "gvSIGi18n_TRAInforme_attr_informeIdiomas_help"
+msgstr "Report or the translation status, summarized by languages."
+
+#. Default: "Informe por Modulos e Idiomas"
+#: TRAInforme informeModulos
+msgid "gvSIGi18n_TRAInforme_attr_informeModulos_label"
+msgstr "Modules and Languages Report"
+
+#. Default: "Informe del estado de traduccion por modulos y detallado por  idiomas."
+#: TRAInforme informeModulos
+msgid "gvSIGi18n_TRAInforme_attr_informeModulos_help"
+msgstr "Report or the translation status, summarized by modules and detailed by languages."
+
+#. Default: "Intervalo minimo de actualizacion en Minutos"
+#: TRAInforme minimoIntervaloActualizacionEnMinutos
+msgid "gvSIGi18n_TRAInforme_attr_minimoIntervaloActualizacionEnMinutos_label"
+msgstr "Minimum Update Interval in Minutes"
+
+#. Default: "Si es Auto-Actualizable, es el Intervalo minimo de tiempo en minutos a esperar antes de actualizar automaticamente el informe. Si el valor es 0, el informe se actualizara en todas las solilcitudes de los usuarios, posiblemente sobrecargando el eistema."
+#: TRAInforme minimoIntervaloActualizacionEnMinutos
+msgid "gvSIGi18n_TRAInforme_attr_minimoIntervaloActualizacionEnMinutos_help"
+msgstr "If the Report is set to be Auto-Updated, Minimum Time interval in minutes to wait before automatically updating the report. If 0, the report will be updated upon demand at every user request, possibly over-loading the system."
+
+#. Default: "Usuario Informador"
+#: TRAInforme usuarioInformador
+msgid "gvSIGi18n_TRAInforme_attr_usuarioInformador_label"
+msgstr "Reporting User"
+
+#. Default: "Usuario que ha solicitado creado el Informe."
+#: TRAInforme usuarioInformador
+msgid "gvSIGi18n_TRAInforme_attr_usuarioInformador_help"
+msgstr "User who requested the ellaboration of the report."
+
+#. Default: "Modulo"
+#: TRAModulo
+msgid "gvSIGi18n_TRAModulo_label"
+msgstr "Module"
+
+#. Default: "Uno de los Modulos del producto a traducir."
+#: TRAModulo
+msgid "gvSIGi18n_TRAModulo_help"
+msgstr "One of the Modules in the product to translate."
+
+#. Default: "Dominio"
+#: TRAModulo dominio
+msgid "gvSIGi18n_TRAModulo_attr_dominio_label"
+msgstr "Domain"
+
+#. Default: "Dato que aparece en los ficheros de exportacion de tipo GNUgettext PO, para identificar la aplicacion o modulo a que se aplican las traducciones."
+#: TRAModulo dominio
+msgid "gvSIGi18n_TRAModulo_attr_dominio_help"
+msgstr "Iinformation that appears in the exported files of GNUgettext PO format, to indicate the application or module to which the translations apply."
+
+#. Default: "Es Modulo Principal"
+#: TRAModulo esModuloPrincipal
+msgid "gvSIGi18n_TRAModulo_attr_esModuloPrincipal_label"
+msgstr "Is Main Module"
+
+#. Default: "Si las traducciones en este Modulo pueden resolver las cadenas de mismo simbolo de otros modulos."
+#: TRAModulo esModuloPrincipal
+msgid "gvSIGi18n_TRAModulo_attr_esModuloPrincipal_help"
+msgstr "Whether the translations in this Module may resolve the strings of same symbol in other modules."
+
+#. Default: "Permite ver Modulo"
+#: TRAModulo permiteLeer
+msgid "gvSIGi18n_TRAModulo_attr_permiteLeer_label"
+msgstr "Allow to see Module"
+
+#. Default: "Si Verdadero, entonces el usuario puede ver el modulo. Si Falso, entonces no puede ver el modulo. Puede ocurrir durante  procesos de importacion largos, o por indicacion del coordinador."
+#: TRAModulo permiteLeer
+msgid "gvSIGi18n_TRAModulo_attr_permiteLeer_help"
+msgstr "If True, then the user may see  the module. If False, then the user can not see  the module. This may happen during long import processes or by coordinator request."
+
+#. Default: "Permite Modificar Modulo"
+#: TRAModulo permiteModificar
+msgid "gvSIGi18n_TRAModulo_attr_permiteModificar_label"
+msgstr "Allow Changes to Module"
+
+#. Default: "Si Verdadero, entonces el usuario puede realizar los cambios a los que permite sus roles en el modulo. Si Falso, entonces no puede realizar cambios en el modulo. Puede ocurrir durante  procesos de importacion largos, o por indicacion del coordinador."
+#: TRAModulo permiteModificar
+msgid "gvSIGi18n_TRAModulo_attr_permiteModificar_help"
+msgstr "If True, then the user may perform  the changes authorized by the roles held on the module. If False, then the user can not make changes to the module. This may happen during long import processe."
+
+#. Default: "Solicitud Creacion Cadena"
+#: TRASolicitudCadena
+msgid "gvSIGi18n_TRASolicitudCadena_label"
+msgstr "String creation request"
+
+#. Default: "Una solicitud para crear una nueva cadena del producto a traducir, identificada por su simbolo, y opcionalmente con traducciones al idioma principal e idioma de referencia."
+#: TRASolicitudCadena
+msgid "gvSIGi18n_TRASolicitudCadena_help"
+msgstr "A request to create a new string to translate, identified by a string symbol, and optionally with translations into the main and reference language"
+
+#. Default: "Traduccion al Idioma Principal"
+#: TRASolicitudCadena cadenaTraducidaAIdiomaPrincipal
+msgid "gvSIGi18n_TRASolicitudCadena_attr_cadenaTraducidaAIdiomaPrincipal_label"
+msgstr "Translation into the main language"
+
+#. Default: "Cadena traducida al Idioma principal, suministrada por el desarrollador."
+#: TRASolicitudCadena cadenaTraducidaAIdiomaPrincipal
+msgid "gvSIGi18n_TRASolicitudCadena_attr_cadenaTraducidaAIdiomaPrincipal_help"
+msgstr "String translated to the main Language, supplied by the developer."
+
+#. Default: "Traduccion al idioma de referencia"
+#: TRASolicitudCadena cadenaTraducidaAIdiomaReferencia
+msgid "gvSIGi18n_TRASolicitudCadena_attr_cadenaTraducidaAIdiomaReferencia_label"
+msgstr "Translation into the reference language"
+
+#. Default: "Cadena traducida al Idioma de referencia, suministrada por el desarrollador."
+#: TRASolicitudCadena cadenaTraducidaAIdiomaReferencia
+msgid "gvSIGi18n_TRASolicitudCadena_attr_cadenaTraducidaAIdiomaReferencia_help"
+msgstr "String translated to the reference Language, supplied by the developer."
+
+#. Default: "Codigo de Idioma Principal"
+#: TRASolicitudCadena codigoIdiomaPrincipal
+msgid "gvSIGi18n_TRASolicitudCadena_attr_codigoIdiomaPrincipal_label"
+msgstr "Main Language code"
+
+#. Default: "Codigo de Idioma Principal para el que el desarrollador proporciona una traducción."
+#: TRASolicitudCadena codigoIdiomaPrincipal
+msgid "gvSIGi18n_TRASolicitudCadena_attr_codigoIdiomaPrincipal_help"
+msgstr "Main Language code for which the developer supplies a translation."
+
+#. Default: "Codigo de Idioma de referencia"
+#: TRASolicitudCadena codigoIdiomaReferencia
+msgid "gvSIGi18n_TRASolicitudCadena_attr_codigoIdiomaReferencia_label"
+msgstr "Reference Language code"
+
+#. Default: "Codigo de Idioma de referencia para el que el desarrollador proporciona una traducción."
+#: TRASolicitudCadena codigoIdiomaReferencia
+msgid "gvSIGi18n_TRASolicitudCadena_attr_codigoIdiomaReferencia_help"
+msgstr "Reference Language code for which the developer supplies a translation."
+
+#. Default: "Estado de la Solicitud de Cadena"
+#: TRASolicitudCadena estadoSolicitudCadena
+msgid "gvSIGi18n_TRASolicitudCadena_attr_estadoSolicitudCadena_label"
+msgstr "String Request Status"
+
+#. Default: "Estado de la Solicitud de Cadena, como Dendiente, Descartada o Creada."
+#: TRASolicitudCadena estadoSolicitudCadena
+msgid "gvSIGi18n_TRASolicitudCadena_attr_estadoSolicitudCadena_help"
+msgstr "String Request Status as Pending, Discarded, or Created."
+
+#. Default: "Pendiente"
+#: TRASolicitudCadena estadoSolicitudCadena
+msgid "gvSIGi18n_TRASolicitudCadena_attr_estadoSolicitudCadena_option_Pendiente"
+msgstr "Pending"
+
+#. Default: "Descartada"
+#: TRASolicitudCadena estadoSolicitudCadena
+msgid "gvSIGi18n_TRASolicitudCadena_attr_estadoSolicitudCadena_option_Descartada"
+msgstr "Discarded"
+
+#. Default: "Creada"
+#: TRASolicitudCadena estadoSolicitudCadena
+msgid "gvSIGi18n_TRASolicitudCadena_attr_estadoSolicitudCadena_option_Creada"
+msgstr "Created"
+
+#. Default: "Fecha de Cancelacion"
+#: TRASolicitudCadena fechaCancelacionTextual
+msgid "gvSIGi18n_TRASolicitudCadena_attr_fechaCancelacionTextual_label"
+msgstr "Cancelation Date"
+
+#. Default: "La fecha en que la cadena fue cancelada, de forma que no vuelva a ser considerada para su traduccion."
+#: TRASolicitudCadena fechaCancelacionTextual
+msgid "gvSIGi18n_TRASolicitudCadena_attr_fechaCancelacionTextual_help"
+msgstr "The date when the String was cancelled, such that the string won't be considered again for translation."
+
+#. Default: "Fecha de Creacion como texto"
+#: TRASolicitudCadena fechaCreacionTextual
+msgid "gvSIGi18n_TRASolicitudCadena_attr_fechaCreacionTextual_label"
+msgstr "Creation Date as text"
+
+#. Default: "Representacion textual de la fecha en que se creo la cadena a traducir."
+#: TRASolicitudCadena fechaCreacionTextual
+msgid "gvSIGi18n_TRASolicitudCadena_attr_fechaCreacionTextual_help"
+msgstr "Textual representation of the date when the String was first created."
+
+#. Default: "Modulos"
+#: TRASolicitudCadena nombresModulos
+msgid "gvSIGi18n_TRASolicitudCadena_attr_nombresModulos_label"
+msgstr "Modules"
+
+#. Default: "Nombres de los Modulos en los que se usa esta cadena."
+#: TRASolicitudCadena nombresModulos
+msgid "gvSIGi18n_TRASolicitudCadena_attr_nombresModulos_help"
+msgstr "Names of the Modules using this String."
+
+#. Default: "Referencias a fuentes"
+#: TRASolicitudCadena referenciasFuentes
+msgid "gvSIGi18n_TRASolicitudCadena_attr_referenciasFuentes_label"
+msgstr "Source references"
+
+#. Default: "Referencias a codigo fuente donde aparece esta cadena."
+#: TRASolicitudCadena referenciasFuentes
+msgid "gvSIGi18n_TRASolicitudCadena_attr_referenciasFuentes_help"
+msgstr "References to source code where the string is used."
+
+#. Default: "Simbolo"
+#: TRASolicitudCadena simbolo
+msgid "gvSIGi18n_TRASolicitudCadena_attr_simbolo_label"
+msgstr "Symbol"
+
+#. Default: "El simbolo que identifica la Cadena que se solicita crear."
+#: TRASolicitudCadena simbolo
+msgid "gvSIGi18n_TRASolicitudCadena_attr_simbolo_help"
+msgstr "The symbol identifying the string requested to be created,"
+
+#. Default: "Usuario Creador"
+#: TRASolicitudCadena usuarioCreador
+msgid "gvSIGi18n_TRASolicitudCadena_attr_usuarioCreador_label"
+msgstr "Creator user"
+
+#. Default: "Usuario que creo o importo la cadena a traducir."
+#: TRASolicitudCadena usuarioCreador
+msgid "gvSIGi18n_TRASolicitudCadena_attr_usuarioCreador_help"
+msgstr "User who created or imported the string to be translated."
+
+#. Default: "Traduccion"
+#: TRATraduccion
+msgid "gvSIGi18n_TRATraduccion_label"
+msgstr "Translation"
+
+#. Default: "Traduccion de una de las Cadenas a uno de los Idiomas."
+#: TRATraduccion
+msgid "gvSIGi18n_TRATraduccion_help"
+msgstr "Translation of one of the strings into one of the languages."
+
+#. Default: "Traduccion"
+#: TRATraduccion cadenaTraducida
+msgid "gvSIGi18n_TRATraduccion_attr_cadenaTraducida_label"
+msgstr "Translation"
+
+#. Default: "Cadena traducida al Idioma."
+#: TRATraduccion cadenaTraducida
+msgid "gvSIGi18n_TRATraduccion_attr_cadenaTraducida_help"
+msgstr "String translated to the Language."
+
+#. Default: "Codigo de Idioma en gvSIG"
+#: TRATraduccion codigoIdiomaEnGvSIG
+msgid "gvSIGi18n_TRATraduccion_attr_codigoIdiomaEnGvSIG_label"
+msgstr "Language code in gvSIG"
+
+#. Default: "Codigo de Idioma en gvSIG, que soporta algunos idiomas para los que no existe (todavia) un codigo internacional."
+#: TRATraduccion codigoIdiomaEnGvSIG
+msgid "gvSIGi18n_TRATraduccion_attr_codigoIdiomaEnGvSIG_help"
+msgstr "Language code in gvSIG, as gvSIG supports some languages for which there is no international code (yet)."
+
+#. Default: "Comentario"
+#: TRATraduccion comentario
+msgid "gvSIGi18n_TRATraduccion_attr_comentario_label"
+msgstr "Comment"
+
+#. Default: "Comentarios acerca de esta traduccion."
+#: TRATraduccion comentario
+msgid "gvSIGi18n_TRATraduccion_attr_comentario_help"
+msgstr "Comments to this translation."
+
+#. Default: "Estado de la Cadena"
+#: TRATraduccion estadoCadena
+msgid "gvSIGi18n_TRATraduccion_attr_estadoCadena_label"
+msgstr "String State"
+
+#. Default: "Estado de la Cadena, como Activa o Inactiva."
+#: TRATraduccion estadoCadena
+msgid "gvSIGi18n_TRATraduccion_attr_estadoCadena_help"
+msgstr "String State, as Active or Inactive."
+
+#. Default: "Inactiva"
+#: TRATraduccion estadoCadena
+msgid "gvSIGi18n_TRATraduccion_attr_estadoCadena_option_Inactiva"
+msgstr "Inactive"
+
+#. Default: "Activa"
+#: TRATraduccion estadoCadena
+msgid "gvSIGi18n_TRATraduccion_attr_estadoCadena_option_Activa"
+msgstr "Active"
+
+#. Default: "Estado de Traduccion"
+#: TRATraduccion estadoTraduccion
+msgid "gvSIGi18n_TRATraduccion_attr_estadoTraduccion_label"
+msgstr "Translation State"
+
+#. Default: "El estado de la Traduccion, como Pendiente, Traducida, Revisada o Definitiva."
+#: TRATraduccion estadoTraduccion
+msgid "gvSIGi18n_TRATraduccion_attr_estadoTraduccion_help"
+msgstr "Translation State, as Pending, Translated, Reviewed or Definitive."
+
+#. Default: "Pendiente"
+#: TRATraduccion estadoTraduccion
+msgid "gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Pendiente"
+msgstr "Pending"
+
+#. Default: "Traducida"
+#: TRATraduccion estadoTraduccion
+msgid "gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Traducida"
+msgstr "Translated"
+
+#. Default: "Revisada"
+#: TRATraduccion estadoTraduccion
+msgid "gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Revisada"
+msgstr "Reviewed"
+
+#. Default: "Definitiva"
+#: TRATraduccion estadoTraduccion
+msgid "gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Definitiva"
+msgstr "Definitive"
+
+#. Default: "Fecha de Creacion"
+#: TRATraduccion fechaCreacionTextual
+msgid "gvSIGi18n_TRATraduccion_attr_fechaCreacionTextual_label"
+msgstr "Creation Date"
+
+#. Default: "La fecha en que la Traduccion al lenguage fue creada, bien como Traducida o como Pendiente."
+#: TRATraduccion fechaCreacionTextual
+msgid "gvSIGi18n_TRATraduccion_attr_fechaCreacionTextual_help"
+msgstr "Date when the translation into the Language was created, either in Translated or Pending state."
+
+#. Default: "Fecha Definitiva"
+#: TRATraduccion fechaDefinitivoTextual
+msgid "gvSIGi18n_TRATraduccion_attr_fechaDefinitivoTextual_label"
+msgstr "Definitive Date"
+
+#. Default: "La fecha en que la Traduccion al Idioma se bloqueo como definitiva.The date when the translation into the Language was locked as definitive."
+#: TRATraduccion fechaDefinitivoTextual
+msgid "gvSIGi18n_TRATraduccion_attr_fechaDefinitivoTextual_help"
+msgstr "fechaDefinitivoTextual"
+
+#. Default: "Fecha de Revision"
+#: TRATraduccion fechaRevisionTextual
+msgid "gvSIGi18n_TRATraduccion_attr_fechaRevisionTextual_label"
+msgstr "Review Date"
+
+#. Default: "La fecha en que reviso la Traduccion de la Cadena al Idioma."
+#: TRATraduccion fechaRevisionTextual
+msgid "gvSIGi18n_TRATraduccion_attr_fechaRevisionTextual_help"
+msgstr "The date when the String Translation to the Language was reviewed."
+
+#. Default: "Fecha de Traduccion"
+#: TRATraduccion fechaTraduccionTextual
+msgid "gvSIGi18n_TRATraduccion_attr_fechaTraduccionTextual_label"
+msgstr "Translation Date"
+
+#. Default: "La fecha en que la Cadena fue traducida al Idioma."
+#: TRATraduccion fechaTraduccionTextual
+msgid "gvSIGi18n_TRATraduccion_attr_fechaTraduccionTextual_help"
+msgstr "Date when the String was translated to the Language."
+
+#. Default: "Historia"
+#: TRATraduccion historia
+msgid "gvSIGi18n_TRATraduccion_attr_historia_label"
+msgstr "History"
+
+#. Default: "Historia de cambios a la traduccion de la cadena al idioma."
+#: TRATraduccion historia
+msgid "gvSIGi18n_TRATraduccion_attr_historia_help"
+msgstr "History of changes to the string's translation into the Language."
+
+#. Default: "Id Cadena"
+#: TRATraduccion idCadena
+msgid "gvSIGi18n_TRATraduccion_attr_idCadena_label"
+msgstr "String Id"
+
+#. Default: "El identificador (interno) de la Cadena a traducir."
+#: TRATraduccion idCadena
+msgid "gvSIGi18n_TRATraduccion_attr_idCadena_help"
+msgstr "The (internal) identifier of the String to translate."
+
+#. Default: "Indicadores para GNU gettext PO"
+#: TRATraduccion indicadoresPO
+msgid "gvSIGi18n_TRATraduccion_attr_indicadoresPO_label"
+msgstr "GNU gettext PO flags"
+
+#. Default: "Indicadores utilizados por GNU gettext PO , como fuzzy e indicacion que la cadena de una cadena de formateo de un lenguage de programacion especifico."
+#: TRATraduccion indicadoresPO
+msgid "gvSIGi18n_TRATraduccion_attr_indicadoresPO_help"
+msgstr "Flags used by GNU gettext PO, like fuzzy and indicators that the string is a formatting string in a specific programming language."
+
+#. Default: "Modulos"
+#: TRATraduccion nombresModulos
+msgid "gvSIGi18n_TRATraduccion_attr_nombresModulos_label"
+msgstr "Modules"
+
+#. Default: "Nombres de los Modulos en los que se usa esta cadena."
+#: TRATraduccion nombresModulos
+msgid "gvSIGi18n_TRATraduccion_attr_nombresModulos_help"
+msgstr "Names of the Modules using this String."
+
+#. Default: "Simbolo"
+#: TRATraduccion simbolo
+msgid "gvSIGi18n_TRATraduccion_attr_simbolo_label"
+msgstr "Symbol"
+
+#. Default: "El simbolo original que identifica la Cadena a traducir."
+#: TRATraduccion simbolo
+msgid "gvSIGi18n_TRATraduccion_attr_simbolo_help"
+msgstr "The original symbol identifying the string to be translated."
+
+#. Default: "Coordinador"
+#: TRATraduccion usuarioCoordinador
+msgid "gvSIGi18n_TRATraduccion_attr_usuarioCoordinador_label"
+msgstr "Coordinator"
+
+#. Default: "Usuario con capacidades de Coordinador que hizo Definitiva la traduccion de la cadena al idioma."
+#: TRATraduccion usuarioCoordinador
+msgid "gvSIGi18n_TRATraduccion_attr_usuarioCoordinador_help"
+msgstr "User with Coordinator capabilities, who made Definitive the string translation into the language."
+
+#. Default: "Creador"
+#: TRATraduccion usuarioCreador
+msgid "gvSIGi18n_TRATraduccion_attr_usuarioCreador_label"
+msgstr "Creator"
+
+#. Default: "Usuario que creo la traduccion al lenguage, bien en estado Traducida o Pendiente, durante un proceso de importaciono creacion de lenguage."
+#: TRATraduccion usuarioCreador
+msgid "gvSIGi18n_TRATraduccion_attr_usuarioCreador_help"
+msgstr "User who created the translation into the language in Translated or Pending state, during an import or language creation process."
+
+#. Default: "Revisor"
+#: TRATraduccion usuarioRevisor
+msgid "gvSIGi18n_TRATraduccion_attr_usuarioRevisor_label"
+msgstr "Reviewer"
+
+#. Default: "Usuario que reviso la Traduccion de la Cadena al Idioma."
+#: TRATraduccion usuarioRevisor
+msgid "gvSIGi18n_TRATraduccion_attr_usuarioRevisor_help"
+msgstr "User who reviewd the String Translation to the Language."
+
+#. Default: "Traductor"
+#: TRATraduccion usuarioTraductor
+msgid "gvSIGi18n_TRATraduccion_attr_usuarioTraductor_label"
+msgstr "Translator"
+
+#. Default: "Usuario que ha traducido la Cadena al Idioma."
+#: TRATraduccion usuarioTraductor
+msgid "gvSIGi18n_TRATraduccion_attr_usuarioTraductor_help"
+msgstr "User who translated this string into this language."

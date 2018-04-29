@@ -1,0 +1,124 @@
+<tal:block replace="nothing">
+# File: gvSIGtraduccionesFooter_view.pt
+#
+# Copyright (c) 2008, 2009 by Conselleria de Infraestructuras y Transporte de la
+# Generalidad Valenciana
+#
+# GNU General Public License (GPL)
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+#
+# Authors: 
+# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana 
+# Model Driven Development sl  Valencia (Spain) www.ModelDD.org 
+# Antonio Carrasco Valero                       carrasco@ModelDD.org
+#
+#</tal:block>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en">
+<body>
+
+
+
+<div metal:define-macro="tCredits_gvSIGtraducciones" >
+    
+    <table class="TRAsytle_Credits_Table">
+        <tbody>
+            <tr class="TRAsytle_Credits_Row">
+                <td class="TRAsytle_Credits_PropertyName_Cell">
+                    <span class="TRAsytle_Credits_PropertyName_Span">
+                        <tal:block tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_credits_ProjectTitle_PropertyName', 'Project-')" />                
+                    </span>
+                </td>
+               <td class="TRAsytle_Credits_PropertyValue_Cell">
+                    <span class="TRAsytle_Credits_PropertyValue_Span">
+                        <tal:block tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_credits_ProjectTitle_PropertyValue', 'gvSIGtraducciones-')" />                
+                    </span>
+                </td>
+             </tr>
+        </tbody>
+    </table>
+    
+    
+        <p align="center">
+            <span>
+                <font size="2"  />
+            </span>
+            <br/>
+            <span>
+                <font size="1" tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_credits_gvSIGi18n_author', 'Developed by Model Driven Development, sl and Antonio Carrasco Valero for the gvSIG project of the Conselleria de Infraestructuras y Transporte de la Generalitat Valenciana in Valencia, Spain.-')" />
+            </span>
+            <br/>
+            <span>
+                <font size="1" tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_credits_gvSIGi18n_description', 'Application for the translation of user interface strings, in the program for geographic information management gvSIG, its extensions, and the collaborative applications (like this one) used by the gvSIG project.-')" />
+            </span>
+            <br/>
+            <span>
+                <font size="1" tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_credits_gvSIG_description', 'gvSIG is a desktop application for management of geographic information, released as Free Libre Open Source Software.-')" />
+            </span>
+            <br/>
+            <span>
+                <font size="1" tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_credits_copyright', 'Copyright 2008, 2009 Conselleria de Infraestructuras y Transporte de la Generalitat Valenciana in Valencia, Spain-')" />
+            </span>
+            <br/>
+            <span>
+                <font size="1">
+                    
+                </font>
+            </span>
+        </p>
+
+<tal:block tal:replace="nothing">   
+        <tal:block tal:define="
+                        pURL_OMG                      string:www.omg.org;
+                        pURL_OMG_BusinessSpecs        string:www.omg.org/technology/documents/br_pm_spec_catalog.htm;
+                        pURL_OMG_BMM                  python:'www.omg.org/technology/documents/br_pm_spec_catalog.htm%cBMM'% 35;
+                        pURL_OMG_BPDM                 python:'www.omg.org/technology/documents/br_pm_spec_catalog.htm%cBPDM'% 35;
+                        pURL_OMG_BPMN                 python:'www.omg.org/technology/documents/br_pm_spec_catalog.htm%cBPMN'% 35;
+                        pURL_OMG_MDA                  python:'www.omg.org/mda';
+                        pParametros                   python: { 'OMG': pURL_OMG, 'BMM': pURL_OMG_BMM, 'BPDM': pURL_OMG_BPDM, 'BPMN': pURL_OMG_BPMN, };
+                        unaFraseMDA1                  python: here.ModelDDvlPlone_tool.fTranslateI18N( here,  'gvSIGbpd', 'gvSIGbpd_footer_phrase_mda1_with_parameters', 'desarrollo segun');
+                        unaFrase1                     python: here.ModelDDvlPlone_tool.fTranslateI18N( here,  'gvSIGbpd', 'gvSIGbpd_footer_phrase1_with_parameters', 'y conceptos estandar del');
+                        unaFrase2                     python: here.ModelDDvlPlone_tool.fTranslateI18N( here,  'gvSIGbpd', 'gvSIGbpd_footer_phrase2_with_parameters', 'para Estrategia, Reglas y Procesos de Negocio')" >                                        
+            <br/>
+
+            
+            <p align="center">
+                <font size="1">
+                    <tal:block tal:content="python: unaFrase1" />
+                    &nbsp;
+                    <a title="Object Management Group, open standardisation organisation" href="" tal:attributes="href python: 'http://%s' % pURL_OMG" >OMG</a>
+                    &nbsp;
+                    <a title="Adopted standard specifications for Business Strategy, Business Rules and Business Processes" href="" tal:attributes="href python: 'http://%s' % pURL_OMG_BusinessSpecs" ><tal:block tal:content="python: unaFrase2" /></a>                    
+                    &nbsp;
+                    <a title="Business Motivation Model adopted standard specifications" href="" tal:attributes="href python: 'http://%s' % pURL_OMG_BMM" >BMM</a>
+                    &nbsp;
+                    <a title="Business Process Definition Metamodel adopted standard specifications" href="" tal:attributes="href python: 'http://%s' % pURL_OMG_BPDM" >BPDM</a>
+                    &nbsp;
+                    <a title="Business Process Modeling Notation adopted standard specifications" href="" tal:attributes="href python: 'http://%s' % pURL_OMG_BPMN" >BPMN</a>
+                </font>
+            </p>                
+            <p align="center">
+                <font size="1">
+                    <tal:block tal:content="python: unaFraseMDA1" />
+                    &nbsp;
+                    <a title="Model Driven Architecture" href="" tal:attributes="href python: 'http://%s' % pURL_OMG_MDA" >Model Driven Architecture (MDA)</a>
+                </font>
+            </p>    
+
+         </tal:block>
+</tal:block>

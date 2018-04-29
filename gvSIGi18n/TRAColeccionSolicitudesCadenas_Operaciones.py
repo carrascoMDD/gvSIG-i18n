@@ -2,7 +2,7 @@
 #
 # File: TRAColeccionSolicitudesCadenas_Operaciones.py
 #
-# Copyright (c) 2008, 2009, 2010, 2011  by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -41,37 +41,14 @@ import logging
 from Products.CMFCore       import permissions
 from Products.CMFCore.utils  import getToolByName
 
+from Products.ModelDDvlPloneTool.ModelDDvlPloneTool import ModelDDvlPloneTool
 
+from TRAElemento_Constants import *
 
-from TRAElemento_Constants                 import *
-from TRAElemento_Constants_Activity        import *
-from TRAElemento_Constants_Configurations  import *
-from TRAElemento_Constants_Contributions   import *
-from TRAElemento_Constants_Dates           import *
-from TRAElemento_Constants_Encoding        import *
-from TRAElemento_Constants_Import          import *
-from TRAElemento_Constants_Languages       import *
-from TRAElemento_Constants_Logging         import *
-from TRAElemento_Constants_Modules         import *
-from TRAElemento_Constants_Profiling       import *
-from TRAElemento_Constants_Progress        import *
-from TRAElemento_Constants_String          import *
-from TRAElemento_Constants_StringRequests  import *
-from TRAElemento_Constants_Translate       import *
-from TRAElemento_Constants_Translation     import *
-from TRAElemento_Constants_TypeNames       import *
-from TRAElemento_Constants_Views           import *
-from TRAElemento_Constants_Vocabularies    import *
-from TRAUtils                              import *
+from TRAImportarExportar_Constants import *
 
-from TRAImportarExportar_Constants import cScannedKeys_String_Symbol, cScannedKeys_String_Modules, cScannedKeys_Translation_Translation, cScannedKeys_String_Translations
-
+from TRAElemento_Permission_Definitions import cUseCase_CreateTRASolicitudCadena, cUseCase_CreateTRACadena, cUseCase_CleanupTRAColeccionSolicitudesCadenas
 from TRAElemento_Permission_Definitions import cBoundObject
-from TRAElemento_Permission_Definitions_UseCaseNames import cUseCase_CreateTRASolicitudCadena, cUseCase_CreateTRACadena, cUseCase_CleanupTRAColeccionSolicitudesCadenas
-
-
-
-
 
 
 ##/code-section module-header
@@ -81,6 +58,7 @@ from TRAElemento_Permission_Definitions_UseCaseNames import cUseCase_CreateTRASo
 ##code-section after-local-schema #fill in your manual code here
 
 
+cEstadoSolicitudCadena_Pending = 'Pendiente'
 
 ##/code-section after-local-schema
 
@@ -100,82 +78,8 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
     # Methods
     
     
-    
-    
-    
-    
-    
-    security.declareProtected( permissions.View, 'fNewStringSymbolAcceptedReport')    
-    def fNewStringSymbolAcceptedReport( self, theNewStringSymbol):
-        
-        if not theNewStringSymbol:
-            return [ False, self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Warning_NewStringSymbol_Empty', 'Can not be Empty',),]
-        
-        aNewStringSymbol = theNewStringSymbol.strip()
-        if not aNewStringSymbol:
-            return [ False, self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Warning_NewStringSymbol_Empty', 'Can not be Empty',),]
-        
-        aNewStringSymbolLines = aNewStringSymbol.splitlines()
-        if not aNewStringSymbolLines:
-            return [ False, self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Warning_NewStringSymbol_Empty', 'Can not be Empty',),]
-         
-        aNewStringSymbol = aNewStringSymbolLines[0]
-        if not aNewStringSymbol:
-            return [ False, self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Warning_NewStringSymbol_Empty', 'Can not be Empty',),]
-         
-        if not ( aNewStringSymbol == aNewStringSymbol.replace( ' ', '').replace( '\t', '')):
-            return [ False, self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Warning_NewStringSymbol_BlanksNotAllowed', 'Blanks not allowed',),]
-                 
-        for aChar in aNewStringSymbol:
-            if not ( aChar.isalnum() or ( aChar in cNewStringSymbol_AcceptableNonAlphanumericChars)):
-                return [ False, '%s %s' % ( 
-                    self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Warning_NewStringSymbol_OnlyAlphanumerocCharsAnd', 'Only allowed alphanumeric chars and',),
-                    '  '.join( [ '"%s"' % aC for aC in cNewStringSymbol_AcceptableNonAlphanumericChars]),
-                )]
-                
-        return [ True, '',]       
-                
-        
-        
-        
-        
-        
-    security.declarePrivate( 'pAllSubElements_into')    
-    def pAllSubElements_into( self, theCollection, theAdditionalParams=None):
-        if theCollection == None:
-            return self
-        theCollection.append( self)
-        
-        
-        unosElementos = self.fObtenerTodasSolicitudesCadenas()
-        if unosElementos:
-            for unElemento in unosElementos:
-                unElemento.pAllSubElements_into( theCollection, theAdditionalParams=theAdditionalParams)
-        
-        return self
         
 
-
-    
-
-
-    security.declarePrivate( 'pForAllElementsDo_recursive')    
-    def pForAllElementsDo_recursive( self, theLambda=None, thePloneLambda=None,):
-        if not theLambda:
-            return self
-        
-        theLambda( self)
-
-        unosElementos = self.fObtenerTodasSolicitudesCadenas()
-        if unosElementos:
-            for unElemento in unosElementos:
-                unElemento.pForAllElementsDo_recursive( theLambda, thePloneLambda)
-                
-        if thePloneLambda:
-            self.pForAllElementsPloneDo( thePloneLambda)
-        
-        return self
-        
 
 
                                 
@@ -185,7 +89,7 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
         """Retrieve all contained elements of type TRASolicitudCadena.
         
         """
-        someSolicitudesCadenas = self.fObjectValues( cNombreTipoTRASolicitudCadena) 
+        someSolicitudesCadenas = self.objectValues( cNombreTipoTRASolicitudCadena) 
         return someSolicitudesCadenas
          
       
@@ -204,7 +108,7 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
         
         for unaSolicitudCadena in someSolicitudesCadenas:
             unEstadoSolicitudCadena = unaSolicitudCadena.getEstadoSolicitudCadena() 
-            if unEstadoSolicitudCadena == cEstadoSolicitudCadena_Pending:
+            if ( not unEstadoSolicitudCadena) or ( unEstadoSolicitudCadena == cEstadoSolicitudCadena_Pending):
                 somePendingSolicitudesCadenas.append( unaSolicitudCadena)
                 
         return somePendingSolicitudesCadenas
@@ -213,49 +117,12 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
     
     
 
-                
-    security.declareProtected( permissions.View, 'fHaySolicitudesCadenasPendientes')
-    def fHaySolicitudesCadenasPendientes( self, ):
-        """Return True if there exist any contained elements of type TRASolicitudCadena, which are in pending status.
-        
-        """
-        someSolicitudesCadenas = self.fObtenerTodasSolicitudesCadenas()
-        
-        
-        for unaSolicitudCadena in someSolicitudesCadenas:
-            unEstadoSolicitudCadena = unaSolicitudCadena.getEstadoSolicitudCadena() 
-            if unEstadoSolicitudCadena == cEstadoSolicitudCadena_Pending:
-                return True
-                
-        return False
-         
-
-    
-    
-
-                
-    security.declareProtected( permissions.View, 'fHaySolicitudesCadenasYaProcesadas')
-    def fHaySolicitudesCadenasYaProcesadas( self, ):
-        """Return True if there exist any contained elements of type TRASolicitudCadena, which have already been processed: the ones which are NOT in pending status.
-        
-        """
-        someSolicitudesCadenas = self.fObtenerTodasSolicitudesCadenas()
-        
-        
-        for unaSolicitudCadena in someSolicitudesCadenas:
-            unEstadoSolicitudCadena = unaSolicitudCadena.getEstadoSolicitudCadena() 
-            if unEstadoSolicitudCadena == cEstadoSolicitudCadena_Created:
-                return True
-                
-        return False
-    
-    
 
 
     
     security.declarePrivate( 'fCrearSolicitudCadena')    
     def fCrearSolicitudCadena( self,
-        theTimeProfilingResults =None, 
+        theTimeProfilingResults =None, # invoked from ModelDDvlPloneTool still using previous style of time profiling, thus the parameter is not theParentExecutionRecord =None, 
         theModelDDvlPloneTool_Mutators   =None, 
         theNewTypeName          ='', 
         theNewOneTitle          ='', 
@@ -268,15 +135,13 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
         
         """
     
-        unExecutionRecord = self.fStartExecution( 'method',  'fCrearSolicitudCadena', None, True, { 'log_what': 'details', 'log_when': True, }) 
+        unExecutionRecord = self.fStartExecution( 'method',  'fCrearSolicitudCadena', None, True, { 'log_what': 'details', 'log_when': True, }) # invoked from ModelDDvlPloneTool still using previous style of time profiling, thus the parameter is not theParentExecutionRecord =None, 
 
-        from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import cModificationKind_CreateSubElement, cModificationKind_Create
-       
         try:
             unasDescripcionesContenidosCreados = []
             try:
-                unPermissionsCache = fDictOrNew( thePermissionsCache)
-                unRolesCache       = fDictOrNew( theRolesCache)
+                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
+                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
                 
                 unUseCaseQueryResult = self.fUseCaseAssessment(  
                     theUseCaseName          = cUseCase_CreateTRASolicitudCadena, 
@@ -291,7 +156,7 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                     anActionReport = { 'effect': 'error', 'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_no_permission_ToCreateNewStringRequest_msgid', "User does not have permission to create new string requests.-"), }
                     return anActionReport  
                             
-                aModelDDvlPlone_tool = self.fModelDDvlPloneTool()
+                aModelDDvlPlone_tool = getToolByName( self, 'ModelDDvlPlone_tool')
                              
                 
                 unNewTypeName = theNewTypeName
@@ -303,14 +168,6 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                 aTranslationIntoMainLanguage        = theAdditionalParams.get( 'theTranslationIntoMainLanguage',    None)
                 aReferenceLanguage                  = theAdditionalParams.get( 'theReferenceLanguage',    None)
                 aTranslationIntoReferenceLanguage   = theAdditionalParams.get( 'theTranslationIntoReferenceLanguage',    None)
-                someModuleNames                     = theAdditionalParams.get( 'theModuleNames',    None)
-                
-                aModuleNamesString = ''
-                if isinstance( someModuleNames, list):
-                    aModuleNamesString = cTRAModuleNameSeparator.join( someModuleNames)
-                else:
-                    aModuleNamesString = someModuleNames
-                    
         
                 if not aNewSymbol:
                     anActionReport = { 'effect': 'error', 'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCreating_SolicitudCadena_missingParameter_Symbol_warning_msgid', "The new string symbol is missing. Can not create a new string request without a string symbol.-"), }
@@ -367,25 +224,17 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                     
                 unMemberId = self.fGetMemberId()
 
-                unaFechaCreacion =self. fDateTimeNow()
                 anAttrsDict = { 
                     'title':                            unNewTitle,
                     'description':                      '',
                     'simbolo':                          aNewSymbol,
                     'usuarioCreador':                   unMemberId,
-                    'fechaCreacion':                    unaFechaCreacion,
+                    'fechaCreacion':                    self.fDateTimeNow(),
                     'codigoIdiomaPrincipal':            aMainlanguage,
                     'cadenaTraducidaAIdiomaPrincipal':  aTranslationIntoMainLanguage,
                     'codigoIdiomaReferencia':           aReferenceLanguage,
                     'cadenaTraducidaAIdiomaReferencia': aTranslationIntoReferenceLanguage,
-                    'nombresModulos':                   aModuleNamesString,
                 }
-                
-                self.pFlushCachedTemplates_All()  
-                self.getCatalogo().pFlushCachedTemplates_All()      
-                for aSolicitudCadena in someSolicitudesCadenas:
-                    aSolicitudCadena.pFlushCachedTemplates_All()
-                
                 
                 unaIdNuevaSolicitudCadena = self.invokeFactory( cNombreTipoTRASolicitudCadena, aNewId, **anAttrsDict)
                 if not unaIdNuevaSolicitudCadena:
@@ -421,56 +270,6 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
  
                 unSolicitudCadenaCreationReport = { 'effect': 'created', 'new_object_result': unResultadoNuevaSolicitudCadena, }
                         
-                
-            
-                aModelDDvlPloneTool_Mutators = self.fModelDDvlPloneTool().fModelDDvlPloneTool_Mutators( self)
-                    
-                aCreateElementReport = aModelDDvlPloneTool_Mutators.fNewVoidCreateElementReport()
-                aCreateElementReport.update( { 'effect': 'created', 'new_object_result': unResultadoNuevaSolicitudCadena, })
-                
-                someFieldReports    = aCreateElementReport[ 'field_reports']
-                aFieldReportsByName = aCreateElementReport[ 'field_reports_by_name']
-                
-                aReportForField = { 'attribute_name': 'id',                              'effect': 'changed', 'new_value': unaIdNuevaSolicitudCadena, 'previous_value': '',}
-                someFieldReports.append( aReportForField)            
-                aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
-                
-                aReportForField = { 'attribute_name': 'title',                           'effect': 'changed', 'new_value': unNewTitle,           'previous_value': '',}
-                someFieldReports.append( aReportForField)            
-                aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
-                
-                
-                aReportForField = { 'attribute_name': 'simbolo',                         'effect': 'changed', 'new_value': aNewSymbol,           'previous_value': '',}
-                someFieldReports.append( aReportForField)            
-                aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
-                
-                aReportForField = { 'attribute_name': 'usuarioCreador',                  'effect': 'changed', 'new_value': unMemberId,           'previous_value': '',}
-                someFieldReports.append( aReportForField)            
-                aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
-                
-                aReportForField = { 'attribute_name': 'fechaCreacion',                   'effect': 'changed', 'new_value': unaFechaCreacion,           'previous_value': '',}
-                someFieldReports.append( aReportForField)            
-                aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
-                
-                aReportForField = { 'attribute_name': 'codigoIdiomaPrincipal',           'effect': 'changed', 'new_value': aMainlanguage,           'previous_value': '',}
-                someFieldReports.append( aReportForField)            
-                aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
-                
-                aReportForField = { 'attribute_name': 'cadenaTraducidaAIdiomaPrincipal', 'effect': 'changed', 'new_value': aTranslationIntoMainLanguage,           'previous_value': '',}
-                someFieldReports.append( aReportForField)            
-                aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
-                
-                aReportForField = { 'attribute_name': 'codigoIdiomaReferencia',          'effect': 'changed', 'new_value': aReferenceLanguage,           'previous_value': '',}
-                someFieldReports.append( aReportForField)            
-                aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
-                
-                aReportForField = { 'attribute_name': 'cadenaTraducidaAIdiomaReferencia','effect': 'changed', 'new_value': aTranslationIntoReferenceLanguage,           'previous_value': '',}
-                someFieldReports.append( aReportForField)            
-                aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
-                                   
-                aModelDDvlPloneTool_Mutators.pSetAudit_Creation( self,                    cModificationKind_CreateSubElement, aCreateElementReport, theUseCounter=True)       
-                aModelDDvlPloneTool_Mutators.pSetAudit_Creation( unaNuevaSolicitudCadena, cModificationKind_Create,           aCreateElementReport)       
-                
                 return unSolicitudCadenaCreationReport
                 
  
@@ -480,10 +279,7 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                 
                 unInformeExcepcion = 'Exception during fCrearSolicitudCadena\n' 
                 unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-                try:
-                    unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
-                except:
-                    None
+                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
                 unInformeExcepcion += unaExceptionFormattedTraceback   
                                          
                 unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
@@ -508,173 +304,10 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
             
             
             
-
-    
-    security.declarePrivate( 'fCrearImportarYLimpiarCadenas')    
-    def fCrearImportarYLimpiarCadenas( self,
-        thePermissionsCache     =None,
-        theRolesCache           =None,
-        theParentExecutionRecord=None):
-        """Create new instances of TRACadena by executing an import process, then clean up the string requests. Ceate an instance of TRAImportacion with a TRAContenidoIntercambio that will create the language when the import is executed.
-        
-        """
-    
-        unExecutionRecord = self.fStartExecution( 'method',  'fCrearImportarYLimpiarCadenas', None, True, { 'log_what': 'details', 'log_when': True, }) 
-
-        try:
-             
-            try:
-                unPermissionsCache = fDictOrNew( thePermissionsCache)
-                unRolesCache       = fDictOrNew( theRolesCache)
-                            
-                aCreateImportReport = self.fCrearCadenas( unPermissionsCache, unRolesCache, unExecutionRecord,)
-                if not aCreateImportReport.get( 'effect', '') == 'created':
-                    aResult = { 
-                        'effect': 'error', 
-                        'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCreatingImportProcessToCreateStrings', "Error creating import process to create strings-") + aCreateImportReport.get( 'failure', ''),
-                    }
-                    return aResult
-                
-                unNewObjectResult = aCreateImportReport.get( 'new_object_result', {})
-                if not unNewObjectResult:
-                    aResult = { 
-                        'effect': 'error', 
-                        'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorImportProcessToCreateStringsNotCreated', "Import process to create strings hast not been created-"),
-                    }
-                    return aResult
-                    
-                anImportElement = unNewObjectResult.get( 'object', None)
-                if ( anImportElement == None):
-                    aResult = { 
-                        'effect': 'error', 
-                        'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorImportProcessElementNotCreated', "Import process has not been created-"),
-                    }
-                    return aResult
-                
-                
-                someSolicitudesCadenasUIDsPorSimbolo = aCreateImportReport.get( 'string_creation_request_UIDs_by_string_symbol', {})
-                
-                
-                aProgressHandlerCreationResult = anImportElement.fCreateProgressHandlerFor_Import( 
-                    theAdditionalParams      = { 'theIsToCreateCadenas': True, 'theSolicitudesCadenasUIDsPorSimbolo': someSolicitudesCadenasUIDsPorSimbolo,},  
-                    thePermissionsCache     =unPermissionsCache, 
-                    theRolesCache           =unRolesCache, 
-                    theParentExecutionRecord=unExecutionRecord)
-                if ( not aProgressHandlerCreationResult) or not aProgressHandlerCreationResult.get( 'success', False):
-                    aResult = { 
-                        'effect': 'error', 
-                        'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorImportProgressHandlerNotCreated', "Import Progress Handler has not been created-"),
-                    }
-                    return aResult
-                
-                
-                
-                aProgressHandler = aProgressHandlerCreationResult.get( 'progress_handler', None)
-                if not aProgressHandler:
-                    aResult = { 
-                        'effect': 'error', 
-                        'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorImportProgressHandlerNotFound', "Import Progress Handler has not been found-"),
-                    }
-                    return aResult
-
-                
-                aProgressElement = aProgressHandlerCreationResult.get( 'progress_element', None)
-                if ( aProgressElement == None):
-                    aResult = { 
-                        'effect': 'error', 
-                        'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorProgressElementNotKnownByImportProcessElement', "Progress element is not known by progress handler-"),
-                    }
-                    return aResult
-                
-                
-                
-                
-                aProgressElement.fProcessControl( 
-                    theProcessControlAction     =cTRAProcessControl_Action_Execute,
-                    theAdditionalParams          =None,
-                    thePermissionsCache         =unPermissionsCache, 
-                    theRolesCache               =unRolesCache, 
-                    theParentExecutionRecord    =unExecutionRecord,
-                )
-                
-                    
-                aProgressResult = aProgressHandler.vResult
-                if not aProgressResult:
-                    aResult = { 
-                        'effect': 'error', 
-                        'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorImportProgressNoResult', "Import Progress Result is  missing-"),
-                    }
-                    return aResult
-                
-                anImportExecutionReport = aProgressResult.get( 'import_contents_report', {})
-                if not anImportExecutionReport:
-                    aResult = { 
-                        'effect': 'error', 
-                        'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorImportContentsReportMissing', "Import Contents Report is  missing-"),
-                    }
-                    return aResult
-                
-                                
-                anImportError       = anImportExecutionReport.get( 'error', '')
-                anImportErrorDetail = anImportExecutionReport.get( 'error_detail', '')
-                if anImportError:
-                    aResult = { 
-                        'effect': 'error', 
-                        'failure':  '%s %s %s ' % (
-                            self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorImportProcessFailed', "Import process failed-"),
-                            self.fTranslateI18N( 'gvSIGi18n', anImportError, anImportError),
-                            anImportErrorDetail,
-                        ),
-                    }
-                    return aResult
-                    
- 
-                
-                
-                aCleanUpStringsReport = self.fLimpiarCadenas( unPermissionsCache, unRolesCache, unExecutionRecord,)
-                # TRADeveloper role can not clean up strings, as we want them to stay in the list for a coordinator to know.
-                #if not aCleanUpStringsReport.get( 'effect', '') == 'deleted':
-                    #aResult = { 
-                        #'effect': 'error', 
-                        #'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCleaningUpStringsRequests', "Error cleaning up strings requests-") + aCleanUpStringsReport.get( 'failure', ''),
-                    #}
-                    #return aResult
-                
-                aResult = { 
-                    'effect': 'created',
-                    'new_object_result': unNewObjectResult,
-                    'progress_element':  aProgressElement,
-                }
-                
-                return aResult
-                
-            except:
-                unaExceptionInfo = sys.exc_info()
-                unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
-                
-                unInformeExcepcion = 'Exception during fCrearImportarYLimpiarCadenas\n' 
-                unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-                try:
-                    unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
-                except:
-                    None
-                unInformeExcepcion += unaExceptionFormattedTraceback   
-                                         
-                unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
-
-                if cLogExceptions:
-                    logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
-                
-                anActionReport = { 'effect': 'error', 'failure': '%s\n%s' % (   self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCreating_Cadeas_Exception_msgid', "Exception while creating Strings (as import process).-"), unInformeExcepcion, ) }
-                return anActionReport     
-              
-        finally:
-            unExecutionRecord and unExecutionRecord.pEndExecution()
-            unExecutionRecord and unExecutionRecord.pClearLoggedAll()
-
-                    
-                
-                              
+            
+            
+            
+            
             
             
             
@@ -690,15 +323,13 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
         
         """
     
-        unExecutionRecord = self.fStartExecution( 'method',  'fCrearCadenas', None, False, { 'log_what': 'details', 'log_when': True, }) 
-
-        from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import cModificationKind_CreateSubElement, cModificationKind_Create
+        unExecutionRecord = self.fStartExecution( 'method',  'fCrearCadenas', None, True, { 'log_what': 'details', 'log_when': True, }) # invoked from ModelDDvlPloneTool still using previous style of time profiling, thus the parameter is not theParentExecutionRecord =None, 
 
         try:
             unasDescripcionesContenidosCreados = []
             try:
-                unPermissionsCache = fDictOrNew( thePermissionsCache)
-                unRolesCache       = fDictOrNew( theRolesCache)
+                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
+                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
                 
                 unUseCaseQueryResult = self.fUseCaseAssessment(  
                     theUseCaseName          = cUseCase_CreateTRACadena, 
@@ -713,7 +344,7 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                     anActionReport = { 'effect': 'error', 'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_no_permission_ToCreateStrings_msgid', "User does not have permission to create new strings (as an import process built from new string requests).-"), }
                     return anActionReport  
                             
-                aModelDDvlPlone_tool = self.fModelDDvlPloneTool()
+                aModelDDvlPlone_tool = ModelDDvlPloneTool()
                              
                 
                 someSolicitudesCadenasPendientes = self.fObtenerSolicitudesCadenasPendientes()
@@ -724,7 +355,7 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
  
                 unCatalogo = self.getCatalogo()
                 
-                if unCatalogo == None:
+                if not unCatalogo:
                     anActionReport = { 'effect': 'error', 'failure':  'InternalError: gvSIGi18n_errorCreating_Idioma_Missing_TRACatalogo_error_msgid', }
                     return anActionReport  
                 
@@ -751,18 +382,7 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                                             someLanguagesEnCadenasACrear.add( unCodigoIdiomaReferencia)
                     
                             
-                if not someSolicitudesCadenasACrear:
-                    anActionReport = { 'effect': 'error', 'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_warningCreating_Strings_NoStringRequestsToCreate_msgid', "There are no New String requests to create. No Import process created.-"), }
-                    return anActionReport  
                             
-                                            
-                            
-                someSolicitudesCadenasUIDsPorSimbolo = { }
-                for aSolicitudCadenaACrear in someSolicitudesCadenasACrear:
-                    unSimboloCadena           = aSolicitudCadenaACrear.getSimbolo()
-                    aSolicitudCadenaACrearUID = aSolicitudCadenaACrear.UID()
-                    someSolicitudesCadenasUIDsPorSimbolo[ unSimboloCadena] = aSolicitudCadenaACrearUID
-                    
                             
                 unaColeccionImportaciones = unCatalogo.fObtenerColeccionImportaciones()
                 if not unaColeccionImportaciones:
@@ -771,7 +391,7 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                 
                      
                 unMemberId = self.fGetMemberId()
-                unaFechaYHora =self.fDateTimeNowTextual()
+                unaFechaYHora = self.fDateTimeNowTextual()
 
                 aPloneUtilsTool = self.getPloneUtilsToolForNormalizeString()  
                
@@ -785,8 +405,6 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                     'description':   '',
                 }
                 
-                unaColeccionImportaciones.pFlushCachedTemplates_All()                            
-                
                 unaIdNuevaImportacion = unaColeccionImportaciones.invokeFactory( cNombreTipoTRAImportacion, aNewIdImportacion, **anAttrsDictImportacion)
                 if not unaIdNuevaImportacion:
                     anActionReport = { 'effect': 'error', 'failure': '%s' %   self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCreating_Strings_TRAImportacion_NotCreated_msgid', "Error creating strings: import not created.-"), }
@@ -797,12 +415,7 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                     anActionReport = { 'effect': 'error', 'failure': '%s' %  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCreating_Strings_TRAImportacion_Created_TRAImportacion_NotFound_msgid', "Could not find import just created-."), }
                     return anActionReport     
 
-                
-                unaNuevaImportacion.pFlushCachedTemplates_All()                            
-      
-                    
-                        
-                unTitleContenidoIntercambio = '%s' % self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_crearStrings_Importacion_prefix', "To Create Strings")
+                unTitleContenidoIntercambio = '%s' % ( self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_crearStrings_Importacion_prefix', "To Create Strings"), )
                 aNewIdContenidoIntercambio = unTitleContenidoIntercambio.lower().replace( ' ', '-')
                 if aPloneUtilsTool:
                     aNewIdContenidoIntercambio = aPloneUtilsTool.normalizeString( aNewIdContenidoIntercambio)
@@ -823,75 +436,28 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                     return anActionReport     
                 
                 
+                someStringsAndTranslations = { }
                 
-                aScannedData = self.fNewVoidScannedData()
-                
-                someScannedStrings   = aScannedData[ 'symbols']
-                someScannedLanguages = aScannedData[ 'languages']
-                someScannedModules   = aScannedData[ 'modules']
-                                
-                for aSolicitudCadenaACrear in someSolicitudesCadenasACrear:
-                    
-                    unSimboloCadena                     = aSolicitudCadenaACrear.getSimbolo()
-                    unCodigoIdiomaPrincipal             = aSolicitudCadenaACrear.getCodigoIdiomaPrincipal()
-                    unaCadenaTraducidaAIdiomaPrincipal  = aSolicitudCadenaACrear.getCadenaTraducidaAIdiomaPrincipal()
-                    unCodigoIdiomaReferencia            = aSolicitudCadenaACrear.getCodigoIdiomaReferencia()
-                    unaCadenaTraducidaAIdiomaReferencia = aSolicitudCadenaACrear.getCadenaTraducidaAIdiomaReferencia()
-                    unosNombresModulosString            = aSolicitudCadenaACrear.getNombresModulos()
-                    
-                    
-                    unosNombresModulos                  = self.fParseNombresModulosString( unosNombresModulosString)
-                    unosIndexesNombresModulos = [ ]
-                    for unNombreModulo in unosNombresModulos:
-                        
-                        if unNombreModulo in someScannedModules:
-                            unosIndexesNombresModulos.append( someScannedModules.index( unNombreModulo))
-                        
-                        else:
-                            unosIndexesNombresModulos.append( len( someScannedModules))
-                            someScannedModules.append( unNombreModulo)
-                            
-                            
-                    if not ( unCodigoIdiomaPrincipal in someScannedLanguages):
-                        someScannedLanguages.append( unCodigoIdiomaPrincipal)                        
-                    
-                    if not ( unCodigoIdiomaReferencia in someScannedLanguages):
-                        someScannedLanguages.append( unCodigoIdiomaReferencia)
-                    
-                    if unaCadenaTraducidaAIdiomaPrincipal:
-                        unaCadenaTraducidaAIdiomaPrincipal  = unaCadenaTraducidaAIdiomaPrincipal.strip()
-                    
+                for unaSolicitudCadena in someSolicitudesCadenasACrear:
+                    unSimboloCadena                     = unaSolicitudCadena.getSimbolo()
+                    unCodigoIdiomaPrincipal             = unaSolicitudCadena.getCodigoIdiomaPrincipal()
+                    unaCadenaTraducidaAIdiomaPrincipal  = unaSolicitudCadena.getCadenaTraducidaAIdiomaPrincipal().strip()
+                    unCodigoIdiomaReferencia            = unaSolicitudCadena.getCodigoIdiomaReferencia()
+                    unaCadenaTraducidaAIdiomaReferencia = unaSolicitudCadenaPendiente.getCadenaTraducidaAIdiomaReferencia()
                     if unaCadenaTraducidaAIdiomaReferencia:
                         unaCadenaTraducidaAIdiomaReferencia = unaCadenaTraducidaAIdiomaReferencia.strip()
                     
-                        
-                        
-                        
-                    aScannedString = self.fNewVoidScannedString()
+                    unasTraduccionesCadena = { }
+                    someStringsAndTranslations[ unSimboloCadena] = unasTraduccionesCadena
                     
-                    aScannedString[ cScannedKeys_String_Symbol]  = unSimboloCadena
-                    aScannedString[ cScannedKeys_String_Modules] = unosIndexesNombresModulos
+                    unasTraduccionesCadena[ unCodigoIdiomaPrincipal] = unaCadenaTraducidaAIdiomaPrincipal 
+                    if unCodigoIdiomaReferencia and unaCadenaTraducidaAIdiomaReferencia:
+                        unasTraduccionesCadena[ unCodigoIdiomaReferencia] = unaCadenaTraducidaAIdiomaReferencia 
                     
-                    someScannedStrings.append( aScannedString)
-                              
-                    if unaCadenaTraducidaAIdiomaPrincipal:
-                        aScannedTranslation = self.fNewVoidScannedTranslation()
-                        aScannedTranslation[ cScannedKeys_Translation_Translation] = unaCadenaTraducidaAIdiomaPrincipal                  
-                        aScannedString[ cScannedKeys_String_Translations][ unCodigoIdiomaPrincipal] = aScannedTranslation
-                    
-                    if unaCadenaTraducidaAIdiomaReferencia:
-                        aScannedTranslation = self.fNewVoidScannedTranslation()
-                        aScannedTranslation[ cScannedKeys_Translation_Translation] = unaCadenaTraducidaAIdiomaReferencia                  
-                        aScannedString[ cScannedKeys_String_Translations][ unCodigoIdiomaReferencia] = aScannedTranslation
-                        
-                        
-
-                unUploadedContent = self.fNewVoidUploadedContent()
-                unUploadedContent[ 'content_data'] = aScannedData
-                unNuevoContenidoIntercambio.pSetContenido( unUploadedContent)
-
-                    
-                    
+                
+                unContenidoConCadenas = { 'strings_and_translations': someStringsAndTranslations, }
+                unNuevoContenidoIntercambio.pSetContenido( unContenidoConCadenas)
+                
                 unTimeProfilingResults = { }
                 unResultadoNuevaImportacion = aModelDDvlPlone_tool.fRetrieveTypeConfig( 
                     theTimeProfilingResults     =unTimeProfilingResults,
@@ -913,65 +479,8 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                     anActionReport = { 'effect': 'error', 'failure': 'retrieval_failure', }
                     return anActionReport     
  
-                unStringsCreationReport = { 'effect': 'created', 'new_object_result': unResultadoNuevaImportacion, 
-                    'string_creation_request_UIDs_by_string_symbol': someSolicitudesCadenasUIDsPorSimbolo
-                }
+                unStringsCreationReport = { 'effect': 'created', 'new_object_result': unResultadoNuevaImportacion, }
                         
-                
-                
-                unaColeccionImportaciones.pFlushCachedTemplates_All()                            
-                unaNuevaImportacion.pFlushCachedTemplates_All()                            
-                unNuevoContenidoIntercambio.pFlushCachedTemplates_All()                            
-            
-                aModelDDvlPloneTool_Mutators = self.fModelDDvlPloneTool().fModelDDvlPloneTool_Mutators( self)
-                    
-                aCreateElementReport = aModelDDvlPloneTool_Mutators.fNewVoidCreateElementReport()
-                aCreateElementReport.update( { 'effect': 'created', 'new_object_result': unResultadoNuevaImportacion, })
-                
-                someFieldReports    = aCreateElementReport[ 'field_reports']
-                aFieldReportsByName = aCreateElementReport[ 'field_reports_by_name']
-                
-                aReportForField = { 'attribute_name': 'id',     'effect': 'changed', 'new_value': unaIdNuevoContenidoIntercambio, 'previous_value': '',}
-                someFieldReports.append( aReportForField)            
-                aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
-                
-                aReportForField = { 'attribute_name': 'title',  'effect': 'changed', 'new_value': unTitleContenidoIntercambio,    'previous_value': '',}
-                someFieldReports.append( aReportForField)            
-                aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
-                
-                                   
-                aModelDDvlPloneTool_Mutators.pSetAudit_Creation( unaColeccionImportaciones,  cModificationKind_CreateSubElement, aCreateElementReport, theUseCounter=True)       
-                aModelDDvlPloneTool_Mutators.pSetAudit_Creation( unaNuevaImportacion,        cModificationKind_Create,           aCreateElementReport)       
-                
-                aContenidoIntercambioTraversalResult = None
-                for aTraversalResult in unResultadoNuevaImportacion.get( 'traversals', []):
-                    if aTraversalResult.get( 'traversal_name', '') == cNombreTraversal_Importacion_ContenidosIntercambio:
-                        aContenidoIntercambioTraversalResult = aTraversalResult
-                        break
-                if aContenidoIntercambioTraversalResult: 
-                    someContenidoIntercambioResults = aContenidoIntercambioTraversalResult.get( 'elements', [])
-                    
-                    for aContenidoIntercambioResult in someContenidoIntercambioResults:
-                        
-                        unNuevoContenidoIntercambioElement = aContenidoIntercambioResult.get( 'object', None)
-                        if not ( unNuevoContenidoIntercambioElement == None):
-                        
-                            aCreateElementReport = aModelDDvlPloneTool_Mutators.fNewVoidCreateElementReport()
-                            aCreateElementReport.update( { 'effect': 'created', 'new_object_result': aContenidoIntercambioResult, })
-                            
-                            someFieldReports    = aCreateElementReport[ 'field_reports']
-                            aFieldReportsByName = aCreateElementReport[ 'field_reports_by_name']
-                            
-                            aReportForField = { 'attribute_name': 'id',     'effect': 'changed', 'new_value': aContenidoIntercambioResult.get( 'id', ''),     'previous_value': '',}
-                            someFieldReports.append( aReportForField)            
-                            aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
-                            
-                            aReportForField = { 'attribute_name': 'title',  'effect': 'changed', 'new_value': aContenidoIntercambioResult.get( 'title', ''),  'previous_value': '',}
-                            someFieldReports.append( aReportForField)            
-                            
-                            aModelDDvlPloneTool_Mutators.pSetAudit_Creation( unaNuevaImportacion,                cModificationKind_CreateSubElement, aCreateElementReport, theUseCounter=True)       
-                            aModelDDvlPloneTool_Mutators.pSetAudit_Creation( unNuevoContenidoIntercambioElement, cModificationKind_Create,           aCreateElementReport)       
-                
                 return unStringsCreationReport
                 
  
@@ -981,10 +490,7 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                 
                 unInformeExcepcion = 'Exception during fCrearCadenas\n' 
                 unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-                try:
-                    unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
-                except:
-                    None
+                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
                 unInformeExcepcion += unaExceptionFormattedTraceback   
                                          
                 unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
@@ -1021,13 +527,13 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
         
         """
     
-        unExecutionRecord = self.fStartExecution( 'method',  'fLimpiarCadenas', None, True, { 'log_what': 'details', 'log_when': True, }) 
+        unExecutionRecord = self.fStartExecution( 'method',  'fLimpiarCadenas', None, True, { 'log_what': 'details', 'log_when': True, }) # invoked from ModelDDvlPloneTool still using previous style of time profiling, thus the parameter is not theParentExecutionRecord =None, 
 
         try:
             unasDescripcionesContenidosCreados = []
             try:
-                unPermissionsCache = fDictOrNew( thePermissionsCache)
-                unRolesCache       = fDictOrNew( theRolesCache)
+                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
+                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
                 
                 unUseCaseQueryResult = self.fUseCaseAssessment(  
                     theUseCaseName          = cUseCase_CleanupTRAColeccionSolicitudesCadenas, 
@@ -1053,7 +559,7 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
  
                 unCatalogo = self.getCatalogo()
                 
-                if unCatalogo == None:
+                if not unCatalogo:
                     anActionReport = { 'effect': 'error', 'failure':  'InternalError: gvSIGi18n_errorCreating_Idioma_Missing_TRACatalogo_error_msgid', }
                     return anActionReport  
                 
@@ -1062,10 +568,8 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                 
                 for unaSolicitudCadena in someSolicitudesCadenas:
                     unEstadoSolicitudCadena = unaSolicitudCadena.getEstadoSolicitudCadena() 
-                    
-                    if unEstadoSolicitudCadena == cEstadoSolicitudCadena_Created:
+                    if unEstadoSolicitudCadena and not ( unEstadoSolicitudCadena == cEstadoSolicitudCadena_Pending):
                         someSolicitudesCadenasAEliminar.append( unaSolicitudCadena)
-                        
                     else:
                         unSimboloCadena = unaSolicitudCadena.getSimbolo()
                         if not unSimboloCadena:
@@ -1093,9 +597,6 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                     
                     
                 if unasIdsSolicitudesCadenasAEliminar: 
-                    
-                    self.pFlushCachedTemplates_All()                            
-                    
                     self.manage_delObjects( unasIdsSolicitudesCadenasAEliminar)
                 
  
@@ -1110,10 +611,7 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                 
                 unInformeExcepcion = 'Exception during fLimpiarCadenas\n' 
                 unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-                try:
-                    unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
-                except:
-                    None
+                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
                 unInformeExcepcion += unaExceptionFormattedTraceback   
                                          
                 unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)

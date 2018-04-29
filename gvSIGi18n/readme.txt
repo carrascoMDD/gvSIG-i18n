@@ -134,7 +134,7 @@ PREREQUISITE PRODUCTS
 Copyright
 
 
-  Copyright (c) 2008, 2009,2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+  Copyright (c) 2008, 2009 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
   
 
 

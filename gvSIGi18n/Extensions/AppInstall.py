@@ -2,7 +2,8 @@
 #
 # File: Install.py
 #
-# Copyright (c) 2008, 2009, 2010, 2011  by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
+# Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -51,8 +52,7 @@ def install(self):
         if not unPortal:
             unOutput.write( 'ERROR: Could not find portal object\n' )
         else:
-            someExistingRoles = unPortal.userdefined_roles()
-            #someExistingRoles = list( unPortal.__ac_roles__)    
+            someExistingRoles = list( unPortal.__ac_roles__)    
             someNewRoles      = list( someExistingRoles)[:]  
             someAddedRoles    = []
             
@@ -61,11 +61,10 @@ def install(self):
                 if not ( unRol in someExistingRoles):
                     someNewRoles.append(unRol)
                     someAddedRoles.append(unRol)
-                    unPortal._addRole( unRol)
                     unRolesChanged = True
                     
             if unRolesChanged:
-                #unPortal.__ac_roles__ = tuple( someNewRoles)
+                unPortal.__ac_roles__ = tuple( someNewRoles)
                 unOutput.write( 'Existing Roles: %s\nAdded Roles: %s\n' % ( ' '.join( someExistingRoles), ' '.join( someAddedRoles)))
             else:
                 unOutput.write( 'Existing Roles: %s\n' % ' '.join( someExistingRoles))
@@ -99,71 +98,4 @@ def install(self):
             unOutput.write( 'No Types to unmap from portal_catalog\n')
             
     return unOutput.getvalue()
-
-
-
-
-
-
-
-#def install(self):
-    #unOutput = StringIO()
-
-    #"""#########################################
-    #Create application specific roles
-    #"""
-    #unPortalTool = getToolByName(self,'portal_url', None)
-    #if not unPortalTool:
-        #unOutput.write( 'ERROR: Could not find tool portal_url\n' )
-    #else:
-        #unPortal = unPortalTool.getPortalObject()
-        #if not unPortal:
-            #unOutput.write( 'ERROR: Could not find portal object\n' )
-        #else:
-            #someExistingRoles = list( unPortal.__ac_roles__)    
-            #someNewRoles      = list( someExistingRoles)[:]  
-            #someAddedRoles    = []
-            
-            #unRolesChanged = False
-            #for unRol in TRARoles_list:
-                #if not ( unRol in someExistingRoles):
-                    #someNewRoles.append(unRol)
-                    #someAddedRoles.append(unRol)
-                    #unRolesChanged = True
-                    
-            #if unRolesChanged:
-                #unPortal.__ac_roles__ = tuple( someNewRoles)
-                #unOutput.write( 'Existing Roles: %s\nAdded Roles: %s\n' % ( ' '.join( someExistingRoles), ' '.join( someAddedRoles)))
-            #else:
-                #unOutput.write( 'Existing Roles: %s\n' % ' '.join( someExistingRoles))
-                 
-        
-    #"""# #########################################
-    #Configure archetpe_tool to avoid including certain classes when portal_catalog is reconstructed
-    #"""
-    #someArchetypeNamesAlreadyUnmappedFromPortalCatalog = []
-    #someArchetypeNamesUnmappedFromPortalCatalog = []
-    
-    #unArchetypeTool = getToolByName( self, 'archetype_tool', None)
-    #if not unArchetypeTool:
-        #unOutput.write( 'ERROR: Could not find tool archetype_tool\n' )
-    #else:
-        #if cTRAArchetypeNames_NotInPortalCatalog:
-            #for unArchetypeName in cTRAArchetypeNames_NotInPortalCatalog:
-                #someCatalogsForType = unArchetypeTool.getCatalogsByType( unArchetypeName) 
-                #if someCatalogsForType:
-                    #unArchetypeTool.setCatalogsByType( unArchetypeName, [])
-                    #someArchetypeNamesUnmappedFromPortalCatalog.append( unArchetypeName)
-                #else:
-                    #someArchetypeNamesAlreadyUnmappedFromPortalCatalog.append( unArchetypeName)
-
-            #if someArchetypeNamesAlreadyUnmappedFromPortalCatalog:
-                #unOutput.write( 'Types Already unmapped from portal_catalog %s\n' % ' '.join( someArchetypeNamesAlreadyUnmappedFromPortalCatalog))
-                
-            #if someArchetypeNamesUnmappedFromPortalCatalog:
-                #unOutput.write( 'Types Just unmapped from portal_catalog %s\n' % ' '.join( someArchetypeNamesUnmappedFromPortalCatalog))
-        #else:
-            #unOutput.write( 'No Types to unmap from portal_catalog\n')
-            
-    #return unOutput.getvalue()
 

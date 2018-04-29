@@ -2,8 +2,8 @@
 #
 # File: TRAColeccionIdiomas.py
 #
-# Copyright (c) 2013 by 2008, 2009, 2010, 2011 Conselleria de Infraestructuras
-# y Transporte de la Generalidad Valenciana
+# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
+# Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -33,11 +33,7 @@ from AccessControl import ClassSecurityInfo
 from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.TRAColeccionArquetipos import TRAColeccionArquetipos
 from TRAColeccionIdiomas_Operaciones import TRAColeccionIdiomas_Operaciones
-from Products.gvSIGi18n.TRAConRegistroActividad import TRAConRegistroActividad
 from Products.gvSIGi18n.config import *
-
-# additional imports from tagged value 'import'
-from TRAElemento_Operaciones import TRAElemento_Operaciones
 
 ##code-section module-header #fill in your manual code here
 ##/code-section module-header
@@ -57,11 +53,12 @@ schema = Schema((
         ),
         contains_collections=False,
         label2='Languages',
-        additional_columns=['codigoIdiomaEnGvSIG', 'estaBloqueado', 'codigoInternacionalDeIdioma', 'nombreNativoDeIdioma'],
+        additional_columns=['codigoIdiomaEnGvSIG', 'codigoInternacionalDeIdioma', 'nombreNativoDeIdioma', 'codigoIdiomaReferencia', 'ambitoDelIdioma', 'juegoDeCaracteresParaJavaProperties', 'juegoDeCaracteresParaPO', 'fallbackDeIdiomas'],
         label='Idiomas',
         represents_aggregation=True,
         description2='Languages to translate the strings into.',
         multiValued=1,
+        factory_views={ 'TRAIdioma' : 'TRACrear_Idioma',},
         owner_class_name="TRAColeccionIdiomas",
         expression="context.objectValues(['TRAIdioma'])",
         computed_types=['TRAIdioma'],
@@ -78,17 +75,16 @@ schema = Schema((
 TRAColeccionIdiomas_schema = OrderedBaseFolderSchema.copy() + \
     getattr(TRAColeccionArquetipos, 'schema', Schema(())).copy() + \
     getattr(TRAColeccionIdiomas_Operaciones, 'schema', Schema(())).copy() + \
-    getattr(TRAConRegistroActividad, 'schema', Schema(())).copy() + \
     schema.copy()
 
 ##code-section after-schema #fill in your manual code here
 ##/code-section after-schema
 
-class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccionIdiomas_Operaciones, TRAConRegistroActividad):
+class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccionIdiomas_Operaciones):
     """
     """
     security = ClassSecurityInfo()
-    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAColeccionArquetipos,'__implements__',()),) + (getattr(TRAColeccionIdiomas_Operaciones,'__implements__',()),) + (getattr(TRAConRegistroActividad,'__implements__',()),)
+    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAColeccionArquetipos,'__implements__',()),) + (getattr(TRAColeccionIdiomas_Operaciones,'__implements__',()),)
 
     # This name appears in the 'add' box
     archetype_name = 'Coleccion de Idiomas'
@@ -111,34 +107,24 @@ class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccio
 
 
 
-    allowed_content_types = ['TRAIdioma'] + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', [])) + list(getattr(TRAColeccionIdiomas_Operaciones, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', []))
-    filter_content_types             = 1
-    global_allow                     = 0
+    allowed_content_types = ['TRAIdioma'] + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', [])) + list(getattr(TRAColeccionIdiomas_Operaciones, 'allowed_content_types', []))
+    filter_content_types = 1
+    global_allow = 0
     #content_icon = 'TRAColeccionIdiomas.gif'
-    immediate_view                   = 'Tabular'
-    default_view                     = 'Tabular'
-    suppl_views                      = ['Tabular',]
-    typeDescription                  = "Coleccion de idiomas a los que se desea traducir las cadenas."
-    typeDescMsgId                    =  'gvSIGi18n_TRAColeccionIdiomas_help'
-    archetype_name2                  = 'Languages collection'
-    typeDescription2                 = '''Collection of languages to translate the strings into.'''
-    archetype_name_msgid             = 'gvSIGi18n_TRAColeccionIdiomas_label'
-    factory_methods                  = None
-    factory_enablers                 = None
-    propagate_delete_impact_to       = None
+    immediate_view = 'Tabular'
+    default_view = 'Tabular'
+    suppl_views = ['Tabular',]
+    typeDescription = "Coleccion de idiomas a los que se desea traducir las cadenas."
+    typeDescMsgId =  'gvSIGi18n_TRAColeccionIdiomas_help'
+    archetype_name2 = 'Languages collection'
+    typeDescription2 = '''Collection of languages to translate the strings into.'''
+    archetype_name_msgid = 'gvSIGi18n_TRAColeccionIdiomas_label'
+    factory_methods = { 'TRAIdioma' : 'fCrearIdioma',}
+    factory_enablers = { 'TRAIdioma' : [ 'fUseCaseCheckDoableFactory', 'Create_TRAIdioma',]}
     allow_discussion = False
 
 
     actions =  (
-
-
-       {'action': "string:${object_url}/TRACrear_Idioma",
-        'category': "object_buttons",
-        'id': 'TRACreateLanguage',
-        'name': 'Create Language',
-        'permissions': ("Modify portal content",),
-        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Create_TRAIdioma')"""
-       },
 
 
        {'action': "string:${object_url}/sharing",
@@ -146,7 +132,7 @@ class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccio
         'id': 'local_roles',
         'name': 'Sharing',
         'permissions': ("Manage properties",),
-        'condition': """python:object.fAllowWrite() and object.TRAgvSIGi18n_tool.fRoleQuery_IsAnyRol( object, [ 'Manager', 'Owner', 'TRACreator', 'TRAManager', 'TRACoordinator',])"""
+        'condition': """python:object.fAllowWrite() and object.fRoleQuery_IsManagerOrCoordinator()"""
        },
 
 
@@ -173,16 +159,7 @@ class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccio
         'id': 'view',
         'name': 'View',
         'permissions': ("View",),
-        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'View_any_TRA_element')"""
-       },
-
-
-       {'action': "string:${object_url}/MDDChanges",
-        'category': "object_buttons",
-        'id': 'mddchanges',
-        'name': 'Changes',
-        'permissions': ("View",),
-        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Changes_on_any_TRA_element')"""
+        'condition': """python:1"""
        },
 
 
@@ -191,25 +168,7 @@ class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccio
         'id': 'edit',
         'name': 'Edit',
         'permissions': ("Modify portal content",),
-        'condition': """python:object.fAllowWrite() and object.TRAgvSIGi18n_tool.fRoleQuery_IsAnyRol( object, [ 'Manager', 'Owner', 'TRACreator', 'TRAManager', 'TRACoordinator',])"""
-       },
-
-
-       {'action': "string:${object_url}/TRAFlushCache_action",
-        'category': "object_buttons",
-        'id': 'tra_flushcache',
-        'name': 'Flush',
-        'permissions': ("View",),
-        'condition': """python:object.TRAgvSIGi18n_tool.fRoleQuery_IsAnyRol( object, [ 'Manager', 'Owner', 'TRACreator', 'TRAManager', 'TRACoordinator',])"""
-       },
-
-
-       {'action': "string:${object_url}/TRAInventory_action",
-        'category': "object_buttons",
-        'id': 'TRA_inventario',
-        'name': 'Inventory',
-        'permissions': ("View",),
-        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Inventory_TRAElemento')"""
+        'condition': """python:object.fAllowWrite()"""
        },
 
 
@@ -218,7 +177,7 @@ class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccio
         'id': 'TRA_SeguridadUsuarioConectado',
         'name': 'Permissions',
         'permissions': ("View",),
-        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Permissions_on_any_TRA_element')"""
+        'condition': """python:1"""
        },
 
 
@@ -228,42 +187,6 @@ class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccio
         'name': 'State',
         'permissions': ("View",),
         'condition': """python:0"""
-       },
-
-
-       {'action': "string:${object_url}/TRARecatalog_action",
-        'category': "object_buttons",
-        'id': 'TRA_recatalogar',
-        'name': 'ReCatalog',
-        'permissions': ("View",),
-        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'ReCatalog_TRAElemento')"""
-       },
-
-
-       {'action': "string:${object_url}/MDDCacheStatus/",
-        'category': "object_buttons",
-        'id': 'mddcachestatus',
-        'name': 'Cache',
-        'permissions': ("View",),
-        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'CacheStatus_on_any_TRA_element')"""
-       },
-
-
-       {'action': "string:${object_url}/TRAResetPermissions_action",
-        'category': "object_buttons",
-        'id': 'TRA_reestablecerpermisos',
-        'name': 'Reset Permissions',
-        'permissions': ("View",),
-        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'ResetPermissions_TRAElemento')"""
-       },
-
-
-       {'action': "string:${object_url}/TRAVerifyPermissions_action",
-        'category': "object_buttons",
-        'id': 'TRA_verificarpermisos',
-        'name': 'Verify Permissions',
-        'permissions': ("View",),
-        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'VerifyPermissions_TRAElemento')"""
        },
 
 
@@ -285,33 +208,19 @@ class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccio
         
         return False
 
-    security.declarePublic('displayContentsTab')
-    def displayContentsTab(self):
-        """
-        """
-        
-        return False
-
-    security.declarePublic('fExtraLinks')
-    def fExtraLinks(self):
-        """
-        """
-        
-        return TRAElemento_Operaciones.fExtraLinks( self)
-
-    security.declarePublic('fIsCacheable')
-    def fIsCacheable(self):
-        """
-        """
-        
-        return True
-
     security.declarePublic('manage_afterAdd')
     def manage_afterAdd(self,item,container):
         """
         """
         
         return TRAColeccionArquetipos.manage_afterAdd( self, item, container)
+
+    security.declarePublic('cb_isMoveable')
+    def cb_isMoveable(self):
+        """
+        """
+        
+        return False
 
     security.declarePublic('manage_beforeDelete')
     def manage_beforeDelete(self,item,container):
@@ -325,7 +234,14 @@ class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccio
         """
         """
         
-        return self
+        return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
+
+    security.declarePublic('displayContentsTab')
+    def displayContentsTab(self):
+        """
+        """
+        
+        return False
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

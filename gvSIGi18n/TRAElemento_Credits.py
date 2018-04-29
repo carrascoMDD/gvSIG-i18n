@@ -2,7 +2,7 @@
 #
 # File: TRAElemento_Credits.py
 #
-# Copyright (c) 2008, 2009, 2010, 2011  by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+# Copyright (c) 2008, 2009 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -79,8 +79,7 @@ gTRACredits_Constant = {
     'gvSIGi18n_credits_RequirementsCoordination_Administration_URL':u"gvsig.org/web/author/vacevedo",
     'gvSIGi18n_credits_SponsorProjectTitle_Jefe_Name':u"Martin Garcia",
     'gvSIGi18n_credits_SponsorProjectTitle_CoordinadorGeneral_Name':u"Gabriel Carrion",
-    'gvSIGi18n_credits_SponsorProjectTitle_CoordinadorTecnico_Name':u"Joaquin del Cerro",
-    'gvSIGi18n_credits_SponsorProjectTitle_CoordinadorTecnicoAtProjectLaunch_Name':u"Luis W. Sevilla",
+    'gvSIGi18n_credits_SponsorProjectTitle_CoordinadorTecnico_Name':u"Luis W. Sevilla",
     'gvSIGi18n_credits_Standards_UML_PropertyValue': u"Unified Modeling Language (UML)",   
     'gvSIGi18n_credits_Standards_UML_URL_PropertyValue':u"www.omg.org/technology/documents/modeling_spec_catalog.htm#UML",
     'gvSIGi18n_credits_Standards_MOF_PropertyValue': u"Meta Object Facility (MOF)",    
@@ -126,7 +125,6 @@ gTRACredits_I18N = {
     'gvSIGi18n_credits_SponsorProjectTitle_Jefe_Title':u"Chief Organization and Information Officer at CIT-",
     'gvSIGi18n_credits_SponsorProjectTitle_CoordinadorGeneral_Title':"gvSIG General Coordinator-",
     'gvSIGi18n_credits_SponsorProjectTitle_CoordinadorTecnico_Title': u"gvSIG Technical Coordinator-",
-    'gvSIGi18n_credits_SponsorProjectTitle_CoordinadorTecnicoAtProjectLaunch_Title': u"Technical Coord. whn project launched-",
     'gvSIGi18n_credits_DevelopedBy_PropertyName': u"Developed by-",
     'gvSIGi18n_credits_PorLa': u"by the-",
     'gvSIGi18n_credits_por':   u"by-",
@@ -156,7 +154,7 @@ class TRAElemento_Credits:
         
         aCreditsDict = gTRACredits_I18N.copy()
         
-        aTranslationService = self.getTranslationServiceTool()   
+        aTranslationService = getToolByName( self, 'translation_service', None)   
         if not aTranslationService:
             aCreditsDict.update( gTRACredits_Constant)
             return aCreditsDict

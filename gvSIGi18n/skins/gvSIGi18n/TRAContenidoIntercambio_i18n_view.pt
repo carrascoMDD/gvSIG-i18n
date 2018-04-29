@@ -1,0 +1,147 @@
+<tal:block replace="nothing">
+# File: TRAContenidoIntercambio_i18n_view.pt
+#
+# Copyright (c) 2008, 2009 by Conselleria de Infraestructuras y Transporte de la
+# Generalidad Valenciana
+#
+# GNU General Public License (GPL)
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+#
+# Authors: 
+# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana 
+# Model Driven Development sl  Valencia (Spain) www.ModelDD.org 
+# Antonio Carrasco Valero                       carrasco@ModelDD.org
+#
+</tal:block>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en">
+<body>
+
+
+    <div metal:define-macro="tInformeContenidoIntercambio_i18n" >
+
+        <tal:block tal:define="        
+            pParentExecutionRecord  pExecutionRecord | nothing;
+            pExecutionRecord python: here.fStartExecution( 'template', 'TRAInformeContenidoIntercambio_i18n_view.pt', pParentExecutionRecord, False)" >
+    
+            <tal:block tal:define="
+                global unIndexClassFila python: 0; 
+                global unasClasesFilas  python: ('odd','even');
+                global aTranslationsCache       python: {
+                    'gvSIGi18n_numeroCadenas_property_label':                           here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_numeroCadenas_property_label',                             'Total number of Strings-' ),
+                    'gvSIGi18n_idioma_msgid':                                           here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_idioma_msgid',                                             'Language-' ),
+                    'gvSIGi18n_bandera_msgid':                                          here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_bandera_msgid',                                            'Flag-' ),
+                    'gvSIGi18n_traducciones_msgid':                                     here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_traducciones_msgid',                                       'Translations-' ),
+                    'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Pendiente':   here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Pendiente',     'Pending-' ),
+                    'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Traducida':   here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Traducida',     'Translated-' ),
+                    'gvSIGi18n_traduccion_conEncodingError':                            here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_traduccion_conEncodingError',     'Error-' ),
+                    'gvSIGi18n_TRAIdioma_attr_nombreIdioma_label_abbreviated':          here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TRAIdioma_attr_nombreIdioma_label_abbreviated',    'Name-' ),
+                    'gvSIGi18n_TRAIdioma_attr_nombreNativoDeIdioma_label_abbreviated':  here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TRAIdioma_attr_nombreNativoDeIdioma_label_abbreviated',    'Native name-' ),
+                }" />
+                    
+            <tal:block tal:define="pInforme pInforme | nothing"
+                tal:condition="pInforme" >
+                <tal:block tal:condition="not: pInforme">
+                    <p i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_nohaycontenidointercambiotraducciones_warning_msgid">There is no valid translation interchange content-</p>
+                </tal:block>
+                <tal:block tal:condition="pInforme">
+                    
+                    <br/>  
+                    <p>
+                        <font size="2">
+                            <em tal:content="aTranslationsCache/gvSIGi18n_numeroCadenas_property_label"/>
+                            <strong tal:content="python: pInforme[ 'num_strings']" />
+                        </font>
+                    </p>          
+                    <table class="listing" summary="TranslationsInterchangeContents" id="#" tal:attributes="id python: 'Report'">
+                        <thead>
+                            <tr>
+                                <th class="nosort" align="left" tal:content="aTranslationsCache/gvSIGi18n_idioma_msgid" />  
+                                <th class="nosort" align="left" tal:content="aTranslationsCache/gvSIGi18n_bandera_msgid" />  
+                                <th class="nosort" align="right" tal:content="aTranslationsCache/gvSIGi18n_TRAIdioma_attr_nombreIdioma_label_abbreviated" />  
+                                <th class="nosort" align="right" tal:content="aTranslationsCache/gvSIGi18n_TRAIdioma_attr_nombreNativoDeIdioma_label_abbreviated" />  
+                                <th class="nosort" align="right" tal:content="aTranslationsCache/gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Traducida" />  
+                                <th class="nosort" align="right" tal:content="string:%" />  
+                                <th class="nosort" align="right" tal:content="aTranslationsCache/gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Pendiente" />  
+                                <th class="nosort" align="right" tal:content="string:%" />  
+                                <th class="nosort" align="right" tal:content="aTranslationsCache/gvSIGi18n_traduccion_conEncodingError" />  
+                                <th class="nosort" align="right" tal:content="string:%" />  
+                           </tr>
+                        </thead>
+                        <tbody>                       
+                            <tal:block tal:repeat="pLanguage pInforme/languages">
+                            
+                                <tr class="#" id="#" 
+                                    tal:attributes="class python: unasClasesFilas[ unIndexClassFila % 2];
+                                    id python: 'language-%s' % pLanguage;"
+                                    tal:define="global unIndexClassFila python: unIndexClassFila + 1" >                        
+            
+                                    <td  align="center"  valign="baseline" >
+                                        <strong tal:content="python: here.fAsUnicode( pLanguage)" />
+                                    </td>
+                                    <td  align="center"  valign="baseline">
+                                        <tal:block tal:define="aFlag python: pInforme.get( 'language_names_and_flags', {}).get( pLanguage, {})"/>
+                                        <tal:block tal:define="aFlag python: pInforme.get( 'language_names_and_flags', {}).get( pLanguage, {}).get( 'flag', 'tra_flag-ninguna.gif')">
+                                            <img width="14" height="11" alt="" tal:attributes="src python: '%s/%s' % ( here.absolute_url(), aFlag);title python: pLanguage" />
+                                        </tal:block>                                                                
+                                    </td>
+                                    <td  align="left"  valign="baseline" >
+                                        <tal:block tal:content="python: here.fAsUnicode( pInforme.get( 'language_names_and_flags', {}).get( pLanguage, {}).get( 'english', pLanguage))" />
+                                    </td>
+                                    <td  align="left"  valign="baseline" >
+                                        <tal:block tal:content="python: here.fAsUnicode( pInforme.get( 'language_names_and_flags', {}).get( pLanguage, {}).get( 'native', pLanguage))" />
+                                    </td>
+    
+                                    <td  align="right"  valign="baseline">
+                                        <strong tal:content="python: pInforme[ 'num_translated_by_language'][ pLanguage]" />
+                                    </td>
+                                    
+                                    <td  align="right"  valign="baseline">
+                                        <span tal:content="python: pInforme[ 'percent_translated_by_language'][ pLanguage]" />
+                                    </td>
+                                        
+                                    <td  align="right"  valign="baseline">
+                                        <strong tal:content="python: pInforme[ 'num_pending_by_language'][ pLanguage]" />
+                                    </td>
+                                    
+                                    <td  align="right"  valign="baseline">
+                                        <span tal:content="python: pInforme[ 'percent_pending_by_language'][ pLanguage]" />
+                                    </td>
+                                        
+                                    <td  align="right"  valign="baseline">
+                                        <strong tal:content="python: pInforme[ 'num_encoding_errors_by_language'][ pLanguage]" />
+                                    </td>
+                                    
+                                    <td  align="right"  valign="baseline">
+                                        <span tal:content="python: pInforme[ 'percent_encoding_errors_by_language'][ pLanguage]" />
+                                    </td>
+    
+                                </tr>   
+                            </tal:block>
+                        </tbody>
+                    </table>
+                </tal:block>
+            </tal:block>
+            <br/>
+            
+            <tal:block tal:define="dummy python: pExecutionRecord and here.pEndExecution( pExecutionRecord)" />
+
+        </tal:block>
+        
+    </div>        
+ 

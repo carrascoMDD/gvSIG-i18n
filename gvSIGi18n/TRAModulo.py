@@ -2,8 +2,8 @@
 #
 # File: TRAModulo.py
 #
-# Copyright (c) 2013 by 2008, 2009, 2010, 2011 Conselleria de Infraestructuras
-# y Transporte de la Generalidad Valenciana
+# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
+# Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -65,7 +65,6 @@ schema = Schema((
         styleex="volatile=0;IsLiteral=0;",
         description2="If True, then the user may see  the module. If False, then the user can not see  the module. This may happen during long import processes or by coordinator request.",
         ea_guid="{6607BD0C-0619-492e-B4EC-1BD206122B87}",
-        read_only="True",
         scale="0",
         default="True",
         label="Permite ver Modulo",
@@ -98,7 +97,6 @@ schema = Schema((
         styleex="volatile=0;IsLiteral=0;",
         description2="If True, then the user may perform  the changes authorized by the roles held on the module. If False, then the user can not make changes to the module. This may happen during long import processe.",
         ea_guid="{C9E9AD96-7852-49a3-BC7D-45130F8C9816}",
-        read_only="True",
         scale="0",
         default="True",
         label="Permite Modificar Modulo",
@@ -121,8 +119,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRAModulo_attr_dominio_help',
             i18n_domain='gvSIGi18n',
         ),
+        scale="0",
         description="Dato que aparece en los ficheros de exportacion de tipo GNUgettext PO, para identificar la aplicacion o modulo a que se aplican las traducciones.",
-        searchable=0,
         duplicates="0",
         label2="Domain",
         ea_localid="1170",
@@ -130,14 +128,13 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        description2="Iinformation that appears in the exported files of GNUgettext PO format, to indicate the application or module to which the translations apply.",
-        ea_guid="{70C5AFBA-F231-4944-BC58-D108311B4B10}",
-        scale="0",
-        label="Dominio",
         length="0",
+        description2="Iinformation that appears in the exported files of GNUgettext PO format, to indicate the application or module to which the translations apply.",
         containment="Not Specified",
+        ea_guid="{70C5AFBA-F231-4944-BC58-D108311B4B10}",
         position="1",
-        owner_class_name="TRAModulo"
+        owner_class_name="TRAModulo",
+        label="Dominio"
     ),
 
     BooleanField(
@@ -218,42 +215,23 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRAMod
     use_folder_tabs = 0
 
     allowed_content_types = [] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', [])) + list(getattr(TRAModulo_Operaciones, 'allowed_content_types', []))
-    filter_content_types             = 1
-    global_allow                     = 0
+    filter_content_types = 1
+    global_allow = 0
     content_icon = 'tramodulo.gif'
-    immediate_view                   = 'Tabular'
-    default_view                     = 'Tabular'
-    suppl_views                      = ['Tabular',]
-    typeDescription                  = "Uno de los Modulos del producto a traducir."
-    typeDescMsgId                    =  'gvSIGi18n_TRAModulo_help'
-    archetype_name2                  = 'Module'
-    typeDescription2                 = '''One of the Modules in the product to translate.'''
-    archetype_name_msgid             = 'gvSIGi18n_TRAModulo_label'
-    factory_methods                  = None
-    factory_enablers                 = None
-    propagate_delete_impact_to       = None
+    immediate_view = 'Tabular'
+    default_view = 'Tabular'
+    suppl_views = ['Tabular',]
+    typeDescription = "Uno de los Modulos del producto a traducir."
+    typeDescMsgId =  'gvSIGi18n_TRAModulo_help'
+    archetype_name2 = 'Module'
+    typeDescription2 = '''One of the Modules in the product to translate.'''
+    archetype_name_msgid = 'gvSIGi18n_TRAModulo_label'
+    factory_methods = None
+    factory_enablers = None
     allow_discussion = False
 
 
     actions =  (
-
-
-       {'action': "string:${object_url}/TRARenombrar_Modulo",
-        'category': "object_buttons",
-        'id': 'TRARenameModule',
-        'name': 'Rename Module',
-        'permissions': ("Modify portal content",),
-        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Rename_TRAModulo')"""
-       },
-
-
-       {'action': "string:${object_url}/TRAEliminar_Modulo",
-        'category': "object_buttons",
-        'id': 'TRADeleteModule',
-        'name': 'Delete Module',
-        'permissions': ("Delete objects",),
-        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Delete_TRAModulo')"""
-       },
 
 
        {'action': "string:$object_url/Editar",
@@ -261,7 +239,7 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRAMod
         'id': 'edit',
         'name': 'Edit',
         'permissions': ("Modify portal content",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Edit_TRAModulo')"""
+        'condition': """python:object.fAllowWrite()"""
        },
 
 
@@ -270,7 +248,7 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRAMod
         'id': 'local_roles',
         'name': 'Sharing',
         'permissions': ("Manage properties",),
-        'condition': """python:object.fAllowWrite() and object.TRAgvSIGi18n_tool.fRoleQuery_IsAnyRol( object, [ 'Manager', 'Owner', 'TRACreator', 'TRAManager', 'TRACoordinator',])"""
+        'condition': """python:object.fAllowWrite() and object.fRoleQuery_IsManagerOrCoordinator()"""
        },
 
 
@@ -279,43 +257,7 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRAMod
         'id': 'view',
         'name': 'View',
         'permissions': ("View",),
-        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'View_any_TRA_element')"""
-       },
-
-
-       {'action': "string:${object_url}/MDDCacheStatus/",
-        'category': "object_buttons",
-        'id': 'mddcachestatus',
-        'name': 'Cache',
-        'permissions': ("View",),
-        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'CacheStatus_on_any_TRA_element')"""
-       },
-
-
-       {'action': "string:${object_url}/MDDChanges",
-        'category': "object_buttons",
-        'id': 'mddchanges',
-        'name': 'Changes',
-        'permissions': ("View",),
-        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Changes_on_any_TRA_element')"""
-       },
-
-
-       {'action': "string:$object_url/content_status_history",
-        'category': "object",
-        'id': 'content_status_history',
-        'name': 'State',
-        'permissions': ("View",),
-        'condition': """python:0"""
-       },
-
-
-       {'action': "string:${object_url}/TRAFlushCache_action",
-        'category': "object_buttons",
-        'id': 'tra_flushcache',
-        'name': 'FlushCache',
-        'permissions': ("View",),
-        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fRoleQuery_IsAnyRol( object, [ 'Manager', 'Owner', 'TRACreator', 'TRAManager', 'TRACoordinator',])"""
+        'condition': """python:1"""
        },
 
 
@@ -325,42 +267,6 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRAMod
         'name': 'Folder Listing',
         'permissions': ("View",),
         'condition': """python:0"""
-       },
-
-
-       {'action': "string:${object_url}/TRAInventory_action",
-        'category': "object_buttons",
-        'id': 'TRA_inventario',
-        'name': 'Inventory',
-        'permissions': ("View",),
-        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Inventory_TRAElemento')"""
-       },
-
-
-       {'action': "string:${object_url}/TRARecatalog_action",
-        'category': "object_buttons",
-        'id': 'TRA_recatalogar',
-        'name': 'ReCatalog',
-        'permissions': ("View",),
-        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'ReCatalog_TRAElemento')"""
-       },
-
-
-       {'action': "string:${object_url}/TRAResetPermissions_action",
-        'category': "object_buttons",
-        'id': 'TRA_reestablecerpermisos',
-        'name': 'Reset Permissions',
-        'permissions': ("View",),
-        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'ResetPermissions_TRAElemento')"""
-       },
-
-
-       {'action': "string:${object_url}/TRAVerifyPermissions_action",
-        'category': "object_buttons",
-        'id': 'TRA_verificarpermisos',
-        'name': 'Verify Permissions',
-        'permissions': ("View",),
-        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'VerifyPermissions_TRAElemento')"""
        },
 
 
@@ -378,7 +284,16 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRAMod
         'id': 'TRA_SeguridadUsuarioConectado',
         'name': 'Permissions',
         'permissions': ("View",),
-        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Permissions_on_any_TRA_element')"""
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:$object_url/content_status_history",
+        'category': "object",
+        'id': 'content_status_history',
+        'name': 'State',
+        'permissions': ("View",),
+        'condition': """python:0"""
        },
 
 
@@ -399,6 +314,27 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRAMod
         """
         
         return False
+
+    security.declarePublic('manage_afterAdd')
+    def manage_afterAdd(self,item,container):
+        """
+        """
+        
+        return TRAArquetipo.manage_afterAdd( self, item, container)
+
+    security.declarePublic('manage_beforeDelete')
+    def manage_beforeDelete(self,item,container):
+        """
+        """
+        
+        return TRAArquetipo.manage_beforeDelete( self, item, container)
+
+    security.declarePublic('manage_pasteObjects')
+    def manage_pasteObjects(self,cb_copy_data,REQUEST):
+        """
+        """
+        
+        return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
 
     security.declarePublic('displayContentsTab')
     def displayContentsTab(self):
@@ -421,54 +357,12 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRAMod
         
         return self.fAllowRead() and self.getPermiteModificar() and self.getCatalogo().fAllowWrite()
 
-    security.declarePublic('fExtraLinks')
-    def fExtraLinks(self):
+    security.declarePublic('cb_isMoveable')
+    def cb_isMoveable(self):
         """
         """
         
-        return TRAModulo_Operaciones.fExtraLinks( self)
-
-    security.declarePublic('fIsCacheable')
-    def fIsCacheable(self):
-        """
-        """
-        
-        return True
-
-    security.declarePublic('fIsLocked')
-    def fIsLocked(self):
-        """
-        """
-        
-        return not self.getPermiteModificar()
-
-    security.declarePublic('fIsUnLocked')
-    def fIsUnLocked(self):
-        """
-        """
-        
-        return self.getPermiteModificar()
-
-    security.declarePublic('manage_afterAdd')
-    def manage_afterAdd(self,item,container):
-        """
-        """
-        
-        return TRAArquetipo.manage_afterAdd( self, item, container)
-
-    security.declarePublic('manage_beforeDelete')
-    def manage_beforeDelete(self,item,container):
-        """
-        """
-        
-        return TRAArquetipo.manage_beforeDelete( self, item, container)
-
-    security.declarePublic('manage_pasteObjects')
-    def manage_pasteObjects(self,cb_copy_data,REQUEST):
-        """
-        """
-        
-        return self
+        return False
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

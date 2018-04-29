@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<RelationsLibrary>
+	<RulesetCollection id="gvSIGi18n">
+		<Ruleset id="IdiomasReferencia" uid="EAID_C9A23B85_D76D_4490_B3BE_D035AC784D9D">
+			<TypeConstraint id="type_constraint">
+				<allowedSourceType>
+					TRAIdioma
+				</allowedSourceType>
+				<allowedTargetType>
+					TRAIdioma
+				</allowedTargetType>
+			</TypeConstraint>
+			<InverseImplicator id="inverse_relation">
+				<inverseRuleset uidref="ReferenciaDeIdiomas"/>
+			</InverseImplicator>
+		</Ruleset>
+		<Ruleset id="ReferenciaDeIdiomas" uid="ReferenciaDeIdiomas">
+			<TypeConstraint id="type_constraint">
+				<allowedSourceType>
+					TRAIdioma
+				</allowedSourceType>
+				<allowedTargetType>
+					TRAIdioma
+				</allowedTargetType>
+			</TypeConstraint>
+			<InverseImplicator id="inverse_relation">
+				<inverseRuleset uidref="EAID_C9A23B85_D76D_4490_B3BE_D035AC784D9D"/>
+			</InverseImplicator>
+		</Ruleset>
+		<Ruleset id="IdiomaBase" uid="EAID_D682E989_78FE_4493_B9A4_089216C74981">
+			<TypeConstraint id="type_constraint">
+				<allowedSourceType>
+					TRAIdioma
+				</allowedSourceType>
+				<allowedTargetType>
+					TRAIdioma
+				</allowedTargetType>
+			</TypeConstraint>
+			<InverseImplicator id="inverse_relation">
+				<inverseRuleset uidref="BaseDeIdiomas"/>
+			</InverseImplicator>
+		</Ruleset>
+		<Ruleset id="BaseDeIdiomas" uid="BaseDeIdiomas">
+			<TypeConstraint id="type_constraint">
+				<allowedSourceType>
+					TRAIdioma
+				</allowedSourceType>
+				<allowedTargetType>
+					TRAIdioma
+				</allowedTargetType>
+			</TypeConstraint>
+			<CardinalityConstraint id="cardinality">
+				<maxTargetCardinality>
+					1
+				</maxTargetCardinality>
+			</CardinalityConstraint>
+			<InverseImplicator id="inverse_relation">
+				<inverseRuleset uidref="EAID_D682E989_78FE_4493_B9A4_089216C74981"/>
+			</InverseImplicator>
+		</Ruleset>
+	</RulesetCollection>
+</RelationsLibrary>
+
