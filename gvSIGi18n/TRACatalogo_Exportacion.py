@@ -35,6 +35,7 @@ import logging
 from codecs                 import lookup           as CODECS_Lookup
 from codecs                 import EncodedFile      as CODECS_EncodedFile
 
+from Acquisition import aq_get
 
 from AccessControl          import ClassSecurityInfo
 
@@ -50,6 +51,8 @@ from StringIO import StringIO
 
 from zipfile import ZipFile, ZIP_STORED, ZIP_DEFLATED
 
+
+
 from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow, fDateTimeNow
 
 
@@ -62,6 +65,88 @@ from TRAElemento_Permission_Definitions import cUseCase_ImportTRAImportacion, cU
 
 
 ##code-section after-local-schema #fill in your manual code here
+
+
+# ##################################
+"""BEGIN ACV patch for v.1.2.1 20110125
+
+"""
+
+from Products.ExternalMethod.ExternalMethod import ExternalMethod
+
+
+cTRAExportAdditionalConfig_ExternalMethodName = 'TRAExportAdditionalConfig'
+
+
+def fgResolveMethodBinding( theContextualElement =None, theMethodName =None):
+    """Try to get an external method by name.
+    """
+
+
+    if theContextualElement == None:
+        return None
+    
+    if not theMethodName:
+        return None
+
+
+    # ######################################################
+    """Strings are used to name the external method.
+
+    """
+    if not isinstance( theMethodName, str) or isinstance( theMethodName, unicode):
+        return None
+
+
+
+    # ######################################################
+    """Try to get an external method.
+
+    """
+    unExternalMethod = None
+    try:
+        unExternalMethod = aq_get( theContextualElement, theMethodName, None, 1)
+    except:
+        None  
+    if not unExternalMethod:
+        return None
+    
+    if not isinstance( unExternalMethod, ExternalMethod):
+        return None
+    
+    return unExternalMethod
+
+
+
+
+def fgExportAdditionalConfig( theContextualElement):
+    
+    if theContextualElement == None:
+        return None
+    
+    anExternalMethod = fgResolveMethodBinding( theContextualElement, cTRAExportAdditionalConfig_ExternalMethodName)
+    if not anExternalMethod:
+        return None
+    
+    if not callable( anExternalMethod):
+        return None
+    
+    anExportAdditionalConfig = anExternalMethod( theContextualElement)
+
+    return anExportAdditionalConfig
+
+
+    
+    
+    
+
+# ##################################
+"""END ACV patch for v.1.2.1 20110125
+
+"""
+
+
+
 ##/code-section after-local-schema
 
 
@@ -1718,6 +1803,16 @@ class TRACatalogo_Exportacion:
         if not theBuffer:
             theResult[ 'status'] = cResultCondition_Internal_MissingParameter    
             return False
+
+        someModuleReplacements = {}
+        someUserReplacements   = {}
+        
+        anExportAdditionalConfig = fgExportAdditionalConfig( self)
+        if anExportAdditionalConfig:
+            someModuleReplacements = anExportAdditionalConfig.get( 'module_replacements', {})
+            someUserReplacements   = anExportAdditionalConfig.get( 'user_replacements', {})
+            
+        
         
         unHayError = False
         
@@ -1830,6 +1925,95 @@ class TRACatalogo_Exportacion:
                             unHayError =  True
                 
                 theBuffer.write( "\n" )
+                
+                
+                
+                # #######################################
+                """BEGIN ACV patch for v.1.2.1 20110125
+                Export string modules, translation status, and contributing users and dates.
+                """
+                
+                    
+                unosModulosCadena = unResultadoTraduccion[ 'getNombresModulos'] or ''
+                if unosModulosCadena:
+                    unosNombresModulosCadena = unosModulosCadena.strip().split( ' ')
+                    if unosNombresModulosCadena:
+                        unosNuevosNombresModulosCadena = []
+                        for unNombreModuloCadena in unosNombresModulosCadena:
+                            unNuevoNombreModuloCadena = someModuleReplacements.get( unNombreModuloCadena, unNombreModuloCadena)
+                            if unNuevoNombreModuloCadena and not ( unNuevoNombreModuloCadena in unosNuevosNombresModulosCadena):
+                                unosNuevosNombresModulosCadena.append( unNuevoNombreModuloCadena)
+                                
+                        unosNuevosNombresModulosCadenaString = ''
+                        if unosNuevosNombresModulosCadena:
+                            unosNuevosNombresModulosCadenaString = ' '.join( unosNuevosNombresModulosCadena)
+                        
+                        if unosNuevosNombresModulosCadenaString:
+                            theBuffer.write( '#Modules %s=%s\n' % ( unSimboloCadenaEncoded, unosNuevosNombresModulosCadenaString,))
+                        
+                            
+                            
+                            
+                unaFechaCreacion = unResultadoTraduccion[ 'getFechaCreacionTextual'] or ''
+                if unaFechaCreacion:
+                    theBuffer.write( '#CreationDate %s=%s\n' % ( unSimboloCadenaEncoded, unaFechaCreacion,))
+                    
+                unUsuarioCreador = unResultadoTraduccion[ 'getUsuarioCreador']       or ''
+                if unUsuarioCreador:
+                    unUsuarioCreador = someUserReplacements.get( unUsuarioCreador, unUsuarioCreador)
+                    if unUsuarioCreador:
+                        theBuffer.write( '#Creator %s=%s\n' % ( unSimboloCadenaEncoded, unUsuarioCreador,))
+                           
+                    
+                    
+                if unaCadenaTraducida:
+                    
+                    unEstadoTraduccion = unResultadoTraduccion[ 'getEstadoTraduccion']
+                    if unEstadoTraduccion in [ cEstadoTraduccionTraducida, cEstadoTraduccionRevisada, cEstadoTraduccionDefinitiva,]:
+                        
+                        unaFechaTraduccion = unResultadoTraduccion[ 'getFechaTraduccionTextual'] or ''
+                        if unaFechaTraduccion:
+                            theBuffer.write( '#TranslationDate %s=%s\n' % ( unSimboloCadenaEncoded, unaFechaTraduccion,))
+                            
+                        unUsuarioTraductor = unResultadoTraduccion[ 'getUsuarioTraductor']       or ''
+                        if unUsuarioTraductor:
+                            unUsuarioTraductor = someUserReplacements.get( unUsuarioTraductor, unUsuarioTraductor)
+                            if unUsuarioTraductor:
+                                theBuffer.write( '#Translator %s=%s\n' % ( unSimboloCadenaEncoded, unUsuarioTraductor,))
+                       
+                        
+                        if unEstadoTraduccion in [ cEstadoTraduccionRevisada, cEstadoTraduccionDefinitiva,]:
+                    
+                            unaFechaRevision = unResultadoRevision[ 'getFechaRevisionTextual'] or ''
+                            if unaFechaRevision:
+                                theBuffer.write( '#ReviewDate %s=%s\n' % ( unSimboloCadenaEncoded, unaFechaRevision,))
+                                
+                            unUsuarioRevisor = unResultadoRevision[ 'getUsuarioRevisor']       or ''
+                            if unUsuarioRevisor:
+                                unUsuarioRevisor = someUserReplacements.get( unUsuarioRevisor, unUsuarioRevisor)
+                                if unUsuarioRevisor:
+                                    theBuffer.write( '#Reviewer %s=%s\n' % ( unSimboloCadenaEncoded, unUsuarioRevisor,))
+                            
+     
+                            if unEstadoTraduccion in [ cEstadoTraduccionDefinitiva,]:
+                        
+                                unaFechaDefinitivo = unResultadoRevision[ 'getFechaDefinitivoTextual'] or ''
+                                if unaFechaDefinitivo:
+                                    theBuffer.write( '#DefinitiveDate %s=%s\n' % ( unaFechaDefinitivo, unaFechaRevision,))
+                                    
+                                unUsuarioCoordinador = unResultadoRevision[ 'getUsuarioCoordinador']       or ''
+                                if unUsuarioCoordinador:
+                                    unUsuarioCoordinador = someUserReplacements.get( unUsuarioCoordinador, unUsuarioCoordinador)
+                                    if unUsuarioCoordinador:
+                                        theBuffer.write( '#Coordinator %s=%s\n' % ( unSimboloCadenaEncoded, unUsuarioCoordinador,))
+                                             
+                                    
+                                    
+                # #######################################
+                """END ACV patch for v.1.2.1 20110125
+                
+                """
+                
                 
         return not unHayError        
     
@@ -3350,6 +3534,12 @@ class TRACatalogo_Exportacion:
 # end of class TRACatalogo_Exportacion
 
 ##code-section module-footer #fill in your manual code here
+
+
+
+
+
+
 ##/code-section module-footer
 
 
