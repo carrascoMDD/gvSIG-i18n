@@ -1,0 +1,228 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>gvSIGi18n::TRAConRegistroActividad</title>
+<link href="../css/ea.css" rel="stylesheet" type="text/css" />
+<script>
+function initPage(src) {
+	if(parent==this&&(this.location+"").indexOf('EARoot')!=-1)
+		document.location=(this.location+"").substring(0,(this.location+"").indexOf('EARoot'))+"index"+(this.location+"").substring((this.location+"").lastIndexOf('.'))+"?goto="+((this.location+"").substring((this.location+"").indexOf('EARoot')+7,(this.location+"").lastIndexOf('.')).replace(/\//g,':').replace(/EA/g,""));
+	else
+		parent.initPage(src);
+}
+</script>
+</head>
+<body onload="initPage(this);" class="Content">
+<div class="pageHeader"></div>
+<div class="PageBody">
+	<span class="ObjectTitle">TRAConRegistroActividad  : public abstract  &lt;&lt;mixin&gt;&gt; class</span>
+	<table border="0" cellpadding="0" cellspacing="0" class="ObjectDetails">
+		<tr>
+			<td width="15%" class="ObjectDetailsTopic">Created:</td>
+			<td width="85%" class="ObjectDetailsValue">24/09/2009 00:38:39</td>
+		</tr>
+		<tr>
+			<td class="ObjectDetailsTopic">Modified:</td>
+			<td class="ObjectDetailsValue">24/09/2009 04:09:22</td>
+		</tr>
+		<tr style="height: 10px"><td colspan="2"></td></tr>
+		<tr>
+			<td class="ObjectDetailsTopic"><img src="../images/plus03.gif" align="absmiddle" id="proj" onclick="parent.toggleData(this.id)" />Project:</td>
+			<td class="ObjectDetailsValue"></td>
+		</tr>
+		<tr id="proj00" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Author:</td>
+			<td class="ObjectDetailsValue">acv</td>
+		</tr>
+		<tr id="proj01" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Version:</td>
+			<td class="ObjectDetailsValue">1.0</td>
+		</tr>
+		<tr id="proj02" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Phase:</td>
+			<td class="ObjectDetailsValue">1.0</td>
+		</tr>
+		<tr id="proj03" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Status:</td>
+			<td class="ObjectDetailsValue">Proposed</td>
+		</tr>
+		<tr id="proj04" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Complexity:</td>
+			<td class="ObjectDetailsValue">Easy</td>
+		</tr>
+		<tr>
+			<td class="ObjectDetailsTopic"><img src="../images/plus03.gif" align="absmiddle" id="adv" onclick="parent.toggleData(this.id)" />Advanced:</td>
+			<td class="ObjectDetailsValue"></td>
+		</tr>
+		<tr id="adv00" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">UUID:</td>
+			<td class="ObjectDetailsValue">{C2552714-AB1D-46a1-9888-4ABAD0554714}</td>
+		</tr>
+		<tr id="adv01" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Appears In:</td>
+			<td class="ObjectDetailsValue"><a href="EA15.htm">50 - gvSIGi18n - con registro actividad</a></td>
+		</tr>
+	</table>
+	
+	<div class="TableGroup" id="TableGroup">
+		<ul class="ItemTitle">
+			<li onClick="parent.toggleItem('Attributes');" id="AttributesTitle">Attributes</li>
+			<li onClick="parent.toggleItem('TaggedVal');" id="TaggedValTitle">Tagged Values</li>
+			<li onClick="parent.toggleItem('Links');" id="LinksTitle">Other Links</li>
+		</ul>
+<div class="ItemBody" id="AttributesTable">
+	<table border="0" cellspacing="0" cellpadding="0" class="Table">
+		<tr>
+			<td width="40%" class="TableHeading">Attribute</td>
+			<td width="60%" class="TableHeading">Details</td>
+		</tr>
+						<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public int</i><br /><strong>&nbsp;&nbsp;contadorCambios</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> 0<br></i>description=Contador de cambios realizados a lo largo del tiempo. Util para descubrir si han tenido lugar cambios desde que se leyeron los datos del elemento.<br>description2=Counter of changes over time. Useful to learn if any changes happened since the reading of the element information.<br>exclude_from_copyconfig=True<br>exclude_from_traversalconfig=True<br>is_change_counter=True<br>label=Contador de Cambios<br>label2=Change Counter<br>read_only=True<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public boolean</i><br /><strong>&nbsp;&nbsp;estaInactivo</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> 0<br></i>description=Si Verdadero, entonces el elemento esta inactivo porque ha sido eliminado. Los elementos eliminados no se presentan a los usuario en los usos normales de la aplicacion, y se reservan a funciones especiales de administracion.<br>description2=If True, then the element is inactive because it has been delete. Deleted elements are not presented to users in the usual application use cases, and reserved for specialized administration functions.<br>exclude_from_copyconfig=True<br>exclude_from_traversalconfig=True<br>is_inactive_state=True<br>label=El Elemento esta Inactivo<br>label2=Element is Inactive<br>read_only=True<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public date</i><br /><strong>&nbsp;&nbsp;fechaCreacion</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i></i>description=Fecha en que se creo el elemento.<br>description2=Date when the element was created.<br>exclude_from_copyconfig=True<br>exclude_from_traversalconfig=True<br>is_creation_date=True<br>label=Fecha de Creacion<br>label2=Creation Date<br>read_only=True<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public date</i><br /><strong>&nbsp;&nbsp;fechaEliminacion</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i></i>description=Fecha en que se elimino el elemento.<br>description2=Date when the element was deleted.<br>exclude_from_copyconfig=True<br>exclude_from_traversalconfig=True<br>is_deletion_date=True<br>label=Fecha de Eliminacion<br>label2=Deletion Date<br>read_only=True<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public date</i><br /><strong>&nbsp;&nbsp;fechaModificacion</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i></i>description=Fecha en que se modifico el elemento.<br>description2=Date when the element was modified.<br>exclude_from_copyconfig=True<br>exclude_from_traversalconfig=True<br>is_modification_date=True<br>label=Fecha de Modificacion<br>label2=Modification Date<br>read_only=True<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public text</i><br /><strong>&nbsp;&nbsp;registroDeCambios</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i></i>description=Regitro de los cambios efectuados sobre el elemento a lo largo del tiempo por diferentes usuarios.<br>description2=Record of changes made to the element over time by different users.<br>exclude_from_copyconfig=True<br>exclude_from_traversalconfig=True<br>is_change_log=True<br>label=Historia de Cambios<br>label2=Change Log<br>read_only=True<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public string</i><br /><strong>&nbsp;&nbsp;usuarioCreador</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i></i>description=Usuario que creo el elemento.<br>description2=User who created the element.<br>exclude_from_copyconfig=True<br>exclude_from_traversalconfig=True<br>is_creation_user=True<br>label=Usuario Creador<br>label2=Creator User<br>read_only=True<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public string</i><br /><strong>&nbsp;&nbsp;usuarioEliminador</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i></i>description=Usuario que elimino el elemento.<br>description2=User who deleted the element.<br>exclude_from_copyconfig=True<br>exclude_from_traversalconfig=True<br>is_deletion_user=True<br>label=Usuario Eliminador<br>label2=Deletion User<br>read_only=True<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public string</i><br /><strong>&nbsp;&nbsp;usuarioModificador</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i></i>description=Usuario que modifico el elemento.<br>description2=User who modified the element.<br>exclude_from_copyconfig=True<br>exclude_from_traversalconfig=True<br>is_modification_user=True<br>label=Usuario Modificador<br>label2=Modification User<br>read_only=True<br>&nbsp;</td>
+			</tr>
+		</table>
+</div><div class="ItemBody" id="TaggedValTable">
+	<table align="center" border="0" cellspacing="0" cellpadding="0" class="Table">
+	<tr>
+			<td width="30%" class="TableHeading">Tag</td>
+			<td width="30%" class="TableHeading">Value</td>
+			<td width="40%" class="TableHeading">Details</td>
+	</tr>
+					<tr>
+				<td width="30%" class="TableRow" valign="top">fields_order_1</td>
+				<td width="30%" class="TableRow" valign="top">['fechaCreacion','usuarioCreador','fechaModificacion','usuarioModificador','fechaEliminacion','usuarioEliminador','estaActivo','registroDeCambios',
+]</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>
+</table>
+</div>		<div class="ItemBody" id="LinksTable">
+			<table align="center" border="0" cellspacing="0" cellpadding="0" class="Table">
+				<tr>
+					<td width="30%" class="TableHeading">Object</td>
+					<td width="15%" class="TableHeading">Type</td>
+					<td width="15%" class="TableHeading">Connection</td>
+					<td width="40%" class="TableHeading">Notes</td>
+				</tr>
+				<tr>
+					<td width="30%" class="TableRow" valign="top"><a href="EA73.htm">«ordered» TRACatalogo</a></td>
+					<td width="15%" class="TableRow" valign="top">Class</td>
+					<td width="15%" class="TableRow" valign="top">Generalization</td>
+					<td width="40%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="30%" class="TableRow" valign="top"><a href="EA82.htm">«ordered» TRAColeccionIdiomas</a></td>
+					<td width="15%" class="TableRow" valign="top">Class</td>
+					<td width="15%" class="TableRow" valign="top">Generalization</td>
+					<td width="40%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="30%" class="TableRow" valign="top"><a href="EA74.htm">«ordered» TRAIdioma</a></td>
+					<td width="15%" class="TableRow" valign="top">Class</td>
+					<td width="15%" class="TableRow" valign="top">Generalization</td>
+					<td width="40%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="30%" class="TableRow" valign="top"><a href="EA77.htm">«ordered» TRAModulo</a></td>
+					<td width="15%" class="TableRow" valign="top">Class</td>
+					<td width="15%" class="TableRow" valign="top">Generalization</td>
+					<td width="40%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="30%" class="TableRow" valign="top"><a href="EA78.htm">«ordered» TRAImportacion</a></td>
+					<td width="15%" class="TableRow" valign="top">Class</td>
+					<td width="15%" class="TableRow" valign="top">Generalization</td>
+					<td width="40%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="30%" class="TableRow" valign="top"><a href="EA79.htm">«ordered» TRAContenidoIntercambio</a></td>
+					<td width="15%" class="TableRow" valign="top">Class</td>
+					<td width="15%" class="TableRow" valign="top">Generalization</td>
+					<td width="40%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="30%" class="TableRow" valign="top"><a href="EA80.htm">«ordered» TRAInforme</a></td>
+					<td width="15%" class="TableRow" valign="top">Class</td>
+					<td width="15%" class="TableRow" valign="top">Generalization</td>
+					<td width="40%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="30%" class="TableRow" valign="top"><a href="EA24.htm">«ordered» TRASolicitudCadena</a></td>
+					<td width="15%" class="TableRow" valign="top">Class</td>
+					<td width="15%" class="TableRow" valign="top">Generalization</td>
+					<td width="40%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="30%" class="TableRow" valign="top"><a href="EA85.htm">«ordered» TRAColeccionModulos</a></td>
+					<td width="15%" class="TableRow" valign="top">Class</td>
+					<td width="15%" class="TableRow" valign="top">Generalization</td>
+					<td width="40%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="30%" class="TableRow" valign="top"><a href="EA25.htm">«ordered» TRAColeccionInformes</a></td>
+					<td width="15%" class="TableRow" valign="top">Class</td>
+					<td width="15%" class="TableRow" valign="top">Generalization</td>
+					<td width="40%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="30%" class="TableRow" valign="top"><a href="EA26.htm">«folder» TRAColeccionSolicitudesCadenas</a></td>
+					<td width="15%" class="TableRow" valign="top">Class</td>
+					<td width="15%" class="TableRow" valign="top">Generalization</td>
+					<td width="40%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="30%" class="TableRow" valign="top"><a href="EA86.htm">«ordered» TRAColeccionImportaciones</a></td>
+					<td width="15%" class="TableRow" valign="top">Class</td>
+					<td width="15%" class="TableRow" valign="top">Generalization</td>
+					<td width="40%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="30%" class="TableRow" valign="top"><a href="EA81.htm">«ordered» TRAProgreso</a></td>
+					<td width="15%" class="TableRow" valign="top">Class</td>
+					<td width="15%" class="TableRow" valign="top">Generalization</td>
+					<td width="40%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="30%" class="TableRow" valign="top"><a href="EA83.htm">«ordered» TRAColeccionProgresos</a></td>
+					<td width="15%" class="TableRow" valign="top">Class</td>
+					<td width="15%" class="TableRow" valign="top">Generalization</td>
+					<td width="40%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="30%" class="TableRow" valign="top"><a href="EA23.htm">«ordered» TRAParametrosControlProgreso</a></td>
+					<td width="15%" class="TableRow" valign="top">Class</td>
+					<td width="15%" class="TableRow" valign="top">Generalization</td>
+					<td width="40%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+
+			</table>
+		</div>
+	</div>
+<div class="pageFooter"></div>
+ 
+</body>
+</html>

@@ -49,6 +49,11 @@ msgstr "Status Reports Collection"
 msgid "Coleccion de Modulos"
 msgstr "Modules collection"
 
+#. Default: "Coleccion de Progresos"
+#: TRAColeccionProgresos
+msgid "Coleccion de Progresos"
+msgstr "Progresses Collection"
+
 #. Default: "Coleccion de Solicitudes de creacion de Cadenas"
 #: TRAColeccionSolicitudesCadenas
 msgid "Coleccion de Solicitudes de creacion de Cadenas"
@@ -78,6 +83,16 @@ msgstr "Status Report"
 #: TRAModulo
 msgid "Modulo"
 msgstr "Module"
+
+#. Default: "Parametros Control de Progreso"
+#: TRAParametrosControlProgreso
+msgid "Parametros Control de Progreso"
+msgstr "Progress Control Parameters"
+
+#. Default: "Progreso"
+#: TRAProgreso
+msgid "Progreso"
+msgstr "Progress"
 
 #. Default: "Solicitud Creacion Cadena"
 #: TRASolicitudCadena
@@ -161,6 +176,15 @@ msgstr "Copy Translations"
 msgid "Create Strings"
 msgstr "Create Strings"
 
+#. Default: "Create New String Request"
+#: TRACatalogo
+msgid "Create New String Request"
+msgstr "Create New String Request"
+
+
+
+
+
 #. Default: "Clean-up Strings"
 #: TRAColeccionSolicitudesCadena
 msgid "Clean-up Strings"
@@ -188,6 +212,17 @@ msgstr "Permissions"
 #: TRACatalogo
 msgid "Create Language"
 msgstr "Create Language"
+
+
+#. Default: "Crear Modulo"
+#: TRACatalogo
+msgid "Create Module"
+msgstr "Create Module"
+
+#. Default: "Crear Informe"
+#: TRACatalogo
+msgid "Create Report"
+msgstr "Create Report"
 
 
 
@@ -237,4 +272,60 @@ msgid "Lock Language"
 msgstr "Lock Language"
 
 
+
+#. Default: "Inventario"
+#: TRACatalogo
+msgid "Inventory"
+msgstr "Inventory"
+
+
+#. Default: "ReCatalogar"
+#: TRACatalogo
+msgid "ReCatalog"
+msgstr "ReCatalog"
+
+
+#. Default: "Reestablecer Permisos"
+#: TRACatalogo
+msgid "Reset Permissions"
+msgstr "Reset Permissions"
+
+
+
+#. Default: "Eliminar Modulo"
+#: TRAModulo
+msgid "Delete Module"
+msgstr "Delete Module"
+
+
+
+#. Default: "Configurar Progreso"
+#: TRAProgreso
+msgid "Configure Progress"
+msgstr "Configure Progress"
+
+
+
+#. Default: "Controlar Progreso"
+#: TRAProgreso
+msgid "Control Progress"
+msgstr "Control Progress" 
+
+#. Default: "Eliminar Idioma"
+#: TRAIdioma
+msgid "Delete Language"
+msgstr "Delete Language"
+
+
+
+#. Default: "Exportar Copia de Seguridad"
+#: TRABackup_action
+msgid "Export Backup"
+msgstr "Export Backup"
+
+
+#. Default: "Actividad"
+#: TRAIdioma
+msgid "Activity"
+msgstr "Activity"
 

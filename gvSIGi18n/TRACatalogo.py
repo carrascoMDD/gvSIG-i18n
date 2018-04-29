@@ -2,8 +2,8 @@
 #
 # File: TRACatalogo.py
 #
-# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
-# Generalidad Valenciana
+# Copyright (c) 2010 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+# Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -80,7 +80,7 @@ schema = Schema((
         label="Permite Modificar",
         length="0",
         containment="Not Specified",
-        position="0",
+        position="23",
         owner_class_name="TRACatalogo",
         exclude_from_exportconfig="True",
         exclude_from_copyconfig="True"
@@ -112,7 +112,7 @@ schema = Schema((
         label="Producto",
         length="0",
         containment="Not Specified",
-        position="23",
+        position="17",
         owner_class_name="TRACatalogo"
     ),
 
@@ -142,7 +142,7 @@ schema = Schema((
         label="Codigo de Idioma por defecto",
         length="0",
         containment="Not Specified",
-        position="12",
+        position="0",
         owner_class_name="TRACatalogo"
     ),
 
@@ -172,7 +172,7 @@ schema = Schema((
         label="Codigo de Idioma para Solicitudes de Nuevas Cadenas",
         length="0",
         containment="Not Specified",
-        position="13",
+        position="2",
         owner_class_name="TRACatalogo"
     ),
 
@@ -202,7 +202,7 @@ schema = Schema((
         label="Codigo de Idioma de Referencia  para Solicitudes de Nuevas Cadenas",
         length="0",
         containment="Not Specified",
-        position="14",
+        position="1",
         owner_class_name="TRACatalogo"
     ),
 
@@ -232,7 +232,7 @@ schema = Schema((
         label="Nombre de Modulo por defecto",
         length="0",
         containment="Not Specified",
-        position="22",
+        position="16",
         owner_class_name="TRACatalogo"
     ),
 
@@ -262,7 +262,7 @@ schema = Schema((
         label="Dominio para cadenas sin modulo",
         length="0",
         containment="Not Specified",
-        position="24",
+        position="3",
         owner_class_name="TRACatalogo"
     ),
 
@@ -292,7 +292,7 @@ schema = Schema((
         label="Numero maximo de registros de traduccion por pagina por defecto",
         length="0",
         containment="Not Specified",
-        position="1",
+        position="11",
         owner_class_name="TRACatalogo"
     ),
 
@@ -322,7 +322,7 @@ schema = Schema((
         label="Numero de Traducciones en pagina por defecto",
         length="0",
         containment="Not Specified",
-        position="10",
+        position="35",
         owner_class_name="TRACatalogo"
     ),
 
@@ -352,7 +352,7 @@ schema = Schema((
         label="Tiempo en segundos para confirmar Importacion",
         length="0",
         containment="Not Specified",
-        position="2",
+        position="31",
         owner_class_name="TRACatalogo"
     ),
 
@@ -385,7 +385,7 @@ schema = Schema((
         label="Formato de exportacion por defecto",
         length="0",
         containment="Not Specified",
-        position="15",
+        position="7",
         owner_class_name="TRACatalogo"
     ),
 
@@ -418,7 +418,7 @@ schema = Schema((
         label="Incluir fichero locales.csv",
         length="0",
         containment="Not Specified",
-        position="19",
+        position="8",
         owner_class_name="TRACatalogo"
     ),
 
@@ -451,7 +451,7 @@ schema = Schema((
         label="Incluir fichero MANIFEST.MF",
         length="0",
         containment="Not Specified",
-        position="20",
+        position="9",
         owner_class_name="TRACatalogo"
     ),
 
@@ -484,7 +484,7 @@ schema = Schema((
         label="Exportar modulos por separado",
         length="0",
         containment="Not Specified",
-        position="21",
+        position="14",
         owner_class_name="TRACatalogo"
     ),
 
@@ -517,7 +517,7 @@ schema = Schema((
         label="Tipo de archivo descargable por defecto",
         length="0",
         containment="Not Specified",
-        position="17",
+        position="34",
         owner_class_name="TRACatalogo"
     ),
 
@@ -550,7 +550,7 @@ schema = Schema((
         label="Modo de gestion de errores de codificacion",
         length="0",
         containment="Not Specified",
-        position="16",
+        position="12",
         owner_class_name="TRACatalogo"
     ),
 
@@ -583,7 +583,7 @@ schema = Schema((
         label="Export File for gvSIGby default",
         length="0",
         containment="Not Specified",
-        position="18",
+        position="6",
         owner_class_name="TRACatalogo"
     ),
 
@@ -609,11 +609,11 @@ schema = Schema((
         description2="Number of Activities that shall cause the invalidation of the Activity Report, even if the minimum retention time has not lapsed yet.",
         ea_guid="{48B86632-5CF5-4034-8ADA-ACE2F48763DB}",
         scale="0",
-        default="1",
+        default="3",
         label="Cambios para Anular Informe Actividad",
         length="0",
         containment="Not Specified",
-        position="8",
+        position="18",
         owner_class_name="TRACatalogo"
     ),
 
@@ -643,7 +643,7 @@ schema = Schema((
         label="Minimo Tiempo en segundos que se retiene el Informe de Actividad",
         length="0",
         containment="Not Specified",
-        position="9",
+        position="27",
         owner_class_name="TRACatalogo"
     ),
 
@@ -669,11 +669,11 @@ schema = Schema((
         description2="Time in seconds that the Status Report by Languages shall be retained, even if the results have become inaccurate because of any modification of translations status. To avoid excessive recalculation for barely relevant changes.",
         ea_guid="{46E6C4B5-2AD9-4d59-BD9A-C93ECB3C9265}",
         scale="0",
-        default="180",
+        default="120",
         label="Minimo Tiempo en segundos que se retiene el Informe de Estado por Idiomas",
         length="0",
         containment="Not Specified",
-        position="5",
+        position="28",
         owner_class_name="TRACatalogo"
     ),
 
@@ -699,11 +699,11 @@ schema = Schema((
         description2="Number of Translation status changes that shall cause the invalidation of the Status Report by Languages, even if the minimum retention time has not lapsed yet.",
         ea_guid="{72EA73A3-2DEC-4fbb-973D-A40573168F6C}",
         scale="0",
-        default="10",
+        default="5",
         label="Cambios para Anular Informe Idiomas",
         length="0",
         containment="Not Specified",
-        position="4",
+        position="19",
         owner_class_name="TRACatalogo"
     ),
 
@@ -729,11 +729,11 @@ schema = Schema((
         description2="Time in seconds that the Status Report by Modules and Languages shall be retained, even if the results have become inaccurate because of any modification of translations status. To avoid excessive recalculation for barely relevant changes.",
         ea_guid="{D8B188A2-0626-40cd-B2BA-8759F7283616}",
         scale="0",
-        default="3600",
+        default="300",
         label="Minimo Tiempo en segundos que se retiene el Informe de Estado por Modulos e Idiomas",
         length="0",
         containment="Not Specified",
-        position="7",
+        position="29",
         owner_class_name="TRACatalogo"
     ),
 
@@ -759,11 +759,11 @@ schema = Schema((
         description2="Number of Translation status changes that shall cause the invalidation of the Status Report by Modules and Languages, even if the minimum retention time has not lapsed yet.",
         ea_guid="{88EC54C8-424B-4a1e-B0B8-9BADC4E3BFCF}",
         scale="0",
-        default="100",
+        default="20",
         label="Cambios para Anular Informe Modulos e Idiomas",
         length="0",
         containment="Not Specified",
-        position="6",
+        position="20",
         owner_class_name="TRACatalogo"
     ),
 
@@ -789,136 +789,12 @@ schema = Schema((
         description2="The system shall record recent Translation status changes, up to this maximum, discarding the oldest ones when the maximum is exceeded,",
         ea_guid="{FA1DD245-141B-46df-8764-2ACDE92809D2}",
         scale="0",
-        default="2000",
+        default="5000",
         label="Maximo numero de Cambios Recientes",
         length="0",
         containment="Not Specified",
-        position="3",
+        position="10",
         owner_class_name="TRACatalogo"
-    ),
-
-    ComputedField(
-        name='ultimaVersionImportada',
-        widget=ComputedField._properties['widget'](
-            label="Ultima Version importada del producto",
-            label2="Last Imported Product Version",
-            description="Ultima Version del Producto que se ha importado.",
-            description2="Last Imported Product Version.",
-            label_msgid='gvSIGi18n_TRACatalogo_attr_ultimaVersionImportada_label',
-            description_msgid='gvSIGi18n_TRACatalogo_attr_ultimaVersionImportada_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        description="Ultima Version del Producto que se ha importado.",
-        duplicates="0",
-        label2="Last Imported Product Version",
-        ea_localid="795",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        description2="Last Imported Product Version.",
-        ea_guid="{D418DC1C-CBFB-4585-8A44-E54FB3661F2E}",
-        scale="0",
-        label="Ultima Version importada del producto",
-        length="0",
-        containment="Not Specified",
-        position="25",
-        owner_class_name="TRACatalogo",
-        expression="context.fDeriveUltimaVersionImportada()",
-        computed_types="string"
-    ),
-
-    ComputedField(
-        name='ultimoBuildImportado',
-        widget=ComputedField._properties['widget'](
-            label="Identificador del Ultimo Build Importado",
-            label2="Last Imported Product Build identifier",
-            description="Identificador del Ultimo Build del Producto que ha sido importado.",
-            description2="Last Imported Product Build identifier.",
-            label_msgid='gvSIGi18n_TRACatalogo_attr_ultimoBuildImportado_label',
-            description_msgid='gvSIGi18n_TRACatalogo_attr_ultimoBuildImportado_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        description="Identificador del Ultimo Build del Producto que ha sido importado.",
-        duplicates="0",
-        label2="Last Imported Product Build identifier",
-        ea_localid="796",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        description2="Last Imported Product Build identifier.",
-        ea_guid="{2738E794-60C4-4a82-943E-70BA6EA6FAFC}",
-        scale="0",
-        label="Identificador del Ultimo Build Importado",
-        length="0",
-        containment="Not Specified",
-        position="26",
-        owner_class_name="TRACatalogo",
-        expression="context.fDeriveUltimoBuildImportado()",
-        computed_types="string"
-    ),
-
-    ComputedField(
-        name='fechaUltimaImportacion',
-        widget=ComputedField._properties['widget'](
-            label="Fecha de Ultima Importacion",
-            label2="Last Import process Date",
-            description="Fecha y hora de fin del Ultimo proceso de Importacion",
-            description2="Data and time when the ast Import process terminated.",
-            label_msgid='gvSIGi18n_TRACatalogo_attr_fechaUltimaImportacion_label',
-            description_msgid='gvSIGi18n_TRACatalogo_attr_fechaUltimaImportacion_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        description="Fecha y hora de fin del Ultimo proceso de Importacion",
-        duplicates="0",
-        label2="Last Import process Date",
-        ea_localid="848",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        description2="Data and time when the ast Import process terminated.",
-        ea_guid="{24BB0A30-0760-42c6-8CEF-AA8950A49AD7}",
-        scale="0",
-        label="Fecha de Ultima Importacion",
-        length="0",
-        containment="Not Specified",
-        position="27",
-        owner_class_name="TRACatalogo",
-        expression="context.fDeriveFechaUltimaImportacion()",
-        computed_types="DateTime"
-    ),
-
-    ComputedField(
-        name='fechaUltimoInforme',
-        widget=ComputedField._properties['widget'](
-            label="Fecha del Ultimo Informe de Estado",
-            label2="Last Status Report Date",
-            description="Fecha y Hora en que se elaboro el ultimo informe de estado de traduccion del catalogo.",
-            description2="Data and time when the last Status Report was ellaborated from the catalog.",
-            label_msgid='gvSIGi18n_TRACatalogo_attr_fechaUltimoInforme_label',
-            description_msgid='gvSIGi18n_TRACatalogo_attr_fechaUltimoInforme_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        description="Fecha y Hora en que se elaboro el ultimo informe de estado de traduccion del catalogo.",
-        duplicates="0",
-        label2="Last Status Report Date",
-        ea_localid="816",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        description2="Data and time when the last Status Report was ellaborated from the catalog.",
-        ea_guid="{6117DAB0-5BF2-492f-B0BE-69B6717624DF}",
-        scale="0",
-        label="Fecha del Ultimo Informe de Estado",
-        length="0",
-        containment="Not Specified",
-        position="28",
-        owner_class_name="TRACatalogo",
-        expression="context.fDeriveFechaUltimoInforme()",
-        computed_types="DateTime"
     ),
 
     ComputedField(
@@ -997,6 +873,241 @@ schema = Schema((
     ),
 
     ComputedField(
+        name='coleccionProgresos',
+        widget=ComputedWidget(
+            label="Coleccion de Progresos",
+            label2="Progresses collection",
+            description="Coleccion de informes de Progreso acerca de Procesos de larga duracion",
+            description2="Collection of Progress reports about long-lived processes",
+            label_msgid='gvSIGi18n_TRACatalogo_contents_coleccionProgresos_label',
+            description_msgid='gvSIGi18n_TRACatalogo_contents_coleccionProgresos_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        contains_collections=True,
+        label2='Progresses collection',
+        label='Coleccion de Progresos',
+        represents_aggregation=True,
+        description2='Collection of Progress reports about long-lived processes',
+        multiValued=1,
+        owner_class_name="TRACatalogo",
+        multiplicity_higher=1,
+        expression="context.objectValues(['TRAColeccionProgresos'])",
+        computed_types=['TRAColeccionProgresos'],
+        non_framework_elements=False,
+        description='Coleccion de informes de Progreso acerca de Procesos de larga duracion'
+    ),
+
+    BooleanField(
+        name='perfilDeEjecucionHabilitado',
+        widget=BooleanField._properties['widget'](
+            label="Perfil de Ejecucion Habilitado",
+            label2="Execution Profiling Enabled",
+            description="Si Verdadero, el sistema registrara el perfil de la ejecucion, como secuencias anidadas de plantillas y metodos ejecutados.",
+            description2="When True, the System shall record the execution profile, as nested sequences of executed templates and methods.",
+            label_msgid='gvSIGi18n_TRACatalogo_attr_perfilDeEjecucionHabilitado_label',
+            description_msgid='gvSIGi18n_TRACatalogo_attr_perfilDeEjecucionHabilitado_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Si Verdadero, el sistema registrara el perfil de la ejecucion, como secuencias anidadas de plantillas y metodos ejecutados.",
+        duplicates="0",
+        label2="Execution Profiling Enabled",
+        ea_localid="1710",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;IsLiteral=0;",
+        description2="When True, the System shall record the execution profile, as nested sequences of executed templates and methods.",
+        ea_guid="{53AA8DDC-878D-4084-8E8D-21E0CA662C25}",
+        scale="0",
+        default="False",
+        label="Perfil de Ejecucion Habilitado",
+        length="0",
+        containment="Not Specified",
+        position="22",
+        owner_class_name="TRACatalogo"
+    ),
+
+    BooleanField(
+        name='tiemposDeEjecucionHabilitado',
+        widget=BooleanField._properties['widget'](
+            label="Tiempos de Ejecucion Habilitado",
+            label2="Execution Timestamping Enabled",
+            description="Si Verdadero, el sistema registrara el tiempo utilizado en la ejecucion, de plantillas y metodos.",
+            description2="When True, the System shall record the time to execute templates and methods.",
+            label_msgid='gvSIGi18n_TRACatalogo_attr_tiemposDeEjecucionHabilitado_label',
+            description_msgid='gvSIGi18n_TRACatalogo_attr_tiemposDeEjecucionHabilitado_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Si Verdadero, el sistema registrara el tiempo utilizado en la ejecucion, de plantillas y metodos.",
+        duplicates="0",
+        label2="Execution Timestamping Enabled",
+        ea_localid="1711",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;IsLiteral=0;",
+        description2="When True, the System shall record the time to execute templates and methods.",
+        ea_guid="{A01EA392-A20F-4f09-AF50-A7AEF85D5B7D}",
+        scale="0",
+        default="False",
+        label="Tiempos de Ejecucion Habilitado",
+        length="0",
+        containment="Not Specified",
+        position="33",
+        owner_class_name="TRACatalogo"
+    ),
+
+    BooleanField(
+        name='registroRaizDeEjecucionAutomaticoHabilitado',
+        widget=BooleanField._properties['widget'](
+            label="Registro Raiz de Ejecucion Automatico Habilitado",
+            label2="Execution auto root record Enabled",
+            description="Si Verdadero, el sistema creara un registro de ejecucion raiz, cuando la plantilla o metodo que invoca no haya suministrado uno.",
+            description2="If True, the system shall create a root execution record, when the caller template or method does not supply one.",
+            label_msgid='gvSIGi18n_TRACatalogo_attr_registroRaizDeEjecucionAutomaticoHabilitado_label',
+            description_msgid='gvSIGi18n_TRACatalogo_attr_registroRaizDeEjecucionAutomaticoHabilitado_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Si Verdadero, el sistema creara un registro de ejecucion raiz, cuando la plantilla o metodo que invoca no haya suministrado uno.",
+        duplicates="0",
+        label2="Execution auto root record Enabled",
+        ea_localid="1712",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;IsLiteral=0;",
+        description2="If True, the system shall create a root execution record, when the caller template or method does not supply one.",
+        ea_guid="{D291273D-8B6B-49d7-A21C-1B506AA55090}",
+        scale="0",
+        default="False",
+        label="Registro Raiz de Ejecucion Automatico Habilitado",
+        length="0",
+        containment="Not Specified",
+        position="26",
+        owner_class_name="TRACatalogo"
+    ),
+
+    BooleanField(
+        name='escrituraEnDiscoDeRegistroDeEjecucionHabilitado',
+        widget=BooleanField._properties['widget'](
+            label="Escritura en Disco de Perfil de Ejecucion Habilitado",
+            label2="Log Execution Profile to Disc Enabled",
+            description="Si Verdadero, el sistema escribira el perfil de ejecucion en fichero de log en disco.",
+            description2="If True, the system shall write the execution profile to the log.",
+            label_msgid='gvSIGi18n_TRACatalogo_attr_escrituraEnDiscoDeRegistroDeEjecucionHabilitado_label',
+            description_msgid='gvSIGi18n_TRACatalogo_attr_escrituraEnDiscoDeRegistroDeEjecucionHabilitado_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Si Verdadero, el sistema escribira el perfil de ejecucion en fichero de log en disco.",
+        duplicates="0",
+        label2="Log Execution Profile to Disc Enabled",
+        ea_localid="1713",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;IsLiteral=0;",
+        description2="If True, the system shall write the execution profile to the log.",
+        ea_guid="{933CC6B5-A0EE-4909-9FB5-3FFDDD6F0B23}",
+        scale="0",
+        default="False",
+        label="Escritura en Disco de Perfil de Ejecucion Habilitado",
+        length="0",
+        containment="Not Specified",
+        position="5",
+        owner_class_name="TRACatalogo"
+    ),
+
+    BooleanField(
+        name='escrituraEnDiscoDeRegistroDeEjecucionDetalladoHabilitado',
+        widget=BooleanField._properties['widget'](
+            label="Escritura en Disco de Perfil Detallado de Ejecucion Habilitado",
+            label2="Log Detailed Execution Profile to Disc Enabled",
+            description="Si Verdadero, el sistema escribira detalladamente el perfil de ejecucion en  fichero de log en disco.",
+            description2="If True, the system shall write the execution profile to the log in a detailed form.",
+            label_msgid='gvSIGi18n_TRACatalogo_attr_escrituraEnDiscoDeRegistroDeEjecucionDetalladoHabilitado_label',
+            description_msgid='gvSIGi18n_TRACatalogo_attr_escrituraEnDiscoDeRegistroDeEjecucionDetalladoHabilitado_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Si Verdadero, el sistema escribira detalladamente el perfil de ejecucion en  fichero de log en disco.",
+        duplicates="0",
+        label2="Log Detailed Execution Profile to Disc Enabled",
+        ea_localid="1714",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;IsLiteral=0;",
+        description2="If True, the system shall write the execution profile to the log in a detailed form.",
+        ea_guid="{BCA930B7-404D-421e-A338-6BC9BB56BDAC}",
+        scale="0",
+        default="False",
+        label="Escritura en Disco de Perfil Detallado de Ejecucion Habilitado",
+        length="0",
+        containment="Not Specified",
+        position="4",
+        owner_class_name="TRACatalogo"
+    ),
+
+    BooleanField(
+        name='presentacionEnPaginasDeRegistroDeEjecucionHabilitado',
+        widget=BooleanField._properties['widget'](
+            label="Presentacion en Paginas de Perfil de Ejecucion Habilitado",
+            label2="Render Execution Profile in Pages Enabled",
+            description="Si Verdadero, el sistema presentara en las paginas el perfil de ejecucion.",
+            description2="If True, the system shall present in pages the execution profile.",
+            label_msgid='gvSIGi18n_TRACatalogo_attr_presentacionEnPaginasDeRegistroDeEjecucionHabilitado_label',
+            description_msgid='gvSIGi18n_TRACatalogo_attr_presentacionEnPaginasDeRegistroDeEjecucionHabilitado_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Si Verdadero, el sistema presentara en las paginas el perfil de ejecucion.",
+        duplicates="0",
+        label2="Render Execution Profile in Pages Enabled",
+        ea_localid="1715",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;IsLiteral=0;",
+        description2="If True, the system shall present in pages the execution profile.",
+        ea_guid="{FF2655B6-37DE-4bf4-BC46-2A7CCB15E703}",
+        scale="0",
+        default="False",
+        label="Presentacion en Paginas de Perfil de Ejecucion Habilitado",
+        length="0",
+        containment="Not Specified",
+        position="24",
+        owner_class_name="TRACatalogo"
+    ),
+
+    BooleanField(
+        name='presentacionEnPaginasDeTiempoDeEjecucionHabilitado',
+        widget=BooleanField._properties['widget'](
+            label="Presentacion en Paginas de Tiempo de Ejecucion Habilitado",
+            label2="Render Execution Time in Pages Enabled",
+            description="Si Verdadero, el sistema presentara en las paginas el tiempo de ejecucion.",
+            description2="If True, the system shall present in pages the execution time.",
+            label_msgid='gvSIGi18n_TRACatalogo_attr_presentacionEnPaginasDeTiempoDeEjecucionHabilitado_label',
+            description_msgid='gvSIGi18n_TRACatalogo_attr_presentacionEnPaginasDeTiempoDeEjecucionHabilitado_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Si Verdadero, el sistema presentara en las paginas el tiempo de ejecucion.",
+        duplicates="0",
+        label2="Render Execution Time in Pages Enabled",
+        ea_localid="1716",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;IsLiteral=0;",
+        description2="If True, the system shall present in pages the execution time.",
+        ea_guid="{74A16EEE-AE7E-44a9-92BC-FD9AA763B394}",
+        scale="0",
+        default="False",
+        label="Presentacion en Paginas de Tiempo de Ejecucion Habilitado",
+        length="0",
+        containment="Not Specified",
+        position="25",
+        owner_class_name="TRACatalogo"
+    ),
+
+    ComputedField(
         name='coleccionCadenas',
         widget=ComputedWidget(
             label="Coleccion de Cadenas",
@@ -1050,7 +1161,7 @@ schema = Schema((
         name='coleccionSolicitudesCadenas',
         widget=ComputedWidget(
             label="Coleccion de Solicitudes de Cadenas",
-            label2="String Requests Collection",
+            label2="String Requests collection",
             description="Coleccion de solicitudes realizadas por los desarrolladores, para crear nuevas cadenas.",
             description2="Collection of requests by developers to create new strings.",
             label_msgid='gvSIGi18n_TRACatalogo_contents_coleccionSolicitudesCadenas_label',
@@ -1058,7 +1169,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         contains_collections=True,
-        label2='String Requests Collection',
+        label2='String Requests collection',
         label='Coleccion de Solicitudes de Cadenas',
         represents_aggregation=True,
         description2='Collection of requests by developers to create new strings.',
@@ -1100,7 +1211,7 @@ schema = Schema((
         label="Modo de Interaccion con el Servidor por defecto",
         length="0",
         containment="Not Specified",
-        position="11",
+        position="13",
         owner_class_name="TRACatalogo"
     ),
 
@@ -1130,7 +1241,61 @@ schema = Schema((
         length="0",
         exclude_from_traversalconfig="True",
         containment="Not Specified",
-        position="31",
+        position="15",
+        owner_class_name="TRACatalogo"
+    ),
+
+    ComputedField(
+        name='parametrosControlProgreso',
+        widget=ComputedWidget(
+            label="Parametros control progreso",
+            label2="Progress control parameters",
+            description="Parametros controlando la gestion del progreso de procesos de larga duracion, incluyendo registro, transacciones, guardar resultados y ceder procesador.",
+            description2="Parameters controlling the management of the progress of long-lived processes, including logging, transactions, store results and yield processor.",
+            label_msgid='gvSIGi18n_TRACatalogo_contents_parametrosControlProgreso_label',
+            description_msgid='gvSIGi18n_TRACatalogo_contents_parametrosControlProgreso_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        contains_collections=False,
+        label2='Progress control parameters',
+        label='Parametros control progreso',
+        represents_aggregation=True,
+        description2='Parameters controlling the management of the progress of long-lived processes, including logging, transactions, store results and yield processor.',
+        multiValued=1,
+        owner_class_name="TRACatalogo",
+        expression="context.objectValues(['TRAParametrosControlProgreso'])",
+        computed_types=['TRAParametrosControlProgreso'],
+        non_framework_elements=False,
+        description='Parametros controlando la gestion del progreso de procesos de larga duracion, incluyendo registro, transacciones, guardar resultados y ceder procesador.'
+    ),
+
+    IntegerField(
+        name='segundosParaConfirmarAccion',
+        widget=IntegerField._properties['widget'](
+            label="Tiempo en segundos para confirmar Accion",
+            label2="Time in seconds to confirm launch of a long process",
+            description="Tiempo en segundos del que dispone el Usuario para confirmar lanzamiento de procesos de larga duracion. Si no confirma en este tiempo, el Usuario debera volver a solicitar la accion.",
+            description2="Time in seconds for the User to confirm the launch of a long process. If the User does not confirm in this period of time, the user shall request the action again.",
+            label_msgid='gvSIGi18n_TRACatalogo_attr_segundosParaConfirmarAccion_label',
+            description_msgid='gvSIGi18n_TRACatalogo_attr_segundosParaConfirmarAccion_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Tiempo en segundos del que dispone el Usuario para confirmar lanzamiento de procesos de larga duracion. Si no confirma en este tiempo, el Usuario debera volver a solicitar la accion.",
+        duplicates="0",
+        label2="Time in seconds to confirm launch of a long process",
+        ea_localid="1605",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="Time in seconds for the User to confirm the launch of a long process. If the User does not confirm in this period of time, the user shall request the action again.",
+        ea_guid="{EA7AA3DF-5BD4-4644-A3D4-F42F915299A1}",
+        scale="0",
+        default="120",
+        label="Tiempo en segundos para confirmar Accion",
+        length="0",
+        containment="Not Specified",
+        position="30",
         owner_class_name="TRACatalogo"
     ),
 
@@ -1160,75 +1325,7 @@ schema = Schema((
         length="0",
         exclude_from_traversalconfig="True",
         containment="Not Specified",
-        position="29",
-        owner_class_name="TRACatalogo"
-    ),
-
-    ReferenceField(
-        name='ultimaImportacion',
-        widget=ReferenceBrowserWidget(
-            label="Ultima importacion",
-            label2="Last Import process",
-            description="Ultima Importacion de modulos, idiomas, cadenas y traducciones del producto.",
-            description2="Last process importing modules, languages, strings and translations.",
-            label_msgid='gvSIGi18n_TRACatalogo_attr_ultimaImportacion_label',
-            description_msgid='gvSIGi18n_TRACatalogo_attr_ultimaImportacion_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        description="Ultima Importacion de modulos, idiomas, cadenas y traducciones del producto.",
-        relationship="UltimaImportacion",
-        duplicates="0",
-        label2="Last Import process",
-        ea_localid="812",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        description2="Last process importing modules, languages, strings and translations.",
-        ea_guid="{E75635C1-6754-483f-BD18-2E27B08563C2}",
-        allowed_types=['TRAImportacion'],
-        read_only="True",
-        scale="0",
-        additional_columns=['estadoProceso', 'haCompletadoConExito'],
-        label="Ultima importacion",
-        length="0",
-        multiValued=0,
-        containment="Not Specified",
         position="32",
-        owner_class_name="TRACatalogo"
-    ),
-
-    ReferenceField(
-        name='ultimoInforme',
-        widget=ReferenceBrowserWidget(
-            label="Ultimo Informe de Estado",
-            label2="Last Status Report",
-            description="Ultimo Informe de Estado elaborado en el catalogo.",
-            description2="Last Status report ellaborated from the catalog.",
-            label_msgid='gvSIGi18n_TRACatalogo_attr_ultimoInforme_label',
-            description_msgid='gvSIGi18n_TRACatalogo_attr_ultimoInforme_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        description="Ultimo Informe de Estado elaborado en el catalogo.",
-        relationship="BPDUltimoInforme",
-        duplicates="0",
-        label2="Last Status Report",
-        ea_localid="815",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        description2="Last Status report ellaborated from the catalog.",
-        ea_guid="{7DAE6970-929C-4a03-AC6F-01774676A754}",
-        allowed_types=['TRAInforme'],
-        read_only="True",
-        scale="0",
-        additional_columns=['haCompletadoConExito'],
-        label="Ultimo Informe de Estado",
-        length="0",
-        multiValued=0,
-        containment="Not Specified",
-        position="30",
         owner_class_name="TRACatalogo"
     ),
 
@@ -1280,7 +1377,7 @@ class TRACatalogo(OrderedBaseFolder, TRAArquetipo, TRACatalogo_Inicializacion, T
 
 
 
-    allowed_content_types = ['TRAColeccionInformes', 'TRAColeccionCadenas', 'TRAColeccionImportaciones', 'TRAColeccionSolicitudesCadenas', 'TRAColeccionIdiomas', 'TRAColeccionModulos'] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Inicializacion, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Informes, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Globales, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Operaciones, 'allowed_content_types', [])) + list(getattr(TRACatalogo_CursorTraducciones, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Actividad, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Exportacion, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', []))
+    allowed_content_types = ['TRAColeccionInformes', 'TRAColeccionCadenas', 'TRAParametrosControlProgreso', 'TRAColeccionImportaciones', 'TRAColeccionSolicitudesCadenas', 'TRAColeccionIdiomas', 'TRAColeccionProgresos', 'TRAColeccionModulos'] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Inicializacion, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Informes, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Globales, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Operaciones, 'allowed_content_types', [])) + list(getattr(TRACatalogo_CursorTraducciones, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Actividad, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Exportacion, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', []))
     filter_content_types             = 1
     global_allow                     = 1
     content_icon = 'tracatalogo.gif'
@@ -1301,39 +1398,21 @@ class TRACatalogo(OrderedBaseFolder, TRAArquetipo, TRACatalogo_Inicializacion, T
     actions =  (
 
 
-       {'action': "string:${object_url}/Tabular/",
-        'category': "object",
-        'id': 'TRA_advanced',
-        'name': 'Advanced View',
-        'permissions': ("View",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Advanced_View_on_any_TRA_element')"""
-       },
-
-
-       {'action': "string:${object_url}/TRACatalogoDetalle",
-        'category': "object",
-        'id': 'TRA_detalle',
-        'name': 'Details',
-        'permissions': ("View",),
-        'condition': """python:False and object.fUseCaseCheckDoable( 'EllaborateInformeModulesAndLanguages')"""
-       },
-
-
-       {'action': "string:${object_url}/TRACatalogoInforme",
-        'category': "object",
-        'id': 'TRA_informe',
-        'name': 'Report',
-        'permissions': ("View",),
-        'condition': """python:object.fUseCaseCheckDoable( 'EllaborateInformeLanguages')"""
-       },
-
-
        {'action': "string:${object_url}/TRACatalogoActividad",
         'category': "object",
         'id': 'TRA_actividad',
         'name': 'Activity',
         'permissions': ("View",),
         'condition': """python:True or object.fUseCaseCheckDoable( 'EllaborateInformeActividad')"""
+       },
+
+
+       {'action': "string:${object_url}/Tabular/",
+        'category': "object",
+        'id': 'TRA_advanced',
+        'name': 'Details',
+        'permissions': ("View",),
+        'condition': """python:object.fUseCaseCheckDoable( 'Advanced_View_on_any_TRA_element')"""
        },
 
 
@@ -1346,15 +1425,6 @@ class TRACatalogo(OrderedBaseFolder, TRAArquetipo, TRACatalogo_Inicializacion, T
        },
 
 
-       {'action': "string:${object_url}/TRAConfirmarDesbloquearCatalogo",
-        'category': "object_buttons",
-        'id': 'TRA_desbloquear_catalogo',
-        'name': 'Unlock Catalog',
-        'permissions': ("Modify portal content",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Unlock_TRACatalogo')"""
-       },
-
-
        {'action': "string:${object_url}/Editar",
         'category': "object_buttons",
         'id': 'TRA_configurar',
@@ -1364,12 +1434,12 @@ class TRACatalogo(OrderedBaseFolder, TRAArquetipo, TRACatalogo_Inicializacion, T
        },
 
 
-       {'action': "string:${object_url}/informes/TRACrear_Informe",
+       {'action': "string:${object_url}/TRABackup_action",
         'category': "object_buttons",
-        'id': 'TRACreateInforme',
-        'name': 'Create Report',
+        'id': 'TRA_export_backup',
+        'name': 'Export Backup',
         'permissions': ("Modify portal content",),
-        'condition': """python:object.fObtenerColeccionInformes() and object.fObtenerColeccionInformes().fUseCaseCheckDoable( 'Create_TRAInforme')"""
+        'condition': """python:object.fUseCaseCheckDoable( 'Backup_TRACatalogo')"""
        },
 
 
@@ -1382,12 +1452,48 @@ class TRACatalogo(OrderedBaseFolder, TRAArquetipo, TRACatalogo_Inicializacion, T
        },
 
 
+       {'action': "string:${object_url}/informes/TRACrear_Informe",
+        'category': "object_buttons",
+        'id': 'TRACreateInforme',
+        'name': 'Create Report',
+        'permissions': ("Modify portal content",),
+        'condition': """python:object.fObtenerColeccionInformes() and object.fObtenerColeccionInformes().fUseCaseCheckDoable( 'Create_TRAInforme')"""
+       },
+
+
+       {'action': "string:${object_url}/modulos/TRACrear_Modulo",
+        'category': "object_buttons",
+        'id': 'TRACreateModule',
+        'name': 'Create Module',
+        'permissions': ("Modify portal content",),
+        'condition': """python:object.fObtenerColeccionModulos() and object.fObtenerColeccionModulos().fUseCaseCheckDoable( 'Create_TRAModulo')"""
+       },
+
+
        {'action': "string:${object_url}/solicitudescadenas/TRACrear_SolicitudCadena/?theNewTypeName=TRASolicitudCadena&theAggregationName=solicitudesCadenas",
         'category': "object_buttons",
-        'id': 'TRACreateCadena',
+        'id': 'TRACreateSolicitudCadena',
         'name': 'Create New String Request',
-        'permissions': ("List folder contents",),
+        'permissions': ("View",),
         'condition': """python:object.fObtenerColeccionSolicitudesCadenas() and object.fObtenerColeccionSolicitudesCadenas().fUseCaseCheckDoable( 'Create_TRASolicitudCadena')"""
+       },
+
+
+       {'action': "string:${object_url}/TRAConfirmarDesbloquearCatalogo",
+        'category': "object_buttons",
+        'id': 'TRA_desbloquear_catalogo',
+        'name': 'Unlock Catalog',
+        'permissions': ("Modify portal content",),
+        'condition': """python:object.fUseCaseCheckDoable( 'Unlock_TRACatalogo')"""
+       },
+
+
+       {'action': "string:${object_url}/TRACatalogoDetalle",
+        'category': "object",
+        'id': 'TRA_detalle',
+        'name': 'Report',
+        'permissions': ("View",),
+        'condition': """python:object.fUseCaseCheckDoable( 'EllaborateInformeModulesAndLanguages')"""
        },
 
 
@@ -1400,21 +1506,30 @@ class TRACatalogo(OrderedBaseFolder, TRAArquetipo, TRACatalogo_Inicializacion, T
        },
 
 
-       {'action': "string:${object_url}/TRACatalogo",
-        'category': "object",
-        'id': 'view',
-        'name': 'View',
-        'permissions': ("View",),
-        'condition': """python:1"""
-       },
-
-
        {'action': "string:${object_url}/TRAExportar",
         'category': "object_buttons",
         'id': 'TRA_export_translations',
         'name': 'Export',
         'permissions': ("View",),
         'condition': """python:object.fUseCaseCheckDoable( 'Export')"""
+       },
+
+
+       {'action': "string:${object_url}/TRACatalogoInforme",
+        'category': "object",
+        'id': 'TRA_informe',
+        'name': 'Summary',
+        'permissions': ("View",),
+        'condition': """python:object.fUseCaseCheckDoable( 'EllaborateInformeLanguages')"""
+       },
+
+
+       {'action': "string:${object_url}/TRAInicializar_action",
+        'category': "object_buttons",
+        'id': 'TRA_inicializar',
+        'name': 'Initialize',
+        'permissions': ("View",),
+        'condition': """python:object.fUseCaseCheckDoable( 'Initialize_TRACatalogo')"""
        },
 
 
@@ -1427,11 +1542,47 @@ class TRACatalogo(OrderedBaseFolder, TRAArquetipo, TRACatalogo_Inicializacion, T
        },
 
 
-       {'action': "string:${object_url}/sharing",
+       {'action': "string:${object_url}/TRACatalogo",
         'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
+        'id': 'view',
+        'name': 'View',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:${object_url}/MDDCacheStatus/",
+        'category': "object_buttons",
+        'id': 'mddcachestatus',
+        'name': 'Cache',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:${object_url}/MDDChanges",
+        'category': "object_buttons",
+        'id': 'mddchanges',
+        'name': 'Changes',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:${object_url}/TRAConfigureProfiling_action",
+        'category': "object_buttons",
+        'id': 'TRA_configure_profiling',
+        'name': 'Configure Profiling',
+        'permissions': ("ManagePortal",),
+        'condition': """python:object.fUseCaseCheckDoable( 'Configure_ExecutionProfilingEnablement_TRACatalogo')"""
+       },
+
+
+       {'action': "string:$object_url/content_status_history",
+        'category': "object",
+        'id': 'content_status_history',
+        'name': 'State',
+        'permissions': ("View",),
         'condition': """python:0"""
        },
 
@@ -1445,12 +1596,39 @@ class TRACatalogo(OrderedBaseFolder, TRAArquetipo, TRACatalogo_Inicializacion, T
        },
 
 
-       {'action': "string:${object_url}/MDDChanges",
+       {'action': "string:${object_url}/TRAInventory_action",
         'category': "object_buttons",
-        'id': 'mddchanges',
-        'name': 'Changes',
+        'id': 'TRA_inventario',
+        'name': 'Inventory',
         'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': """python:object.fUseCaseCheckDoable( 'Inventory_TRAElemento')"""
+       },
+
+
+       {'action': "string:${object_url}/sharing",
+        'category': "object",
+        'id': 'local_roles',
+        'name': 'Sharing',
+        'permissions': ("Manage properties",),
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/TRARecatalog_action",
+        'category': "object_buttons",
+        'id': 'TRA_recatalogar',
+        'name': 'ReCatalog',
+        'permissions': ("View",),
+        'condition': """python:object.fUseCaseCheckDoable( 'ReCatalog_TRAElemento')"""
+       },
+
+
+       {'action': "string:${object_url}/TRAResetPermissions_action",
+        'category': "object_buttons",
+        'id': 'TRA_reestablecerpermisos',
+        'name': 'Reset Permissions',
+        'permissions': ("View",),
+        'condition': """python:object.fUseCaseCheckDoable( 'ResetPermissions_TRAElemento')"""
        },
 
 
@@ -1468,25 +1646,7 @@ class TRACatalogo(OrderedBaseFolder, TRAArquetipo, TRACatalogo_Inicializacion, T
         'id': 'TRA_SeguridadUsuarioConectado',
         'name': 'Permissions',
         'permissions': ("View",),
-        'condition': """python:1"""
-       },
-
-
-       {'action': "string:$object_url/content_status_history",
-        'category': "object",
-        'id': 'content_status_history',
-        'name': 'State',
-        'permissions': ("View",),
-        'condition': """python:0"""
-       },
-
-
-       {'action': "string:${object_url}/MDDCacheStatus/",
-        'category': "object_buttons",
-        'id': 'mddcachestatus',
-        'name': 'Cache',
-        'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': """python:object.fUseCaseCheckDoable( 'Permissions_on_any_TRA_element')"""
        },
 
 
@@ -1504,13 +1664,6 @@ class TRACatalogo(OrderedBaseFolder, TRAArquetipo, TRACatalogo_Inicializacion, T
 
     # Methods
 
-    security.declarePublic('fIsCacheable')
-    def fIsCacheable(self):
-        """
-        """
-        
-        return True
-
     security.declarePublic('cb_isCopyable')
     def cb_isCopyable(self):
         """
@@ -1525,19 +1678,19 @@ class TRACatalogo(OrderedBaseFolder, TRAArquetipo, TRACatalogo_Inicializacion, T
         
         return False
 
-    security.declarePublic('manage_beforeDelete')
-    def manage_beforeDelete(self,item,container):
-        """
-        """
-        
-        return TRACatalogo_Operaciones.pHandle_manage_beforeDelete( self, item, container)
-
     security.declarePublic('fExtraLinks')
     def fExtraLinks(self):
         """
         """
         
         return TRAElemento_Operaciones.fExtraLinks( self)
+
+    security.declarePublic('fIsCacheable')
+    def fIsCacheable(self):
+        """
+        """
+        
+        return True
 
     security.declarePublic('getEsRaiz')
     def getEsRaiz(self):
@@ -1552,6 +1705,13 @@ class TRACatalogo(OrderedBaseFolder, TRAArquetipo, TRACatalogo_Inicializacion, T
         """
         
         return TRACatalogo_Operaciones.pHandle_manage_afterAdd( self, item, container)
+
+    security.declarePublic('manage_beforeDelete')
+    def manage_beforeDelete(self,item,container):
+        """
+        """
+        
+        return TRACatalogo_Operaciones.pHandle_manage_beforeDelete( self, item, container)
 
     security.declarePublic('manage_pasteObjects')
     def manage_pasteObjects(self,cb_copy_data,REQUEST):

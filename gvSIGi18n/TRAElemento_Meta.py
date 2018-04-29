@@ -1,6 +1,6 @@
 
-# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
-# Generalidad Valenciana
+# Copyright (c) 2010 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+# Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -120,12 +120,15 @@ class TRAElemento_Meta:
             'TRAColeccionImportaciones',
             'TRAColeccionInformes',
             'TRAColeccionModulos',
+            'TRAColeccionProgresos',
             'TRAColeccionSolicitudesCadenas',
             'TRAContenidoIntercambio',
             'TRAIdioma',
             'TRAImportacion',
             'TRAInforme',
             'TRAModulo',
+            'TRAParametrosControlProgreso',
+            'TRAProgreso',
             'TRASolicitudCadena',
             'TRATraduccion',
  
@@ -168,6 +171,10 @@ class TRAElemento_Meta:
                 from Products.gvSIGi18n.TRAColeccionModulos         import TRAColeccionModulos
                 return TRAColeccionModulos            
 
+            if theMetaTypeName == 'TRAColeccionProgresos':
+                from Products.gvSIGi18n.TRAColeccionProgresos         import TRAColeccionProgresos
+                return TRAColeccionProgresos            
+
             if theMetaTypeName == 'TRAColeccionSolicitudesCadenas':
                 from Products.gvSIGi18n.TRAColeccionSolicitudesCadenas         import TRAColeccionSolicitudesCadenas
                 return TRAColeccionSolicitudesCadenas            
@@ -191,6 +198,14 @@ class TRAElemento_Meta:
             if theMetaTypeName == 'TRAModulo':
                 from Products.gvSIGi18n.TRAModulo         import TRAModulo
                 return TRAModulo            
+
+            if theMetaTypeName == 'TRAParametrosControlProgreso':
+                from Products.gvSIGi18n.TRAParametrosControlProgreso         import TRAParametrosControlProgreso
+                return TRAParametrosControlProgreso            
+
+            if theMetaTypeName == 'TRAProgreso':
+                from Products.gvSIGi18n.TRAProgreso         import TRAProgreso
+                return TRAProgreso            
 
             if theMetaTypeName == 'TRASolicitudCadena':
                 from Products.gvSIGi18n.TRASolicitudCadena         import TRASolicitudCadena

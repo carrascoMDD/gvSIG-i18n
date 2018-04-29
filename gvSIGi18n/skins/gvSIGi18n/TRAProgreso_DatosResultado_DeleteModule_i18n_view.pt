@@ -1,0 +1,219 @@
+<tal:block replace="nothing">
+# File: TRAProgreso_DatosResultado_DeleteModule_i18n_view.pt
+#
+# Copyright (c) 2008, 2009,2010 by Conselleria de Infraestructuras y Transporte de la
+# Generalidad Valenciana
+#
+# GNU General Public License (GPL)
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+#
+# Authors: 
+# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana 
+# Model Driven Development sl  Valencia (Spain) www.ModelDD.org 
+# Antonio Carrasco Valero                       carrasco@ModelDD.org
+#
+</tal:block>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en">
+<body>
+
+
+   
+
+<div metal:define-macro="tProgreso_DatosResultado_DeleteModule_i18n" >
+
+    <tal:block tal:define="pDatosResultado pDatosResultado | nothing" >
+    
+        <tal:block tal:condition="python: not pDatosResultado" >
+            <p>
+                <strong i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_nohaydatosResultado_warning_msgid">There is no data result from the process available at this time-</strong>
+            </p>
+        </tal:block>
+        
+        <tal:block tal:condition="python: pDatosResultado" >
+            <h3>
+                <strong  tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_DeleteModule',  'Delete Module-' )" />
+                &ensp;
+                <strong  tal:content="python: pDatosResultado.get( 'element_title', '')" />
+            </h3>
+            <p tal:condition="python: pDatosResultado.get( 'from_progress_handler', False)">
+                <strong  tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_ProgressResult_fromProgressHandler_msgid',  'Progress Result from Progress Handler-' )" />
+            </p>
+            <p tal:condition="python: not pDatosResultado.get( 'from_progress_handler', False)">
+                <strong  tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_ProgressResult_fromPersistentProgress_msgid',  'Progress Result from Persistent Progress-' )" />
+            </p>
+            <p>
+                <strong  tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_ElementPath_msgid',  'Element path-' )" />
+                <span tal:content="python: pDatosResultado.get( 'element_path', '')" />
+                <br/>
+                <strong  tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Element_UID',  'Element UID-' )" />
+                <span tal:content="python: pDatosResultado.get( 'element_UID', '')" />                 
+            </p>
+            <p>
+                <strong  tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_attr_usuarioInformador_label',  'Requesting User-' )" />
+                <span tal:content="python: pDatosResultado.get( 'member_id', '')" />      
+            </p>
+            <p>
+                <strong i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_Success">Success-</strong>
+                &ensp;
+                <span tal:condition="python: not pDatosResultado.get( 'success', False)" i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_FailureOrIncomplete">Failure or Incomplete-</span>
+                <span tal:condition="python: pDatosResultado.get( 'success', False)" i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_Success">Success-</span>
+            </p>
+            <p>
+                <strong i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_Condition">Condition-</strong>
+                &ensp;
+                <span tal:content="python: ( pDatosResultado and pDatosResultado.get( 'condition', '')) or ''" />                                         
+            </p>
+            <p>
+                <strong  tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_attr_tipoProceso_label',  'Process Type-' )" />
+                <span tal:content="python: pDatosResultado.get( 'process_type', '')" />                 
+                <br/>
+                <strong  tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_attr_clasesSoporte_label',  'Progress Support Kinds-' )" />
+                <span tal:content="python: pDatosResultado.get( 'progress_support_kinds', '')" />      
+            </p>
+            <br/>
+            <p>
+                <strong  tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TRACatalogo_title',  'Translations Catalog title-' )" />
+                <span tal:content="python: pDatosResultado.get( 'TRACatalogo_title', '')" />                 
+                <br/>
+                <strong  tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TRACatalogo_path',  'Translations Catalog path-' )" />
+                <span tal:content="python: pDatosResultado.get( 'TRACatalogo_path', '')" />                 
+                <br/>
+                <strong  tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TRACatalogo_UID',  'Translations Catalog UID-' )" />
+                <span tal:content="python: pDatosResultado.get( 'TRACatalogo_UID', '')" />                 
+            </p>
+            <br/>
+            <p>
+                <strong  tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_LastElement_UID',  'Last Element Title-' )" />
+                <span tal:content="python: pDatosResultado.get( 'last_element_title', '')" />                 
+                <br/>
+                <strong  tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_LastElementPath_msgid',  'Last Element path-' )" />
+                <span tal:content="python: pDatosResultado.get( 'last_element_path', '')" />
+                <br/>
+                <strong  tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_LastElement_UID',  'LastElement UID-' )" />
+                <span tal:content="python: pDatosResultado.get( 'last_element_UID', '')" />                 
+                <br/>
+            </p>
+            <br/>
+            <p>
+                <strong  tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_FechaComienzo_label',  'Start date and time-' )" />
+                <span tal:content="python: '%s' % pDatosResultado.get( 'start_date_time_string', '')" />                 
+                <br/>
+                <strong  tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_FechaNow_label',  'Date and time now-' )" />
+                <span tal:content="python: '%s' % pDatosResultado.get( 'date_time_now_string', '')" />                 
+                <br/>
+                <strong  tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_FechaFin_label',  'End date and time-' )" />
+                <span tal:content="python: '%s' % pDatosResultado.get( 'end_date_time_string', '')" />                 
+                <br/>
+            </p>
+            <br/>
+            
+            
+            
+            <p>
+                <strong  tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_NumberOfElements',  'Number of elements-' )" />
+                <span tal:content="python: '%d' % pDatosResultado.get( 'total_elements_traversed', 0)" />                 
+            </p>
+            <br/>
+            <br/>
+            <table id="cid_TRADeleteModuleResult_ElementsByType" class="listing"
+                tal:define="pElementsByType python: pDatosResultado.get( 'elements_by_type', []);
+                    pClasesFilas python: [ 'even', 'odd',]"
+                tal:condition="pElementsByType" >
+                <thead>
+                    <tr>
+                        <th align="left"  class="sortable" tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_ElementType',  'Element Type-' )" />
+                        <th align="right" class="sortable" tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_NumElements',  '# elems.-' )" />
+                    </tr>
+                </thead>
+                <tbody >
+                    <tal:block tal:repeat="pElementTypeAndCount python: pElementsByType" >
+                        <tr class="#"  tal:define="pRowIndex repeat/pElementTypeAndCount/index" 
+                            tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
+                            <td tal:content="python: pElementTypeAndCount[ 0]" />
+                            <td align="right" tal:content="python:'%d' % pElementTypeAndCount[ 1]" />
+                        </tr>
+                    </tal:block>
+                </tbody>
+            </table>
+            <br/>        
+            <br/>
+            
+            
+            
+            <p>
+                <strong  tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_NumberOfElementsDeleteModule',  'Number of elements affected by deleting the module-' )" />
+                <span tal:content="python: '%d' % pDatosResultado.get( 'total_elements_changed', 0)" />                 
+            </p>
+            <br/>
+            <br/>
+            <table id="cid_TRADeleteModuleResult_ElementsByType" class="listing"
+                tal:define="pElementsChangedByType python: pDatosResultado.get( 'elements_changed_by_type', []);
+                    pClasesFilas python: [ 'even', 'odd',]"
+                tal:condition="pElementsChangedByType" >
+                <thead>
+                    <tr>
+                        <th align="left"  class="sortable" tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_ElementType',  'Element Type-' )" />
+                        <th align="right" class="sortable" tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_NumElements',  '# elems.-' )" />
+                    </tr>
+                </thead>
+                <tbody >
+                    <tal:block tal:repeat="pElementTypeAndCount python: pElementsChangedByType" >
+                        <tr class="#"  tal:define="pRowIndex repeat/pElementTypeAndCount/index" 
+                            tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
+                            <td tal:content="python: pElementTypeAndCount[ 0]" />
+                            <td align="right" tal:content="python:'%d' % pElementTypeAndCount[ 1]" />
+                        </tr>
+                    </tal:block>
+                </tbody>
+            </table>
+            <br/>                
+        </tal:block>
+     </tal:block>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

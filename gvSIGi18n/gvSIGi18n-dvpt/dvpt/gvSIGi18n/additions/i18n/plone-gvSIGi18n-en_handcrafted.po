@@ -1,0 +1,226 @@
+
+
+
+
+
+
+
+#. Default: "Build Report"
+#: TRAInforme
+msgid "Build Report"
+msgstr "Build Report"
+
+
+#. Default: "Verify"
+#: TRACatalogo
+msgid "Verify"
+msgstr "Verify"
+
+
+#. Default: "Initialize"
+#: TRAArquetipo
+msgid "Initialize"
+msgstr "Initialize"
+
+#. Default: "Export"
+#: TRAArquetipo
+msgid "Export"
+msgstr "Export"
+
+#. Default: "Import"
+#: TRAArquetipo
+msgid "Import"
+msgstr "Import"
+
+
+#. Default: "Configure"
+#: TRAArquetipo
+msgid "Configure"
+msgstr "Configure"
+
+
+
+#. Default: "Content"
+#: TRAContenidoIntercambio
+msgid "Content"
+msgstr "Content"
+
+#. Default: "Contents"
+#: TRAImportacion
+msgid "Contents"
+msgstr "Contents"
+
+
+#. Default: "Data"
+#: TRAContenidoIntercambio TRAImportacion
+msgid "Data"
+msgstr "Data"
+
+#. Default: "Progress"
+#: TRAImportacion
+msgid "Progress"
+msgstr "Progress"
+
+#. Default: "Copy Translations"
+#: TRAIdioma
+msgid "Copy Translations"
+msgstr "Copy Translations"
+
+#. Default: "Create Strings"
+#: TRAColeccionSolicitudesCadena
+msgid "Create Strings"
+msgstr "Create Strings"
+
+#. Default: "Create New String Request"
+#: TRACatalogo
+msgid "Create New String Request"
+msgstr "Create New String Request"
+
+
+
+
+
+#. Default: "Clean-up Strings"
+#: TRAColeccionSolicitudesCadena
+msgid "Clean-up Strings"
+msgstr "Clean-up Strings"
+
+#. Default: "Lock Catalog"
+#: TRACatalogo
+msgid "Lock Catalog"
+msgstr "Lock Catalog"
+
+
+#. Default: "Unlock Catalog"
+#: TRACatalogo
+msgid "Unlock Catalog"
+msgstr "Unlock Catalog"
+
+
+#. Default: "Permisos"
+#: TRACatalogo
+msgid "Permissions"
+msgstr "Permissions"
+
+
+#. Default: "Crear Idioma"
+#: TRACatalogo
+msgid "Create Language"
+msgstr "Create Language"
+
+
+#. Default: "Crear Modulo"
+#: TRACatalogo
+msgid "Create Module"
+msgstr "Create Module"
+
+#. Default: "Crear Informe"
+#: TRACatalogo
+msgid "Create Report"
+msgstr "Create Report"
+
+
+
+#. Default: "Reutilizar"
+#: TRAImportacion
+msgid "Reuse"
+msgstr "Reuse"
+
+
+
+#. Default: "Resumen"
+#: TRAImportacion
+msgid "Summary"
+msgstr "Summary"
+
+
+
+#. Default: "Detalle"
+#: TRAImportacion
+msgid "Details"
+msgstr "Details"
+
+
+#. Default: "Vista avanzada"
+#: TRACatalogo
+msgid "Advanced View"
+msgstr "Advanced View"
+
+
+
+#. Default: "Informe"
+#: TRACatalogo
+msgid "Report"
+msgstr "Report"
+
+
+#. Default: "Exportar para gvSIG"
+#: TRACatalogo
+msgid "Export for gvSIG"
+msgstr "Export for gvSIG"
+
+
+
+#. Default: "Bloquear Idioma"
+#: TRAIdioma
+msgid "Lock Language"
+msgstr "Lock Language"
+
+
+
+#. Default: "Inventario"
+#: TRACatalogo
+msgid "Inventory"
+msgstr "Inventory"
+
+
+#. Default: "ReCatalogar"
+#: TRACatalogo
+msgid "ReCatalog"
+msgstr "ReCatalog"
+
+
+#. Default: "Reestablecer Permisos"
+#: TRACatalogo
+msgid "Reset Permissions"
+msgstr "Reset Permissions"
+
+
+
+#. Default: "Eliminar Modulo"
+#: TRAModulo
+msgid "Delete Module"
+msgstr "Delete Module"
+
+
+
+#. Default: "Configurar Progreso"
+#: TRAProgreso
+msgid "Configure Progress"
+msgstr "Configure Progress"
+
+
+
+#. Default: "Controlar Progreso"
+#: TRAProgreso
+msgid "Control Progress"
+msgstr "Control Progress" 
+
+#. Default: "Eliminar Idioma"
+#: TRAIdioma
+msgid "Delete Language"
+msgstr "Delete Language"
+
+
+
+#. Default: "Exportar Copia de Seguridad"
+#: TRABackup_action
+msgid "Export Backup"
+msgstr "Export Backup"
+
+
+#. Default: "Actividad"
+#: TRAIdioma
+msgid "Activity"
+msgstr "Activity"
+

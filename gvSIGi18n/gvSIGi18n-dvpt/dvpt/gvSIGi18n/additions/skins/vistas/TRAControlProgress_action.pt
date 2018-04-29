@@ -1,0 +1,407 @@
+<tal:block replace="nothing">
+# File: TRAControlProgress_action.pt
+#
+# Copyright (c) 2008, 2009,2010 by Conselleria de Infraestructuras y Transporte de la
+# Generalidad Valenciana
+#
+# GNU General Public License (GPL)
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+#
+# Authors: 
+# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana 
+# Model Driven Development sl  Valencia (Spain) www.ModelDD.org 
+# Antonio Carrasco Valero                       carrasco@ModelDD.org
+#
+</tal:block>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+<body>                     
+<metal:main fill-slot="main">
+    <tal:main-macro metal:define-macro="main"
+        tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas.
+        global pStartTime       pStartTime | python: here.ModelDDvlPlone_tool.fMillisecondsNow()" 
+        i18n:domain="gvSIGi18n">
+
+           
+
+
+        <tal:block tal:define="
+            pExecutionRecord python: here.fStartExecution( 'template', 'TRAControlProgress_action.pt', None, True, { 'log_when': True, });
+            pPermissionsCache python: {};
+            pRolesCache python: {}" >
+    
+            <div metal:use-macro="here/document_actions/macros/document_actions">
+                Document actions (print, sendto etc)
+            </div>
+    
+            <h1 tal:content="object_title" class="documentFirstHeading">
+              Title or id
+            </h1>
+    
+            <div metal:use-macro="here/document_byline/macros/byline">
+              Get the byline - contains details about author and modification date.
+            </div>
+            
+            
+            <tal:block tal:define="pProcessControlAction python: request.form.get( 'TRAControlProgress_Action', '')" >
+                
+                <tal:block tal:condition="python: pProcessControlAction and ( pProcessControlAction in [ 'Terminate', 'Pause', 'Resume',])" >
+                    <tal:block tal:define="
+                        pServiceResult python: here.fService_ProcessControl( 
+                            theProcessControlAction     =pProcessControlAction,
+                            theProgressHandlerKey       =here.fProgressHandlerKey(),
+                            thePermissionsCache         =pPermissionsCache,
+                            theRolesCache               =pRolesCache,
+                            theParentExecutionRecord    =pExecutionRecord);
+                        unServiceSuccess                python:  ( pServiceResult or {}).get( 'success', False);" >
+                        <br/>
+                    </tal:block>
+                </tal:block>
+            </tal:block>
+            
+            
+            <tal:block tal:condition="python: not here.fAllowWrite()" >
+                <div class="portalMessage" >
+                    <span tal:content="python: here.ModelDDvlPlone_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TranslationsCatalogIsLockedAgainstModifications', 'The Translations Catalog Is Locked Against Modifications')" />
+                </div>
+            </tal:block>
+            
+            <metal:block metal:use-macro="here/CabeceraEnTabla_i18n_view/macros/tCabeceraEnTabla_i18n" />   
+              
+                
+            <table width="100%%" cellspacing="0" cellpadding="0" frame="void" >
+                <tr>
+                    <td width="10%"  align="left" valign="baseline" >
+                        <font size="2">
+                            <em><span tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TRACatalogo_attr_nombreProducto_label',   'Product Name-' )" /></em>
+                         </font>        
+                        <font size="3">
+                            <strong><span tal:content="python: here.fAsUnicode( here.getCatalogo().getNombreProducto())" /></strong>
+                         </font>
+                    </td>         
+                    <td  width="15%" align="center" valign="baseline">
+                        <tal:block tal:define="
+                            pUseCaseAssessmentResult python: here.fUseCaseAssessment( 
+                                theUseCaseName          = 'Advanced_View_on_any_TRA_element', 
+                                theElementsBindings     = { 'object': here,},
+                                theRulesToCollect       = None, 
+                                thePermissionsCache     = pPermissionsCache, 
+                                theRolesCache           = pRolesCache, 
+                                theParentExecutionRecord= pExecutionRecord)"
+                            tal:condition="python: pUseCaseAssessmentResult and pUseCaseAssessmentResult.get( 'success', False)">    
+                            <strong>
+                                <a href="#" title="#" 
+                                    tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_vistaAvanzada_msgid',   'Details-')"
+                                    tal:attributes="
+                                        title aLinkTitle;
+                                        href python: '%s/Tabular/' % here.absolute_url()">
+                                    <img src="#" alt="#" title="#" 
+                                         tal:attributes="src python: '%s/tabular.gif' % here.portal_url(); alt aLinkTitle; title aLinkTitle" 
+                                         id="icon-tabular" />
+                                    <span tal:content="aLinkTitle" />
+                                </a>
+                            </strong>
+                        </tal:block>
+                    </td>
+                    <td width="15%" align="right" valign="baseline">                    
+                        <strong>
+                           <a href="#" title="#"
+                               tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_refrescar_action_label',   'Refresh-' )"
+                               tal:attributes="
+                                   title aLinkTitle;
+                                   href python: '%s/TRAControlProgress_action/' % here.absolute_url()">
+                                <img src="#" alt="#" title="#" 
+                                     tal:attributes="src python: '%s/refrescar.gif' % here.portal_url(); alt aLinkTitle; title aLinkTitle" 
+                                     id="icon-refrescar" />
+                               <span tal:content="aLinkTitle" />
+                           </a>
+                        </strong>
+                    </td>
+                    <td width="15%"  align="right" valign="baseline">                    
+                        <strong>
+                            <a href="#" title="#"  
+                                tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_volveracatalogo_msgid',   'Back to catalog-' )"
+                                tal:attributes="
+                                    title aLinkTitle;
+                                    href python: '%s/TRACatalogo/' % here.getCatalogo().absolute_url()">
+                                <span tal:content="aLinkTitle" />
+                            </a>
+                        </strong>
+                    </td>                
+                    <td width="15%" align="right" valign="baseline">                    
+                        <strong>
+                            <a href="#" title="#" 
+                                tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_ProgressResults_msgid',   'Progress Results-' )"                                    
+                                tal:attributes="
+                                    title aLinkTitle;
+                                    href python: '%s/TRAProgressResults_action/' % here.absolute_url()">
+                                <span tal:content="aLinkTitle" />
+                            </a>
+                        </strong>
+                    </td>
+                    <td width="15%" align="right" valign="baseline">                    
+                        <strong>
+                            <a href="#" title="#" 
+                                tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_ConfigureProgress_msgid',   'Configure Progress-' )"                                    
+                                tal:attributes="
+                                    title aLinkTitle;
+                                    href python: '%s/TRAConfigureProgress_action/' % here.absolute_url()">
+                                <span tal:content="aLinkTitle" />
+                            </a>
+                        </strong>
+                    </td>
+                    <td width="15%" align="right" valign="baseline"
+                        tal:define="pElementoEspecificacionProceso python: here.fDeriveElementoEspecificacionProceso()"
+                        tal:condition="python: not ( pElementoEspecificacionProceso == None)">                    
+                        <strong>
+                            <a href="#" title="#" 
+                                tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_ProcessSpecificacionElement_msgid',   'Process specificacion element-' )"                                    
+                                tal:attributes="
+                                    title aLinkTitle;
+                                    href python: '%s/Tabular/' % pElementoEspecificacionProceso.absolute_url()">
+                                <span tal:content="aLinkTitle" />
+                            </a>
+                        </strong>
+                    </td>
+                </tr>
+            </table>
+                        
+            <br/>
+            <br/>
+            
+            <tal:block tal:define="pEstadoControl python: here.fEstadoControl( )" >
+                <tal:block tal:condition="python: not pEstadoControl">
+                    <p i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_nohayEstadoControl_warning_msgid">There is no progress control status for the process available at this time-</p>
+                </tal:block>
+                <tal:block tal:condition="pEstadoControl">
+                    <metal:block metal:use-macro="here/TRAProgreso_EstadoControl_i18n_view/macros/tProgreso_EstadoControl_i18n" />   
+                </tal:block>
+                <br/>
+                <br/>
+            </tal:block>     
+            
+            
+            <tal:block tal:define="pContadoresControl python: here.fContadoresControl( )" >
+                <tal:block tal:condition="python: not pContadoresControl">
+                     <p i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_nohaycontadores_warning_msgid">There are no control parameters for the process available at this time-</p>
+                </tal:block>
+                <tal:block tal:condition="pContadoresControl">
+                    <metal:block metal:use-macro="here/TRAProgreso_ContadoresControl_i18n_view/macros/tProgreso_ContadoresControl_i18n" />   
+                </tal:block>
+                <br/>
+                <br/>
+            </tal:block>
+                        
+            <tal:block tal:define="pParametrosControl python: here.fParametrosControl( )" >
+                <tal:block tal:condition="python: not pParametrosControl">
+                     <p i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_nohaycontadores_warning_msgid">There are no control parameters for the process available at this time-</p>
+                </tal:block>
+                <tal:block tal:condition="pParametrosControl">
+                    <metal:block metal:use-macro="here/TRAProgreso_ParametrosControl_i18n_view/macros/tProgreso_ParametrosControl_i18n" />   
+                </tal:block>
+                <br/>
+                <br/>
+            </tal:block>
+                
+            <h2>
+                <strong  tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_ControlProcessProgress',  'Control progress of long-lived process-' )" />
+                <br/>
+                <strong  tal:content="python: here.Title()" />
+            </h2>
+            <p>
+                <strong  tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_ElementPath_msgid',  'Element path-' )" />
+                <span tal:content="python: here.fPhysicalPathString()" />
+            </p>
+            
+            <tal:block tal:define="
+                pControlUseCaseAssessmentResult python: here.fUseCaseAssessment( 
+                    theUseCaseName          = 'Control_TRAProgreso', 
+                    theElementsBindings     = { 'object': here,},
+                    theRulesToCollect       = None, 
+                    thePermissionsCache     = pPermissionsCache, 
+                    theRolesCache           = pRolesCache, 
+                    theParentExecutionRecord= pExecutionRecord)" >
+                    
+                <tal:block tal:condition="python: not( pControlUseCaseAssessmentResult and pControlUseCaseAssessmentResult.get( 'success', False))">    
+                    <br/>
+                    <br/>
+                    <font size="3" >
+                        <strong>
+                            <tal:block tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_userCanNotControlProcessProgress_msgid',   'You are not allowed to control the progress of this long-lived process.-' )" />
+                        </strong>
+                    </font>
+                    <br/>
+                    <br/>
+                </tal:block>
+                
+                
+                <tal:block tal:condition="python: pControlUseCaseAssessmentResult and pControlUseCaseAssessmentResult.get( 'success', False)">    
+  
+                
+                
+                    <tal:block tal:define="
+                        pProgressHandlerKey python: here.fProgressHandlerKey()" >
+
+                        <tal:block tal:condition="not: pProgressHandlerKey">
+                            <p><font size="3" color="red"><strong tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_NoKeyProgressHandlerForLongLivedProcess', 'No Key available for Progress Handler to control this long-lived Process.-')" /></font>                 
+                        </tal:block>
+                        
+                        
+                        <tal:block tal:condition="pProgressHandlerKey">
+                        
+                            <!-- #################################################################
+                            SECTION: Styles to add presentation and behavior to the page elements
+                            ################################################################# -->
+                    
+                             <style type="text/css" >
+                                .TRAstyle_Clickable {
+                                    cursor: pointer;
+                                }
+                                .TRAstyle_NoDisplay {
+                                    display: none;
+                                }
+                                .TRAstyle_Display {
+                                    display: run-in;
+                                }
+                            </style>
+                        
+                        
+                            <!-- #################################################################
+                            SECTION: Scripts to add behavior to the page elements
+                            ################################################################# -->
+                            <script type="text/javascript" src="ajax_queue.js"> </script>
+                            <script type="text/javascript" src="TRAProcessControl_javascripts.js"> </script>
+                            
+                            <span class="TRAstyle_NoDisplay" id="cTRAId_ConfirmLaunchStringMsg"
+                                tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_ConfirmLaunchStringMsg',   'Do you want to LAUNCH execution of the process ?-' )" />
+                            
+                            <span class="TRAstyle_NoDisplay" id="cTRAId_ReallyLaunchStringMsg"
+                                tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_ReallyLaunchStringMsg',   'Do you REALLY want to LAUNCH execution of the process ?-' )" />
+                                
+                                
+                            <br/>
+                            <p>
+                                <font size="3" color="red">
+                                    <strong class="TRAstyle_Clickable" tal:define="aLinkTitle python: '%s %s %s' % ( here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_ASYNCHRONOUSLY_request_msgid', 'ASYNCHRONOUSLY request'), here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_LaunchProcess_msgid',   'Launch Process-' ), pProgressHandlerKey.get( 'progress_element_title', ''),)" 
+                                        onmouseup="#" tal:attributes="onmouseup python: 'pTRAMouseUpHandler_LaunchProcess( %c%s%c, %c%s%c)%c' % ( 39, pProgressHandlerKey.get( 'translations_catalog_root_path', ''), 39, 39, pProgressHandlerKey.get( 'progress_element_UID', ''), 39, 59)" 
+                                        tal:content="aLinkTitle" />
+                                </font>
+                            </p>
+                            
+                            <br/>
+                            
+                            <form id="TRAControlProgress_ActionsForm" method="GET" enctype="multipart/form-data">
+                            
+                                <input id="cid_TRAControlProgress_Action" name="TRAControlProgress_Action" type="hidden" value="" />
+                            
+                                <input id="cid_TRATerminateProcessButton" value="#"
+                                    name="TRATerminateProcessButton" type="button" style="font-size: 9pt;"  class="TRAstyle_Clickable" 
+                                    tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TerminateProcess_msgid',   'Terminate Process-' )" 
+                                    onmouseup="#" tal:attributes="value aLinkTitle; onmouseup python: 'pTRAMouseUpHandler_ControlProcess( %c%s%c, %c%s%c, %c%s%c)%c' % ( 39, 'Terminate', 39, 39, here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_ConfirmTerminateStringMsg',   'Do you want to TERMINATE execution of the process ?-' ), 39, 39, here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_ReallyTerminateStringMsg',   'Do you REALLY want to TERMINATE execution of the process ?-' ), 39, 59)" />
+
+                                &emsp;&emsp;
+                                
+                                <input id="cid_TRAPauseProcessButton" value="#"
+                                    name="TRAPauseProcessButton" type="button" style="font-size: 9pt;"  class="TRAstyle_Clickable" 
+                                    tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_PauseProcess_msgid',   'Pause Process-' )" 
+                                    onmouseup="#" tal:attributes="value aLinkTitle; onmouseup python: 'pTRAMouseUpHandler_ControlProcess( %c%s%c, %c%s%c, %c%s%c)%c' % ( 39, 'Pause', 39, 39, here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_ConfirmPauseStringMsg',   'Do you want to PAUSE execution of the process ?-' ), 39, 39, here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_ReallyPauseStringMsg',   'Do you REALLY want to PAUSE execution of the process ?-' ), 39, 59)" />
+                                &emsp;&emsp;
+                                
+                                <input id="cid_TRAResumeProcessButton" value="#"
+                                    name="TRAResumeProcessButton" type="button" style="font-size: 9pt;"  class="TRAstyle_Clickable" 
+                                    tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_ResumeProcess_msgid',   'Resume Process-' )" 
+                                    onmouseup="#" tal:attributes="value aLinkTitle; onmouseup python: 'pTRAMouseUpHandler_ControlProcess( %c%s%c, %c%s%c, %c%s%c)%c' % ( 39, 'Resume', 39, 39, here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_ConfirmResumeStringMsg',   'Do you want to RESUME execution of the process ?-' ), 39, 39, here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_ReallyResumeStringMsg',   'Do you REALLY want to RESUME execution of the process ?-' ), 39, 59)" />                                
+                            </form>
+                            
+                            <br/>
+                            <br/>
+                            <div class=""  id="cid_TRAInteractionMessageHolder">
+                                <font size="1">
+                                    <strong tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_InteracionStatusMessage',   'Interaction status-' )" />
+                                    <span  id="cid_TRAInteractionMessage" tal:content="string:" />
+                                </font>
+                            </div>
+                            <br/>
+                            
+                            <textarea
+                                readonly="readonly"
+                                rows="3"
+                                columns="72"
+                                name="theTRAAsyncRequest_Display_Field" 
+                                id="theTRAAsyncRequest_Display_Field" 
+                                style="font-size: 8pt;">-no request-</textarea> 
+                            <br/>
+                            <br/>
+                            
+                            <textarea
+                                readonly="readonly"
+                                rows="8"
+                                columns="72"
+                                name="theTRAAsyncRequest_Response_Display_Field" 
+                                id="theTRAAsyncRequest_Response_Display_Field" 
+                                style="font-size: 8pt;">-no response-</textarea> 
+                            <br/>
+                            <br/>
+
+                        </tal:block>
+                        
+                    </tal:block>
+            
+                
+                
+                
+                
+                
+                
+                
+                
+       
+                         
+                </tal:block>
+            </tal:block>
+
+          
+            <tal:block tal:define="dummy python: pExecutionRecord and here.pEndExecution( pExecutionRecord)" />
+            
+            <metal:block metal:use-macro="here/TRAFooter_i18n_view/macros/tFooter_i18n" />
+    
+    
+            <tal:block tal:replace="structure python: pExecutionRecord and here.TRARenderExecutionDetails( pExecutionRecord)" />
+     
+         
+        </tal:block>
+
+    </tal:main-macro>
+</metal:main>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

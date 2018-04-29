@@ -2,8 +2,8 @@
 #
 # File: gvSIGi18n.py
 #
-# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
-# Generalidad Valenciana
+# Copyright (c) 2010 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+# Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -83,8 +83,10 @@ def initialize(context):
     import TRAArquetipo
     import TRAModulo
     import TRAColeccionCadenas
+    import TRAProgreso
     import TRAInforme
     import TRAColeccionArquetipos
+    import TRAParametrosControlProgreso
     import TRAColeccionImportaciones
     import TRACadena
     import TRAColeccionSolicitudesCadenas
@@ -97,6 +99,7 @@ def initialize(context):
     import TRAIdioma
     import TRAColeccionModulos
     import TRATraduccion
+    import TRAColeccionProgresos
     import TRASolicitudCadena
 
     # Initialize portal content

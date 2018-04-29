@@ -2,8 +2,8 @@
 #
 # File: TRAColeccionSolicitudesCadenas.py
 #
-# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
-# Generalidad Valenciana
+# Copyright (c) 2010 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+# Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -57,7 +57,7 @@ schema = Schema((
         ),
         contains_collections=False,
         label2='String creation Requests',
-        additional_columns=['simbolo', 'estadoSolicitudCadena'],
+        additional_columns=['simbolo', 'estadoSolicitudCadena', 'nombresModulos'],
         label='Solicitudes de creacion de Cadenas',
         represents_aggregation=True,
         description2='Requests by developers to create new strings.',
@@ -133,7 +133,7 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
     actions =  (
 
 
-       {'action': "string:${object_url}/TRACrearCadenas_action",
+       {'action': "string:${object_url}/TRAConfirmarCrearCadenas",
         'category': "object_buttons",
         'id': 'TRACreateStrings',
         'name': 'Create Strings',
@@ -142,7 +142,7 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
        },
 
 
-       {'action': "string:${object_url}/TRALimpiarCadenas_action",
+       {'action': "string:${object_url}/TRAConfirmarLimpiarCadenas",
         'category': "object_buttons",
         'id': 'TRACleanupStrings',
         'name': 'Clean-up Strings',
@@ -151,28 +151,10 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
        },
 
 
-       {'action': "string:${object_url}/folder_listing",
-        'category': "folder",
-        'id': 'folderlisting',
-        'name': 'Folder Listing',
-        'permissions': ("View",),
-        'condition': """python:0"""
-       },
-
-
-       {'action': "string:${object_url}/reference_graph",
-        'category': "object",
-        'id': 'references',
-        'name': 'References',
-        'permissions': ("Modify portal content",),
-        'condition': """python:0"""
-       },
-
-
-       {'action': "string:${object_url}/Tabular",
-        'category': "object",
-        'id': 'view',
-        'name': 'View',
+       {'action': "string:${object_url}/MDDCacheStatus/",
+        'category': "object_buttons",
+        'id': 'mddcachestatus',
+        'name': 'Cache',
         'permissions': ("View",),
         'condition': """python:1"""
        },
@@ -187,30 +169,12 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
        },
 
 
-       {'action': "string:$object_url/Editar",
-        'category': "object",
-        'id': 'edit',
-        'name': 'Edit',
-        'permissions': ("Modify portal content",),
-        'condition': """python:object.fAllowWrite()"""
-       },
-
-
-       {'action': "string:${object_url}/sharing",
-        'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
-        'condition': """python:0"""
-       },
-
-
-       {'action': "string:${object_url}/TRASeguridadUsuarioConectado",
+       {'action': "string:${object_url}/TRAConfigureProfiling_action",
         'category': "object_buttons",
-        'id': 'TRA_SeguridadUsuarioConectado',
-        'name': 'Permissions',
-        'permissions': ("View",),
-        'condition': """python:1"""
+        'id': 'TRA_configure_profiling',
+        'name': 'Configure Profiling',
+        'permissions': ("ManagePortal",),
+        'condition': """python:object.fUseCaseCheckDoable( 'Configure_ExecutionProfilingEnablement_TRACatalogo')"""
        },
 
 
@@ -223,10 +187,82 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
        },
 
 
-       {'action': "string:${object_url}/MDDCacheStatus/",
+       {'action': "string:$object_url/Editar",
+        'category': "object",
+        'id': 'edit',
+        'name': 'Edit',
+        'permissions': ("Modify portal content",),
+        'condition': """python:object.fAllowWrite()"""
+       },
+
+
+       {'action': "string:${object_url}/folder_listing",
+        'category': "folder",
+        'id': 'folderlisting',
+        'name': 'Folder Listing',
+        'permissions': ("View",),
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/TRAInventory_action",
         'category': "object_buttons",
-        'id': 'mddcachestatus',
-        'name': 'Cache',
+        'id': 'TRA_inventario',
+        'name': 'Inventory',
+        'permissions': ("View",),
+        'condition': """python:object.fUseCaseCheckDoable( 'Inventory_TRAElemento')"""
+       },
+
+
+       {'action': "string:${object_url}/sharing",
+        'category': "object",
+        'id': 'local_roles',
+        'name': 'Sharing',
+        'permissions': ("Manage properties",),
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/TRARecatalog_action",
+        'category': "object_buttons",
+        'id': 'TRA_recatalogar',
+        'name': 'ReCatalog',
+        'permissions': ("View",),
+        'condition': """python:object.fUseCaseCheckDoable( 'ReCatalog_TRAElemento')"""
+       },
+
+
+       {'action': "string:${object_url}/TRAResetPermissions_action",
+        'category': "object_buttons",
+        'id': 'TRA_reestablecerpermisos',
+        'name': 'Reset Permissions',
+        'permissions': ("View",),
+        'condition': """python:object.fUseCaseCheckDoable( 'ResetPermissions_TRAElemento')"""
+       },
+
+
+       {'action': "string:${object_url}/reference_graph",
+        'category': "object",
+        'id': 'references',
+        'name': 'References',
+        'permissions': ("Modify portal content",),
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/TRASeguridadUsuarioConectado",
+        'category': "object_buttons",
+        'id': 'TRA_SeguridadUsuarioConectado',
+        'name': 'Permissions',
+        'permissions': ("View",),
+        'condition': """python:object.fUseCaseCheckDoable( 'Permissions_on_any_TRA_element')"""
+       },
+
+
+       {'action': "string:${object_url}/Tabular",
+        'category': "object",
+        'id': 'view',
+        'name': 'View',
         'permissions': ("View",),
         'condition': """python:1"""
        },
@@ -243,20 +279,6 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
 
     # Methods
 
-    security.declarePublic('manage_beforeDelete')
-    def manage_beforeDelete(self,item,container):
-        """
-        """
-        
-        return TRAColeccionArquetipos.manage_beforeDelete( self, item, container)
-
-    security.declarePublic('manage_afterAdd')
-    def manage_afterAdd(self,item,container):
-        """
-        """
-        
-        return TRAColeccionArquetipos.manage_afterAdd( self, item, container)
-
     security.declarePublic('cb_isCopyable')
     def cb_isCopyable(self):
         """
@@ -271,6 +293,13 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
         
         return False
 
+    security.declarePublic('fExtraLinks')
+    def fExtraLinks(self):
+        """
+        """
+        
+        return TRAElemento_Operaciones.fExtraLinks( self)
+
     security.declarePublic('fIsCacheable')
     def fIsCacheable(self):
         """
@@ -278,12 +307,19 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
         
         return True
 
-    security.declarePublic('fExtraLinks')
-    def fExtraLinks(self):
+    security.declarePublic('manage_afterAdd')
+    def manage_afterAdd(self,item,container):
         """
         """
         
-        return TRAElemento_Operaciones.fExtraLinks( self)
+        return TRAColeccionArquetipos.manage_afterAdd( self, item, container)
+
+    security.declarePublic('manage_beforeDelete')
+    def manage_beforeDelete(self,item,container):
+        """
+        """
+        
+        return TRAColeccionArquetipos.manage_beforeDelete( self, item, container)
 
     security.declarePublic('manage_pasteObjects')
     def manage_pasteObjects(self,cb_copy_data,REQUEST):

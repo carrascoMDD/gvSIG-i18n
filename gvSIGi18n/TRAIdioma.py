@@ -2,8 +2,8 @@
 #
 # File: TRAIdioma.py
 #
-# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
-# Generalidad Valenciana
+# Copyright (c) 2010 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+# Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -688,30 +688,12 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRe
     actions =  (
 
 
-       {'action': "string:${object_url}/TRAExportarGvSIG",
-        'category': "object_buttons",
-        'id': 'TRA_export_language_for_gvSIG',
-        'name': 'Export for gvSIG',
-        'permissions': ("View",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Export')"""
-       },
-
-
        {'action': "string:${object_url}/TRAConfirmarBloquearIdioma",
         'category': "object_buttons",
         'id': 'TRA_bloquear_idioma',
         'name': 'Lock Language',
         'permissions': ("Modify portal content",),
         'condition': """python:object.fUseCaseCheckDoable( 'Lock_TRAIdioma')"""
-       },
-
-
-       {'action': "string:${object_url}/TRAConfirmarDesbloquearIdioma",
-        'category': "object_buttons",
-        'id': 'TRA_desbloquear_idioma',
-        'name': 'Unlock Language',
-        'permissions': ("Modify portal content",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Unlock_TRAIdioma')"""
        },
 
 
@@ -724,12 +706,39 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRe
        },
 
 
+       {'action': "string:${object_url}/TRAEliminar_Idioma",
+        'category': "object_buttons",
+        'id': 'TRADeleteLanguage',
+        'name': 'Delete Language',
+        'permissions': ("Delete objects",),
+        'condition': """python:object.fUseCaseCheckDoable( 'Delete_TRAIdioma')"""
+       },
+
+
+       {'action': "string:${object_url}/TRAConfirmarDesbloquearIdioma",
+        'category': "object_buttons",
+        'id': 'TRA_desbloquear_idioma',
+        'name': 'Unlock Language',
+        'permissions': ("Modify portal content",),
+        'condition': """python:object.fUseCaseCheckDoable( 'Unlock_TRAIdioma')"""
+       },
+
+
        {'action': "string:$object_url/Editar",
         'category': "object",
         'id': 'edit',
         'name': 'Edit',
         'permissions': ("Modify portal content",),
         'condition': """python:object.fAllowWrite()"""
+       },
+
+
+       {'action': "string:${object_url}/TRAExportarGvSIG_action",
+        'category': "object_buttons",
+        'id': 'TRA_export_language_for_gvSIG',
+        'name': 'Export for gvSIG',
+        'permissions': ("View",),
+        'condition': """python:object.fUseCaseCheckDoable( 'ExportGvSIG_TRAIdioma')"""
        },
 
 
@@ -751,12 +760,12 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRe
        },
 
 
-       {'action': "string:${object_url}/folder_listing",
-        'category': "folder",
-        'id': 'folderlisting',
-        'name': 'Folder Listing',
+       {'action': "string:${object_url}/MDDCacheStatus/",
+        'category': "object_buttons",
+        'id': 'mddcachestatus',
+        'name': 'Cache',
         'permissions': ("View",),
-        'condition': """python:0"""
+        'condition': """python:1"""
        },
 
 
@@ -766,6 +775,60 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRe
         'name': 'Changes',
         'permissions': ("View",),
         'condition': """python:1"""
+       },
+
+
+       {'action': "string:${object_url}/TRAConfigureProfiling_action",
+        'category': "object_buttons",
+        'id': 'TRA_configure_profiling',
+        'name': 'Configure Profiling',
+        'permissions': ("ManagePortal",),
+        'condition': """python:object.fUseCaseCheckDoable( 'Configure_ExecutionProfilingEnablement_TRACatalogo')"""
+       },
+
+
+       {'action': "string:$object_url/content_status_history",
+        'category': "object",
+        'id': 'content_status_history',
+        'name': 'State',
+        'permissions': ("View",),
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/folder_listing",
+        'category': "folder",
+        'id': 'folderlisting',
+        'name': 'Folder Listing',
+        'permissions': ("View",),
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/TRAInventory_action",
+        'category': "object_buttons",
+        'id': 'TRA_inventario',
+        'name': 'Inventory',
+        'permissions': ("View",),
+        'condition': """python:object.fUseCaseCheckDoable( 'Inventory_TRAElemento')"""
+       },
+
+
+       {'action': "string:${object_url}/TRARecatalog_action",
+        'category': "object_buttons",
+        'id': 'TRA_recatalogar',
+        'name': 'ReCatalog',
+        'permissions': ("View",),
+        'condition': """python:object.fUseCaseCheckDoable( 'ReCatalog_TRAElemento')"""
+       },
+
+
+       {'action': "string:${object_url}/TRAResetPermissions_action",
+        'category': "object_buttons",
+        'id': 'TRA_reestablecerpermisos',
+        'name': 'Reset Permissions',
+        'permissions': ("View",),
+        'condition': """python:object.fUseCaseCheckDoable( 'ResetPermissions_TRAElemento')"""
        },
 
 
@@ -783,25 +846,7 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRe
         'id': 'TRA_SeguridadUsuarioConectado',
         'name': 'Permissions',
         'permissions': ("View",),
-        'condition': """python:1"""
-       },
-
-
-       {'action': "string:$object_url/content_status_history",
-        'category': "object",
-        'id': 'content_status_history',
-        'name': 'State',
-        'permissions': ("View",),
-        'condition': """python:0"""
-       },
-
-
-       {'action': "string:${object_url}/MDDCacheStatus/",
-        'category': "object_buttons",
-        'id': 'mddcachestatus',
-        'name': 'Cache',
-        'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': """python:object.fUseCaseCheckDoable( 'Permissions_on_any_TRA_element')"""
        },
 
 
@@ -830,13 +875,6 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRe
         
         return False
 
-    security.declarePublic('manage_afterAdd')
-    def manage_afterAdd(self,item,container):
-        """
-        """
-        
-        return TRAIdioma_Operaciones.pHandle_manage_afterAdd( self, item, container)
-
     security.declarePublic('fAllowRead')
     def fAllowRead(self):
         """
@@ -850,6 +888,13 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRe
         """
         
         return self.fAllowRead() and self.getPermiteModificar() and self.getCatalogo().fAllowWrite()
+
+    security.declarePublic('fExtraLinks')
+    def fExtraLinks(self):
+        """
+        """
+        
+        return TRAIdioma_Operaciones.fExtraLinks( self)
 
     security.declarePublic('fIsCacheable')
     def fIsCacheable(self):
@@ -872,6 +917,13 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRe
         
         return self.getPermiteModificar()
 
+    security.declarePublic('manage_afterAdd')
+    def manage_afterAdd(self,item,container):
+        """
+        """
+        
+        return TRAIdioma_Operaciones.pHandle_manage_afterAdd( self, item, container)
+
     security.declarePublic('manage_beforeDelete')
     def manage_beforeDelete(self,item,container):
         """
@@ -885,13 +937,6 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRe
         """
         
         return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
-
-    security.declarePublic('fExtraLinks')
-    def fExtraLinks(self):
-        """
-        """
-        
-        return TRAIdioma_Operaciones.fExtraLinks( self)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

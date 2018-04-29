@@ -2,8 +2,8 @@
 #
 # File: TRAContenidoIntercambio.py
 #
-# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
-# Generalidad Valenciana
+# Copyright (c) 2010 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+# Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -80,13 +80,14 @@ schema = Schema((
         widget=StringWidget(
             label="Modulo",
             label2="Module",
-            description="Nombre del Modulo en que se usa o resuelve esta cadena (base por defecto).",
-            description2="Name of the Module where this String is used or resolved (base, by default).",
+            description="Opcional: Nombre del Modulo a que se asociaran las cadenas importadas desde este contenido de intercambio de traducciones.",
+            description2="Optional Name of the Module to be associated with strings imported from this translations interchange content.",
             label_msgid='gvSIGi18n_TRAContenidoIntercambio_attr_nombreModulo_label',
             description_msgid='gvSIGi18n_TRAContenidoIntercambio_attr_nombreModulo_help',
             i18n_domain='gvSIGi18n',
         ),
-        description="Nombre del Modulo en que se usa o resuelve esta cadena (base por defecto).",
+        scale="0",
+        description="Opcional: Nombre del Modulo a que se asociaran las cadenas importadas desde este contenido de intercambio de traducciones.",
         duplicates="0",
         label2="Module",
         ea_localid="984",
@@ -94,15 +95,13 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        description2="Name of the Module where this String is used or resolved (base, by default).",
-        ea_guid="{23643564-462C-4376-BD6A-053471FFF4EA}",
-        scale="0",
-        default="base",
-        label="Modulo",
         length="0",
+        description2="Optional Name of the Module to be associated with strings imported from this translations interchange content.",
         containment="Not Specified",
-        position="0",
-        owner_class_name="TRAContenidoIntercambio"
+        ea_guid="{23643564-462C-4376-BD6A-053471FFF4EA}",
+        position="4",
+        owner_class_name="TRAContenidoIntercambio",
+        label="Modulo"
     ),
 
     StringField(
@@ -131,7 +130,7 @@ schema = Schema((
         label="Usuario Contribuidor",
         length="0",
         containment="Not Specified",
-        position="2",
+        position="6",
         owner_class_name="TRAContenidoIntercambio"
     ),
 
@@ -161,7 +160,7 @@ schema = Schema((
         label="Fecha y Hora de Carga",
         length="0",
         containment="Not Specified",
-        position="4",
+        position="2",
         owner_class_name="TRAContenidoIntercambio"
     ),
 
@@ -192,7 +191,7 @@ schema = Schema((
         label="Sumario del contenido",
         length="0",
         containment="Not Specified",
-        position="7",
+        position="5",
         owner_class_name="TRAContenidoIntercambio",
         exclude_from_views="[ 'Textual', 'Tabular',  ]"
     ),
@@ -225,7 +224,7 @@ schema = Schema((
         length="0",
         expression="context.fInformeContenidoIntercambio()",
         containment="Not Specified",
-        position="6",
+        position="3",
         owner_class_name="TRAContenidoIntercambio",
         custom_presentation_view="TRAContenidoIntercambioTraducciones_i18n_view",
         computed_types="text"
@@ -258,7 +257,7 @@ schema = Schema((
         length="0",
         exclude_from_traversalconfig="True",
         containment="Not Specified",
-        position="5",
+        position="0",
         owner_class_name="TRAContenidoIntercambio"
     ),
 
@@ -327,6 +326,15 @@ class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAConRegistroAct
     actions =  (
 
 
+       {'action': "string:${object_url}/TRAContenidoIntercambioDatos",
+        'category': "object",
+        'id': 'TRAContenidoIntercambioDatos',
+        'name': 'Data',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
        {'action': "string:$object_url/Editar",
         'category': "object",
         'id': 'edit',
@@ -345,20 +353,38 @@ class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAConRegistroAct
        },
 
 
-       {'action': "string:${object_url}/TRAContenidoIntercambioDatos",
-        'category': "object",
-        'id': 'TRAContenidoIntercambioDatos',
-        'name': 'Data',
+       {'action': "string:${object_url}/MDDCacheStatus/",
+        'category': "object_buttons",
+        'id': 'mddcachestatus',
+        'name': 'Cache',
         'permissions': ("View",),
         'condition': """python:1"""
        },
 
 
-       {'action': "string:${object_url}/sharing",
+       {'action': "string:${object_url}/MDDChanges",
+        'category': "object_buttons",
+        'id': 'mddchanges',
+        'name': 'Changes',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:${object_url}/TRAConfigureProfiling_action",
+        'category': "object_buttons",
+        'id': 'TRA_configure_profiling',
+        'name': 'Configure Profiling',
+        'permissions': ("ManagePortal",),
+        'condition': """python:object.fUseCaseCheckDoable( 'Configure_ExecutionProfilingEnablement_TRACatalogo')"""
+       },
+
+
+       {'action': "string:$object_url/content_status_history",
         'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
+        'id': 'content_status_history',
+        'name': 'State',
+        'permissions': ("View",),
         'condition': """python:0"""
        },
 
@@ -372,12 +398,39 @@ class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAConRegistroAct
        },
 
 
-       {'action': "string:${object_url}/MDDChanges",
+       {'action': "string:${object_url}/TRAInventory_action",
         'category': "object_buttons",
-        'id': 'mddchanges',
-        'name': 'Changes',
+        'id': 'TRA_inventario',
+        'name': 'Inventory',
         'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': """python:object.fUseCaseCheckDoable( 'Inventory_TRAElemento')"""
+       },
+
+
+       {'action': "string:${object_url}/sharing",
+        'category': "object",
+        'id': 'local_roles',
+        'name': 'Sharing',
+        'permissions': ("Manage properties",),
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/TRARecatalog_action",
+        'category': "object_buttons",
+        'id': 'TRA_recatalogar',
+        'name': 'ReCatalog',
+        'permissions': ("View",),
+        'condition': """python:object.fUseCaseCheckDoable( 'ReCatalog_TRAElemento')"""
+       },
+
+
+       {'action': "string:${object_url}/TRAResetPermissions_action",
+        'category': "object_buttons",
+        'id': 'TRA_reestablecerpermisos',
+        'name': 'Reset Permissions',
+        'permissions': ("View",),
+        'condition': """python:object.fUseCaseCheckDoable( 'ResetPermissions_TRAElemento')"""
        },
 
 
@@ -395,25 +448,7 @@ class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAConRegistroAct
         'id': 'TRA_SeguridadUsuarioConectado',
         'name': 'Permissions',
         'permissions': ("View",),
-        'condition': """python:1"""
-       },
-
-
-       {'action': "string:$object_url/content_status_history",
-        'category': "object",
-        'id': 'content_status_history',
-        'name': 'State',
-        'permissions': ("View",),
-        'condition': """python:0"""
-       },
-
-
-       {'action': "string:${object_url}/MDDCacheStatus/",
-        'category': "object_buttons",
-        'id': 'mddcachestatus',
-        'name': 'Cache',
-        'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': """python:object.fUseCaseCheckDoable( 'Permissions_on_any_TRA_element')"""
        },
 
 
@@ -428,22 +463,8 @@ class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAConRegistroAct
 
     # Methods
 
-    security.declarePublic('manage_beforeDelete')
-    def manage_beforeDelete(self,item,container):
-        """
-        """
-        
-        return TRAArquetipo.manage_beforeDelete( self, item, container)
-
-    security.declarePublic('manage_afterAdd')
-    def manage_afterAdd(self,item,container):
-        """
-        """
-        
-        return TRAArquetipo.manage_afterAdd( self, item, container)
-
-    security.declarePublic('fIsCacheable')
-    def fIsCacheable(self):
+    security.declarePublic('cb_isCopyable')
+    def cb_isCopyable(self):
         """
         """
         
@@ -456,12 +477,33 @@ class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAConRegistroAct
         
         return False
 
-    security.declarePublic('cb_isCopyable')
-    def cb_isCopyable(self):
+    security.declarePublic('fExtraLinks')
+    def fExtraLinks(self):
+        """
+        """
+        
+        return TRAContenidoIntercambio_Operaciones.fExtraLinks( self)
+
+    security.declarePublic('fIsCacheable')
+    def fIsCacheable(self):
         """
         """
         
         return True
+
+    security.declarePublic('manage_afterAdd')
+    def manage_afterAdd(self,item,container):
+        """
+        """
+        
+        return TRAArquetipo.manage_afterAdd( self, item, container)
+
+    security.declarePublic('manage_beforeDelete')
+    def manage_beforeDelete(self,item,container):
+        """
+        """
+        
+        return TRAArquetipo.manage_beforeDelete( self, item, container)
 
     security.declarePublic('manage_pasteObjects')
     def manage_pasteObjects(self,cb_copy_data,REQUEST):
@@ -469,13 +511,6 @@ class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAConRegistroAct
         """
         
         return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
-
-    security.declarePublic('fExtraLinks')
-    def fExtraLinks(self):
-        """
-        """
-        
-        return TRAContenidoIntercambio_Operaciones.fExtraLinks( self)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

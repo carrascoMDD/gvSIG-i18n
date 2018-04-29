@@ -2,8 +2,8 @@
 #
 # File: TRAColeccionArquetipos.py
 #
-# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
-# Generalidad Valenciana
+# Copyright (c) 2010 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+# Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -65,28 +65,10 @@ class TRAColeccionArquetipos(TRAElemento):
     actions =  (
 
 
-       {'action': "string:${object_url}/folder_listing",
-        'category': "folder",
-        'id': 'folderlisting',
-        'name': 'Folder Listing',
-        'permissions': ("View",),
-        'condition': """python:0"""
-       },
-
-
-       {'action': "string:${object_url}/reference_graph",
-        'category': "object",
-        'id': 'references',
-        'name': 'References',
-        'permissions': ("Modify portal content",),
-        'condition': """python:0"""
-       },
-
-
-       {'action': "string:${object_url}/Tabular",
-        'category': "object",
-        'id': 'view',
-        'name': 'View',
+       {'action': "string:${object_url}/MDDCacheStatus/",
+        'category': "object_buttons",
+        'id': 'mddcachestatus',
+        'name': 'Cache',
         'permissions': ("View",),
         'condition': """python:1"""
        },
@@ -101,30 +83,12 @@ class TRAColeccionArquetipos(TRAElemento):
        },
 
 
-       {'action': "string:$object_url/Editar",
-        'category': "object",
-        'id': 'edit',
-        'name': 'Edit',
-        'permissions': ("Modify portal content",),
-        'condition': """python:object.fAllowWrite()"""
-       },
-
-
-       {'action': "string:${object_url}/sharing",
-        'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
-        'condition': """python:0"""
-       },
-
-
-       {'action': "string:${object_url}/TRASeguridadUsuarioConectado",
+       {'action': "string:${object_url}/TRAConfigureProfiling_action",
         'category': "object_buttons",
-        'id': 'TRA_SeguridadUsuarioConectado',
-        'name': 'Permissions',
-        'permissions': ("View",),
-        'condition': """python:1"""
+        'id': 'TRA_configure_profiling',
+        'name': 'Configure Profiling',
+        'permissions': ("ManagePortal",),
+        'condition': """python:object.fUseCaseCheckDoable( 'Configure_ExecutionProfilingEnablement_TRACatalogo')"""
        },
 
 
@@ -137,10 +101,82 @@ class TRAColeccionArquetipos(TRAElemento):
        },
 
 
-       {'action': "string:${object_url}/MDDCacheStatus/",
+       {'action': "string:$object_url/Editar",
+        'category': "object",
+        'id': 'edit',
+        'name': 'Edit',
+        'permissions': ("Modify portal content",),
+        'condition': """python:object.fAllowWrite()"""
+       },
+
+
+       {'action': "string:${object_url}/folder_listing",
+        'category': "folder",
+        'id': 'folderlisting',
+        'name': 'Folder Listing',
+        'permissions': ("View",),
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/TRAInventory_action",
         'category': "object_buttons",
-        'id': 'mddcachestatus',
-        'name': 'Cache',
+        'id': 'TRA_inventario',
+        'name': 'Inventory',
+        'permissions': ("View",),
+        'condition': """python:object.fUseCaseCheckDoable( 'Inventory_TRAElemento')"""
+       },
+
+
+       {'action': "string:${object_url}/sharing",
+        'category': "object",
+        'id': 'local_roles',
+        'name': 'Sharing',
+        'permissions': ("Manage properties",),
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/TRARecatalog_action",
+        'category': "object_buttons",
+        'id': 'TRA_recatalogar',
+        'name': 'ReCatalog',
+        'permissions': ("View",),
+        'condition': """python:object.fUseCaseCheckDoable( 'ReCatalog_TRAElemento')"""
+       },
+
+
+       {'action': "string:${object_url}/TRAResetPermissions_action",
+        'category': "object_buttons",
+        'id': 'TRA_reestablecerpermisos',
+        'name': 'Reset Permissions',
+        'permissions': ("View",),
+        'condition': """python:object.fUseCaseCheckDoable( 'ResetPermissions_TRAElemento')"""
+       },
+
+
+       {'action': "string:${object_url}/reference_graph",
+        'category': "object",
+        'id': 'references',
+        'name': 'References',
+        'permissions': ("Modify portal content",),
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/TRASeguridadUsuarioConectado",
+        'category': "object_buttons",
+        'id': 'TRA_SeguridadUsuarioConectado',
+        'name': 'Permissions',
+        'permissions': ("View",),
+        'condition': """python:object.fUseCaseCheckDoable( 'Permissions_on_any_TRA_element')"""
+       },
+
+
+       {'action': "string:${object_url}/Tabular",
+        'category': "object",
+        'id': 'view',
+        'name': 'View',
         'permissions': ("View",),
         'condition': """python:1"""
        },
@@ -157,15 +193,15 @@ class TRAColeccionArquetipos(TRAElemento):
 
     # Methods
 
-    security.declarePublic('getEsColeccion')
-    def getEsColeccion(self):
+    security.declarePublic('cb_isCopyable')
+    def cb_isCopyable(self):
         """
         """
         
-        return True
+        return False
 
-    security.declarePublic('cb_isCopyable')
-    def cb_isCopyable(self):
+    security.declarePublic('cb_isMoveable')
+    def cb_isMoveable(self):
         """
         """
         
@@ -185,6 +221,13 @@ class TRAColeccionArquetipos(TRAElemento):
         
         return False
 
+    security.declarePublic('getEsColeccion')
+    def getEsColeccion(self):
+        """
+        """
+        
+        return True
+
     security.declarePublic('manage_afterAdd')
     def manage_afterAdd(self,item,container):
         """
@@ -198,13 +241,6 @@ class TRAColeccionArquetipos(TRAElemento):
         """
         
         return TRAElemento.manage_beforeDelete( self, item, container)
-
-    security.declarePublic('cb_isMoveable')
-    def cb_isMoveable(self):
-        """
-        """
-        
-        return False
 # end of class TRAColeccionArquetipos
 
 ##code-section module-footer #fill in your manual code here

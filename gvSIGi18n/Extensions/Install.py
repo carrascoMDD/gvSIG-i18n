@@ -2,8 +2,8 @@
 #
 # File: Install.py
 #
-# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
-# Generalidad Valenciana
+# Copyright (c) 2010 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+# Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -103,7 +103,9 @@ def install(self, reinstall=False):
         "TRAColeccionInformes",
         "TRAModulo",
         "TRAColeccionCadenas",
+        "TRAProgreso",
         "TRAInforme",
+        "TRAParametrosControlProgreso",
         "TRAColeccionImportaciones",
         "TRACadena",
         "TRAColeccionSolicitudesCadenas",
@@ -114,6 +116,7 @@ def install(self, reinstall=False):
         "TRAIdioma",
         "TRAColeccionModulos",
         "TRATraduccion",
+        "TRAColeccionProgresos",
         "TRASolicitudCadena",
         ] + factory_tool.getFactoryTypes().keys()
     factory_tool.manage_setPortalFactoryTypes(listOfTypeIds=factory_types)

@@ -2,8 +2,8 @@
 #
 # File: TRAModulo.py
 #
-# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
-# Generalidad Valenciana
+# Copyright (c) 2010 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+# Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -237,6 +237,15 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRAMod
     actions =  (
 
 
+       {'action': "string:${object_url}/TRAEliminar_Modulo",
+        'category': "object_buttons",
+        'id': 'TRADeleteModule',
+        'name': 'Delete Module',
+        'permissions': ("Delete objects",),
+        'condition': """python:object.fUseCaseCheckDoable( 'Delete_TRAModulo')"""
+       },
+
+
        {'action': "string:$object_url/Editar",
         'category': "object",
         'id': 'edit',
@@ -264,12 +273,12 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRAMod
        },
 
 
-       {'action': "string:${object_url}/folder_listing",
-        'category': "folder",
-        'id': 'folderlisting',
-        'name': 'Folder Listing',
+       {'action': "string:${object_url}/MDDCacheStatus/",
+        'category': "object_buttons",
+        'id': 'mddcachestatus',
+        'name': 'Cache',
         'permissions': ("View",),
-        'condition': """python:0"""
+        'condition': """python:1"""
        },
 
 
@@ -279,6 +288,60 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRAMod
         'name': 'Changes',
         'permissions': ("View",),
         'condition': """python:1"""
+       },
+
+
+       {'action': "string:${object_url}/TRAConfigureProfiling_action",
+        'category': "object_buttons",
+        'id': 'TRA_configure_profiling',
+        'name': 'Configure Profiling',
+        'permissions': ("ManagePortal",),
+        'condition': """python:object.fUseCaseCheckDoable( 'Configure_ExecutionProfilingEnablement_TRACatalogo')"""
+       },
+
+
+       {'action': "string:$object_url/content_status_history",
+        'category': "object",
+        'id': 'content_status_history',
+        'name': 'State',
+        'permissions': ("View",),
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/folder_listing",
+        'category': "folder",
+        'id': 'folderlisting',
+        'name': 'Folder Listing',
+        'permissions': ("View",),
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/TRAInventory_action",
+        'category': "object_buttons",
+        'id': 'TRA_inventario',
+        'name': 'Inventory',
+        'permissions': ("View",),
+        'condition': """python:object.fUseCaseCheckDoable( 'Inventory_TRAElemento')"""
+       },
+
+
+       {'action': "string:${object_url}/TRARecatalog_action",
+        'category': "object_buttons",
+        'id': 'TRA_recatalogar',
+        'name': 'ReCatalog',
+        'permissions': ("View",),
+        'condition': """python:object.fUseCaseCheckDoable( 'ReCatalog_TRAElemento')"""
+       },
+
+
+       {'action': "string:${object_url}/TRAResetPermissions_action",
+        'category': "object_buttons",
+        'id': 'TRA_reestablecerpermisos',
+        'name': 'Reset Permissions',
+        'permissions': ("View",),
+        'condition': """python:object.fUseCaseCheckDoable( 'ResetPermissions_TRAElemento')"""
        },
 
 
@@ -296,25 +359,7 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRAMod
         'id': 'TRA_SeguridadUsuarioConectado',
         'name': 'Permissions',
         'permissions': ("View",),
-        'condition': """python:1"""
-       },
-
-
-       {'action': "string:$object_url/content_status_history",
-        'category': "object",
-        'id': 'content_status_history',
-        'name': 'State',
-        'permissions': ("View",),
-        'condition': """python:0"""
-       },
-
-
-       {'action': "string:${object_url}/MDDCacheStatus/",
-        'category': "object_buttons",
-        'id': 'mddcachestatus',
-        'name': 'Cache',
-        'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': """python:object.fUseCaseCheckDoable( 'Permissions_on_any_TRA_element')"""
        },
 
 
@@ -328,6 +373,62 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRAMod
     ##/code-section class-header
 
     # Methods
+
+    security.declarePublic('cb_isCopyable')
+    def cb_isCopyable(self):
+        """
+        """
+        
+        return False
+
+    security.declarePublic('displayContentsTab')
+    def displayContentsTab(self):
+        """
+        """
+        
+        return False
+
+    security.declarePublic('fAllowRead')
+    def fAllowRead(self):
+        """
+        """
+        
+        return self.getPermiteLeer() and self.getCatalogo().fAllowRead()
+
+    security.declarePublic('fAllowWrite')
+    def fAllowWrite(self):
+        """
+        """
+        
+        return self.fAllowRead() and self.getPermiteModificar() and self.getCatalogo().fAllowWrite()
+
+    security.declarePublic('fExtraLinks')
+    def fExtraLinks(self):
+        """
+        """
+        
+        return TRAModulo_Operaciones.fExtraLinks( self)
+
+    security.declarePublic('fIsCacheable')
+    def fIsCacheable(self):
+        """
+        """
+        
+        return True
+
+    security.declarePublic('fIsLocked')
+    def fIsLocked(self):
+        """
+        """
+        
+        return not self.getPermiteModificar()
+
+    security.declarePublic('fIsUnLocked')
+    def fIsUnLocked(self):
+        """
+        """
+        
+        return self.getPermiteModificar()
 
     security.declarePublic('manage_afterAdd')
     def manage_afterAdd(self,item,container):
@@ -349,62 +450,6 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRAMod
         """
         
         return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
-
-    security.declarePublic('displayContentsTab')
-    def displayContentsTab(self):
-        """
-        """
-        
-        return False
-
-    security.declarePublic('cb_isCopyable')
-    def cb_isCopyable(self):
-        """
-        """
-        
-        return False
-
-    security.declarePublic('fAllowRead')
-    def fAllowRead(self):
-        """
-        """
-        
-        return self.getPermiteLeer() and self.getCatalogo().fAllowRead()
-
-    security.declarePublic('fAllowWrite')
-    def fAllowWrite(self):
-        """
-        """
-        
-        return self.fAllowRead() and self.getPermiteModificar() and self.getCatalogo().fAllowWrite()
-
-    security.declarePublic('fIsLocked')
-    def fIsLocked(self):
-        """
-        """
-        
-        return not self.getPermiteModificar()
-
-    security.declarePublic('fIsCacheable')
-    def fIsCacheable(self):
-        """
-        """
-        
-        return True
-
-    security.declarePublic('fIsUnLocked')
-    def fIsUnLocked(self):
-        """
-        """
-        
-        return self.getPermiteModificar()
-
-    security.declarePublic('fExtraLinks')
-    def fExtraLinks(self):
-        """
-        """
-        
-        return TRAModulo_Operaciones.fExtraLinks( self)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

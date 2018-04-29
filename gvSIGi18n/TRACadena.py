@@ -2,8 +2,8 @@
 #
 # File: TRACadena.py
 #
-# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
-# Generalidad Valenciana
+# Copyright (c) 2010 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+# Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -68,7 +68,7 @@ schema = Schema((
         description2="The original symbol identifying the string to be translated.",
         containment="Not Specified",
         ea_guid="{D7A26052-9642-4336-9E66-D7C7AAD9D7E6}",
-        position="0",
+        position="5",
         owner_class_name="TRACadena",
         label="Simbolo"
     ),
@@ -102,7 +102,7 @@ schema = Schema((
         label="Estado de la Cadena",
         length="0",
         containment="Not Specified",
-        position="3",
+        position="0",
         owner_class_name="TRACadena"
     ),
 
@@ -130,7 +130,7 @@ schema = Schema((
         description2="Textual representation of the date when the String was first created.",
         containment="Not Specified",
         ea_guid="{37522DDE-9593-4f36-8686-C889D5C6B928}",
-        position="4",
+        position="2",
         owner_class_name="TRACadena",
         label="Fecha de Creacion como texto"
     ),
@@ -159,7 +159,7 @@ schema = Schema((
         description2="User who created or imported the string to be translated.",
         containment="Not Specified",
         ea_guid="{419A6822-511F-48d5-9D48-A75E8E596478}",
-        position="5",
+        position="7",
         owner_class_name="TRACadena",
         label="Usuario Creador"
     ),
@@ -188,7 +188,7 @@ schema = Schema((
         description2="The date when the String was cancelled, such that the string won't be considered again for translation.",
         containment="Not Specified",
         ea_guid="{897F7F5D-B75C-4084-8D79-B7639A72865C}",
-        position="6",
+        position="1",
         owner_class_name="TRACadena",
         label="Fecha de Cancelacion"
     ),
@@ -217,7 +217,7 @@ schema = Schema((
         description2="Names of the Modules using this String.",
         containment="Not Specified",
         ea_guid="{0CFE460B-2B53-47e7-A1D9-72BDFAC41336}",
-        position="7",
+        position="3",
         owner_class_name="TRACadena",
         label="Modulos"
     ),
@@ -246,7 +246,7 @@ schema = Schema((
         description2="References to source code where the string is used.",
         containment="Not Specified",
         ea_guid="{11E67965-20C0-4a3e-B113-5A320582937E}",
-        position="8",
+        position="4",
         owner_class_name="TRACadena",
         label="Referencias a fuentes"
     ),
@@ -301,7 +301,7 @@ schema = Schema((
         label="Simbolo (fragmentos para busqueda textual)",
         length="0",
         containment="Not Specified",
-        position="1",
+        position="6",
         owner_class_name="TRACadena",
         expression="context.fGetSimboloEnPalabras()",
         computed_types="string"
@@ -355,15 +355,6 @@ class TRACadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones):
     actions =  (
 
 
-       {'action': "string:${object_url}/Tabular",
-        'category': "object",
-        'id': 'view',
-        'name': 'View',
-        'permissions': ("View",),
-        'condition': """python:1"""
-       },
-
-
        {'action': "string:$object_url/Editar",
         'category': "object",
         'id': 'edit',
@@ -373,11 +364,47 @@ class TRACadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones):
        },
 
 
-       {'action': "string:${object_url}/sharing",
+       {'action': "string:${object_url}/Tabular",
         'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
+        'id': 'view',
+        'name': 'View',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:${object_url}/MDDCacheStatus/",
+        'category': "object_buttons",
+        'id': 'mddcachestatus',
+        'name': 'Cache',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:${object_url}/MDDChanges",
+        'category': "object_buttons",
+        'id': 'mddchanges',
+        'name': 'Changes',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:${object_url}/TRAConfigureProfiling_action",
+        'category': "object_buttons",
+        'id': 'TRA_configure_profiling',
+        'name': 'Configure Profiling',
+        'permissions': ("ManagePortal",),
+        'condition': """python:object.fUseCaseCheckDoable( 'Configure_ExecutionProfilingEnablement_TRACatalogo')"""
+       },
+
+
+       {'action': "string:$object_url/content_status_history",
+        'category': "object",
+        'id': 'content_status_history',
+        'name': 'State',
+        'permissions': ("View",),
         'condition': """python:0"""
        },
 
@@ -391,12 +418,39 @@ class TRACadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones):
        },
 
 
-       {'action': "string:${object_url}/MDDChanges",
+       {'action': "string:${object_url}/TRAInventory_action",
         'category': "object_buttons",
-        'id': 'mddchanges',
-        'name': 'Changes',
+        'id': 'TRA_inventario',
+        'name': 'Inventory',
         'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': """python:object.fUseCaseCheckDoable( 'Inventory_TRAElemento')"""
+       },
+
+
+       {'action': "string:${object_url}/sharing",
+        'category': "object",
+        'id': 'local_roles',
+        'name': 'Sharing',
+        'permissions': ("Manage properties",),
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/TRARecatalog_action",
+        'category': "object_buttons",
+        'id': 'TRA_recatalogar',
+        'name': 'ReCatalog',
+        'permissions': ("View",),
+        'condition': """python:object.fUseCaseCheckDoable( 'ReCatalog_TRAElemento')"""
+       },
+
+
+       {'action': "string:${object_url}/TRAResetPermissions_action",
+        'category': "object_buttons",
+        'id': 'TRA_reestablecerpermisos',
+        'name': 'Reset Permissions',
+        'permissions': ("View",),
+        'condition': """python:object.fUseCaseCheckDoable( 'ResetPermissions_TRAElemento')"""
        },
 
 
@@ -414,25 +468,7 @@ class TRACadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones):
         'id': 'TRA_SeguridadUsuarioConectado',
         'name': 'Permissions',
         'permissions': ("View",),
-        'condition': """python:1"""
-       },
-
-
-       {'action': "string:$object_url/content_status_history",
-        'category': "object",
-        'id': 'content_status_history',
-        'name': 'State',
-        'permissions': ("View",),
-        'condition': """python:0"""
-       },
-
-
-       {'action': "string:${object_url}/MDDCacheStatus/",
-        'category': "object_buttons",
-        'id': 'mddcachestatus',
-        'name': 'Cache',
-        'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': """python:object.fUseCaseCheckDoable( 'Permissions_on_any_TRA_element')"""
        },
 
 
@@ -461,6 +497,20 @@ class TRACadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones):
         
         return False
 
+    security.declarePublic('displayContentsTab')
+    def displayContentsTab(self):
+        """
+        """
+        
+        return False
+
+    security.declarePublic('fExtraLinks')
+    def fExtraLinks(self):
+        """
+        """
+        
+        return TRAElemento_Operaciones.fExtraLinks( self)
+
     security.declarePublic('fIsActive')
     def fIsActive(self):
         """
@@ -475,26 +525,19 @@ class TRACadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones):
         
         return self.getEstadoCadena() =='Inactiva'
 
+    security.declarePublic('fVocabulary_NombresModulos')
+    def fVocabulary_NombresModulos(self):
+        """
+        """
+        
+        return self.getCatalogo().fTodosModulosVocabulary()
+
     security.declarePublic('manage_afterAdd')
     def manage_afterAdd(self,item,container):
         """
         """
         
         return TRACadena_Operaciones.pHandle_manage_afterAdd( self, item, container)
-
-    security.declarePublic('reindexObject')
-    def reindexObject(self,idxs=[]):
-        """
-        """
-        
-        return TRACadena_Operaciones.pHandle_reindexObject( self, idxs)
-
-    security.declarePublic('displayContentsTab')
-    def displayContentsTab(self):
-        """
-        """
-        
-        return False
 
     security.declarePublic('manage_beforeDelete')
     def manage_beforeDelete(self,item,container):
@@ -510,12 +553,12 @@ class TRACadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones):
         
         return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
 
-    security.declarePublic('fExtraLinks')
-    def fExtraLinks(self):
+    security.declarePublic('reindexObject')
+    def reindexObject(self,idxs=[]):
         """
         """
         
-        return TRAElemento_Operaciones.fExtraLinks( self)
+        return TRACadena_Operaciones.pHandle_reindexObject( self, idxs)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

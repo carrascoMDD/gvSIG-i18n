@@ -1,0 +1,1 @@
+attrib D:\dvpt\plone251\Data\Extensions\TRA*.py -R /S

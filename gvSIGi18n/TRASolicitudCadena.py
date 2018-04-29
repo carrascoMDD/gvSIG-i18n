@@ -2,8 +2,8 @@
 #
 # File: TRASolicitudCadena.py
 #
-# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
-# Generalidad Valenciana
+# Copyright (c) 2010 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+# Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -71,7 +71,7 @@ schema = Schema((
         label="Simbolo",
         length="0",
         containment="Not Specified",
-        position="0",
+        position="9",
         owner_class_name="TRASolicitudCadena"
     ),
 
@@ -105,7 +105,7 @@ schema = Schema((
         label="Estado de la Solicitud de Cadena",
         length="0",
         containment="Not Specified",
-        position="2",
+        position="4",
         owner_class_name="TRASolicitudCadena"
     ),
 
@@ -135,7 +135,7 @@ schema = Schema((
         label="Fecha de Creacion como texto",
         length="0",
         containment="Not Specified",
-        position="3",
+        position="6",
         owner_class_name="TRASolicitudCadena"
     ),
 
@@ -165,7 +165,7 @@ schema = Schema((
         label="Usuario Creador",
         length="0",
         containment="Not Specified",
-        position="4",
+        position="10",
         owner_class_name="TRASolicitudCadena"
     ),
 
@@ -210,7 +210,6 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRASolicitudCadena_attr_nombresModulos_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="Nombres de los Modulos en los que se usa esta cadena.",
         duplicates="0",
         label2="Modules",
@@ -219,13 +218,15 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="Names of the Modules using this String.",
-        containment="Not Specified",
         ea_guid="{E9755386-21D5-472e-960E-C6D8A6BC1887}",
+        read_only="True",
+        scale="0",
+        label="Modulos",
+        length="0",
+        containment="Not Specified",
         position="7",
-        owner_class_name="TRASolicitudCadena",
-        label="Modulos"
+        owner_class_name="TRASolicitudCadena"
     ),
 
     StringField(
@@ -252,14 +253,14 @@ schema = Schema((
         description2="References to source code where the string is used.",
         containment="Not Specified",
         ea_guid="{63018342-F0CE-44a1-9EDC-734730A9FC5E}",
-        position="6",
+        position="8",
         owner_class_name="TRASolicitudCadena",
         label="Referencias a fuentes"
     ),
 
     StringField(
         name='codigoIdiomaPrincipal',
-        widget=StringWidget(
+        widget=SelectionWidget(
             label="Codigo de Idioma Principal",
             label2="Main Language code",
             description="Codigo de Idioma Principal para el que el desarrollador proporciona una traducción.",
@@ -269,6 +270,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Codigo de Idioma Principal para el que el desarrollador proporciona una traducción.",
+        vocabulary='fVocabulary_CodigoIdiomaPrincipal',
         duplicates="0",
         label2="Main Language code",
         ea_localid="1530",
@@ -283,7 +285,7 @@ schema = Schema((
         label="Codigo de Idioma Principal",
         length="0",
         containment="Not Specified",
-        position="7",
+        position="2",
         owner_class_name="TRASolicitudCadena"
     ),
 
@@ -311,14 +313,14 @@ schema = Schema((
         description2="String translated to the main Language, supplied by the developer.",
         containment="Not Specified",
         ea_guid="{5D47B672-17A5-46c0-8C08-F72075FB49E4}",
-        position="8",
+        position="0",
         owner_class_name="TRASolicitudCadena",
         label="Traduccion al Idioma Principal"
     ),
 
     StringField(
         name='codigoIdiomaReferencia',
-        widget=StringWidget(
+        widget=SelectionWidget(
             label="Codigo de Idioma de referencia",
             label2="Reference Language code",
             description="Codigo de Idioma de referencia para el que el desarrollador proporciona una traducción.",
@@ -327,8 +329,8 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRASolicitudCadena_attr_codigoIdiomaReferencia_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="Codigo de Idioma de referencia para el que el desarrollador proporciona una traducción.",
+        vocabulary='fVocabulary_CodigoIdiomaReferencia',
         duplicates="0",
         label2="Reference Language code",
         ea_localid="1527",
@@ -336,13 +338,14 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="Reference Language code for which the developer supplies a translation.",
-        containment="Not Specified",
         ea_guid="{D20AAA93-7307-43f5-A043-24EA875BF767}",
-        position="9",
-        owner_class_name="TRASolicitudCadena",
-        label="Codigo de Idioma de referencia"
+        scale="0",
+        label="Codigo de Idioma de referencia",
+        length="0",
+        containment="Not Specified",
+        position="3",
+        owner_class_name="TRASolicitudCadena"
     ),
 
     TextField(
@@ -369,7 +372,7 @@ schema = Schema((
         description2="String translated to the reference Language, supplied by the developer.",
         containment="Not Specified",
         ea_guid="{ED296F39-B610-4e7b-AE4D-FE9C68BD947F}",
-        position="10",
+        position="1",
         owner_class_name="TRASolicitudCadena",
         label="Traduccion al idioma de referencia"
     ),
@@ -437,15 +440,6 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActivida
     actions =  (
 
 
-       {'action': "string:${object_url}/Tabular",
-        'category': "object",
-        'id': 'view',
-        'name': 'View',
-        'permissions': ("View",),
-        'condition': """python:1"""
-       },
-
-
        {'action': "string:$object_url/Editar",
         'category': "object",
         'id': 'edit',
@@ -455,11 +449,47 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActivida
        },
 
 
-       {'action': "string:${object_url}/sharing",
+       {'action': "string:${object_url}/Tabular",
         'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
+        'id': 'view',
+        'name': 'View',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:${object_url}/MDDCacheStatus/",
+        'category': "object_buttons",
+        'id': 'mddcachestatus',
+        'name': 'Cache',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:${object_url}/MDDChanges",
+        'category': "object_buttons",
+        'id': 'mddchanges',
+        'name': 'Changes',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:${object_url}/TRAConfigureProfiling_action",
+        'category': "object_buttons",
+        'id': 'TRA_configure_profiling',
+        'name': 'Configure Profiling',
+        'permissions': ("ManagePortal",),
+        'condition': """python:object.fUseCaseCheckDoable( 'Configure_ExecutionProfilingEnablement_TRACatalogo')"""
+       },
+
+
+       {'action': "string:$object_url/content_status_history",
+        'category': "object",
+        'id': 'content_status_history',
+        'name': 'State',
+        'permissions': ("View",),
         'condition': """python:0"""
        },
 
@@ -473,12 +503,39 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActivida
        },
 
 
-       {'action': "string:${object_url}/MDDChanges",
+       {'action': "string:${object_url}/TRAInventory_action",
         'category': "object_buttons",
-        'id': 'mddchanges',
-        'name': 'Changes',
+        'id': 'TRA_inventario',
+        'name': 'Inventory',
         'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': """python:object.fUseCaseCheckDoable( 'Inventory_TRAElemento')"""
+       },
+
+
+       {'action': "string:${object_url}/sharing",
+        'category': "object",
+        'id': 'local_roles',
+        'name': 'Sharing',
+        'permissions': ("Manage properties",),
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/TRARecatalog_action",
+        'category': "object_buttons",
+        'id': 'TRA_recatalogar',
+        'name': 'ReCatalog',
+        'permissions': ("View",),
+        'condition': """python:object.fUseCaseCheckDoable( 'ReCatalog_TRAElemento')"""
+       },
+
+
+       {'action': "string:${object_url}/TRAResetPermissions_action",
+        'category': "object_buttons",
+        'id': 'TRA_reestablecerpermisos',
+        'name': 'Reset Permissions',
+        'permissions': ("View",),
+        'condition': """python:object.fUseCaseCheckDoable( 'ResetPermissions_TRAElemento')"""
        },
 
 
@@ -496,25 +553,7 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActivida
         'id': 'TRA_SeguridadUsuarioConectado',
         'name': 'Permissions',
         'permissions': ("View",),
-        'condition': """python:1"""
-       },
-
-
-       {'action': "string:$object_url/content_status_history",
-        'category': "object",
-        'id': 'content_status_history',
-        'name': 'State',
-        'permissions': ("View",),
-        'condition': """python:0"""
-       },
-
-
-       {'action': "string:${object_url}/MDDCacheStatus/",
-        'category': "object_buttons",
-        'id': 'mddcachestatus',
-        'name': 'Cache',
-        'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': """python:object.fUseCaseCheckDoable( 'Permissions_on_any_TRA_element')"""
        },
 
 
@@ -529,12 +568,26 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActivida
 
     # Methods
 
-    security.declarePublic('manage_afterAdd')
-    def manage_afterAdd(self,item,container):
+    security.declarePublic('cb_isCopyable')
+    def cb_isCopyable(self):
         """
         """
         
-        return TRAArquetipo.manage_afterAdd( self, item, container)
+        return False
+
+    security.declarePublic('displayContentsTab')
+    def displayContentsTab(self):
+        """
+        """
+        
+        return False
+
+    security.declarePublic('fExtraLinks')
+    def fExtraLinks(self):
+        """
+        """
+        
+        return TRAElemento_Operaciones.fExtraLinks( self)
 
     security.declarePublic('fIsCacheable')
     def fIsCacheable(self):
@@ -542,6 +595,34 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActivida
         """
         
         return True
+
+    security.declarePublic('fVocabulary_CodigoIdiomaPrincipal')
+    def fVocabulary_CodigoIdiomaPrincipal(self):
+        """
+        """
+        
+        return self.getCatalogo().fTodosIdiomasVocabulary()
+
+    security.declarePublic('fVocabulary_CodigoIdiomaReferencia')
+    def fVocabulary_CodigoIdiomaReferencia(self):
+        """
+        """
+        
+        return self.getCatalogo().fTodosIdiomasVocabulary()
+
+    security.declarePublic('fVocabulary_NombresModulos')
+    def fVocabulary_NombresModulos(self):
+        """
+        """
+        
+        return self.getCatalogo().fTodosModulosVocabulary()
+
+    security.declarePublic('manage_afterAdd')
+    def manage_afterAdd(self,item,container):
+        """
+        """
+        
+        return TRAArquetipo.manage_afterAdd( self, item, container)
 
     security.declarePublic('manage_beforeDelete')
     def manage_beforeDelete(self,item,container):
@@ -556,27 +637,6 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActivida
         """
         
         return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
-
-    security.declarePublic('fExtraLinks')
-    def fExtraLinks(self):
-        """
-        """
-        
-        return TRAElemento_Operaciones.fExtraLinks( self)
-
-    security.declarePublic('displayContentsTab')
-    def displayContentsTab(self):
-        """
-        """
-        
-        return False
-
-    security.declarePublic('cb_isCopyable')
-    def cb_isCopyable(self):
-        """
-        """
-        
-        return False
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

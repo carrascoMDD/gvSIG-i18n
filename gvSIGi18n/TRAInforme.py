@@ -2,8 +2,8 @@
 #
 # File: TRAInforme.py
 #
-# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
-# Generalidad Valenciana
+# Copyright (c) 2010 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+# Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -86,13 +86,13 @@ schema = Schema((
         widget=BooleanField._properties['widget'](
             label="Comenzo a ejecutar",
             label2="Begun execution",
-            description="Si el proceso de importacion ha comenzado alguna vez a ejecutarse.",
-            description2="Whether the import process has ever started to execute.",
+            description="Si la elaboracion del informe ha comenzado alguna vez a ejecutarse.",
+            description2="Whether the report generation has ever started to execute.",
             label_msgid='gvSIGi18n_TRAInforme_attr_haComenzado_label',
             description_msgid='gvSIGi18n_TRAInforme_attr_haComenzado_help',
             i18n_domain='gvSIGi18n',
         ),
-        description="Si el proceso de importacion ha comenzado alguna vez a ejecutarse.",
+        description="Si la elaboracion del informe ha comenzado alguna vez a ejecutarse.",
         duplicates="0",
         label2="Begun execution",
         ea_localid="778",
@@ -100,7 +100,7 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        description2="Whether the import process has ever started to execute.",
+        description2="Whether the report generation has ever started to execute.",
         ea_guid="{C86A43EB-2E89-4e09-96A6-10557B82BB2F}",
         read_only="True",
         scale="0",
@@ -147,13 +147,13 @@ schema = Schema((
         widget=BooleanField._properties['widget'](
             label="Exito?",
             label2="Success?",
-            description="Si el proceso de importacion ha completado exitosamente su ejecucion.",
-            description2="Whether the import process has sucessfully completed execution.",
+            description="Si la elaboracion del informe ha completado exitosamente su ejecucion.",
+            description2="Whether the ellaboration of the report has sucessfully completed execution.",
             label_msgid='gvSIGi18n_TRAInforme_attr_haCompletadoConExito_label',
             description_msgid='gvSIGi18n_TRAInforme_attr_haCompletadoConExito_help',
             i18n_domain='gvSIGi18n',
         ),
-        description="Si el proceso de importacion ha completado exitosamente su ejecucion.",
+        description="Si la elaboracion del informe ha completado exitosamente su ejecucion.",
         duplicates="0",
         label2="Success?",
         ea_localid="785",
@@ -161,7 +161,7 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        description2="Whether the import process has sucessfully completed execution.",
+        description2="Whether the ellaboration of the report has sucessfully completed execution.",
         ea_guid="{CA62E5F4-34EB-4d25-918A-DB1029ABAD35}",
         read_only="True",
         scale="0",
@@ -362,13 +362,13 @@ schema = Schema((
         widget=TextAreaWidget(
             label="Excepcion durante Informe por Modulos e Idiomas",
             label2="Exception during Modules and Languages Report",
-            description="Cuando la elaboracion del informe de estado por modulose idiomas  finaliza con una condicion de error, contiene el informe del error de la aplicacion.",
+            description="Cuando la elaboracion del informe de estado por modulos e idiomas  finaliza con una condicion de error, contiene el informe del error de la aplicacion.",
             description2="When the ellaboration of the status report by Modules and Lanaguages terminates with an error, contains the applicacion exception report.",
             label_msgid='gvSIGi18n_TRAInforme_attr_informeExcepcionModulos_label',
             description_msgid='gvSIGi18n_TRAInforme_attr_informeExcepcionModulos_help',
             i18n_domain='gvSIGi18n',
         ),
-        description="Cuando la elaboracion del informe de estado por modulose idiomas  finaliza con una condicion de error, contiene el informe del error de la aplicacion.",
+        description="Cuando la elaboracion del informe de estado por modulos e idiomas  finaliza con una condicion de error, contiene el informe del error de la aplicacion.",
         duplicates="0",
         label2="Exception during Modules and Languages Report",
         ea_localid="1461",
@@ -479,11 +479,38 @@ class TRAInforme(OrderedBaseFolder, TRAArquetipo, TRAInforme_Operaciones, TRACon
        },
 
 
-       {'action': "string:${object_url}/sharing",
+       {'action': "string:${object_url}/MDDCacheStatus/",
+        'category': "object_buttons",
+        'id': 'mddcachestatus',
+        'name': 'Cache',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:${object_url}/MDDChanges",
+        'category': "object_buttons",
+        'id': 'mddchanges',
+        'name': 'Changes',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:${object_url}/TRAConfigureProfiling_action",
+        'category': "object_buttons",
+        'id': 'TRA_configure_profiling',
+        'name': 'Configure Profiling',
+        'permissions': ("ManagePortal",),
+        'condition': """python:object.fUseCaseCheckDoable( 'Configure_ExecutionProfilingEnablement_TRACatalogo')"""
+       },
+
+
+       {'action': "string:$object_url/content_status_history",
         'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
+        'id': 'content_status_history',
+        'name': 'State',
+        'permissions': ("View",),
         'condition': """python:0"""
        },
 
@@ -497,12 +524,39 @@ class TRAInforme(OrderedBaseFolder, TRAArquetipo, TRAInforme_Operaciones, TRACon
        },
 
 
-       {'action': "string:${object_url}/MDDChanges",
+       {'action': "string:${object_url}/TRAInventory_action",
         'category': "object_buttons",
-        'id': 'mddchanges',
-        'name': 'Changes',
+        'id': 'TRA_inventario',
+        'name': 'Inventory',
         'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': """python:object.fUseCaseCheckDoable( 'Inventory_TRAElemento')"""
+       },
+
+
+       {'action': "string:${object_url}/sharing",
+        'category': "object",
+        'id': 'local_roles',
+        'name': 'Sharing',
+        'permissions': ("Manage properties",),
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/TRARecatalog_action",
+        'category': "object_buttons",
+        'id': 'TRA_recatalogar',
+        'name': 'ReCatalog',
+        'permissions': ("View",),
+        'condition': """python:object.fUseCaseCheckDoable( 'ReCatalog_TRAElemento')"""
+       },
+
+
+       {'action': "string:${object_url}/TRAResetPermissions_action",
+        'category': "object_buttons",
+        'id': 'TRA_reestablecerpermisos',
+        'name': 'Reset Permissions',
+        'permissions': ("View",),
+        'condition': """python:object.fUseCaseCheckDoable( 'ResetPermissions_TRAElemento')"""
        },
 
 
@@ -520,25 +574,7 @@ class TRAInforme(OrderedBaseFolder, TRAArquetipo, TRAInforme_Operaciones, TRACon
         'id': 'TRA_SeguridadUsuarioConectado',
         'name': 'Permissions',
         'permissions': ("View",),
-        'condition': """python:1"""
-       },
-
-
-       {'action': "string:$object_url/content_status_history",
-        'category': "object",
-        'id': 'content_status_history',
-        'name': 'State',
-        'permissions': ("View",),
-        'condition': """python:0"""
-       },
-
-
-       {'action': "string:${object_url}/MDDCacheStatus/",
-        'category': "object_buttons",
-        'id': 'mddcachestatus',
-        'name': 'Cache',
-        'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': """python:object.fUseCaseCheckDoable( 'Permissions_on_any_TRA_element')"""
        },
 
 
@@ -552,6 +588,34 @@ class TRAInforme(OrderedBaseFolder, TRAArquetipo, TRAInforme_Operaciones, TRACon
     ##/code-section class-header
 
     # Methods
+
+    security.declarePublic('cb_isCopyable')
+    def cb_isCopyable(self):
+        """
+        """
+        
+        return False
+
+    security.declarePublic('displayContentsTab')
+    def displayContentsTab(self):
+        """
+        """
+        
+        return False
+
+    security.declarePublic('fExtraLinks')
+    def fExtraLinks(self):
+        """
+        """
+        
+        return TRAElemento_Operaciones.fExtraLinks( self)
+
+    security.declarePublic('fIsCacheable')
+    def fIsCacheable(self):
+        """
+        """
+        
+        return True
 
     security.declarePublic('manage_afterAdd')
     def manage_afterAdd(self,item,container):
@@ -573,34 +637,6 @@ class TRAInforme(OrderedBaseFolder, TRAArquetipo, TRAInforme_Operaciones, TRACon
         """
         
         return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
-
-    security.declarePublic('fIsCacheable')
-    def fIsCacheable(self):
-        """
-        """
-        
-        return True
-
-    security.declarePublic('displayContentsTab')
-    def displayContentsTab(self):
-        """
-        """
-        
-        return False
-
-    security.declarePublic('fExtraLinks')
-    def fExtraLinks(self):
-        """
-        """
-        
-        return TRAElemento_Operaciones.fExtraLinks( self)
-
-    security.declarePublic('cb_isCopyable')
-    def cb_isCopyable(self):
-        """
-        """
-        
-        return False
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

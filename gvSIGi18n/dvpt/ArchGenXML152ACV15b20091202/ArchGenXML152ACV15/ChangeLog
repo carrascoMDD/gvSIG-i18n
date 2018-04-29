@@ -1,0 +1,35 @@
+2006-12-04 Jens W Klein <jens@bluedyanmics.com>
+
+	* make it special-charater aware and get rid of UnicodeDecodeErrors.
+
+	* supports for now archetypes_name, widget:label and widget:description
+
+2006-11-25  Jean-Paul Ladage  <j.ladage@zestsoftware.nl>
+
+	* BaseGenerator.py: Allow option --manual-code-sections to generate manual code
+	sections. In case you want to generate your model only once and find that
+    those sections clutter your code.
+
+2006-11-01  Reinout van Rees  <reinout@zestsoftware.nl>
+
+	* ArchetypesGenerator.py: Added support for argouml's plain xmi
+	format suffix: .uml (patch by Erik Rose: thanks!)
+
+2006-09-01  Godefroid Chapelle <gotcha@bubblenet.be>
+
+	* url TGV on transition, setup action url, use PloneWorkflowTransitions to see it in Plone
+
+2006-06-29  Godefroid Chapelle <gotcha@bubblenet.be> - Gauthier Bastien <gbastien@commune.sambreville.be>
+
+	* fix imports tagged value for packages
+
+2006-06-29  Godefroid Chapelle <gotcha@bubblenet.be> - Gauthier Bastien <gbastien@commune.sambreville.be>
+
+	* new zope_class stereotype for classes; will generate a Python class plus security imports,
+        security declarations on methods and security initialization. Refactored security computation from
+        ArchetypesGenerator to BaseGenerator
+
+2006-06-29  Reinout van Rees  <reinout@vanrees.org>
+
+	* ChangeLog: Started the changelog.
+

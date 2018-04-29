@@ -2,8 +2,8 @@
 #
 # File: TRATraduccion.py
 #
-# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
-# Generalidad Valenciana
+# Copyright (c) 2010 by 2008, 2009, 2010 Conselleria de Infraestructuras y
+# Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -662,15 +662,6 @@ class TRATraduccion(OrderedBaseFolder, TRAArquetipo, TRATraduccion_Operaciones):
     actions =  (
 
 
-       {'action': "string:${object_url}/Tabular",
-        'category': "object",
-        'id': 'view',
-        'name': 'View',
-        'permissions': ("View",),
-        'condition': """python:1"""
-       },
-
-
        {'action': "string:$object_url/Editar",
         'category': "object",
         'id': 'edit',
@@ -680,11 +671,47 @@ class TRATraduccion(OrderedBaseFolder, TRAArquetipo, TRATraduccion_Operaciones):
        },
 
 
-       {'action': "string:${object_url}/sharing",
+       {'action': "string:${object_url}/Tabular",
         'category': "object",
-        'id': 'local_roles',
-        'name': 'Sharing',
-        'permissions': ("Manage properties",),
+        'id': 'view',
+        'name': 'View',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:${object_url}/MDDCacheStatus/",
+        'category': "object_buttons",
+        'id': 'mddcachestatus',
+        'name': 'Cache',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:${object_url}/MDDChanges",
+        'category': "object_buttons",
+        'id': 'mddchanges',
+        'name': 'Changes',
+        'permissions': ("View",),
+        'condition': """python:1"""
+       },
+
+
+       {'action': "string:${object_url}/TRAConfigureProfiling_action",
+        'category': "object_buttons",
+        'id': 'TRA_configure_profiling',
+        'name': 'Configure Profiling',
+        'permissions': ("ManagePortal",),
+        'condition': """python:object.fUseCaseCheckDoable( 'Configure_ExecutionProfilingEnablement_TRACatalogo')"""
+       },
+
+
+       {'action': "string:$object_url/content_status_history",
+        'category': "object",
+        'id': 'content_status_history',
+        'name': 'State',
+        'permissions': ("View",),
         'condition': """python:0"""
        },
 
@@ -698,12 +725,39 @@ class TRATraduccion(OrderedBaseFolder, TRAArquetipo, TRATraduccion_Operaciones):
        },
 
 
-       {'action': "string:${object_url}/MDDChanges",
+       {'action': "string:${object_url}/TRAInventory_action",
         'category': "object_buttons",
-        'id': 'mddchanges',
-        'name': 'Changes',
+        'id': 'TRA_inventario',
+        'name': 'Inventory',
         'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': """python:object.fUseCaseCheckDoable( 'Inventory_TRAElemento')"""
+       },
+
+
+       {'action': "string:${object_url}/sharing",
+        'category': "object",
+        'id': 'local_roles',
+        'name': 'Sharing',
+        'permissions': ("Manage properties",),
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/TRARecatalog_action",
+        'category': "object_buttons",
+        'id': 'TRA_recatalogar',
+        'name': 'ReCatalog',
+        'permissions': ("View",),
+        'condition': """python:object.fUseCaseCheckDoable( 'ReCatalog_TRAElemento')"""
+       },
+
+
+       {'action': "string:${object_url}/TRAResetPermissions_action",
+        'category': "object_buttons",
+        'id': 'TRA_reestablecerpermisos',
+        'name': 'Reset Permissions',
+        'permissions': ("View",),
+        'condition': """python:object.fUseCaseCheckDoable( 'ResetPermissions_TRAElemento')"""
        },
 
 
@@ -721,25 +775,7 @@ class TRATraduccion(OrderedBaseFolder, TRAArquetipo, TRATraduccion_Operaciones):
         'id': 'TRA_SeguridadUsuarioConectado',
         'name': 'Permissions',
         'permissions': ("View",),
-        'condition': """python:1"""
-       },
-
-
-       {'action': "string:$object_url/content_status_history",
-        'category': "object",
-        'id': 'content_status_history',
-        'name': 'State',
-        'permissions': ("View",),
-        'condition': """python:0"""
-       },
-
-
-       {'action': "string:${object_url}/MDDCacheStatus/",
-        'category': "object_buttons",
-        'id': 'mddcachestatus',
-        'name': 'Cache',
-        'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': """python:object.fUseCaseCheckDoable( 'Permissions_on_any_TRA_element')"""
        },
 
 
@@ -753,27 +789,6 @@ class TRATraduccion(OrderedBaseFolder, TRAArquetipo, TRATraduccion_Operaciones):
     ##/code-section class-header
 
     # Methods
-
-    security.declarePublic('manage_afterAdd')
-    def manage_afterAdd(self,item,container):
-        """
-        """
-        
-        return TRATraduccion_Operaciones.pHandle_manage_afterAdd( self, item, container)
-
-    security.declarePublic('manage_beforeDelete')
-    def manage_beforeDelete(self,item,container):
-        """
-        """
-        
-        return TRAArquetipo.manage_beforeDelete( self, item, container)
-
-    security.declarePublic('reindexObject')
-    def reindexObject(self,idxs=[]):
-        """
-        """
-        
-        return TRATraduccion_Operaciones.pHandle_reindexObject( self, idxs)
 
     security.declarePublic('cb_isCopyable')
     def cb_isCopyable(self):
@@ -796,12 +811,33 @@ class TRATraduccion(OrderedBaseFolder, TRAArquetipo, TRATraduccion_Operaciones):
         
         return TRAElemento_Operaciones.fExtraLinks( self)
 
+    security.declarePublic('manage_afterAdd')
+    def manage_afterAdd(self,item,container):
+        """
+        """
+        
+        return TRATraduccion_Operaciones.pHandle_manage_afterAdd( self, item, container)
+
+    security.declarePublic('manage_beforeDelete')
+    def manage_beforeDelete(self,item,container):
+        """
+        """
+        
+        return TRAArquetipo.manage_beforeDelete( self, item, container)
+
     security.declarePublic('manage_pasteObjects')
     def manage_pasteObjects(self,cb_copy_data,REQUEST):
         """
         """
         
         return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
+
+    security.declarePublic('reindexObject')
+    def reindexObject(self,idxs=[]):
+        """
+        """
+        
+        return TRATraduccion_Operaciones.pHandle_reindexObject( self, idxs)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

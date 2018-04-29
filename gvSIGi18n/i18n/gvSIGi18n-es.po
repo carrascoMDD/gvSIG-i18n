@@ -184,6 +184,26 @@ msgstr "Dominio para cadenas sin modulo"
 msgid "gvSIGi18n_TRACatalogo_attr_dominioPorDefecto_help"
 msgstr "Dato que aparece en los ficheros de exportacion de tipo GNUgettext PO, cuando se exportan separadamente en su propio fichero cadenas que no pertenecen a un modulo, para identificar la aplicacion o modulo a que se aplican las traducciones."
 
+#. Default: "Escritura en Disco de Perfil Detallado de Ejecucion Habilitado"
+#: TRACatalogo escrituraEnDiscoDeRegistroDeEjecucionDetalladoHabilitado
+msgid "gvSIGi18n_TRACatalogo_attr_escrituraEnDiscoDeRegistroDeEjecucionDetalladoHabilitado_label"
+msgstr "Escritura en Disco de Perfil Detallado de Ejecucion Habilitado"
+
+#. Default: "Si Verdadero, el sistema escribira detalladamente el perfil de ejecucion en  fichero de log en disco."
+#: TRACatalogo escrituraEnDiscoDeRegistroDeEjecucionDetalladoHabilitado
+msgid "gvSIGi18n_TRACatalogo_attr_escrituraEnDiscoDeRegistroDeEjecucionDetalladoHabilitado_help"
+msgstr "Si Verdadero, el sistema escribira detalladamente el perfil de ejecucion en  fichero de log en disco."
+
+#. Default: "Escritura en Disco de Perfil de Ejecucion Habilitado"
+#: TRACatalogo escrituraEnDiscoDeRegistroDeEjecucionHabilitado
+msgid "gvSIGi18n_TRACatalogo_attr_escrituraEnDiscoDeRegistroDeEjecucionHabilitado_label"
+msgstr "Escritura en Disco de Perfil de Ejecucion Habilitado"
+
+#. Default: "Si Verdadero, el sistema escribira el perfil de ejecucion en fichero de log en disco."
+#: TRACatalogo escrituraEnDiscoDeRegistroDeEjecucionHabilitado
+msgid "gvSIGi18n_TRACatalogo_attr_escrituraEnDiscoDeRegistroDeEjecucionHabilitado_help"
+msgstr "Si Verdadero, el sistema escribira el perfil de ejecucion en fichero de log en disco."
+
 #. Default: "Export File for gvSIGby default"
 #: TRACatalogo exportarNombreFicheroParaGvSIGPorDefecto
 msgid "gvSIGi18n_TRACatalogo_attr_exportarNombreFicheroParaGvSIGPorDefecto_label"
@@ -203,26 +223,6 @@ msgstr "Si"
 #: TRACatalogo exportarNombreFicheroParaGvSIGPorDefecto
 msgid "gvSIGi18n_TRACatalogo_attr_exportarNombreFicheroParaGvSIGPorDefecto_option_No"
 msgstr "No"
-
-#. Default: "Fecha de Ultima Importacion"
-#: TRACatalogo fechaUltimaImportacion
-msgid "gvSIGi18n_TRACatalogo_attr_fechaUltimaImportacion_label"
-msgstr "Fecha de Ultima Importacion"
-
-#. Default: "Fecha y hora de fin del Ultimo proceso de Importacion"
-#: TRACatalogo fechaUltimaImportacion
-msgid "gvSIGi18n_TRACatalogo_attr_fechaUltimaImportacion_help"
-msgstr "Fecha y hora de fin del Ultimo proceso de Importacion"
-
-#. Default: "Fecha del Ultimo Informe de Estado"
-#: TRACatalogo fechaUltimoInforme
-msgid "gvSIGi18n_TRACatalogo_attr_fechaUltimoInforme_label"
-msgstr "Fecha del Ultimo Informe de Estado"
-
-#. Default: "Fecha y Hora en que se elaboro el ultimo informe de estado de traduccion del catalogo."
-#: TRACatalogo fechaUltimoInforme
-msgid "gvSIGi18n_TRACatalogo_attr_fechaUltimoInforme_help"
-msgstr "Fecha y Hora en que se elaboro el ultimo informe de estado de traduccion del catalogo."
 
 #. Default: "Formato de exportacion por defecto"
 #: TRACatalogo formatoExportacionPorDefecto
@@ -444,6 +444,16 @@ msgstr "Cambios para Anular Informe Modulos e Idiomas"
 msgid "gvSIGi18n_TRACatalogo_attr_numeroDeCambiosAnularInformeModulosEIdiomas_help"
 msgstr "Numero de cambios de estado de Traducciones que causan la anulacion del Informe de Estado por Modulos e Idiomas, incluso aunque no haya expirado el plazo de retencion del informe."
 
+#. Default: "Perfil de Ejecucion Habilitado"
+#: TRACatalogo perfilDeEjecucionHabilitado
+msgid "gvSIGi18n_TRACatalogo_attr_perfilDeEjecucionHabilitado_label"
+msgstr "Perfil de Ejecucion Habilitado"
+
+#. Default: "Si Verdadero, el sistema registrara el perfil de la ejecucion, como secuencias anidadas de plantillas y metodos ejecutados."
+#: TRACatalogo perfilDeEjecucionHabilitado
+msgid "gvSIGi18n_TRACatalogo_attr_perfilDeEjecucionHabilitado_help"
+msgstr "Si Verdadero, el sistema registrara el perfil de la ejecucion, como secuencias anidadas de plantillas y metodos ejecutados."
+
 #. Default: "Permite Modificar"
 #: TRACatalogo permiteModificar
 msgid "gvSIGi18n_TRACatalogo_attr_permiteModificar_label"
@@ -453,6 +463,36 @@ msgstr "Permite Modificar"
 #: TRACatalogo permiteModificar
 msgid "gvSIGi18n_TRACatalogo_attr_permiteModificar_help"
 msgstr "Si Verdadero, entonces los usuarios puede realizar los cambios a los que permite sus roles en la aplicacion. Si Falso, entonces no puede realizar cambios,  Puede ocurrir durante  procesos de importacion largos."
+
+#. Default: "Presentacion en Paginas de Perfil de Ejecucion Habilitado"
+#: TRACatalogo presentacionEnPaginasDeRegistroDeEjecucionHabilitado
+msgid "gvSIGi18n_TRACatalogo_attr_presentacionEnPaginasDeRegistroDeEjecucionHabilitado_label"
+msgstr "Presentacion en Paginas de Perfil de Ejecucion Habilitado"
+
+#. Default: "Si Verdadero, el sistema presentara en las paginas el perfil de ejecucion."
+#: TRACatalogo presentacionEnPaginasDeRegistroDeEjecucionHabilitado
+msgid "gvSIGi18n_TRACatalogo_attr_presentacionEnPaginasDeRegistroDeEjecucionHabilitado_help"
+msgstr "Si Verdadero, el sistema presentara en las paginas el perfil de ejecucion."
+
+#. Default: "Presentacion en Paginas de Tiempo de Ejecucion Habilitado"
+#: TRACatalogo presentacionEnPaginasDeTiempoDeEjecucionHabilitado
+msgid "gvSIGi18n_TRACatalogo_attr_presentacionEnPaginasDeTiempoDeEjecucionHabilitado_label"
+msgstr "Presentacion en Paginas de Tiempo de Ejecucion Habilitado"
+
+#. Default: "Si Verdadero, el sistema presentara en las paginas el tiempo de ejecucion."
+#: TRACatalogo presentacionEnPaginasDeTiempoDeEjecucionHabilitado
+msgid "gvSIGi18n_TRACatalogo_attr_presentacionEnPaginasDeTiempoDeEjecucionHabilitado_help"
+msgstr "Si Verdadero, el sistema presentara en las paginas el tiempo de ejecucion."
+
+#. Default: "Registro Raiz de Ejecucion Automatico Habilitado"
+#: TRACatalogo registroRaizDeEjecucionAutomaticoHabilitado
+msgid "gvSIGi18n_TRACatalogo_attr_registroRaizDeEjecucionAutomaticoHabilitado_label"
+msgstr "Registro Raiz de Ejecucion Automatico Habilitado"
+
+#. Default: "Si Verdadero, el sistema creara un registro de ejecucion raiz, cuando la plantilla o metodo que invoca no haya suministrado uno."
+#: TRACatalogo registroRaizDeEjecucionAutomaticoHabilitado
+msgid "gvSIGi18n_TRACatalogo_attr_registroRaizDeEjecucionAutomaticoHabilitado_help"
+msgstr "Si Verdadero, el sistema creara un registro de ejecucion raiz, cuando la plantilla o metodo que invoca no haya suministrado uno."
 
 #. Default: "Minimo Tiempo en segundos que se retiene el Informe de Actividad"
 #: TRACatalogo segundosMinimosRetencionInformeActividad
@@ -484,6 +524,16 @@ msgstr "Minimo Tiempo en segundos que se retiene el Informe de Estado por Modulo
 msgid "gvSIGi18n_TRACatalogo_attr_segundosMinimosRetencionInformeModulosEIdiomas_help"
 msgstr "Tiempo en segundos que se retendra el Informe de Estado por Modulos e Idiomas, aunque sus resultados sean inexactos por alguna modificacion del estado de traducciones, para evitar recalculo excesivo por cambios poco relevantes."
 
+#. Default: "Tiempo en segundos para confirmar Accion"
+#: TRACatalogo segundosParaConfirmarAccion
+msgid "gvSIGi18n_TRACatalogo_attr_segundosParaConfirmarAccion_label"
+msgstr "Tiempo en segundos para confirmar Accion"
+
+#. Default: "Tiempo en segundos del que dispone el Usuario para confirmar lanzamiento de procesos de larga duracion. Si no confirma en este tiempo, el Usuario debera volver a solicitar la accion."
+#: TRACatalogo segundosParaConfirmarAccion
+msgid "gvSIGi18n_TRACatalogo_attr_segundosParaConfirmarAccion_help"
+msgstr "Tiempo en segundos del que dispone el Usuario para confirmar lanzamiento de procesos de larga duracion. Si no confirma en este tiempo, el Usuario debera volver a solicitar la accion."
+
 #. Default: "Tiempo en segundos para confirmar Importacion"
 #: TRACatalogo segundosParaConfirmarImportacion
 msgid "gvSIGi18n_TRACatalogo_attr_segundosParaConfirmarImportacion_label"
@@ -503,6 +553,16 @@ msgstr "Simbolos Cadenas ordenados"
 #: TRACatalogo simbolosCadenasOrdenados
 msgid "gvSIGi18n_TRACatalogo_attr_simbolosCadenasOrdenados_help"
 msgstr "Simbolos de las cadenas a traducir, ordenados."
+
+#. Default: "Tiempos de Ejecucion Habilitado"
+#: TRACatalogo tiemposDeEjecucionHabilitado
+msgid "gvSIGi18n_TRACatalogo_attr_tiemposDeEjecucionHabilitado_label"
+msgstr "Tiempos de Ejecucion Habilitado"
+
+#. Default: "Si Verdadero, el sistema registrara el tiempo utilizado en la ejecucion, de plantillas y metodos."
+#: TRACatalogo tiemposDeEjecucionHabilitado
+msgid "gvSIGi18n_TRACatalogo_attr_tiemposDeEjecucionHabilitado_help"
+msgstr "Si Verdadero, el sistema registrara el tiempo utilizado en la ejecucion, de plantillas y metodos."
 
 #. Default: "Tipo de archivo descargable por defecto"
 #: TRACatalogo tipoArchivoExportacionPorDefecto
@@ -533,46 +593,6 @@ msgstr "Numero de Traducciones en pagina por defecto"
 #: TRACatalogo traduccionesPorPaginaPorDefecto
 msgid "gvSIGi18n_TRACatalogo_attr_traduccionesPorPaginaPorDefecto_help"
 msgstr "Numero de Traducciones por defecto a presentar en las paginas de exploracion sin contar las traducciones a los idiomas de referencia."
-
-#. Default: "Ultima importacion"
-#: TRACatalogo ultimaImportacion
-msgid "gvSIGi18n_TRACatalogo_attr_ultimaImportacion_label"
-msgstr "Ultima importacion"
-
-#. Default: "Ultima Importacion de modulos, idiomas, cadenas y traducciones del producto."
-#: TRACatalogo ultimaImportacion
-msgid "gvSIGi18n_TRACatalogo_attr_ultimaImportacion_help"
-msgstr "Ultima Importacion de modulos, idiomas, cadenas y traducciones del producto."
-
-#. Default: "Ultima Version importada del producto"
-#: TRACatalogo ultimaVersionImportada
-msgid "gvSIGi18n_TRACatalogo_attr_ultimaVersionImportada_label"
-msgstr "Ultima Version importada del producto"
-
-#. Default: "Ultima Version del Producto que se ha importado."
-#: TRACatalogo ultimaVersionImportada
-msgid "gvSIGi18n_TRACatalogo_attr_ultimaVersionImportada_help"
-msgstr "Ultima Version del Producto que se ha importado."
-
-#. Default: "Identificador del Ultimo Build Importado"
-#: TRACatalogo ultimoBuildImportado
-msgid "gvSIGi18n_TRACatalogo_attr_ultimoBuildImportado_label"
-msgstr "Identificador del Ultimo Build Importado"
-
-#. Default: "Identificador del Ultimo Build del Producto que ha sido importado."
-#: TRACatalogo ultimoBuildImportado
-msgid "gvSIGi18n_TRACatalogo_attr_ultimoBuildImportado_help"
-msgstr "Identificador del Ultimo Build del Producto que ha sido importado."
-
-#. Default: "Ultimo Informe de Estado"
-#: TRACatalogo ultimoInforme
-msgid "gvSIGi18n_TRACatalogo_attr_ultimoInforme_label"
-msgstr "Ultimo Informe de Estado"
-
-#. Default: "Ultimo Informe de Estado elaborado en el catalogo."
-#: TRACatalogo ultimoInforme
-msgid "gvSIGi18n_TRACatalogo_attr_ultimoInforme_help"
-msgstr "Ultimo Informe de Estado elaborado en el catalogo."
 
 #. Default: "Coleccion de Cadenas"
 #: TRACatalogo coleccionCadenas
@@ -624,6 +644,16 @@ msgstr "Coleccion de Modulos"
 msgid "gvSIGi18n_TRACatalogo_contents_coleccionModulos_help"
 msgstr "Coleccion de Modulos en el Producto a traducir."
 
+#. Default: "Coleccion de Progresos"
+#: TRACatalogo coleccionProgresos
+msgid "gvSIGi18n_TRACatalogo_contents_coleccionProgresos_label"
+msgstr "Coleccion de Progresos"
+
+#. Default: "Coleccion de informes de Progreso acerca de Procesos de larga duracion"
+#: TRACatalogo coleccionProgresos
+msgid "gvSIGi18n_TRACatalogo_contents_coleccionProgresos_help"
+msgstr "Coleccion de informes de Progreso acerca de Procesos de larga duracion"
+
 #. Default: "Coleccion de Solicitudes de Cadenas"
 #: TRACatalogo coleccionSolicitudesCadenas
 msgid "gvSIGi18n_TRACatalogo_contents_coleccionSolicitudesCadenas_label"
@@ -633,6 +663,16 @@ msgstr "Coleccion de Solicitudes de Cadenas"
 #: TRACatalogo coleccionSolicitudesCadenas
 msgid "gvSIGi18n_TRACatalogo_contents_coleccionSolicitudesCadenas_help"
 msgstr "Coleccion de solicitudes realizadas por los desarrolladores, para crear nuevas cadenas."
+
+#. Default: "Parametros control progreso"
+#: TRACatalogo parametrosControlProgreso
+msgid "gvSIGi18n_TRACatalogo_contents_parametrosControlProgreso_label"
+msgstr "Parametros control progreso"
+
+#. Default: "Parametros controlando la gestion del progreso de procesos de larga duracion, incluyendo registro, transacciones, guardar resultados y ceder procesador."
+#: TRACatalogo parametrosControlProgreso
+msgid "gvSIGi18n_TRACatalogo_contents_parametrosControlProgreso_help"
+msgstr "Parametros controlando la gestion del progreso de procesos de larga duracion, incluyendo registro, transacciones, guardar resultados y ceder procesador."
 
 #. Default: "TRAColeccionArquetipos"
 #: TRAColeccionArquetipos
@@ -743,6 +783,26 @@ msgstr "Modulos"
 #: TRAColeccionModulos modulos
 msgid "gvSIGi18n_TRAColeccionModulos_contents_modulos_help"
 msgstr "Modulos en el Producto a traducir."
+
+#. Default: "Coleccion de Progresos"
+#: TRAColeccionProgresos
+msgid "gvSIGi18n_TRAColeccionProgresos_label"
+msgstr "Coleccion de Progresos"
+
+#. Default: "Coleccion de informes de Progreso acerca de Procesos de larga duracion"
+#: TRAColeccionProgresos
+msgid "gvSIGi18n_TRAColeccionProgresos_help"
+msgstr "Coleccion de informes de Progreso acerca de Procesos de larga duracion"
+
+#. Default: "Progresos"
+#: TRAColeccionProgresos progresos
+msgid "gvSIGi18n_TRAColeccionProgresos_contents_progresos_label"
+msgstr "Progresos"
+
+#. Default: "Informes de Progreso acerca de Procesos de larga duracion"
+#: TRAColeccionProgresos progresos
+msgid "gvSIGi18n_TRAColeccionProgresos_contents_progresos_help"
+msgstr "Informes de Progreso acerca de Procesos de larga duracion"
 
 #. Default: "Coleccion de Solicitudes de creacion de Cadenas"
 #: TRAColeccionSolicitudesCadenas
@@ -919,10 +979,10 @@ msgstr "Contenidos de los Archivos de intercambio de traducciones  incluyendo  c
 msgid "gvSIGi18n_TRAContenidoIntercambio_attr_nombreModulo_label"
 msgstr "Modulo"
 
-#. Default: "Nombre del Modulo en que se usa o resuelve esta cadena (base por defecto)."
+#. Default: "Opcional: Nombre del Modulo a que se asociaran las cadenas importadas desde este contenido de intercambio de traducciones."
 #: TRAContenidoIntercambio nombreModulo
 msgid "gvSIGi18n_TRAContenidoIntercambio_attr_nombreModulo_help"
-msgstr "Nombre del Modulo en que se usa o resuelve esta cadena (base por defecto)."
+msgstr "Opcional: Nombre del Modulo a que se asociaran las cadenas importadas desde este contenido de intercambio de traducciones."
 
 #. Default: "Sumario del contenido"
 #: TRAContenidoIntercambio sumarioContenido
@@ -1274,16 +1334,6 @@ msgstr "Codigo de Idioma por defecto"
 msgid "gvSIGi18n_TRAImportacion_attr_codigoIdiomaPorDefecto_help"
 msgstr "Codigo del lenguage para importar plantillas de traduccion GNUgettext .POT, o para Java .properties que no tienen el codigo del lenguage como sufijo en el nombre del fichero."
 
-#. Default: "Comenzar cuando acabe el anterior"
-#: TRAImportacion comenzarAlFinalizarAnterior
-msgid "gvSIGi18n_TRAImportacion_attr_comenzarAlFinalizarAnterior_label"
-msgstr "Comenzar cuando acabe el anterior"
-
-#. Default: "Si Verdadero, y el proceso aun no ha sido ejecutado, el proceso sera ejecutado cuando acaba de ejecutarse el anterior"
-#: TRAImportacion comenzarAlFinalizarAnterior
-msgid "gvSIGi18n_TRAImportacion_attr_comenzarAlFinalizarAnterior_help"
-msgstr "Si Verdadero, y el proceso aun no ha sido ejecutado, el proceso sera ejecutado cuando acaba de ejecutarse el anterior"
-
 #. Default: "Crear Informe de Estado ANTES"
 #: TRAImportacion crearInformeAntes
 msgid "gvSIGi18n_TRAImportacion_attr_crearInformeAntes_label"
@@ -1314,95 +1364,25 @@ msgstr "Debe crear Traducciones que falten"
 msgid "gvSIGi18n_TRAImportacion_attr_debeCrearTraduccionesQueFaltan_help"
 msgstr "Crear las Traducciones que faltan para las cadenas e idiomas existentes, quiza por interrupcion indeseada de procesos de importacion anteriores."
 
-#. Default: "Segundos de Espera entre Transacciones"
-#: TRAImportacion esperaEntreTransaccionesEnSegundos
-msgid "gvSIGi18n_TRAImportacion_attr_esperaEntreTransaccionesEnSegundos_label"
-msgstr "Segundos de Espera entre Transacciones"
+#. Default: "Elemento de Progreso y Resultados"
+#: TRAImportacion elementoProgreso
+msgid "gvSIGi18n_TRAImportacion_attr_elementoProgreso_label"
+msgstr "Elemento de Progreso y Resultados"
 
-#. Default: "Con decimales. Intervalo de espera al final de una transaccion, antes de comenzar la siguiente. Util con valores bajos ( <100) del Intervalo de Refresco en Numero de Escrituras, para dejar libre capacidad de procesamiento para otros procesos o usuarios."
-#: TRAImportacion esperaEntreTransaccionesEnSegundos
-msgid "gvSIGi18n_TRAImportacion_attr_esperaEntreTransaccionesEnSegundos_help"
-msgstr "Con decimales. Intervalo de espera al final de una transaccion, antes de comenzar la siguiente. Util con valores bajos ( <100) del Intervalo de Refresco en Numero de Escrituras, para dejar libre capacidad de procesamiento para otros procesos o usuarios."
+#. Default: "Elemento para control del Progreso de la importacion, y almacenamiento de los resultados de la importacion, durante y al final del proceso."
+#: TRAImportacion elementoProgreso
+msgid "gvSIGi18n_TRAImportacion_attr_elementoProgreso_help"
+msgstr "Elemento para control del Progreso de la importacion, y almacenamiento de los resultados de la importacion, durante y al final del proceso."
 
-#. Default: "Segundos a ceder procesador"
-#: TRAImportacion esperaTrasOperacionesEnSegundos
-msgid "gvSIGi18n_TRAImportacion_attr_esperaTrasOperacionesEnSegundos_label"
-msgstr "Segundos a ceder procesador"
+#. Default: "Identificador del elemento de Control del Progreso"
+#: TRAImportacion identificadorElementoProgreso
+msgid "gvSIGi18n_TRAImportacion_attr_identificadorElementoProgreso_label"
+msgstr "Identificador del elemento de Control del Progreso"
 
-#. Default: "Con decimales, los segundos que se cede el procesador a otros procesos."
-#: TRAImportacion esperaTrasOperacionesEnSegundos
-msgid "gvSIGi18n_TRAImportacion_attr_esperaTrasOperacionesEnSegundos_help"
-msgstr "Con decimales, los segundos que se cede el procesador a otros procesos."
-
-#. Default: "Estado del Proceso"
-#: TRAImportacion estadoProceso
-msgid "gvSIGi18n_TRAImportacion_attr_estadoProceso_label"
-msgstr "Estado del Proceso"
-
-#. Default: "El estado del proceso de importacion, como activo o inactivo."
-#: TRAImportacion estadoProceso
-msgid "gvSIGi18n_TRAImportacion_attr_estadoProceso_help"
-msgstr "El estado del proceso de importacion, como activo o inactivo."
-
-#. Default: "Inactivo"
-#: TRAImportacion estadoProceso
-msgid "gvSIGi18n_TRAImportacion_attr_estadoProceso_option_Inactivo"
-msgstr "Inactivo"
-
-#. Default: "Activo"
-#: TRAImportacion estadoProceso
-msgid "gvSIGi18n_TRAImportacion_attr_estadoProceso_option_Activo"
-msgstr "Activo"
-
-#. Default: "Fecha y Hora de Comienzo"
-#: TRAImportacion fechaComienzoProceso
-msgid "gvSIGi18n_TRAImportacion_attr_fechaComienzoProceso_label"
-msgstr "Fecha y Hora de Comienzo"
-
-#. Default: "Fecha y hora en que se comenzo a ejecutar el proceso de importacion."
-#: TRAImportacion fechaComienzoProceso
-msgid "gvSIGi18n_TRAImportacion_attr_fechaComienzoProceso_help"
-msgstr "Fecha y hora en que se comenzo a ejecutar el proceso de importacion."
-
-#. Default: "Fecha y Hora de Fin"
-#: TRAImportacion fechaFinProceso
-msgid "gvSIGi18n_TRAImportacion_attr_fechaFinProceso_label"
-msgstr "Fecha y Hora de Fin"
-
-#. Default: "Fecha y hora en que termino el proceso de importacion."
-#: TRAImportacion fechaFinProceso
-msgid "gvSIGi18n_TRAImportacion_attr_fechaFinProceso_help"
-msgstr "Fecha y hora en que termino el proceso de importacion."
-
-#. Default: "Fecha y Hora del ultimo informe de Progreso"
-#: TRAImportacion fechaUltimoInformeProgreso
-msgid "gvSIGi18n_TRAImportacion_attr_fechaUltimoInformeProgreso_label"
-msgstr "Fecha y Hora del ultimo informe de Progreso"
-
-#. Default: "Fecha y hora en que se refreco al ultimo informe de progreso."
-#: TRAImportacion fechaUltimoInformeProgreso
-msgid "gvSIGi18n_TRAImportacion_attr_fechaUltimoInformeProgreso_help"
-msgstr "Fecha y hora en que se refreco al ultimo informe de progreso."
-
-#. Default: "Comenzo a ejecutar"
-#: TRAImportacion haComenzado
-msgid "gvSIGi18n_TRAImportacion_attr_haComenzado_label"
-msgstr "Comenzo a ejecutar"
-
-#. Default: "Si el proceso de importacion ha comenzado alguna vez a ejecutarse."
-#: TRAImportacion haComenzado
-msgid "gvSIGi18n_TRAImportacion_attr_haComenzado_help"
-msgstr "Si el proceso de importacion ha comenzado alguna vez a ejecutarse."
-
-#. Default: "Exito?"
-#: TRAImportacion haCompletadoConExito
-msgid "gvSIGi18n_TRAImportacion_attr_haCompletadoConExito_label"
-msgstr "Exito?"
-
-#. Default: "Si el proceso de importacion ha completado exitosamente su ejecucion."
-#: TRAImportacion haCompletadoConExito
-msgid "gvSIGi18n_TRAImportacion_attr_haCompletadoConExito_help"
-msgstr "Si el proceso de importacion ha completado exitosamente su ejecucion."
+#. Default: "Identificador del elemento utilizado para controlar el progreso del proceso de larga duración."
+#: TRAImportacion identificadorElementoProgreso
+msgid "gvSIGi18n_TRAImportacion_attr_identificadorElementoProgreso_help"
+msgstr "Identificador del elemento utilizado para controlar el progreso del proceso de larga duración."
 
 #. Default: "Informe de Cambios"
 #: TRAImportacion informeCambios
@@ -1429,20 +1409,20 @@ msgstr "Informe de lenguajes, cadenas y traducciones en los archivos de intercam
 msgid "gvSIGi18n_TRAImportacion_attr_informeEstadoAntes_label"
 msgstr "Informe Antes de la Importacion."
 
-#. Default: "Informe del estado de traduccion, antes de la Importacion."
+#. Default: "Informe acerca del estado de traducciones, antes de la Importacion."
 #: TRAImportacion informeEstadoAntes
 msgid "gvSIGi18n_TRAImportacion_attr_informeEstadoAntes_help"
-msgstr "Informe del estado de traduccion, antes de la Importacion."
+msgstr "Informe acerca del estado de traducciones, antes de la Importacion."
 
 #. Default: "Informe Despues de Importar"
 #: TRAImportacion informeEstadoDespues
 msgid "gvSIGi18n_TRAImportacion_attr_informeEstadoDespues_label"
 msgstr "Informe Despues de Importar"
 
-#. Default: "Informe del estado de traduccion, despues de la importacion."
+#. Default: "Informe acerca del estado de traducciones, despues de la importacion."
 #: TRAImportacion informeEstadoDespues
 msgid "gvSIGi18n_TRAImportacion_attr_informeEstadoDespues_help"
-msgstr "Informe del estado de traduccion, despues de la importacion."
+msgstr "Informe acerca del estado de traducciones, despues de la importacion."
 
 #. Default: "Informe por Idiomas Antes de la Importacion."
 #: TRAImportacion informeEstadoIdiomasAntes
@@ -1484,56 +1464,6 @@ msgstr "Informe por Modulos e Idiomas Despues de Importar"
 msgid "gvSIGi18n_TRAImportacion_attr_informeEstadoModulosDespues_help"
 msgstr "Informe del estado de traduccion por modulos y detallado por  idiomas, despues de la importacion."
 
-#. Default: "Informe de Excepcion"
-#: TRAImportacion informeExcepcion
-msgid "gvSIGi18n_TRAImportacion_attr_informeExcepcion_label"
-msgstr "Informe de Excepcion"
-
-#. Default: "Cuando el proceso de importacion finaliza con una condicion de error, contiene el informe del error de la aplicacion."
-#: TRAImportacion informeExcepcion
-msgid "gvSIGi18n_TRAImportacion_attr_informeExcepcion_help"
-msgstr "Cuando el proceso de importacion finaliza con una condicion de error, contiene el informe del error de la aplicacion."
-
-#. Default: "Informe de Final"
-#: TRAImportacion informeFinal
-msgid "gvSIGi18n_TRAImportacion_attr_informeFinal_label"
-msgstr "Informe de Final"
-
-#. Default: "Cuando el proceso de importacion finaliza con una condicion de error, contiene el informe de idiomas, cadenas y traducciones cargados."
-#: TRAImportacion informeFinal
-msgid "gvSIGi18n_TRAImportacion_attr_informeFinal_help"
-msgstr "Cuando el proceso de importacion finaliza con una condicion de error, contiene el informe de idiomas, cadenas y traducciones cargados."
-
-#. Default: "Informe de Progreso"
-#: TRAImportacion informeProgreso
-msgid "gvSIGi18n_TRAImportacion_attr_informeProgreso_label"
-msgstr "Informe de Progreso"
-
-#. Default: "Cuando el proceso de importacion se esta ejecutando, informa del progreso alcanzado."
-#: TRAImportacion informeProgreso
-msgid "gvSIGi18n_TRAImportacion_attr_informeProgreso_help"
-msgstr "Cuando el proceso de importacion se esta ejecutando, informa del progreso alcanzado."
-
-#. Default: "Intervalo de Refresco en Minutos"
-#: TRAImportacion intervaloRefrescoEnMinutos
-msgid "gvSIGi18n_TRAImportacion_attr_intervaloRefrescoEnMinutos_label"
-msgstr "Intervalo de Refresco en Minutos"
-
-#. Default: "Intervalo de tiempo en minutos tras las que se requiere que se actualize el estado e informe de progreso."
-#: TRAImportacion intervaloRefrescoEnMinutos
-msgid "gvSIGi18n_TRAImportacion_attr_intervaloRefrescoEnMinutos_help"
-msgstr "Intervalo de tiempo en minutos tras las que se requiere que se actualize el estado e informe de progreso."
-
-#. Default: "Intervalo de Refresco en Numero de Escrituras"
-#: TRAImportacion intervaloRefrescoEnNumeroEscrituras
-msgid "gvSIGi18n_TRAImportacion_attr_intervaloRefrescoEnNumeroEscrituras_label"
-msgstr "Intervalo de Refresco en Numero de Escrituras"
-
-#. Default: "Numero de escrituras de cadenas o traducciones tras las que se requiere que se actualize el estado e informe de progreso. Use valores bajos ( <100) y la Espera entre Transacciones no nula, para dejar procesador a otros procesos o usuarios."
-#: TRAImportacion intervaloRefrescoEnNumeroEscrituras
-msgid "gvSIGi18n_TRAImportacion_attr_intervaloRefrescoEnNumeroEscrituras_help"
-msgstr "Numero de escrituras de cadenas o traducciones tras las que se requiere que se actualize el estado e informe de progreso. Use valores bajos ( <100) y la Espera entre Transacciones no nula, para dejar procesador a otros procesos o usuarios."
-
 #. Default: "Max #  lineas .PO"
 #: TRAImportacion maximoLineasAImportarGNUgettextPO
 msgid "gvSIGi18n_TRAImportacion_attr_maximoLineasAImportarGNUgettextPO_label"
@@ -1563,36 +1493,6 @@ msgstr "Nombre de Modulo por defecto"
 #: TRAImportacion nombreModuloPorDefecto
 msgid "gvSIGi18n_TRAImportacion_attr_nombreModuloPorDefecto_help"
 msgstr "Nombre del modulo a utilizar cuando no se puede obtener, bien del nombre del dominio en ficheros GNU gettext .PO, o de la estructura de carpetas si el contenido a importar es una archivo .jar o .zip."
-
-#. Default: "Numero de Refrescos por Escritura en Log"
-#: TRAImportacion numeroDeRefrescosPorEscrituraEnLog
-msgid "gvSIGi18n_TRAImportacion_attr_numeroDeRefrescosPorEscrituraEnLog_label"
-msgstr "Numero de Refrescos por Escritura en Log"
-
-#. Default: "Para evitar escribir demasiado frecuentemente en el registro de actividad, cuando se usan valores bajos del Intervalo de Refresco en Numero de Escrituras, este valor puede configurarse a valores altos (>10, < 100)."
-#: TRAImportacion numeroDeRefrescosPorEscrituraEnLog
-msgid "gvSIGi18n_TRAImportacion_attr_numeroDeRefrescosPorEscrituraEnLog_help"
-msgstr "Para evitar escribir demasiado frecuentemente en el registro de actividad, cuando se usan valores bajos del Intervalo de Refresco en Numero de Escrituras, este valor puede configurarse a valores altos (>10, < 100)."
-
-#. Default: "Numero de Operaciones antes de ceder procesador"
-#: TRAImportacion numeroOperacionesAntesDeCederProcesador
-msgid "gvSIGi18n_TRAImportacion_attr_numeroOperacionesAntesDeCederProcesador_label"
-msgstr "Numero de Operaciones antes de ceder procesador"
-
-#. Default: "Para evitar que el proceso de importacion consuma una gran parte de la capacidad de proceso, se cedera el procesador, tras este numero de operaciones realizadas, tanto de lectura como escritura."
-#: TRAImportacion numeroOperacionesAntesDeCederProcesador
-msgid "gvSIGi18n_TRAImportacion_attr_numeroOperacionesAntesDeCederProcesador_help"
-msgstr "Para evitar que el proceso de importacion consuma una gran parte de la capacidad de proceso, se cedera el procesador, tras este numero de operaciones realizadas, tanto de lectura como escritura."
-
-#. Default: "Milisegundos de Actividad antes de ceder procesador"
-#: TRAImportacion periodoActividadSinEsperaEnMilisegundos
-msgid "gvSIGi18n_TRAImportacion_attr_periodoActividadSinEsperaEnMilisegundos_label"
-msgstr "Milisegundos de Actividad antes de ceder procesador"
-
-#. Default: "if the value es bigger than 0, then Processor control shall not be yield until the specific number of millseconds of activity, even if the Number of Operations to yield has been reached."
-#: TRAImportacion periodoActividadSinEsperaEnMilisegundos
-msgid "gvSIGi18n_TRAImportacion_attr_periodoActividadSinEsperaEnMilisegundos_help"
-msgstr "if the value es bigger than 0, then Processor control shall not be yield until the specific number of millseconds of activity, even if the Number of Operations to yield has been reached."
 
 #. Default: "Usuario Importador"
 #: TRAImportacion usuarioImportador
@@ -1689,20 +1589,20 @@ msgstr "Fecha y hora en que termino la elaboracion del informe de estado."
 msgid "gvSIGi18n_TRAInforme_attr_haComenzado_label"
 msgstr "Comenzo a ejecutar"
 
-#. Default: "Si el proceso de importacion ha comenzado alguna vez a ejecutarse."
+#. Default: "Si la elaboracion del informe ha comenzado alguna vez a ejecutarse."
 #: TRAInforme haComenzado
 msgid "gvSIGi18n_TRAInforme_attr_haComenzado_help"
-msgstr "Si el proceso de importacion ha comenzado alguna vez a ejecutarse."
+msgstr "Si la elaboracion del informe ha comenzado alguna vez a ejecutarse."
 
 #. Default: "Exito?"
 #: TRAInforme haCompletadoConExito
 msgid "gvSIGi18n_TRAInforme_attr_haCompletadoConExito_label"
 msgstr "Exito?"
 
-#. Default: "Si el proceso de importacion ha completado exitosamente su ejecucion."
+#. Default: "Si la elaboracion del informe ha completado exitosamente su ejecucion."
 #: TRAInforme haCompletadoConExito
 msgid "gvSIGi18n_TRAInforme_attr_haCompletadoConExito_help"
-msgstr "Si el proceso de importacion ha completado exitosamente su ejecucion."
+msgstr "Si la elaboracion del informe ha completado exitosamente su ejecucion."
 
 #. Default: "Excepcion"
 #: TRAInforme informeExcepcion
@@ -1729,10 +1629,10 @@ msgstr "Cuando la elaboracion del informe de estado por idiomas finaliza con una
 msgid "gvSIGi18n_TRAInforme_attr_informeExcepcionModulos_label"
 msgstr "Excepcion durante Informe por Modulos e Idiomas"
 
-#. Default: "Cuando la elaboracion del informe de estado por modulose idiomas  finaliza con una condicion de error, contiene el informe del error de la aplicacion."
+#. Default: "Cuando la elaboracion del informe de estado por modulos e idiomas  finaliza con una condicion de error, contiene el informe del error de la aplicacion."
 #: TRAInforme informeExcepcionModulos
 msgid "gvSIGi18n_TRAInforme_attr_informeExcepcionModulos_help"
-msgstr "Cuando la elaboracion del informe de estado por modulose idiomas  finaliza con una condicion de error, contiene el informe del error de la aplicacion."
+msgstr "Cuando la elaboracion del informe de estado por modulos e idiomas  finaliza con una condicion de error, contiene el informe del error de la aplicacion."
 
 #. Default: "Informe por Idiomas"
 #: TRAInforme informeIdiomas
@@ -1813,6 +1713,471 @@ msgstr "Permite Modificar Modulo"
 #: TRAModulo permiteModificar
 msgid "gvSIGi18n_TRAModulo_attr_permiteModificar_help"
 msgstr "Si Verdadero, entonces el usuario puede realizar los cambios a los que permite sus roles en el modulo. Si Falso, entonces no puede realizar cambios en el modulo. Puede ocurrir durante  procesos de importacion largos, o por indicacion del coordinador."
+
+#. Default: "Parametros Control de Progreso"
+#: TRAParametrosControlProgreso
+msgid "gvSIGi18n_TRAParametrosControlProgreso_label"
+msgstr "Parametros Control de Progreso"
+
+#. Default: "Parametros que controlan la gestion del progreso de procesos de larga duracion, incluyendo el registro, transacciones, guardar resultados y ceder procesador."
+#: TRAParametrosControlProgreso
+msgid "gvSIGi18n_TRAParametrosControlProgreso_help"
+msgstr "Parametros que controlan la gestion del progreso de procesos de larga duracion, incluyendo el registro, transacciones, guardar resultados y ceder procesador."
+
+#. Default: "Ceder Procesador Habilitado"
+#: TRAParametrosControlProgreso cederProcesador_habilitado
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_cederProcesador_habilitado_label"
+msgstr "Ceder Procesador Habilitado"
+
+#. Default: "Si Verdadero, entonces el sistema gestionara la cesion de procesador durante el control del progreso del proceso de larga duracion de este tipo."
+#: TRAParametrosControlProgreso cederProcesador_habilitado
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_cederProcesador_habilitado_help"
+msgstr "Si Verdadero, entonces el sistema gestionara la cesion de procesador durante el control del progreso del proceso de larga duracion de este tipo."
+
+#. Default: "Ceder Procesador Maximo Elementos Leidos"
+#: TRAParametrosControlProgreso cederProcesador_maximoElementosLeidos
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_cederProcesador_maximoElementosLeidos_label"
+msgstr "Ceder Procesador Maximo Elementos Leidos"
+
+#. Default: "Para Ceder Procesador: cuando se lea este numero de elementos desde la ultima vez que se cedio el procesador, el sistema cedera el procesador para que atienda otros procesos."
+#: TRAParametrosControlProgreso cederProcesador_maximoElementosLeidos
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_cederProcesador_maximoElementosLeidos_help"
+msgstr "Para Ceder Procesador: cuando se lea este numero de elementos desde la ultima vez que se cedio el procesador, el sistema cedera el procesador para que atienda otros procesos."
+
+#. Default: "Ceder Procesador Maximo Elementos Modificados"
+#: TRAParametrosControlProgreso cederProcesador_maximoElementosModificados
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_cederProcesador_maximoElementosModificados_label"
+msgstr "Ceder Procesador Maximo Elementos Modificados"
+
+#. Default: "Para Ceder Procesador: cuando se modifique este numero de elementos desde la ultima vez que se cedio el procesador, el sistema cedera el procesador para que atienda otros procesos."
+#: TRAParametrosControlProgreso cederProcesador_maximoElementosModificados
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_cederProcesador_maximoElementosModificados_help"
+msgstr "Para Ceder Procesador: cuando se modifique este numero de elementos desde la ultima vez que se cedio el procesador, el sistema cedera el procesador para que atienda otros procesos."
+
+#. Default: "Ceder Procesador Maximo Milisegundos"
+#: TRAParametrosControlProgreso cederProcesador_maximoMilisegundos
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_cederProcesador_maximoMilisegundos_label"
+msgstr "Ceder Procesador Maximo Milisegundos"
+
+#. Default: "Para Ceder Procesador: cuando haya transcurrido este numero de milisegundos desde la ultima vez que se cedio el procesador, el sistema cedera el procesador para que atienda otros procesos."
+#: TRAParametrosControlProgreso cederProcesador_maximoMilisegundos
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_cederProcesador_maximoMilisegundos_help"
+msgstr "Para Ceder Procesador: cuando haya transcurrido este numero de milisegundos desde la ultima vez que se cedio el procesador, el sistema cedera el procesador para que atienda otros procesos."
+
+#. Default: "Ceder Procesador Porcentaje Tiempo Actividad"
+#: TRAParametrosControlProgreso cederProcesador_porcentajeTiempoActividad
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_cederProcesador_porcentajeTiempoActividad_label"
+msgstr "Ceder Procesador Porcentaje Tiempo Actividad"
+
+#. Default: "Para Ceder Procesador: el sistema limitara a este porcentaje el tiempo de actividad de este proceso, cediendo el procesador para que atienda otros procesos."
+#: TRAParametrosControlProgreso cederProcesador_porcentajeTiempoActividad
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_cederProcesador_porcentajeTiempoActividad_help"
+msgstr "Para Ceder Procesador: el sistema limitara a este porcentaje el tiempo de actividad de este proceso, cediendo el procesador para que atienda otros procesos."
+
+#. Default: "Guardar Resultados Habilitado"
+#: TRAParametrosControlProgreso guardarResultados_habilitado
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_guardarResultados_habilitado_label"
+msgstr "Guardar Resultados Habilitado"
+
+#. Default: "Si Verdadero, entonces el sistema guardara resultados durante el control del progreso del proceso de larga duracion de este tipo."
+#: TRAParametrosControlProgreso guardarResultados_habilitado
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_guardarResultados_habilitado_help"
+msgstr "Si Verdadero, entonces el sistema guardara resultados durante el control del progreso del proceso de larga duracion de este tipo."
+
+#. Default: "Guardar Resultados Maximo Elementos Leidos"
+#: TRAParametrosControlProgreso guardarResultados_maximoElementosLeidos
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_guardarResultados_maximoElementosLeidos_label"
+msgstr "Guardar Resultados Maximo Elementos Leidos"
+
+#. Default: "Para Guardar Resultados: cuando se lea este numero de elementos desde la ultima vez que se guardaron los resultados, el sistema guardara los resultados del proceso."
+#: TRAParametrosControlProgreso guardarResultados_maximoElementosLeidos
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_guardarResultados_maximoElementosLeidos_help"
+msgstr "Para Guardar Resultados: cuando se lea este numero de elementos desde la ultima vez que se guardaron los resultados, el sistema guardara los resultados del proceso."
+
+#. Default: "Guardar Resultados Maximo Elementos Modificados"
+#: TRAParametrosControlProgreso guardarResultados_maximoElementosModificados
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_guardarResultados_maximoElementosModificados_label"
+msgstr "Guardar Resultados Maximo Elementos Modificados"
+
+#. Default: "Para Guardar Resultados: cuando se modifique este numero de elementos desde la ultima vez que se guardaron los resultados, el sistema guardara los resultados del proceso."
+#: TRAParametrosControlProgreso guardarResultados_maximoElementosModificados
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_guardarResultados_maximoElementosModificados_help"
+msgstr "Para Guardar Resultados: cuando se modifique este numero de elementos desde la ultima vez que se guardaron los resultados, el sistema guardara los resultados del proceso."
+
+#. Default: "Guardar Resultados Maximo Milisegundos"
+#: TRAParametrosControlProgreso guardarResultados_maximoMilisegundos
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_guardarResultados_maximoMilisegundos_label"
+msgstr "Guardar Resultados Maximo Milisegundos"
+
+#. Default: "Para Guardar Resultados: cuando haya transcurrido este numero de milisegundos desde la ultima vez que se guardaron los resultados, el sistema guardara los resultados del proceso."
+#: TRAParametrosControlProgreso guardarResultados_maximoMilisegundos
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_guardarResultados_maximoMilisegundos_help"
+msgstr "Para Guardar Resultados: cuando haya transcurrido este numero de milisegundos desde la ultima vez que se guardaron los resultados, el sistema guardara los resultados del proceso."
+
+#. Default: "Registro Habilitado"
+#: TRAParametrosControlProgreso registro_habilitado
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_registro_habilitado_label"
+msgstr "Registro Habilitado"
+
+#. Default: "Si Verdadero, entonces el sistema escribira entradas de registro durante el control del progreso del proceso de larga duracion de este tipo."
+#: TRAParametrosControlProgreso registro_habilitado
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_registro_habilitado_help"
+msgstr "Si Verdadero, entonces el sistema escribira entradas de registro durante el control del progreso del proceso de larga duracion de este tipo."
+
+#. Default: "Registro Maximo Elementos Leidos"
+#: TRAParametrosControlProgreso registro_maximoElementosLeidos
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_registro_maximoElementosLeidos_label"
+msgstr "Registro Maximo Elementos Leidos"
+
+#. Default: "Para Registro: cuando se lea este numero de elementos desde la ultima entrada de registro, el sistema escribira una nueva entrada en el registro (log)"
+#: TRAParametrosControlProgreso registro_maximoElementosLeidos
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_registro_maximoElementosLeidos_help"
+msgstr "Para Registro: cuando se lea este numero de elementos desde la ultima entrada de registro, el sistema escribira una nueva entrada en el registro (log)"
+
+#. Default: "Registro Maximo Elementos Modificados"
+#: TRAParametrosControlProgreso registro_maximoElementosModificados
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_registro_maximoElementosModificados_label"
+msgstr "Registro Maximo Elementos Modificados"
+
+#. Default: "Para Registro: cuando se modifique este numero de elementos desde la ultima entrada de registro, el sistema escribira una nueva entrada en el registro (log)"
+#: TRAParametrosControlProgreso registro_maximoElementosModificados
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_registro_maximoElementosModificados_help"
+msgstr "Para Registro: cuando se modifique este numero de elementos desde la ultima entrada de registro, el sistema escribira una nueva entrada en el registro (log)"
+
+#. Default: "Registro Maximo Milisegundos"
+#: TRAParametrosControlProgreso registro_maximoMilisegundos
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_registro_maximoMilisegundos_label"
+msgstr "Registro Maximo Milisegundos"
+
+#. Default: "Para Registro: cuando haya transcurrido este numero de milisegundos desde la ultima entrada de registro, el sistema escribira una nueva entrada en el registro (log)"
+#: TRAParametrosControlProgreso registro_maximoMilisegundos
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_registro_maximoMilisegundos_help"
+msgstr "Para Registro: cuando haya transcurrido este numero de milisegundos desde la ultima entrada de registro, el sistema escribira una nueva entrada en el registro (log)"
+
+#. Default: "Registro Maximo Transacciones"
+#: TRAParametrosControlProgreso registro_maximoTransacciones
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_registro_maximoTransacciones_label"
+msgstr "Registro Maximo Transacciones"
+
+#. Default: "Para Registro: cuando se hayan guardado este numero de transacciones desde la ultima entrada de registro, el sistema escribira una nueva entrada en el registro (log)"
+#: TRAParametrosControlProgreso registro_maximoTransacciones
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_registro_maximoTransacciones_help"
+msgstr "Para Registro: cuando se hayan guardado este numero de transacciones desde la ultima entrada de registro, el sistema escribira una nueva entrada en el registro (log)"
+
+#. Default: "Transacciones Habilitado"
+#: TRAParametrosControlProgreso transacciones_habilitado
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_transacciones_habilitado_label"
+msgstr "Transacciones Habilitado"
+
+#. Default: "Si Verdadero, entonces el sistema creara transacciones durante el control del progreso del proceso de larga duracion de este tipo."
+#: TRAParametrosControlProgreso transacciones_habilitado
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_transacciones_habilitado_help"
+msgstr "Si Verdadero, entonces el sistema creara transacciones durante el control del progreso del proceso de larga duracion de este tipo."
+
+#. Default: "Transacciones Maximo Elementos Leidos"
+#: TRAParametrosControlProgreso transacciones_maximoElementosLeidos
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_transacciones_maximoElementosLeidos_label"
+msgstr "Transacciones Maximo Elementos Leidos"
+
+#. Default: "Para Transacciones: cuando se lea este numero de elementos desde la ultima transaccion, el sistema creara una nueva transaccion."
+#: TRAParametrosControlProgreso transacciones_maximoElementosLeidos
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_transacciones_maximoElementosLeidos_help"
+msgstr "Para Transacciones: cuando se lea este numero de elementos desde la ultima transaccion, el sistema creara una nueva transaccion."
+
+#. Default: "Transacciones Maximo Elementos Modificados"
+#: TRAParametrosControlProgreso transacciones_maximoElementosModificados
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_transacciones_maximoElementosModificados_label"
+msgstr "Transacciones Maximo Elementos Modificados"
+
+#. Default: "Para Transacciones: cuando se modifique este numero de elementos desde la ultima transaccion, el sistema creara una nueva transaccion."
+#: TRAParametrosControlProgreso transacciones_maximoElementosModificados
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_transacciones_maximoElementosModificados_help"
+msgstr "Para Transacciones: cuando se modifique este numero de elementos desde la ultima transaccion, el sistema creara una nueva transaccion."
+
+#. Default: "Transacciones Maximo Milisegundos"
+#: TRAParametrosControlProgreso transacciones_maximoMilisegundos
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_transacciones_maximoMilisegundos_label"
+msgstr "Transacciones Maximo Milisegundos"
+
+#. Default: "Para Transacciones: cuando haya transcurrido este numero de milisegundos desde la ultima transaccion, el sistema creara una nueva transaccion."
+#: TRAParametrosControlProgreso transacciones_maximoMilisegundos
+msgid "gvSIGi18n_TRAParametrosControlProgreso_attr_transacciones_maximoMilisegundos_help"
+msgstr "Para Transacciones: cuando haya transcurrido este numero de milisegundos desde la ultima transaccion, el sistema creara una nueva transaccion."
+
+#. Default: "Progreso"
+#: TRAProgreso
+msgid "gvSIGi18n_TRAProgreso_label"
+msgstr "Progreso"
+
+#. Default: "Informe de Progreso acerca de un Proceso de larga duracion"
+#: TRAProgreso
+msgid "gvSIGi18n_TRAProgreso_help"
+msgstr "Informe de Progreso acerca de un Proceso de larga duracion"
+
+#. Default: "Clases de Soporte al Progreso"
+#: TRAProgreso clasesSoporte
+msgid "gvSIGi18n_TRAProgreso_attr_clasesSoporte_label"
+msgstr "Clases de Soporte al Progreso"
+
+#. Default: "Los servicios de gestion del progreso que se proporcional al proceso: persistencia, transaccionalidad, liberar procesador y registro."
+#: TRAProgreso clasesSoporte
+msgid "gvSIGi18n_TRAProgreso_attr_clasesSoporte_help"
+msgstr "Los servicios de gestion del progreso que se proporcional al proceso: persistencia, transaccionalidad, liberar procesador y registro."
+
+#. Default: "Ruta del elemento de comienzo"
+#: TRAProgreso comienzoRuta
+msgid "gvSIGi18n_TRAProgreso_attr_comienzoRuta_label"
+msgstr "Ruta del elemento de comienzo"
+
+#. Default: "Ruta de acceso al elemento en que se comienza el proceso cuyo progreso se gestiona."
+#: TRAProgreso comienzoRuta
+msgid "gvSIGi18n_TRAProgreso_attr_comienzoRuta_help"
+msgstr "Ruta de acceso al elemento en que se comienza el proceso cuyo progreso se gestiona."
+
+#. Default: "Tipo del elemento de comienzo"
+#: TRAProgreso comienzoTipo
+msgid "gvSIGi18n_TRAProgreso_attr_comienzoTipo_label"
+msgstr "Tipo del elemento de comienzo"
+
+#. Default: "Tipo del elemento en que se comienza el proceso cuyo progreso se gestiona."
+#: TRAProgreso comienzoTipo
+msgid "gvSIGi18n_TRAProgreso_attr_comienzoTipo_help"
+msgstr "Tipo del elemento en que se comienza el proceso cuyo progreso se gestiona."
+
+#. Default: "Titulo del elemento de comienzo"
+#: TRAProgreso comienzoTitulo
+msgid "gvSIGi18n_TRAProgreso_attr_comienzoTitulo_label"
+msgstr "Titulo del elemento de comienzo"
+
+#. Default: "Titulo del elemento en que se comienza el proceso cuyo progreso se gestiona."
+#: TRAProgreso comienzoTitulo
+msgid "gvSIGi18n_TRAProgreso_attr_comienzoTitulo_help"
+msgstr "Titulo del elemento en que se comienza el proceso cuyo progreso se gestiona."
+
+#. Default: "UID del elemento de comienzo"
+#: TRAProgreso comienzoUID
+msgid "gvSIGi18n_TRAProgreso_attr_comienzoUID_label"
+msgstr "UID del elemento de comienzo"
+
+#. Default: "Identificador unico interno del elemento en que se comienza el proceso cuyo progreso se gestiona."
+#: TRAProgreso comienzoUID
+msgid "gvSIGi18n_TRAProgreso_attr_comienzoUID_help"
+msgstr "Identificador unico interno del elemento en que se comienza el proceso cuyo progreso se gestiona."
+
+#. Default: "Contadores de Control"
+#: TRAProgreso contadoresControl
+msgid "gvSIGi18n_TRAProgreso_attr_contadoresControl_label"
+msgstr "Contadores de Control"
+
+#. Default: "Almacena los contadores que controlan la gestion del proceso de larga duracion."
+#: TRAProgreso contadoresControl
+msgid "gvSIGi18n_TRAProgreso_attr_contadoresControl_help"
+msgstr "Almacena los contadores que controlan la gestion del proceso de larga duracion."
+
+#. Default: "Datos Resultado"
+#: TRAProgreso datosResultado
+msgid "gvSIGi18n_TRAProgreso_attr_datosResultado_label"
+msgstr "Datos Resultado"
+
+#. Default: "Almacena los datos resultantes del proceso de larga duracion."
+#: TRAProgreso datosResultado
+msgid "gvSIGi18n_TRAProgreso_attr_datosResultado_help"
+msgstr "Almacena los datos resultantes del proceso de larga duracion."
+
+#. Default: "Elemento que especifica el Proceso (solo para Importaciones)"
+#: TRAProgreso elementoEspecificacionProceso
+msgid "gvSIGi18n_TRAProgreso_attr_elementoEspecificacionProceso_label"
+msgstr "Elemento que especifica el Proceso (solo para Importaciones)"
+
+#. Default: "Elemento que especifica el proceso a ejecutar (por ejemplo, una Importacion)."
+#: TRAProgreso elementoEspecificacionProceso
+msgid "gvSIGi18n_TRAProgreso_attr_elementoEspecificacionProceso_help"
+msgstr "Elemento que especifica el proceso a ejecutar (por ejemplo, una Importacion)."
+
+#. Default: "Estado de Control del Progreso"
+#: TRAProgreso estadoControl
+msgid "gvSIGi18n_TRAProgreso_attr_estadoControl_label"
+msgstr "Estado de Control del Progreso"
+
+#. Default: "Resume el estado del control del progreso, del proceso de larga duracion."
+#: TRAProgreso estadoControl
+msgid "gvSIGi18n_TRAProgreso_attr_estadoControl_help"
+msgstr "Resume el estado del control del progreso, del proceso de larga duracion."
+
+#. Default: "Estado del Proceso"
+#: TRAProgreso estadoProceso
+msgid "gvSIGi18n_TRAProgreso_attr_estadoProceso_label"
+msgstr "Estado del Proceso"
+
+#. Default: "InactivoEl estado del proceso de larga duracion, como activo o inactivo."
+#: TRAProgreso estadoProceso
+msgid "gvSIGi18n_TRAProgreso_attr_estadoProceso_help"
+msgstr "InactivoEl estado del proceso de larga duracion, como activo o inactivo."
+
+#. Default: "Inactivo"
+#: TRAProgreso estadoProceso
+msgid "gvSIGi18n_TRAProgreso_attr_estadoProceso_option_Inactivo"
+msgstr "Inactivo"
+
+#. Default: "Activo"
+#: TRAProgreso estadoProceso
+msgid "gvSIGi18n_TRAProgreso_attr_estadoProceso_option_Activo"
+msgstr "Activo"
+
+#. Default: "Fecha y Hora de Comienzo"
+#: TRAProgreso fechaComienzoProceso
+msgid "gvSIGi18n_TRAProgreso_attr_fechaComienzoProceso_label"
+msgstr "Fecha y Hora de Comienzo"
+
+#. Default: "Fecha y hora en que se comenzo el proceso de larga duracion."
+#: TRAProgreso fechaComienzoProceso
+msgid "gvSIGi18n_TRAProgreso_attr_fechaComienzoProceso_help"
+msgstr "Fecha y hora en que se comenzo el proceso de larga duracion."
+
+#. Default: "Fecha y Hora de Fin"
+#: TRAProgreso fechaFinProceso
+msgid "gvSIGi18n_TRAProgreso_attr_fechaFinProceso_label"
+msgstr "Fecha y Hora de Fin"
+
+#. Default: "Fecha y hora en que termino el proceso de larga duracion."
+#: TRAProgreso fechaFinProceso
+msgid "gvSIGi18n_TRAProgreso_attr_fechaFinProceso_help"
+msgstr "Fecha y hora en que termino el proceso de larga duracion."
+
+#. Default: "Fecha y Hora del ultimo informe de Progreso"
+#: TRAProgreso fechaUltimoInformeProgreso
+msgid "gvSIGi18n_TRAProgreso_attr_fechaUltimoInformeProgreso_label"
+msgstr "Fecha y Hora del ultimo informe de Progreso"
+
+#. Default: "Fecha y hora en que se refresco al ultimo informe de progreso."
+#: TRAProgreso fechaUltimoInformeProgreso
+msgid "gvSIGi18n_TRAProgreso_attr_fechaUltimoInformeProgreso_help"
+msgstr "Fecha y hora en que se refresco al ultimo informe de progreso."
+
+#. Default: "Comenzo a ejecutar"
+#: TRAProgreso haComenzado
+msgid "gvSIGi18n_TRAProgreso_attr_haComenzado_label"
+msgstr "Comenzo a ejecutar"
+
+#. Default: "Si el proceso de larga duracion ha comenzado alguna vez a ejecutarse."
+#: TRAProgreso haComenzado
+msgid "gvSIGi18n_TRAProgreso_attr_haComenzado_help"
+msgstr "Si el proceso de larga duracion ha comenzado alguna vez a ejecutarse."
+
+#. Default: "Exito?"
+#: TRAProgreso haCompletadoConExito
+msgid "gvSIGi18n_TRAProgreso_attr_haCompletadoConExito_label"
+msgstr "Exito?"
+
+#. Default: "Si el proceso de larga duracion ha completado exitosamente su ejecucion."
+#: TRAProgreso haCompletadoConExito
+msgid "gvSIGi18n_TRAProgreso_attr_haCompletadoConExito_help"
+msgstr "Si el proceso de larga duracion ha completado exitosamente su ejecucion."
+
+#. Default: "Identificador del elemento que especifica el Proceso"
+#: TRAProgreso identificadorElementoProceso
+msgid "gvSIGi18n_TRAProgreso_attr_identificadorElementoProceso_label"
+msgstr "Identificador del elemento que especifica el Proceso"
+
+#. Default: "Identificador del elemento que especifica el proceso a ejecutar (por ejemplo, una Importacion)."
+#: TRAProgreso identificadorElementoProceso
+msgid "gvSIGi18n_TRAProgreso_attr_identificadorElementoProceso_help"
+msgstr "Identificador del elemento que especifica el proceso a ejecutar (por ejemplo, una Importacion)."
+
+#. Default: "Excepcion"
+#: TRAProgreso informeExcepcion
+msgid "gvSIGi18n_TRAProgreso_attr_informeExcepcion_label"
+msgstr "Excepcion"
+
+#. Default: "Cuando la ejecucion del proceso de larga duracion finaliza con una condicion de error, contiene el informe del error de la aplicacion."
+#: TRAProgreso informeExcepcion
+msgid "gvSIGi18n_TRAProgreso_attr_informeExcepcion_help"
+msgstr "Cuando la ejecucion del proceso de larga duracion finaliza con una condicion de error, contiene el informe del error de la aplicacion."
+
+#. Default: "Parametros de Control"
+#: TRAProgreso parametrosControl
+msgid "gvSIGi18n_TRAProgreso_attr_parametrosControl_label"
+msgstr "Parametros de Control"
+
+#. Default: "Almacena los parametros que controlan la gestion del proceso de larga duracion."
+#: TRAProgreso parametrosControl
+msgid "gvSIGi18n_TRAProgreso_attr_parametrosControl_help"
+msgstr "Almacena los parametros que controlan la gestion del proceso de larga duracion."
+
+#. Default: "Parametros de Entrada"
+#: TRAProgreso parametrosEntrada
+msgid "gvSIGi18n_TRAProgreso_attr_parametrosEntrada_label"
+msgstr "Parametros de Entrada"
+
+#. Default: "Almacena los parametros que guian el proceso de larga duracion."
+#: TRAProgreso parametrosEntrada
+msgid "gvSIGi18n_TRAProgreso_attr_parametrosEntrada_help"
+msgstr "Almacena los parametros que guian el proceso de larga duracion."
+
+#. Default: "Tipo del elemento que especifica el Proceso"
+#: TRAProgreso tipoElementoProceso
+msgid "gvSIGi18n_TRAProgreso_attr_tipoElementoProceso_label"
+msgstr "Tipo del elemento que especifica el Proceso"
+
+#. Default: "Tipo del elemento que especifica el proceso a ejecutar (por ejemplo, Importacion)."
+#: TRAProgreso tipoElementoProceso
+msgid "gvSIGi18n_TRAProgreso_attr_tipoElementoProceso_help"
+msgstr "Tipo del elemento que especifica el proceso a ejecutar (por ejemplo, Importacion)."
+
+#. Default: "Tipo del Proceso"
+#: TRAProgreso tipoProceso
+msgid "gvSIGi18n_TRAProgreso_attr_tipoProceso_label"
+msgstr "Tipo del Proceso"
+
+#. Default: "InactivoEl tipo del proceso del cual este elemento mantiene su progreso."
+#: TRAProgreso tipoProceso
+msgid "gvSIGi18n_TRAProgreso_attr_tipoProceso_help"
+msgstr "InactivoEl tipo del proceso del cual este elemento mantiene su progreso."
+
+#. Default: "Vacio"
+#: TRAProgreso tipoProceso
+msgid "gvSIGi18n_TRAProgreso_attr_tipoProceso_option_Vacio"
+msgstr "Vacio"
+
+#. Default: "Inventario"
+#: TRAProgreso tipoProceso
+msgid "gvSIGi18n_TRAProgreso_attr_tipoProceso_option_Inventario"
+msgstr "Inventario"
+
+#. Default: "Re-Catalogar"
+#: TRAProgreso tipoProceso
+msgid "gvSIGi18n_TRAProgreso_attr_tipoProceso_option_Re-Catalogar"
+msgstr "Re-Catalogar"
+
+#. Default: "Re-Establecer Permisos"
+#: TRAProgreso tipoProceso
+msgid "gvSIGi18n_TRAProgreso_attr_tipoProceso_option_Re-Establecer Permisos"
+msgstr "Re-Establecer Permisos"
+
+#. Default: "Eliminar Modulo"
+#: TRAProgreso tipoProceso
+msgid "gvSIGi18n_TRAProgreso_attr_tipoProceso_option_Eliminar Modulo"
+msgstr "Eliminar Modulo"
+
+#. Default: "Eliminar Idioima"
+#: TRAProgreso tipoProceso
+msgid "gvSIGi18n_TRAProgreso_attr_tipoProceso_option_Eliminar Idioima"
+msgstr "Eliminar Idioima"
+
+#. Default: "Copia Seguridad"
+#: TRAProgreso tipoProceso
+msgid "gvSIGi18n_TRAProgreso_attr_tipoProceso_option_Copia Seguridad"
+msgstr "Copia Seguridad"
+
+#. Default: "Usuario Solicitante"
+#: TRAProgreso usuarioInformador
+msgid "gvSIGi18n_TRAProgreso_attr_usuarioInformador_label"
+msgstr "Usuario Solicitante"
+
+#. Default: "Usuario que ha solicitado creado el Informe."
+#: TRAProgreso usuarioInformador
+msgid "gvSIGi18n_TRAProgreso_attr_usuarioInformador_help"
+msgstr "Usuario que ha solicitado creado el Informe."
 
 #. Default: "Solicitud Creacion Cadena"
 #: TRASolicitudCadena
@@ -2491,10 +2856,10 @@ msgstr "Fecha informe"
 msgid "gvSIGi18n_HideStateTransitionColumns_label"
 msgstr "Ocultar columnas de botones de cambio de estado"
 
-#. Default: "Reporting the Modules and Languages Status is an intensive process. therefore it is performed periodically by the Coordinator, but not at each user request."
+#. Default: "Reporting the Modules and Languages Status is an intensive process. It is not performed at each user request, but rather after some lapsed time, or changes made, since it was last generated."
 #: TRAInformeModulos_i18n_view.pt
 msgid "gvSIGi18n_InformeModulosIntensiveWarning_msgid"
-msgstr "La elaboracion del Informe de Estado por Modulos e Idiomas es una labor intensiva, y por lo tanto se realiza periodicamente por el Coordinador, pero no en cada solicitud de informe por el usuario."
+msgstr "La elaboracion del Informe de Estado por Modulos e Idiomas es una labor intensiva. No se realiza en cada solicitud de informe por el usuario, sino cuando ha transcurrido un periodo de tiempo, o se han hecho un numero de cambios, desde la ultima vez que se genero el informe."
 
 #. Default: "Send changes to server without refreshing the whole page, allowing continuation of work in the current page."
 #: TRAChangeAndBrowseTranslations.py
@@ -2549,7 +2914,7 @@ msgstr "Realizado"
 #. Default: "not specified"
 #: TRAExportar.pt
 msgid "gvSIGi18n_ModuloNoEspecificado_msgid"
-msgstr "-- no especificado --"
+msgstr "no especificado"
 
 #. Default: "Modules"
 #: Idioma.pt
@@ -3036,10 +3401,10 @@ msgstr "Cancelar Exportacion"
 msgid "gvSIGi18n_cancelarImportacionYVolverATabular_help"
 msgstr "Cancelar importacion de contenido de traducciones y volver a vista tabular de la importacion"
 
-#. Default: "Cancel Import"
+#. Default: "Cancel import of translations contents and navigate back to import tabular view"
 #: TRAImportar.py TRAChangeAndBrowseTranslations.py
 msgid "gvSIGi18n_cancelarImportacionYVolverATabular_msgid"
-msgstr "Cancelar Importacion"
+msgstr "Cancelar Importacion de contenidos, y navegar de vuelta a la vista avanzada"
 
 #. Default: "Catalog"
 #: Idioma.pt
@@ -3101,10 +3466,10 @@ msgstr "Confirmar Importacion"
 msgid "gvSIGi18n_confirmarInicializacion_msgid"
 msgstr "Por favor, confirme que desea realizar la Inicializacion del catalogo traducciones"
 
-#. Default: "You must confirm within the allowed time, or  if you need more time to review its impact, request the action again later."
+#. Default: "You must confirm within the allowed time, or  if you need more time to review the impact of the requested action, take your time to do so, and request the action again later."
 #: TRAImportar.py TRAImportar.pt
 msgid "gvSIGi18n_confirmarTimeout_help"
-msgstr "Debe confirmar dentro del intervalo permitido, o volver a solicitar la accion si necesita mas tiempo para evaluar su impacto."
+msgstr "Debe confirmar dentro del intervalo permitido, o si necesita mas tiempo para evaluar el impacto de la accion, tomese su tiempo, y vuelva a solicitar la accion."
 
 #. Default: ".zip file contents"
 #: TRAImportar.pt
@@ -3241,6 +3606,51 @@ msgstr "Seleccione uno de los idiomas conocidos, o introduzca el codigo y nombre
 msgid "gvSIGi18n_crearIdioma_action_page_title"
 msgstr "Crear nuevo Idioma"
 
+
+
+#. Default: "Exception while creating new Language"
+#: TRACrear_Modulo_i18n_view.pt
+msgid "gvSIGi18n_errorCreating_Idioma_Exception_msgid"
+msgstr "Excepcion creando nuevo Idioma"
+
+
+
+
+
+#. Default: "Create New Module"
+#: TRACrear_Modulo_i18n_view.pt
+msgid "gvSIGi18n_crearModulo_action_page_title"
+msgstr "Crear nuevo Modulo"
+
+
+#. Default: "Enter a name for the desired new Module name. The name must not be the same as one of the existing modules."
+#: TRACrear_Modulo_i18n_view.pt
+msgid "gvSIGi18n_crearModulo_action_page_help"
+msgstr "Introduzca el nombre deseado para el nuevo modulo. El nombre no debe concidir con los de los modulos existentes"
+
+#. Default: "Names of already existing modules"
+#: TRACrear_Modulo_i18n_view.pt
+msgid "gvSIGi18n_crearModulo_ModulosExistentes_title"
+msgstr "Nombres de los modulos existentes"
+
+#. Default: "There are no modules in the translations catalog."
+#: TRACrear_Modulo_i18n_view.pt
+msgid "gvSIGi18n_crearModulo_NoHayModulosExistentes_msgid"
+msgstr "No hay modulos en el catalogo de traducciones"
+
+#. Default: "Name for the new Module"
+#: TRACrear_Modulo_i18n_view.pt
+msgid "gvSIGi18n_TRAModulo_Nombre_label"
+msgstr "Nombre para el nuevo modulo"
+
+#. Default: "Exception while creating new Module"
+#: TRACrear_Modulo_i18n_view.pt
+msgid "gvSIGi18n_errorCreating_Modulo_Exception_msgid"
+msgstr "Excepcion creando nuevo Modulo"
+
+
+
+
 #. Default: "Enter a translation of the new requested string symbol into the specified main language."
 #: TRACrear_SolicitudCadena_i18n_view.pt
 msgid "gvSIGi18n_crearSolicitudCadena_MainLanguage_help"
@@ -3256,10 +3666,10 @@ msgstr "Simbolo de la Cadena solicitada. Debe ser unico, no existir ya en el cat
 msgid "gvSIGi18n_crearSolicitudCadena_NewRequestedStringSymbol_label"
 msgstr "Simbolo de la Cadena solicitada"
 
-#. Default: "Enter a translation of the new requested string symbol, into the specified reference language."
+#. Default: "The language for which a reference translation is also supplied for the new requested string symbol."
 #: TRACrear_SolicitudCadena_i18n_view.pt
 msgid "gvSIGi18n_crearSolicitudCadena_ReferenceLanguage_help"
-msgstr "Introduzca una Traduccion del nuevo simbolo de Cadena solicitada al Idioma de Referencia."
+msgstr "El Idioma para el que se suministra una traducción de Referencia, del nuevo simbolo de cadena solicitada."
 
 #. Default: "Reference Language"
 #: TRACrear_SolicitudCadena_i18n_view.pt
@@ -3271,7 +3681,7 @@ msgstr "Idioma de Referencia"
 msgid "gvSIGi18n_crearSolicitudCadena_RequestedStringSymbol_IsRequired_error_message"
 msgstr "Debe introducir un Simbolo para la nueva Cadena solicitada."
 
-#. Default: "You must enter a translation into the default language"
+#. Default: "You must enter a translation into the main language"
 #: TRACrear_SolicitudCadena_i18n_view.pt
 msgid "gvSIGi18n_crearSolicitudCadena_TranslationIntoMainLanguage_IsRequired_error_message"
 msgstr "Usted debe introducir Traduccion al idioma principal"
@@ -3663,10 +4073,10 @@ msgstr "El numero maximo de traducciones a explorar en una sola pagina es"
 msgid "gvSIGi18n_lista_section_label"
 msgstr "Lista"
 
-#. Default: "Select the modules with the translations you are interested in.\nIf no module is selected then there is no restriction on translation modules.\nThe --unspecified-- module represents those strings that are not associated with any specific module."
+#. Default: "Select the modules with the translations you are interested in.\nIf no module is selected then there is no restriction on translation modules.\nThe not specified module represents those strings that are not associated with any specific module."
 #: TRAChangeAndBrowseTranslations.py
 msgid "gvSIGi18n_modulesFilter_help"
-msgstr "Seleccione los modulos de las traducciones que le interesen.\nSi no selecciona ningun modulo entonces no impone restriccion sobre los modulos de las traducciones.\nEl modulo -- no especificado -- representa las cadenas a traducir que no estan asociadas con ningun modulo en particular."
+msgstr "Seleccione los modulos de las traducciones que le interesen.\nSi no selecciona ningun modulo entonces no impone restriccion sobre los modulos de las traducciones.\nEl modulo no especificado representa las cadenas a traducir que no estan asociadas con ningun modulo en particular."
 
 #. Default: "Filter by Modules"
 #: TRAChangeAndBrowseTranslations.py
@@ -3693,15 +4103,15 @@ msgstr "Mostrar Informe"
 msgid "gvSIGi18n_mostrarSeccionLista_section_label"
 msgstr "Mostrar Lista de traducciones"
 
-#. Default: "Show Status Report"
+#. Default: "Summary"
 #: TRACatalogo.pt
 msgid "gvSIGi18n_mostrarinformedeestado_msgid"
-msgstr "Mostrar Informe de Estado"
+msgstr "Sumario"
 
-#. Default: "Show Modules Report"
+#. Default: "Report"
 #: TRAInformeModulos_i18n_view.pt
 msgid "gvSIGi18n_mostrarinformepormodulos_msgid"
-msgstr "Mostrar Infome por Modulos"
+msgstr "Informe"
 
 #. Default: "New Status"
 #: TRAChangeAndBrowseTranslations.py
@@ -3873,15 +4283,6 @@ msgstr "Observar el progreso de importacion"
 msgid "gvSIGi18n_ocultar_action_label"
 msgstr "Ocultar"
 
-#. Default: "Hide Status Report"
-#: TRACatalogo.pt
-msgid "gvSIGi18n_ocultarinformedeestado_msgid"
-msgstr "Ocultar Informe de Estado"
-
-#. Default: "Hide Modules Report"
-#: TRAInformeModulos_i18n_view.pt
-msgid "gvSIGi18n_ocultarinformepormodulos_msgid"
-msgstr "Ocultar Infome por Modulos"
 
 #. Default: "Before"
 #: TRAChangeAndBrowseTranslations.py
@@ -3903,10 +4304,10 @@ msgstr "Despues de"
 msgid "gvSIGi18n_opcionesSection_title"
 msgstr "Opciones"
 
-#. Default: "If you wish to launch the process, please confirm within the next"
+#. Default: "Please confirm within the next (seconds)"
 #: TRAImportar.py TRAImportar.pt
 msgid "gvSIGi18n_periodoParaConfirmarEnSegundos_msgid"
-msgstr "Si desea lanzar el proceso, por favor confirme antes de"
+msgstr "Por favor confirme antes de (segundos)"
 
 #. Default: "You may observe the progress of the import process by clicking in the Progress action above or the Observe import progress link below."
 #: TRAImportar.py TRAImportar.pt
@@ -4185,6 +4586,13 @@ msgstr "Traducciones al"
 msgid "gvSIGi18n_userCanNotInitializeCatalogo_msgid"
 msgstr "Usted no puede inicializar el catalogo de traducciones."
 
+
+#. Default: "Verify the Translations Catalog"
+#: TRAVerificar_action.pt
+msgid "gvSIGi18n_VerifyTranslationsCatalog"
+msgstr "Verificar el Catalogo de Traducciones"
+
+
 #. Default: "You can not verify the translations catalog."
 #: TRAVerificar_action.pt
 msgid "gvSIGi18n_userCanNotVerifyCatalogo_msgid"
@@ -4215,10 +4623,10 @@ msgstr "Descartar los cambios realizados en la configuracion de exportacion, y v
 msgid "gvSIGi18n_valoresPorDefectoExportacion_msgid"
 msgstr "Configuracion de exportacion por defecto"
 
-#. Default: "Advanced View"
+#. Default: "Details"
 #: TRAInformeIdiomas_i18n_view.pt
 msgid "gvSIGi18n_vistaAvanzada_msgid"
-msgstr "Vista avanzada"
+msgstr "Detalles"
 
 #. Default: "View Detais"
 #: TRAInformeContenidosImportacion_action.pt
@@ -4514,6 +4922,16 @@ msgid "gvSIGi18n_userCanNotReuseImport_msgid"
 msgstr "No esta permitido reutilizar la Importacion"
 
 
+#. Default: "You are not allowed to create a new Language."
+#: TRACrear_Idioma_i18n_view.pt
+msgid "gvSIGi18n_crearModulo_action_NoPermissionToCreate_ErrorMsg"
+msgstr "No esta permitido crear un Idioma."
+
+
+#. Default: "You are not allowed to create a new Module."
+#: TRACrear_Modulo_i18n_view.pt
+msgid "gvSIGi18n_crearModulo_action_NoPermissionToCreate_ErrorMsg"
+msgstr "No esta permitido crear un Modulo."
 
 #. Default: "You are not allowed to create a Status Report by Modules and Languages."
 #: TRACrear_Informe.pt
@@ -4627,7 +5045,7 @@ msgstr "Solicitud enviada."
 #. Default: "Response Received."
 #: TRAChangeAndBrowseTranslations.py
 msgid "gvSIGi18n_AsyncPhase_ResponseReceived_msgid"
-msgstr "Respueta recibida."
+msgstr "Respuesta recibida."
 
 
 #. Default: "Change saved."
@@ -4789,20 +5207,10 @@ msgstr "el usuario puede marcar o grabar este enlace en Favoritos en el navegado
 
 
 
-
-
-
-#. Default: "Hide Activity Report"
-#: TRACatalogoActividad_inner.pt
-msgid "gvSIGi18n_ocultarinformedeactividad_msgid"
-msgstr "Ocultar Informe de Actividad"
-
-
-
-#. Default: "Show Activity Report"
+#. Default: "Activity"
 #: TRACatalogoActividad_inner.pt
 msgid "gvSIGi18n_mostrarinformeactividad_msgid"
-msgstr "Mostrar Informe de Actividad"
+msgstr "Actividad"
 
 
 #. Default: "No Activity Report available"
@@ -4827,6 +5235,10 @@ msgstr "Fecha de Informe de Actividad"
 msgid "gvSIGi18n_cadenas_msgid"
 msgstr "Cadenas"
 
+#. Default: "Modules"
+#: TRAContenidoIntercambio_i18n_view.pt
+msgid "gvSIGi18n_modulos_msgid"
+msgstr "Modulos"
 
 
 
@@ -4868,3 +5280,301 @@ msgid "gvSIGi18n_ActivityByLanguages_label"
 msgstr "Actividad por Idiomas"
 
      
+
+
+#. Default: "You have waited too long to confirm the creation of the requested new strings. Please, request the operation again if you wish to do so."
+#: TRAConfirmarCrearCadenas.pt
+msgid "gvSIGi18n_demasiadaEsperaVuelvaASolicitarCreacionCadenas_help"
+msgstr "Ha tardado demasiado en confirmar la creacion de nuevas cadenas solicitadas. Por favor, vuelva a solicitar la operacion si asi lo desea."
+     
+     
+#. Default: "Confirm Creation of requested New Strings"
+#: TRAConfirmarCrearCadenas.pt
+msgid "gvSIGi18n_confirmarCrearCadenas_msgid"
+msgstr "Confirmar Creacion de Nuevas Cadenas solicitadas"
+
+     
+#. Default: "Cancel creation of requested new strings"
+#: TRAConfirmarCrearCadenas.pt
+msgid "gvSIGi18n_cancelarCrearCadenas_msgid"
+msgstr "Cancelar Creacion de Nuevas Cadenas solicitadas"
+
+                                 
+#. Default: "There are no pending new strings requests."
+#: TRAConfirmarCrearCadenas.pt
+msgid "gvSIGi18n_ThereAreNoPendingStringRequests_msgid"
+msgstr "No hay solicitudes de nuevas cadenas pendientes."
+
+
+
+
+#. Default: "You have waited too long to confirm the Clean-up of the requested new strings. Please, request the operation again if you wish to do so."
+#: TRAConfirmarCrearCadenas.pt
+msgid "gvSIGi18n_demasiadaEsperaVuelvaASolicitarLimpiezaCadenas_help"
+msgstr "Ha tardado demasiado en confirmar la limpieza de solicitudes de nuevas nuevas cadenas ya procesadas. Por favor, vuelva a solicitar la operacion si asi lo desea."
+     
+     
+#. Default: "Confirm Clean-up of already processed New String requests"
+#: TRAConfirmarLimpiarCadenas.pt
+msgid "gvSIGi18n_ConfirmarLimpiarCadenas_msgid"
+msgstr "Confirmar Limpiar solicitudes ya procesadas de Nuevas Cadenas"
+
+     
+
+#. Default: "Cancel Clean-up of already processed New String requests"
+#: TRAConfirmarLimpiarCadenas.pt
+msgid "gvSIGi18n_cancelarLimpiarCadenas_msgid"
+msgstr "Cancelar Limpiar solicitudes ya procesadas de Nuevas Cadenas"
+     
+
+#. Default: "You are not allowed to Clean-up already processed New String requests."
+#: TRAConfirmarLimpiarCadenas.pt
+msgid "gvSIGi18n_userCanNotCleanUpStrings_msgid"
+msgstr "Usted no puede Limpiar solicitudes ya procesadas de Nuevas Cadenas."
+
+
+#. Default: "There are no already processed New String requests to Clean-up."
+#: TRAConfirmarLimpiarCadenas.pt
+msgid "gvSIGi18n_ThereAreNoStringRequestsAlreadyProcessedToCleanUp_msgid"
+msgstr "No hay solicitudes ya procesadas de nuevas cadenas para limpiar."
+
+
+
+
+
+
+
+
+
+
+#. Default: "No ha introducido un codigo de idioma para gvSIG. No es posible crear un nuevo idioma sin un codigo de idioma."
+#: TRAColeccionIdiomas_Operaciones.py
+msgid "gvSIGi18n_errorCreating_Idioma_missingParameter_CodigoIdiomaEnGvSIG_warning_msgid"
+msgstr "The code in gvSIG for the new language is missing. Can not create a new language without a language code."
+
+
+
+#. Default: "The language name expressed in english is missing. Can not create a new language without a language name expressed in english."
+#: TRAColeccionIdiomas_Operaciones.py
+msgid "gvSIGi18n_errorCreating_Idioma_missingParameter_NewEnglishName_warning_msgid"
+msgstr "No ha introducido un codigo de idioma para gvSIG. No es posible crear un nuevo idioma sin un codigo de idioma."
+
+
+#. Default: "A language with same code already exists in the translations catalog."
+#: TRAColeccionIdiomas_Operaciones.py
+msgid "gvSIGi18n_errorCreating_Idioma_LanguageCodeAlreadyExists_warning_msgid"
+msgstr "Ya existe en el catalogo de traducciones un Idioma con el mismo codigo."
+
+
+
+#. Default: "The name for the new module is missing. Can not create a new module without a name."
+#: TRAColeccionModulos_Operaciones.py
+msgid "gvSIGi18n_errorCreating_Modulo_missingParameter_Nombre_warning_msgid"
+msgstr "No ha introducido un nombre de Modulo. No es posible crear un nuevo modulo sin un codigo de idioma."
+
+
+#. Default: "A module with same name already exists in the translations catalog."
+#: TRAColeccionModulos_Operaciones.py
+msgid "gvSIGi18n_errorCreating_Modulo_ModuleNameAlreadyExists_warning_msgid"
+msgstr "Ya existe en el catalogo de traducciones un Modulo con el mismo nombre."
+
+
+
+
+#. Default: "To Create Language"
+#: TRAColeccionIdiomas_Operaciones.py
+msgid "gvSIGi18n_crearIdioma_Importacion_prefix"
+msgstr "Para crear Idioma"
+
+
+
+#. Default: "To Create Module"
+#: TRAColeccionIdiomas_Operaciones.py
+msgid "gvSIGi18n_crearModulo_Importacion_prefix"
+msgstr "Para crear Modulo"
+
+
+
+#. Default: "There are no Modules"
+#: TRAContenidoIntercambio_i18n_view.py
+msgid "gvSIGi18n_NoHayModulos_msgid"
+msgstr "No hay Modulos"
+
+
+
+#. Default: "Inventory of element and contents"
+#: TRAInventory_action.pt
+msgid "gvSIGi18n_InventoryOfAllElements"
+msgstr "Inventario del elemento y sus contenidos"
+
+
+#. Default: "You are not allowed to request an inventory of elements in the translations catalog."
+#: TRAInventory_action.pt
+msgid "gvSIGi18n_userCanNotInventoryCatalogo_msgid"
+msgstr "No puede solicitar un Inventario de elementos en el Catalogo de traducciones."
+
+
+#. Default: "Please, confirm request for an inventory of elements in the translations catalog."
+#: TRAInventory_action.pt
+msgid "gvSIGi18n_confirmarInventario_msgid"
+msgstr "Por favor, confirme su solicitud de un Inventario de elementos en el Catalogo de traducciones."
+
+
+
+#. Default: "Confirm to perform an Inventory of the elements in the translations Catalog, possibly taking a long time and demanding significant server resources, depending on the number of elements found, with usually higher cost with higher number of strings and languages (as seen in the root or summary report pages)."
+#: TRAInventory_action.pt
+msgid "gvSIGi18n_confirmarInventario_help"
+msgstr "Confirme para realizar un Inventario de elementos en el Catalogo de traducciones, posiblemente de larga duracion y consumiendo recursos considerables de servidor, dependiendo en el numero de elementos encontrados, usualmente con costes mas altos con numeros elevados de cadenas e idiomas (como se observa en la pagina raiz o informe sumario)."
+
+
+#. Default: "You have waited too long to confirm the action. Please, request the action again if you wish to do so."
+#: TRAInventory_action.pt
+msgid "gvSIGi18n_demasiadaEsperaVuelvaASolicitarAccion_help"
+msgstr "Ha tardado demasiado en confirmar la accion. Por favor, vuelva a solicitar la accion si asi lo desea."
+
+
+
+#. Default: "Cancel Action"
+#: TRAInventory_action.pt
+msgid "gvSIGi18n_cancelarAccion_msgid"
+msgstr "Cancelar Accion"
+
+
+
+#. Default: "Re-catalog and re-index all the elements"
+#: TRARecatalog_action.pt
+msgid "gvSIGi18n_RecatalogAllElements"
+msgstr "Re-catalogar y re-indexar todos los elementos"
+
+
+#. Default: "Confirm request to re-catalog and re-index all elements in the Translations Catalog."
+#: TRARecatalog_action.pt
+msgid "gvSIGi18n_confirmarRecatalog_msgid"
+msgstr "Por favor, confirme su solicitud para re-catalogar y re-indexar todos los elementos en el Catalogo de traducciones."
+
+
+#. Default: "Confirm to re-catalog and re-index all the elements in the translations Catalog, possibly taking a long time and demanding significant server resources, depending on the number of elements found, with usually higher cost with higher number of strings and languages (as seen in the root or summary report pages)."
+#: TRARecatalog_action.pt
+msgid "gvSIGi18n_confirmarRecatalog_help"
+msgstr "Confirme para re-catalogar y re-indexar todos los elementos en el Catalogo de traducciones, posiblemente de larga duracion y consumiendo recursos considerables de servidor, dependiendo en el numero de elementos encontrados, usualmente con costes mas altos con numeros elevados de cadenas e idiomas (como se observa en la pagina raiz o informe sumario)."
+
+
+
+#. Default: "You are not allowed to re-catalog and re-index all the elements in the translations catalog."
+#: TRAInventory_action.pt
+msgid "gvSIGi18n_userCanNotReCatalog_msgid"
+msgstr "No puede re-catalogar y re-indexar todos los elementos del Catalogo de traducciones."
+
+
+#. Default: "Reset permissions for all elements"
+#: TRAResetPermissions_action.pt
+msgid "gvSIGi18n_ResetPermissionsForAllElements"
+msgstr "Re-establecer permisos para todos los elementos"
+
+
+#. Default: "You are not allowed to reset permissions for all elements in the translations catalog."
+#: TRARecatalog_action.pt
+msgid "gvSIGi18n_userCanNotResetPermissionsCatalogo_msgid"
+msgstr "No puede establecer los permisos para todos los elementos del Catalogo de traducciones."
+
+#. Default: "Confirm to reset permissions for all the elements in the translations Catalog, possibly taking a long time and demanding significant server resources, depending on the number of elements found, with usually higher cost with higher number of strings and languages (as seen in the root or summary report pages)."
+#: TRARecatalog_action.pt
+msgid "gvSIGi18n_confirmarResestablecerPermisos_msgid"
+msgstr "Confirme para  re-establecer los permisos para todos los elementos en el Catalogo de traducciones, posiblemente de larga duracion y consumiendo recursos considerables de servidor, dependiendo en el numero de elementos encontrados, usualmente con costes mas altos con numeros elevados de cadenas e idiomas (como se observa en la pagina raiz o informe sumario)."
+
+#. Default: "Confirm request to Verify the Translations Catalog"
+#: TRARecatalog_action.pt
+msgid "gvSIGi18n_confirmarVerificar_msgid"
+msgstr "Por favor, confirme su solicitud para Verificar el Catalogo de traducciones"
+
+#. Default: "Confirm to Verify the translations Catalog, possibly taking a long time and demanding significant server resources, depending on the number of elements found, with usually higher cost with higher number of strings and languages (as seen in the root or summary report pages)."
+#: TRARecatalog_action.pt
+msgid "gvSIGi18n_confirmarVerificar_help"
+msgstr "Confirme para Verificar el Catalogo de traducciones, posiblemente de larga duracion y consumiendo recursos considerables de servidor, dependiendo en el numero de elementos encontrados, usualmente con costes mas altos con numeros elevados de cadenas e idiomas (como se observa en la pagina raiz o informe sumario)."
+
+
+#. Default: "Initialize the Translations Catalog"
+#: TRACatalogoLazyInit_action.pt
+msgid "gvSIGi18n_InitializeTranslationsCatalog"
+msgstr "Inicializar el Catalogo de Traducciones"
+
+
+#. Default: "Confirm request to Initialize the Translations Catalog"
+#: TRARecatalog_action.pt
+msgid "gvSIGi18n_confirmarInicializar_msgid"
+msgstr "Por favor, confirme su solicitud para Inicializar el Catalogo de traducciones"
+
+#. Default: "Confirm to Initialize the translations Catalog, possibly taking a long time and demanding significant server resources, depending on the number of elements found, with usually higher cost with higher number of strings and languages (as seen in the root or summary report pages)."
+#: TRARecatalog_action.pt
+msgid "gvSIGi18n_confirmarInicializar_help"
+msgstr "Confirme para Inicializar el Catalogo de traducciones, posiblemente de larga duracion y consumiendo recursos considerables de servidor, dependiendo en el numero de elementos encontrados, usualmente con costes mas altos con numeros elevados de cadenas e idiomas (como se observa en la pagina raiz o informe sumario)."
+
+
+#. Default: "You may select some modules using the new requested string symbol, or no module at all."
+#: TRACrear_SolicitudCadena_i18n_view.pt
+msgid "gvSIGi18n_crearSolicitudCadena_ModulosCadena_help"
+msgstr "Puede seleccionar algunos modulos usando la nueva cadena solicitada, o no seleccionar ningun modulo."
+
+
+#. Default: "You must select an existing reference language. If your preferred reference language does not exist, please ask your coordinator to create it for you."
+#: TRACrear_SolicitudCadena_i18n_view.pt
+msgid "gvSIGi18n_crearSolicitudCadena_ReferenceLanguage_IsRequired_error_message"
+msgstr "Debe seleccionar un idioma de referencia existente. Si no existe su idioma de referencia preferido, solicite a su coordinador que cree el idioma de referencia que necesita."
+
+#. Default: "Enter a translation of the new requested string symbol, into the specified reference language."
+#: TRACrear_SolicitudCadena_i18n_view.pt
+msgid "gvSIGi18n_crearSolicitudCadena_TranslationIntoReferenceLanguage_help"
+msgstr "Introduzca una traduccion de la nueva cadena solicitada al idioma de referencia."
+
+#. Default: "Modules using the string"
+#: TRACrear_SolicitudCadena_i18n_view.pt
+msgid "gvSIGi18n_crearSolicitudCadena_ModulosCadena_label"
+msgstr "Modulos que usan la cadena"
+
+#. Default: "You have not selected any Module using the new requested string. Make sure that you select some modules, or that you actually do not want to associate the string with any module. If the module you desire does not exists, please ask your coordinator to create the module, before you can create strings associated with the module."
+#: TRACrear_SolicitudCadena_i18n_view.pt
+msgid "gvSIGi18n_crearSolicitudCadena_ModulosCadena_NoneSelected_warning"
+msgstr "No ha seleccionado ningun modulo usando la nueva cadena solicitada. Asegurese que selecciona algunos modulos, o que efectivamente no desea asociar la cadena con ningun modulo. Si el modulo deseado no existe, por favor solicite a su Coordinador que cree el modulo, para poder crear cadenas asociadas al modulo."
+
+#. Default: "It is required to enter a translation of the new requested string symbol, into the selected reference language."
+#: TRACrear_SolicitudCadena_i18n_view.pt
+msgid "gvSIGi18n_crearSolicitudCadena_TranslationIntoReferenceLanguage_convenientToSupply_msgid"
+msgstr "Es necesario que suministre tambien una traduccion del nuevo simbolo de cadena solicitado, al idioma de referencia seleccionado."
+
+
+#. Default: "The main language does not exist. Please ask your coordinator to create the main language."
+#: TRACrear_SolicitudCadena_i18n_view.pt
+msgid "gvSIGi18n_crearSolicitudCadena_MainLanguage_IsRequired_error_message"
+msgstr "El idioma principal no existe, por favor solicite a su Coordinador que cree el idioma principal."
+
+
+
+#. Default: "Delete Module"
+#: TRAEliminar_Modulo.pt
+msgid "gvSIGi18n_DeleteModule"
+msgstr "Eliminar Modulo"
+
+
+#. Default: "from translations Catalog"
+#: TRAEliminar_Modulo.pt
+msgid "gvSIGi18n_inTranslationsCatalog"
+msgstr "en Catalogo de Traducciones"
+
+
+#. Default: "You are not allowed to delete a Module from the translations catalog."
+#: TRAEliminar_Modulo.pt
+msgid "gvSIGi18n_userCanNotDeleteModule_msgid"
+msgstr "No puede eliminar el Modulo del Catalogo de Traducciones"
+
+
+
+#. Default: "Confirm request to Delete the Module from Translations Catalog"
+#: TRAEliminar_Modulo.pt
+msgid "gvSIGi18n_confirmarEliminarModulo_msgid"
+msgstr "Confirme la solicitud para eliminar el Modulo del Catalogo de Traducciones"
+
+
+#. Default: "Confirm to Delete the Module from the translations Catalog, possibly taking a long time and demanding significant server resources, depending on the number of strings found associated with the Module."
+#: TRAEliminar_Modulo.pt
+msgid "gvSIGi18n_confirmarEliminarModulo_help"
+msgstr "Confirme para Eliminar el Modulo del Catalogo de Traducciones, posiblemente tardando bastante tiempo y consumiendo recursos significantes del servidor, dependiendo del numero de cadenas asociadas con el modulo."

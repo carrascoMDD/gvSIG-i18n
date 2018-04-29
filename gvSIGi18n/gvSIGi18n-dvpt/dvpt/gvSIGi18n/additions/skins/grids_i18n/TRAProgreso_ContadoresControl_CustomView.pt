@@ -1,0 +1,51 @@
+<tal:block replace="nothing">
+# File: TRAProgreso_ContadoresControl_CustomView.pt
+#
+# Copyright (c) 2008, 2009,2010 by Conselleria de Infraestructuras y Transporte de la
+# Generalidad Valenciana
+#
+# GNU General Public License (GPL)
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+#
+# Authors: 
+# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana 
+# Model Driven Development sl  Valencia (Spain) www.ModelDD.org 
+# Antonio Carrasco Valero                       carrasco@ModelDD.org
+#
+</tal:block>
+
+<h2>
+     <span i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAProgreso_attr_contadoresControl_label">Control Counters-</span>
+     &nbsp;
+</h2>
+<p class="formHelp" i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_TRAProgreso_attr_contadoresControl_help">
+    Stores the counters during the long-lived process.
+</p>
+
+<tal:block tal:define="pContadoresControl python: here.fContadoresControl( )" >
+    <tal:block tal:condition="python: not pContadoresControl">
+         <p i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_nohaycontadores_warning_msgid">There are no control parameters for the process available at this time-</p>
+    </tal:block>
+    <tal:block tal:condition="pContadoresControl">
+        <metal:block metal:use-macro="here/TRAProgreso_ContadoresControl_i18n_view/macros/tProgreso_ContadoresControl_i18n" />   
+    </tal:block>
+</tal:block>
+<br/>
+<br/> 
+    
+ 
+    
