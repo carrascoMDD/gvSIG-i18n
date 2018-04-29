@@ -1,13 +1,13 @@
 Overview
 
 
-  gvSIGi18n allows the collaborative translations
+  gvSIGtraducciones allows the collaborative translations
   of user interface strings from the gvSIG application
    - an open source GIS made in Java - 
    and the collaborative tools used in the gvSIG project
    - made in open source Plone.
    
-   gvSIGi18n also allows indeed to translate
+   gvSIGtraducciones also allows indeed to translate
    user interface strings from any other program,
    as it imports and exports translations in both
    Java .properties format for intenationalization localized files,

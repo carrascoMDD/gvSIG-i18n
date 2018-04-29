@@ -1,6 +1,11 @@
 ﻿gvSIG-i18n RELEASE NOTES
 ========================
 
+version 2.0.5
+------------------------------------------------
+Extend the presentation of the TRAUncatalog utility to display the types to uncatalog.
+
+
 version 2.0.4
 ------------------------------------------------
 Added handling of plone elements while traversing the elements tree, i.e. when performing inventory, reset permissions, recatalog.

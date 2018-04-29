@@ -146,9 +146,9 @@ def TRAUncatalog(
     
     aTypesToUncatalogReport = _fNewVoidTypesToUncatalogReport()
     aTypesToUncatalogReport.update( {
-        'types_to_uncatalog_from_portal_catalog':  ( _cTRATodosNombresTiposDesCatalogables_DePortalCatalog               and _cTRATodosNombresTiposDesCatalogables_DePortalCatalog[:])               or [],
-        'types_to_uncatalog_children_excluded':    ( _cTRATodosNombresTiposCatalogables_ChildrenExcluidosDePortalCatalog and _cTRATodosNombresTiposCatalogables_ChildrenExcluidosDePortalCatalog[:]) or [],
-        'types_not_to_uncatalog_from_uid_catalog': ( _cTRATodosNombresTiposNODesCatalogables_DeUIDCatalog                and _cTRATodosNombresTiposNODesCatalogables_DeUIDCatalog[:])                or [],     
+        'types_to_uncatalog_from_portal_catalog':  sorted( ( _cTRATodosNombresTiposDesCatalogables_DePortalCatalog               and _cTRATodosNombresTiposDesCatalogables_DePortalCatalog[:])               or []),
+        'types_to_uncatalog_children_excluded':    sorted( ( _cTRATodosNombresTiposCatalogables_ChildrenExcluidosDePortalCatalog and _cTRATodosNombresTiposCatalogables_ChildrenExcluidosDePortalCatalog[:]) or []),
+        'types_not_to_uncatalog_from_uid_catalog': sorted( ( _cTRATodosNombresTiposNODesCatalogables_DeUIDCatalog                and _cTRATodosNombresTiposNODesCatalogables_DeUIDCatalog[:])                or []),     
     })
     aUncatalogReport[ 'types_to_uncatalog'] = aTypesToUncatalogReport
     
@@ -172,17 +172,21 @@ def TRAUncatalog(
         return aUncatalogReport
 
     
+    anInitialId = theInitialId
+    if anInitialId:
+        anInitialId = anInitialId.strip()
+        
    
     
-    if not theInitialId:
+    if not anInitialId:
         aUncatalogReport.update( {
             'success':     False,
             'status':      'MissingParameter',
-            'condition':   'theInitialId',
+            'condition':   'anInitialId',
         })
         return aUncatalogReport
     
-    aUncatalogReport[ 'initial_id'] = theInitialId
+    aUncatalogReport[ 'initial_id'] = anInitialId
 
    
     if not _fCheckHasRole( theContextualElement, 'Manager'):
@@ -203,7 +207,7 @@ def TRAUncatalog(
         for aContentElement in someContentElements:
             anElementId = aContentElement.getId()
             if anElementId:
-                if anElementId == theInitialId:
+                if anElementId == anInitialId:
                     aInitialElementToUncatalog = aContentElement
                     break
                 

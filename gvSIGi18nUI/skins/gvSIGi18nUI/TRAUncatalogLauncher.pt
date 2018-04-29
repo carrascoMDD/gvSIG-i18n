@@ -51,38 +51,124 @@
             Get the byline - contains details about author and modification date.
         </div>
     
+        <h2>
+            Uncatalog elements
+        </h2>
+        <span class="formHelp">Remove from portal_catalog and uid_catalog a tree of elements.</span>
+        <br/>
+        <br/>
+        
+        
         <tal:block tal:define="
-            pInitialId     request/theInitialId | string:;
+            pUncatalogTypesResult python: here.TRAUncatalog( 
+                theContextualElement =here, 
+                theInitialId         ='',
+                theJustReportTypes   =True,
+            );            
+            pTypesToUncatalog python: ( pUncatalogTypesResult or {}).get( 'types_to_uncatalog', {});
             " >
-    
+
+            <tal:block tal:condition="python:  not ( pUncatalogTypesResult and pUncatalogTypesResult.get( 'success', False))" >
+                <p>
+                    <font size="3" color="red" >
+                        <strong>Error accessing the TRAUncatalog external method to retrieve types to Uncatalog</strong>
+                    </font>
+                    <br/>
+                    <span tal:content="python: 'Status: %s' % ( ( pUncatalogTypesResult or {}).get( 'status', ''))" />
+                    <br/>
+                    <span tal:content="python: 'Condition: %s' % ( ( pUncatalogTypesResult or {}).get( 'condition', ''))" />
+                </p>
+                <br/>
+                <br/>
+            </tal:block>
+            
+            <tal:block tal:condition="python: pUncatalogTypesResult and pUncatalogTypesResult.get( 'success', False)" >
+                <tal:block tal:define="
+                    pTypesToUncatalogFromPortalCatalog python: pTypesToUncatalog.get( 'types_to_uncatalog_from_portal_catalog',  []);
+                    pTypesToUncatalogChildrenExcluded  python: pTypesToUncatalog.get( 'types_to_uncatalog_children_excluded',    []);
+                    pTypesNotToUncatalogFromUIDCatalog python: pTypesToUncatalog.get( 'types_not_to_uncatalog_from_uid_catalog', []);
+                    " >
+                    
+                <h3>
+                    <strong>Types to Uncatalog from portal_catalog</strong>
+                </h3>
+                <p>
+                    <tal:block tal:repeat="pTypeName python: pTypesToUncatalogFromPortalCatalog" >
+                        <span tal:content="pTypeName" />
+                        <br/>
+                    </tal:block>
+                </p>
+                <br/>   
+                <br/>   
+                    
+                <h3>
+                    <strong>Types to whose children shall not be Uncatalogged</strong>
+                </h3>
+                <p>
+                    <tal:block tal:repeat="pTypeName python: pTypesToUncatalogChildrenExcluded" >
+                        <span tal:content="pTypeName" />
+                        <br/>
+                    </tal:block>
+                 </p>
+                <br/>   
+                <br/>   
+                    
+                <h3>
+                    <strong>Types that shall not be Uncatalogged from uid_catalog</strong>
+                </h3>
+                <p>
+                    <tal:block tal:repeat="pTypeName python: pTypesNotToUncatalogFromUIDCatalog" >
+                        <span tal:content="pTypeName" />
+                        <br/>
+                    </tal:block>
+                 </p>
+                <br/>   
+                <br/>   
+                    
+                </tal:block>
+            </tal:block>
+
+
+        </tal:block>
+            
+        
+        
+        <h3>
+            <strong>Available content IDs</strong>
+        </h3>
+        <br/>
+        <p>
+            <tal:block tal:repeat="pID python: here.objectIds()" >
+                <span tal:content="pID" />
+                <br/>
+            </tal:block>
+        </p>
+        <br/>
+        <br/>
+        
+            
+        <tal:block tal:define="pInitialId     request/theInitialId | string:" >
             <tal:block tal:condition="not: pInitialId" >
                 <form method="GET" name="cid_UncatalogLauncher_InitialId_form" id="cid_UncatalogLauncher_InitialId_form" >
-                
+                    <h3>
+                        <font size="2">
+                            <strong>Element Id to be Uncatalogged (recursively)</strong>
+                        </font>
+                        <br/>
+                    </h3>
+                    <span class="formHelp">Enter the id of the element contained in the current one, to be Uncatalogged, along with all its contained elements of the listed types<span/>
+                    <br/>
                     <input type="text" maxlength="128" size="64" id="cid_UncatalogLauncher_InitialId_field" name="theInitialId" value="" />
                     
                     <br/>
                     <br/>
                     
-                    <input type="submit" name="submit" />
+                    <input type="submit" name="submit" value="Execute Uncatalog" />
                     <br/>
                     <br/>
                 </form>        
                 <br/>
-
-                <p>
-                    <font size="3">
-                        <strong>Available content IDs</strong>
-                    </font>
-                </p>
-                <br/>
-                <p>
-                    <tal:block tal:repeat="pID python: here.objectIds()" >
-                        <span tal:content="pID" />
-                        <br/>
-                    </tal:block>
-                 </p>
-                <br/>
-                <br/>
+    
                 <br/>
             </tal:block>
             
@@ -90,8 +176,9 @@
             <tal:block tal:condition="pInitialId" >
             
                 <tal:block tal:define="pUncatalogResult python: here.TRAUncatalog( 
-                    theContextualElement=here, 
-                    theInitialId=pInitialId,
+                    theContextualElement =here, 
+                    theInitialId         =pInitialId,
+                    theJustReportTypes   =False,
                     )" >            
                     
                     <tal:block tal:condition="not: pUncatalogResult" >
@@ -281,7 +368,7 @@
                                         </tbody>
                                     </table>
                                     <br/>
-
+    
                                     
                                 </tal:block>
                             
@@ -296,7 +383,7 @@
                             
                             
                             
-
+    
                             <tal:block tal:define="pUIDTypesAndNumElements python: pUncatalogResult.get( 'uid_types_and_num_elements', False)" >            
                                 
                                 <tal:block tal:condition="not: pUIDTypesAndNumElements" >
@@ -370,7 +457,7 @@
                             
                             
                             
-
+    
                             <tal:block tal:define="pFailedUIDTypesAndNumElements python: pUncatalogResult.get( 'failed_uid_types_and_num_elements', False)" >            
                                 
                                 <tal:block tal:condition="not: pFailedUIDTypesAndNumElements" >
@@ -448,10 +535,10 @@
                 
                 </tal:block>
             </tal:block>
-            
+        </tal:block>
+               
             
         
-        </tal:block>
     
 
 
