@@ -2105,7 +2105,9 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
             
             
         if not unMinuteString:
-            unMinuteInt    = ( theEarliest and cFirstMinuteForSearches) or cLastMinuteForSearches
+            unMinuteInt    = cFirstMinuteForSearches
+            if not theEarliest:
+                unMinuteInt = cLastMinuteForSearches
             unMinuteString = '%02d' % unMinuteInt
         else:
             unMinuteInt = -1
@@ -2116,13 +2118,18 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
             if ( unMinuteInt >= cFirstMinuteForSearches) and ( unMinuteInt <= cLastMinuteForSearches):
                 unMinuteString = '%02d' % unMinuteInt
             else:
-                unMinuteInt    = ( theEarliest and cFirstMinuteForSearches) or cLastMinuteForSearches
+                unMinuteInt    = cFirstMinuteForSearches
+                if not theEarliest:
+                    unMinuteInt = cLastMinuteForSearches
                 unMinuteString = '%02d' % unMinuteInt
             
             
             
         if not unSecondString:
-            unSecondString = '%02d' % (( theEarliest and cFirstSecondForSearches) or cLastSecondForSearches)
+            unSecondInt    = cFirstSecondForSearches
+            if not theEarliest:
+                unSecondInt = cLastSecondForSearches
+            unSecondString = '%02d' % unSecondInt            
         else:
             unSecondInt = -1
             try:
@@ -2132,7 +2139,10 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
             if ( unSecondInt >= cFirstSecondForSearches) and ( unSecondInt <= cLastSecondForSearches):
                 unSecondString = '%02d' % unSecondInt
             else:
-                unSecondString = '%02d' % (( theEarliest and cFirstSecondForSearches) or cLastSecondForSearches)
+                unSecondInt    = cFirstSecondForSearches
+                if not theEarliest:
+                    unSecondInt = cLastSecondForSearches
+                unSecondString = '%02d' % unSecondInt            
             
 
         unNewTimeString = '%s:%s:%s' % ( unHourString, unMinuteString, unSecondString,)
@@ -2157,12 +2167,14 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
                 
         if len( unFechaYHoraStrings) > 1:
             unaFechaStringCompleted =           self.fFechaISOStringDesdeStringParcial( unFechaYHoraStrings[ 0], theEarliest)
-            if not unaFechaStringCompleted:
-                unaFechaStringCompleted =       self.fFechaISOStringDesdeStringParcial( unFechaYHoraStrings[ 1], theEarliest)
-            unaHoraStringCompleted  =       self.fHoraISOStringDesdeStringParcial(  unFechaYHoraStrings[ 0], theEarliest)
-            if not unaHoraStringCompleted:
-                unaHoraStringCompleted  =   self.fHoraISOStringDesdeStringParcial(  unFechaYHoraStrings[ 1], theEarliest)
-                    
+            # ACV 201004251000
+            #if not unaFechaStringCompleted:
+                #unaFechaStringCompleted =       self.fFechaISOStringDesdeStringParcial( unFechaYHoraStrings[ 1], theEarliest)
+            #unaHoraStringCompleted  =       self.fHoraISOStringDesdeStringParcial(  unFechaYHoraStrings[ 0], theEarliest)
+            #if not unaHoraStringCompleted:
+                #unaHoraStringCompleted  =   self.fHoraISOStringDesdeStringParcial(  unFechaYHoraStrings[ 1], theEarliest)
+            unaHoraStringCompleted  =       self.fHoraISOStringDesdeStringParcial(  unFechaYHoraStrings[ 1], theEarliest)
+                     
         else:
             unaFechaStringCompleted =           self.fFechaISOStringDesdeStringParcial( unFechaYHoraStrings[ 0], theEarliest)
             if not unaFechaStringCompleted:
@@ -2176,7 +2188,9 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
             unaFechaStringCompleted = theDefaultDate.ISO()[:10]
         
         if not unaHoraStringCompleted:
-            unaHoraStringCompleted = ( theEarliest and cISOStringEarliestDayTime) or cISOStringLatestDayTime        
+            unaHoraStringCompleted = cISOStringEarliestDayTime
+            if not theEarliest:
+                unaHoraStringCompleted = cISOStringLatestDayTime        
             
         unFechaHoraResultado = '%s%s%s' % ( unaFechaStringCompleted, cISOStringFechaYHoraSeparator, unaHoraStringCompleted,)
         return unFechaHoraResultado

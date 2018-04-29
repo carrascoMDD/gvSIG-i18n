@@ -306,7 +306,8 @@ def TRAChangeAndBrowseTranslations(
     Entry point invoked from a template.
     
     """
-    mfTranslateI18N     = theCatalogo.fTranslateI18N
+    mfCRs2BRs           = theCatalogo.fCRs2BRs
+    mfTranslateI18N     = lambda theDomain, theSymbol, theDefault: fCGIE( theCatalogo.fTranslateI18N( theDomain, theSymbol, theDefault))
     
     mfAsUnicode         = theCatalogo.fAsUnicode
     
@@ -1698,9 +1699,9 @@ def pEmptyPageContents(
         
     """
     
-    mfTranslateI18N     = unContextualObject.fTranslateI18N
     mfAsUnicode         = unContextualObject.fAsUnicode
     mfCRs2BRs           = unContextualObject.fCRs2BRs
+    mfTranslateI18N     = lambda theDomain, theSymbol, theDefault: fCGIE( unContextualObject.fTranslateI18N( theDomain, theSymbol, theDefault))
 
     anOutput = StringIO()
     
@@ -1734,9 +1735,9 @@ def pRenderEmpty(
     """
     
     
-    mfTranslateI18N     = unContextualObject.fTranslateI18N
-    mfAsUnicode         = unContextualObject.fAsUnicode
     mfCRs2BRs           = unContextualObject.fCRs2BRs
+    mfTranslateI18N     = lambda theDomain, theSymbol, theDefault: fCGIE( unContextualObject.fTranslateI18N( theDomain, theSymbol, theDefault))
+    mfAsUnicode         = unContextualObject.fAsUnicode
     
 
 
@@ -1819,9 +1820,9 @@ def pRenderScripts(
         
     """
     
-    mfTranslateI18N     = unContextualObject.fTranslateI18N
-    mfAsUnicode         = unContextualObject.fAsUnicode
     mfCRs2BRs           = unContextualObject.fCRs2BRs
+    mfTranslateI18N     = lambda theDomain, theSymbol, theDefault: fCGIE( unContextualObject.fTranslateI18N( theDomain, theSymbol, theDefault))
+    mfAsUnicode         = unContextualObject.fAsUnicode
     
 
     anOutput.write( u"""  
@@ -1871,9 +1872,10 @@ def pRenderCabecera(
     
     """    
         
-    mfTranslateI18N     = unContextualObject.fTranslateI18N
     mfAsUnicode         = unContextualObject.fAsUnicode
-    
+    mfCRs2BRs           = unContextualObject.fCRs2BRs
+    mfTranslateI18N     = lambda theDomain, theSymbol, theDefault: fCGIE( unContextualObject.fTranslateI18N( theDomain, theSymbol, theDefault))
+
 
 
   
@@ -1962,9 +1964,10 @@ def pRenderSelectorIdiomaPrincipal(
     
     """    
     
-    mfTranslateI18N     = unContextualObject.fTranslateI18N
     mfAsUnicode         = unContextualObject.fAsUnicode
-    
+    mfCRs2BRs           = unContextualObject.fCRs2BRs
+    mfTranslateI18N     = lambda theDomain, theSymbol, theDefault: fCGIE( unContextualObject.fTranslateI18N( theDomain, theSymbol, theDefault))
+
             
     anOutput.write( u"""  
        <!-- #################################################################
@@ -2015,9 +2018,10 @@ def pRenderCollapsibleSelectorIdiomasReferencia(
     
     """    
     
-    mfTranslateI18N     = unContextualObject.fTranslateI18N
     mfAsUnicode         = unContextualObject.fAsUnicode
     mfCRs2BRs           = unContextualObject.fCRs2BRs
+    mfTranslateI18N     = lambda theDomain, theSymbol, theDefault: fCGIE( unContextualObject.fTranslateI18N( theDomain, theSymbol, theDefault))
+
             
     pRenderCollapsible_Lambda(  anOutput,
         aTranslationsCache[ 'gvSIGi18n_idiomasSection_title'],
@@ -2051,9 +2055,10 @@ def pRenderSelectorIdiomasReferencia(
     
     """    
     
-    mfTranslateI18N     = unContextualObject.fTranslateI18N
     mfAsUnicode         = unContextualObject.fAsUnicode
     mfCRs2BRs           = unContextualObject.fCRs2BRs
+    mfTranslateI18N     = lambda theDomain, theSymbol, theDefault: fCGIE( unContextualObject.fTranslateI18N( theDomain, theSymbol, theDefault))
+
     
     unDisplayContryFlags = unContextualObject.fDisplayCountryFlags()
     
@@ -2265,9 +2270,10 @@ def pRenderCollapsibleControlPresentacion(
     
     """    
     
-    mfTranslateI18N     = unContextualObject.fTranslateI18N
     mfAsUnicode         = unContextualObject.fAsUnicode
     mfCRs2BRs           = unContextualObject.fCRs2BRs
+    mfTranslateI18N     = lambda theDomain, theSymbol, theDefault: fCGIE( unContextualObject.fTranslateI18N( theDomain, theSymbol, theDefault))
+
             
     pRenderCollapsible_Lambda(  anOutput,
         aTranslationsCache[ 'gvSIGi18n_opcionesSection_title'],
@@ -2332,9 +2338,10 @@ def pRenderControlPresentacion(
     
     """    
     
-    mfTranslateI18N     = unContextualObject.fTranslateI18N
     mfAsUnicode         = unContextualObject.fAsUnicode
     mfCRs2BRs           = unContextualObject.fCRs2BRs
+    mfTranslateI18N     = lambda theDomain, theSymbol, theDefault: fCGIE( unContextualObject.fTranslateI18N( theDomain, theSymbol, theDefault))
+
     
     
     anOutput.write( u"""  
@@ -2826,9 +2833,10 @@ def pRenderCollapsibleFiltro(
     
     """    
            
-    mfTranslateI18N     = unContextualObject.fTranslateI18N
     mfAsUnicode         = unContextualObject.fAsUnicode
-            
+    mfCRs2BRs           = unContextualObject.fCRs2BRs
+    mfTranslateI18N     = lambda theDomain, theSymbol, theDefault: fCGIE( unContextualObject.fTranslateI18N( theDomain, theSymbol, theDefault))
+
     pRenderCollapsible_Lambda(  anOutput,
         mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_seccionFiltro_title', 'Filter-'),
         u'elid_Filter_collapsible_dl', 
@@ -2847,6 +2855,23 @@ def pRenderCollapsibleFiltro(
 
 
 
+            #'nombresModulos':               theRequest.get( 'theSearchNombresModulos',         ''),
+            #'usuarioCreador':               theRequest.get( 'theSearchUsuarioCreador',         ''), 
+            #'fechaCreacionInicial':         theRequest.get( 'theSearchFechaCreacionInicial',   ''), 
+            #'fechaCreacionFinal':           theRequest.get( 'theSearchFechaCreacionFinal',     ''), 
+            #'usuarioTraductor':             theRequest.get( 'theSearchUsuarioTraductor',       ''), 
+            #'fechaTraduccion':              theRequest.get( 'theSearchFechaTraduccion',        ''), 
+            #'fechaTraduccionInicial':       theRequest.get( 'theSearchFechaTraduccionInicial', ''), 
+            #'fechaTraduccionFinal':         theRequest.get( 'theSearchFechaTraduccionFinal',   ''), 
+            #'usuarioRevisor':               theRequest.get( 'theSearchUsuarioRevisor',         ''),  
+            #'fechaRevision':                theRequest.get( 'theSearchFechaRevision',          ''),  
+            #'fechaRevisionInicial':         theRequest.get( 'theSearchFechaRevisionInicial',   ''),  
+            #'fechaRevisionFinal':           theRequest.get( 'theSearchFechaRevisionFinal',     ''),  
+            #'fechaDefinitivo':              theRequest.get( 'theSearchFechaDefinitivo',        ''),  
+            #'fechaDefinitivoInicial':       theRequest.get( 'theSearchFechaDefinitivoInicial', ''),  
+            #'fechaDefinitivoFinal':         theRequest.get( 'theSearchFechaDefinitivoFinal',   ''),  
+            #'usuarioCoordinador':           theRequest.get( 'theSearchUsuarioCoordinador',     ''),  
+            #'cadenasInactivas':             theRequest.get( 'theInactiveStrings',              ''),  
 
 
 
@@ -2864,31 +2889,241 @@ def pRenderFiltro(
     """    
        
     
-    mfTranslateI18N     = unContextualObject.fTranslateI18N
     mfAsUnicode         = unContextualObject.fAsUnicode
+    mfCRs2BRs           = unContextualObject.fCRs2BRs
+    mfTranslateI18N     = lambda theDomain, theSymbol, theDefault: fCGIE( unContextualObject.fTranslateI18N( theDomain, theSymbol, theDefault))
  
     unTabIndex = 11
     
     anOutput.write( u"""    
-
+    
         <!-- #################################################################
         SECTION: Filtro para busqueda de TRATraduccion por status
         ################################################################# -->
-                      
+                
+        <p class="formHelp">
+            <span >%(gvSIGi18n_TranslationsFilter_help)s</span>
+            <br/>
+            <span >%(gvSIGi18n_TranslationsFilter_Reset_help)s</span>
+        </p>
+        
         <br/>
         <input tabindex=%(tabindex)d name="form_submit" style="font-size: 10pt; font-style: italic"  value="%(gvSIGi18n_refrescar_action_label)s" type="submit"/>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <input tabindex=%(tabindex2)d type="button" name="todos" style="font-size: 9pt; "  value="%(gvSIGi18n_todas_label)s" onclick="pTRAResetFiltros(); return true;" class="TRAstyle_Clickable"  />
         <br/>
         \n""" % { 
-        'tabindex':                                                    unTabIndex,
-        'tabindex2':                                                   unTabIndex + 1,
+        'tabindex':                                            unTabIndex,
+        'tabindex2':                                           unTabIndex + 1,
         'gvSIGi18n_refrescar_action_label':                    mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_refrescar_action_label', 'Refresh-'),                
         'gvSIGi18n_todas_label':                               mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_todas_label', 'All-'),                
+        'gvSIGi18n_TranslationsFilter_help':                   mfCRs2BRs( mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TranslationsFilter_help', 'All-')),
+        'gvSIGi18n_TranslationsFilter_Reset_help':             mfCRs2BRs( mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TranslationsFilter_Reset_help', 'All-')),                
     })
     
     
     unTabIndex += 2
+    
+    anOutput.write( u"""    
+
+        <!-- #################################################################
+        Subsection: Enlace para reproducir acceso con filtro 
+        ################################################################# -->
+        """
+    )
+                    
+                    
+    unParametrosFiltroStream = StringIO( u'')
+    
+    unHayParametrosFiltro = False
+    for unEstadoTraduccion in cTodosEstados:
+        if unEstadoTraduccion in pEstadosIncluidos:
+            if unHayParametrosFiltro:
+                unParametrosFiltroStream.write( '&')
+            unHayParametrosFiltro = True    
+            unParametrosFiltroStream.write( u"""theEstadosAIncluir=%s""" % fCGIE( unEstadoTraduccion))
+                    
+        
+    if pSearchParameters.get( 'simbolo', None):
+        if unHayParametrosFiltro:
+            unParametrosFiltroStream.write( '&')
+        unParametrosFiltroStream.write( u"""theSearchSimbolo=%s""" % fCGIE( mfAsUnicode( pSearchParameters[ 'simbolo'])))
+        unHayParametrosFiltro = True    
+        
+    if pSearchParameters.get( 'cadenaTraducida', None):
+        if unHayParametrosFiltro:
+            unParametrosFiltroStream.write( '&')
+        unParametrosFiltroStream.write( u"""theSearchCadenaTraducida=%s""" % fCGIE( mfAsUnicode( pSearchParameters[ 'cadenaTraducida'])))
+        unHayParametrosFiltro = True    
+        
+    if pSearchParameters.get( 'usuarioCreador', None):
+        if unHayParametrosFiltro:
+            unParametrosFiltroStream.write( '&')
+        unParametrosFiltroStream.write( u"""theSearchUsuarioCreador=%s""" % fCGIE( mfAsUnicode( pSearchParameters[ 'usuarioCreador'])))
+        unHayParametrosFiltro = True    
+        
+    if pSearchParameters.get( 'fechaCreacionInicial', None):
+        if unHayParametrosFiltro:
+            unParametrosFiltroStream.write( '&')
+        unParametrosFiltroStream.write( u"""theSearchFechaCreacionInicial=%s""" % fCGIE( mfAsUnicode( pSearchParameters[ 'fechaCreacionInicial'])))
+        unHayParametrosFiltro = True    
+        
+    if pSearchParameters.get( 'fechaCreacionFinal', None):
+        if unHayParametrosFiltro:
+            unParametrosFiltroStream.write( '&')
+        unParametrosFiltroStream.write( u"""theSearchFechaCreacionFinal=%s""" % fCGIE( mfAsUnicode( pSearchParameters[ 'fechaCreacionFinal'])))
+        unHayParametrosFiltro = True    
+        
+        
+    if pSearchParameters.get( 'usuarioTraductor', None):
+        if unHayParametrosFiltro:
+            unParametrosFiltroStream.write( '&')
+        unParametrosFiltroStream.write( u"""theSearchUsuarioTraductor=%s""" % fCGIE( mfAsUnicode( pSearchParameters[ 'usuarioTraductor'])))
+        unHayParametrosFiltro = True    
+        
+    if pSearchParameters.get( 'fechaTraduccionInicial', None):
+        if unHayParametrosFiltro:
+            unParametrosFiltroStream.write( '&')
+        unParametrosFiltroStream.write( u"""theSearchFechaTraduccionInicial=%s""" % fCGIE( mfAsUnicode( pSearchParameters[ 'fechaTraduccionInicial'])))
+        
+    if pSearchParameters.get( 'fechaTraduccionFinal', None):
+        if unHayParametrosFiltro:
+            unParametrosFiltroStream.write( '&')
+        unParametrosFiltroStream.write( u"""theSearchFechaTraduccionFinal=%s""" % fCGIE( mfAsUnicode( pSearchParameters[ 'fechaTraduccionFinal'])))
+        unHayParametrosFiltro = True    
+
+        
+    if pSearchParameters.get( 'usuarioRevisor', None):
+        if unHayParametrosFiltro:
+            unParametrosFiltroStream.write( '&')
+        unParametrosFiltroStream.write( u"""theSearchUsuarioRevisor=%s""" % fCGIE( mfAsUnicode( pSearchParameters[ 'usuarioRevisor'])))
+        unHayParametrosFiltro = True    
+        
+    if pSearchParameters.get( 'fechaRevisionInicial', None):
+        if unHayParametrosFiltro:
+            unParametrosFiltroStream.write( '&')
+        unParametrosFiltroStream.write( u"""theSearchFechaRevisionInicial=%s""" % fCGIE( mfAsUnicode( pSearchParameters[ 'fechaRevisionInicial'])))
+        unHayParametrosFiltro = True    
+        
+    if pSearchParameters.get( 'fechaRevisionFinal', None):
+        if unHayParametrosFiltro:
+            unParametrosFiltroStream.write( '&')
+        unParametrosFiltroStream.write( u"""theSearchFechaRevisionFinal=%s""" % fCGIE( mfAsUnicode( pSearchParameters[ 'fechaRevisionFinal'])))
+        unHayParametrosFiltro = True    
+
+        
+    if pSearchParameters.get( 'usuarioCoordinador', None):
+        if unHayParametrosFiltro:
+            unParametrosFiltroStream.write( '&')
+        unParametrosFiltroStream.write( u"""theSearchUsuarioCoordinador=%s""" % fCGIE( mfAsUnicode( pSearchParameters[ 'usuarioDefinitivo'])))
+        unHayParametrosFiltro = True    
+        
+    if pSearchParameters.get( 'fechaDefinitivoInicial', None):
+        if unHayParametrosFiltro:
+            unParametrosFiltroStream.write( '&')
+        unParametrosFiltroStream.write( u"""theSearchFechaDefinitivoInicial=%s""" % fCGIE( mfAsUnicode( pSearchParameters[ 'fechaDefinitivoInicial'])))
+        unHayParametrosFiltro = True    
+        
+    if pSearchParameters.get( 'fechaDefinitivoFinal', None):
+        if unHayParametrosFiltro:
+            unParametrosFiltroStream.write( '&')
+        unParametrosFiltroStream.write( u"""theSearchFechaDefinitivoFinal=%s""" % fCGIE( mfAsUnicode( pSearchParameters[ 'fechaDefinitivoFinal'])))
+        unHayParametrosFiltro = True    
+
+    unosNombresModulos = pSearchParameters.get( 'nombresModulos', '')
+    if not unosNombresModulos:
+        unosNombresModulos = []
+    else:    
+        if not ( unosNombresModulos.__class__.__name__ in [ 'list', 'tuple',]):
+            unosNombresModulos = [ unosNombresModulos,]
+
+    for unNombreModulo in unosNombresModulos:
+        if unNombreModulo:
+            if unHayParametrosFiltro:
+                unParametrosFiltroStream.write( '&')
+            unHayParametrosFiltro = True    
+            unParametrosFiltroStream.write( u"""theSearchNombresModulos=%s""" % fCGIE( unNombreModulo))
+             
+            
+    if pSearchParameters.get( 'idCadena', None):
+        if unHayParametrosFiltro:
+            unParametrosFiltroStream.write( '&')
+        unParametrosFiltroStream.write( u"""theSearchIdCadena=%s""" % fCGIE( mfAsUnicode( pSearchParameters[ 'idCadena'])))
+        unHayParametrosFiltro = True    
+
+    if pSearchParameters.get( 'cadenasInactivas', None):
+        if unHayParametrosFiltro:
+            unParametrosFiltroStream.write( '&')
+        unParametrosFiltroStream.write( u"""theInactiveStrings=on""" )
+        unHayParametrosFiltro = True    
+                      
+
+    if pSearchParameters.get( 'simboloCadenaCursor', None):
+        if unHayParametrosFiltro:
+            unParametrosFiltroStream.write( '&')
+        unParametrosFiltroStream.write( u"""theSimboloCadenaCursor=%s""" % fCGIE( mfAsUnicode( pSearchParameters[ 'simboloCadenaCursor'])))
+        unHayParametrosFiltro = True    
+
+
+    if pSearchParameters.get( 'traduccionesPorPagina', None):
+        if unHayParametrosFiltro:
+            unParametrosFiltroStream.write( '&')
+        unParametrosFiltroStream.write( u"""theTraduccionesPorPagina=%s""" % fCGIE( mfAsUnicode( str( pSearchParameters[ 'traduccionesPorPagina']))))
+        unHayParametrosFiltro = True    
+
+    if pSearchParameters.get( 'symbolIndex', None):
+        if unHayParametrosFiltro:
+            unParametrosFiltroStream.write( '&')
+        unParametrosFiltroStream.write( u"""theGoToSymbolIndex=%s""" % fCGIE( mfAsUnicode( str( pSearchParameters[ 'symbolIndex']))))
+        unHayParametrosFiltro = True    
+
+    if pSearchParameters.get( 'pageIndex', None):
+        if unHayParametrosFiltro:
+            unParametrosFiltroStream.write( '&')
+        unParametrosFiltroStream.write( u"""theGoToPageIndex=%s""" % fCGIE( mfAsUnicode( str( pSearchParameters[ 'pageIndex']))))
+        unHayParametrosFiltro = True    
+
+    if pSearchParameters.get( 'symbolStartingWith', None):
+        if unHayParametrosFiltro:
+            unParametrosFiltroStream.write( '&')
+        unParametrosFiltroStream.write( u"""theGoToSymbolStartingWith=%s""" % fCGIE( mfAsUnicode( pSearchParameters[ 'symbolStartingWith'])))
+        unHayParametrosFiltro = True    
+
+    unParametrosFiltroString = unParametrosFiltroStream.getvalue()    
+    
+    
+    
+    unParametrosFiltroStream.close()
+    unParametrosRequestStream = StringIO( u'')
+    
+    if pCodigoIdiomaCursor:
+        unParametrosRequestStream.write( '?theCodigoIdiomaCursor=%s'% fCGIE( mfAsUnicode( pCodigoIdiomaCursor)))
+        
+        unParametrosRequestStream.write( '&theMostrarInforme=on&theMostrarLista=on')
+    
+    pIdiomasReferencia = pSearchParameters.get( 'idiomasReferencia', [])
+    for aReferenceLanguage in pIdiomasReferencia:
+        unParametrosRequestStream.write( '&theIdiomasReferencia=%s' % fCGIE( mfAsUnicode( aReferenceLanguage)))
+                   
+    unParametrosRequestString = unParametrosRequestStream.getvalue()
+    
+    unURLEnlaceFiltroTraduccion = '%s/TRATraducir/%s&%s' % ( unContextualObject.absolute_url(), unParametrosRequestString, unParametrosFiltroString,)
+                   
+                   
+    anOutput.write( u"""    
+        <br/>
+        <a href="%(urlEnlaceFiltro)s">
+            %(gvSIGi18n_TranslationsFilterLink_label)s
+            <p class="formHelp">%(gvSIGi18n_TranslationsFilterLink_help)s</p>
+        </a>
+        <br/>
+        """ % { 
+            'urlEnlaceFiltro': unURLEnlaceFiltroTraduccion, 
+            'gvSIGi18n_TranslationsFilterLink_label': mfTranslateI18N( 'gvSIGi18n',  'gvSIGi18n_TranslationsFilterLink_label', 'Filter link (for results now shown in the list)-',),
+            'gvSIGi18n_TranslationsFilterLink_help':  mfCRs2BRs( mfTranslateI18N( 'gvSIGi18n',  'gvSIGi18n_TranslationsFilterLink_help', 'The User may bookmark or save the link as Favorites in the Internet browser,\nor drop the link as a Shortcut on the desktop,\nor just copy the URL, to reproduce the filter later.-')),
+    })
+
+    unTabIndex += 1
 
     anOutput.write( u"""    
 
@@ -2991,12 +3226,19 @@ def pRenderFiltro(
                                 %(gvSIGi18n_BusquedasPorPalabrasContenidasEnSimboloOTraduccion_title)s
                             </strong>
                         </font>
+                        <p class="formHelp">
+                            <span >%(gvSIGi18n_searchByWords_WildcardsAlowed_help)s</span>
+                            <br/>
+                            <span >%(gvSIGi18n_searchByWords_OrAlowed_help)s</span>
+                        </p>
                     </th>
                 </tr>
             </thead>      
             <tbody>  
             \n""" % { 
         'gvSIGi18n_BusquedasPorPalabrasContenidasEnSimboloOTraduccion_title':  mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_BusquedasPorPalabrasContenidasEnSimboloOTraduccion_title',    'Filter by words in the symbol or the translation-'), 
+        'gvSIGi18n_searchByWords_WildcardsAlowed_help':  mfCRs2BRs( mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_searchByWords_WildcardsAlowed_help',    'Wildcards (* and ?) are permitted, but not at the beginning of words.-')), 
+        'gvSIGi18n_searchByWords_OrAlowed_help':         mfCRs2BRs( mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_searchByWords_OrAlowed_help',           'You may enter OR between words, to retrieve records containing ANY (not ALL) of the words.-')), 
     })            
 
              
@@ -3059,10 +3301,10 @@ def pRenderFiltro(
         </tr>
         \n""" % { 
         'tabindex':                                             unTabIndex,
-        'cadenaTraducida':                                              mfAsUnicode( pSearchParameters[ 'cadenaTraducida']),
+        'cadenaTraducida':                                      mfAsUnicode( pSearchParameters[ 'cadenaTraducida']),
         'gvSIGi18n_TRATraduccion_attr_cadenaTraducida_label':   mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TRATraduccion_attr_cadenaTraducida_label', 'Translation-'), 
-        'font-size':                                                    unasSizesIdioma[ 'edit_font_size'],
-        'field-size':                                                   unasSizesIdioma[ 'filter_field_size'] / 2,
+        'font-size':                                            unasSizesIdioma[ 'edit_font_size'],
+        'field-size':                                           unasSizesIdioma[ 'filter_field_size'] / 2,
         'gvSIGi18n_TRATraduccion_attr_cadenaTraducida_help':    mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TRATraduccion_attr_cadenaTraducida_help',  'The translation of the string into the language.-'), 
         'gvSIGi18n_searchByTranslation_help':                   mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_searchByTranslation_help',                 'Enter words  to search for in the translations into this language. Wildcards (* and ?) are permitted.-'), 
     })
@@ -3182,8 +3424,8 @@ def pRenderFiltro(
                         <input tabindex=%(tabindex_coordinador)d  style="font-size: 8pt;" size="12"  name="theSearchUsuarioCoordinador" id="theSearchUsuarioCoordinador" value="%(usuarioCoordinador)s" />
                     </td>
                     <td align="left" valign="baseline" >
-                        <input tabindex=%(tabindex_fechaDefinitivaInicial)d style="font-size: 8pt;" size="22"  name="theSearchFechaDefinitivoInicial" id="theSearchFechaDefinitivoInicial" value="%(fechaDefinitivaInicial)s" />
-                        <input tabindex=%(tabindex_fechaDefinitivaFinal)d style="font-size: 8pt;" size="22"  name="theSearchFechaDefinitivoFinal"   id="theSearchFechaDefinitivoFinal"   value="%(fechaDefinitivaFinal)s" />
+                        <input tabindex=%(tabindex_fechaDefinitivoInicial)d style="font-size: 8pt;" size="22"  name="theSearchFechaDefinitivoInicial" id="theSearchFechaDefinitivoInicial" value="%(fechaDefinitivoInicial)s" />
+                        <input tabindex=%(tabindex_fechaDefinitivoFinal)d style="font-size: 8pt;" size="22"  name="theSearchFechaDefinitivoFinal"   id="theSearchFechaDefinitivoFinal"   value="%(fechaDefinitivoFinal)s" />
                     </td>
                 </tr>
             </tbody>
@@ -3199,8 +3441,8 @@ def pRenderFiltro(
             'tabindex_fechaRevisionInicial':        unTabIndex + 7,
             'tabindex_fechaRevisionFinal':          unTabIndex + 8,
             'tabindex_coordinador':                 unTabIndex + 9,
-            'tabindex_fechaDefinitivaInicial':      unTabIndex + 10,
-            'tabindex_fechaDefinitivaFinal':        unTabIndex + 11,
+            'tabindex_fechaDefinitivoInicial':      unTabIndex + 10,
+            'tabindex_fechaDefinitivoFinal':        unTabIndex + 11,
             'portal_url':                           unPortalURL, 
             'gvSIGi18n_TRATraduccion_Creada':       aTranslationsCache['gvSIGi18n_TRATraduccion_Creada'],
             'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Traducida':   mfTranslateI18N( 'gvSIGi18n',  'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_%s' % cEstadoTraduccionTraducida, cEstadoTraduccionTraducida),
@@ -3227,8 +3469,8 @@ def pRenderFiltro(
             'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Definitiva':  mfTranslateI18N( 'gvSIGi18n',  'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_%s' % cEstadoTraduccionDefinitiva, cEstadoTraduccionDefinitiva),
             'estado-icon-Definitiva':   cIconsDict.get( cEstadoTraduccionDefinitiva, 'tra_definitiva.gif'), 
             'usuarioCoordinador':       mfAsUnicode( pSearchParameters[ 'usuarioCoordinador']),
-            'fechaDefinitivaInicial':   mfAsUnicode( pSearchParameters[ 'fechaRevisionInicial']),
-            'fechaDefinitivaFinal':     mfAsUnicode( pSearchParameters[ 'fechaRevisionFinal']),
+            'fechaDefinitivoInicial':   mfAsUnicode( pSearchParameters[ 'fechaDefinitivoInicial']),
+            'fechaDefinitivoFinal':     mfAsUnicode( pSearchParameters[ 'fechaDefinitivoFinal']),
         })
      
      
@@ -3391,10 +3633,10 @@ def pRenderFiltroModulos(
     
     """    
     
-    mfTranslateI18N     = unContextualObject.fTranslateI18N
     mfAsUnicode         = unContextualObject.fAsUnicode
     mfCRs2BRs           = unContextualObject.fCRs2BRs
-    
+    mfTranslateI18N     = lambda theDomain, theSymbol, theDefault: fCGIE( unContextualObject.fTranslateI18N( theDomain, theSymbol, theDefault))
+
     
     
     unosNombresModulos = pSearchParameters.get( 'nombresModulos', '')
@@ -3528,8 +3770,10 @@ def pRenderCollapsibleGoTo(
     
     """    
            
-    mfTranslateI18N     = unContextualObject.fTranslateI18N
     mfAsUnicode         = unContextualObject.fAsUnicode
+    mfCRs2BRs           = unContextualObject.fCRs2BRs
+    mfTranslateI18N     = lambda theDomain, theSymbol, theDefault: fCGIE( unContextualObject.fTranslateI18N( theDomain, theSymbol, theDefault))
+
             
     pRenderCollapsible_Lambda(  anOutput,
         mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_seccionGoTo_title', 'GoTo-'),
@@ -3570,9 +3814,11 @@ def pRenderGoTo(
     """    
        
     
-    mfTranslateI18N     = unContextualObject.fTranslateI18N
     mfAsUnicode         = unContextualObject.fAsUnicode
- 
+    mfCRs2BRs           = unContextualObject.fCRs2BRs
+    mfTranslateI18N     = lambda theDomain, theSymbol, theDefault: fCGIE( unContextualObject.fTranslateI18N( theDomain, theSymbol, theDefault))
+
+
     unTabIndex = 11
     
     anOutput.write( u"""    
@@ -3759,8 +4005,10 @@ def pRenderCollapsibleInforme(
     
     """    
     
-    mfTranslateI18N     = unContextualObject.fTranslateI18N
     mfAsUnicode         = unContextualObject.fAsUnicode
+    mfCRs2BRs           = unContextualObject.fCRs2BRs
+    mfTranslateI18N     = lambda theDomain, theSymbol, theDefault: fCGIE( unContextualObject.fTranslateI18N( theDomain, theSymbol, theDefault))
+
             
     pRenderCollapsible_Lambda(  anOutput,
         aTranslationsCache[ 'gvSIGi18n_seccionInformeSumario_title'],
@@ -3807,9 +4055,11 @@ def pRenderInforme(
     
     """    
        
-    mfTranslateI18N     = unContextualObject.fTranslateI18N
     mfAsUnicode         = unContextualObject.fAsUnicode
-    
+    mfCRs2BRs           = unContextualObject.fCRs2BRs
+    mfTranslateI18N     = lambda theDomain, theSymbol, theDefault: fCGIE( unContextualObject.fTranslateI18N( theDomain, theSymbol, theDefault))
+
+   
     
     
     pNumeroCadenas           = pInformeEstadosTodasCadenas[ 'Total'][ 1]
@@ -4134,9 +4384,10 @@ def pRenderEditorDetail(
     
     """
      
-    mfTranslateI18N     = unContextualObject.fTranslateI18N
     mfAsUnicode         = unContextualObject.fAsUnicode
-    
+    mfCRs2BRs           = unContextualObject.fCRs2BRs
+    mfTranslateI18N     = lambda theDomain, theSymbol, theDefault: fCGIE( unContextualObject.fTranslateI18N( theDomain, theSymbol, theDefault))
+
              
     pIndex  = 0     
     
@@ -4437,8 +4688,10 @@ def pRenderCollapsibleHistory(
     
     """
     
-    mfTranslateI18N     = unContextualObject.fTranslateI18N
     mfAsUnicode         = unContextualObject.fAsUnicode
+    mfCRs2BRs           = unContextualObject.fCRs2BRs
+    mfTranslateI18N     = lambda theDomain, theSymbol, theDefault: fCGIE( unContextualObject.fTranslateI18N( theDomain, theSymbol, theDefault))
+
     
             
     pRenderCollapsible_Lambda(  anOutput,
@@ -4473,8 +4726,10 @@ def pRenderHistory(
     """
     
     
-    mfTranslateI18N     = unContextualObject.fTranslateI18N
     mfAsUnicode         = unContextualObject.fAsUnicode
+    mfCRs2BRs           = unContextualObject.fCRs2BRs
+    mfTranslateI18N     = lambda theDomain, theSymbol, theDefault: fCGIE( unContextualObject.fTranslateI18N( theDomain, theSymbol, theDefault))
+
     
 
     pIndex =0
@@ -5000,8 +5255,10 @@ def pRenderCollapsibleList(
     
     """
     
-    mfTranslateI18N     = unContextualObject.fTranslateI18N
     mfAsUnicode         = unContextualObject.fAsUnicode
+    mfCRs2BRs           = unContextualObject.fCRs2BRs
+    mfTranslateI18N     = lambda theDomain, theSymbol, theDefault: fCGIE( unContextualObject.fTranslateI18N( theDomain, theSymbol, theDefault))
+
     
     unCursorPositionString = u''
     
@@ -5084,8 +5341,10 @@ def pRenderList(
     
     """
 
-    mfTranslateI18N     = unContextualObject.fTranslateI18N
     mfAsUnicode         = unContextualObject.fAsUnicode
+    mfCRs2BRs           = unContextualObject.fCRs2BRs
+    mfTranslateI18N     = lambda theDomain, theSymbol, theDefault: fCGIE( unContextualObject.fTranslateI18N( theDomain, theSymbol, theDefault))
+
     
     unPortalURL = unContextualObject.portal_url()
 
@@ -5733,9 +5992,10 @@ def pRenderCollapsibleTechnicalSections(
     
     """
     
-    
-    mfTranslateI18N     = unContextualObject.fTranslateI18N
     mfAsUnicode         = unContextualObject.fAsUnicode
+    mfCRs2BRs           = unContextualObject.fCRs2BRs
+    mfTranslateI18N     = lambda theDomain, theSymbol, theDefault: fCGIE( unContextualObject.fTranslateI18N( theDomain, theSymbol, theDefault))
+
     
             
     if pRenderFormSubmit or  pRenderRequest or pRenderFullRequest or pRenderTimes or pRenderProfile or pRenderAsyncRequest or pRenderUserInterfaceEvents:
@@ -5800,8 +6060,10 @@ def pRenderTechnicalSections(
     
     """    
     
-    mfTranslateI18N     = unContextualObject.fTranslateI18N
     mfAsUnicode         = unContextualObject.fAsUnicode
+    mfCRs2BRs           = unContextualObject.fCRs2BRs
+    mfTranslateI18N     = lambda theDomain, theSymbol, theDefault: fCGIE( unContextualObject.fTranslateI18N( theDomain, theSymbol, theDefault))
+
     
     
     anOutput.write("""
@@ -6152,8 +6414,10 @@ def pRenderCursorButtons(
     
     """
     
-    mfTranslateI18N     = unContextualObject.fTranslateI18N
     mfAsUnicode         = unContextualObject.fAsUnicode
+    mfCRs2BRs           = unContextualObject.fCRs2BRs
+    mfTranslateI18N     = lambda theDomain, theSymbol, theDefault: fCGIE( unContextualObject.fTranslateI18N( theDomain, theSymbol, theDefault))
+
     
     
     anOutput.write( u"""  

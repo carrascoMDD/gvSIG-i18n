@@ -329,7 +329,7 @@ cExternalMetodDefinitions = [
     [ 'TRAExport_ctrl',                                  # module  
         [ 'TRAExport_ParametersCandidateValues',    ]   * 3, # function id title name
     ],
-] + cExternalMetodDefinitions_ModelDDvlPlone
+] + [ aExtMethodDef for aExtMethodDef in cExternalMetodDefinitions_ModelDDvlPlone if not( aExtMethodDef[0] in [ 'MDDLoadModules', 'MDDZipFileExpansionUtils', ])]
 
 
 ##/code-section module-footer

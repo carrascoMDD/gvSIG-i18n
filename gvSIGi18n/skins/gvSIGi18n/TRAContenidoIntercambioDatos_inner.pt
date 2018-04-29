@@ -77,8 +77,8 @@
                 pAllowTextualAndTabular pTrue;
                 pAllowRefrescar pTrue;
                 pPagina          string:Textual; 
-                pPaginaAnteriorPosterior string:TRAContenidosIntercambioDatos;
-                pPaginaRefrescar string:TRAContenidosIntercambioDatos" >
+                pPaginaAnteriorPosterior string:TRAContenidoIntercambioDatos;
+                pPaginaRefrescar string:TRAContenidoIntercambioDatos" >
 
 
                 <tal:block tal:replace="nothing">  

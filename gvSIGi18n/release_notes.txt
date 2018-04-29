@@ -1,6 +1,22 @@
 ﻿gvSIG-i18n RELEASE NOTES
 ========================
 
+|
+|
+
+version 1.2.3
+------------------------------------------------
+
+Task Id  	Task Summary  	Start Date  	End Date  	Percent Complete
+722	BUG with workaround: Import from .zip with locales.csv imports all contained .properties, including the ones declared just as a reference, and not only those declared for translation,,	2010-03-08 04:00	  2010-03-15 04:00	100%
+724	BUG with WORKAROUND: When creating an Import, the Default Module Name parameter is initialized to literal "base", and shall be initialized to the module name in the same parameter of the root Translations Catalog	2010-03-16 12:00	  2010-03-23 12:00	100%
+725	BUG with WORKAROUND: Import from Java .properties also imports comment lines starting with # (sharp) character, and breaks the correct association of strings symbols to translations. Workaround is to remove the comment lines from the .properties files.	2010-03-22 13:00	  2010-03-29 14:00	100%
+742	BUG: Wrong view name in URL in Previous and Next cursor buttons when browsing the interchange contents inside an Import	2010-04-23 07:00	  2010-04-30 07:00	100%
+743	IMPO 11 Import process can be configured to generate or not generate detailed status reports before, or after the process execution	2010-04-23 08:00	  2010-04-30 08:00	100%
+744	BUG TRUI Filter by dates before Translation, Review, Definitive does not work, retrieving also records with no date	2010-04-25 11:00	  2010-05-02 11:00	100%
+745	UITR Filter: document the use of the All button, wildcards only at the beginning of words, and OR between words	2010-04-25 11:00	  2010-05-02 11:00	100%
+746	BUG TRUI Filter by users and dates: when supplying a date after Reviewed, the rendered page includes the date in both the Reviewed and Definitive date filter fields	2010-04-25 11:00	  2010-05-02 11:00	100%
+747	UITR Filter: allow to store in the client the URL of the filter parameters last allpied to retrieve the current translations list	2010-04-25 11:00	  2010-05-02 11:00	100%
 
 |
 |

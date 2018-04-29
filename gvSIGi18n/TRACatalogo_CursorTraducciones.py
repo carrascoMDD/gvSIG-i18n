@@ -116,6 +116,8 @@ cClavesBusquedaInformeTodasOSimbolosOEstados = cClavesBusquedaInformeTodasOSimbo
 
 cClavesAEliminarDeBusquedasParaInforme = [ 'sort_on', 'sort_order', 'sort_limit', ]
 
+cEarliestFechaBusquedaTraducciones    = '1900-01-01%s%s' % ( cISOStringFechaYHoraSeparator, cISOStringEarliestDayTime,)
+
 
 ##/code-section after-schema
 
@@ -3565,7 +3567,8 @@ class TRACatalogo_CursorTraducciones:
                 elif aFechaCreacionInicial:
                     unCriterioBusqueda[ 'getFechaCreacionTextual'] = {'query': aFechaCreacionInicial, 'range': 'min'}
                 else:
-                    unCriterioBusqueda[ 'getFechaCreacionTextual'] = {'query': aFechaCreacionFinal, 'range': 'max'}
+                    unEarliestFechaCreacion = cEarliestFechaBusquedaTraduccioens
+                    unCriterioBusqueda[ 'getFechaCreacionTextual'] = {'query': [ cEarliestFechaBusquedaTraducciones, aFechaCreacionFinal], 'range': 'minmax'}
 
             
             if aUsuarioTraductor:
@@ -3577,18 +3580,18 @@ class TRACatalogo_CursorTraducciones:
                 elif aFechaTraduccionInicial:
                     unCriterioBusqueda[ 'getFechaTraduccionTextual'] = {'query': aFechaTraduccionInicial, 'range': 'min'}
                 else:
-                    unCriterioBusqueda[ 'getFechaTraduccionTextual'] = {'query': aFechaTraduccionFinal, 'range': 'max'}
+                    unCriterioBusqueda[ 'getFechaTraduccionTextual'] = {'query': [ cEarliestFechaBusquedaTraducciones, aFechaTraduccionFinal], 'range': 'minmax'}
 
             if aUsuarioRevisor:
                 unCriterioBusqueda[ 'getUsuarioRevisor'] = aUsuarioRevisor
 
             if aFechaRevisionInicial or aFechaRevisionFinal:
                 if aFechaRevisionInicial and aFechaRevisionFinal:
-                    unCriterioBusqueda[ 'getFechaTraduccionTextual'] = {'query': [ aFechaRevisionInicial, aFechaRevisionFinal,], 'range': 'minmax'}
+                    unCriterioBusqueda[ 'getFechaRevisionTextual'] = {'query': [ aFechaRevisionInicial, aFechaRevisionFinal,], 'range': 'minmax'}
                 elif aFechaRevisionInicial:
-                    unCriterioBusqueda[ 'getFechaTraduccionTextual'] = {'query': aFechaRevisionInicial, 'range': 'min'}
+                    unCriterioBusqueda[ 'getFechaRevisionTextual'] = {'query': aFechaRevisionInicial, 'range': 'min'}
                 else:
-                    unCriterioBusqueda[ 'getFechaTraduccionTextual'] = {'query': aFechaRevisionFinal, 'range': 'max'}
+                    unCriterioBusqueda[ 'getFechaRevisionTextual'] = {'query': [ cEarliestFechaBusquedaTraducciones, aFechaRevisionFinal], 'range': 'minmax'}
                     
 
             if aUsuarioCoordinador:
@@ -3596,11 +3599,11 @@ class TRACatalogo_CursorTraducciones:
 
             if aFechaDefinitivoInicial or aFechaDefinitivoFinal:
                 if aFechaRevisionInicial and aFechaDefinitivoFinal:
-                    unCriterioBusqueda[ 'getFechaTraduccionTextual'] = {'query': [ aFechaDefinitivoInicial, aFechaDefinitivoFinal,], 'range': 'minmax'}
+                    unCriterioBusqueda[ 'getFechaDefinitivoTextual'] = {'query': [ aFechaDefinitivoInicial, aFechaDefinitivoFinal,], 'range': 'minmax'}
                 elif aFechaDefinitivoInicial:
-                    unCriterioBusqueda[ 'getFechaTraduccionTextual'] = {'query': aFechaDefinitivoInicial, 'range': 'min'}
+                    unCriterioBusqueda[ 'getFechaDefinitivoTextual'] = {'query': aFechaDefinitivoInicial, 'range': 'min'}
                 else:
-                    unCriterioBusqueda[ 'getFechaTraduccionTextual'] = {'query': aFechaDefinitivoFinal, 'range': 'max'}
+                    unCriterioBusqueda[ 'getFechaDefinitivoTextual'] = {'query': [ cEarliestFechaBusquedaTraducciones, aFechaDefinitivoFinal], 'range': 'minmax'}
                         
             return unCriterioBusqueda
             

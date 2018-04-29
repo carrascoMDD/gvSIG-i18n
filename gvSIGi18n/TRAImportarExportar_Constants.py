@@ -104,6 +104,8 @@ cExportStatus_NoAvailableModulesToExport    = 'gvSIGi18n_ExportStatus_NoAvailabl
 cExportStatus_CanNotCreateZipFile           = 'gvSIGi18n_ExportStatus_CanNotCreateZipFile'
 
 
+cPropertiesLine_CommentPrefix     = '#'
+
 
 cUnicodeEscapeEncoding            = 'raw_unicode_escape'
 cUnicodeEscapeEncodingFor255Chars = 'ISO-8859-1'

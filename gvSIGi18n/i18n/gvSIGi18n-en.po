@@ -1264,6 +1264,26 @@ msgstr "Launch when previous one terminates"
 msgid "gvSIGi18n_TRAImportacion_attr_comenzarAlFinalizarAnterior_help"
 msgstr "If True, and the process has not been executed, then the process shall be executed when the previous one terminates."
 
+#. Default: "Crear Informe de Estado ANTES"
+#: TRAImportacion crearInformeAntes
+msgid "gvSIGi18n_TRAImportacion_attr_crearInformeAntes_label"
+msgstr "Create Status Report BEFORE"
+
+#. Default: "Cuendo sea verdadero, se creara un informe detallado de estado, antes del proceso de importacion."
+#: TRAImportacion crearInformeAntes
+msgid "gvSIGi18n_TRAImportacion_attr_crearInformeAntes_help"
+msgstr "When true, a detailed status report shall be created before the import process."
+
+#. Default: "Crear Informe de Estado DESPUES"
+#: TRAImportacion crearInformeDespues
+msgid "gvSIGi18n_TRAImportacion_attr_crearInformeDespues_label"
+msgstr "Create Status Report AFTER"
+
+#. Default: "Cuendo sea verdadero, se creara un informe detallado de estado, despues del proceso de importacion."
+#: TRAImportacion crearInformeDespues
+msgid "gvSIGi18n_TRAImportacion_attr_crearInformeDespues_help"
+msgstr "When true, a detailed status report shall be created after the import process."
+
 #. Default: "Debe crear Traducciones que falten"
 #: TRAImportacion debeCrearTraduccionesQueFaltan
 msgid "gvSIGi18n_TRAImportacion_attr_debeCrearTraduccionesQueFaltan_label"
@@ -3887,12 +3907,41 @@ msgstr "Enter the exact identifier of the string to search for."
 #. Default: "Enter words to search for in the string symbols. Wildcards (* and ?) are permitted."
 #: TRAChangeAndBrowseTranslations.py
 msgid "gvSIGi18n_searchBySimbolo_help"
-msgstr "Enter words to search for in the string symbols. Wildcards (* and ?) are permitted."
+msgstr "Enter words to search for in the string symbols. "
 
 #. Default: "Enter words  to search for in the translations into this language. Wildcards (* and ?) are permitted."
 #: TRAChangeAndBrowseTranslations.py
 msgid "gvSIGi18n_searchByTranslation_help"
-msgstr "Enter words  to search for in the translations into this language. Wildcards (* and ?) are permitted."
+msgstr "Enter words  to search for in the translations into this language."
+
+
+
+#. Default: "Wildcards (* and ?) are permitted,\nbut not at the beginning of words."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_searchByWords_WildcardsAlowed_help"
+msgstr "Wildcards (* and ?) are permitted,\nbut not at the beginning of words."
+
+
+
+#. Default: "You may enter OR between words,\nto retrieve records containing ANY (not ALL) of the words."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_searchByWords_OrAlowed_help"
+msgstr "You may enter OR between words,\nto retrieve records containing ANY (not ALL) of the words."
+
+
+
+
+#. Default: "You may enter conditions for translations to match.\nAll conditions shals be met (AND logic, set intersection).\nClick Refresh button to update the list."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationsFilter_help"
+msgstr "You may enter conditions for translations to match.\nAll conditions shall be met (AND logic, set intersection).\nClick Refresh button to update the list."
+
+#. Default: "You may retrieve all the translations,\nresetting the filter, by clicking on the All button."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationsFilter_Reset_help"
+msgstr "You may retrieve all the translations\nresetting the filter, by clicking on the All button."
+
+
 
 #. Default: "Filter"
 #: TRAChangeAndBrowseTranslations.py
@@ -4661,3 +4710,16 @@ msgstr "Symbol beginning with"
 #: TRAChangeAndBrowseTranslations.py
 msgid "gvSIGi18n_TranslationsPage_GoTo_SymbolStartingWithChars_help"
 msgstr "Beginning letters of the first symbol to show."
+
+#. Default: "Filter link (for results now shown in the list)"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationsFilterLink_label"
+msgstr "Filter link (for results now shown in the list)"
+
+
+#. Default: "The User may bookmark or save the link as Favorites in the Internet browser,\nor drop the link as a Shortcut on the desktop,\nor just copy the URL, to reproduce the filter later."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationsFilterLink_help"
+msgstr "The User may bookmark or save the link as Favorites in the Internet browser,\nor drop the link as a Shortcut on the desktop,\nor just copy the URL, to reproduce the filter later."
+
+

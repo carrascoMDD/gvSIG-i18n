@@ -1264,6 +1264,26 @@ msgstr "Comenzar cuando acabe el anterior"
 msgid "gvSIGi18n_TRAImportacion_attr_comenzarAlFinalizarAnterior_help"
 msgstr "Si Verdadero, y el proceso aun no ha sido ejecutado, el proceso sera ejecutado cuando acaba de ejecutarse el anterior"
 
+#. Default: "Crear Informe de Estado ANTES"
+#: TRAImportacion crearInformeAntes
+msgid "gvSIGi18n_TRAImportacion_attr_crearInformeAntes_label"
+msgstr "Crear Informe de Estado ANTES"
+
+#. Default: "Cuendo sea verdadero, se creara un informe detallado de estado, antes del proceso de importacion."
+#: TRAImportacion crearInformeAntes
+msgid "gvSIGi18n_TRAImportacion_attr_crearInformeAntes_help"
+msgstr "Cuendo sea verdadero, se creara un informe detallado de estado, antes del proceso de importacion."
+
+#. Default: "Crear Informe de Estado DESPUES"
+#: TRAImportacion crearInformeDespues
+msgid "gvSIGi18n_TRAImportacion_attr_crearInformeDespues_label"
+msgstr "Crear Informe de Estado DESPUES"
+
+#. Default: "Cuendo sea verdadero, se creara un informe detallado de estado, despues del proceso de importacion."
+#: TRAImportacion crearInformeDespues
+msgid "gvSIGi18n_TRAImportacion_attr_crearInformeDespues_help"
+msgstr "Cuendo sea verdadero, se creara un informe detallado de estado, despues del proceso de importacion."
+
 #. Default: "Debe crear Traducciones que falten"
 #: TRAImportacion debeCrearTraduccionesQueFaltan
 msgid "gvSIGi18n_TRAImportacion_attr_debeCrearTraduccionesQueFaltan_label"
@@ -3446,10 +3466,17 @@ msgstr "el"
 msgid "gvSIGi18n_fichero_msgid"
 msgstr "Fichero"
 
+
+
+
 #. Default: "Filter"
 #: TRAChangeAndBrowseTranslations.py
 msgid "gvSIGi18n_filtro_section_label"
 msgstr "Filtro"
+
+
+
+
 
 #. Default: "Copyright 2008, 2009 Conselleria de Infraestructuras y Transporte de la Generalitat Valenciana, in Valencia, Spain"
 #: gvSIGtraduccionesFooter_view.pt
@@ -3889,12 +3916,39 @@ msgstr "Introduzca el identificador exacto de la cadena que busca."
 #. Default: "Enter words to search for in the string symbols. Wildcards (* and ?) are permitted."
 #: TRAChangeAndBrowseTranslations.py
 msgid "gvSIGi18n_searchBySimbolo_help"
-msgstr "Introduza palabras a buscar en los simbolos de cadenas. Puede utilizar comodines (* y ?)."
+msgstr "Introduza palabras a buscar en los simbolos de cadenas."
 
 #. Default: "Enter words  to search for in the translations into this language. Wildcards (* and ?) are permitted."
 #: TRAChangeAndBrowseTranslations.py
 msgid "gvSIGi18n_searchByTranslation_help"
-msgstr "Introduza palabras a buscar en las traducciones al idioma. Puede utilizar comodines (* y ?)."
+msgstr "Introduza palabras a buscar en las traducciones al idioma."
+
+
+
+
+
+#. Default: "Wildcards (* and ?) are permitted,\nbut not at the beginning of words."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_searchByWords_WildcardsAlowed_help"
+msgstr "Puede utilizar comodines (* y ?),\npero no al comienzo de palabra."
+
+#. Default: "You may enter OR between words,\nto retrieve records containing ANY (not ALL) of the words."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_searchByWords_OrAlowed_help"
+msgstr "Puede introducir OR entre palabras,\npara recuperar registros conteniendo ALGUNA (no TODAS) las palabras."
+
+
+
+#. Default: "You may enter conditions for translations to match.\nAll conditions shals be met (AND logic, set intersection).\nClick Refresh button to update the list."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationsFilter_help"
+msgstr "Puede introducir condiciones que deben cumplir las traducciones.\nTodas las condicions deberan cumplirse (conjuncion logica, interseccion de conjuntos).\nPulse el boton Refrescar para actualizar la lista"
+
+#. Default: "You may retrieve all the translations,\nresetting the filter, by clicking on the All button."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationsFilter_Reset_help"
+msgstr "Puede recuperar todas las traducciones\nreinicializando el filtro pulsando el boton Todas."
+
 
 #. Default: "Filter"
 #: TRAChangeAndBrowseTranslations.py
@@ -4677,3 +4731,16 @@ msgstr "Simbolo comenzando con"
 #: TRAChangeAndBrowseTranslations.py
 msgid "gvSIGi18n_TranslationsPage_GoTo_SymbolStartingWithChars_help"
 msgstr "Las letras iniciales del primer simbolo a mostrar."
+
+#. Default: "Filter link (for results now shown in the list)"
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationsFilterLink_label"
+msgstr "Enlace con Filtro (para los resultados mostrados ahora en la lista)"
+
+
+#. Default: "The User may bookmark or save the link as Favorites in the Internet browser,\nor drop the link as a Shortcut on the desktop,\nor just copy the URL, to reproduce the filter later."
+#: TRAChangeAndBrowseTranslations.py
+msgid "gvSIGi18n_TranslationsFilterLink_help"
+msgstr "el usuario puede marcar o grabar este enlace en Favoritos en el navegador de internet,\no arrastrar el enlace como un atajo en el escritorio\no simplemente copiar la URL, para reproducir el filtro mas tarde."
+
+

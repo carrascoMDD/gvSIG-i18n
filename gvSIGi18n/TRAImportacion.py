@@ -101,6 +101,66 @@ schema = Schema((
         label="Debe crear Traducciones que falten",
         length="0",
         containment="Not Specified",
+        position="2",
+        owner_class_name="TRAImportacion"
+    ),
+
+    BooleanField(
+        name='crearInformeAntes',
+        widget=BooleanField._properties['widget'](
+            label="Crear Informe de Estado ANTES",
+            label2="Create Status Report BEFORE",
+            description="Cuendo sea verdadero, se creara un informe detallado de estado, antes del proceso de importacion.",
+            description2="When true, a detailed status report shall be created before the import process.",
+            label_msgid='gvSIGi18n_TRAImportacion_attr_crearInformeAntes_label',
+            description_msgid='gvSIGi18n_TRAImportacion_attr_crearInformeAntes_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Cuendo sea verdadero, se creara un informe detallado de estado, antes del proceso de importacion.",
+        duplicates="0",
+        label2="Create Status Report BEFORE",
+        ea_localid="1597",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="When true, a detailed status report shall be created before the import process.",
+        ea_guid="{4DED20F9-F187-48d5-A220-7EA18D0E0C6A}",
+        scale="0",
+        default="False",
+        label="Crear Informe de Estado ANTES",
+        length="0",
+        containment="Not Specified",
+        position="1",
+        owner_class_name="TRAImportacion"
+    ),
+
+    BooleanField(
+        name='crearInformeDespues',
+        widget=BooleanField._properties['widget'](
+            label="Crear Informe de Estado DESPUES",
+            label2="Create Status Report AFTER",
+            description="Cuendo sea verdadero, se creara un informe detallado de estado, despues del proceso de importacion.",
+            description2="When true, a detailed status report shall be created after the import process.",
+            label_msgid='gvSIGi18n_TRAImportacion_attr_crearInformeDespues_label',
+            description_msgid='gvSIGi18n_TRAImportacion_attr_crearInformeDespues_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Cuendo sea verdadero, se creara un informe detallado de estado, despues del proceso de importacion.",
+        duplicates="0",
+        label2="Create Status Report AFTER",
+        ea_localid="1598",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="When true, a detailed status report shall be created after the import process.",
+        ea_guid="{E3B22B84-2CB3-46d5-99DF-AD3B00CD02C2}",
+        scale="0",
+        default="False",
+        label="Crear Informe de Estado DESPUES",
+        length="0",
+        containment="Not Specified",
         position="1",
         owner_class_name="TRAImportacion"
     ),
@@ -129,7 +189,7 @@ schema = Schema((
         description2="Product Version imported in this process. When the import executes, this data will be set as the value of the Last Imported Product Version in the translations catalog.",
         containment="Not Specified",
         ea_guid="{4D88E1D8-7FDA-43fd-87C0-BA2A7D756AF3}",
-        position="2",
+        position="3",
         owner_class_name="TRAImportacion",
         label="Version del producto"
     ),
@@ -158,7 +218,7 @@ schema = Schema((
         description2="Product Build identifier imported in this process. When the import executes, this data will be set as the value of the Last Imported Product Build identifier  in the translations catalog.",
         containment="Not Specified",
         ea_guid="{4A1EF8CC-9271-41a5-A444-5F92D60663CA}",
-        position="3",
+        position="4",
         owner_class_name="TRAImportacion",
         label="Identificador del Build"
     ),
@@ -189,7 +249,7 @@ schema = Schema((
         label="Codigo de Idioma por defecto",
         length="0",
         containment="Not Specified",
-        position="4",
+        position="5",
         owner_class_name="TRAImportacion"
     ),
 
@@ -204,6 +264,7 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRAImportacion_attr_nombreModuloPorDefecto_help',
             i18n_domain='gvSIGi18n',
         ),
+        containment="Not Specified",
         description="Nombre del modulo a utilizar cuando no se puede obtener, bien del nombre del dominio en ficheros GNU gettext .PO, o de la estructura de carpetas si el contenido a importar es una archivo .jar o .zip.",
         duplicates="0",
         label2="Default Module Name",
@@ -215,11 +276,10 @@ schema = Schema((
         description2="Name of the Module to use when no module name can be obtained, whether from domain name in the GNUgettext .POfile header, or from the folder structure if the uploaded content is a .jar or .zip archive file.",
         ea_guid="{1303B58A-C358-415e-A2AB-58A07B04C5A2}",
         scale="0",
-        default="base",
         label="Nombre de Modulo por defecto",
         length="0",
-        containment="Not Specified",
-        position="5",
+        default_method="fDefaultNombreModuloFromCatalog",
+        position="6",
         owner_class_name="TRAImportacion"
     ),
 
@@ -249,7 +309,7 @@ schema = Schema((
         label="Max #  lineas .PO",
         length="0",
         containment="Not Specified",
-        position="6",
+        position="7",
         owner_class_name="TRAImportacion"
     ),
 
@@ -279,7 +339,7 @@ schema = Schema((
         label="Max #  lineas .properties",
         length="0",
         containment="Not Specified",
-        position="7",
+        position="8",
         owner_class_name="TRAImportacion"
     ),
 
@@ -309,7 +369,7 @@ schema = Schema((
         label="Intervalo de Refresco en Minutos",
         length="0",
         containment="Not Specified",
-        position="9",
+        position="10",
         owner_class_name="TRAImportacion"
     ),
 
@@ -339,7 +399,7 @@ schema = Schema((
         label="Intervalo de Refresco en Numero de Escrituras",
         length="0",
         containment="Not Specified",
-        position="10",
+        position="11",
         owner_class_name="TRAImportacion"
     ),
 
@@ -369,7 +429,7 @@ schema = Schema((
         label="Segundos de Espera entre Transacciones",
         length="0",
         containment="Not Specified",
-        position="8",
+        position="9",
         owner_class_name="TRAImportacion"
     ),
 
@@ -399,7 +459,7 @@ schema = Schema((
         label="Numero de Refrescos por Escritura en Log",
         length="0",
         containment="Not Specified",
-        position="11",
+        position="12",
         owner_class_name="TRAImportacion"
     ),
 
@@ -429,7 +489,7 @@ schema = Schema((
         label="Numero de Operaciones antes de ceder procesador",
         length="0",
         containment="Not Specified",
-        position="13",
+        position="14",
         owner_class_name="TRAImportacion"
     ),
 
@@ -459,7 +519,7 @@ schema = Schema((
         label="Milisegundos de Actividad antes de ceder procesador",
         length="0",
         containment="Not Specified",
-        position="14",
+        position="15",
         owner_class_name="TRAImportacion"
     ),
 
@@ -489,7 +549,7 @@ schema = Schema((
         label="Segundos a ceder procesador",
         length="0",
         containment="Not Specified",
-        position="12",
+        position="13",
         owner_class_name="TRAImportacion"
     ),
 
@@ -520,7 +580,7 @@ schema = Schema((
         label="Informe de Final",
         length="0",
         containment="Not Specified",
-        position="23",
+        position="24",
         owner_class_name="TRAImportacion",
         exclude_from_views="[ 'Textual',   'General', ]"
     ),
@@ -551,7 +611,7 @@ schema = Schema((
         label="Informe de Excepcion",
         length="0",
         containment="Not Specified",
-        position="24",
+        position="25",
         owner_class_name="TRAImportacion"
     ),
 
@@ -582,7 +642,7 @@ schema = Schema((
         label="Informe Antes de la Importacion.",
         length="0",
         containment="Not Specified",
-        position="26",
+        position="27",
         owner_class_name="TRAImportacion",
         exclude_from_views="[ 'Textual', 'General', ]",
         computed_types="[ 'TRAInforme',]"
@@ -616,7 +676,7 @@ schema = Schema((
         label="Informe por Idiomas Antes de la Importacion.",
         length="0",
         containment="Not Specified",
-        position="27",
+        position="28",
         owner_class_name="TRAImportacion",
         exclude_from_views="[ 'Textual',    'Tabular', 'General', ]",
         computed_types="text"
@@ -650,7 +710,7 @@ schema = Schema((
         label="Informe por Modulos e Idiomas Antes de Importar",
         length="0",
         containment="Not Specified",
-        position="28",
+        position="29",
         owner_class_name="TRAImportacion",
         custom_presentation_view="TRAInformeEstadoModulosAntes_CustomView"
     ),
@@ -682,7 +742,7 @@ schema = Schema((
         label="Informe Despues de Importar",
         length="0",
         containment="Not Specified",
-        position="29",
+        position="30",
         owner_class_name="TRAImportacion",
         expression="context.fInformeEstadoDespues()",
         computed_types="[ 'TRAInforme',]"
@@ -716,7 +776,7 @@ schema = Schema((
         length="0",
         expression="context.fDeriveInformeEstadoIdiomasDespues()",
         containment="Not Specified",
-        position="30",
+        position="31",
         owner_class_name="TRAImportacion",
         custom_presentation_view="TRAInformeEstadoIdiomasDespues_CustomView",
         computed_types="text"
@@ -750,7 +810,7 @@ schema = Schema((
         label="Informe por Modulos e Idiomas Despues de Importar",
         length="0",
         containment="Not Specified",
-        position="31",
+        position="32",
         owner_class_name="TRAImportacion",
         exclude_from_views="[ 'Textual',   'Tabular',  'General', ]"
     ),
@@ -811,7 +871,7 @@ schema = Schema((
         label="Estado del Proceso",
         length="0",
         containment="Not Specified",
-        position="15",
+        position="16",
         owner_class_name="TRAImportacion"
     ),
 
@@ -841,7 +901,7 @@ schema = Schema((
         label="Fecha y Hora de Comienzo",
         length="0",
         containment="Not Specified",
-        position="20",
+        position="21",
         owner_class_name="TRAImportacion"
     ),
 
@@ -871,7 +931,7 @@ schema = Schema((
         label="Fecha y Hora de Fin",
         length="0",
         containment="Not Specified",
-        position="22",
+        position="23",
         owner_class_name="TRAImportacion"
     ),
 
@@ -901,7 +961,7 @@ schema = Schema((
         label="Fecha y Hora del ultimo informe de Progreso",
         length="0",
         containment="Not Specified",
-        position="21",
+        position="22",
         owner_class_name="TRAImportacion"
     ),
 
@@ -932,7 +992,7 @@ schema = Schema((
         label="Comenzo a ejecutar",
         length="0",
         containment="Not Specified",
-        position="16",
+        position="17",
         owner_class_name="TRAImportacion"
     ),
 
@@ -963,7 +1023,7 @@ schema = Schema((
         label="Exito?",
         length="0",
         containment="Not Specified",
-        position="18",
+        position="19",
         owner_class_name="TRAImportacion"
     ),
 
@@ -995,7 +1055,7 @@ schema = Schema((
         label="Contenidos Importacion",
         length="0",
         containment="Not Specified",
-        position="25",
+        position="26",
         owner_class_name="TRAImportacion",
         exclude_from_views="[ 'Textual', 'Tabular', ]",
         computed_types="text"
@@ -1028,7 +1088,7 @@ schema = Schema((
         label="Informe de Progreso",
         length="0",
         containment="Not Specified",
-        position="17",
+        position="18",
         owner_class_name="TRAImportacion",
         custom_presentation_view="TRAImportacionProgreso_CustomView"
     ),
@@ -1084,7 +1144,7 @@ schema = Schema((
         label="Usuario Importador",
         length="0",
         containment="Not Specified",
-        position="19",
+        position="20",
         owner_class_name="TRAImportacion"
     ),
 
@@ -1328,7 +1388,7 @@ class TRAImportacion(OrderedBaseFolder, TRAArquetipo, TRAImportacion_Operaciones
         """
         """
         
-        return TRAArquetipo.manage_afterAdd( self, item, container)
+        return TRAImportacion_Operaciones.pHandle_manage_afterAdd( self, item, container)
 
     security.declarePublic('fExtraLinks')
     def fExtraLinks(self):

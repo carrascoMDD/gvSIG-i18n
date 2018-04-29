@@ -93,6 +93,7 @@ from TRAElemento_Permission_Definitions import cPermissionsToDenyEverywhereToEve
 
 from TRAElemento_Operaciones            import TRAElemento_Operaciones
 
+from TRAElemento import TRAElemento
 
 
 cLogEachExecution_fCombinedContenidosIntercambio = True
@@ -105,6 +106,52 @@ class TRAImportacion_Operaciones:
     security = ClassSecurityInfo()
      
 
+    
+        
+    # ####################################
+    #  Complete initialization after creation
+    # ####################################
+        
+        
+    
+    security.declarePrivate('pHandle_manage_afterAdd')
+    def pHandle_manage_afterAdd(self, theItem, theContainer):   
+        
+        TRAElemento.manage_afterAdd(  self, theItem, theContainer)
+        
+        # Check for Premature_initialization (may not not yet be hooked under TRACatalog instance)
+        #if not self.Title(): # 'portal_factory' in self.getPhysicalPath(): 
+            #return self
+        
+        self.pInitDefaultNombreModuloFromCatalog(  theItem, theContainer)
+                
+        return self
+    
+    
+    
+    security.declarePrivate('fDefaultNombreModuloFromCatalog')
+    def fDefaultNombreModuloFromCatalog(self,):   
+        unCatalog = None
+        try:
+            unCatalog = self.getCatalogo()
+        except:
+            None
+        if not unCatalog:
+            return None
+        
+        unNombreModuloPorDefecto = unCatalog.getNombreModuloPorDefecto()
+        return unNombreModuloPorDefecto
+    
+         
+    
+    security.declarePrivate('pInitDefaultNombreModuloFromCatalog')
+    def pInitDefaultNombreModuloFromCatalog(self, theItem, theContainer):   
+
+        unNombreModuloPorDefecto = self.fDefaultNombreModuloFromCatalog()
+        
+        self.setNombreModuloPorDefecto( unNombreModuloPorDefecto)
+        
+        return self
     
     
     security.declarePrivate( 'pAllSubElements_into')    
@@ -1854,6 +1901,9 @@ class TRAImportacion_Operaciones:
             if not unaLinea:
                 continue
             
+            if unaLinea.startswith( cPropertiesLine_CommentPrefix):
+                continue
+            
             unSeparatorIndex = unaLinea.find( '=', 0) 
             if unSeparatorIndex >= 0:
                 unSimboloCadena     = unaLinea[ : unSeparatorIndex].strip()
@@ -2460,6 +2510,9 @@ class TRAImportacion_Operaciones:
                 
                 unInformeImportarContenidos = self.fNewVoidInformeImportarContenidos()
                 
+                unCrearInformeAntes   = self.getCrearInformeAntes()
+                unCrearInformeDespues = self.getCrearInformeDespues()
+                
                 unInformeImportarContenidos[ 'start_date'] =self.fDateTimeNowTextual()
                 
                 unCatalogo = self.getCatalogo()
@@ -2598,7 +2651,9 @@ class TRAImportacion_Operaciones:
                         self.setFechaFinProceso( None)
                         self.setInformeFinal(    '')
                         self.setInformeExcepcion(    '')
-    
+
+                        unCatalogo.setUltimaImportacion( self)
+                        
                         self.pEliminarInformesEstado( 
                             unUseCaseQueryResult, 
                             False, 
@@ -2607,23 +2662,27 @@ class TRAImportacion_Operaciones:
                             theParentExecutionRecord=unExecutionRecord
                         )
                     
-                        self.pCrearInformeEstado( 
-                            'antes', 
-                            unUseCaseQueryResult, 
-                            False, 
-                            thePermissionsCache=unPermissionsCache, 
-                            theRolesCache=unRolesCache, 
-                            theParentExecutionRecord=unExecutionRecord
-                        )
+                        transaction.commit( )
+                        logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT after initial setup, and eliminating status reports already existing in the import %s" , self.Title()) 
+                         
+                        if unCrearInformeAntes:
+                            self.pCrearInformeEstado( 
+                                'antes', 
+                                unUseCaseQueryResult, 
+                                False, 
+                                thePermissionsCache=unPermissionsCache, 
+                                theRolesCache=unRolesCache, 
+                                theParentExecutionRecord=unExecutionRecord
+                            )
             
+                            transaction.commit( )
+                            logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT INITIAL report")        
 
-                        unCatalogo.setUltimaImportacion( self)
-                        
+                       
                         
                         aModelDDvlPloneTool_Mutators = ModelDDvlPloneTool_Mutators()
                         
-                        
-                        
+                         
                         aImportStatusChangeReport = aModelDDvlPloneTool_Mutators.fNewVoidChangeValuesReport()
                         
                         someFieldReports    = aImportStatusChangeReport.get( 'field_reports')
@@ -2650,13 +2709,14 @@ class TRAImportacion_Operaciones:
                         aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
                         
                         aModelDDvlPloneTool_Mutators.pSetAudit_Modification( self, cModificationKind_ChangeValues, aImportStatusChangeReport)       
-                        
-                        unCatalogo.pFlushCachedTemplates_All()
                     
                         transaction.commit( )
             
-                        logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT status report before import.") 
+                        logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT audit modification record.") 
                     
+                        
+                        unCatalogo.pFlushCachedTemplates_All()
+                        
                 finally:
                     unSubExecutionRecord and unSubExecutionRecord.pEndExecution()
                     unSubExecutionRecord and unSubExecutionRecord.pClearLoggedAll()
@@ -2745,6 +2805,8 @@ class TRAImportacion_Operaciones:
                             self.setInformeProgreso( '')
                             self.setFechaUltimoInformeProgreso( None)                
                     
+                            transaction.commit( )
+                            logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT import status as finished.")        
                             
                             aModelDDvlPloneTool_Mutators = ModelDDvlPloneTool_Mutators()
                             
@@ -2765,30 +2827,24 @@ class TRAImportacion_Operaciones:
                             aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
                             
                             aModelDDvlPloneTool_Mutators.pSetAudit_Modification( self, cModificationKind_ChangeValues, aImportStatusChangeReport)       
-                        
-                            
-                            unCatalogo.pFlushCachedTemplates_All()
-                            
-                            
+                                                                                
                             transaction.commit( )
-                            
-                            logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT FINAL status")        
+                            logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT FINAL audit modification record.")        
                          
+                            if unCrearInformeDespues:
+                                self.pCrearInformeEstado( 
+                                    'despues', 
+                                    unUseCaseQueryResult, 
+                                    False, 
+                                    thePermissionsCache=unPermissionsCache, 
+                                    theRolesCache=unRolesCache, 
+                                    theParentExecutionRecord=unExecutionRecord
+                                )                                                        
                             
-                            self.pCrearInformeEstado( 
-                                'despues', 
-                                unUseCaseQueryResult, 
-                                False, 
-                                thePermissionsCache=unPermissionsCache, 
-                                theRolesCache=unRolesCache, 
-                                theParentExecutionRecord=unExecutionRecord
-                            )
-                            
+                                transaction.commit( )
+                                logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT FINAL report")        
+
                             unCatalogo.pFlushCachedTemplates_All()
-                            
-                            
-                            transaction.commit( )
-                            logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT FINAL report")        
             
                         if not theJustEstimateCost:
                             unCatalogo.pInvalidateSimbolosCadenasOrdenados()  
