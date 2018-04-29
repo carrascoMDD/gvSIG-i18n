@@ -1,0 +1,541 @@
+<tal:block replace="nothing">
+# File: TRAExportar_choreography.pt
+#
+# Copyright (c) 2008, 2009, 2010, 2011  by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+#
+# GNU General Public License (GPL)
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+#
+# Authors: 
+# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana 
+# Model Driven Development sl  Valencia (Spain) www.ModelDD.org 
+# Antonio Carrasco Valero                       carrasco@ModelDD.org
+#
+#
+</tal:block>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<body>
+
+
+
+<div metal:define-macro="tExportar_choreography_help" >
+    <p>
+        <strong>
+            <tal:block tal:replace="structure python:  here.TRAgvSIGi18n_tool.fCRs2BRs( here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_Exportar_coreography_help',  'To Export translations, you must:\n1 - Configure the parameters for the export operation.\n2- Review the parameters entered.\n3 - Review the estimation of content to export.\n4 - Confirm the execution of the export operation.\nYou may reset the configuration parameteres to their initial values.\nYou may cancel at any time.-' ))" />
+        </strong>
+    </p>
+    <br/>
+    <br/>            
+</div>
+
+
+
+<div metal:define-macro="tExportar_choreography" >
+    <tal:block tal:define="
+        pParentExecutionRecord  pExecutionRecord  | nothing;
+        pExecutionRecord        python: here.TRAgvSIGi18n_tool.fStartExecution( here, 'macro_choreograpy', 'TRAExportar_choreography/tExportar_choreography', pParentExecutionRecord, False);
+        pPermissionsCache       pPermissionsCache | python: { };
+        pRolesCache             pRolesCache       | python: { };
+        pUseCaseAssessmentResultsCache pUseCaseAssessmentResultsCache | python: { };        
+        pRequestedAction        python:  here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theRequestedAction', '')" >
+
+            
+        <tal:block tal:condition="python:  ( not pRequestedAction) or ( pRequestedAction == 'Start') or ( pRequestedAction == 'EditParameters')" >
+            <!-- ###################
+            Edit export parameters: First Choreography Step
+            -->
+            <tal:block tal:define="pExportar_EditParameters_choreography_outcomeHolder python: {}">
+                <metal:block metal:use-macro="here/TRAExportar_choreography/macros/tExportar_EditParameters_choreography" />
+            </tal:block>
+        </tal:block>
+        
+        <tal:block tal:condition="python: pRequestedAction == 'ReviewParameters'" >
+            <!-- ###################
+            Review export parameters: Second Choreography Step 
+            -->
+            <tal:block tal:define="pExportar_ReviewParameters_choreography_outcomeHolder python: {}">
+                <metal:block metal:use-macro="here/TRAExportar_choreography/macros/tExportar_ReviewParameters_choreography" />
+            </tal:block>
+        </tal:block>
+        
+        <tal:block tal:condition="python: pRequestedAction == 'EstimateContent'" >
+            <!-- ###################
+            Estimate export content: Third Choreography Step 
+            -->
+            <tal:block tal:define="pExportar_EstimateContent_choreography_outcomeHolder python: {}">
+                <metal:block metal:use-macro="here/TRAExportar_choreography/macros/tExportar_EstimateContent_choreography" />
+            </tal:block>
+        </tal:block>
+        
+        <tal:block tal:condition="python: pRequestedAction == 'ExecuteExport'" >
+            <!-- ###################
+            Export content: Fourth Choreography Step 
+            -->
+            <tal:block tal:define="pExportar_ExportContent_choreography_outcomeHolder python: {}">
+                <metal:block metal:use-macro="here/TRAExportar_choreography/macros/tExportar_ExportContent_choreography" />
+            </tal:block>
+        </tal:block>
+        
+        <tal:block tal:define="dummy python: pExecutionRecord and here.TRAgvSIGi18n_tool.pEndExecution( here, pExecutionRecord)" />
+        
+    </tal:block>
+</div>
+
+
+
+
+<div metal:define-macro="tInformNoLanguageOrModuleAvailableForExport" >
+    <tal:block tal:condition="python: not ( pInformeIdiomasYModulos and  pInformeIdiomasYModulos.get( 'success', True))" >
+        <p>
+            <tal:block tal:replace="structure python: here.TRAgvSIGi18n_tool.fCRs2BRs( here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_AccessFailedAndPromptYouHavePermission_label', 'Access to the translations catalog failed.\nDo you have permission ?\nIf so, you may want to login first.-'))" />
+        </p>
+    </tal:block>
+
+</div>
+
+
+
+
+
+<div metal:define-macro="tExportar_EditParameters_choreography" >
+    <tal:block tal:define="
+        pParentExecutionRecord  pExecutionRecord  | nothing;
+        pExecutionRecord        python: here.TRAgvSIGi18n_tool.fStartExecution( here, 'macro_interaction', 'TRAExportar_choreography/tExportar_EditParameters_choreography', pParentExecutionRecord, False);
+        pPermissionsCache       pPermissionsCache | python: { };
+        pRolesCache             pRolesCache       | python: { };
+        pUseCaseAssessmentResultsCache pUseCaseAssessmentResultsCache | python: { };
+        pExport_EditParameters_Parameters_input python: {}" >
+
+        <metal:block metal:use-macro="here/TRAExportar_EditParameters_interaction/macros/tExtractParametersFromRequest" />
+
+        <tal:block tal:define="
+            pExport_EditParameters_Parameters_output python: here.TRAExport_ParametersCandidateValues( 
+                theContextualObject              = here,
+                theParametersInput               = pExport_EditParameters_Parameters_input,
+                thePermissionsCache              = pPermissionsCache,
+                theRolesCache                    = pRolesCache,
+                theUseCaseAssessmentResultsCache = pUseCaseAssessmentResultsCache,
+                theParentExecutionRecord         = pExecutionRecord,
+            );
+            pExportParametersSuccess python: pExport_EditParameters_Parameters_output and pExport_EditParameters_Parameters_output.get( 'success', False)" >
+            
+            <tal:block tal:condition="not: pExportParametersSuccess" >
+                <!-- ###################
+                FAILURE in retrieval of candidate values for edit parameters 
+                -->
+                
+                <metal:block metal:use-macro="here/TRAExportar_choreography/macros/tExportar_choreography_help" />
+                
+                <metal:block metal:use-macro="here/TRAExportar_EditParameters_interaction/macros/tExportar_EditParameters_interaction_help" />
+                
+                <metal:block metal:use-macro="here/TRAExportar_choreography/macros/tInformNoLanguageOrModuleAvailableForExport" />
+                
+                <metal:block metal:use-macro="here/TRAExportar_choreography/macros/tPromptForEditionDefaultsOrCancel" />    
+
+                <tal:block tal:define="void python: pExportar_EditParameters_choreography_outcomeHolder.update( { 'outcome': False, })" />
+            </tal:block>
+
+            
+            
+            <tal:block tal:condition="pExportParametersSuccess" >
+                <!-- ###################
+                SUCCESS in retrieval of candidate values for edit parameters 
+                -->
+           
+                <metal:block metal:use-macro="here/TRAExportar_choreography/macros/tExportar_choreography_help" />
+                
+                <metal:block metal:use-macro="here/TRAExportar_EditParameters_interaction/macros/tExportar_EditParameters_interaction_help" />
+                
+                <metal:block metal:use-macro="here/TRAExportar_EditParameters_interaction/macros/tPromptForReviewDefaultsOrCancel" />
+                
+                <metal:block metal:use-macro="here/TRAExportar_EditParameters_interaction/macros/tShowExportParametersEditor" />
+
+                <tal:block tal:define="void python: pExportar_EditParameters_choreography_outcomeHolder.update( { 'outcome': True, })" />
+                
+            </tal:block>
+      
+        </tal:block>
+        
+        <tal:block tal:define="dummy python: pExecutionRecord and here.TRAgvSIGi18n_tool.pEndExecution( here, pExecutionRecord)" />
+        
+    </tal:block>
+
+</div>
+
+
+
+
+
+
+
+
+<div metal:define-macro="tExportar_ReviewParameters_choreography" >
+    <tal:block tal:define="
+        pParentExecutionRecord  pExecutionRecord  | nothing;
+        pExecutionRecord        python: here.TRAgvSIGi18n_tool.fStartExecution( here, 'macro_interaction', 'TRAExportar_choreography/tExportar_ReviewParameters_choreography', pParentExecutionRecord, False);
+        pPermissionsCache       pPermissionsCache | python: { };
+        pRolesCache             pRolesCache       | python: { };
+        pUseCaseAssessmentResultsCache pUseCaseAssessmentResultsCache | python: { };
+        pExport_ReviewParameters_Parameters_input python: {}" >
+
+        <metal:block metal:use-macro="here/TRAExportar_ReviewParameters_interaction/macros/tExtractParametersFromRequest" />
+
+        <tal:block tal:define="
+            pExport_ReviewParameters_Parameters_output python: here.TRAExport_ParametersCandidateValues( 
+                theContextualObject              = here,
+                theParametersInput               = pExport_ReviewParameters_Parameters_input,
+                thePermissionsCache              = pPermissionsCache,
+                theRolesCache                    = pRolesCache,
+                theUseCaseAssessmentResultsCache = pUseCaseAssessmentResultsCache,
+                theParentExecutionRecord         = pExecutionRecord,
+            );
+            pReviewParametersSuccess python: pExport_ReviewParameters_Parameters_output and pExport_ReviewParameters_Parameters_output.get( 'success', False)" >
+            
+            <tal:block tal:condition="not: pReviewParametersSuccess" >
+                <!-- ###################
+                FAILURE in retrieval of candidate values for edit parameters 
+                -->
+                
+                <metal:block metal:use-macro="here/TRAExportar_choreography/macros/tExportar_choreography_help" />
+                
+                <metal:block metal:use-macro="here/TRAExportar_ReviewParameters_interaction/macros/tExportar_ReviewParameters_interaction_help" />
+                
+                <metal:block metal:use-macro="here/TRAExportar_choreography/macros/tInformNoLanguageOrModuleAvailableForExport" />
+                
+                <metal:block metal:use-macro="here/TRAExportar_choreography/macros/tPromptForEditionDefaultsOrCancel" />                
+                
+                <tal:block tal:define="void python: pExportar_ReviewParameters_choreography_outcomeHolder.update( { 'outcome': False, })" />
+            </tal:block>
+
+            
+            
+            <tal:block tal:condition="pReviewParametersSuccess" >
+                <!-- ###################
+                SUCCESS in retrieval of candidate values for edit parameters 
+                -->
+           
+                <metal:block metal:use-macro="here/TRAExportar_choreography/macros/tExportar_choreography_help" />
+                
+                <metal:block metal:use-macro="here/TRAExportar_ReviewParameters_interaction/macros/tExportar_ReviewParameters_interaction_help" />
+                
+                <metal:block metal:use-macro="here/TRAExportar_ReviewParameters_interaction/macros/tPromptForEstimationEditionDefaultsOrCancel" />
+                
+                <metal:block metal:use-macro="here/TRAExportar_ReviewParameters_interaction/macros/tShowExportParametersReviewer" />
+
+                <tal:block tal:define="void python: pExportar_ReviewParameters_choreography_outcomeHolder.update( { 'outcome': True, })" />
+                
+            </tal:block>
+      
+        </tal:block>
+        
+        <tal:block tal:define="dummy python: pExecutionRecord and here.TRAgvSIGi18n_tool.pEndExecution( here, pExecutionRecord)" />
+        
+    </tal:block>
+
+</div>
+
+
+
+
+
+
+
+
+<div metal:define-macro="tExportar_EstimateContent_choreography" >
+    <tal:block tal:define="
+        pParentExecutionRecord  pExecutionRecord  | nothing;
+        pExecutionRecord        python: here.TRAgvSIGi18n_tool.fStartExecution( here, 'macro_interaction', 'TRAExportar_choreography/tExportar_EstimateContent_choreography', pParentExecutionRecord, False);
+        pPermissionsCache       pPermissionsCache | python: { };
+        pRolesCache             pRolesCache       | python: { };
+        pUseCaseAssessmentResultsCache pUseCaseAssessmentResultsCache | python: { };
+        pExport_EstimateContent_Parameters_input python: {}" >
+
+        <metal:block metal:use-macro="here/TRAExportar_EstimateContent_interaction/macros/tExtractParametersFromRequest" />
+
+        <tal:block tal:define="
+            pExport_EstimateContent_Parameters_output python: here.TRAExport_ParametersCandidateValues( 
+                theContextualObject              = here,
+                theParametersInput               = pExport_EstimateContent_Parameters_input,
+                thePermissionsCache              = pPermissionsCache,
+                theRolesCache                    = pRolesCache,
+                theUseCaseAssessmentResultsCache = pUseCaseAssessmentResultsCache,
+                theParentExecutionRecord         = pExecutionRecord,
+            );
+            pEstimateContentSuccess python: pExport_EstimateContent_Parameters_output and pExport_EstimateContent_Parameters_output.get( 'success', False)" >
+            
+            <tal:block tal:condition="not: pEstimateContentSuccess" >
+                <!-- ###################
+                FAILURE in retrieval of candidate values for edit parameters 
+                -->
+                
+                <metal:block metal:use-macro="here/TRAExportar_choreography/macros/tExportar_choreography_help" />
+                
+                <metal:block metal:use-macro="here/TRAExportar_EstimateContent_interaction/macros/tExportar_EstimateContent_interaction_help" />
+                
+                <metal:block metal:use-macro="here/TRAExportar_choreography/macros/tInformNoLanguageOrModuleAvailableForExport" />
+                
+                <metal:block metal:use-macro="here/TRAExportar_choreography/macros/tPromptForEditionDefaultsOrCancel" />                
+                
+                <tal:block tal:define="void python: pExportar_EstimateContent_choreography_outcomeHolder.update( { 'outcome': False, })" />
+            </tal:block>
+
+            
+            
+            <tal:block tal:condition="pEstimateContentSuccess" >
+                <!-- ###################
+                SUCCESS in retrieval of candidate values for edit parameters 
+                
+                Estimate export content
+                -->
+           
+                
+                <tal:block tal:define="
+					pExport_ReviewParameters_Parameters_output pExport_EstimateContent_Parameters_output;
+                    pExport_EstimateContent_report python: here.TRAgvSIGi18n_tool.fEstimarContenidoExportacion( 
+						theContextualElement             = here,
+                        theParametersInput               = pExport_EstimateContent_Parameters_output,
+                        thePermissionsCache              = pPermissionsCache,
+                        theRolesCache                    = pRolesCache,
+                        theUseCaseAssessmentResultsCache = pUseCaseAssessmentResultsCache,
+                        theParentExecutionRecord         = pExecutionRecord,
+                    );
+                    pEstimateContentSuccess python: pExport_EstimateContent_report and pExport_EstimateContent_report.get( 'success', False)" >
+            
+                    <tal:block tal:condition="not: pEstimateContentSuccess" >
+                        <!-- ###################
+                        FAILURE in estimating export content 
+                        -->
+                        
+                        <metal:block metal:use-macro="here/TRAExportar_choreography/macros/tExportar_choreography_help" />
+                        
+                        <metal:block metal:use-macro="here/TRAExportar_EstimateContent_interaction/macros/tExportar_EstimateContent_interaction_help" />
+                        
+                        <metal:block metal:use-macro="here/TRAExportar_EstimateContent_interaction/macros/tInformErrorDuringEstimation" />
+
+                        <metal:block metal:use-macro="here/TRAExportar_choreography/macros/tPromptForEditionDefaultsOrCancel" />                                        
+        
+                        <metal:block metal:use-macro="here/TRAExportar_ReviewParameters_interaction/macros/tShowExportParametersReviewer" />                                        
+                        
+                        <tal:block tal:define="void python: pExportar_EstimateContent_choreography_outcomeHolder.update( { 'outcome': False, })" />
+                    </tal:block>
+        
+                    
+                    
+                    <tal:block tal:condition="pEstimateContentSuccess" >
+                        <!-- ###################
+                        SUCCESS in estimating export content 
+                        -->
+                
+                        <metal:block metal:use-macro="here/TRAExportar_choreography/macros/tExportar_choreography_help" />
+                        
+                        <metal:block metal:use-macro="here/TRAExportar_EstimateContent_interaction/macros/tExportar_EstimateContent_interaction_help" />
+                        
+                        <metal:block metal:use-macro="here/TRAExportar_EstimateContent_interaction/macros/tPromptForExecutionEditionDefaultsOrCancel" />
+                        
+                        <metal:block metal:use-macro="here/TRAExportar_ReviewParameters_interaction/macros/tShowExportParametersReviewer" />
+        
+                        <metal:block metal:use-macro="here/TRAExportar_EstimateContent_interaction/macros/tShowExportContentEstimation" />
+        
+                        <tal:block tal:define="void python: pExportar_EstimateContent_choreography_outcomeHolder.update( { 'outcome': True, })" />
+                    
+                    </tal:block>
+
+                </tal:block>
+
+            </tal:block>
+      
+        </tal:block>
+        
+        <tal:block tal:define="dummy python: pExecutionRecord and here.TRAgvSIGi18n_tool.pEndExecution( here, pExecutionRecord)" />
+        
+    </tal:block>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div metal:define-macro="tExportar_ExportContent_choreography" >
+    <tal:block tal:define="
+        pParentExecutionRecord  pExecutionRecord  | nothing;
+        pExecutionRecord        python: here.TRAgvSIGi18n_tool.fStartExecution( here, 'macro_interaction', 'TRAExportar_choreography/tExportar_ExportContent_choreography', pParentExecutionRecord, False);
+        pPermissionsCache       pPermissionsCache | python: { };
+        pRolesCache             pRolesCache       | python: { };
+        pUseCaseAssessmentResultsCache pUseCaseAssessmentResultsCache | python: { };
+        pExport_ExportContent_Parameters_input python: {}" >
+
+        <metal:block metal:use-macro="here/TRAExportar_ExportContent_interaction/macros/tExtractParametersFromRequest" />
+
+        <tal:block tal:define="
+            pExport_ExportContent_Parameters_output python: here.TRAExport_ParametersCandidateValues( 
+                theContextualObject              = here,
+                theParametersInput               = pExport_ExportContent_Parameters_input,
+                thePermissionsCache              = pPermissionsCache,
+                theRolesCache                    = pRolesCache,
+                theUseCaseAssessmentResultsCache = pUseCaseAssessmentResultsCache,
+                theParentExecutionRecord         = pExecutionRecord,
+            );
+            pExportContentSuccess python: pExport_ExportContent_Parameters_output and pExport_ExportContent_Parameters_output.get( 'success', False)" >
+            
+            <tal:block tal:condition="not: pExportContentSuccess" >
+                <!-- ###################
+                FAILURE in retrieval of candidate values for edit parameters 
+                -->
+                
+                <metal:block metal:use-macro="here/TRAExportar_choreography/macros/tExportar_choreography_help" />
+                
+                <metal:block metal:use-macro="here/TRAExportar_ExportContent_interaction/macros/tExportar_ExportContent_interaction_help" />
+                
+                <metal:block metal:use-macro="here/TRAExportar_choreography/macros/tInformNoLanguageOrModuleAvailableForExport" />
+                
+                <metal:block metal:use-macro="here/TRAExportar_choreography/macros/tPromptForEditionDefaultsOrCancel" />
+
+                <tal:block tal:define="void python: pExportar_ExportContent_choreography_outcomeHolder.update( { 'outcome': False, })" />
+            </tal:block>
+
+            
+            
+            <tal:block tal:condition="pExportContentSuccess" >
+                <!-- ###################
+                SUCCESS in retrieval of candidate values for edit parameters 
+                
+                Export content
+                -->
+           
+				<tal:block tal:define="
+					pProgressHandlerCreationResult python: here.TRAgvSIGi18n_tool.fCreateProgressHandlerFor_Export( 
+						theContextualElement    =here,
+						theAdditionalParams     =pExport_ExportContent_Parameters_output,  
+						thePermissionsCache     =pPermissionsCache, 
+						theRolesCache           =pRolesCache, 
+						theParentExecutionRecord=pExecutionRecord);
+					pProgressHandlerKey python: pProgressHandlerCreationResult and pProgressHandlerCreationResult.get( 'progress_handler_key', None);
+					pProgressHandlerCreationErrorCondition python: here.TRAgvSIGi18n_tool.fAsUnicode( here, pProgressHandlerCreationResult and pProgressHandlerCreationResult.get( 'condition', ''))" >
+
+					<tal:block tal:condition="not: pProgressHandlerKey">
+						<p>
+							<font size="3" color="red">
+								<strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_CanNotCreateProgressControlForLongLivedProcess', 'Can Not Create Progress Control For Long-Lived Process.-')" />
+								<tal:block tal:condition="pProgressHandlerCreationErrorCondition">
+									<br/>
+									<span tal:content="pProgressHandlerCreationErrorCondition" />    
+								</tal:block>
+							</font>                 
+						</p>
+					</tal:block>
+					<tal:block tal:condition="pProgressHandlerKey">
+					
+						<tal:block tal:define="pProgressElementURL python: pProgressHandlerKey.get( 'progress_element_URL', '')" >
+					
+							<tal:block tal:condition="not: pProgressElementURL">
+								<p><font size="3" color="red"><strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_NoURLForProgressElementForLongLivedProcess', 'No URL for Progress element for long-lived Process.-')" /></font>                 
+							</tal:block>
+					
+							<tal:block tal:condition="pProgressElementURL">
+							
+								<p tal:content="python:  here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_RedirectingToProcessProgressControl_msgid',   'Redirecting to Process Progress Control ...-' )" />
+								<tal:block tal:define="void python: here.TRAgvSIGi18n_tool.pHTTPResponse_redirect( here,  '%s/TRAControlProgress_action/' % pProgressElementURL)" />
+					
+							</tal:block>
+							
+						</tal:block>
+					</tal:block>
+				</tal:block>
+                
+                
+            </tal:block>
+      
+        </tal:block>
+        
+        <tal:block tal:define="dummy python: pExecutionRecord and here.TRAgvSIGi18n_tool.pEndExecution( here, pExecutionRecord)" />
+        
+    </tal:block>
+
+</div>
+
+
+
+
+
+
+<div metal:define-macro="tPromptForEditionDefaultsOrCancel" >
+               
+    <!-- ###############################################################
+    #  SECTION: Actions available for the user: Cancel or Review the export 
+    #
+    # -->
+    <a href="#" title="#"  
+        tal:define="aLinkTitle python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_cancelarExportacionYVolverACatalogo_msgid',   'Cancel Export-' )"
+        tal:attributes="
+            title aLinkTitle;
+            href python: '%s/' % here.TRAgvSIGi18n_tool.fAbsoluteURL( here,)">
+        <font size="3">
+              <strong>
+                  <span tal:content="aLinkTitle" />
+            </strong>
+        </font>
+    </a>
+    &emsp;
+    <span class="formHelp" tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_cancelarExportacionYVolverACatalogo_help', 'Cancel translations export and navigate back to translations catalog home page.-')" />
+    <br/>
+    <br/>
+    <br/>
+    
+    <a href="#" title="#"  
+        tal:define="aLinkTitle python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_valoresPorDefectoExportacion_msgid',   'Default export configuration-' )"
+        tal:attributes="
+            title aLinkTitle;
+            href python: '%s/TRAExportar/' % here.TRAgvSIGi18n_tool.fAbsoluteURL( here,)">
+        <font size="3">
+              <strong>
+                  <span tal:content="aLinkTitle" />
+            </strong>
+        </font>
+    </a>
+    &emsp;
+    <span class="formHelp" tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_valoresPorDefectoExportacion_help', 'Discard any changes made to export configuration parameters, and start again with the values configured in the translations catalog and languages.-')" />
+    <br/>
+    <br/>
+    <br/>
+    
+    <input type="button" value="#"
+        tal:attributes="value python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_configurarExportacion_msgid',   'Edit parameters-' )"    
+        onclick="document.getElementById('theRequestedAction').value='EditParameters'; document.forms[ 'cid_TRAExportar_form'].submit(); return true;" 
+        style="color: red; font-size: 9pt; font-style: italic; font-weight: 700" />
+    &emsp;
+    <span class="formHelp"  tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_configurarExportacion_help',  'Edit the export configuration paramters.-' )" />
+    <br/>
+    <br/>
+  
+      
+</div>
+
+
+
+
+
+</body>
+</html>

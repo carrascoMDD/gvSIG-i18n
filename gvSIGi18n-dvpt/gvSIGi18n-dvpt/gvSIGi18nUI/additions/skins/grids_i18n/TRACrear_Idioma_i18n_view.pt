@@ -1,0 +1,272 @@
+<tal:block replace="nothing">
+# File: TRACrear_Idioma_i18n_view.pt
+# Copyright (c) 2008, 2009, 2010, 2011  by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+#
+# GNU General Public License (GPL)
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+#
+# Authors: 
+# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana 
+# Model Driven Development sl  Valencia (Spain) www.ModelDD.org 
+# Antonio Carrasco Valero                       carrasco@ModelDD.org
+#
+</tal:block>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en">
+<body>
+
+
+	<div metal:define-macro="tTRACrear_Idioma_i18n_view" >
+	
+	
+		<metal:block metal:use-macro="here/PerformanceAnalysis/macros/tSetupPerformanceAnalysis" />   
+	
+		
+		<tal:block tal:define="
+				pNewTypeName						string:TRAIdioma;		
+				pAggregationName					python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theAggregationName', '');
+				pNewKnownCodigoIdioma				python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theNewKnownCodigoIdioma', '');
+				pNewCodigoIdiomaEnGvSIG				python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theNewCodigoIdiomaEnGvSIG', '');
+				pNewCodigoIdioma					python: ( pNewKnownCodigoIdioma and ( not ( pNewKnownCodigoIdioma == '---')) and pNewKnownCodigoIdioma) or pNewCodigoIdiomaEnGvSIG;
+				pNewCodigoInternacionalDeIdioma		python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theNewCodigoInternacionalDeIdioma', '');
+				pNewEnglishName						python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theNewEnglishName', '');
+				pNewNombreNativoDeIdioma			python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theNewNombreNativoDeIdioma', '');
+				
+				pCopyFromLanguageCode		        python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theCopyFromLanguageCode', '');	
+
+		 global pMostrarFormulario					python: (( not pNewKnownCodigoIdioma) or ( pNewKnownCodigoIdioma == '---' )) and ( (not pNewCodigoIdiomaEnGvSIG) or (not pNewEnglishName));
+				pTrue								python: True;
+				pFalse								python: False;
+				pPermissionsCache					python: { };
+				pRolesCache							python: { };
+				pParentExecutionRecord				pExecutionRecord | nothing;">
+				
+			<tal:block tal:define="
+				pUseCaseAssessmentResult python: here.TRAgvSIGi18n_tool.fUseCaseAssessment( 
+                    theContextualElement    = here, 
+					theUseCaseName          = 'Create_TRAIdioma', 
+					theElementsBindings     = { 'object': here,},
+					theRulesToCollect       = None, 
+					thePermissionsCache     = pPermissionsCache, 
+					theRolesCache           = pRolesCache, 
+					theParentExecutionRecord= pExecutionRecord);
+				pPermiteCrear python: pUseCaseAssessmentResult and pUseCaseAssessmentResult.get( 'success', False)" >
+				
+				
+				<tal:block tal:condition="not: pPermiteCrear" >
+					<br/>
+					<h2 > 
+						<a  href="#" tal:attributes="href python: '%s/Tabular/' % here.TRAgvSIGi18n_tool.fCatalogoAbsoluteURL( here,)" class="state-visible" title="">
+							<font color="Red">                    
+								<span  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearIdioma_action_NoPermissionToCreate_ErrorMsg">You are not allowed to create a new Language-</span>
+							</font>
+						</a>                
+					</h2>      
+				</tal:block>				
+
+				
+				<tal:block tal:condition="pPermiteCrear" >	
+				
+					<tal:block tal:condition="not: pMostrarFormulario" >
+					
+					
+						<tal:block tal:define="
+							someAdditionalParams python: {
+								'theCodigoIdiomaEnGvSIG'				:pNewCodigoIdioma,  
+								'theCodigoInternacionalDeIdioma'        :pNewCodigoInternacionalDeIdioma, 
+								'theEnglishName'						:pNewEnglishName,
+								'theNombreNativoDeIdioma'				:pNewNombreNativoDeIdioma,  
+								'theCopyFromLanguageCode'               :pCopyFromLanguageCode,
+							}; 
+							unosArgs python: {
+								'theContextualElement':     here,
+								'theAdditionalParams':      someAdditionalParams,
+								'thePermissionsCache':      pPermissionsCache,
+								'theRolesCache':            pRolesCache,
+								'theParentExecutionRecord': pExecutionRecord,
+							};   
+							pProgressHandlerCreationResult python: here.TRAgvSIGi18n_tool.fCreateProgressHandlerFor_CreateLanguage( **unosArgs);
+							pProgressHandlerKey python: pProgressHandlerCreationResult and pProgressHandlerCreationResult.get( 'progress_handler_key', None);
+							pProgressHandlerCreationErrorCondition python: here.TRAgvSIGi18n_tool.fAsUnicode( here, pProgressHandlerCreationResult and pProgressHandlerCreationResult.get( 'condition', ''))" >
+
+							<tal:block tal:condition="not: pProgressHandlerKey">
+								<p>
+									<font size="3" color="red">
+										<strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_CanNotCreateProgressControlForLongLivedProcess', 'Can Not Create Progress Control For Long-Lived Process.-')" />
+										<tal:block tal:condition="pProgressHandlerCreationErrorCondition">
+											<br/>
+											<span tal:content="pProgressHandlerCreationErrorCondition" />    
+										</tal:block>
+									</font>                 
+								</p>
+							</tal:block>
+							<tal:block tal:condition="pProgressHandlerKey">
+							
+								<tal:block tal:define="pProgressElementURL python: pProgressHandlerKey.get( 'progress_element_URL', '')" >
+							
+									<tal:block tal:condition="not: pProgressElementURL">
+										<p><font size="3" color="red"><strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_NoURLForProgressElementForLongLivedProcess', 'No URL for Progress element for long-lived Process.-')" /></font>                 
+									</tal:block>
+							
+									<tal:block tal:condition="pProgressElementURL">
+									
+										<p tal:content="python:  here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_RedirectingToProcessProgressControl_msgid',   'Redirecting to Process Progress Control ...-' )" />
+										<tal:block tal:define="void python: here.TRAgvSIGi18n_tool.pHTTPResponse_redirect( here,  '%s/TRAControlProgress_action/' % pProgressElementURL)" />
+							
+									</tal:block>
+									
+								</tal:block>
+							</tal:block>
+						</tal:block>
+		
+					</tal:block>
+				
+					
+					<tal:block tal:condition="pMostrarFormulario" >
+						<form name="Crear_TRAIdioma" method="post" enctype="multipart/form-data"
+							tal:define="
+							    pIdiomasCodesAndDisplayNames python: here.TRAgvSIGi18n_tool.fNonExistingKnownIdiomasCodesAndDisplayNames(
+									theContextualElement  = here,
+								);
+								pExistingIdiomasCodesAndDisplayNames python: here.TRAgvSIGi18n_tool.fTodosIdiomasCodesAndDisplayNames(
+									theContextualElement  = here,								
+								)">
+							
+							<input originalvalue="#" name="theNewTypeName" value="#" type="hidden"
+								tal:attributes="originalvalue python: pNewTypeName;value python: pNewTypeName" />
+								
+							<input originalvalue="#" name="theAggregationName" value="#" type="hidden"
+								tal:attributes="originalvalue python: pAggregationName;value python: pAggregationName" />
+								
+							<tal:block tal:condition="pIdiomasCodesAndDisplayNames">
+								<h3  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearIdioma_action_page_title">Create New Language-</h3>
+								<br/>
+								<p class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearIdioma_action_page_help">Select one of the known languages, or Enter the language code and name of the language in english. Optionally enter the international code (if different) and the native language name.-</p>
+								<br/>			    
+								<p><strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRACrearIioma_wellKnownLanguages_label">Well Known Languages-</strong></p>
+								<p  class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRACrearIioma_wellKnownLanguages_help">The following are languages well known to the gvSIG-i18n application. Leave the --- option to enter another language, in the fields below.-</p>
+								
+								<select  style="font-size: 9pt;" name="theNewKnownCodigoIdioma" id="theNewKnownCodigoIdioma" >
+									<option 
+										id="cid_NewKnownLanguageCode_None" value="---"
+										tal:content="string:---" />
+									<tal:block tal:repeat="unIdiomaIndex python: range( len(  pIdiomasCodesAndDisplayNames))">
+										<tal:block tal:define="
+											unValorYEtiqueta     python: pIdiomasCodesAndDisplayNames[ unIdiomaIndex];
+											pCodeIdioma                python: unValorYEtiqueta[ 0];
+											pTitleIdioma               python: unValorYEtiqueta[ 1].replace( '[', '')" >                                                            
+											<option 
+												id="#" value="#"
+												tal:content="pTitleIdioma"
+												tal:attributes="value python: pCodeIdioma;
+													id python: 'cid_NewLanguageCode_%s' % pCodeIdioma"/>
+										</tal:block>
+									</tal:block>
+								</select>
+							</tal:block>
+									
+							<br/>
+							<br/>
+							<br/>			    
+								
+							<p><strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRACrearIioma_otherLanguageData_label">Enter data for a language not known yet to the gvSIG-i18n application-</strong></p>
+							<br/>			    
+		
+							<p><strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAIdioma_attr_codigoIdiomaEnGvSIG_label">Language code in gvSIG-</strong></p>
+							<p  class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAIdioma_attr_codigoIdiomaEnGvSIG_help">Language code in gvSIG, as gvSIG supports some languages for which there is no international code (yet).-</p>
+							<input name="theNewCodigoIdiomaEnGvSIG" id="theNewCodigoIdiomaEnGvSIG" type="text" size="10" maxlength="10" tabindex="1"
+								value="" tal:attributes="value pNewCodigoIdiomaEnGvSIG"/> 					
+							<br/>			    
+							<br/>
+							
+							<p><strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAIdioma_attr_codigoInternacionalDeIdioma_label">International language code-</strong></p>
+							<p  class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAIdioma_attr_codigoInternacionalDeIdioma_help">Standard international language code,according to I18N conventions.-</p>
+							<input name="theNewCodigoInternacionalDeIdioma" id="theNewCodigoInternacionalDeIdioma" type="text" size="10" maxlength="10"  tabindex="2" 
+								value="" tal:attributes="value pNewCodigoInternacionalDeIdioma"/> 					
+							<br/>			    
+							<br/>
+							
+							<p><strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAIdioma_attr_nombreEnInglesDeIdioma_label">English name-</strong></p>
+							<p  class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAIdioma_attr_nombreEnInglesDeIdioma_help">Nombre del idioma, expresado en idioma ingles.-</p>
+							<input name="theNewEnglishName" id="theNewEnglishName" size="32" maxlength="80" tabindex="3" 
+								value="" tal:attributes="value pNewEnglishName"/> 					
+							<br/>			    
+							<br/>
+							
+							<p><strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAIdioma_attr_nombreNativoDeIdioma_label">Native language name-</strong></p>
+							<p  class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAIdioma_attr_nombreNativoDeIdioma_help">Language name expressed in the native language-</p>
+							<input name="theNewNombreNativoDeIdioma" id="theNewNombreNativoDeIdioma" size="32" maxlength="80" tabindex="4" 
+								value="" tal:attributes="value pNewNombreNativoDeIdioma"/> 					
+							<br/>			    
+									
+							<br/>
+							<br/>
+		
+							
+							<h3  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_copyTranslations_action_page_title">Copy Translations from another Language into this Language-</h3>
+							<br/>
+							<p  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_copyTranslations_action_TranslationsImportedThroughImportprocess">The Translations will be copied indirectly through an Import process.-</p>
+							<p  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_copyTranslations_action_selectLanguage">Select a source Language to  copy Translations from, and click on Save button.-</p>
+							<p  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_copyTranslations_action_ExecuteImportProcess">The System will create an Import. Please execute the created import process, to copy the source translations into this Language.-</p>
+							<br/>			    
+								
+							<p><strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_copyTranslations_action_SourceLanguage_label">Source Language-</strong></p>
+							<p  class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_copyTranslations_action_SourceLanguage_help">One of the existing Languages, from which the Translations will be copied into this Language.-</p>
+							
+							<select  style="font-size: 9pt;" name="theCopyFromLanguageCode" id="theCopyFromLanguageCode" >
+								<option 
+									id="cid_CopyFromLanguageCode_None" value="---"
+									tal:content="string:---" />
+								<tal:block tal:repeat="unIdiomaIndex python: range( len(  pExistingIdiomasCodesAndDisplayNames))">
+									<tal:block tal:define="
+										unCodeAndDisplayname     python: pExistingIdiomasCodesAndDisplayNames[ unIdiomaIndex];
+										pCodigoIdioma            python: unCodeAndDisplayname[ 0].replace( '[', '');
+										pTituloIdioma            python: unCodeAndDisplayname[ 1]" >                                                            
+										<option 
+											id="#" value="#"
+											tal:content="pTituloIdioma"
+											tal:attributes="value python: pCodigoIdioma;
+												id python: 'cid_CopyFromLanguageCode_%d' % ( unIdiomaIndex, )"/>
+									</tal:block>
+								</tal:block>
+							</select>
+							
+							<br/>
+							<br/>
+							
+							<input class="context" name="form_submit"  type="submit"  value="Save" tabindex="5" i18n:domain="plone" i18n:attributes="value label_save" />                                                        
+						</form>
+					</tal:block>				
+				</tal:block>
+			</tal:block>
+		</tal:block>
+		
+		<metal:block metal:use-macro="here/PerformanceAnalysis/macros/tRenderProcessingTime_HTML" />   
+			 
+	</div>
+    
+
+	
+	
+
+	
+	
+	
+	
+</body>
+</html>
+

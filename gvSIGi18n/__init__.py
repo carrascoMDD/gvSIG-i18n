@@ -2,8 +2,8 @@
 #
 # File: gvSIGi18n.py
 #
-# Copyright (c) 2008, 2009, 2010, 2011 Conselleria de Infraestructuras y
-# Transporte de la Generalidad Valenciana
+# Copyright (c) 2013 by 2008, 2009, 2010, 2011 Conselleria de Infraestructuras
+# y Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -69,6 +69,7 @@ DirectoryView.registerDirectory('skins', product_globals)
 DirectoryView.registerDirectory('skins/gvSIGi18n',
                                     product_globals)
 
+
 ##code-section custom-init-head #fill in your manual code here
 ##/code-section custom-init-head
 
@@ -79,43 +80,82 @@ def initialize(context):
 
     # imports packages and types for registration
 
+
+
     import TRAConfiguracion
+
     import TRAColeccionInformes
+
     import TRAArquetipo
+
     import TRAModulo
+
     import TRAColeccionCadenas
+
     import TRAProgreso
+
     import TRAInforme
+
     import TRAColeccionArquetipos
+
     import TRAParametrosControlProgreso
+
     import TRAContenidoXML
+
     import TRAColeccionImportaciones
+
     import TRACadena
+
     import TRAColeccionSolicitudesCadenas
+
     import TRAElemento
+
     import TRAConfiguracionSolicitudesCadenas
+
     import TRAConfiguracionPaginaTraducciones
+
     import TRASimbolosOrdenados
+
     import TRACatalogo
+
     import TRAColeccionIdiomas
+
     import TRAConfiguracionInvalidacionInformes
+
     import TRAConfiguracionVarios
+
     import TRAContenidoIntercambio
+
     import TRAConfiguracionImportacion
+
     import TRAConfiguracionExportacion
+
     import TRAConRegistroActividad
+
     import TRAImportacion
+
     import TRAIdioma
+
     import TRAColeccionModulos
+
     import TRATraduccion
+
     import TRAColeccionContribuciones
+
     import TRAColeccionProgresos
+
     import TRAConfiguracionPermisos
+
     import TRAContribuciones
+
     import TRAConfiguracionPerfilEjecucion
+
     import TRASolicitudCadena
 
+
+
     # Initialize portal content
+
     all_content_types, all_constructors, all_ftis = process_types(
         listTypes(PROJECTNAME),
         PROJECTNAME)
@@ -137,6 +177,7 @@ def initialize(context):
         context.registerClass(meta_type   = all_ftis[i]['meta_type'],
                               constructors= (all_constructors[i],),
                               permission  = ADD_CONTENT_PERMISSIONS[klassname])
+
 
     # Apply customization-policy, if theres any
     if CustomizationPolicy and hasattr(CustomizationPolicy, 'register'):

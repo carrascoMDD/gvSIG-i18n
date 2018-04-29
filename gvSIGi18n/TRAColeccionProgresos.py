@@ -2,8 +2,8 @@
 #
 # File: TRAColeccionProgresos.py
 #
-# Copyright (c) 2008, 2009, 2010, 2011 Conselleria de Infraestructuras y
-# Transporte de la Generalidad Valenciana
+# Copyright (c) 2013 by 2008, 2009, 2010, 2011 Conselleria de Infraestructuras
+# y Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #

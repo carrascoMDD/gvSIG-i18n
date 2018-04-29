@@ -2,8 +2,8 @@
 #
 # File: Install.py
 #
-# Copyright (c) 2008, 2009, 2010, 2011 Conselleria de Infraestructuras y
-# Transporte de la Generalidad Valenciana
+# Copyright (c) 2013 by 2008, 2009, 2010, 2011 Conselleria de Infraestructuras
+# y Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -50,6 +50,8 @@ from Products.Archetypes.Extensions.utils import installTypes
 from Products.Archetypes.Extensions.utils import install_subskin
 from Products.Archetypes.config import TOOL_NAME as ARCHETYPETOOLNAME
 from Products.Archetypes.atapi import listTypes
+
+
 from Products.gvSIGi18n.config import PROJECTNAME
 from Products.gvSIGi18n.config import product_globals as GLOBALS
 
@@ -79,6 +81,29 @@ def install(self, reinstall=False):
     install_subskin(self, out, GLOBALS)
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     # try to call a workflow install method
     # in 'InstallWorkflows.py' method 'installWorkflows'
     try:
@@ -97,41 +122,86 @@ def install(self, reinstall=False):
 
 
 
+
+
+
+
+
+
+
     # enable portal_factory for given types
     factory_tool = getToolByName(self,'portal_factory')
     factory_types=[
         "TRAColeccionInformes",
-        "TRAModulo",
-        "TRAColeccionCadenas",
-        "TRAProgreso",
-        "TRAInforme",
-        "TRAParametrosControlProgreso",
-        "TRAContenidoXML",
-        "TRAColeccionImportaciones",
-        "TRACadena",
-        "TRAColeccionSolicitudesCadenas",
-        "TRAConfiguracionSolicitudesCadenas",
-        "TRAConfiguracionPaginaTraducciones",
-        "TRASimbolosOrdenados",
-        "TRACatalogo",
-        "TRAColeccionIdiomas",
-        "TRAConfiguracionInvalidacionInformes",
-        "TRAConfiguracionVarios",
-        "TRAContenidoIntercambio",
-        "TRAConfiguracionImportacion",
-        "TRAConfiguracionExportacion",
-        "TRAImportacion",
-        "TRAIdioma",
-        "TRAColeccionModulos",
-        "TRATraduccion",
-        "TRAColeccionContribuciones",
-        "TRAColeccionProgresos",
-        "TRAConfiguracionPermisos",
-        "TRAContribuciones",
-        "TRAConfiguracionPerfilEjecucion",
-        "TRASolicitudCadena",
-        ] + factory_tool.getFactoryTypes().keys()
+        
+"TRAModulo",
+        
+"TRAColeccionCadenas",
+        
+"TRAProgreso",
+        
+"TRAInforme",
+        
+"TRAParametrosControlProgreso",
+        
+"TRAContenidoXML",
+        
+"TRAColeccionImportaciones",
+        
+"TRACadena",
+        
+"TRAColeccionSolicitudesCadenas",
+        
+"TRAConfiguracionSolicitudesCadenas",
+        
+"TRAConfiguracionPaginaTraducciones",
+        
+"TRASimbolosOrdenados",
+        
+"TRACatalogo",
+        
+"TRAColeccionIdiomas",
+        
+"TRAConfiguracionInvalidacionInformes",
+        
+"TRAConfiguracionVarios",
+        
+"TRAContenidoIntercambio",
+        
+"TRAConfiguracionImportacion",
+        
+"TRAConfiguracionExportacion",
+        
+"TRAImportacion",
+        
+"TRAIdioma",
+        
+"TRAColeccionModulos",
+        
+"TRATraduccion",
+        
+"TRAColeccionContribuciones",
+        
+"TRAColeccionProgresos",
+        
+"TRAConfiguracionPermisos",
+        
+"TRAContribuciones",
+        
+"TRAConfiguracionPerfilEjecucion",
+        
+"TRASolicitudCadena",
+        
+] + factory_tool.getFactoryTypes().keys()
     factory_tool.manage_setPortalFactoryTypes(listOfTypeIds=factory_types)
+
+
+
+
+
+
+
+
 
     from Products.gvSIGi18n.config import STYLESHEETS
     try:
@@ -188,6 +258,24 @@ def install(self, reinstall=False):
 
 def uninstall(self, reinstall=False):
     out = StringIO()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

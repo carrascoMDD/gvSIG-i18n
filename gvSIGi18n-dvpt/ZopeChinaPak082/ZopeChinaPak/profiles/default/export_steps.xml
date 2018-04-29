@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<export-steps>
+ <export-step id="catalog"
+              handler="Products.CMFCore.exportimport.catalog.exportCatalogTool"
+              title="Catalog Tool">
+   Export Catalog subobjects, indexes and columns
+ </export-step>
+ <export-step id="content"
+              handler="Products.CMFCore.exportimport.content.exportSiteStructure"
+              title="Content">
+  Export the site's structure and content.
+ </export-step>
+ <export-step id="propertiestool"
+              handler="Products.CMFPlone.exportimport.propertiestool.exportPloneProperties"
+              title="Plone Properties">
+  Export plone properties tool and subobjects.
+ </export-step>
+ <export-step id="step_registries"
+              handler="Products.GenericSetup.tool.exportStepRegistries"
+              title="Step Registries">
+  Export current contents of import step registry and export step registry.
+ </export-step>
+</export-steps>

@@ -2,8 +2,8 @@
 #
 # File: gvSIGi18n.py
 #
-# Copyright (c) 2008, 2009, 2010, 2011 Conselleria de Infraestructuras y
-# Transporte de la Generalidad Valenciana
+# Copyright (c) 2013 by 2008, 2009, 2010, 2011 Conselleria de Infraestructuras
+# y Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -45,6 +45,8 @@ except ImportError: # Old CMF
     from Products.CMFCore.CMFCorePermissions import setDefaultRoles
 
 
+
+
 ##code-section config-head #fill in your manual code here
 ##/code-section config-head
 
@@ -62,11 +64,23 @@ else:
 # Permissions
 DEFAULT_ADD_CONTENT_PERMISSION = "Add portal content"
 setDefaultRoles(DEFAULT_ADD_CONTENT_PERMISSION, ('Manager', 'Owner'))
+
 ADD_CONTENT_PERMISSIONS = {
+
+
     'TRACatalogo': 'gvSIGi18n: Add TRACatalogo',
+
+
 }
 
+
+
+
 setDefaultRoles('gvSIGi18n: Add TRACatalogo', ('Manager','Owner'))
+
+
+
+
 
 product_globals = globals()
 

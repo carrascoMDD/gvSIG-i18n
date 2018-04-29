@@ -1,0 +1,337 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>gvSIGi18n::TRAConfiguracionPermisos</title>
+<link href="../css/ea.css" rel="stylesheet" type="text/css" />
+<script>
+function initPage(src) {
+	if(parent==this&&(this.location+"").indexOf('EARoot')!=-1)
+		document.location=(this.location+"").substring(0,(this.location+"").indexOf('EARoot'))+"index"+(this.location+"").substring((this.location+"").lastIndexOf('.'))+"?goto="+((this.location+"").substring((this.location+"").indexOf('EARoot')+7,(this.location+"").lastIndexOf('.')).replace(/\//g,':').replace(/EA/g,""));
+	else
+		parent.initPage(src);
+}
+</script>
+</head>
+<body onload="initPage(this);" class="Content">
+<div class="pageHeader"></div>
+<div class="PageBody">
+	<span class="ObjectTitle">TRAConfiguracionPermisos  : public   &lt;&lt;ordered&gt;&gt; class</span>
+	<table border="0" cellpadding="0" cellspacing="0" class="ObjectDetails">
+		<tr>
+			<td width="15%" class="ObjectDetailsTopic">Created:</td>
+			<td width="85%" class="ObjectDetailsValue">13/11/2008 16:15:54</td>
+		</tr>
+		<tr>
+			<td class="ObjectDetailsTopic">Modified:</td>
+			<td class="ObjectDetailsValue">10/10/2010 16:01:18</td>
+		</tr>
+		<tr style="height: 10px"><td colspan="2"></td></tr>
+		<tr>
+			<td class="ObjectDetailsTopic"><img src="../images/plus03.gif" align="absmiddle" id="proj" onclick="parent.toggleData(this.id)" />Project:</td>
+			<td class="ObjectDetailsValue"></td>
+		</tr>
+		<tr id="proj00" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Author:</td>
+			<td class="ObjectDetailsValue"></td>
+		</tr>
+		<tr id="proj01" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Version:</td>
+			<td class="ObjectDetailsValue">1.0</td>
+		</tr>
+		<tr id="proj02" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Phase:</td>
+			<td class="ObjectDetailsValue">1.0</td>
+		</tr>
+		<tr id="proj03" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Status:</td>
+			<td class="ObjectDetailsValue">Proposed</td>
+		</tr>
+		<tr id="proj04" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Complexity:</td>
+			<td class="ObjectDetailsValue">Easy</td>
+		</tr>
+		<tr>
+			<td class="ObjectDetailsTopic"><img src="../images/plus03.gif" align="absmiddle" id="adv" onclick="parent.toggleData(this.id)" />Advanced:</td>
+			<td class="ObjectDetailsValue"></td>
+		</tr>
+		<tr id="adv00" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">UUID:</td>
+			<td class="ObjectDetailsValue">{F05D4F00-A9FF-48d0-96D1-081758C76B13}</td>
+		</tr>
+		<tr id="adv01" style="display: none;">
+			<td class="ObjectDetailsTopic" style="padding-left: 18px;">Appears In:</td>
+			<td class="ObjectDetailsValue"><a href="EA15.htm">07 - gvSIGi18n - configuraciones</a>, <a href="EA17.htm">08 - gvSIGi18n - configuraciones - details</a>, <a href="EA1.htm">00 - gvSIGi18n - todos conceptos</a></td>
+		</tr>
+	</table>
+	
+	<div class="TableGroup" id="TableGroup">
+		<ul class="ItemTitle">
+			<li onClick="parent.toggleItem('Attributes');" id="AttributesTitle">Attributes</li>
+			<li onClick="parent.toggleItem('Operations');" id="OperationsTitle">Operations</li>
+			<li onClick="parent.toggleItem('TaggedVal');" id="TaggedValTitle">Tagged Values</li>
+			<li onClick="parent.toggleItem('Links');" id="LinksTitle">Other Links</li>
+		</ul>
+<div class="ItemBody" id="AttributesTable">
+	<table border="0" cellspacing="0" cellpadding="0" class="Table">
+		<tr>
+			<td width="40%" class="TableHeading">Attribute</td>
+			<td width="60%" class="TableHeading">Details</td>
+		</tr>
+						<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public <a href="EA231.htm">selection</a></i><br /><strong>&nbsp;&nbsp;esAnonymousTRAManager</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> No<br></i>description=Si es Verdadero, entonces los Usuarios Anonimos pueden operar como TRAManager.<br>description2=If True, then Anonymous Users can operate as TRAManager.<br>label=Anonimos son TRAManager<br>label2=Anonymous are TRAManager<br>vocabulary=python:['Si','No',]<br>vocabulary2=python:['Yes','No',]<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public <a href="EA231.htm">selection</a></i><br /><strong>&nbsp;&nbsp;esAuthenticatedTRAManager</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> No<br></i>description=Si es Verdadero, entonces los Usuarios Autentificados pueden operar como TRAManager.<br>description2=If True, then Authenticated Users can operate as TRAManager.<br>label=Autentificados son TRAManager<br>label2=Authenticated are TRAManager<br>vocabulary=python:['Si','No',]<br>vocabulary2=python:['Yes','No',]<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public <a href="EA231.htm">selection</a></i><br /><strong>&nbsp;&nbsp;esManagerTRAManager</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> Si<br></i>description=Si es Verdadero, entonces los Usuarios Managers pueden operar como TRAManager.<br>description2=If True, then Managers Users can operate as TRAManager.<br>label=Managers son TRAManager<br>label2=Managers are TRAManager<br>vocabulary=python:['Si','No',]<br>vocabulary2=python:['Yes','No',]<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public <a href="EA231.htm">selection</a></i><br /><strong>&nbsp;&nbsp;esOwnerTRAManager</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> Si<br></i>description=Si es Verdadero, entonces los Usuarios Propietarios pueden operar como TRAManager.<br>description2=If True, then Owners Users can operate as TRAManager.<br>label=Propietarios son TRAManager<br>label2=Owners are TRAManager<br>vocabulary=python:['Si','No',]<br>vocabulary2=python:['Yes','No',]<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public <a href="EA231.htm">selection</a></i><br /><strong>&nbsp;&nbsp;esReviewerTRAManager</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> No<br></i>description=Si es Verdadero, entonces los Usuarios Revisores pueden operar como TRAManager.<br>description2=If True, then Reviewers Users can operate as TRAManager.<br>label=Revisores son TRAManager<br>label2=Reviewers are TRAManager<br>vocabulary=python:['Si','No',]<br>vocabulary2=python:['Yes','No',]<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public <a href="EA231.htm">selection</a></i><br /><strong>&nbsp;&nbsp;esAnonymousTRACoordinator</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> No<br></i>description=Si es Verdadero, entonces los Usuarios Anonimos pueden operar como sonTRACoordinator.<br>description2=If True, then Anonymous Users can operate as sonTRACoordinator.<br>label=Anonimos son TRACoordinator<br>label2=Anonymous are TRACoordinator<br>vocabulary=python:['Si','No',]<br>vocabulary2=python:['Yes','No',]<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public <a href="EA231.htm">selection</a></i><br /><strong>&nbsp;&nbsp;esAuthenticatedTRACoordinator</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> No<br></i>description=Si es Verdadero, entonces los Usuarios Autentificados pueden operar como sonTRACoordinator.<br>description2=If True, then Authenticated Users can operate as sonTRACoordinator.<br>label=Autentificados son TRACoordinator<br>label2=Authenticated are TRACoordinator<br>vocabulary=python:['Si','No',]<br>vocabulary2=python:['Yes','No',]<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public <a href="EA231.htm">selection</a></i><br /><strong>&nbsp;&nbsp;esManagerTRACoordinator</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> Si<br></i>description=Si es Verdadero, entonces los Usuarios Managers pueden operar como sonTRACoordinator.<br>description2=If True, then Managers Users can operate as sonTRACoordinator.<br>label=Managers son TRACoordinator<br>label2=Managers are TRACoordinator<br>vocabulary=python:['Si','No',]<br>vocabulary2=python:['Yes','No',]<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public <a href="EA231.htm">selection</a></i><br /><strong>&nbsp;&nbsp;esMemberTRAManager</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> No<br></i>description=Si es Verdadero, entonces los Usuarios Miembros pueden operar como TRAManager.<br>description2=If True, then Members Users can operate as TRAManager.<br>label=Miembros son TRAManager<br>label2=Members are TRAManager<br>vocabulary=python:['Si','No',]<br>vocabulary2=python:['Yes','No',]<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public <a href="EA231.htm">selection</a></i><br /><strong>&nbsp;&nbsp;esOwnerTRACoordinator</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> Si<br></i>description=Si es Verdadero, entonces los Usuarios Propietarios pueden operar como sonTRACoordinator.<br>description2=If True, then Owners Users can operate as sonTRACoordinator.<br>label=Propietarios son TRACoordinator<br>label2=Owners are TRACoordinator<br>vocabulary=python:['Si','No',]<br>vocabulary2=python:['Yes','No',]<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public <a href="EA231.htm">selection</a></i><br /><strong>&nbsp;&nbsp;esReviewerTRACoordinator</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> No<br></i>description=Si es Verdadero, entonces los Usuarios Revisores pueden operar como sonTRACoordinator.<br>description2=If True, then Reviewers Users can operate as sonTRACoordinator.<br>label=Revisores son TRACoordinator<br>label2=Reviewers are TRACoordinator<br>vocabulary=python:['Si','No',]<br>vocabulary2=python:['Yes','No',]<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public <a href="EA231.htm">selection</a></i><br /><strong>&nbsp;&nbsp;esAnonymousTRADeveloper</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> No<br></i>description=Si es Verdadero, entonces los Usuarios Anonimos pueden operar como TRADeveloper.<br>description2=If True, then Anonymous Users can operate as TRADeveloper.<br>label=Anonimos son TRADeveloper<br>label2=Anonymous are TRADeveloper<br>vocabulary=python:['Si','No',]<br>vocabulary2=python:['Yes','No',]<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public <a href="EA231.htm">selection</a></i><br /><strong>&nbsp;&nbsp;esAuthenticatedTRADeveloper</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> No<br></i>description=Si es Verdadero, entonces los Usuarios Autentificados pueden operar como TRADeveloper.<br>description2=If True, then Authenticated Users can operate as TRADeveloper.<br>label=Autentificados son TRADeveloper<br>label2=Authenticated are TRADeveloper<br>vocabulary=python:['Si','No',]<br>vocabulary2=python:['Yes','No',]<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public <a href="EA231.htm">selection</a></i><br /><strong>&nbsp;&nbsp;esManagerTRADeveloper</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> Si<br></i>description=Si es Verdadero, entonces los Usuarios Managers pueden operar como TRADeveloper.<br>description2=If True, then Managers Users can operate as TRADeveloper.<br>label=Managers son TRADeveloper<br>label2=Managers are TRADeveloper<br>vocabulary=python:['Si','No',]<br>vocabulary2=python:['Yes','No',]<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public <a href="EA231.htm">selection</a></i><br /><strong>&nbsp;&nbsp;esMemberTRACoordinator</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> No<br></i>description=Si es Verdadero, entonces los Usuarios Miembros pueden operar como sonTRACoordinator.<br>description2=If True, then Members Users can operate as sonTRACoordinator.<br>label=Miembros son TRACoordinator<br>label2=Members are sonTRACoordinator<br>vocabulary=python:['Si','No',]<br>vocabulary2=python:['Yes','No',]<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public <a href="EA231.htm">selection</a></i><br /><strong>&nbsp;&nbsp;esOwnerTRADeveloper</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> Si<br></i>description=Si es Verdadero, entonces los Usuarios Propietarios pueden operar como TRADeveloper.<br>description2=If True, then Owners Users can operate as TRADeveloper.<br>label=Propietarios son TRADeveloper<br>label2=Owners are TRADeveloper<br>vocabulary=python:['Si','No',]<br>vocabulary2=python:['Yes','No',]<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public <a href="EA231.htm">selection</a></i><br /><strong>&nbsp;&nbsp;esReviewerTRADeveloper</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> No<br></i>description=Si es Verdadero, entonces los Usuarios Revisores pueden operar como TRADeveloper.<br>description2=If True, then Reviewers Users can operate as TRADeveloper.<br>label=Revisores son TRADeveloper<br>label2=Reviewers are TRADeveloper<br>vocabulary=python:['Si','No',]<br>vocabulary2=python:['Yes','No',]<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public <a href="EA231.htm">selection</a></i><br /><strong>&nbsp;&nbsp;esAnonymousTRAReviewer</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> No<br></i>description=Si es Verdadero, entonces los Usuarios Anonimos pueden operar como TRAReviewer.<br>description2=If True, then Anonymous Users can operate as TRAReviewer.<br>label=Anonimos son TRAReviewer<br>label2=Anonymous are TRAReviewer<br>vocabulary=python:['Si','No',]<br>vocabulary2=python:['Yes','No',]<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public <a href="EA231.htm">selection</a></i><br /><strong>&nbsp;&nbsp;esAuthenticatedTRAReviewer</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> No<br></i>description=Si es Verdadero, entonces los Usuarios Autentificados pueden operar como TRAReviewer.<br>description2=If True, then Authenticated Users can operate as TRAReviewer.<br>label=Autentificados son TRAReviewer<br>label2=Authenticated are TRAReviewer<br>vocabulary=python:['Si','No',]<br>vocabulary2=python:['Yes','No',]<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public <a href="EA231.htm">selection</a></i><br /><strong>&nbsp;&nbsp;esManagerTRAReviewer</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> Si<br></i>description=Si es Verdadero, entonces los Usuarios Managers pueden operar como TRAReviewer.<br>description2=If True, then Managers Users can operate as TRAReviewer.<br>label=Managers son TRAReviewer<br>label2=Managers are TRAReviewer<br>vocabulary=python:['Si','No',]<br>vocabulary2=python:['Yes','No',]<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public <a href="EA231.htm">selection</a></i><br /><strong>&nbsp;&nbsp;esOwnerTRAReviewer</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> Si<br></i>description=Si es Verdadero, entonces los Usuarios Propietarios pueden operar como TRAReviewer.<br>description2=If True, then Owners Users can operate as TRAReviewer.<br>label=Propietarios son TRAReviewer<br>label2=Owners are TRAReviewer<br>vocabulary=python:['Si','No',]<br>vocabulary2=python:['Yes','No',]<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public <a href="EA231.htm">selection</a></i><br /><strong>&nbsp;&nbsp;esReviewerTRAReviewer</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> No<br></i>description=Si es Verdadero, entonces los Usuarios Revisores pueden operar como TRAReviewer.<br>description2=If True, then Reviewers Users can operate as TRAReviewer.<br>label=Revisores son TRAReviewer<br>label2=Reviewers are TRAReviewer<br>vocabulary=python:['Si','No',]<br>vocabulary2=python:['Yes','No',]<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public <a href="EA231.htm">selection</a></i><br /><strong>&nbsp;&nbsp;esAnonymousTRATranslator</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> No<br></i>description=Si es Verdadero, entonces los Usuarios Anonimos pueden operar como TRATranslator.<br>description2=If True, then Anonymous Users can operate as TRATranslator.<br>label=Anonimos son TRATranslator<br>label2=Anonymous are TRATranslator<br>vocabulary=python:['Si','No',]<br>vocabulary2=python:['Yes','No',]<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public <a href="EA231.htm">selection</a></i><br /><strong>&nbsp;&nbsp;esAuthenticatedTRATranslator</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> No<br></i>description=Si es Verdadero, entonces los Usuarios Autentificados pueden operar como TRATranslator.<br>description2=If True, then Authenticated Users can operate as TRATranslator.<br>label=Autentificados son TRATranslator<br>label2=Authenticated are TRATranslator<br>vocabulary=python:['Si','No',]<br>vocabulary2=python:['Yes','No',]<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public <a href="EA231.htm">selection</a></i><br /><strong>&nbsp;&nbsp;esManagerTRATranslator</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> Si<br></i>description=Si es Verdadero, entonces los Usuarios Managers pueden operar como TRATranslator.<br>description2=If True, then Managers Users can operate as TRATranslator.<br>label=Managers son TRATranslator<br>label2=Managers are TRATranslator<br>vocabulary=python:['Si','No',]<br>vocabulary2=python:['Yes','No',]<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public <a href="EA231.htm">selection</a></i><br /><strong>&nbsp;&nbsp;esMemberTRADeveloper</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> No<br></i>description=Si es Verdadero, entonces los Usuarios Miembros pueden operar como TRADeveloper.<br>description2=If True, then Members Users can operate as TRADeveloper.<br>label=Miembros son TRADeveloper<br>label2=Members are TRADeveloper<br>vocabulary=python:['Si','No',]<br>vocabulary2=python:['Yes','No',]<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public <a href="EA231.htm">selection</a></i><br /><strong>&nbsp;&nbsp;esOwnerTRATranslator</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> Si<br></i>description=Si es Verdadero, entonces los Usuarios Propietarios pueden operar como TRATranslator.<br>description2=If True, then Owners Users can operate as TRATranslator.<br>label=Propietarios son TRATranslator<br>label2=Owners are TRATranslator<br>vocabulary=python:['Si','No',]<br>vocabulary2=python:['Yes','No',]<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public <a href="EA231.htm">selection</a></i><br /><strong>&nbsp;&nbsp;esReviewerTRATranslator</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> No<br></i>description=Si es Verdadero, entonces los Usuarios Revisores pueden operar como TRATranslator.<br>description2=If True, then Reviewers Users can operate as TRATranslator.<br>label=Revisores son TRATranslator<br>label2=Reviewers are TRATranslator<br>vocabulary=python:['Si','No',]<br>vocabulary2=python:['Yes','No',]<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public <a href="EA231.htm">selection</a></i><br /><strong>&nbsp;&nbsp;esAnonymousTRAVisitor</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> Si<br></i>description=Si es Verdadero, entonces los Usuarios Anonimos pueden operar como TRAVisitor.<br>description2=If True, then Anonymous Users can operate as TRAVisitor.<br>label=Anonimos son TRAVisitor<br>label2=Anonymous are TRAVisitor<br>vocabulary=python:['Si','No',]<br>vocabulary2=python:['Yes','No',]<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public <a href="EA231.htm">selection</a></i><br /><strong>&nbsp;&nbsp;esAuthenticatedTRAVisitor</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> Si<br></i>description=Si es Verdadero, entonces los Usuarios Autentificados pueden operar como TRAVisitor.<br>description2=If True, then Authenticated Users can operate as TRAVisitor.<br>label=Autentificados son TRAVisitor<br>label2=Authenticated are TRAVisitor<br>vocabulary=python:['Si','No',]<br>vocabulary2=python:['Yes','No',]<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public <a href="EA231.htm">selection</a></i><br /><strong>&nbsp;&nbsp;esManagerTRAVisitor</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> Si<br></i>description=Si es Verdadero, entonces los Usuarios Managers pueden operar como TRAVisitor.<br>description2=If True, then Managers Users can operate as TRAVisitor.<br>label=Managers son TRAVisitor<br>label2=Managers are TRAVisitor<br>vocabulary=python:['Si','No',]<br>vocabulary2=python:['Yes','No',]<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public <a href="EA231.htm">selection</a></i><br /><strong>&nbsp;&nbsp;esOwnerTRAVisitor</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> Si<br></i>description=Si es Verdadero, entonces los Usuarios Propietarios pueden operar como TRAVisitor.<br>description2=If True, then Owners Users can operate as TRAVisitor.<br>label=Propietarios son TRAVisitor<br>label2=Owners are TRAVisitor<br>vocabulary=python:['Si','No',]<br>vocabulary2=python:['Yes','No',]<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public <a href="EA231.htm">selection</a></i><br /><strong>&nbsp;&nbsp;esReviewerTRAVisitor</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> Si<br></i>description=Si es Verdadero, entonces los Usuarios Revisores pueden operar como TRAVisitor.<br>description2=If True, then Reviewers Users can operate as TRAVisitor.<br>label=Revisores son TRAVisitor<br>label2=Reviewers are TRAVisitor<br>vocabulary=python:['Si','No',]<br>vocabulary2=python:['Yes','No',]<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public <a href="EA231.htm">selection</a></i><br /><strong>&nbsp;&nbsp;esMemberTRAReviewer</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> No<br></i>description=Si es Verdadero, entonces los Usuarios Miembros pueden operar como TRAReviewer.<br>description2=If True, then Members Users can operate as TRAReviewer.<br>label=Miembros son TRAReviewer<br>label2=Members are TRAReviewer<br>vocabulary=python:['Si','No',]<br>vocabulary2=python:['Yes','No',]<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public <a href="EA231.htm">selection</a></i><br /><strong>&nbsp;&nbsp;esMemberTRATranslator</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> No<br></i>description=Si es Verdadero, entonces los Usuarios Miembros pueden operar como TRATranslator.<br>description2=If True, then Members Users can operate as TRATranslator.<br>label=Miembros son TRATranslator<br>label2=Members are TRATranslator<br>vocabulary=python:['Si','No',]<br>vocabulary2=python:['Yes','No',]<br>&nbsp;</td>
+			</tr>			<tr>
+				<td width="40%" class="TableRow" valign="top"><i>public <a href="EA231.htm">selection</a></i><br /><strong>&nbsp;&nbsp;esMemberTRAVisitor</strong></td>
+				<td width="60%" class="TableRow" valign="top"><i><i>Initial:</i> Si<br></i>description=Si es Verdadero, entonces los Usuarios Miembros pueden operar como TRAVisitor.<br>description2=If True, then Members Users can operate as TRAVisitor.<br>label=Miembros son TRAVisitor<br>label2=Members are TRAVisitor<br>vocabulary=python:['Si','No',]<br>vocabulary2=python:['Yes','No',]<br>&nbsp;</td>
+			</tr>
+		</table>
+</div><div class="ItemBody" id="OperationsTable">
+	<table border="0" cellspacing="0" cellpadding="0" class="Table">
+		<tr>
+			<td width="40%" class="TableHeading">Operation</td>
+			<td width="60%" class="TableHeading">Details</td>
+		</tr>
+						<tr>
+				<td width="40%" class="TableRow">
+					<i>public</i><br />
+					<strong>ActivarConfiguracionPermisos_PloneAction</strong>():<a href="EA232.htm">void</a>
+				</td>
+				<td width="60%" class="TableRow">
+					<i>Sequential &lt;&lt;action&gt;&gt; </i>
+					<table>
+						<tr>
+							<td valign = "top"><i>Tags:</i><span style="margin-left: .7cm;"> </span></td>
+							<td>action=string:${object_url}/TRAActivatePermissionsConfiguration_actioncategory=object_buttonscondition=object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Activate_TRAConfiguracion_Permisos')id=TRAActivateConfiguracionPermisoslabel=Activate Permissions Configurationlabel2=Activar Configuracion de Permisospermission=View</td>
+						</tr>
+					</table>
+					
+				</td>
+			</tr>
+
+		</table>
+</div><div class="ItemBody" id="TaggedValTable">
+	<table align="center" border="0" cellspacing="0" cellpadding="0" class="Table">
+	<tr>
+			<td width="30%" class="TableHeading">Tag</td>
+			<td width="30%" class="TableHeading">Value</td>
+			<td width="40%" class="TableHeading">Details</td>
+	</tr>
+					<tr>
+				<td width="30%" class="TableRow" valign="top">allow_discussion</td>
+				<td width="30%" class="TableRow" valign="top">False</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>			<tr>
+				<td width="30%" class="TableRow" valign="top">archetype_name</td>
+				<td width="30%" class="TableRow" valign="top">Configuracion Permisos</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>			<tr>
+				<td width="30%" class="TableRow" valign="top">archetype_name2</td>
+				<td width="30%" class="TableRow" valign="top">Permissions Configuration</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>			<tr>
+				<td width="30%" class="TableRow" valign="top">content_icon</td>
+				<td width="30%" class="TableRow" valign="top">traconfiguracion.gif</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>			<tr>
+				<td width="30%" class="TableRow" valign="top">default_view</td>
+				<td width="30%" class="TableRow" valign="top">Tabular</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>			<tr>
+				<td width="30%" class="TableRow" valign="top">fields_order_1</td>
+				<td width="30%" class="TableRow" valign="top">['aspectoConfiguracion','esAnonymousTRAManager','esAnonymousTRACoordinator','esAnonymousTRADeveloper','esAnonymousTRAReviewer','esAnonymousTRATranslator','esAnonymousTRAVisitor',]</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>			<tr>
+				<td width="30%" class="TableRow" valign="top">fields_order_2</td>
+				<td width="30%" class="TableRow" valign="top">['esAuthenticatedTRAManager','esAuthenticatedTRACoordinator','esAuthenticatedTRADeveloper','esAuthenticatedTRAReviewer','esAuthenticatedTRATranslator','esAuthenticatedTRAVisitor',]</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>			<tr>
+				<td width="30%" class="TableRow" valign="top">fields_order_3</td>
+				<td width="30%" class="TableRow" valign="top">['esMemberTRAManager','esMemberTRACoordinator','esMemberTRADeveloper','esMemberTRAReviewer','esMemberTRATranslator','esMemberTRAVisitor',]</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>			<tr>
+				<td width="30%" class="TableRow" valign="top">fields_order_4</td>
+				<td width="30%" class="TableRow" valign="top">['esReviewerTRAManager','esReviewerTRACoordinator','esReviewerTRADeveloper','esReviewerTRAReviewer','esReviewerTRATranslator','esReviewerTRAVisitor',]</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>			<tr>
+				<td width="30%" class="TableRow" valign="top">fields_order_5</td>
+				<td width="30%" class="TableRow" valign="top">['esOwnerTRAManager','esOwnerTRACoordinator','esOwnerTRADeveloper','esOwnerTRAOwner','esOwnerTRAReviewer','esOwnerTRATranslator','esOwnerTRAVisitor',]</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>			<tr>
+				<td width="30%" class="TableRow" valign="top">fields_order_6</td>
+				<td width="30%" class="TableRow" valign="top">['esManagerTRAManager','esManagerTRACoordinator','esManagerTRADeveloper','esManagerTRAManager','esManagerTRAReviewer','esManagerTRATranslator','esManagerTRAVisitor',]</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>			<tr>
+				<td width="30%" class="TableRow" valign="top">fields_order_7</td>
+				<td width="30%" class="TableRow" valign="top">['super',]</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>			<tr>
+				<td width="30%" class="TableRow" valign="top">global_allow</td>
+				<td width="30%" class="TableRow" valign="top">False</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>			<tr>
+				<td width="30%" class="TableRow" valign="top">hide_actions</td>
+				<td width="30%" class="TableRow" valign="top">metadata,sharing,folderContents</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>			<tr>
+				<td width="30%" class="TableRow" valign="top">hide_folder_tabs</td>
+				<td width="30%" class="TableRow" valign="top">False</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>			<tr>
+				<td width="30%" class="TableRow" valign="top">immediate_view</td>
+				<td width="30%" class="TableRow" valign="top">Tabular</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>			<tr>
+				<td width="30%" class="TableRow" valign="top">imports</td>
+				<td width="30%" class="TableRow" valign="top">from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import ReferenceBrowserWidget</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>			<tr>
+				<td width="30%" class="TableRow" valign="top">imports</td>
+				<td width="30%" class="TableRow" valign="top">from TRAElemento_Operaciones import TRAElemento_Operaciones
+
+</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>			<tr>
+				<td width="30%" class="TableRow" valign="top">suppl_views</td>
+				<td width="30%" class="TableRow" valign="top">['Tabular',]</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>			<tr>
+				<td width="30%" class="TableRow" valign="top">typeDescription</td>
+				<td width="30%" class="TableRow" valign="top">Configuracion del catalogo de traducciones, con parametros controlando los permisos de las operaciones sobre el catalogo.</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>			<tr>
+				<td width="30%" class="TableRow" valign="top">typeDescription2</td>
+				<td width="30%" class="TableRow" valign="top">Translations catalog configuration, with parameters controlling the permissions of operations on the catalog.</td>
+				<td width="30%" class="TableRow" valign="top">&nbsp;</td>
+			</tr>
+</table>
+</div>		<div class="ItemBody" id="LinksTable">
+			<table align="center" border="0" cellspacing="0" cellpadding="0" class="Table">
+				<tr>
+					<td width="30%" class="TableHeading">Object</td>
+					<td width="15%" class="TableHeading">Type</td>
+					<td width="15%" class="TableHeading">Connection</td>
+					<td width="40%" class="TableHeading">Notes</td>
+				</tr>
+				<tr>
+					<td width="30%" class="TableRow" valign="top"><a href="EA169.htm">«ordered» TRAConfiguracion</a></td>
+					<td width="15%" class="TableRow" valign="top">Class</td>
+					<td width="15%" class="TableRow" valign="top">Generalization</td>
+					<td width="40%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="30%" class="TableRow" valign="top"><a href="EA121.htm">«stub» TRAConfiguracionPermisos_Operaciones</a></td>
+					<td width="15%" class="TableRow" valign="top">Class</td>
+					<td width="15%" class="TableRow" valign="top">Generalization</td>
+					<td width="40%" class="TableRow" valign="top">&nbsp;</td>
+				</tr>
+
+			</table>
+		</div>
+	</div>
+<div class="pageFooter"></div>
+ 
+</body>
+</html>
