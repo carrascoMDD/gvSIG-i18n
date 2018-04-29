@@ -82,9 +82,54 @@ class TRAColeccionInformes_Operaciones:
     
     
         
+
+    security.declarePrivate( 'pAllSubElements_into')    
+    def pAllSubElements_into( self, theCollection, theAdditionalParms=None):
+        if theCollection == None:
+            return self
+        theCollection.append( self)
+        
+        
+        unosElementos = self.fObtenerTodosInformes()
+        if unosElementos:
+            for unElemento in unosElementos:
+                unElemento.pAllSubElements_into( theCollection,theAdditionalParms=theAdditionalParms)
+        
+        return self
+            
     
     
 
+
+
+    security.declarePrivate( 'pForAllElementsDo_recursive')    
+    def pForAllElementsDo_recursive( self, theLambda):
+        if not theLambda:
+            return self
+        
+        theLambda( self)
+
+        unosElementos = self.fObtenerTodosInformes()
+        if unosElementos:
+            for unElemento in unosElementos:
+                unElemento.pForAllElementsDo_recursive( theLambda)
+        
+        return self
+            
+            
+        
+        
+        
+    
+    security.declareProtected( permissions.View, 'fObtenerTodosInformes')
+    def fObtenerTodosInformes( self, ):
+        """Retrieve all contained elements of type TRAInforme.
+        
+        """
+        unosElementos = self.objectValues( cNombreTipoTRAInforme) 
+        return unosElementos
+         
+          
     
 
     security.declareProtected( permissions.AddPortalContent, 'fCrearInforme')

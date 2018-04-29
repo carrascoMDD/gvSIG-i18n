@@ -32,6 +32,7 @@ __docformat__ = 'plaintext'
 from AccessControl import ClassSecurityInfo
 from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.TRAColeccionArquetipos import TRAColeccionArquetipos
+from TRAColeccionImportaciones_Operaciones import TRAColeccionImportaciones_Operaciones
 from Products.gvSIGi18n.TRAConRegistroActividad import TRAConRegistroActividad
 from Products.gvSIGi18n.config import *
 
@@ -76,17 +77,18 @@ schema = Schema((
 
 TRAColeccionImportaciones_schema = OrderedBaseFolderSchema.copy() + \
     getattr(TRAColeccionArquetipos, 'schema', Schema(())).copy() + \
+    getattr(TRAColeccionImportaciones_Operaciones, 'schema', Schema(())).copy() + \
     getattr(TRAConRegistroActividad, 'schema', Schema(())).copy() + \
     schema.copy()
 
 ##code-section after-schema #fill in your manual code here
 ##/code-section after-schema
 
-class TRAColeccionImportaciones(OrderedBaseFolder, TRAColeccionArquetipos, TRAConRegistroActividad):
+class TRAColeccionImportaciones(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccionImportaciones_Operaciones, TRAConRegistroActividad):
     """
     """
     security = ClassSecurityInfo()
-    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAColeccionArquetipos,'__implements__',()),) + (getattr(TRAConRegistroActividad,'__implements__',()),)
+    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAColeccionArquetipos,'__implements__',()),) + (getattr(TRAColeccionImportaciones_Operaciones,'__implements__',()),) + (getattr(TRAConRegistroActividad,'__implements__',()),)
 
     # This name appears in the 'add' box
     archetype_name = 'Coleccion de Importaciones'
@@ -109,7 +111,7 @@ class TRAColeccionImportaciones(OrderedBaseFolder, TRAColeccionArquetipos, TRACo
 
 
 
-    allowed_content_types = ['TRAImportacion'] + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', []))
+    allowed_content_types = ['TRAImportacion'] + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', [])) + list(getattr(TRAColeccionImportaciones_Operaciones, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', []))
     filter_content_types             = 1
     global_allow                     = 0
     #content_icon = 'TRAColeccionImportaciones.gif'

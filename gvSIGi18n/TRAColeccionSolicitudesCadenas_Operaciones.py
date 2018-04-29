@@ -86,8 +86,79 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
     # Methods
     
     
+    
+    
+    
+    
+    
+    security.declareProtected( permissions.View, 'fNewStringSymbolAcceptedReport')    
+    def fNewStringSymbolAcceptedReport( self, theNewStringSymbol):
+        
+        if not theNewStringSymbol:
+            return [ False, self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Warning_NewStringSymbol_Empty', 'Can not be Empty',),]
+        
+        aNewStringSymbol = theNewStringSymbol.strip()
+        if not aNewStringSymbol:
+            return [ False, self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Warning_NewStringSymbol_Empty', 'Can not be Empty',),]
+        
+        aNewStringSymbolLines = aNewStringSymbol.splitlines()
+        if not aNewStringSymbolLines:
+            return [ False, self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Warning_NewStringSymbol_Empty', 'Can not be Empty',),]
+         
+        aNewStringSymbol = aNewStringSymbolLines[0]
+        if not aNewStringSymbol:
+            return [ False, self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Warning_NewStringSymbol_Empty', 'Can not be Empty',),]
+         
+        if not ( aNewStringSymbol == aNewStringSymbol.replace( ' ', '').replace( '\t', '')):
+            return [ False, self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Warning_NewStringSymbol_BlanksNotAllowed', 'Blanks not allowed',),]
+                 
+        for aChar in aNewStringSymbol:
+            if not ( aChar.isalnum() or ( aChar in cNewStringSymbol_AcceptableNonAlphanumericChars)):
+                return [ False, '%s %s' % ( 
+                    self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Warning_NewStringSymbol_OnlyAlphanumerocCharsAnd', 'Only allowed alphanumeric chars and',),
+                    '  '.join( [ '"%s"' % aC for aC in cNewStringSymbol_AcceptableNonAlphanumericChars]),
+                )]
+                
+        return [ True, '',]       
+                
+        
+        
+        
+        
+        
+    security.declarePrivate( 'pAllSubElements_into')    
+    def pAllSubElements_into( self, theCollection, theAdditionalParms=None):
+        if theCollection == None:
+            return self
+        theCollection.append( self)
+        
+        
+        unosElementos = self.fObtenerTodasSolicitudesCadenas()
+        if unosElementos:
+            for unElemento in unosElementos:
+                unElemento.pAllSubElements_into( theCollection, theAdditionalParms=theAdditionalParms)
+        
+        return self
         
 
+
+    
+
+
+    security.declarePrivate( 'pForAllElementsDo_recursive')    
+    def pForAllElementsDo_recursive( self, theLambda):
+        if not theLambda:
+            return self
+        
+        theLambda( self)
+
+        unosElementos = self.fObtenerTodasSolicitudesCadenas()
+        if unosElementos:
+            for unElemento in unosElementos:
+                unElemento.pForAllElementsDo_recursive( theLambda)
+        
+        return self
+        
 
 
                                 
@@ -409,13 +480,19 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                     return aResult
                 
            
-                anImportExecutionReport = anImportElement.fImportarContenidosIntercambio( False,unPermissionsCache, unRolesCache, unExecutionRecord,)
+                anImportExecutionReport = anImportElement.fImportarContenidosIntercambio(
+                    theJustEstimateCost      =False, 
+                    theIsToCreateCadenas     =True,
+                    thePermissionsCache      =unPermissionsCache, 
+                    theRolesCache            =unRolesCache, 
+                    theParentExecutionRecord =unExecutionRecord)
+                
                 anImportError       = anImportExecutionReport.get( 'error', '')
                 anImportErrorDetail = anImportExecutionReport.get( 'error_detail', '')
                 if anImportError:
                     aResult = { 
                         'effect': 'error', 
-                        'failure':  '%s %s %s ' (
+                        'failure':  '%s %s %s ' % (
                             self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorImportProcessFailed', "Import process failed-"),
                             self.fTranslateI18N( 'gvSIGi18n', anImportError, anImportError),
                             anImportErrorDetail,
@@ -425,12 +502,13 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                     
                 
                 aCleanUpStringsReport = self.fLimpiarCadenas( unPermissionsCache, unRolesCache, unExecutionRecord,)
-                if not aCleanUpStringsReport.get( 'effect', '') == 'deleted':
-                    aResult = { 
-                        'effect': 'error', 
-                        'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCleaningUpStringsRequests', "Error cleaning up strings requests-") + aCleanUpStringsReport.get( 'failure', ''),
-                    }
-                    return aResult
+                # TRADeveloper role can not clean up strings, as we want them to stay in the list for a coordinator to know.
+                #if not aCleanUpStringsReport.get( 'effect', '') == 'deleted':
+                    #aResult = { 
+                        #'effect': 'error', 
+                        #'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCleaningUpStringsRequests', "Error cleaning up strings requests-") + aCleanUpStringsReport.get( 'failure', ''),
+                    #}
+                    #return aResult
                 
                 aResult = { 
                     'effect': 'created',
@@ -707,7 +785,7 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                 
                 unInformeExcepcion = 'Exception during fCrearCadenas\n' 
                 unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                unInformeExcepcion += 'exception message %s\n\n' % str( ( hasattr( unaExceptionInfo[1], 'args') and unaExceptionInfo[1].args) or '')
                 unInformeExcepcion += unaExceptionFormattedTraceback   
                                          
                 unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)

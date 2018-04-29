@@ -82,8 +82,38 @@ class TRAColeccionIdiomas_Operaciones:
     
 
 
-    
 
+    security.declarePrivate( 'pAllSubElements_into')    
+    def pAllSubElements_into( self, theCollection, theAdditionalParms=None):
+        if theCollection == None:
+            return self
+        theCollection.append( self)
+        
+        unosElementos = self.fObtenerTodosIdiomas()
+        if unosElementos:
+            for unElemento in unosElementos:
+                unElemento.pAllSubElements_into( theCollection, theAdditionalParms=theAdditionalParms)
+        
+        return self
+        
+
+        
+
+
+    security.declarePrivate( 'pForAllElementsDo_recursive')    
+    def pForAllElementsDo_recursive( self, theLambda):
+        if not theLambda:
+            return self
+        
+        theLambda( self)
+        
+        unosElementos = self.fObtenerTodosIdiomas()
+        if unosElementos:
+            for unElemento in unosElementos:
+                unElemento.pForAllElementsDo_recursive( theLambda)
+        
+        return self
+        
                                 
                 
     security.declareProtected( permissions.View, 'fObtenerTodosIdiomas')

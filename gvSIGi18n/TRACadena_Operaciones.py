@@ -79,6 +79,36 @@ class TRACadena_Operaciones:
 
 
 
+    security.declarePrivate( 'pAllSubElements_into')    
+    def pAllSubElements_into( self, theCollection, theAdditionalParms=None):
+        if theCollection == None:
+            return self
+        theCollection.append( self)
+        
+        
+        unosElementos = self.fObtenerTodasTraducciones()
+        if unosElementos:
+            for unElemento in unosElementos:
+                unElemento.pAllSubElements_into( theCollection, theAdditionalParms=theAdditionalParms)
+        
+        return self
+        
+
+
+    security.declarePrivate( 'pForAllElementsDo_recursive')    
+    def pForAllElementsDo_recursive( self, theLambda):
+        if not theLambda:
+            return self
+        
+        theLambda( self)
+        
+        unosElementos = self.fObtenerTodasTraducciones()
+        if unosElementos:
+            for unElemento in unosElementos:
+                unElemento.pForAllElementsDo_recursive( theLambda)
+        
+        return self
+        
 
     
 # ####################################
@@ -412,7 +442,7 @@ class TRACadena_Operaciones:
     security.declarePrivate( 'fObtenerTodasTraducciones')
     def fObtenerTodasTraducciones( self, ):
    
-        unasTraducciones = self.objectValues( cNombreTipoTRATraduccion) #
+        unasTraducciones = self.objectValues( cNombreTipoTRATraduccion) 
         return unasTraducciones
            
     
@@ -433,7 +463,21 @@ class TRACadena_Operaciones:
         return unaTraduccionPorId         
         
            
+    
+
+    security.declarePrivate( 'fObtenerTraduccionPorCodigoIdioma')
+    def fObtenerTraduccionPorCodigoIdioma( self, theCodigoIdioma, thePloneUtilsTool=None):
+   
+        if not theCodigoIdioma:
+            return None
+                    
+        aTraduccionId       = self.fIdTraduccionEnLenguage( theCodigoIdioma,thePloneUtilsTool=thePloneUtilsTool)
+
+        unaTraduccionPorId = self.getTraduccionPorID( aTraduccionId)
+
+        return unaTraduccionPorId         
         
+              
         
      
 

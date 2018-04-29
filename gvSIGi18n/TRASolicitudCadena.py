@@ -33,7 +33,7 @@ from AccessControl import ClassSecurityInfo
 from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.TRAArquetipo import TRAArquetipo
 from Products.gvSIGi18n.TRAConRegistroActividad import TRAConRegistroActividad
-from TRACadena_Operaciones import TRACadena_Operaciones
+from TRASolicitudCadena_Operaciones import TRASolicitudCadena_Operaciones
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
@@ -383,17 +383,17 @@ schema = Schema((
 TRASolicitudCadena_schema = OrderedBaseFolderSchema.copy() + \
     getattr(TRAArquetipo, 'schema', Schema(())).copy() + \
     getattr(TRAConRegistroActividad, 'schema', Schema(())).copy() + \
-    getattr(TRACadena_Operaciones, 'schema', Schema(())).copy() + \
+    getattr(TRASolicitudCadena_Operaciones, 'schema', Schema(())).copy() + \
     schema.copy()
 
 ##code-section after-schema #fill in your manual code here
 ##/code-section after-schema
 
-class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRACadena_Operaciones):
+class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRASolicitudCadena_Operaciones):
     """
     """
     security = ClassSecurityInfo()
-    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAArquetipo,'__implements__',()),) + (getattr(TRAConRegistroActividad,'__implements__',()),) + (getattr(TRACadena_Operaciones,'__implements__',()),)
+    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAArquetipo,'__implements__',()),) + (getattr(TRAConRegistroActividad,'__implements__',()),) + (getattr(TRASolicitudCadena_Operaciones,'__implements__',()),)
 
     # This name appears in the 'add' box
     archetype_name = 'Solicitud Creacion Cadena'
@@ -416,7 +416,7 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActivida
 
 
 
-    allowed_content_types = [] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', [])) + list(getattr(TRACadena_Operaciones, 'allowed_content_types', []))
+    allowed_content_types = [] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', [])) + list(getattr(TRASolicitudCadena_Operaciones, 'allowed_content_types', []))
     filter_content_types             = 1
     global_allow                     = 0
     content_icon = 'trasolicitudcadena.gif'

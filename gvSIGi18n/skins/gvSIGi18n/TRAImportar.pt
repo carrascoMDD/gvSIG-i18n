@@ -200,7 +200,7 @@
                     </h2>
                     <p class="formHelp" i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_estimationOfImportOperations_help" />
         
-                    <tal:block tal:define="pInforme python: here.fImportarContenidosIntercambio( True, pPermissionsCache, pRolesCache, pExecutionRecord)" >
+                    <tal:block tal:define="pInforme python: here.fImportarContenidosIntercambio( True, False, pPermissionsCache, pRolesCache, pExecutionRecord)" >
                         <tal:block tal:condition="python: not pInforme">
                              <p i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_errorEstimatingImportOperations_warning_msgid">Internal error while producing report of import operations.-</p>
                         </tal:block>

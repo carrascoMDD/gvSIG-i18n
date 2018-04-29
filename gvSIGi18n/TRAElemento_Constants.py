@@ -33,6 +33,7 @@ Antonio Carrasco Valero <carrasco@ModelDD.org>"""
 __docformat__ = 'plaintext'
 
 
+cNewStringSymbol_AcceptableNonAlphanumericChars = '-_'
 
 
 cLazyCreateModelDDvlPloneTool          = True
@@ -67,6 +68,21 @@ cTimeStampingEnabled             = True
 cTimeProfilingEnabled            = True
 
 
+
+
+
+cLogInventoryProgress                = True
+cLogInventoryProgressInterval        = 20000
+cLogInventoryResult                  = True
+
+cLogResetPermissionsProgress         = True
+cLogResetPermissionsProgressInterval = 4000
+cLogResetPermissionsResult           = True
+
+
+cLogRecatalogProgress                = True
+cLogRecatalogProgressInterval        = 8000
+cLogRecatalogResult                  = True
 
 
 

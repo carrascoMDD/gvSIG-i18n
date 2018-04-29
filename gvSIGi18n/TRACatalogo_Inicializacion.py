@@ -133,8 +133,10 @@ class TRACatalogo_Inicializacion:
 
 
 
-   
-            
+
+
+    
+    
     
     security.declarePrivate('fInstallContainer_Tools')
     def fInstallContainer_Tools( self):
@@ -1743,8 +1745,10 @@ class TRACatalogo_Inicializacion:
                                 unCatalogReportEntry[ 'catalog_refreshed'] = True
                                 unCatalogReportEntry[ 'catalog_refresh_duration'] = unEndTime - unStartTime
                                 
-                            
-                        if ( len( [ unaIndexEntry for unaIndexEntry in unCatalogReportEntry[ 'indexes']  if unaIndexEntry[ 'success'] ]) == len( unCatalogReportEntry[ 'indexes'])) and \
+                                                 
+  
+                        if ( not ( unCatalog == None)) and\
+                           ( len( [ unaIndexEntry for unaIndexEntry in unCatalogReportEntry[ 'indexes']  if unaIndexEntry[ 'success'] ]) == len( unCatalogReportEntry[ 'indexes'])) and \
                            ( len( [ unSchemaEntry for unSchemaEntry in unCatalogReportEntry[ 'schemas']  if unSchemaEntry[ 'success'] ]) == len( unCatalogReportEntry[ 'schemas'])) and \
                            ( len( [ unSchemaEntry for unSchemaEntry in unCatalogReportEntry[ 'lexicons'] if unSchemaEntry[ 'success'] ]) == len( unCatalogReportEntry[ 'lexicons'])):
                             unCatalogReportEntry[ 'success'] = True

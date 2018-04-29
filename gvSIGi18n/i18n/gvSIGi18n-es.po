@@ -1284,6 +1284,16 @@ msgstr "Segundos de Espera entre Transacciones"
 msgid "gvSIGi18n_TRAImportacion_attr_esperaEntreTransaccionesEnSegundos_help"
 msgstr "Con decimales. Intervalo de espera al final de una transaccion, antes de comenzar la siguiente. Util con valores bajos ( <100) del Intervalo de Refresco en Numero de Escrituras, para dejar libre capacidad de procesamiento para otros procesos o usuarios."
 
+#. Default: "Segundos a ceder procesador"
+#: TRAImportacion esperaTrasOperacionesEnSegundos
+msgid "gvSIGi18n_TRAImportacion_attr_esperaTrasOperacionesEnSegundos_label"
+msgstr "Segundos a ceder procesador"
+
+#. Default: "Con decimales, los segundos que se cede el procesador a otros procesos."
+#: TRAImportacion esperaTrasOperacionesEnSegundos
+msgid "gvSIGi18n_TRAImportacion_attr_esperaTrasOperacionesEnSegundos_help"
+msgstr "Con decimales, los segundos que se cede el procesador a otros procesos."
+
 #. Default: "Estado del Proceso"
 #: TRAImportacion estadoProceso
 msgid "gvSIGi18n_TRAImportacion_attr_estadoProceso_label"
@@ -1513,6 +1523,26 @@ msgstr "Numero de Refrescos por Escritura en Log"
 #: TRAImportacion numeroDeRefrescosPorEscrituraEnLog
 msgid "gvSIGi18n_TRAImportacion_attr_numeroDeRefrescosPorEscrituraEnLog_help"
 msgstr "Para evitar escribir demasiado frecuentemente en el registro de actividad, cuando se usan valores bajos del Intervalo de Refresco en Numero de Escrituras, este valor puede configurarse a valores altos (>10, < 100)."
+
+#. Default: "Numero de Operaciones antes de ceder procesador"
+#: TRAImportacion numeroOperacionesAntesDeCederProcesador
+msgid "gvSIGi18n_TRAImportacion_attr_numeroOperacionesAntesDeCederProcesador_label"
+msgstr "Numero de Operaciones antes de ceder procesador"
+
+#. Default: "Para evitar que el proceso de importacion consuma una gran parte de la capacidad de proceso, se cedera el procesador, tras este numero de operaciones realizadas, tanto de lectura como escritura."
+#: TRAImportacion numeroOperacionesAntesDeCederProcesador
+msgid "gvSIGi18n_TRAImportacion_attr_numeroOperacionesAntesDeCederProcesador_help"
+msgstr "Para evitar que el proceso de importacion consuma una gran parte de la capacidad de proceso, se cedera el procesador, tras este numero de operaciones realizadas, tanto de lectura como escritura."
+
+#. Default: "Milisegundos de Actividad antes de ceder procesador"
+#: TRAImportacion periodoActividadSinEsperaEnMilisegundos
+msgid "gvSIGi18n_TRAImportacion_attr_periodoActividadSinEsperaEnMilisegundos_label"
+msgstr "Milisegundos de Actividad antes de ceder procesador"
+
+#. Default: "if the value es bigger than 0, then Processor control shall not be yield until the specific number of millseconds of activity, even if the Number of Operations to yield has been reached."
+#: TRAImportacion periodoActividadSinEsperaEnMilisegundos
+msgid "gvSIGi18n_TRAImportacion_attr_periodoActividadSinEsperaEnMilisegundos_help"
+msgstr "if the value es bigger than 0, then Processor control shall not be yield until the specific number of millseconds of activity, even if the Number of Operations to yield has been reached."
 
 #. Default: "Usuario Importador"
 #: TRAImportacion usuarioImportador
@@ -4544,3 +4574,36 @@ msgstr "Version del Producto"
 msgid "gvSIGi18n_exportar_Parameter_L10NVersion_label"
 msgstr "Version de la Localizacion"
 
+
+
+#. Default: "Import process failed"
+#: TRAColeccionSolicitudersCadenas_Operacionse.py
+msgid "gvSIGi18n_errorImportProcessFailed"
+msgstr "El proceso de importacion ha fracasado."
+
+
+#. Default: "Error cleaning up strings requests."
+#: TRAColeccionSolicitudersCadenas_Operacionse.py
+msgid "gvSIGi18n_errorCleaningUpStringsRequests"
+msgstr "Error limpiando las solicitudes de cadenas."
+
+
+
+
+#. Default: "Can not be Empty."
+#: TRAColeccionSolicitudersCadenas_Operaciones.py
+msgid "gvSIGi18n_Warning_NewStringSymbol_Empty"
+msgstr "No puede estar vacia."
+
+
+
+#. Default: "Blanks not allowed"
+#: TRAColeccionSolicitudersCadenas_Operaciones.py
+msgid "gvSIGi18n_Warning_NewStringSymbol_BlanksNotAllowed"
+msgstr "No se permiten blancos."
+
+
+#. Default: "Only allowed alphanumeric chars and"
+#: TRAColeccionSolicitudersCadenas_Operaciones.py
+msgid "gvSIGi18n_Warning_NewStringSymbol_OnlyAlphanumerocCharsAnd"
+msgstr "Solo se permiten caracteres alfanumericos y "

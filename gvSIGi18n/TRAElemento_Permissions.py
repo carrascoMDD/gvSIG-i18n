@@ -79,6 +79,9 @@ from TRAElemento_Permissions_SecuritySchemaDocumentation     import cSecuritySch
 
 
 
+
+
+
 class TRAElemento_Permissions:
     """
     """
@@ -179,9 +182,7 @@ class TRAElemento_Permissions:
 
     
     
-    
 
-    
 
     
     
@@ -576,15 +577,191 @@ class TRAElemento_Permissions:
     #      are known beforehand for the thousandas of instances to create
     #   
     # #############################################################
+   
+    
+    security.declarePrivate( 'fNewVoidResetPermissionsResult')
+    def fNewVoidResetPermissionsResult( self, ):
+        unResult = {
+            'success':   False,
+            'total_elements_traversed': 0,
+            'total_elements_reset':     0,
+            'elements_reset_by_type_dict':   { },
+            'elements_reset_by_type':      [ ],
+        }
+        return unResult
+    
+    
+
+        
+        
+        
+
+    security.declareProtected( permissions.ManagePortal, 'fResetPermissionsForAllElements')
+    def fResetPermissionsForAllElements( self, theAdditionalParms=None):
+        
+        someAdditionalParms = theAdditionalParms
+        if someAdditionalParms == None:
+            someAdditionalParms = { }
+        else:
+            someAdditionalParms = someAdditionalParms.copy()
+            
+        someAdditionalParms[ 'permissions_to_reset'] = cPermissionsToReset[:]
+        
+        aResetResult = self.fNewVoidResetPermissionsResult()
+        
+        if cLogResetPermissionsProgress:
+            aResetPermissionsResultDump = self.fResetPermissionsResult_dump( aResetResult)
+            
+            aLogger = logging.getLogger( 'gvSIGi18n')
+            aLogger.info( '\n\nSTARTED %s' % aResetPermissionsResultDump)
+        
+        
+        
+        def fResetPermissionsForElement_lambda( theElement, theResetResult, theAdditionalParmsHere):        
+        
+            theResetResult [ 'total_elements_traversed'] += 1
+            
+            aMetaType = 'UnknownType'
+            try:
+                aMetaType = theElement.meta_type
+            except:
+                aMetaType = theElement.__class__.__name
+            if not aMetaType:
+                aMetaType = 'UnknownType'
+                
+            
+            if theElement.fSetPermissions( theAdditionalParms=theAdditionalParmsHere):
+                theResetResult [ 'total_elements_reset'] += 1
+                
+                aNumElementsOfType = theResetResult[ 'elements_reset_by_type_dict'].get( aMetaType, 0)
+                aNumElementsOfType += 1
+                theResetResult[ 'elements_reset_by_type_dict'][ aMetaType] = aNumElementsOfType
+                
+            if cLogResetPermissionsProgress and not( theResetResult [ 'total_elements_traversed'] % cLogResetPermissionsProgressInterval):
+                aResetPermissionsResultDump = theElement.fResetPermissionsResult_dump( theResetResult)
+                
+                aLogger = logging.getLogger( 'gvSIGi18n')
+                aLogger.info( '\n\nPROGRESS of %s' % aResetPermissionsResultDump)
+                
+            
+            return None        
+        
+        
+        
+        self.pForAllElementsDo( lambda theElement: fResetPermissionsForElement_lambda( theElement, aResetResult, someAdditionalParms))
+        
+        someMetaTypes =  aResetResult[ 'elements_reset_by_type_dict'].keys()
+        someMetaTypes = sorted( someMetaTypes)
+        for aMetaType in someMetaTypes:
+            aResetResult[ 'elements_reset_by_type'].append( [ aMetaType, aResetResult[ 'elements_reset_by_type_dict'][ aMetaType],])
+            
+        aResetResult [ 'success'] = True
+        
+        if cLogResetPermissionsResult:
+            aResetPermissionsResultDump = self.fResetPermissionsResult_dump( aResetResult)
+            
+            aLogger = logging.getLogger( 'gvSIGi18n')
+            aLogger.info( '\n\nCOMPLETED %s' % aResetPermissionsResultDump)
+    
+        return aResetResult
+    
+    
+    
+
+    security.declarePrivate( 'fResetPermissionsResult_dump')
+    def fResetPermissionsResult_dump( self, theResetResult):
+        
+        if not theResetResult:
+            return 'NO ResetPermissionsResult'
+        
+        aStringIO = StringIO()
+        
+        aStringIO.write( """ResetPermissionsResult\n""")
+        aStringIO.write( """Success: %s\n""" % theResetResult .get( 'success', False))
+        aStringIO.write( """total_elements_traversed: %s\n""" % theResetResult .get( 'total_elements_traversed', 0))
+        aStringIO.write( """total_elements_reset:     %s\n""" % theResetResult .get( 'total_elements_reset', 0))
+        aStringIO.write( """traversed_minus_reset:    %s\n""" % ( theResetResult .get( 'total_elements_traversed', 0) - theResetResult .get( 'total_elements_reset', 0)))
+
+        aStringIO.write( """\nType: #elems.\n""")
+        
+        someElementsResetByTypeDict = theResetResult.get( 'elements_reset_by_type_dict', [])
+        
+        for aMetaType in sorted( someElementsResetByTypeDict.keys()):
+            aNumElements = someElementsResetByTypeDict.get( aMetaType, 0)
+            aStringIO.write( """%s : %d\n""" % (aMetaType, aNumElements))
+            
+        aStringIO.write( """\n\n""")
+            
+        aDumpString = aStringIO.getvalue()
+        return aDumpString
+    
+        
+        
+
+
+    security.declareProtected( permissions.ManagePortal, 'fResetPermissionsForAllElements_RetrieveAllFirst')
+    def fResetPermissionsForAllElements_RetrieveAllFirst( self, theAdditionalParms=None):
+        
+        someAdditionalParms = theAdditionalParms
+        if someAdditionalParms == None:
+            someAdditionalParms = { }
+        else:
+            someAdditionalParms = someAdditionalParms.copy()
+            
+        someAdditionalParms[ 'permissions_to_reset'] = cPermissionsToReset[:]
+        
+        aResetResult = self.fNewVoidResetPermissionsResult()
+        
+        allElements = self.fAllSubElements( theAdditionalParms=theAdditionalParms)
+        aResetResult [ 'total_elements_traversed'] = len( allElements)
+        
+        for anElement in allElements:
+            aMetaType = 'UnknownType'
+            try:
+                aMetaType = anElement.meta_type
+            except:
+                aMetaType = anElement.__class__.__name
+            if not aMetaType:
+                aMetaType = 'UnknownType'
+                
+            
+            if anElement.fSetPermissions( theAdditionalParms=theAdditionalParms):
+                aResetResult [ 'total_elements_reset'] += 1
+                
+                aNumElementsOfType = aResetResult[ 'elements_reset_by_type_dict'].get( aMetaType, 0)
+                aNumElementsOfType += 1
+                aResetResult[ 'elements_reset_by_type_dict'][ aMetaType] = aNumElementsOfType
+
+        someMetaTypes =  aResetResult[ 'elements_reset_by_type_dict'].keys()
+        someMetaTypes = sorted( someMetaTypes)
+        for aMetaType in someMetaTypes:
+            aResetResult[ 'elements_reset_by_type'].append( [ aMetaType, aResetResult[ 'elements_reset_by_type_dict'][ aMetaType],])
+            
+                
+        aResetResult [ 'success'] = True
+        
+        return aResetResult
+    
+            
+        
+    
+
+                
 
     
-    
     security.declarePrivate( 'pSetPermissions')
-    def pSetPermissions(self):
+    def pSetPermissions(self, theAdditionalParms=None):
+        self.fSetPermissions( theAdditionalParms=theAdditionalParms)
+        return self
+    
+    
+    
+    security.declarePrivate( 'fSetPermissions')
+    def fSetPermissions(self, theAdditionalParms=None):
  
         unasPermissionsSpec = self.getCatalogo().fPermissionsForElement( self)   
         if not unasPermissionsSpec:
-            return self
+            return False
         
         # It is used to unset the 'Copy or Move' permission
         # but it is cheked when the id of the temporary element is changed upon saving the id/title imput form.
@@ -602,6 +779,13 @@ class TRAElemento_Permissions:
             
             if unaPermission:
                 self.manage_permission( unaPermission, roles=unosRoles, acquire=unAcquire)
+                
+        unasPermissionsToReset = ( theAdditionalParms or {}).get( 'permissions_to_reset', [])
+        if unasPermissionsToReset:     
+            for unaPermission in unasPermissionsToReset:
+                if not unasPermissionsSpec.has_key( unaPermission):
+                    self.manage_permission( unaPermission, roles=[], acquire=False)
+                    
                 
     
         aAcquireRoleAssignments       = self.fAcquireRoleAssignmentsElement( self)
@@ -629,7 +813,7 @@ class TRAElemento_Permissions:
                 pass # it's already ok 
                                 
                 
-        return self
+        return True
     
     
 

@@ -67,7 +67,27 @@ class TRAModulo_Operaciones:
 
     
 
-                   
+    security.declarePrivate( 'pAllSubElements_into')    
+    def pAllSubElements_into( self, theCollection, theAdditionalParms=None):
+        if theCollection == None:
+            return self
+        theCollection.append( self)
+        
+         
+        return self
+        
+    
+
+    security.declarePrivate( 'pForAllElementsDo_recursive')    
+    def pForAllElementsDo_recursive( self, theLambda):
+        if not theLambda:
+            return self
+        
+        theLambda( self)        
+    
+        return self
+
+                       
     
     security.declarePublic( 'fExtraLinks')    
     def fExtraLinks( self):

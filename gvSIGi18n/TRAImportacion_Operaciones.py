@@ -87,7 +87,7 @@ from TRAImportarExportar_Constants import *
 
 from TRAElemento_Permission_Definitions import cUseCase_CreateTRAContenidoIntercambio, cUseCase_DeleteTRAContenidoIntercambio
 from TRAElemento_Permission_Definitions import cUseCase_ImportTRAImportacion, cUseCase_CreateMissingTRATraduccion, cUseCase_ReuseTRAImportacion
-from TRAElemento_Permission_Definitions import cBoundObject
+from TRAElemento_Permission_Definitions import cUseCase_ImportTRAImportacion_ToCreateCadenas, cBoundObject
 
 from TRAElemento_Permission_Definitions import cPermissionsToDenyEverywhereToEverybody
 
@@ -105,6 +105,45 @@ class TRAImportacion_Operaciones:
     security = ClassSecurityInfo()
      
 
+    
+    
+    security.declarePrivate( 'pAllSubElements_into')    
+    def pAllSubElements_into( self, theCollection, theAdditionalParms=None):
+        if theCollection == None:
+            return self
+        theCollection.append( self)
+        
+        
+        unosElementos = self.fObtenerTodosContenidosIntercambio()
+        if unosElementos:
+            for unElemento in unosElementos:
+                unElemento.pAllSubElements_into( theCollection, theAdditionalParms=theAdditionalParms)
+        
+        return self
+           
+    
+    
+    
+
+
+    security.declarePrivate( 'pForAllElementsDo_recursive')    
+    def pForAllElementsDo_recursive( self, theLambda):
+        if not theLambda:
+            return self
+        
+        theLambda( self)        
+    
+        unosElementos = self.fObtenerTodosContenidosIntercambio()
+        if unosElementos:
+            for unElemento in unosElementos:
+                unElemento.pForAllElementsDo_recursive( theLambda)
+        
+        return self
+           
+    
+        
+    
+    
     security.declarePrivate( 'fNewVoidUploadedEntry')    
     def fNewVoidUploadedEntry( self,):
         unUploadedEntry = {
@@ -321,7 +360,7 @@ class TRAImportacion_Operaciones:
     security.declareProtected( permissions.View, 'fObtenerTodosContenidosIntercambio')
     def fObtenerTodosContenidosIntercambio( self, ):
    
-        unosElementos = self.objectValues( cNombreTipoTRAContenidoIntercambio) #
+        unosElementos = self.objectValues( cNombreTipoTRAContenidoIntercambio) 
         return unosElementos
          
   
@@ -940,11 +979,11 @@ class TRAImportacion_Operaciones:
                         else:
                             
                             if unNumFields > 0:
-                                unLocaleLanguage  = unosLineFields[ 1]  
+                                unLocaleLanguage  = unosLineFields[ 1].lower()  
                             if unNumFields > 1:
-                                unLocaleCountry  = unosLineFields[ 2]  
+                                unLocaleCountry  = unosLineFields[ 2].lower()  
                             if unNumFields > 2:
-                                unLocaleVariation  = unosLineFields[ 3]  
+                                unLocaleVariation  = unosLineFields[ 3].lower()  
                             if unNumFields > 3:
                                 unIsReferenceString  = unosLineFields[ 4]  
                                 unIsReference = unIsReferenceString.lower() == cLocalesCSVIsReferenceFile.lower()
@@ -2400,7 +2439,12 @@ class TRAImportacion_Operaciones:
     
     
     security.declareProtected( permissions.AddPortalContent, 'fImportarContenidosIntercambio')    
-    def fImportarContenidosIntercambio( self, theJustEstimateCost=True, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
+    def fImportarContenidosIntercambio( self, 
+        theJustEstimateCost      =True, 
+        theIsToCreateCadenas     =False,
+        thePermissionsCache      =None, 
+        theRolesCache            =None, 
+        theParentExecutionRecord =None):
         
   
         unExecutionRecord = self.fStartExecution( 'method',  'fImportarContenidosIntercambio', theParentExecutionRecord, False) 
@@ -2462,8 +2506,12 @@ class TRAImportacion_Operaciones:
                     unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
                     unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
                         
+                    aUseCaseNameToAssess = cUseCase_ImportTRAImportacion
+                    if theIsToCreateCadenas:
+                        aUseCaseNameToAssess  = cUseCase_ImportTRAImportacion_ToCreateCadenas
+                    
                     unUseCaseQueryResult = self.fUseCaseAssessment(  
-                        theUseCaseName          = cUseCase_ImportTRAImportacion, 
+                        theUseCaseName          = aUseCaseNameToAssess, 
                         theElementsBindings     = { cBoundObject: self,}, 
                         theRulesToCollect       = ['languages', 'modules',], 
                         thePredicateOverrides   = { self.getCatalogo().UID(): { 'fAllowWrite': True, }, },
@@ -2778,10 +2826,14 @@ class TRAImportacion_Operaciones:
                         if unaSiguienteImportacionAEjecutar:
                             unaSiguienteImportacionAEjecutar.fImportarContenidosIntercambio( 
                                 theJustEstimateCost      =theJustEstimateCost, 
+                                theIsToCreateCadenas     =theIsToCreateCadenas,
                                 thePermissionsCache      =thePermissionsCache, 
                                 theRolesCache            =theRolesCache, 
                                 theParentExecutionRecord =unExecutionRecord
                             )
+
+                
+                            
 
                 if not theJustEstimateCost:
                     if unCambiado_PermiteModificar:
@@ -2882,6 +2934,13 @@ class TRAImportacion_Operaciones:
                 unaEsperaEntreTransaccionesEnSegundos = self.getEsperaEntreTransaccionesEnSegundos()
                 unCurrentCommitsHolder = [ 0,]
                 unNumeroDeRefrescosPorEscrituraEnLog  = self.getNumeroDeRefrescosPorEscrituraEnLog()
+                
+                unNumeroOperacionesAntesDeCederProcesador   = self.getNumeroOperacionesAntesDeCederProcesador()
+                unaEsperaTrasOperacionesEnSegundos          = self.getEsperaTrasOperacionesEnSegundos()
+                unPeriodoActividadSinEsperaEnMilisegundos   = self.getPeriodoActividadSinEsperaEnMilisegundos()
+                
+                unMillisecondsFinUltimaEspera               = fMillisecondsNow()           
+                unOperationsDoneTrasUltimaEspera            = 0
                 
                 
                 unaFechaUltimoInformeProgresoHolder   = [ self.getFechaUltimoInformeProgreso(), ]
@@ -3017,6 +3076,24 @@ class TRAImportacion_Operaciones:
                             unCurrentChangesHolder[ 0] += 1
                             theInformeImportarContenidos[ 'operations_done']   += 1
                             
+                            unOperationsDoneTrasUltimaEspera += 1
+                            
+                            if ( unaEsperaTrasOperacionesEnSegundos >= 0.1) and ( unNumeroOperacionesAntesDeCederProcesador > 0) and ( unOperationsDoneTrasUltimaEspera >= unNumeroOperacionesAntesDeCederProcesador):
+                                unMustSleep = True
+                                if unPeriodoActividadSinEsperaEnMilisegundos > 0:
+                                    unMillisecondsComienzoEspera = fMillisecondsNow()
+                                    if ( unMillisecondsComienzoEspera - unMillisecondsFinUltimaEspera) < unPeriodoActividadSinEsperaEnMilisegundos:
+                                        unMustSleep = False
+
+                                if unMustSleep:                                    
+                                    time.sleep( unaEsperaTrasOperacionesEnSegundos )
+
+                                    unOperationsDoneTrasUltimaEspera = 0
+                                    
+                                    if unPeriodoActividadSinEsperaEnMilisegundos > 0:
+                                        unMillisecondsFinUltimaEspera = fMillisecondsNow()
+                            
+                            
                             self.pPeriodicCommit( 
                                 theCatalogo, 
                                 theInformeImportarContenidos, 
@@ -3105,6 +3182,24 @@ class TRAImportacion_Operaciones:
                             unCurrentChangesHolder[ 0] += 1
                             theInformeImportarContenidos[ 'operations_done']   += 1
                             
+                            unOperationsDoneTrasUltimaEspera += 1
+                            
+                            if ( unaEsperaTrasOperacionesEnSegundos >= 0.1) and ( unNumeroOperacionesAntesDeCederProcesador > 0) and ( unOperationsDoneTrasUltimaEspera >= unNumeroOperacionesAntesDeCederProcesador):
+                                unMustSleep = True
+                                if unPeriodoActividadSinEsperaEnMilisegundos > 0:
+                                    unMillisecondsComienzoEspera = fMillisecondsNow()
+                                    if ( unMillisecondsComienzoEspera - unMillisecondsFinUltimaEspera) < unPeriodoActividadSinEsperaEnMilisegundos:
+                                        unMustSleep = False
+
+                                if unMustSleep:                                    
+                                    time.sleep( unaEsperaTrasOperacionesEnSegundos )
+
+                                    unOperationsDoneTrasUltimaEspera = 0
+                                    
+                                    if unPeriodoActividadSinEsperaEnMilisegundos > 0:
+                                        unMillisecondsFinUltimaEspera = fMillisecondsNow()
+                            
+                            
                             self.pPeriodicCommit( 
                                 theCatalogo, 
                                 theInformeImportarContenidos, 
@@ -3186,9 +3281,9 @@ class TRAImportacion_Operaciones:
                 for unCodigoIdioma in todosCodigosIdiomas:
                     unIdioma = self.getCatalogo().fGetIdiomaPorCodigo( unCodigoIdioma)
                     if unIdioma:
-                        unosCatalogsBusquedaTraduccionesPorIdioma[ unCodigoIdioma] = self.getCatalogo().fCatalogBusquedaTraduccionesParaIdioma( unIdioma)
-                        unosCatalogsFiltroTraduccionesPorIdioma[   unCodigoIdioma] = self.getCatalogo().fCatalogFiltroTraduccionesParaIdioma(   unIdioma)
-                        unosCatalogsTextoTraduccionesPorIdioma[    unCodigoIdioma] = self.getCatalogo().fCatalogTextoTraduccionesParaIdioma(    unIdioma)
+                        unosCatalogsBusquedaTraduccionesPorIdioma[ unCodigoIdioma] = unCatalogoRaiz.fCatalogBusquedaTraduccionesParaIdioma( unIdioma)
+                        unosCatalogsFiltroTraduccionesPorIdioma[   unCodigoIdioma] = unCatalogoRaiz.fCatalogFiltroTraduccionesParaIdioma(   unIdioma)
+                        unosCatalogsTextoTraduccionesPorIdioma[    unCodigoIdioma] = unCatalogoRaiz.fCatalogTextoTraduccionesParaIdioma(    unIdioma)
 
             finally:
                 unSubExecutionRecord and unSubExecutionRecord.pEndExecution()
@@ -3257,6 +3352,25 @@ class TRAImportacion_Operaciones:
                     
                     theInformeImportarContenidos[ 'string_creations'] += 1
                     theInformeImportarContenidos[ 'operations_done']  += 1
+                    
+                    unOperationsDoneTrasUltimaEspera += 1
+                    
+                    if ( unaEsperaTrasOperacionesEnSegundos >= 0.1) and ( unNumeroOperacionesAntesDeCederProcesador > 0) and ( unOperationsDoneTrasUltimaEspera >= unNumeroOperacionesAntesDeCederProcesador):
+                        unMustSleep = True
+                        if unPeriodoActividadSinEsperaEnMilisegundos > 0:
+                            unMillisecondsComienzoEspera = fMillisecondsNow()
+                            if ( unMillisecondsComienzoEspera - unMillisecondsFinUltimaEspera) < unPeriodoActividadSinEsperaEnMilisegundos:
+                                unMustSleep = False
+
+                        if unMustSleep:                                    
+                            time.sleep( unaEsperaTrasOperacionesEnSegundos )
+
+                            unOperationsDoneTrasUltimaEspera = 0
+                            
+                            if unPeriodoActividadSinEsperaEnMilisegundos > 0:
+                                unMillisecondsFinUltimaEspera = fMillisecondsNow()
+                        
+                        
                     
                     unaCadena   = unaCadenaEIdNumber[ 0]
                     unIdNumber  = unaCadenaEIdNumber[ 1]
@@ -3437,6 +3551,25 @@ class TRAImportacion_Operaciones:
                                             unCurrentChangesHolder[ 0] += 1
                                             theInformeImportarContenidos[ 'translation_creations'] += 1 
                                             theInformeImportarContenidos[ 'operations_done']   += 1
+                                            
+                                            unOperationsDoneTrasUltimaEspera += 1
+                                            
+                                            if ( unaEsperaTrasOperacionesEnSegundos >= 0.1) and ( unNumeroOperacionesAntesDeCederProcesador > 0) and ( unOperationsDoneTrasUltimaEspera >= unNumeroOperacionesAntesDeCederProcesador):
+                                                unMustSleep = True
+                                                if unPeriodoActividadSinEsperaEnMilisegundos > 0:
+                                                    unMillisecondsComienzoEspera = fMillisecondsNow()
+                                                    if ( unMillisecondsComienzoEspera - unMillisecondsFinUltimaEspera) < unPeriodoActividadSinEsperaEnMilisegundos:
+                                                        unMustSleep = False
+                
+                                                if unMustSleep:                                    
+                                                    time.sleep( unaEsperaTrasOperacionesEnSegundos )
+                
+                                                    unOperationsDoneTrasUltimaEspera = 0
+                                                    
+                                                    if unPeriodoActividadSinEsperaEnMilisegundos > 0:
+                                                        unMillisecondsFinUltimaEspera = fMillisecondsNow()
+                        
+                                            
                                         else:
                                             # ######################################################
                                             """Exit with error condition.
@@ -3507,13 +3640,50 @@ class TRAImportacion_Operaciones:
                                             theInformeImportarContenidos[ 'operations_done']   += 1
                                             
                                             unCurrentChangesHolder[ 0] += 1                            
-                                            
+                                                                    
+                                            unOperationsDoneTrasUltimaEspera += 1
+                                                            
+                                            if ( unaEsperaTrasOperacionesEnSegundos >= 0.1) and ( unNumeroOperacionesAntesDeCederProcesador > 0) and ( unOperationsDoneTrasUltimaEspera >= unNumeroOperacionesAntesDeCederProcesador):
+                                                unMustSleep = True
+                                                if unPeriodoActividadSinEsperaEnMilisegundos > 0:
+                                                    unMillisecondsComienzoEspera = fMillisecondsNow()
+                                                    if ( unMillisecondsComienzoEspera - unMillisecondsFinUltimaEspera) < unPeriodoActividadSinEsperaEnMilisegundos:
+                                                        unMustSleep = False
+                
+                                                if unMustSleep:                                    
+                                                    time.sleep( unaEsperaTrasOperacionesEnSegundos )
+                
+                                                    unOperationsDoneTrasUltimaEspera = 0
+                                                    
+                                                    if unPeriodoActividadSinEsperaEnMilisegundos > 0:
+                                                        unMillisecondsFinUltimaEspera = fMillisecondsNow()
+                        
                 
                                         elif ( unEstadoTraduccion == cEstadoTraduccionTraducida):
                                             
                                             if unaTraduccionEncoded == unaCadenaTraducida:
                                                 theInformeImportarContenidos[ 'translations_unchanged'] += 1 
                                                 theInformeImportarContenidos[ 'operations_done']   += 1
+                                                
+                                                unOperationsDoneTrasUltimaEspera += 1
+                                                
+                                                if ( unaEsperaTrasOperacionesEnSegundos >= 0.1) and ( unNumeroOperacionesAntesDeCederProcesador > 0) and ( unOperationsDoneTrasUltimaEspera >= unNumeroOperacionesAntesDeCederProcesador):
+                                                    unMustSleep = True
+                                                    if unPeriodoActividadSinEsperaEnMilisegundos > 0:
+                                                        unMillisecondsComienzoEspera = fMillisecondsNow()
+                                                        if ( unMillisecondsComienzoEspera - unMillisecondsFinUltimaEspera) < unPeriodoActividadSinEsperaEnMilisegundos:
+                                                            unMustSleep = False
+                    
+                                                    if unMustSleep:                                    
+                                                        time.sleep( unaEsperaTrasOperacionesEnSegundos )
+                    
+                                                        unOperationsDoneTrasUltimaEspera = 0
+                                                        
+                                                        if unPeriodoActividadSinEsperaEnMilisegundos > 0:
+                                                            unMillisecondsFinUltimaEspera = fMillisecondsNow()
+                        
+                                                
+                                                
                                             else:
                                                 
                                                 unAhoraStoreString =self.fDateTimeNowTextual()
@@ -3553,6 +3723,23 @@ class TRAImportacion_Operaciones:
                                                 
                                                 unCurrentChangesHolder[ 0] += 1                            
                 
+                                                unOperationsDoneTrasUltimaEspera += 1
+                                                
+                                                if ( unaEsperaTrasOperacionesEnSegundos >= 0.1) and ( unNumeroOperacionesAntesDeCederProcesador > 0) and ( unOperationsDoneTrasUltimaEspera >= unNumeroOperacionesAntesDeCederProcesador):
+                                                    unMustSleep = True
+                                                    if unPeriodoActividadSinEsperaEnMilisegundos > 0:
+                                                        unMillisecondsComienzoEspera = fMillisecondsNow()
+                                                        if ( unMillisecondsComienzoEspera - unMillisecondsFinUltimaEspera) < unPeriodoActividadSinEsperaEnMilisegundos:
+                                                            unMustSleep = False
+                    
+                                                    if unMustSleep:                                    
+                                                        time.sleep( unaEsperaTrasOperacionesEnSegundos )
+                    
+                                                        unOperationsDoneTrasUltimaEspera = 0
+                                                        
+                                                        if unPeriodoActividadSinEsperaEnMilisegundos > 0:
+                                                            unMillisecondsFinUltimaEspera = fMillisecondsNow()
+                        
                                                 
                                                 
                                         elif ( unEstadoTraduccion == cEstadoTraduccionRevisada):
@@ -3560,6 +3747,24 @@ class TRAImportacion_Operaciones:
                                             if unaTraduccionEncoded == unaCadenaTraducida:
                                                 theInformeImportarContenidos[ 'translations_unchanged'] += 1 
                                                 theInformeImportarContenidos[ 'operations_done']   += 1
+                                                
+                                                unOperationsDoneTrasUltimaEspera += 1
+                                                
+                                                if ( unaEsperaTrasOperacionesEnSegundos >= 0.1) and ( unNumeroOperacionesAntesDeCederProcesador > 0) and ( unOperationsDoneTrasUltimaEspera >= unNumeroOperacionesAntesDeCederProcesador):
+                                                    unMustSleep = True
+                                                    if unPeriodoActividadSinEsperaEnMilisegundos > 0:
+                                                        unMillisecondsComienzoEspera = fMillisecondsNow()
+                                                        if ( unMillisecondsComienzoEspera - unMillisecondsFinUltimaEspera) < unPeriodoActividadSinEsperaEnMilisegundos:
+                                                            unMustSleep = False
+                    
+                                                    if unMustSleep:                                    
+                                                        time.sleep( unaEsperaTrasOperacionesEnSegundos )
+                    
+                                                        unOperationsDoneTrasUltimaEspera = 0
+                                                        
+                                                        if unPeriodoActividadSinEsperaEnMilisegundos > 0:
+                                                            unMillisecondsFinUltimaEspera = fMillisecondsNow()
+                       
                                                 
                                             else:
                                                 unAhoraStoreString =self.fDateTimeNowTextual()
@@ -3584,6 +3789,23 @@ class TRAImportacion_Operaciones:
                 
                                                 theInformeImportarContenidos[ 'translations_ignored'] += 1 
                 
+                                                unOperationsDoneTrasUltimaEspera += 1
+                                                                    
+                                                if ( unaEsperaTrasOperacionesEnSegundos >= 0.1) and ( unNumeroOperacionesAntesDeCederProcesador > 0) and ( unOperationsDoneTrasUltimaEspera >= unNumeroOperacionesAntesDeCederProcesador):
+                                                    unMustSleep = True
+                                                    if unPeriodoActividadSinEsperaEnMilisegundos > 0:
+                                                        unMillisecondsComienzoEspera = fMillisecondsNow()
+                                                        if ( unMillisecondsComienzoEspera - unMillisecondsFinUltimaEspera) < unPeriodoActividadSinEsperaEnMilisegundos:
+                                                            unMustSleep = False
+                    
+                                                    if unMustSleep:                                    
+                                                        time.sleep( unaEsperaTrasOperacionesEnSegundos )
+                    
+                                                        unOperationsDoneTrasUltimaEspera = 0
+                                                        
+                                                        if unPeriodoActividadSinEsperaEnMilisegundos > 0:
+                                                            unMillisecondsFinUltimaEspera = fMillisecondsNow()
+                                           
                                                 
                                                 
                                         elif ( unEstadoTraduccion == cEstadoTraduccionDefinitiva):
@@ -3591,11 +3813,48 @@ class TRAImportacion_Operaciones:
                 
                                                 theInformeImportarContenidos[ 'translations_unchanged'] += 1 
                                                 theInformeImportarContenidos[ 'operations_done']   += 1
+                                                
+                                                unOperationsDoneTrasUltimaEspera += 1
+                                                
+                                                if ( unaEsperaTrasOperacionesEnSegundos >= 0.1) and ( unNumeroOperacionesAntesDeCederProcesador > 0) and ( unOperationsDoneTrasUltimaEspera >= unNumeroOperacionesAntesDeCederProcesador):
+                                                    unMustSleep = True
+                                                    if unPeriodoActividadSinEsperaEnMilisegundos > 0:
+                                                        unMillisecondsComienzoEspera = fMillisecondsNow()
+                                                        if ( unMillisecondsComienzoEspera - unMillisecondsFinUltimaEspera) < unPeriodoActividadSinEsperaEnMilisegundos:
+                                                            unMustSleep = False
+                    
+                                                    if unMustSleep:                                    
+                                                        time.sleep( unaEsperaTrasOperacionesEnSegundos )
+                    
+                                                        unOperationsDoneTrasUltimaEspera = 0
+                                                        
+                                                        if unPeriodoActividadSinEsperaEnMilisegundos > 0:
+                                                            unMillisecondsFinUltimaEspera = fMillisecondsNow()
+                        
+                                                
                                             else:
                 
                                                 theInformeImportarContenidos[ 'translations_ignored'] += 1 
                                                 theInformeImportarContenidos[ 'operations_done']   += 1
                                                 
+                                                
+                                                unOperationsDoneTrasUltimaEspera += 1
+                                                
+                                                if ( unaEsperaTrasOperacionesEnSegundos >= 0.1) and ( unNumeroOperacionesAntesDeCederProcesador > 0) and ( unOperationsDoneTrasUltimaEspera >= unNumeroOperacionesAntesDeCederProcesador):
+                                                    unMustSleep = True
+                                                    if unPeriodoActividadSinEsperaEnMilisegundos > 0:
+                                                        unMillisecondsComienzoEspera = fMillisecondsNow()
+                                                        if ( unMillisecondsComienzoEspera - unMillisecondsFinUltimaEspera) < unPeriodoActividadSinEsperaEnMilisegundos:
+                                                            unMustSleep = False
+                    
+                                                    if unMustSleep:                                    
+                                                        time.sleep( unaEsperaTrasOperacionesEnSegundos )
+                    
+                                                        unOperationsDoneTrasUltimaEspera = 0
+                                                        
+                                                        if unPeriodoActividadSinEsperaEnMilisegundos > 0:
+                                                            unMillisecondsFinUltimaEspera = fMillisecondsNow()
+                        
                                                 
                                     theInformeImportarContenidos[ 'processed_translations'] += 1
         
@@ -3607,15 +3866,33 @@ class TRAImportacion_Operaciones:
                         if unaEsCadenaRecienCreada:                    
                             unosCodigosIdiomasTraduccionesQueFaltan =  unSetTodosCodigosIdiomas  - unosCodigosIdiomasTraduccionesCreadas
                         else:
-                # ACV OJO OJO 200903130212 hace falta verificar 
                             unosCodigosIdiomasTraduccionesAComprobar   = unSetTodosCodigosIdiomasInicial.difference( unosCodigosIdiomasTraduccionesCreadas).difference( unosCodigosIdiomasTraduccionesEncontradas)
                             unasTraduccionesAComprobar                 = unaCadena.fTraduccionesPorIdiomas( unosCodigosIdiomasTraduccionesAComprobar, thePloneUtilsTool) 
                             unosCodigosIdiomasTraduccionesNoExistentes = set( [ unCodIdioma  for  unCodIdioma in unosCodigosIdiomasTraduccionesAComprobar if not unasTraduccionesAComprobar.has_key( unCodIdioma)])
                             unosCodigosIdiomasTraduccionesQueFaltan    = unSetCodigosIdiomasACrear.difference( unosCodigosIdiomasTraduccionesCreadas).union( unosCodigosIdiomasTraduccionesNoExistentes)
                              
-                            # theInformeImportarContenidos[ 'operations_done']   += len( set( unosCodigosIdiomasAImportar).difference( set( unosCodigosIdiomasTraduccionesQueFaltan)).difference( unosCodigosIdiomasTraduccionesEncontradas))
-                            theInformeImportarContenidos[ 'operations_done']   += len( set( todosCodigosIdiomas).union( set( unosCodigosIdiomasACrear)).difference( set( unosCodigosIdiomasTraduccionesQueFaltan)).difference( unosCodigosIdiomasTraduccionesEncontradas).difference( unosCodigosIdiomasTraduccionesCreadas))
+                            unOperationsJustDone = len( set( todosCodigosIdiomas).union( set( unosCodigosIdiomasACrear)).difference( set( unosCodigosIdiomasTraduccionesQueFaltan)).difference( unosCodigosIdiomasTraduccionesEncontradas).difference( unosCodigosIdiomasTraduccionesCreadas))
+                            theInformeImportarContenidos[ 'operations_done']   += unOperationsJustDone
 
+                            unOperationsDoneTrasUltimaEspera += unOperationsJustDone
+                            
+                            if ( unaEsperaTrasOperacionesEnSegundos >= 0.1) and ( unNumeroOperacionesAntesDeCederProcesador > 0) and ( unOperationsDoneTrasUltimaEspera >= unNumeroOperacionesAntesDeCederProcesador):
+                                unMustSleep = True
+                                if unPeriodoActividadSinEsperaEnMilisegundos > 0:
+                                    unMillisecondsComienzoEspera = fMillisecondsNow()
+                                    if ( unMillisecondsComienzoEspera - unMillisecondsFinUltimaEspera) < unPeriodoActividadSinEsperaEnMilisegundos:
+                                        unMustSleep = False
+
+                                if unMustSleep:                                    
+                                    time.sleep( unaEsperaTrasOperacionesEnSegundos )
+
+                                    unOperationsDoneTrasUltimaEspera = 0
+                                    
+                                    if unPeriodoActividadSinEsperaEnMilisegundos > 0:
+                                        unMillisecondsFinUltimaEspera = fMillisecondsNow()
+                        
+                            
+                            
                         for unCodigoIdiomaQueFalta in  unosCodigosIdiomasTraduccionesQueFaltan:
                             unaNuevaTraduccion = self.fCrearTraduccionPendiente( 
                                 theCodigoIdioma                     =unCodigoIdiomaQueFalta, 
@@ -3638,6 +3915,24 @@ class TRAImportacion_Operaciones:
                                 theInformeImportarContenidos[ 'translation_creations_as_pending'] += 1 
                                 unCurrentChangesHolder[ 0] += 1
                                 theInformeImportarContenidos[ 'operations_done']   += 1
+                                
+                                unOperationsDoneTrasUltimaEspera += 1
+                                
+                                if ( unaEsperaTrasOperacionesEnSegundos >= 0.1) and ( unNumeroOperacionesAntesDeCederProcesador > 0) and ( unOperationsDoneTrasUltimaEspera >= unNumeroOperacionesAntesDeCederProcesador):
+                                    unMustSleep = True
+                                    if unPeriodoActividadSinEsperaEnMilisegundos > 0:
+                                        unMillisecondsComienzoEspera = fMillisecondsNow()
+                                        if ( unMillisecondsComienzoEspera - unMillisecondsFinUltimaEspera) < unPeriodoActividadSinEsperaEnMilisegundos:
+                                            unMustSleep = False
+    
+                                    if unMustSleep:                                    
+                                        time.sleep( unaEsperaTrasOperacionesEnSegundos )
+    
+                                        unOperationsDoneTrasUltimaEspera = 0
+                                        
+                                        if unPeriodoActividadSinEsperaEnMilisegundos > 0:
+                                            unMillisecondsFinUltimaEspera = fMillisecondsNow()
+                                
                             else:
                                 # ######################################################
                                 """Exit with error condition.
@@ -3740,52 +4035,98 @@ class TRAImportacion_Operaciones:
                         unaIdCadena = unaCadena.getId()
                         unosNombresModulos = unaCadena.getNombresModulos()
                         for unCodigoIdioma in unosCodigosIdiomasACrear:
-                            unaNuevaTraduccion = self.fCrearTraduccionPendiente( 
-                                theCodigoIdioma                     =unCodigoIdioma, 
-                                theCadena                           =unaCadena, 
-                                theSimboloCadena                    =unSimboloCadena,  
-                                theIdCadena                         =unaIdCadena, 
-                                theNombresModulos                   =unosNombresModulos, 
-                                theMemberId                         =theMemberId, 
-                                thePloneUtilsTool                   =thePloneUtilsTool, 
-                                theCatalogBusquedaTraducciones      =unosCatalogsBusquedaTraduccionesPorIdioma[  unCodigoIdioma], 
-                                theCatalogFiltroTraducciones        =unosCatalogsFiltroTraduccionesPorIdioma[    unCodigoIdioma],
-                                theCatalogTextoTraducciones         =unosCatalogsTextoTraduccionesPorIdioma[     unCodigoIdioma],
-                                theTraduccionPermissionsSpecs       =someTraduccionPermissionsSpecs,
-                                theTraduccionAcquireRoleAssignments =aTraduccionAcquireRoleAssignments,
-                                thePermissionsCache                 =unPermissionsCache, 
-                                theRolesCache                       =unRolesCache, 
-                                theParentExecutionRecord            =unExecutionRecord,
-                            )
-                            if unaNuevaTraduccion:
-                                theInformeImportarContenidos[ 'translation_creations_as_pending'] += 1 
-                                unCurrentChangesHolder[ 0] += 1
+                            
+                            unaTraduccionEncontrada = unaCadena.fObtenerTraduccionPorCodigoIdioma( unCodigoIdioma,thePloneUtilsTool=thePloneUtilsTool)
+                            if not( unaTraduccionEncontrada == None):
                                 
-                                theInformeImportarContenidos[ 'translations_created_in_new_languages_for_preexisting_strings'] += 1
+                                theInformeImportarContenidos[ 'translations_unchanged'] += 1 
                                 theInformeImportarContenidos[ 'operations_done']   += 1
-                            else:
-                                # ######################################################
-                                """Exit with error condition.
                                 
-                                """
-                                theInformeImportarContenidos[ 'fecha_informe'] =self.fDateTimeNowTextual()
-                                theInformeImportarContenidos[ 'error'] = "gvSIGi18n_TRACadena_failedTranslationCreation_error_msgid"
-                                theInformeImportarContenidos[ 'error_detail'] = '%s %s' % ( unCodigoIdioma, unSimboloCadena , )
-                                self.pPeriodicCommit( 
-                                    theCatalogo, 
-                                    theInformeImportarContenidos, 
-                                    unIntervaloRefrescoEnNumeroEscrituras, 
-                                    unIntervaloRefrescoEnMinutos, 
-                                    unaEsperaEntreTransaccionesEnSegundos,
-                                    unNumeroDeRefrescosPorEscrituraEnLog,
-                                    unCurrentChangesHolder, unCurrentCommitsHolder, 
-                                    unaFechaUltimoInformeProgresoHolder, 
-                                    True,
-                                    thePermissionsCache         =unPermissionsCache, 
-                                    theRolesCache               =unRolesCache, 
-                                    theParentExecutionRecord    =unExecutionRecord,                       
+                                theInformeImportarContenidos[ 'translations_to_create_in_new_languages_for_preexisting_strings']   -= 1
+                                
+                                
+                                unOperationsDoneTrasUltimaEspera += 1
+                                
+                                if ( unaEsperaTrasOperacionesEnSegundos >= 0.1) and ( unNumeroOperacionesAntesDeCederProcesador > 0) and ( unOperationsDoneTrasUltimaEspera >= unNumeroOperacionesAntesDeCederProcesador):
+                                    unMustSleep = True
+                                    if unPeriodoActividadSinEsperaEnMilisegundos > 0:
+                                        unMillisecondsComienzoEspera = fMillisecondsNow()
+                                        if ( unMillisecondsComienzoEspera - unMillisecondsFinUltimaEspera) < unPeriodoActividadSinEsperaEnMilisegundos:
+                                            unMustSleep = False
+    
+                                    if unMustSleep:                                    
+                                        time.sleep( unaEsperaTrasOperacionesEnSegundos )
+    
+                                        unOperationsDoneTrasUltimaEspera = 0
+                                        
+                                        if unPeriodoActividadSinEsperaEnMilisegundos > 0:
+                                            unMillisecondsFinUltimaEspera = fMillisecondsNow()
+                         
+                            else:
+                                unaNuevaTraduccion = self.fCrearTraduccionPendiente( 
+                                    theCodigoIdioma                     =unCodigoIdioma, 
+                                    theCadena                           =unaCadena, 
+                                    theSimboloCadena                    =unSimboloCadena,  
+                                    theIdCadena                         =unaIdCadena, 
+                                    theNombresModulos                   =unosNombresModulos, 
+                                    theMemberId                         =theMemberId, 
+                                    thePloneUtilsTool                   =thePloneUtilsTool, 
+                                    theCatalogBusquedaTraducciones      =unosCatalogsBusquedaTraduccionesPorIdioma[  unCodigoIdioma], 
+                                    theCatalogFiltroTraducciones        =unosCatalogsFiltroTraduccionesPorIdioma[    unCodigoIdioma],
+                                    theCatalogTextoTraducciones         =unosCatalogsTextoTraduccionesPorIdioma[     unCodigoIdioma],
+                                    theTraduccionPermissionsSpecs       =someTraduccionPermissionsSpecs,
+                                    theTraduccionAcquireRoleAssignments =aTraduccionAcquireRoleAssignments,
+                                    thePermissionsCache                 =unPermissionsCache, 
+                                    theRolesCache                       =unRolesCache, 
+                                    theParentExecutionRecord            =unExecutionRecord,
                                 )
-                                return self
+                                if unaNuevaTraduccion:
+                                    theInformeImportarContenidos[ 'translation_creations_as_pending'] += 1 
+                                    unCurrentChangesHolder[ 0] += 1
+                                    
+                                    theInformeImportarContenidos[ 'translations_created_in_new_languages_for_preexisting_strings'] += 1
+                                    theInformeImportarContenidos[ 'operations_done']   += 1
+                                    
+                                    unOperationsDoneTrasUltimaEspera += 1
+                                    
+                                    if ( unaEsperaTrasOperacionesEnSegundos >= 0.1) and ( unNumeroOperacionesAntesDeCederProcesador > 0) and ( unOperationsDoneTrasUltimaEspera >= unNumeroOperacionesAntesDeCederProcesador):
+                                        unMustSleep = True
+                                        if unPeriodoActividadSinEsperaEnMilisegundos > 0:
+                                            unMillisecondsComienzoEspera = fMillisecondsNow()
+                                            if ( unMillisecondsComienzoEspera - unMillisecondsFinUltimaEspera) < unPeriodoActividadSinEsperaEnMilisegundos:
+                                                unMustSleep = False
+        
+                                        if unMustSleep:                                    
+                                            time.sleep( unaEsperaTrasOperacionesEnSegundos )
+        
+                                            unOperationsDoneTrasUltimaEspera = 0
+                                            
+                                            if unPeriodoActividadSinEsperaEnMilisegundos > 0:
+                                                unMillisecondsFinUltimaEspera = fMillisecondsNow()
+                                    
+                                else:
+                                    # ######################################################
+                                    """Exit with error condition.
+                                    
+                                    """
+                                    theInformeImportarContenidos[ 'fecha_informe'] =self.fDateTimeNowTextual()
+                                    theInformeImportarContenidos[ 'error'] = "gvSIGi18n_TRACadena_failedTranslationCreation_error_msgid"
+                                    theInformeImportarContenidos[ 'error_detail'] = '%s %s' % ( unCodigoIdioma, unSimboloCadena , )
+                                    self.pPeriodicCommit( 
+                                        theCatalogo, 
+                                        theInformeImportarContenidos, 
+                                        unIntervaloRefrescoEnNumeroEscrituras, 
+                                        unIntervaloRefrescoEnMinutos, 
+                                        unaEsperaEntreTransaccionesEnSegundos,
+                                        unNumeroDeRefrescosPorEscrituraEnLog,
+                                        unCurrentChangesHolder, unCurrentCommitsHolder, 
+                                        unaFechaUltimoInformeProgresoHolder, 
+                                        True,
+                                        thePermissionsCache         =unPermissionsCache, 
+                                        theRolesCache               =unRolesCache, 
+                                        theParentExecutionRecord    =unExecutionRecord,                       
+                                    )
+                                    return self
                                 
                                 
                                 
@@ -3893,6 +4234,24 @@ class TRAImportacion_Operaciones:
                                 unInformeCrearTraduccionesQueFaltan[ 'operations_done']   += 1
                                 theInformeImportarContenidos[ 'operations_done']   += 1
                                 
+                                unOperationsDoneTrasUltimaEspera += 1
+                                
+                                if ( unaEsperaTrasOperacionesEnSegundos >= 0.1) and ( unNumeroOperacionesAntesDeCederProcesador > 0) and ( unOperationsDoneTrasUltimaEspera >= unNumeroOperacionesAntesDeCederProcesador):
+                                    unMustSleep = True
+                                    if unPeriodoActividadSinEsperaEnMilisegundos > 0:
+                                        unMillisecondsComienzoEspera = fMillisecondsNow()
+                                        if ( unMillisecondsComienzoEspera - unMillisecondsFinUltimaEspera) < unPeriodoActividadSinEsperaEnMilisegundos:
+                                            unMustSleep = False
+    
+                                    if unMustSleep:                                    
+                                        time.sleep( unaEsperaTrasOperacionesEnSegundos )
+    
+                                        unOperationsDoneTrasUltimaEspera = 0
+                                        
+                                        if unPeriodoActividadSinEsperaEnMilisegundos > 0:
+                                            unMillisecondsFinUltimaEspera = fMillisecondsNow()
+                                
+                                
                             else:
                             
                                 unaNuevaTraduccion = self.fCrearTraduccionPendiente( 
@@ -3918,6 +4277,24 @@ class TRAImportacion_Operaciones:
                                     unCurrentChangesHolder[ 0] += 1
                                     
                                     theInformeImportarContenidos[ 'operations_done']   += 1
+                                    
+                                    unOperationsDoneTrasUltimaEspera += 1
+                                    
+                                    if ( unaEsperaTrasOperacionesEnSegundos >= 0.1) and ( unNumeroOperacionesAntesDeCederProcesador > 0) and ( unOperationsDoneTrasUltimaEspera >= unNumeroOperacionesAntesDeCederProcesador):
+                                        unMustSleep = True
+                                        if unPeriodoActividadSinEsperaEnMilisegundos > 0:
+                                            unMillisecondsComienzoEspera = fMillisecondsNow()
+                                            if ( unMillisecondsComienzoEspera - unMillisecondsFinUltimaEspera) < unPeriodoActividadSinEsperaEnMilisegundos:
+                                                unMustSleep = False
+        
+                                        if unMustSleep:                                    
+                                            time.sleep( unaEsperaTrasOperacionesEnSegundos )
+        
+                                            unOperationsDoneTrasUltimaEspera = 0
+                                            
+                                            if unPeriodoActividadSinEsperaEnMilisegundos > 0:
+                                                unMillisecondsFinUltimaEspera = fMillisecondsNow()
+                                    
                                 else:
                                     # ######################################################
                                     """Exit with error condition.

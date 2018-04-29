@@ -44,8 +44,8 @@ from Products.ATContentTypes.content.base import updateAliases
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
-from TRAElemento_Operaciones import TRAElemento_Operaciones
 from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import ReferenceBrowserWidget
+from TRAElemento_Operaciones import TRAElemento_Operaciones
 
 ##code-section module-header #fill in your manual code here
 ##/code-section module-header
@@ -476,7 +476,7 @@ schema = Schema((
         description2="Time in seconds that the Status Report by Languages shall be retained, even if the results have become inaccurate because of any modification of translations status. To avoid excessive recalculation for barely relevant changes.",
         ea_guid="{46E6C4B5-2AD9-4d59-BD9A-C93ECB3C9265}",
         scale="0",
-        default="60",
+        default="180",
         label="Minimo Tiempo en segundos que se retiene el Informe de Estado por Idiomas",
         length="0",
         containment="Not Specified",
@@ -536,7 +536,7 @@ schema = Schema((
         description2="Time in seconds that the Status Report by Modules and Languages shall be retained, even if the results have become inaccurate because of any modification of translations status. To avoid excessive recalculation for barely relevant changes.",
         ea_guid="{D8B188A2-0626-40cd-B2BA-8759F7283616}",
         scale="0",
-        default="1800",
+        default="3600",
         label="Minimo Tiempo en segundos que se retiene el Informe de Estado por Modulos e Idiomas",
         length="0",
         containment="Not Specified",
@@ -566,7 +566,7 @@ schema = Schema((
         description2="Number of Translation status changes that shall cause the invalidation of the Status Report by Modules and Languages, even if the minimum retention time has not lapsed yet.",
         ea_guid="{88EC54C8-424B-4a1e-B0B8-9BADC4E3BFCF}",
         scale="0",
-        default="30",
+        default="100",
         label="Cambios para Anular Informe Modulos e Idiomas",
         length="0",
         containment="Not Specified",
@@ -1315,8 +1315,8 @@ class TRACatalogo(OrderedBaseFolder, TRAArquetipo, TRACatalogo_Inicializacion, T
         'category': "object_buttons",
         'id': 'TRACreateCadena',
         'name': 'Create New String Request',
-        'permissions': ("Modify portal content",),
-        'condition': """python:object.fObtenerColeccionSolicitudesCadenas() and object.fObtenerColeccionSolicitudesCadenas().fUseCaseCheckDoable( 'Create_TRACadena')"""
+        'permissions': ("List folder contents",),
+        'condition': """python:object.fObtenerColeccionSolicitudesCadenas() and object.fObtenerColeccionSolicitudesCadenas().fUseCaseCheckDoable( 'Create_TRASolicitudCadena')"""
        },
 
 

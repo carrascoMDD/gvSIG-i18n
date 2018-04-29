@@ -685,7 +685,266 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
     security = ClassSecurityInfo()
 
     
-    gUseCaseSpecificationsByName = { }
+    
+   
+    
+    security.declarePrivate( 'fNewVoidRecatalogResult')
+    def fNewVoidRecatalogResult( self, ):
+        unResult = {
+            'success':                  False,
+            'total_elements_traversed': 0,
+            'elements_by_type_dict':    { },
+            'elements_by_type':         [ ],
+        }
+        return unResult
+        
+    
+    
+    
+
+    security.declareProtected( permissions.ManagePortal, 'fRecatalogAllElements')
+    def fRecatalogAllElements( self, theAdditionalParms=None):
+
+        aRecatalogResult = self.fNewVoidRecatalogResult()
+        
+        if cLogRecatalogProgress:
+            aRecatalogResultDump = self.fRecatalogResult_dump( aRecatalogResult)
+            
+            aLogger = logging.getLogger( 'gvSIGi18n')
+            aLogger.info( '\n\nSTARTED %s' % aRecatalogResultDump)
+            
+        
+        unPortalCatalog = getToolByName( self, 'portal_catalog')
+
+         
+        unCatalogoRaiz = self.getCatalogo()           
+        unCatalogBusquedaCadenas       = unCatalogoRaiz.fCatalogBusquedaCadenas() 
+        unCatalogFiltroCadenas         = unCatalogoRaiz.fCatalogFiltroCadenas() 
+        unCatalogTextoCadenas          = unCatalogoRaiz.fCatalogTextoCadenas() 
+        
+        todosIdiomas = [ ]
+        unasColeccionesIdiomas = self.fObtenerTodasColeccionesIdiomas()
+        if unasColeccionesIdiomas:
+            for unaColeccionIdiomas in unasColeccionesIdiomas:
+                unosIdiomas = unaColeccionIdiomas.fObtenerTodosIdiomas()
+                if unosIdiomas:
+                    todosIdiomas.extend( unosIdiomas)
+                
+                
+        unosCatalogsBusquedaTraduccionesPorIdioma = { }
+        unosCatalogsFiltroTraduccionesPorIdioma   = { }
+        unosCatalogsTextoTraduccionesPorIdioma    = { }
+        for unIdioma in todosIdiomas:
+            if not( unIdioma == None):
+                unCodigoIdioma = unIdioma.getCodigoIdiomaEnGvSIG()
+                if unCodigoIdioma:
+                    unosCatalogsBusquedaTraduccionesPorIdioma[ unCodigoIdioma] = unCatalogoRaiz.fCatalogBusquedaTraduccionesParaIdioma( unIdioma)
+                    unosCatalogsFiltroTraduccionesPorIdioma[   unCodigoIdioma] = unCatalogoRaiz.fCatalogFiltroTraduccionesParaIdioma(   unIdioma)
+                    unosCatalogsTextoTraduccionesPorIdioma[    unCodigoIdioma] = unCatalogoRaiz.fCatalogTextoTraduccionesParaIdioma(    unIdioma)
+            
+                    
+        unosCatalogs = {
+            'PortalCatalog':        unPortalCatalog,
+            'BusquedaCadenas':      unCatalogBusquedaCadenas,
+            'FiltroCadenas':        unCatalogFiltroCadenas,
+            'TextoCadenas':         unCatalogTextoCadenas,
+            'BusquedaTraducciones': unosCatalogsBusquedaTraduccionesPorIdioma,
+            'FiltroTraducciones':   unosCatalogsFiltroTraduccionesPorIdioma,
+            'TextoTraducciones':    unosCatalogsTextoTraduccionesPorIdioma,
+        }
+            
+        
+        
+        def fRecatalogElement_lambda( theElement, theRecatalogResult, theCatalogs, theAdditionalParmsHere):        
+        
+            theRecatalogResult [ 'total_elements_traversed'] += 1
+            
+            aMetaType = 'UnknownType'
+            try:
+                aMetaType = theElement.meta_type
+            except:
+                aMetaType = theElement.__class__.__name
+            if not aMetaType:
+                aMetaType = 'UnknownType'
+                
+            aNumElementsOfType = theRecatalogResult[ 'elements_by_type_dict'].get( aMetaType, 0)
+            aNumElementsOfType += 1
+            theRecatalogResult[ 'elements_by_type_dict'][ aMetaType] = aNumElementsOfType
+            
+            if aMetaType == cNombreTipoTRATraduccion:
+                unCodigoIdioma = theElement.getCodigoIdiomaEnGvSIG()
+                theElement.pAddToCatalogs( theCatalogs.get( 'BusquedaTraducciones', {}).get( unCodigoIdioma),  theCatalogs.get( 'FiltroTraducciones', {}).get( unCodigoIdioma),  theCatalogs.get( 'TextoTraducciones', {}).get( unCodigoIdioma), None)
+            
+            elif aMetaType == cNombreTipoTRACadena:
+                theElement.pAddToCatalogs( theCatalogs.get( 'BusquedaCadenas', None),  theCatalogs.get( 'FiltroCadenas', None),  theCatalogs.get( 'TextoCadenas', None),)
+                
+            else:
+                theElement.reindexObject()
+                
+                
+            if cLogRecatalogProgress and not( theRecatalogResult [ 'total_elements_traversed'] % cLogRecatalogProgressInterval):
+                aRecatalogResultDump = theElement.fRecatalogResult_dump( theRecatalogResult)
+                
+                aLogger = logging.getLogger( 'gvSIGi18n')
+                aLogger.info( '\n\nPROGRESS of %s' % aRecatalogResultDump)
+                
+            
+            return None        
+        
+        
+        
+        self.pForAllElementsDo( lambda theElement: fRecatalogElement_lambda( theElement, aRecatalogResult, unosCatalogs, theAdditionalParms))
+        
+        someMetaTypes =  aRecatalogResult[ 'elements_by_type_dict'].keys()
+        someMetaTypes = sorted( someMetaTypes)
+        for aMetaType in someMetaTypes:
+            aRecatalogResult[ 'elements_by_type'].append( [ aMetaType, aRecatalogResult[ 'elements_by_type_dict'][ aMetaType],])
+            
+        aRecatalogResult [ 'success'] = True
+        
+        if cLogRecatalogResult:
+            aRecatalogResultDump = self.fRecatalogResult_dump( aRecatalogResult)
+            
+            aLogger = logging.getLogger( 'gvSIGi18n')
+            aLogger.info( '\n\nCOMPLETED %s' % aRecatalogResultDump)
+    
+        return aRecatalogResult
+    
+    
+      
+
+
+    security.declarePrivate( 'fRecatalogResult_dump')
+    def fRecatalogResult_dump( self, theRecatalogResult):
+        
+        if not theRecatalogResult:
+            return 'NO RecatalogResult'
+        
+        aStringIO = StringIO()
+        
+        aStringIO.write( """RecatalogResult\n""")
+        aStringIO.write( """Success: %s\n""" % theRecatalogResult .get( 'success', False))
+        aStringIO.write( """total_elements_traversed: %s\n""" % theRecatalogResult .get( 'total_elements_traversed', 0))
+
+        aStringIO.write( """\nType: #elems.\n""")
+        
+        someElementsByTypeDict = theRecatalogResult.get( 'elements_by_type_dict', [])
+        
+        for aMetaType in sorted( someElementsByTypeDict.keys()):
+            aNumElements = someElementsByTypeDict.get( aMetaType, 0)
+            aStringIO.write( """%s : %d\n""" % (aMetaType, aNumElements))
+            
+        aStringIO.write( """\n\n""")
+            
+        aDumpString = aStringIO.getvalue()
+        return aDumpString
+      
+        
+    
+    
+   
+    
+    security.declarePrivate( 'fNewVoidInventoryResult')
+    def fNewVoidInventoryResult( self, ):
+        unResult = {
+            'success':                  False,
+            'total_elements_traversed': 0,
+            'elements_by_type_dict':    { },
+            'elements_by_type':         [ ],
+        }
+        return unResult
+        
+    
+    
+    
+
+    security.declareProtected( permissions.ManagePortal, 'fInventory')
+    def fInventory( self, theAdditionalParms=None):
+
+        aInventoryResult = self.fNewVoidInventoryResult()
+        
+        if cLogInventoryProgress:
+            aInventoryResultDump = self.fInventoryResult_dump( aInventoryResult)
+            
+            aLogger = logging.getLogger( 'gvSIGi18n')
+            aLogger.info( '\n\nSTARTED %s' % aInventoryResultDump)
+            
+         
+        def fInventoryElement_lambda( theElement, theInventoryResult, theAdditionalParmsHere):        
+        
+            theInventoryResult [ 'total_elements_traversed'] += 1
+            
+            aMetaType = 'UnknownType'
+            try:
+                aMetaType = theElement.meta_type
+            except:
+                aMetaType = theElement.__class__.__name
+            if not aMetaType:
+                aMetaType = 'UnknownType'
+                
+            aNumElementsOfType = theInventoryResult[ 'elements_by_type_dict'].get( aMetaType, 0)
+            aNumElementsOfType += 1
+            theInventoryResult[ 'elements_by_type_dict'][ aMetaType] = aNumElementsOfType
+            
+            if cLogInventoryProgress and not( theInventoryResult [ 'total_elements_traversed'] % cLogInventoryProgressInterval):
+                aInventoryResultDump = theElement.fInventoryResult_dump( theInventoryResult)
+                
+                aLogger = logging.getLogger( 'gvSIGi18n')
+                aLogger.info( '\n\nPROGRESS of %s' % aInventoryResultDump)
+                
+            
+            return None        
+        
+        
+        
+        self.pForAllElementsDo( lambda theElement: fInventoryElement_lambda( theElement, aInventoryResult, theAdditionalParms))
+        
+        someMetaTypes =  aInventoryResult[ 'elements_by_type_dict'].keys()
+        someMetaTypes = sorted( someMetaTypes)
+        for aMetaType in someMetaTypes:
+            aInventoryResult[ 'elements_by_type'].append( [ aMetaType, aInventoryResult[ 'elements_by_type_dict'][ aMetaType],])
+            
+        aInventoryResult [ 'success'] = True
+        
+        if cLogInventoryResult:
+            aInventoryResultDump = self.fInventoryResult_dump( aInventoryResult)
+            
+            aLogger = logging.getLogger( 'gvSIGi18n')
+            aLogger.info( '\n\nCOMPLETED %s' % aInventoryResultDump)
+    
+        return aInventoryResult
+    
+    
+  
+    
+
+    security.declarePrivate( 'fInventoryResult_dump')
+    def fInventoryResult_dump( self, theInventoryResult):
+        
+        if not theInventoryResult:
+            return 'NO InventoryResult'
+        
+        aStringIO = StringIO()
+        
+        aStringIO.write( """InventoryResult\n""")
+        aStringIO.write( """Success: %s\n""" % theInventoryResult .get( 'success', False))
+        aStringIO.write( """total_elements_traversed: %s\n""" % theInventoryResult .get( 'total_elements_traversed', 0))
+
+        aStringIO.write( """\nType: #elems.\n""")
+        
+        someElementsByTypeDict = theInventoryResult.get( 'elements_by_type_dict', [])
+        
+        for aMetaType in sorted( someElementsByTypeDict.keys()):
+            aNumElements = someElementsByTypeDict.get( aMetaType, 0)
+            aStringIO.write( """%s : %d\n""" % (aMetaType, aNumElements))
+            
+        aStringIO.write( """\n\n""")
+            
+        aDumpString = aStringIO.getvalue()
+        return aDumpString
+      
+    
+    
     
     
     
@@ -727,11 +986,33 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
     
     
     
-    # ACV 20090926 This method is provided by its definition in the model in the TRAElemento class, and code-generated: removed 
-    #security.declarePublic( 'getAddableTypesInMenu')    
-    #def getAddableTypesInMenu( self, theTypes):
-        #return []
     
+    
+    security.declarePrivate( 'fAllSubElements')    
+    def fAllSubElements( self, theAdditionalParms=None):
+        someSubElements = [ ]
+        self.pAllSubElements_into( someSubElements, theAdditionalParms=None)
+        return someSubElements
+    
+           
+    
+    
+    
+    security.declarePrivate( 'pForAllElementsDo')    
+    def pForAllElementsDo( self, theLambda=None):
+        if not theLambda:
+            return self
+        someSubElements = [ ]
+        self.pForAllElementsDo_recursive( theLambda)
+        return someSubElements
+        
+    
+
+
+        
+        
+        
+
     
     security.declarePublic( 'fIsCollection')    
     def fIsCollection( self, theObject):
@@ -1183,54 +1464,6 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
         return 'TRA_%s' % '_'.join( self.getCatalogo().getPhysicalPath()[2:])
  
 
-    
-    # #################################################
-    """All Idiomas User Groups
-    
-    """
-    
-    #security.declarePrivate( 'fUserGroupIdAllIdiomasFor')
-    #def fUserGroupIdAllIdiomasFor(self, theGroupName):
-        #return '%s_%s' % ( self.fPrefijoUserGroupsAllIdiomas(), theGroupName,)
- 
-       
-    #security.declarePrivate( 'fPrefijoUserGroupsAllIdiomas')
-    #def fPrefijoUserGroupsAllIdiomas(self, ):
-        #return 'TRA_%s_%s' % ( '_'.join( self.getCatalogo().getPhysicalPath()[2:]), cTRAUsersGroup_AllLanguages_postfix)
- 
-    
-    
-    # #################################################
-    # Language specific User Groups
-    #
-    
-    #security.declarePrivate( 'fUserGroupIdIdiomaFor')
-    #def fUserGroupIdIdiomaFor(self, theGroupName, theIdioma):
-        #return '%s_%s' % ( self.fPrefijoUserGroupsIdioma( theIdioma), theGroupName, )
- 
-    #security.declarePrivate( 'fPrefijoUserGroupsIdioma')
-    #def fPrefijoUserGroupsIdioma(self, theIdioma):
-        #return 'TRA_%s_%s' % ('_'.join( self.getCatalogo().getPhysicalPath()[2:]), theIdioma.getId(), )
-    
-    
-    # #################################################
-    # Module specific User Groups
-    #
-     
- 
-    #security.declarePrivate( 'fUserGroupIdModuloFor')
-    #def fUserGroupIdModuloFor(self, theGroupName, theModulo):
-        #return '%s_%s' % ( self.fPrefijoUserGroupsModulo( theModulo), theGroupName, )
-
-    
- 
-    #security.declarePrivate( 'fPrefijoUserGroupsModulo')
-    #def fPrefijoUserGroupsModulo(self, theModulo):
-        #return 'TRA_%s_%s' % ( '_'.join( self.getCatalogo().getPhysicalPath()[2:]), theModulo.getId().replace(' ', '-'), )
- 
-       
-    
-    
     
     
     

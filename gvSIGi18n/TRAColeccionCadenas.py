@@ -31,6 +31,7 @@ __docformat__ = 'plaintext'
 
 from AccessControl import ClassSecurityInfo
 from Products.Archetypes.atapi import *
+from TRAColeccionCadenas_Operaciones import TRAColeccionCadenas_Operaciones
 from Products.gvSIGi18n.TRAColeccionArquetipos import TRAColeccionArquetipos
 from Products.gvSIGi18n.config import *
 
@@ -74,17 +75,18 @@ schema = Schema((
 ##/code-section after-local-schema
 
 TRAColeccionCadenas_schema = BaseBTreeFolderSchema.copy() + \
+    getattr(TRAColeccionCadenas_Operaciones, 'schema', Schema(())).copy() + \
     getattr(TRAColeccionArquetipos, 'schema', Schema(())).copy() + \
     schema.copy()
 
 ##code-section after-schema #fill in your manual code here
 ##/code-section after-schema
 
-class TRAColeccionCadenas(BaseBTreeFolder, TRAColeccionArquetipos):
+class TRAColeccionCadenas(BaseBTreeFolder, TRAColeccionCadenas_Operaciones, TRAColeccionArquetipos):
     """
     """
     security = ClassSecurityInfo()
-    __implements__ = (getattr(BaseBTreeFolder,'__implements__',()),) + (getattr(TRAColeccionArquetipos,'__implements__',()),)
+    __implements__ = (getattr(BaseBTreeFolder,'__implements__',()),) + (getattr(TRAColeccionCadenas_Operaciones,'__implements__',()),) + (getattr(TRAColeccionArquetipos,'__implements__',()),)
 
     # This name appears in the 'add' box
     archetype_name = 'Coleccion de Cadenas'
@@ -93,7 +95,7 @@ class TRAColeccionCadenas(BaseBTreeFolder, TRAColeccionArquetipos):
     portal_type = 'TRAColeccionCadenas'
     use_folder_tabs = 0
 
-    allowed_content_types = ['TRACadena'] + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', []))
+    allowed_content_types = ['TRACadena'] + list(getattr(TRAColeccionCadenas_Operaciones, 'allowed_content_types', [])) + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', []))
     filter_content_types             = 1
     global_allow                     = 0
     #content_icon = 'TRAColeccionCadenas.gif'

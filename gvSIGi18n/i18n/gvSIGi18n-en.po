@@ -1284,6 +1284,16 @@ msgstr "Delay Seconds between Transactions"
 msgid "gvSIGi18n_TRAImportacion_attr_esperaEntreTransaccionesEnSegundos_help"
 msgstr "With float values. Time to wait at the end of a transaction, before starting the next one. Usefule with low values of Refresh Interval in number of Writes (<100), to free processing power for other processes or users."
 
+#. Default: "Segundos a ceder procesador"
+#: TRAImportacion esperaTrasOperacionesEnSegundos
+msgid "gvSIGi18n_TRAImportacion_attr_esperaTrasOperacionesEnSegundos_label"
+msgstr "Seconds to yield processor"
+
+#. Default: "Con decimales, los segundos que se cede el procesador a otros procesos."
+#: TRAImportacion esperaTrasOperacionesEnSegundos
+msgid "gvSIGi18n_TRAImportacion_attr_esperaTrasOperacionesEnSegundos_help"
+msgstr "With float values, number of seconds to yield the processor to other processes."
+
 #. Default: "Estado del Proceso"
 #: TRAImportacion estadoProceso
 msgid "gvSIGi18n_TRAImportacion_attr_estadoProceso_label"
@@ -1513,6 +1523,26 @@ msgstr "Number of Refreshes in each Write to the Log"
 #: TRAImportacion numeroDeRefrescosPorEscrituraEnLog
 msgid "gvSIGi18n_TRAImportacion_attr_numeroDeRefrescosPorEscrituraEnLog_help"
 msgstr "To avoid writting too often to the log, when using low values for Refresh Interval in number of Writes, this value can be configured to high values (>10, <100)."
+
+#. Default: "Numero de Operaciones antes de ceder procesador"
+#: TRAImportacion numeroOperacionesAntesDeCederProcesador
+msgid "gvSIGi18n_TRAImportacion_attr_numeroOperacionesAntesDeCederProcesador_label"
+msgstr "Number of Operations before yielding the procesor"
+
+#. Default: "Para evitar que el proceso de importacion consuma una gran parte de la capacidad de proceso, se cedera el procesador, tras este numero de operaciones realizadas, tanto de lectura como escritura."
+#: TRAImportacion numeroOperacionesAntesDeCederProcesador
+msgid "gvSIGi18n_TRAImportacion_attr_numeroOperacionesAntesDeCederProcesador_help"
+msgstr "To avoid the import process consuming most processing capacidty, the processor is yield to other processes after this number of read or write operations."
+
+#. Default: "Milisegundos de Actividad antes de ceder procesador"
+#: TRAImportacion periodoActividadSinEsperaEnMilisegundos
+msgid "gvSIGi18n_TRAImportacion_attr_periodoActividadSinEsperaEnMilisegundos_label"
+msgstr "Activity Milliseconds before yielding the procesor"
+
+#. Default: "if the value es bigger than 0, then Processor control shall not be yield until the specific number of millseconds of activity, even if the Number of Operations to yield has been reached."
+#: TRAImportacion periodoActividadSinEsperaEnMilisegundos
+msgid "gvSIGi18n_TRAImportacion_attr_periodoActividadSinEsperaEnMilisegundos_help"
+msgstr "Si el valor es mayor que cero, entonces no se cedera el control del procesador, hasta completar el numero especificado de milisegundos de actividad, aunque se haya alcanzado el numero de operaciones para ceder"
 
 #. Default: "Usuario Importador"
 #: TRAImportacion usuarioImportador
@@ -4531,3 +4561,33 @@ msgstr "Product Version"
 msgid "gvSIGi18n_exportar_Parameter_L10NVersion_label"
 msgstr "Localization Version"
 
+
+#. Default: "El proceso de importacion ha fracasado."
+#: TRAColeccionSolicitudersCadenas_Operaciones.py
+msgid "gvSIGi18n_errorImportProcessFailed"
+msgstr "Import process failed"
+
+
+#. Default: "Error limpiando las solicitudes de cadenas."
+#: TRAColeccionSolicitudersCadenas_Operaciones.py
+msgid "gvSIGi18n_errorCleaningUpStringsRequests"
+msgstr "Error cleaning up strings requests."
+
+
+#. Default: "No puede estar vacia."
+#: TRAColeccionSolicitudersCadenas_Operaciones.py
+msgid "gvSIGi18n_Warning_NewStringSymbol_Empty"
+msgstr "Can not be Empty."
+
+
+
+#. Default: "No se permiten blancos."
+#: TRAColeccionSolicitudersCadenas_Operaciones.py
+msgid "gvSIGi18n_Warning_NewStringSymbol_BlanksNotAllowed"
+msgstr "Blanks not allowed"
+
+
+#. Default: "Solo se permiten caracteres alfanumericos y "
+#: TRAColeccionSolicitudersCadenas_Operaciones.py
+msgid "gvSIGi18n_Warning_NewStringSymbol_OnlyAlphanumerocCharsAnd"
+msgstr "Only allowed alphanumeric chars and"

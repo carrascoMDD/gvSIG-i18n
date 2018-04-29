@@ -111,8 +111,88 @@ class TRACatalogo_Operaciones:
     security = ClassSecurityInfo()
 
     
+    security.declarePrivate( 'pAllSubElements_into')        
+    def pAllSubElements_into( self, theCollection, theAdditionalParms=None):
+        if theCollection == None:
+            return self
+        theCollection.append( self)
+        
+        
+        unosElementos = self.fObtenerTodasColeccionesIdiomas()
+        if unosElementos:
+            for unElemento in unosElementos:
+                unElemento.pAllSubElements_into( theCollection)
+                
+        unosElementos = self.fObtenerTodasColeccionesModulos()
+        if unosElementos:
+            for unElemento in unosElementos:
+                unElemento.pAllSubElements_into( theCollection)
+                
+        unosElementos = self.fObtenerTodasColeccionesCadenas()
+        if unosElementos:
+            for unElemento in unosElementos:
+                unElemento.pAllSubElements_into( theCollection)
+                
+        unosElementos = self.fObtenerTodasColeccionesSolicitudesCadenas()
+        if unosElementos:
+            for unElemento in unosElementos:
+                unElemento.pAllSubElements_into( theCollection)
+                
+        unosElementos = self.fObtenerTodasColeccionesImportaciones()
+        if unosElementos:
+            for unElemento in unosElementos:
+                unElemento.pAllSubElements_into( theCollection)
+                
+        unosElementos = self.fObtenerTodasColeccionesInformes()
+        if unosElementos:
+            for unElemento in unosElementos:
+                unElemento.pAllSubElements_into( theCollection)
+                
+        return self
+    
 
-  
+    
+    
+    security.declarePrivate( 'pForAllElementsDo_recursive')        
+    def pForAllElementsDo_recursive( self, theLambda):
+        if not theLambda:
+            return self
+        
+        theLambda( self)
+        
+        
+        unosElementos = self.fObtenerTodasColeccionesIdiomas()
+        if unosElementos:
+            for unElemento in unosElementos:
+                unElemento.pForAllElementsDo_recursive( theLambda)
+                
+        unosElementos = self.fObtenerTodasColeccionesModulos()
+        if unosElementos:
+            for unElemento in unosElementos:
+                unElemento.pForAllElementsDo_recursive( theLambda)
+                
+        unosElementos = self.fObtenerTodasColeccionesCadenas()
+        if unosElementos:
+            for unElemento in unosElementos:
+                unElemento.pForAllElementsDo_recursive( theLambda)
+                
+        unosElementos = self.fObtenerTodasColeccionesSolicitudesCadenas()
+        if unosElementos:
+            for unElemento in unosElementos:
+                unElemento.pForAllElementsDo_recursive( theLambda)
+                
+        unosElementos = self.fObtenerTodasColeccionesImportaciones()
+        if unosElementos:
+            for unElemento in unosElementos:
+                unElemento.pForAllElementsDo_recursive( theLambda)
+                
+        unosElementos = self.fObtenerTodasColeccionesInformes()
+        if unosElementos:
+            for unElemento in unosElementos:
+                unElemento.pForAllElementsDo_recursive( theLambda)
+                
+        return self    
+      
     
 # ####################################
 #  Destroy before deletion
@@ -699,8 +779,19 @@ class TRACatalogo_Operaciones:
         return unasColecciones[ 0]
          
   
-        
+    
+    security.declareProtected( permissions.View, 'fObtenerTodasColeccionesIdiomas')
+    def fObtenerTodasColeccionesIdiomas( self, ):
+   
+        unasColecciones = self.objectValues( cNombreTipoTRAColeccionIdiomas) #
+        if not unasColecciones:
+            return []
+        return unasColecciones
+                 
+    
+    
 
+    
     security.declarePrivate( 'fObtenerTodosIdiomas')
     def fObtenerTodosIdiomas( self, ):
    
@@ -982,7 +1073,15 @@ class TRACatalogo_Operaciones:
         return unasColecciones[ 0]
          
     
-        
+    security.declareProtected( permissions.View, 'fObtenerTodasColeccionesModulos')
+    def fObtenerTodasColeccionesModulos( self, ):
+   
+        unasColecciones = self.objectValues( cNombreTipoTRAColeccionModulos) #
+        if not unasColecciones:
+            return []
+        return unasColecciones
+         
+           
 
     security.declareProtected( permissions.View, 'fObtenerTodosModulos')
     def fObtenerTodosModulos( self, ):
@@ -1090,7 +1189,19 @@ class TRACatalogo_Operaciones:
          
     
     
+         
+    security.declareProtected( permissions.View, 'fObtenerTodasColeccionesCadenas')
+    def fObtenerTodasColeccionesCadenas( self, ):
+   
+        unasColecciones = self.objectValues( cNombreTipoTRAColeccionCadenas)
+        if not unasColecciones:
+            return []
+        return unasColecciones
     
+    
+    
+    
+            
     security.declareProtected( permissions.View, 'fObtenerColeccionSolicitudesCadenas')
     def fObtenerColeccionSolicitudesCadenas( self, ):
    
@@ -1100,7 +1211,18 @@ class TRACatalogo_Operaciones:
         return unasColecciones[ 0]
          
     
-        
+    
+    
+    
+    security.declareProtected( permissions.View, 'fObtenerTodasColeccionesSolicitudesCadenas')
+    def fObtenerTodasColeccionesSolicitudesCadenas( self, ):
+   
+        unasColecciones = self.objectValues( cNombreTipoTRAColeccionSolicitudesCadenas)
+        if not unasColecciones:
+            return []
+        return unasColecciones
+         
+            
     
     
     
@@ -1342,7 +1464,17 @@ class TRACatalogo_Operaciones:
             return None
         return unasColecciones[ 0]
     
-        
+
+
+     
+    security.declareProtected( permissions.View, 'fObtenerTodasColeccionesInformes')
+    def fObtenerTodasColeccionesInformes( self, ):
+   
+        unasColecciones = self.objectValues( cNombreTipoTRAColeccionInformes) #
+        if not unasColecciones:
+            return []
+        return unasColecciones
+            
 
     security.declareProtected( permissions.View, 'fObtenerTodosInformes')
     def fObtenerTodosInformes( self, ):
@@ -1381,8 +1513,19 @@ class TRACatalogo_Operaciones:
             return None
         return unasColecciones[ 0]
     
+             
+    security.declareProtected( permissions.View, 'fObtenerTodasColeccionesImportaciones')
+    def fObtenerTodasColeccionesImportaciones( self, ):
+   
+        unasColecciones = self.objectValues( cNombreTipoTRAColeccionImportaciones) #
+        if not unasColecciones:
+            return []
+        return unasColecciones
+    
         
 
+    
+    
     security.declareProtected( permissions.View, 'fObtenerTodasImportaciones')
     def fObtenerTodasImportaciones( self, ):
    

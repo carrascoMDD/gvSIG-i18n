@@ -1,6 +1,20 @@
 ﻿gvSIG-i18n RELEASE NOTES
 ========================
 
+|
+|
+
+version 1.2.1
+----------------
+
+
+
+Task Id  	Task Summary  	Start Date  	End Date  	Percent Complete
+692	BUG: IMPO does not seem to yield processor or refresh progress report at the requested intervals	2010-01-26 12:00	  2010-02-02 12:00	100%
+695	BUG: When importing from gvSIG .properties archive with locales.csv, if the language is country-specific, and the country is in uppercase, the language is not recognized as a well known languaes in Plone, and does not display the country flag	2010-01-26 15:00	  2010-02-02 15:00	100%
+696	SUC10x3 Yield processor during Import after a number of read or write operations and a minimum period of activity	2010-01-27 05:00	  2010-02-03 05:00	100%
+691	SUC21x2 For gvSIG projects, do not allow spaces or non-ASCII chars in new string symbols when Use Case "Request additional String to be translated"	2010-01-26 11:00	  2010-02-02 11:00	100%
+697	SUC21x3 Reference language shall be an existing language, in Use Case "Request additional String to be translated"	2010-01-27 05:00	  2010-02-03 05:00	100%
 
 |
 |

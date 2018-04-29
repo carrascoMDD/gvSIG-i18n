@@ -112,7 +112,7 @@
                             <tal:block tal:define="
                                 pPermissionsCache python: {}; 
                                 pRolesCache python: {};
-                                dummy  python:here.fImportarContenidosIntercambio( False, pPermissionsCache, pRolesCache, pExecutionRecord)" />
+                                dummy  python:here.fImportarContenidosIntercambio( False, False, pPermissionsCache, pRolesCache, pExecutionRecord)" />
                             <tal:block tal:define="dummy python:request.response.redirect( '%s/TRAImportacionProgreso/' % here.absolute_url())" />
                         </tal:block>
                     </tal:block>
