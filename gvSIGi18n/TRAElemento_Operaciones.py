@@ -35,13 +35,8 @@ __docformat__ = 'plaintext'
 
 import cgi
 
-import sys
-import traceback
 
 import logging
-
-from logging import ERROR as cLoggingLevel_ERROR
-
 
 from codecs                     import lookup   as CODECS_Lookup
 
@@ -53,10 +48,6 @@ from StringIO                   import StringIO
 
 from AccessControl              import ClassSecurityInfo
 from Acquisition                import aq_inner, aq_parent
-
-
-from OFS.CopySupport            import CopyContainer
-
 
 from Products.Archetypes.utils  import shasattr
 
@@ -70,9 +61,6 @@ from Products.Archetypes.atapi  import OrderedBaseFolder, BaseBTreeFolder
 from Products.PloneLanguageTool import availablelanguages as PloneLanguageToolAvailableLanguages
 
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneTool import cModelDDvlPloneToolId, ModelDDvlPloneTool
-
-from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fReprAsString, fMillisecondsNow, fDateTimeNow
 
 
 from TRAElemento_Constants              import *
@@ -81,11 +69,7 @@ from TRAElemento_Permission_Definitions import cTRAUsersGroup_AllLanguages_postf
     
 from TRAImportarExportar_Constants      import cUTFEncodingsForAllLanguages, cDefaultEncodingsSourceMap, cWesternLanguageMarkInSourceMap, cEncodingSeparatorSentinelName
         
-
-
-from TRAElemento_Permissions import TRAElemento_Permissions
-from TRAElemento_Credits     import TRAElemento_Credits
-
+from Products.gvSIGi18n.TRAElemento_Permissions import TRAElemento_Permissions
 
 
 
@@ -243,37 +227,7 @@ class TRAExecutionRecord:
     
     def __init__( self, theContextualObject, theExecutedKind, theExecutedName, theParentExecutionRecord, theProfilingConfig={}, theExtraExecutionInfo=''):
         
-        self.vIsExecutionLoggingEnabled = False
-        self.vIsDetailedExecutionLoggingEnabled = False
-        self.vInitialized           = False
-        self.vIsExcluded            = False
-        self.vExtraExecutionInfo    = None
-        self.vContextualObject      = None
-        self.vContextualObjectClassName = None
-        self.vContextualObjectPath = None
-        self.vContextualObjectTitle = None
-        self.vExecutedKind          = None
-        self.vExecutedName          = None
-        self.vDetailLevel           = None
-        self.vExecutionStartTime    = None
-        self.vExecutionEndTime      = None
-        self.vParent                = None
-        
-        self.vChildren              = None
-        self.vProfilingConfig       = None
-        self.vExceptions            = None
-        self.vLogged                = False
-        self.vExceptionsInChildren  = False
-        
-        
-        
-        
         try:
-            
-            if not ( theContextualObject == None):
-                self.vIsExecutionLoggingEnabled = theContextualObject.getCatalogo().fIsExecutionLoggingEnabled()
-                self.vIsDetailedExecutionLoggingEnabled = theContextualObject.getCatalogo().fIsDetailedExecutionLoggingEnabled()
-            
             if cTimeStampingEnabled or cTimeProfilingEnabled:
                 
                 self.vInitialized           = True
@@ -285,7 +239,7 @@ class TRAExecutionRecord:
                     self.vExtraExecutionInfo.append( str( theExtraExecutionInfo))
                 
                 self.vContextualObject      = theContextualObject
-                if not ( theContextualObject == None):
+                if theContextualObject:
                     self.vContextualObjectClassName = theContextualObject.__class__.__name__
                     self.vContextualObjectPath      = theContextualObject.fDisplayPathString()
                     try:
@@ -441,15 +395,15 @@ class TRAExecutionRecord:
             if not self.vInitialized:
                 return self
             
-            if self.vIsExecutionLoggingEnabled:
+            if cExecutionLoggingEnabled:
                 aWhenToLog = self.vProfilingConfig.get( 'log_when', False)
                 if aWhenToLog == True or ( ( aWhenToLog == 'root') and not self.vParent):
                     
-                    if self.vProfilingConfig.get( 'log_what', '') == 'details' and self.vIsDetailedExecutionLoggingEnabled:
+                    if self.vProfilingConfig.get( 'log_what', '') == 'details' and cDetailedExecutionLoggingEnabled:
                         unPrintString = self.fPrintStringDetails( True)
                         if unPrintString:
                             unPrintString = '\n' + unPrintString
-                    elif self.vIsDetailedExecutionLoggingEnabled and self.vProfilingConfig.get( 'log_what', '') == 'dots':
+                    elif cDetailedExecutionLoggingEnabled and self.vProfilingConfig.get( 'log_what', '') == 'dots':
                         unPrintString = self.fPrintStringDots( True)
                     else:
                         unPrintString = self.fPrintString( )
@@ -677,7 +631,7 @@ class TRAExecutionRecord:
             
 # ########################################################################################################
     
-class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
+class TRAElemento_Operaciones( TRAElemento_Permissions):
     """CLASS: base class for all application elements, with commonly used behaviours aand service access points
         
     """
@@ -688,49 +642,6 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
     gUseCaseSpecificationsByName = { }
     
     
-    
-    security.declarePublic( 'fNewVoidExtraLink')    
-    def fNewVoidExtraLink( self):
-        unExtraLink = {
-            'label'   : '',
-            'href'    : '',
-            'icon'    : '',
-            'domain'  : '',
-            'msgid'   : '',
-        }
-        return unExtraLink
-        
-
-    
-    security.declarePublic( 'fExtraLinks')    
-    def fExtraLinks( self):
-        
-        unosExtraLinks = [ ]
-        
-        unaURL = self.getCatalogo().absolute_url()
-        if not unaURL:
-            return unosExtraLinks
-        
-        unExtraLink = self.fNewVoidExtraLink()
-        unExtraLink.update( {
-            'label'   : self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_GoTo_Root', 'Go Root',),
-            'href'    : '%s/TRACatalogo/' % unaURL,
-            'icon'    : 'tra_root.gif',
-            'domain'  : 'gvSIGi18n',
-            'msgid'   : 'gvSIGi18n_GoTo_Root',
-        })
-        unosExtraLinks.append( unExtraLink)
-                            
-        return unosExtraLinks
-    
-    
-    
-    
-    
-    # ACV 20090926 This method is provided by its definition in the model in the TRAElemento class, and code-generated: removed 
-    #security.declarePublic( 'getAddableTypesInMenu')    
-    #def getAddableTypesInMenu( self, theTypes):
-        #return []
     
     
     security.declarePublic( 'fIsCollection')    
@@ -744,52 +655,13 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
     security.declarePublic( 'pLog')    
     def pLog( self, theMessage):
         
-        logging.getLogger( 'gvSIGi18n').info( fReprAsString( theMessage))
+        logging.getLogger( 'gvSIGi18n').info( repr( theMessage))
         
         return self
     
     
- 
-      
-    security.declarePrivate( 'fNewVoidLanguagesDetails')    
-    def fNewVoidLanguagesDetails( self,):
-        aLanguagesDetails = dict( [ [ aKey, '',] for aKey in cAcceptedLanguageDetailKeys])
-        return aLanguagesDetails
     
     
-    
-      
-    security.declarePrivate( 'fNewVoidUploadedContent')    
-    def fNewVoidUploadedContent( self,):
-        unUploadedContent = {
-            'import_report':                          None,
-            'uploaded_entries':                       [],
-            # ############################################
-            # languages is the list of language names to create 
-            'languages':                              [],
-            # ############################################
-            # module is the module to which the included strings are associated.
-            'module':                                 '',
-            # ############################################
-            # languages is a dict with language codes as keys, 
-            # and values are a dict holding details about the language to create, including
-            'languages_details':                      self.fNewVoidLanguagesDetails(),
-            # ############################################
-            # strings_and_translations is a dict
-            #   where keys are string symbols, 
-            #   and   values are dicts with languages a keys, and the values are the translations of the symbols for the key language.
-            'strings_and_translations':               {},
-            # ############################################
-            # strings_with_encoding_errors is a dict
-            #   where keys are string symbols, 
-            #   and   values are lists of the languages for which there was encountered an encoding error while reading the translations interchange file.            
-            'strings_with_encoding_errors':           {}, 
-            'strings_sources':                        {},
-        }
-        return unUploadedContent
-    
-    
-        
     
     security.declarePrivate( 'fNewVoidContenidoIntercambioReport')    
     def fNewVoidContenidoIntercambioReport( self):
@@ -976,8 +848,6 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
 
         someEncodingsForAllLanguages = set( [ unE[ 0] for unE in cUTFEncodingsForAllLanguages])
         
-        someEncodingsForAllLanguages.add( cEncodingUnicodeEscape)
-        
         someEncodingsForLanguage     = [ unE[:] for unE in cUTFEncodingsForAllLanguages]
 
         if not theCodigoIdioma:
@@ -1073,69 +943,6 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
         aPloneLanguageTool = self.getPloneLanguageTool()
         unosLanguagesPorCodigo = aPloneLanguageTool.getAvailableLanguageInformation()
         
-        unosLanguagesPorCodigo = dict( [ [ unosLanguagesPorCodigo_Key, unosLanguagesPorCodigo_Value.copy(),] for unosLanguagesPorCodigo_Key, unosLanguagesPorCodigo_Value in unosLanguagesPorCodigo.items()])
-        
-        someCountrySpecificLanguagesPorCodigo = PloneLanguageToolAvailableLanguages.getCombined()
-        for aCountrySpecificLanguageCode in someCountrySpecificLanguagesPorCodigo.keys():
-            if not ( unosLanguagesPorCodigo.has_key( aCountrySpecificLanguageCode)):
-                unosLanguagesPorCodigo[ aCountrySpecificLanguageCode] = someCountrySpecificLanguagesPorCodigo[ aCountrySpecificLanguageCode].copy()   
-                unosLanguagesPorCodigo[ 'selected'] = False
-                
-        unCatalogo = self.getCatalogo()
-        unosIdiomas = unCatalogo.fObtenerTodosIdiomas()
-        
-        unPortalURL = self.fPortalURL()
-        
-        for unIdioma in unosIdiomas:
-            unCodigoIdiomaEnGvSIG         = unIdioma.getCodigoIdiomaEnGvSIG()
-            unCodigoInternacionalDeIdioma = unIdioma.getCodigoInternacionalDeIdioma()
-            aTitle                        = unIdioma.Title()
-            aNombreNativoDeIdioma         = unIdioma.getNombreNativoDeIdioma()
-            unFlag, unFlagURL             = unIdioma.fFlagAndURL()
-            
-            unosDatosIdioma = unosLanguagesPorCodigo.get( unCodigoIdiomaEnGvSIG, {})
-            
-            unosDatosIdioma[ 'english'] = aTitle
-            unosDatosIdioma[ 'native']  = aNombreNativoDeIdioma
-
-            if unFlag:
-                unosDatosIdioma[ 'flag'] = unFlag
-                
-                if unFlagURL:
-                    unosDatosIdioma[ 'flag_url'] = unFlagURL
-            
-                
-            unosLanguagesPorCodigo[ unCodigoIdiomaEnGvSIG] = unosDatosIdioma
-            
-        for unCodigoIdioma in unosLanguagesPorCodigo.keys():
-            
-            unosDatosIdioma = unosLanguagesPorCodigo.get( unCodigoIdioma, {})
-            if unosDatosIdioma:
-                
-                unFlag = unosDatosIdioma.get( 'flag', '')
-                
-                if not unFlag:
-                    unosDatosIdioma[ 'flag']     = cTRAFlagIdiomaDesconocida
-                    unFlagURL                    = '%s/%s' % ( unPortalURL, cTRAFlagIdiomaDesconocida,)
-                    unosDatosIdioma[ 'flag_url'] = unFlagURL
-                else:
-                    unFlagURL =  unosDatosIdioma.get( 'flag_url', '')
-                    if not unFlagURL:
-                        unFlagURL                    = '%s/%s' % ( unPortalURL, unFlag,)
-                        unosDatosIdioma[ 'flag_url'] = unFlagURL
-
-        return unosLanguagesPorCodigo.copy()
-    
-    
-    
-    
-    
-    security.declareProtected( permissions.View, 'fLanguagesNamesAndFlagsPorCodigo_AvailableInPlone')
-    def fLanguagesNamesAndFlagsPorCodigo_AvailableInPlone(self,):
-        
-        aPloneLanguageTool = self.getPloneLanguageTool()
-        unosLanguagesPorCodigo = aPloneLanguageTool.getAvailableLanguageInformation()
-        
         someCountrySpecificLanguagesPorCodigo = PloneLanguageToolAvailableLanguages.getCombined()
         for aCountrySpecificLanguageCode in someCountrySpecificLanguagesPorCodigo.keys():
             if not ( unosLanguagesPorCodigo.has_key( aCountrySpecificLanguageCode)):
@@ -1189,14 +996,14 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
     
     """
     
-    #security.declarePrivate( 'fUserGroupIdAllIdiomasFor')
-    #def fUserGroupIdAllIdiomasFor(self, theGroupName):
-        #return '%s_%s' % ( self.fPrefijoUserGroupsAllIdiomas(), theGroupName,)
+    security.declarePrivate( 'fUserGroupIdAllIdiomasFor')
+    def fUserGroupIdAllIdiomasFor(self, theGroupName):
+        return '%s_%s' % ( self.fPrefijoUserGroupsAllIdiomas(), theGroupName,)
  
        
-    #security.declarePrivate( 'fPrefijoUserGroupsAllIdiomas')
-    #def fPrefijoUserGroupsAllIdiomas(self, ):
-        #return 'TRA_%s_%s' % ( '_'.join( self.getCatalogo().getPhysicalPath()[2:]), cTRAUsersGroup_AllLanguages_postfix)
+    security.declarePrivate( 'fPrefijoUserGroupsAllIdiomas')
+    def fPrefijoUserGroupsAllIdiomas(self, ):
+        return 'TRA_%s_%s' % ( '_'.join( self.getCatalogo().getPhysicalPath()[2:]), cTRAUsersGroup_AllLanguages_postfix)
  
     
     
@@ -1204,13 +1011,13 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
     # Language specific User Groups
     #
     
-    #security.declarePrivate( 'fUserGroupIdIdiomaFor')
-    #def fUserGroupIdIdiomaFor(self, theGroupName, theIdioma):
-        #return '%s_%s' % ( self.fPrefijoUserGroupsIdioma( theIdioma), theGroupName, )
+    security.declarePrivate( 'fUserGroupIdIdiomaFor')
+    def fUserGroupIdIdiomaFor(self, theGroupName, theIdioma):
+        return '%s_%s' % ( self.fPrefijoUserGroupsIdioma( theIdioma), theGroupName, )
  
-    #security.declarePrivate( 'fPrefijoUserGroupsIdioma')
-    #def fPrefijoUserGroupsIdioma(self, theIdioma):
-        #return 'TRA_%s_%s' % ('_'.join( self.getCatalogo().getPhysicalPath()[2:]), theIdioma.getId(), )
+    security.declarePrivate( 'fPrefijoUserGroupsIdioma')
+    def fPrefijoUserGroupsIdioma(self, theIdioma):
+        return 'TRA_%s_%s' % ('_'.join( self.getCatalogo().getPhysicalPath()[2:]), theIdioma.getId(), )
     
     
     # #################################################
@@ -1218,15 +1025,15 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
     #
      
  
-    #security.declarePrivate( 'fUserGroupIdModuloFor')
-    #def fUserGroupIdModuloFor(self, theGroupName, theModulo):
-        #return '%s_%s' % ( self.fPrefijoUserGroupsModulo( theModulo), theGroupName, )
+    security.declarePrivate( 'fUserGroupIdModuloFor')
+    def fUserGroupIdModuloFor(self, theGroupName, theModulo):
+        return '%s_%s' % ( self.fPrefijoUserGroupsModulo( theModulo), theGroupName, )
 
     
  
-    #security.declarePrivate( 'fPrefijoUserGroupsModulo')
-    #def fPrefijoUserGroupsModulo(self, theModulo):
-        #return 'TRA_%s_%s' % ( '_'.join( self.getCatalogo().getPhysicalPath()[2:]), theModulo.getId().replace(' ', '-'), )
+    security.declarePrivate( 'fPrefijoUserGroupsModulo')
+    def fPrefijoUserGroupsModulo(self, theModulo):
+        return 'TRA_%s_%s' % ( '_'.join( self.getCatalogo().getPhysicalPath()[2:]), theModulo.getId().replace(' ', '-'), )
  
        
     
@@ -1297,29 +1104,9 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
         return unPortal       
     
     
-
-        
     
-
-    security.declarePrivate('fPortalURL')
-    def fPortalURL(self, ):
-        
-        unPortalURLTool = getToolByName( self, 'portal_url', None)
-        if not unPortalURLTool:
-            return ''
-        
-        unPortalURL = ''
-        try:
-            unPortalURL = unPortalURLTool()
-        except: 
-            None
-        if not unPortalURL:
-            return ''
-        
-        return unPortalURL
-           
-        
     
+        
       
 # ####################################
 #  Initialize after creation
@@ -1330,17 +1117,14 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
     def pHandle_manage_afterAdd(self, theItem, theContainer):   
         
         if self.__class__.__name__ == 'TRACadena':
-            pass
+            a = 1
         
-        elif self.__class__.__name__ == 'TRATraduccion':
-            pass
+        if self.__class__.__name__ == 'TRATraduccion':
+            b = 2
         
-        elif self.__class__.__name__ == 'TRAColeccionCadenas':
+        if self.__class__.__name__ == 'TRAColeccionCadenas':
             BaseBTreeFolder.manage_afterAdd(  self, theItem, theContainer)
         
-        #elif self.__class__.__name__ == 'TRAColeccionSolicitudesCadenas':
-            #BaseBTreeFolder.manage_afterAdd(  self, theItem, theContainer)
-
         else:
             OrderedBaseFolder.manage_afterAdd(  self, theItem, theContainer)
         
@@ -1351,122 +1135,7 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
          
         
     
-
-   
-    # #############################################################
-    # Intercepting modification method for re-ordering an OrderedBaseFolder specialization
-    # used in to provide drag&drop functionality directly from Plone.
-    # does not hit the ModelDDvlPlone framework presentation layer
-    # and therefore the incalidation of cache entries must be triggered by intercepting the method
-    #
-
-    security.declareProtected(permissions.ModifyPortalContent, 'pHandle_moveObjectsByDelta')
-    def pHandle_moveObjectsByDelta(self, ids, delta, subset_ids=None): 
-        
-        unResult = None
-        
-        if self.__class__.__name__ == 'TRAColeccionCadenas':
-            
-            unResult = BaseBTreeFolder.moveObjectsByDelta(   self,  ids, delta, subset_ids=subset_ids)
-        
-        else:
-            unResult = OrderedBaseFolder.moveObjectsByDelta( self,  ids, delta, subset_ids=subset_ids)
-        
-        
-        if not unResult:
-            return self
-        
-        
-        unaModelDDvlPloneTool = getToolByName( self, 'ModelDDvlPlone_tool', None)
-        if not unaModelDDvlPloneTool:
-            return self
-        
-        someImpactedUIDs = []
-        
-        unaOwnUID = self.UID()
-        someImpactedUIDs.append( unaOwnUID)
-        
-        if shasattr( self, 'getContenedor'):
-            unContenedor = None
-            try:
-                unContenedor = self.getContenedor()
-            except:
-                None
-            if not ( unContenedor == None):
-                unContenedorUID = ''
-                if shasattr( self, 'UID'):
-                    unContenedorUID = ''
-                    try:
-                        unContenedorUID = unContenedor.UID()
-                    except:
-                        None
-                    if unContenedorUID and not ( unContenedorUID in someImpactedUIDs):
-                        someImpactedUIDs.append( unContenedorUID)
-            
-        if shasattr( self, 'getPropietario'):
-            unPropietario = None
-            try:
-                unPropietario = self.getPropietario()
-            except:
-                None
-            if not ( unPropietario == None) and not ( unPropietario == unContenedor):
-                unPropietarioUID = ''
-                if shasattr( self, 'UID'):
-                    unPropietarioUID = ''
-                    try:
-                        unPropietarioUID = unPropietario.UID()
-                    except:
-                        None
-                if unPropietarioUID and not ( unPropietarioUID in someImpactedUIDs):
-                    someImpactedUIDs.append( unPropietarioUID)
-            
-        someIds = ids
-        if not ( someIds.__class__.__name__ in [ 'list', 'tuple', 'set',]):
-            someIds = [ someIds,]
-
-        aMovedNewPosition = -1
-        someObjectValues = self.objectValues()
-        for anObjectIndex in range( len( someObjectValues)):
-            
-            anObject = someObjectValues[ anObjectIndex]
-            
-            anObjectId = anObject.getId()
-            if ( anObjectId in someIds):
-                aMovedNewPosition = anObjectIndex
-                
-            anObjectUID = anObject.UID()
-            if anObjectUID and not ( anObjectUID in someImpactedUIDs):
-                someImpactedUIDs.append( anObjectUID)
-
-                
-        anElementToReportUpon = None
-            
-        for anId in someIds:
-            for anObject in someObjectValues:
-                if anObject.getId() == anId:
-                    anElementToReportUpon = anObject
-                    break
-                
-        anElementResult = None
-        if not ( anElementToReportUpon == None):
-            anElementResult = unaModelDDvlPloneTool.fNewResultForElement( anElementToReportUpon)
-            
-            
-        unaModelDDvlPloneTool.pFlushCachedTemplatesForImpactedElementsUIDs( self, someImpactedUIDs)
-        
-        aMoveReport = {
-            'effect':                  'moved', 
-            'new_position':            aMovedNewPosition,
-            'delta':                   delta,
-            'moved_element':           anElementResult,
-            'parent_traversal_name':   '',
-            'impacted_objects_UIDs':   someImpactedUIDs,
-        } 
-        unaModelDDvlPloneTool._pSetAudit_Modification( self, 'Move Sub Object', aMoveReport)
-        
-        return unResult
-            
-        
+    
     
         
       
@@ -1477,34 +1146,15 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
     
     security.declarePrivate('pHandle_manage_beforeDelete')
     def pHandle_manage_beforeDelete(self, theItem, theContainer):   
-        """Disable ZCatalog logging while deleting contents to avoid flooding the log with catalog messages complaining about keys not found. 
-        Note that instances of TRACadena and TRATraduccion are not catalogged in the global ZCatalog, and therefore there are thousands of ZCatalog log entries complaining.
-        This excessive logging slows down the server.
         
-        """
-        unResult = None
-        unDisableLevelChanged = False
-        try:
-            aLoggerManager = logging.getLogger('Zope.ZCatalog').manager
-            aDisableLevel = aLoggerManager.disable
-            
-            if not ( aDisableLevel == cLoggingLevel_ERROR):
-                if aLoggerManager:
-                    aLoggerManager.disable = cLoggingLevel_ERROR
-                    unDisableLevelChanged = True
-                
-            if isinstance( self, OrderedBaseFolder):
-                OrderedBaseFolder.manage_beforeDelete(  self, theItem, theContainer)
-            elif isinstance( self, BaseBTreeFolder):
-                BaseBTreeFolder.manage_beforeDelete(  self, theItem, theContainer)
-                            
-        finally:
-            if unDisableLevelChanged:
-                if aLoggerManager:
-                    aLoggerManager.disable = aDisableLevel
-
+        if isinstance( self, OrderedBaseFolder):
+            OrderedBaseFolder.manage_beforeDelete(  self, theItem, theContainer)
+        elif isinstance( self, BaseBTreeFolder):
+            BaseBTreeFolder.manage_beforeDelete(  self, theItem, theContainer)
+                        
         return self
-        
+    
+     
     
     
     
@@ -1519,13 +1169,11 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
     def getElementoPorID(self, theID):
         if not theID:
             return None
-
-        unosExistingElements = self.objectValues()
-        
-        for unElement in unosExistingElements:
-            unId = unElement.getId()
-            if unId == theID:
-                return unElement
+            
+        try:
+            return self[ theID]
+        except KeyError:
+            None
              
         return None    
         
@@ -1602,95 +1250,66 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
         if not unMember:
             return ''
         
-        if unMember.getUserName() == 'Anonymous User':
-            unMemberId = unMember.getUserName()
-        else:
-            unMemberId = unMember.getMemberId()   
-
+        unMemberId = unMember.getMemberId()           
         return unMemberId
         
-   
-    
 
-    
 
     
     
+
+    
+    
+        
 # #############################################################
 # Owner accessors
 # 
 
 
 
-    security.declarePrivate('getRaiz')
+    security.declarePublic('getRaiz')
     def getRaiz(self):
         if self.getEsRaiz():
-            return self            
-        unContenedor =  aq_parent( aq_inner( self))
+            return self
+            
+        unContenedor = self.getContenedor()
         
         if not unContenedor:
             return None
         
         return unContenedor.getRaiz()
 
-    
-    
-    
-    
-    security.declarePrivate( 'getCatalogo')
-    def getCatalogo( self):
-        unCatalogo = self.getRaiz()
-        if not (unCatalogo.__class__.__name__ == cNombreTipoTRACatalogo):
-            return None
-        return unCatalogo
-        
 
 
 
 
-
-    # OJO ACV 20090609 
-    # to use standard plone portal_catalog path index rather than 
-    # the application specific getPathDelRaiz
     security.declarePrivate('fPathDelRaiz')
     def fPathDelRaiz(self):
         unRaiz = self.getRaiz()
         if not unRaiz:
             return ''
        
-        unPathString = unRaiz.fPhysicalPathString( )
+        unPathString = self.fPhysicalPathString( unRaiz)
         return unPathString
-        
-    
-    #security.declarePrivate('fPathDelRaiz')
-    #def fPathDelRaiz(self):
-        #unRaiz = self.getRaiz()
-        #if not unRaiz:
-            #return ''
-       
-        #unPathString = self.fPhysicalPathString( unRaiz)
-        #return unPathString
 
 
 
-    # ACV 20090913 Return the standard path, not the variation we were using before, without the root site name
-    # Remove the parameter
+
     security.declarePrivate('fPhysicalPathString')
-    def fPhysicalPathString(self, ):
-        unPhysicalPath = self.getPhysicalPath()
+    def fPhysicalPathString(self, theElemento):
+        if not theElemento:
+            return ''
+        
+        unPhysicalPath = theElemento.getPhysicalPath()
         if not unPhysicalPath:
             return ''
      
-        #if unPhysicalPath[ 0] == '':
-            #unPhysicalPath = unPhysicalPath[1:]
+        if unPhysicalPath[ 0] == '':
+            unPhysicalPath = unPhysicalPath[1:]
         
-        #unFoldersPath = unPhysicalPath[1:]
-        #unPathString = '/' + '/'.join( unFoldersPath)
-        unPathString = '/'.join( unPhysicalPath)
+        unFoldersPath = unPhysicalPath[1:]
+        unPathString = '/' + '/'.join( unFoldersPath)
         return unPathString
-
-
-
 
 
     
@@ -1968,7 +1587,7 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
         if not aMilliseconds:
             return False
         
-        aMillisecondsNow = fMillisecondsNow() 
+        aMillisecondsNow = self.fMillisecondsNow() 
         
         anAllowed = ( aMillisecondsNow > aMilliseconds) and  ( (aMillisecondsNow - aMilliseconds) <= ( theAllowedSeconds * 1000))
         return anAllowed
@@ -1977,7 +1596,7 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
         
     security.declareProtected( permissions.View, 'fMagicMillisecondsNowString')
     def fMagicMillisecondsNowString(self):   
-        someMilliseconds = fMillisecondsNow()
+        someMilliseconds = self.fMillisecondsNow()
         unMillisecondsString = str( someMilliseconds)
         unMagicMillisecondsString = self.fMagicizeString( unMillisecondsString)
         return unMagicMillisecondsString
@@ -2006,21 +1625,21 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
              
 
     
-    #security.declareProtected( permissions.View, 'fMillisecondsNow')
-    #def fMillisecondsNow(self):   
-        #return int( time() * 1000)
+    security.declareProtected( permissions.View, 'fMillisecondsNow')
+    def fMillisecondsNow(self):   
+        return int( time() * 1000)
     
     
     
-    #security.declareProtected( permissions.View, 'fDateTimeNow')
-    #def fDateTimeNow(self):   
-        #return DateTime()
+    security.declareProtected( permissions.View, 'fDateTimeNow')
+    def fDateTimeNow(self):   
+        return DateTime()
     
     
     
     security.declareProtected( permissions.View, 'fDateTimeNowString')
     def fDateTimeNowString(self):   
-        return self.fDateTimeToString( fDateTimeNow())
+        return self.fDateTimeToString( self.fDateTimeNow())
     
     
     security.declareProtected( permissions.View, 'fDateTimeToString')
@@ -2035,7 +1654,7 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
     def fDateTimeNowTextual(self):   
         unYMDHMS = localtime()[:6]
         unDateStoreString = '%04d-%02d-%02d %02d:%02d:%02d' % unYMDHMS
-        return self.fDateToStoreString( fDateTimeNow())
+        return self.fDateToStoreString( self.fDateTimeNow())
 
 
 
@@ -2523,15 +2142,14 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
         """
         
         unResultDict = theResultDict
-        if ( unResultDict == None):
-            unResultDict = { }
-                
+        
         if not theI18NDomainsStringsAndDefaults:
             return unResultDict
         
+        if ( unResultDict == None):
+            unResultDict = { }
+        
         aTranslationService = getToolByName( self, 'translation_service', None)
-        if not aTranslationService:
-            return unResultDict
         
         for aDomainStringsAndDefaults in theI18NDomainsStringsAndDefaults:
             aI18NDomain             = aDomainStringsAndDefaults[ 0] or cI18NDomainDefault
@@ -2552,28 +2170,11 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
             
 
     
-    security.declarePrivate( 'fTranslationI18NDomain')
-    def fTranslationI18NDomain( self, theI18NDomain):
-
-        aI18NDomain = theI18NDomain
-        if not aI18NDomain:
-            try:
-                aI18NDomain = self.getNombreProyecto()
-            except:
-                None
-            if not aI18NDomain:
-                aI18NDomain = 'ModelDDvlPlone'
-                
-        if not aI18NDomain:
-            aI18NDomain = "plone"
-            
-        return aI18NDomain
-
     
 
 
     security.declarePublic( 'fTranslateI18N')
-    def fTranslateI18N( self, theI18NDomain, theString, theDefault, theTranslationService=None):
+    def fTranslateI18N( self, theI18NDomain, theString, theDefault):
         """Internationalization: return the translated string from the specific domain into the language preferred by the connected user, or return the supplied default.
         
         """
@@ -2588,17 +2189,12 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
             except:
                 None
                 
-        aI18NDomain = self.fTranslationI18NDomain( theI18NDomain)
         if not aI18NDomain:
-            return unicode( theDefault)
-                
-
-        
-        aTranslationService = theTranslationService
-        if not aTranslationService:
-            aTranslationService = getToolByName( self, 'translation_service', None)
-            
+            aI18NDomain = "plone"
+             
+             
         aTranslation = theDefault
+        aTranslationService = getToolByName( self, 'translation_service', None)
         if aTranslationService:
             aTranslation = aTranslationService.utranslate( aI18NDomain, theString, mapping=None, context=self , target_language= None, default=theDefault)            
            
@@ -2749,31 +2345,6 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
         return unResultString
             
 
- 
-#   fTFLVsUnless stands for function for multiple  Translated Field Label and Value
-#   will be used in the context of expressions of computed archetype schema fields
-#   the short name is to use less space
-#   in the tagged value edition fields
-#   of case tools            
-    security.declarePrivate('fTFLVs')
-    def fTFLVsUnless(self, theFieldNamesAndExcludeValues):
-        if not theFieldNames:
-            return ''
-        
-        someFieldLabelsAndValues = []
-        for unFieldName, unExcludeValue in theFieldNamesAndExcludeValues:
-            unFieldLabelAndValue = self.fTFLVUnless( unFieldName, unExcludeValue)
-            if unFieldLabelAndValue:
-                someFieldLabelsAndValues.append( unFieldLabelAndValue)
-
-        if not someFieldLabelsAndValues:
-            return ''
-            
-        unResultString = '; '.join( someFieldLabelsAndValues)
-
-        return unResultString
-            
-
     
     
 #   fTFLV stands for function for Translated Field Label and Value
@@ -2798,31 +2369,6 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
              
 
     
-
-    
-#   fTFLVUnless stands for function for Translated Field Label and Value
-#   will be used in the context of expressions of computed archetype schema fields
-#   the short name is to use less space
-#   in the tagged value edition fields
-#   of case tools            
-    security.declarePrivate('fTFLV')
-    def fTFLVUnless(self, theFieldName, theExcludeValueString):
-        if not theFieldName:
-            return ''
-
-        unValueString = self.fFV( theFieldName)
-        if not unValueString:
-            return ''
-        
-        if unValueString == theExcludeValueString:
-            return ''
-            
-        aTranslatedLabel = self.fTFL( theFieldName)
-        if not aTranslatedLabel:
-            aTranslatedLabel = ''         
-    
-        return aTranslatedLabel + ' ' + unValueString
-             
     
     
 #   fFV stands for function for  Field Value
@@ -3251,262 +2797,4 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
          
     
  
-
     
-
-
-   
-    security.declarePrivate( 'fModelDDvlPloneTool')
-    def fModelDDvlPloneTool( self, theAllowCreation=False):
-        """Retrieve or create an instance of ModelDDvlPloneTool.
-        
-        """
-        try:
-    
-            # ACV 2009092 Seems easier to use the getToolByName, otherwise the commented code works ok
-            # Changed when eliminating arbitrary instantiations of ModelDDvlPloneTool, 
-            # rather than looking up the tool singleton
-            # Now, those cases retrieve the tool invoking this function
-            #
-           
-            #aModelDDvlPloneTool = None
-            #try:
-                #aModelDDvlPloneTool = aq_get( unPortalRoot, cModelDDvlPloneToolId, None, 1)
-            #except:
-                #None  
-            
-            
-            aModelDDvlPloneTool = getToolByName( self, 'ModelDDvlPlone_tool', None)
-            
-            if aModelDDvlPloneTool:
-                return aModelDDvlPloneTool
-            
-            if not ( theAllowCreation and cLazyCreateModelDDvlPloneTool):
-                return None
-     
-            unPortalRoot = self.fPortalRoot()
-            if not unPortalRoot:
-                return None
-             
-            unaNuevaTool = ModelDDvlPloneTool( ) 
-            unPortalRoot._setObject( cModelDDvlPloneToolId,  unaNuevaTool)
-            aModelDDvlPloneTool = None
-            
-            #try:
-                #aModelDDvlPloneTool = aq_get( unPortalRoot, cModelDDvlPloneToolId, None, 1)
-            #except:
-                #None  
-                
-            aModelDDvlPloneTool = getToolByName( self, 'ModelDDvlPlone_tool', None)
-            if not aModelDDvlPloneTool:
-                return None
-                        
-            return aModelDDvlPloneTool
-        
-        except:
-            unaExceptionInfo = sys.exc_info()
-            unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
-            
-            unInformeExcepcion = 'Exception during Lazy Initialization operation fModelDDvlPloneTool\n' 
-            unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-            unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
-            unInformeExcepcion += unaExceptionFormattedTraceback   
-                     
-     
-            if cLogExceptions:
-                logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
-    
-            return None
-             
-
-        
-            
-        
-        
-        
-    security.declarePrivate( 'pHandle_manage_pasteObjects')        
-    def pHandle_manage_pasteObjects(self, cb_copy_data=None, REQUEST=None):
-        """Trap and override behavior of manage_pasteObjects implementation in CopySupport.py 
-        
-        """
-        return None
-    
-        # ACV 20091216 Should not paste nothing on no TRA element
-        ## Get the list of objects to be copied into this (self) container
-        ## Copied from class CopyContainer in file Zope lib python OFS  CopySupport.py
-        #if cb_copy_data is not None:
-            #cp = cb_copy_data
-        #elif REQUEST is not None and REQUEST.has_key('__cp'):
-            #cp = REQUEST['__cp']
-        #else:
-            #cp = None
-        #if cp is None:
-            #return CopyContainer.manage_objectPaste( self, cb_copy_data, REQUEST)
-             
-        #try:
-            #op, mdatas = loads(decompress(unquote(cp))) # _cb_decode(cp)
-        #except:
-            #return CopyContainer.manage_objectPaste( self, cb_copy_data, REQUEST)
-
-    
-        #oblist = []
-        #app = self.getPhysicalRoot()
-        #for mdata in mdatas:
-            #m = Moniker.loadMoniker(mdata)
-            #try:
-                #ob = m.bind(app)
-            #except:
-                #return CopyContainer.manage_objectPaste( self, cb_copy_data, REQUEST)
-            ## Do not verify here
-            ## self._verifyObjectPaste(ob, validate_src=op+1)
-            #oblist.append(ob)
-        ## End of code copied from class CopyContainer
-            
-        #someObjectsToPaste = oblist[:]
-        
-        #if not someObjectsToPaste:
-            #return CopyContainer.manage_objectPaste( self, cb_copy_data, REQUEST)
-        
-        #someAwareObjects = []
-        #for anObjectToPaste in someObjectsToPaste:
-            #anExportConfig = None
-            #try:
-                #anExportConfig = anObjectToPaste.exportConfig()
-            #except:
-                #None
-            #if anExportConfig:
-                #someAwareObjects.append( anObjectToPaste)
-                
-        #if not someAwareObjects:
-            #return CopyContainer.manage_objectPaste( self, cb_copy_data, REQUEST)
-        
-        
-        #aRequest = REQUEST
-        #if not aRequest:
-            #try:
-                #aRequest = self.REQUEST
-            #except:
-                #None
-        #if not aRequest:
-            #"""Default to Plone behavior.
-            
-            #"""
-            #return CopyContainer.manage_pasteObjects( self, cb_copy_data, REQUEST)
-        
-        
-        #unModelDDvlPloneTool = self.fModelDDvlPloneTool( True)
-        #if not unModelDDvlPloneTool:
-            #return CopyContainer.manage_pasteObjects( self, cb_copy_data, REQUEST)
-        
-        #return unModelDDvlPloneTool.fPaste( 
-            #theTimeProfilingResults     =None,
-            #theContainerObject          =self, 
-            #theObjectsToPaste           =someObjectsToPaste,
-            #theAdditionalParams         =None,
-        #)
-    
-        ## return CopyContainer.manage_pasteObjects( self, cb_copy_data, REQUEST)
-        ## aRequest.response.redirect( '%s/MDDpaste' % self.absolute_url())
-        
-        
-        
-       
-        
-    
-        
-        
-    security.declarePrivate('pFlushCachedTemplates')
-    def pFlushCachedTemplates(self,  theViewsToFlush=[]):
-        unModelDDvlPloneTool = self.fModelDDvlPloneTool()
-        if not unModelDDvlPloneTool:
-            return self
-        
-        unModelDDvlPloneTool.pFlushCachedTemplatesForImpactedElementsUIDs( self, [ self.UID(),], theViewsToFlush=theViewsToFlush)
-
-        return self
-
-           
-    
-    
-
-    security.declarePrivate('pFlushCachedTemplates_All')
-    def pFlushCachedTemplates_All(self, theViewsToFlush=[]):
-        
-        unModelDDvlPloneTool = self.fModelDDvlPloneTool()
-        if not unModelDDvlPloneTool:
-            return self
-
-        someUIDs = self.fAllElementUIDs()
-        if someUIDs:        
-            unModelDDvlPloneTool.pFlushCachedTemplatesForImpactedElementsUIDs( self, someUIDs, theViewsToFlush=theViewsToFlush)
-
-        return self
-        
-    
-    
-   
-        
-    security.declarePrivate('fAllElementUIDs')
-    def fAllElementUIDs(self,):
-        
-        someUIDs = [ ]
-        
-        unPortalCatalog = getToolByName( self, 'portal_catalog')
-        
-        unPhysicalPath = self.fPhysicalPathString()
-
-        unaBusqueda = { 
-            'path' :    unPhysicalPath,
-        }
- 
-        unosResultadosBusqueda = unPortalCatalog.searchResults( **unaBusqueda)
-        for unResultadoBusqueda in unosResultadosBusqueda:
-            if unResultadoBusqueda:
-                aFoundObject = unResultadoBusqueda.getObject()
-                if not ( aFoundObject == None):
-                    unaUID =  ''
-                    try:
-                        unaUID = aFoundObject.UID()
-                    except:
-                        None
-                    if unaUID:
-                        someUIDs.append( unaUID)        
-
-        return someUIDs
-        
-      
-            
-    
-
-    # ####################################################
-    """Methods for safe evaluation of strings.
-    
-    """
-        
-    
-    def fDefaultEvalStringGlobalsDict(self, ):
-        return { '__builtins__':None, 'True': True, 'False': False, 'None': None, 'DateTime': DateTime,}.copy()
-        
-    
-    
-    def fEvalString(self, theString, theExtraGlobals={}):
-        if not theString:
-            return None
-        
-        unGlobalsDict = self.fDefaultEvalStringGlobalsDict()
-        if not unGlobalsDict:
-            unGlobalsDict = { '__builtins__':None, }
-            
-        unGlobalsDict = unGlobalsDict.copy()
-        if theExtraGlobals:
-            unGlobalsDict.update( theExtraGlobals)
-            
-        unValue = None
-        try:
-            unValue = eval( theString, unGlobalsDict)
-        except:
-            unGlobalsString = str( unGlobalsDict.keys()).replace( '[', '').replace( ']', '')
-            logging.getLogger( 'ModelDDvlPlone').error( 'fEvalString( "%s", { %s })' % ( str( theString), unGlobalsString))
-            
-        return unValue
-     

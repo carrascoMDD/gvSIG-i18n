@@ -37,15 +37,11 @@
                              
 <metal:main fill-slot="main">
     <tal:main-macro metal:define-macro="main"
-        tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas.
-        global pStartTime       pStartTime | python: here.ModelDDvlPlone_tool.fMillisecondsNow()" 
+        tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas." 
         i18n:domain="gvSIGi18n">
 
-
-        <metal:block metal:use-macro="here/TRAProfileExecution/macros/tSetupProfileExecution" />   
-
         <tal:block tal:define="
-            pExecutionRecord python: here.fStartExecution( 'template', 'TRAVerificar_action.pt', None, pAllowRootProfileExecution, { 'log_what': 'details', 'log_when': True, });
+            pExecutionRecord python: here.fStartExecution( 'template', 'TRAVerificar_action.pt', None, True, { 'log_what': 'details', 'log_when': True, });
             pPermissionsCache python: {};
             pRolesCache python: {}" >
             
@@ -60,14 +56,6 @@
             <div metal:use-macro="here/document_byline/macros/byline">
               Get the byline - contains details about author and modification date.
             </div>
-            
-            
-            
-            <tal:block tal:condition="python: not here.fAllowWrite()" >
-                <div class="portalMessage" >
-                    <span tal:content="python: here.ModelDDvlPlone_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TranslationsCatalogIsLockedAgainstModifications', 'The Translations Catalog Is Locked Against Modifications')" />
-                </div>
-            </tal:block>
             
             
     
@@ -100,7 +88,7 @@
                                     tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_vistaAvanzada_msgid',   'Advanced view-')"
                                     tal:attributes="
                                         title aLinkTitle;
-                                        href python: '%s/Tabular/' % here.getCatalogo().absolute_url()">
+                                        href python: '%s/Tabular' % here.getCatalogo().absolute_url()">
                                     <span tal:content="aLinkTitle" />
                                 </a>
                             </strong>
@@ -112,7 +100,7 @@
                                 tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_volveracatalogo_msgid',   'Back to catalog-' )"
                                 tal:attributes="
                                     title aLinkTitle;
-                                    href python: '%s/TRACatalogo/' % here.absolute_url()">
+                                    href python: '%s/TRACatalogo' % here.absolute_url()">
                                 <span tal:content="aLinkTitle" />
                             </a>
                         </strong>
@@ -123,7 +111,7 @@
                                 tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_mostrarinformedeestado_msgid',   'Show Status Report-' )"                                    
                                 tal:attributes="
                                     title aLinkTitle;
-                                    href python: '%s/TRACatalogoInforme/' % here.getCatalogo().absolute_url()">
+                                    href python: '%s/TRACatalogoInforme' % here.getCatalogo().absolute_url()">
                                 <span tal:content="aLinkTitle" />
                             </a>
                         </strong>
@@ -148,7 +136,7 @@
                         tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_inicializar_msgid',   'Initialize catalog-' )"                                    
                         tal:attributes="
                             title aLinkTitle;
-                            href python: '%s/TRAConfirmarInicializacion/' % here.getCatalogo().absolute_url()">
+                            href python: '%s/TRAConfirmarInicializacion' % here.getCatalogo().absolute_url()">
                         <font size="2" color="red">
                             <strong>
                                 <span tal:content="aLinkTitle" />
@@ -159,7 +147,7 @@
                 <tal:block tal:condition="python: not( pInicializarUseCaseAssessmentResult and pInicializarUseCaseAssessmentResult.get( 'success', False))">    
                     <br/>
                     <br/>
-                    <font size="3" >
+                    <font size="1" color="gray">
                         <strong>
                             <tal:block tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_userCanNotInitializeCatalogo_msgid',   'You are not allowed to verify the translations catalog.-' )" />
                         </strong>

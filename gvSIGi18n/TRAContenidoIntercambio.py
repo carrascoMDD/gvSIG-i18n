@@ -2,7 +2,7 @@
 #
 # File: TRAContenidoIntercambio.py
 #
-# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
+# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
 # Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -32,13 +32,11 @@ __docformat__ = 'plaintext'
 from AccessControl import ClassSecurityInfo
 from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.TRAArquetipo import TRAArquetipo
-from Products.gvSIGi18n.TRAConRegistroActividad import TRAConRegistroActividad
-from TRAContenidoIntercambio_Operaciones import TRAContenidoIntercambio_Operaciones
+from Products.gvSIGi18n.TRAContenidoIntercambio_Operaciones import TRAContenidoIntercambio_Operaciones
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
 from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import ReferenceBrowserWidget
-from TRAElemento_Operaciones import TRAElemento_Operaciones
 
 ##code-section module-header #fill in your manual code here
 ##/code-section module-header
@@ -126,7 +124,7 @@ schema = Schema((
         styleex="volatile=0;",
         description2="User who uploaded the interchange archive content string translations into languages.",
         ea_guid="{E444AD8A-CE91-417c-8488-F7C9A8BD6CE0}",
-        read_only="True",
+        read_only=True,
         scale="0",
         label="Usuario Contribuidor",
         length="0",
@@ -156,7 +154,7 @@ schema = Schema((
         styleex="volatile=0;",
         description2="Date and Time when the process to  analise translations interchange archives was completed or terminated.",
         ea_guid="{47A5578E-D8DD-40b4-9C13-E58B10354525}",
-        read_only="True",
+        read_only=True,
         scale="0",
         label="Fecha y Hora de Carga",
         length="0",
@@ -188,7 +186,7 @@ schema = Schema((
         ea_guid="{EE87E802-C6A1-4ab9-B83E-8FB97921838D}",
         exclude_from_values_form="True",
         scale="0",
-        expression="context.fSumarioContenido()",
+        expression="context.fSumarioContenidoIntercambio()",
         label="Sumario del contenido",
         length="0",
         containment="Not Specified",
@@ -201,22 +199,22 @@ schema = Schema((
         name='informeContenido',
         widget=ComputedField._properties['widget'](
             label="Contenido Intercambio de Traducciones",
-            label2="Content in Translations Interchange",
-            description="Contenidos de los Archivos de intercambio de traducciones  incluyendo  cadenas (posiblemente asociadas a modulos)  y traducciones a un numero de idiomas,",
-            description2="Contents of translations interchange Archive files, including strings (possibly associated with modules) and translations to a number of languages.",
+            label2="Content in Trasnslations Interchange",
+            description="Contenidos de los Archivos de intercambio de traducciones  incluyendo un numero de directorios de modulo con ficheros de cadenas y traducciones a un numero de idiomas,",
+            description2="Contents of translations interchange Archive files, including a number of module directories with files with strings and translations to a number of languages.",
             label_msgid='gvSIGi18n_TRAContenidoIntercambio_attr_informeContenido_label',
             description_msgid='gvSIGi18n_TRAContenidoIntercambio_attr_informeContenido_help',
             i18n_domain='gvSIGi18n',
         ),
-        description="Contenidos de los Archivos de intercambio de traducciones  incluyendo  cadenas (posiblemente asociadas a modulos)  y traducciones a un numero de idiomas,",
+        description="Contenidos de los Archivos de intercambio de traducciones  incluyendo un numero de directorios de modulo con ficheros de cadenas y traducciones a un numero de idiomas,",
         duplicates="0",
-        label2="Content in Translations Interchange",
+        label2="Content in Trasnslations Interchange",
         ea_localid="993",
         derived="0",
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        description2="Contents of translations interchange Archive files, including strings (possibly associated with modules) and translations to a number of languages.",
+        description2="Contents of translations interchange Archive files, including a number of module directories with files with strings and translations to a number of languages.",
         ea_guid="{6E839E35-1227-4081-9397-0F4CF172D96A}",
         exclude_from_values_form="True",
         scale="0",
@@ -252,7 +250,7 @@ schema = Schema((
         styleex="volatile=0;",
         description2="Already analised contents of the interchange of string translations into languages.",
         ea_guid="{711B544F-FEA0-403e-8D74-D691687CFE9C}",
-        read_only="True",
+        read_only=True,
         scale="0",
         label="Contenido",
         length="0",
@@ -260,6 +258,38 @@ schema = Schema((
         containment="Not Specified",
         position="5",
         owner_class_name="TRAContenidoIntercambio"
+    ),
+
+    ComputedField(
+        name='pathDelRaiz',
+        widget=ComputedField._properties['widget'](
+            label="Path del Raiz",
+            label2="Root's Path",
+            description="Path del Catalogo raiz de este elemento.",
+            description2="This element's root Catalog path.",
+            label_msgid='gvSIGi18n_TRAContenidoIntercambio_attr_pathDelRaiz_label',
+            description_msgid='gvSIGi18n_TRAContenidoIntercambio_attr_pathDelRaiz_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Path del Catalogo raiz de este elemento.",
+        duplicates="0",
+        label2="Root's Path",
+        ea_localid="1145",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="This element's root Catalog path.",
+        ea_guid="{F52AD924-7BAB-4339-8FFE-B7DDE391DC1F}",
+        scale="0",
+        expression="context.fPathDelRaiz()",
+        label="Path del Raiz",
+        length="0",
+        exclude_from_traversalconfig="True",
+        containment="Not Specified",
+        position="3",
+        owner_class_name="TRAContenidoIntercambio",
+        exclude_from_views="[ 'Textual', 'Tabular',  ]"
     ),
 
 ),
@@ -270,88 +300,42 @@ schema = Schema((
 
 TRAContenidoIntercambio_schema = OrderedBaseFolderSchema.copy() + \
     getattr(TRAArquetipo, 'schema', Schema(())).copy() + \
-    getattr(TRAConRegistroActividad, 'schema', Schema(())).copy() + \
     getattr(TRAContenidoIntercambio_Operaciones, 'schema', Schema(())).copy() + \
     schema.copy()
 
 ##code-section after-schema #fill in your manual code here
 ##/code-section after-schema
 
-class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRAContenidoIntercambio_Operaciones):
+class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAContenidoIntercambio_Operaciones):
     """
     """
     security = ClassSecurityInfo()
-    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAArquetipo,'__implements__',()),) + (getattr(TRAConRegistroActividad,'__implements__',()),) + (getattr(TRAContenidoIntercambio_Operaciones,'__implements__',()),)
+    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAArquetipo,'__implements__',()),) + (getattr(TRAContenidoIntercambio_Operaciones,'__implements__',()),)
 
     # This name appears in the 'add' box
     archetype_name = 'Contenido de Intercambio'
 
     meta_type = 'TRAContenidoIntercambio'
     portal_type = 'TRAContenidoIntercambio'
-
-
-    # Change Audit fields
-
-    creation_date_field = 'fechaCreacion'
-    creation_user_field = 'usuarioCreador'
-    modification_date_field = 'fechaModificacion'
-    modification_user_field = 'usuarioModificador'
-    deletion_date_field = 'fechaEliminacion'
-    deletion_user_field = 'usuarioEliminador'
-    is_inactive_field = 'estaInactivo'
-    change_counter_field = 'contadorCambios'
-    change_log_field = 'registroDeCambios'
-
-
-
     use_folder_tabs = 0
 
-    allowed_content_types = [] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', [])) + list(getattr(TRAContenidoIntercambio_Operaciones, 'allowed_content_types', []))
-    filter_content_types             = 1
-    global_allow                     = 0
+    allowed_content_types = [] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRAContenidoIntercambio_Operaciones, 'allowed_content_types', []))
+    filter_content_types = 1
+    global_allow = 0
     content_icon = 'tracontenidointercambio.gif'
-    immediate_view                   = 'Tabular'
-    default_view                     = 'Tabular'
-    suppl_views                      = ['Tabular',]
-    typeDescription                  = "Contenido de un intercambio de Importacion de traducciones de cadenas a uno o mas idiomas."
-    typeDescMsgId                    =  'gvSIGi18n_TRAContenidoIntercambio_help'
-    archetype_name2                  = 'Interchange Content'
-    typeDescription2                 = '''Contents of an Import interchange of string translations to a number od languages'''
-    archetype_name_msgid             = 'gvSIGi18n_TRAContenidoIntercambio_label'
-    factory_methods                  = None
-    factory_enablers                 = None
-    propagate_delete_impact_to       = None
+    immediate_view = 'Tabular'
+    default_view = 'Tabular'
+    suppl_views = ['Tabular',]
+    typeDescription = "Contenido de un intercambio, bien Importacion o Exportacion, de traducciones de cadenas a uno o mas idiomas."
+    typeDescMsgId =  'gvSIGi18n_TRAContenidoIntercambio_help'
+    archetype_name2 = 'Interchange Content'
+    typeDescription2 = '''Contents of an Import or Export interchange of string translations to a number od languages'''
+    archetype_name_msgid = 'gvSIGi18n_TRAContenidoIntercambio_label'
+    factory_methods = None
     allow_discussion = False
 
 
     actions =  (
-
-
-       {'action': "string:$object_url/Editar",
-        'category': "object",
-        'id': 'edit',
-        'name': 'Edit',
-        'permissions': ("Modify portal content",),
-        'condition': """python:object.fAllowWrite() and object.fRoleQuery_IsManagerOrCoordinator()"""
-       },
-
-
-       {'action': "string:${object_url}/Tabular",
-        'category': "object",
-        'id': 'view',
-        'name': 'View',
-        'permissions': ("View",),
-        'condition': """python:1"""
-       },
-
-
-       {'action': "string:${object_url}/TRAContenidoIntercambioDatos",
-        'category': "object",
-        'id': 'TRAContenidoIntercambioDatos',
-        'name': 'Data',
-        'permissions': ("View",),
-        'condition': """python:1"""
-       },
 
 
        {'action': "string:${object_url}/sharing",
@@ -359,7 +343,7 @@ class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAConRegistroAct
         'id': 'local_roles',
         'name': 'Sharing',
         'permissions': ("Manage properties",),
-        'condition': """python:0"""
+        'condition': 'python:1'
        },
 
 
@@ -368,16 +352,7 @@ class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAConRegistroAct
         'id': 'folderlisting',
         'name': 'Folder Listing',
         'permissions': ("View",),
-        'condition': """python:0"""
-       },
-
-
-       {'action': "string:${object_url}/MDDChanges",
-        'category': "object_buttons",
-        'id': 'mddchanges',
-        'name': 'Changes',
-        'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': 'python:0'
        },
 
 
@@ -386,16 +361,7 @@ class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAConRegistroAct
         'id': 'references',
         'name': 'References',
         'permissions': ("Modify portal content",),
-        'condition': """python:0"""
-       },
-
-
-       {'action': "string:${object_url}/TRASeguridadUsuarioConectado",
-        'category': "object_buttons",
-        'id': 'TRA_SeguridadUsuarioConectado',
-        'name': 'Permissions',
-        'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': 'python:0'
        },
 
 
@@ -404,16 +370,43 @@ class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAConRegistroAct
         'id': 'content_status_history',
         'name': 'State',
         'permissions': ("View",),
-        'condition': """python:0"""
+        'condition': 'python:0'
        },
 
 
-       {'action': "string:${object_url}/MDDCacheStatus/",
-        'category': "object_buttons",
-        'id': 'mddcachestatus',
-        'name': 'Cache',
+       {'action': "string:$object_url/Editar",
+        'category': "object",
+        'id': 'edit',
+        'name': 'Edit',
+        'permissions': ("Modify portal content",),
+        'condition': 'python:1'
+       },
+
+
+       {'action': "string:${object_url}/sharing",
+        'category': "object",
+        'id': 'local_roles',
+        'name': 'Sharing',
+        'permissions': ("Manage properties",),
+        'condition': 'python:0'
+       },
+
+
+       {'action': "string:${object_url}/Tabular",
+        'category': "object",
+        'id': 'view',
+        'name': 'View',
         'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': 'python:1'
+       },
+
+
+       {'action': "string:${object_url}/TRAInformeContenidoIntercambio_action",
+        'category': "object",
+        'id': 'ContenidoIntercambio',
+        'name': 'Data',
+        'permissions': ("View",),
+        'condition': 'python:1'
        },
 
 
@@ -440,46 +433,11 @@ class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAConRegistroAct
         """
         """
         
-        return TRAArquetipo.manage_afterAdd( self, item, container)
-
-    security.declarePublic('fIsCacheable')
-    def fIsCacheable(self):
-        """
-        """
-        
-        return True
-
-    security.declarePublic('displayContentsTab')
-    def displayContentsTab(self):
-        """
-        """
-        
-        return False
-
-    security.declarePublic('cb_isCopyable')
-    def cb_isCopyable(self):
-        """
-        """
-        
-        return True
-
-    security.declarePublic('manage_pasteObjects')
-    def manage_pasteObjects(self,cb_copy_data,REQUEST):
-        """
-        """
-        
-        return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
-
-    security.declarePublic('fExtraLinks')
-    def fExtraLinks(self):
-        """
-        """
-        
-        return TRAContenidoIntercambio_Operaciones.fExtraLinks( self)
+        return TRAArquetipo.manage_beforeDelete( self, item, container)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:
-        if a['id'] in ['metadata', 'sharing', 'folderContents']:
+        if a['id'] in ['metadata']:
             a['visible'] = 0
     return fti
 

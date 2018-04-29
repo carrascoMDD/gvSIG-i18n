@@ -35,7 +35,7 @@ __docformat__ = 'plaintext'
 from StringIO import StringIO
 
 cREMOVEDContents_JumpsBackTodefaultpage_SecuritySchemaDocumentation = u"""
-
+  
 .. contents::
 
 |
@@ -45,9 +45,6 @@ cREMOVEDContents_JumpsBackTodefaultpage_SecuritySchemaDocumentation = u"""
 
 
 cSecuritySchemaDocumentation = u"""
-
-
-**NEED FULL REWRITE - THIS IS NOT UP TO DATE**
 
 
 Roles
@@ -554,6 +551,145 @@ For example, with a base *"Catalogo"* object named **"gvSIGi18n"** located a the
   * *TRA_gvSIGi18n_Reviewers*
   * *TRA_gvSIGi18n_Translators*
   * *TRA_gvSIGi18n_Visitors*
+
+|
+|
+
+
+*"AccessAll"* Languages  User Groups
+============================================
+
+To allow the User to operate in all Languages,
+the User must be added to the *"AccessAll"* Languages  User Groups.
+
+To enable the managed access to the complete *"Catalogo"* objects repository,
+and thanks to having all objects (with the noted exception of Languages managed separately)
+acquiring  Role assignments to Users and User Groups from its container:
+
+* The application will assign to the corresponding groups the application Roles 
+  *TRACoordinator*, *TRAReviewer*, *TRATranslator*, *TRAVisitor*, 
+  ( - but NOt *TRAManager* ! -) 
+  on the base *"Catalogo"* object, 
+  such that the assignment of Roles to the *"AccessAll"* Languages User Groups 
+  is acquired by all the objects in the *"Catalogo"* objects repository.
+
+To enable the separate management of translation activity in specific languages,
+yet to maintain managerial and coordination access to these languages, 
+when and if the Language becomes managed separately,
+and the Language object will not acquire the Role assignments to Users and User Groups from its container:
+
+* The application will also assign to the corresponding user groups
+  the application Roles *TRAManager* and "TRACoordinator*,
+  but not  *TRAReviewer* nor *TRATranslator* nor *TRAVisitor*,
+  on all the Language objects (type *TRAIdioma*).
+
+|
+|
+
+The *"AccessAll"* User Groups have names of the form:
+
+* **TRA_<path>_la_ALL_Managers**
+* **TRA_<path>_la_ALL_Coordinators**
+* **TRA_<path>_la_ALL_Reviewers**
+* **TRA_<path>_la_ALL_Translators**
+* **TRA_<path>_la_ALL_Visitors**
+
+|
+|
+
+Substituting:
+
+* *<path>* by the path of the the application repository (an object of type TRACatalogo),
+  from the root of the *"Plone Site*" (i.e., without the id of the Plone Site).
+  with slashes ("/") substituted by underscores ("_").
+
+For example, with a base *"Catalogo"* object named **"gvSIGi18n"** located a the root of the *"Plone site*"
+  * *TRA_gvSIGi18n_la_ALL_Managers*
+  * *TRA_gvSIGi18n_la_ALL_Coordinators*
+  * *TRA_gvSIGi18n_la_ALL_Reviewers*
+  * *TRA_gvSIGi18n_la_ALL_Translators*
+  * *TRA_gvSIGi18n_la_ALL_Visitors*
+
+|
+|
+
+*"Language specific"* User Groups
+=================================
+
+To assign Roles to Users in the whole of the application objects repository,
+and allow the User to operate in selected specific Languages,
+and not indiscriminately on all Languages,
+the User must be added to the Language specific User Groups,
+rather than to the Global User Groups.
+
+To enable the separate control for a Language,
+the Language object shall not acquire the Role assignments to Users and User Groups from its container,
+therefore the flag "Inherit roles from higher levels " will display de-selected
+on the "Advanced settings" section,
+of the "sharing" Plone page (you need permission ManageProperties to see this).
+
+To allow to the Users that participate just in specific languages,
+to access other objects in the *"Catalogo"* repository,
+that are not specific to any Language,
+like the untranslated *"Strings"* original symbols, and Reports.
+
+* The application will assign to the corresponding groups
+  all the application Roles *TRAManager*, *TRACoordinator*, *TRAReviewer*, *TRATranslator*, *TRAVisitor*, 
+  on the base *"Catalogo"* object, 
+  such that the assignment of Roles to the *Language specific" User Groups 
+  is acquired by all the objects in the *"Catalogo"* objects repository,
+  except the Languages that are managed separately.
+  
+  
+To allow the users to access their specific language:
+  
+* The application will indeed assign to the corresponding user groups
+  all the application Roles *TRAManager*, *TRACoordinator*, *TRAReviewer*, *TRATranslator*, *TRAVisitor*, 
+  on the specific the Language object (type *TRAIdioma*).
+
+|
+|
+
+The *"Language specific"* User Groups have names of the form:
+
+* **TRA_<path>_la-<code>_Managers**
+* **TRA_<path>_la-<code>_Coordinators**
+* **TRA_<path>_la-<code>_Reviewers**
+* **TRA_<path>_la-<code>_Translators**
+* **TRA_<path>_la-<code>_Visitors**
+
+|
+|
+
+Substituting:
+
+* *<path>* by the path of the the application repository,
+  from the root of the *"Plone Site*" (i.e., without the id of the Plone Site).
+  with slashes ("/") substituted by underscores ("_").)
+  
+* *<code>* by the the code of the language.
+  * as a "*two letter*" code ( "es", "en", ...), 
+  * or as a *two letter-two letter* ( "es-ar", "en-us", ...) for country-specific languages,
+  * or as a *two letter-two letter-two letter* ( "es-es-an", "en-us-ny", ...) for variations on country-specific languages,
+  
+
+
+For example, with a base *"Catalogo"* object named **"gvSIGi18n"** located a the root of the *"Plone site*",
+  and a language with code **"es"**
+
+  * *TRA_gvSIGi18n_la-es_Managers*
+  * *TRA_gvSIGi18n_la-es_Coordinators*
+  * *TRA_gvSIGi18n_la-es_Reviewers*
+  * *TRA_gvSIGi18n_la-es_Translators*
+  * *TRA_gvSIGi18n_la-es_Visitors*
+
+or with the same *"Catalogo"* object and a country specific language with code **"es-ar"**
+
+  * *TRA_gvSIGi18n_la-es-ar_Managers*
+  * *TRA_gvSIGi18n_la-es-ar_Coordinators*
+  * *TRA_gvSIGi18n_la-es-ar_Reviewers*
+  * *TRA_gvSIGi18n_la-es-ar_Translators*
+  * *TRA_gvSIGi18n_la-es-ar_Visitors*
 
 |
 |

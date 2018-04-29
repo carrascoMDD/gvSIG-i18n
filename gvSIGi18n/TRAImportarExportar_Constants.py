@@ -37,14 +37,6 @@ __docformat__ = 'plaintext'
 from TRAElemento_Constants import *
 
 
-cMinWaitBetweenTransactions = 0.1 # seconds
-
-cMaxWaitBetweenTransactions = 60.0 # seconds
-
-
-
-
-
 # ##############################################
 # Handling modes for of export encoding errors
 
@@ -358,7 +350,6 @@ cWesternLanguageMarkInSourceMap =  'en'
 cEncodingSeparatorSentinelName  = '--encoding_separator--'
 
 cUTFEncodingsForAllLanguages = [ 
-    [ cEncodingUnicodeEscape, cEncodingUnicodeEscape, []], 
     [ cEncodingUTF8, cEncodingUTF8, []], 
     [ u'utf_7', u'U7,unicode-1-1-utf-7', []], 
      [ u'utf_8_sig', u'utf_8_sig', []], 
@@ -453,12 +444,10 @@ cDefaultEncodingsSourceMap = [
     [ u'shift_jisx0213', u'shiftjisx0213,sjisx0213,s_jisx0213', u'Japanese', u'ja',],
  ]
 
-
-cAllEncodingNames = reduce( lambda todosEncodings, someEncodings: todosEncodings + someEncodings, [ [ unEncodingSpec[ 0], ] + unEncodingSpec[ 1].split( ',') for unEncodingSpec in cUTFEncodingsForAllLanguages + cDefaultEncodingsSourceMap], [])
-
-
-
-
-# ACV 20090922 Unused. Removed.
-#cDefaultEncodingsForLanguages = { }
+cDefaultEncodingsForLanguages = {
+    
+    
+    
+    
+}
 

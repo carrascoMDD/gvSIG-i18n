@@ -48,7 +48,7 @@
         void python: pExport_ExportContent_Parameters_input.update( dict( [
             ( 'theExportFormat',            request.get( 'theExportFormat',             None),),
             ( 'theIncludeManifest',         request.get( 'theIncludeManifest',          None),),
-            ( 'theIncludeLocalesCSV',       request.get( 'theIncludeLocalesCSV',          None),),
+            ( 'theIncludeLocalesCSV',         request.get( 'theIncludeLocalesCSV',          None),),
             ( 'theSeparatedModules',        request.get( 'theSeparatedModules',         None),),
             ( 'theTipoArchivo',             request.get( 'theTipoArchivo',              None),),
             ( 'theDefaultLanguageCode',     request.get( 'theDefaultLanguageCode',      None),),
@@ -58,10 +58,6 @@
             ( 'theModulesToExport',         pModulesToExport,),
             ( 'theCodigosIdiomaReferencia', pCodigosIdiomaReferencia,),            
             ( 'theCodificacionesCaracteres',pCodificacionesCaracteres,),            
-            ( 'theFilenameForGvSIG',        request.get( 'theFilenameForGvSIG',         None),),
-            ( 'theProductName',             request.get( 'theProductName',              None),),
-            ( 'theProductVersion',          request.get( 'theProductVersion',           None),),
-            ( 'theL10NVersion',             request.get( 'theL10NVersion',              None),),
         ]));" />
 </div>
 
@@ -287,7 +283,7 @@
         tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_valoresPorDefectoExportacion_msgid',   'Default export configuration-' )"
         tal:attributes="
             title aLinkTitle;
-            href python: '%s/TRAExportar/' % here.absolute_url()">
+            href python: '%s/TRAExportar' % here.absolute_url()">
         <font size="3">
               <strong>
                   <span tal:content="aLinkTitle" />

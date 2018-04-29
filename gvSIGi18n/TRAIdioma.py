@@ -2,7 +2,7 @@
 #
 # File: TRAIdioma.py
 #
-# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
+# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
 # Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -32,8 +32,8 @@ __docformat__ = 'plaintext'
 from AccessControl import ClassSecurityInfo
 from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.TRAArquetipo import TRAArquetipo
-from TRAIdioma_Operaciones import TRAIdioma_Operaciones
-from Products.gvSIGi18n.TRAConRegistroActividad import TRAConRegistroActividad
+from Products.gvSIGi18n.TRAIdioma_Operaciones import TRAIdioma_Operaciones
+from Products.Relations.field import RelationField
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
@@ -43,105 +43,6 @@ from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import Reference
 ##/code-section module-header
 
 schema = Schema((
-
-    BooleanField(
-        name='permiteLeer',
-        widget=BooleanField._properties['widget'](
-            label="Permite ver Idioma",
-            label2="Allow to see Language",
-            description="Si Verdadero, entonces los usuarios puede ver el idioma. Puede ser Falso durante  procesos de importacion largos, o por indicacion del coordinador.",
-            description2="If True, then the users may see  the language. It may be False during long import processes or by coordinator request.",
-            label_msgid='gvSIGi18n_TRAIdioma_attr_permiteLeer_label',
-            description_msgid='gvSIGi18n_TRAIdioma_attr_permiteLeer_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        description="Si Verdadero, entonces los usuarios puede ver el idioma. Puede ser Falso durante  procesos de importacion largos, o por indicacion del coordinador.",
-        duplicates="0",
-        label2="Allow to see Language",
-        ea_localid="1576",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;IsLiteral=0;",
-        description2="If True, then the users may see  the language. It may be False during long import processes or by coordinator request.",
-        ea_guid="{76F8837E-DEC9-4f32-B6CA-0F04ABE405F1}",
-        read_only="True",
-        scale="0",
-        default="True",
-        label="Permite ver Idioma",
-        length="0",
-        containment="Not Specified",
-        position="18",
-        owner_class_name="TRAIdioma",
-        exclude_from_exportconfig="True",
-        exclude_from_copyconfig="True"
-    ),
-
-    BooleanField(
-        name='permiteModificar',
-        widget=BooleanField._properties['widget'](
-            label="Permite Modificar Idioma",
-            label2="Allow Changes to Language",
-            description="Si Verdadero, entonces el usuario puede realizar los cambios a los que permite sus roles en el idioma. Si Falso, entonces no puede realizar cambios en el idioma,  Puede ocurrir durante  procesos de importacion largos, o por indicacion del coordinador.",
-            description2="If True, then the user may perform  the changes authorized by the roles held on the language. If False, then the user can not make changes to the language. This may happen during long import processes or coordinator request.",
-            label_msgid='gvSIGi18n_TRAIdioma_attr_permiteModificar_label',
-            description_msgid='gvSIGi18n_TRAIdioma_attr_permiteModificar_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        description="Si Verdadero, entonces el usuario puede realizar los cambios a los que permite sus roles en el idioma. Si Falso, entonces no puede realizar cambios en el idioma,  Puede ocurrir durante  procesos de importacion largos, o por indicacion del coordinador.",
-        duplicates="0",
-        label2="Allow Changes to Language",
-        ea_localid="1573",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;IsLiteral=0;",
-        description2="If True, then the user may perform  the changes authorized by the roles held on the language. If False, then the user can not make changes to the language. This may happen during long import processes or coordinator request.",
-        ea_guid="{45A11E6E-E5C8-405a-9702-9BF365FFD3DE}",
-        read_only="True",
-        scale="0",
-        default="True",
-        label="Permite Modificar Idioma",
-        length="0",
-        containment="Not Specified",
-        position="16",
-        owner_class_name="TRAIdioma",
-        exclude_from_exportconfig="True",
-        exclude_from_copyconfig="True"
-    ),
-
-    ComputedField(
-        name='estaBloqueado',
-        widget=ComputedField._properties['widget'](
-            label="Bloqueado",
-            label2="Locked",
-            description="Si Verdadero, entonces el usuario no puede realizar los cambios a los que permite sus roles en el idioma. Si Falso, entonces puede realizar cambios en el idioma,  Puede ocurrir durante  procesos de importacion largos, o por indicacion del coordinador.",
-            description2="If True, then the user may not  perform  the changes authorized by the roles held on the language. If False, then the user can make changes to the language. This may happen during long import processes or coordinator request.",
-            label_msgid='gvSIGi18n_TRAIdioma_attr_estaBloqueado_label',
-            description_msgid='gvSIGi18n_TRAIdioma_attr_estaBloqueado_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        description="Si Verdadero, entonces el usuario no puede realizar los cambios a los que permite sus roles en el idioma. Si Falso, entonces puede realizar cambios en el idioma,  Puede ocurrir durante  procesos de importacion largos, o por indicacion del coordinador.",
-        duplicates="0",
-        label2="Locked",
-        ea_localid="1593",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;IsLiteral=0;",
-        description2="If True, then the user may not  perform  the changes authorized by the roles held on the language. If False, then the user can make changes to the language. This may happen during long import processes or coordinator request.",
-        ea_guid="{665EC558-519B-4f00-95B1-E468BC7C365E}",
-        scale="0",
-        label="Bloqueado",
-        length="0",
-        containment="Not Specified",
-        position="17",
-        owner_class_name="TRAIdioma",
-        expression="not context.fAllowWrite()",
-        computed_types="boolean",
-        exclude_from_copyconfig="True",
-        exclude_from_exportconfig="True"
-    ),
 
     StringField(
         name='codigoIdiomaEnGvSIG',
@@ -167,7 +68,7 @@ schema = Schema((
         description2="Language code in gvSIG, as gvSIG supports some languages for which there is no international code (yet).",
         containment="Not Specified",
         ea_guid="{C8E57D89-5CEC-48f0-B926-DA83FCDC9EAD}",
-        position="0",
+        position="1",
         owner_class_name="TRAIdioma",
         label="Codigo de Idioma en gvSIG"
     ),
@@ -196,38 +97,9 @@ schema = Schema((
         description2="Standard international language code,according to the I18N conventions.",
         containment="Not Specified",
         ea_guid="{32F6E759-E25D-4145-8961-613BE5F817F3}",
-        position="1",
-        owner_class_name="TRAIdioma",
-        label="Codigo internacional de Idioma"
-    ),
-
-    StringField(
-        name='nombreEnInglesDeIdioma',
-        widget=StringWidget(
-            label="Nombre en ingles",
-            label2="English name",
-            description="Nombre del idioma, expresado en idioma ingles.",
-            description2="Language name, expressed in english language.",
-            label_msgid='gvSIGi18n_TRAIdioma_attr_nombreEnInglesDeIdioma_label',
-            description_msgid='gvSIGi18n_TRAIdioma_attr_nombreEnInglesDeIdioma_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        scale="0",
-        description="Nombre del idioma, expresado en idioma ingles.",
-        duplicates="0",
-        label2="English name",
-        ea_localid="1531",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        length="0",
-        description2="Language name, expressed in english language.",
-        containment="Not Specified",
-        ea_guid="{B6FA4A49-ABED-41d7-B35E-4031AD105F59}",
         position="2",
         owner_class_name="TRAIdioma",
-        label="Nombre en ingles"
+        label="Codigo internacional de Idioma"
     ),
 
     StringField(
@@ -235,14 +107,14 @@ schema = Schema((
         widget=StringWidget(
             label="Nombre propio del idioma",
             label2="Native language name",
-            description="Nombre del idioma expresado en su idioma.",
-            description2="Language name expressed in the native language.",
+            description="Nombre del idioma expresado en el mismo idioma.",
+            description2="Language name express in the same language.",
             label_msgid='gvSIGi18n_TRAIdioma_attr_nombreNativoDeIdioma_label',
             description_msgid='gvSIGi18n_TRAIdioma_attr_nombreNativoDeIdioma_help',
             i18n_domain='gvSIGi18n',
         ),
         scale="0",
-        description="Nombre del idioma expresado en su idioma.",
+        description="Nombre del idioma expresado en el mismo idioma.",
         duplicates="0",
         label2="Native language name",
         ea_localid="1163",
@@ -251,74 +123,12 @@ schema = Schema((
         collection="false",
         styleex="volatile=0;",
         length="0",
-        description2="Language name expressed in the native language.",
+        description2="Language name express in the same language.",
         containment="Not Specified",
         ea_guid="{27989BCF-643E-4730-87F2-939F42EA6F38}",
-        position="3",
+        position="4",
         owner_class_name="TRAIdioma",
         label="Nombre propio del idioma"
-    ),
-
-    StringField(
-        name='modoSeleccionBandera',
-        widget=SelectionWidget(
-            label="Modo seleccion Bandera",
-            label2="Flag selecction mode",
-            description="Criterio para seleccion de la bandera especifica para este idioma: la bandera seleccionada por la plataforma Zope/Plone, una bandera Plone con nombre especifico, o una imagen adjunta.",
-            description2="Criteria to select the flag to display for this language: the flag seleccted by the Zope/Plone platform, other Plone flag with a specified name, or an Image attachment.",
-            label_msgid='gvSIGi18n_TRAIdioma_attr_modoSeleccionBandera_label',
-            description_msgid='gvSIGi18n_TRAIdioma_attr_modoSeleccionBandera_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        description="Criterio para seleccion de la bandera especifica para este idioma: la bandera seleccionada por la plataforma Zope/Plone, una bandera Plone con nombre especifico, o una imagen adjunta.",
-        vocabulary=['Plone','Especifica','Adjunta',],
-        duplicates="0",
-        vocabulary_msgids=['gvSIGi18n_TRAIdioma_attr_modoSeleccionBandera_option_Plone', 'gvSIGi18n_TRAIdioma_attr_modoSeleccionBandera_option_Especifica', 'gvSIGi18n_TRAIdioma_attr_modoSeleccionBandera_option_Adjunta'],
-        label2="Flag selecction mode",
-        ea_localid="1591",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        description2="Criteria to select the flag to display for this language: the flag seleccted by the Zope/Plone platform, other Plone flag with a specified name, or an Image attachment.",
-        ea_guid="{A8A54230-C7CD-43d1-A5F4-CA882CC2B33A}",
-        vocabulary2=['Plone','Specified','Attached',],
-        scale="0",
-        default="Plone",
-        label="Modo seleccion Bandera",
-        length="0",
-        containment="Not Specified",
-        position="5",
-        owner_class_name="TRAIdioma"
-    ),
-
-    StringField(
-        name='iconoBanderaIdioma',
-        widget=StringWidget(
-            label="Icono de la Bandera",
-            label2="Flag Icon",
-            description="Nombre de una bandera displonible en  la plataforma Zope/Plone, o la identidad de una imagen adjunta al lenguage, a utilizar como bandera para el idioma. Ha de ser de dimensiones iguales o menores a 16x16 pixels, preferentemente con fondo transparente.",
-            description2="Name of a flag available in the Zope/Plone platform, or the id of an image attached to the language, to use as the flag for the language. Must have dimensions equal or smaller than 16 x 16 pixels, prefereably with transparent background.",
-            label_msgid='gvSIGi18n_TRAIdioma_attr_iconoBanderaIdioma_label',
-            description_msgid='gvSIGi18n_TRAIdioma_attr_iconoBanderaIdioma_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        scale="0",
-        description="Nombre de una bandera displonible en  la plataforma Zope/Plone, o la identidad de una imagen adjunta al lenguage, a utilizar como bandera para el idioma. Ha de ser de dimensiones iguales o menores a 16x16 pixels, preferentemente con fondo transparente.",
-        duplicates="0",
-        label2="Flag Icon",
-        ea_localid="1581",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        length="0",
-        description2="Name of a flag available in the Zope/Plone platform, or the id of an image attached to the language, to use as the flag for the language. Must have dimensions equal or smaller than 16 x 16 pixels, prefereably with transparent background.",
-        containment="Not Specified",
-        ea_guid="{288C7CCE-8ECB-48bb-89F3-C7A64259AFEB}",
-        position="6",
-        owner_class_name="TRAIdioma",
-        label="Icono de la Bandera"
     ),
 
     StringField(
@@ -348,7 +158,7 @@ schema = Schema((
         label="Codigo de Idioma de referencia",
         length="0",
         containment="Not Specified",
-        position="13",
+        position="3",
         owner_class_name="TRAIdioma"
     ),
 
@@ -381,7 +191,7 @@ schema = Schema((
         label="Ambito",
         length="0",
         containment="Not Specified",
-        position="4",
+        position="5",
         owner_class_name="TRAIdioma"
     ),
 
@@ -409,9 +219,123 @@ schema = Schema((
         description2="Languages for which this is an acceptable fallback, in case they lack their own tranlation. This information appears in the files exported as GNU gettext PO format.",
         containment="Not Specified",
         ea_guid="{9FF87A07-8C98-4b8b-9CD3-38DCC86A29D9}",
-        position="14",
+        position="12",
         owner_class_name="TRAIdioma",
         label="Fallback de idiomas"
+    ),
+
+    RelationField(
+        name='referenciaDeIdiomas',
+        inverse_relation_label="Idiomas a los que sirve de referencia",
+        additional_columns=['codigoIdiomaEnGvSIG', 'codigoInternacionalDeIdioma', 'nombreNativoDelIdioma', 'esIdiomaDePais', 'esVariacionDeIdiomaDePais'],
+        inverse_relation_description="Idiomas que preferentemente sirven de referencia a los traductores para traducir a este idioma.",
+        description="Idiomas que preferentemente sirven de referencia a los traductores para traducir a este idioma.",
+        relationship='IdiomasReferencia',
+        inverse_relation_field_name='idiomasReferencia',
+        inverse_relation_label2="Languages to which this serves as reference",
+        label2="Reference Languages",
+        inverse_relation_description2="Languages that translators use prefereably as a reference to translate into this language.",
+        widget=ReferenceBrowserWidget(
+            label="Idiomas de Referencia",
+            label2="Reference Languages",
+            description="Idiomas que preferentemente sirven de referencia a los traductores para traducir a este idioma.",
+            description2="Languages that translators use prefereably as a reference to translate into this language.",
+            label_msgid='gvSIGi18n_TRAIdioma_rel_referenciaDeIdiomas_label',
+            description_msgid='gvSIGi18n_TRAIdioma_rel_referenciaDeIdiomas_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        label="Idiomas de Referencia",
+        description2="Languages that translators use prefereably as a reference to translate into this language.",
+        multiValued=1,
+        containment="Unspecified",
+        inverse_relationship='ReferenciaDeIdiomas',
+        owner_class_name="TRAIdioma",
+        deststyle="Union=0;Derived=0;AllowDuplicates=0;Owned=0;Navigable=Unspecified;"
+    ),
+
+    RelationField(
+        name='idiomasReferencia',
+        inverse_relation_label="Idiomas de Referencia",
+        additional_columns=[ 'codigoIdiomaEnGvSIG','codigoInternacionalDeIdioma','nombreNativoDelIdioma','esIdiomaDePais','esVariacionDeIdiomaDePais',],
+        inverse_relation_description="Idiomas que preferentemente sirven de referencia a los traductores para traducir a este idioma.",
+        description="Idiomas que preferentemente sirven de referencia a los traductores para traducir a este idioma.",
+        relationship='ReferenciaDeIdiomas',
+        inverse_relation_field_name='referenciaDeIdiomas',
+        sourcestyle="Union=0;Derived=0;AllowDuplicates=0;Owned=0;Navigable=Unspecified;",
+        inverse_relation_label2="Reference Languages",
+        label2="Languages to which this serves as reference",
+        inverse_relation_description2="Languages that translators use prefereably as a reference to translate into this language.",
+        widget=ReferenceBrowserWidget(
+            label="Idiomas a los que sirve de referencia",
+            label2="Languages to which this serves as reference",
+            description="Idiomas que preferentemente sirven de referencia a los traductores para traducir a este idioma.",
+            description2="Languages that translators use prefereably as a reference to translate into this language.",
+            label_msgid='gvSIGi18n_TRAIdioma_rel_idiomasReferencia_label',
+            description_msgid='gvSIGi18n_TRAIdioma_rel_idiomasReferencia_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        label="Idiomas a los que sirve de referencia",
+        description2="Languages that translators use prefereably as a reference to translate into this language.",
+        multiValued=1,
+        containment="Unspecified",
+        inverse_relationship='IdiomasReferencia'
+    ),
+
+    RelationField(
+        name='baseDeIdiomas',
+        inverse_relation_label="Base de Idiomas",
+        additional_columns=['codigoIdiomaEnGvSIG', 'codigoInternacionalDeIdioma', 'nombreNativoDelIdioma', 'esIdiomaDePais'],
+        inverse_relation_description="Idiomas que son una especializacion de este en un pais, o una variacion de un idioma propio a un pais.",
+        description="Idioma del que este es un caso especial para un pais o una variacion en un pais.",
+        relationship='IdiomaBase',
+        inverse_relation_field_name='idiomaBase',
+        inverse_relation_label2="Base for Languages",
+        label2="Base Language",
+        inverse_relation_description2="Languages that are derived from this, as a country specific specialization, or a variation of a country specific language.",
+        widget=ReferenceBrowserWidget(
+            label="Idioma Base",
+            label2="Base Language",
+            description="Idioma del que este es un caso especial para un pais o una variacion en un pais.",
+            description2="Language for which this is a country specific specialization, or a variation of a country specific language.",
+            label_msgid='gvSIGi18n_TRAIdioma_rel_baseDeIdiomas_label',
+            description_msgid='gvSIGi18n_TRAIdioma_rel_baseDeIdiomas_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        label="Idioma Base",
+        description2="Language for which this is a country specific specialization, or a variation of a country specific language.",
+        multiValued=1,
+        containment="Unspecified",
+        inverse_relationship='BaseDeIdiomas',
+        owner_class_name="TRAIdioma",
+        deststyle="Union=0;Derived=0;AllowDuplicates=0;Owned=0;Navigable=Unspecified;"
+    ),
+
+    RelationField(
+        name='idiomaBase',
+        inverse_relation_label="Idioma Base",
+        additional_columns=[ 'codigoIdiomaEnGvSIG','codigoInternacionalDeIdioma','nombreNativoDelIdioma','esIdiomaDePais',],
+        inverse_relation_description="Idioma del que este es un caso especial para un pais o una variacion en un pais.",
+        description="Idiomas que son una especializacion de este en un pais, o una variacion de un idioma propio a un pais.",
+        relationship='BaseDeIdiomas',
+        inverse_relation_field_name='baseDeIdiomas',
+        sourcestyle="Union=0;Derived=0;AllowDuplicates=0;Owned=0;Navigable=Unspecified;",
+        inverse_relation_label2="Base Language",
+        label2="Base for Languages",
+        inverse_relation_description2="Language for which this is a country specific specialization, or a variation of a country specific language.",
+        widget=ReferenceBrowserWidget(
+            label="Base de Idiomas",
+            label2="Base for Languages",
+            description="Idiomas que son una especializacion de este en un pais, o una variacion de un idioma propio a un pais.",
+            description2="Languages that are derived from this, as a country specific specialization, or a variation of a country specific language.",
+            label_msgid='gvSIGi18n_TRAIdioma_rel_idiomaBase_label',
+            description_msgid='gvSIGi18n_TRAIdioma_rel_idiomaBase_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        label="Base de Idiomas",
+        description2="Languages that are derived from this, as a country specific specialization, or a variation of a country specific language.",
+        multiValued=0,
+        containment="Unspecified",
+        inverse_relationship='IdiomaBase'
     ),
 
     StringField(
@@ -438,7 +362,7 @@ schema = Schema((
         description2="Team in charge of translations to the language. This information appears in the exported files of GNUgettext PO format.",
         containment="Not Specified",
         ea_guid="{CD852AC8-F684-4a10-A1C9-9E3C5A72F7FE}",
-        position="7",
+        position="6",
         owner_class_name="TRAIdioma",
         label="Equipo del idioma"
     ),
@@ -470,7 +394,7 @@ schema = Schema((
         label="Juego de caracteres para exportacion como Java Properties",
         length="0",
         containment="Not Specified",
-        position="8",
+        position="7",
         owner_class_name="TRAIdioma"
     ),
 
@@ -501,7 +425,7 @@ schema = Schema((
         label="Juego de caracteres para exportacion como GNU gettext PO",
         length="0",
         containment="Not Specified",
-        position="9",
+        position="8",
         owner_class_name="TRAIdioma"
     ),
 
@@ -531,7 +455,7 @@ schema = Schema((
         label="Codificacion de transferencia de contenido",
         length="0",
         containment="Not Specified",
-        position="10",
+        position="9",
         owner_class_name="TRAIdioma"
     ),
 
@@ -561,7 +485,7 @@ schema = Schema((
         label="Formas plurales",
         length="0",
         containment="Not Specified",
-        position="11",
+        position="10",
         owner_class_name="TRAIdioma"
     ),
 
@@ -591,7 +515,7 @@ schema = Schema((
         label="Codificaciones preferidas",
         length="0",
         containment="Not Specified",
-        position="12",
+        position="11",
         owner_class_name="TRAIdioma"
     ),
 
@@ -621,8 +545,40 @@ schema = Schema((
         label="Es Idioma Principal",
         length="0",
         containment="Not Specified",
-        position="15",
+        position="13",
         owner_class_name="TRAIdioma"
+    ),
+
+    ComputedField(
+        name='pathDelRaiz',
+        widget=ComputedField._properties['widget'](
+            label="Path del Raiz",
+            label2="Root's Path",
+            description="Path del Catalogo raiz de este elemento.",
+            description2="This element's root Catalog path.",
+            label_msgid='gvSIGi18n_TRAIdioma_attr_pathDelRaiz_label',
+            description_msgid='gvSIGi18n_TRAIdioma_attr_pathDelRaiz_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Path del Catalogo raiz de este elemento.",
+        duplicates="0",
+        label2="Root's Path",
+        ea_localid="1107",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="This element's root Catalog path.",
+        ea_guid="{00436A4E-8694-4ae3-9AEC-C9A6A1915D96}",
+        scale="0",
+        expression="context.fPathDelRaiz()",
+        label="Path del Raiz",
+        length="0",
+        exclude_from_traversalconfig="True",
+        containment="Not Specified",
+        position="0",
+        owner_class_name="TRAIdioma",
+        exclude_from_views="[ 'Textual', 'Tabular',  ]"
     ),
 
 ),
@@ -634,103 +590,39 @@ schema = Schema((
 TRAIdioma_schema = OrderedBaseFolderSchema.copy() + \
     getattr(TRAArquetipo, 'schema', Schema(())).copy() + \
     getattr(TRAIdioma_Operaciones, 'schema', Schema(())).copy() + \
-    getattr(TRAConRegistroActividad, 'schema', Schema(())).copy() + \
     schema.copy()
 
 ##code-section after-schema #fill in your manual code here
 ##/code-section after-schema
 
-class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRegistroActividad):
+class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones):
     """
     """
     security = ClassSecurityInfo()
-    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAArquetipo,'__implements__',()),) + (getattr(TRAIdioma_Operaciones,'__implements__',()),) + (getattr(TRAConRegistroActividad,'__implements__',()),)
+    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAArquetipo,'__implements__',()),) + (getattr(TRAIdioma_Operaciones,'__implements__',()),)
 
     # This name appears in the 'add' box
     archetype_name = 'Idioma'
 
     meta_type = 'TRAIdioma'
     portal_type = 'TRAIdioma'
-
-
-    # Change Audit fields
-
-    creation_date_field = 'fechaCreacion'
-    creation_user_field = 'usuarioCreador'
-    modification_date_field = 'fechaModificacion'
-    modification_user_field = 'usuarioModificador'
-    deletion_date_field = 'fechaEliminacion'
-    deletion_user_field = 'usuarioEliminador'
-    is_inactive_field = 'estaInactivo'
-    change_counter_field = 'contadorCambios'
-    change_log_field = 'registroDeCambios'
-
-
-
-    allowed_content_types = [] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRAIdioma_Operaciones, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', []))
-    filter_content_types             = 1
-    global_allow                     = 0
+    allowed_content_types = [] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRAIdioma_Operaciones, 'allowed_content_types', []))
+    filter_content_types = 1
+    global_allow = 0
     content_icon = 'traidioma.gif'
-    immediate_view                   = 'Tabular'
-    default_view                     = 'Tabular'
-    suppl_views                      = ['Tabular',]
-    typeDescription                  = "Uno de los Idiomas a los que se han de traducir las cadenas."
-    typeDescMsgId                    =  'gvSIGi18n_TRAIdioma_help'
-    archetype_name2                  = 'Language'
-    typeDescription2                 = '''One of the languages to translate the strings into.'''
-    archetype_name_msgid             = 'gvSIGi18n_TRAIdioma_label'
-    factory_methods                  = None
-    factory_enablers                 = None
-    propagate_delete_impact_to       = None
+    immediate_view = 'Tabular'
+    default_view = 'Tabular'
+    suppl_views = ['Tabular',]
+    typeDescription = "Uno de los Idiomas a los que se han de traducir las cadenas."
+    typeDescMsgId =  'gvSIGi18n_TRAIdioma_help'
+    archetype_name2 = 'Language'
+    typeDescription2 = '''One of the languages to translate the strings into.'''
+    archetype_name_msgid = 'gvSIGi18n_TRAIdioma_label'
+    factory_methods = None
     allow_discussion = False
 
 
     actions =  (
-
-
-       {'action': "string:${object_url}/TRAExportarGvSIG",
-        'category': "object_buttons",
-        'id': 'TRA_export_language_for_gvSIG',
-        'name': 'Export for gvSIG',
-        'permissions': ("View",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Export')"""
-       },
-
-
-       {'action': "string:${object_url}/TRAConfirmarBloquearIdioma",
-        'category': "object_buttons",
-        'id': 'TRA_bloquear_idioma',
-        'name': 'Lock Language',
-        'permissions': ("Modify portal content",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Lock_TRAIdioma')"""
-       },
-
-
-       {'action': "string:${object_url}/TRAConfirmarDesbloquearIdioma",
-        'category': "object_buttons",
-        'id': 'TRA_desbloquear_idioma',
-        'name': 'Unlock Language',
-        'permissions': ("Modify portal content",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Unlock_TRAIdioma')"""
-       },
-
-
-       {'action': "string:${object_url}/TRACopiar_Traducciones",
-        'category': "object_buttons",
-        'id': 'TRACopyTranslations',
-        'name': 'Copy Translations',
-        'permissions': ("Modify portal content",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Copy_Translations')"""
-       },
-
-
-       {'action': "string:$object_url/Editar",
-        'category': "object",
-        'id': 'edit',
-        'name': 'Edit',
-        'permissions': ("Modify portal content",),
-        'condition': """python:object.fAllowWrite()"""
-       },
 
 
        {'action': "string:${object_url}/sharing",
@@ -738,16 +630,7 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRe
         'id': 'local_roles',
         'name': 'Sharing',
         'permissions': ("Manage properties",),
-        'condition': """python:object.fAllowWrite() and object.fRoleQuery_IsManagerOrCoordinator()"""
-       },
-
-
-       {'action': "string:${object_url}/Tabular",
-        'category': "object",
-        'id': 'view',
-        'name': 'View',
-        'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': 'python:1'
        },
 
 
@@ -756,16 +639,7 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRe
         'id': 'folderlisting',
         'name': 'Folder Listing',
         'permissions': ("View",),
-        'condition': """python:0"""
-       },
-
-
-       {'action': "string:${object_url}/MDDChanges",
-        'category': "object_buttons",
-        'id': 'mddchanges',
-        'name': 'Changes',
-        'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': 'python:0'
        },
 
 
@@ -774,16 +648,7 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRe
         'id': 'references',
         'name': 'References',
         'permissions': ("Modify portal content",),
-        'condition': """python:0"""
-       },
-
-
-       {'action': "string:${object_url}/TRASeguridadUsuarioConectado",
-        'category': "object_buttons",
-        'id': 'TRA_SeguridadUsuarioConectado',
-        'name': 'Permissions',
-        'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': 'python:0'
        },
 
 
@@ -792,16 +657,34 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRe
         'id': 'content_status_history',
         'name': 'State',
         'permissions': ("View",),
-        'condition': """python:0"""
+        'condition': 'python:0'
        },
 
 
-       {'action': "string:${object_url}/MDDCacheStatus/",
-        'category': "object_buttons",
-        'id': 'mddcachestatus',
-        'name': 'Cache',
+       {'action': "string:${object_url}/sharing",
+        'category': "object",
+        'id': 'local_roles',
+        'name': 'Sharing',
+        'permissions': ("Manage properties",),
+        'condition': 'python:object.fRoleQuery_IsCoordinator()'
+       },
+
+
+       {'action': "string:${object_url}/Tabular",
+        'category': "object",
+        'id': 'view',
+        'name': 'View',
         'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': 'python:1'
+       },
+
+
+       {'action': "string:$object_url/Editar",
+        'category': "object",
+        'id': 'edit',
+        'name': 'Edit',
+        'permissions': ("Modify portal content",),
+        'condition': 'python:1'
        },
 
 
@@ -816,20 +699,6 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRe
 
     # Methods
 
-    security.declarePublic('cb_isCopyable')
-    def cb_isCopyable(self):
-        """
-        """
-        
-        return False
-
-    security.declarePublic('displayContentsTab')
-    def displayContentsTab(self):
-        """
-        """
-        
-        return False
-
     security.declarePublic('manage_afterAdd')
     def manage_afterAdd(self,item,container):
         """
@@ -837,65 +706,16 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRe
         
         return TRAIdioma_Operaciones.pHandle_manage_afterAdd( self, item, container)
 
-    security.declarePublic('fAllowRead')
-    def fAllowRead(self):
-        """
-        """
-        
-        return self.getPermiteLeer() and self.getCatalogo().fAllowRead()
-
-    security.declarePublic('fAllowWrite')
-    def fAllowWrite(self):
-        """
-        """
-        
-        return self.fAllowRead() and self.getPermiteModificar() and self.getCatalogo().fAllowWrite()
-
-    security.declarePublic('fIsCacheable')
-    def fIsCacheable(self):
-        """
-        """
-        
-        return True
-
-    security.declarePublic('fIsLocked')
-    def fIsLocked(self):
-        """
-        """
-        
-        return not self.getPermiteModificar()
-
-    security.declarePublic('fIsUnlocked')
-    def fIsUnlocked(self):
-        """
-        """
-        
-        return self.getPermiteModificar()
-
     security.declarePublic('manage_beforeDelete')
     def manage_beforeDelete(self,item,container):
         """
         """
         
         return TRAArquetipo.manage_beforeDelete( self, item, container)
-
-    security.declarePublic('manage_pasteObjects')
-    def manage_pasteObjects(self,cb_copy_data,REQUEST):
-        """
-        """
-        
-        return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
-
-    security.declarePublic('fExtraLinks')
-    def fExtraLinks(self):
-        """
-        """
-        
-        return TRAIdioma_Operaciones.fExtraLinks( self)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:
-        if a['id'] in ['metadata', 'folderContents']:
+        if a['id'] in ['metadata']:
             a['visible'] = 0
     return fti
 

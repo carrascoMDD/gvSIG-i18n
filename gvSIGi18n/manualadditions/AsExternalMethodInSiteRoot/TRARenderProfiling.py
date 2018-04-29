@@ -122,7 +122,7 @@ def fExecutionRecordPrintString( theExecutionRecord, ):
     
 
 
-def TRARenderExecutionDetails( theExecutionRecord, theCollapsible=True, theOutput=None):
+def TRARenderExecutionDetails( theExecutionRecord,):
     """Render Performance profiling information.
     
     """
@@ -134,8 +134,8 @@ def TRARenderExecutionDetails( theExecutionRecord, theCollapsible=True, theOutpu
         if not theExecutionRecord.vInitialized:
             return 'TRARenderExecutionDetails error: theExecutionRecord not initialized'
         
-        if theOutput == None:
-            theOutput = StringIO()
+        
+        theOutput = StringIO()
         
         unDuration = theExecutionRecord.vExecutionEndTime - theExecutionRecord.vExecutionStartTime
         
@@ -143,8 +143,7 @@ def TRARenderExecutionDetails( theExecutionRecord, theCollapsible=True, theOutpu
         
         pWriteScriptsForExecutionRecordPrintString( theOutput)
         
-        if theCollapsible:
-            theOutput.write( cCollapsibleBlock_open % ( 'TRAExecutionProfiling_id', '%d ms. - Execution Profile' % unDuration,))
+        theOutput.write( cCollapsibleBlock_open % ( 'TRAExecutionProfiling_id', '%d ms. - Execution Profile' % unDuration,))
             
         
         theOutput.write( """
@@ -167,8 +166,7 @@ def TRARenderExecutionDetails( theExecutionRecord, theCollapsible=True, theOutpu
             \n"""
         )
         
-        if theCollapsible:
-            theOutput.write( cCollapsibleBlock_close)
+        theOutput.write( cCollapsibleBlock_close)
         
         unString = theOutput.getvalue()
         return unString
@@ -290,7 +288,7 @@ def pWriteScriptsForExecutionRecordPrintString( theOutput, ):
         <!-- #################################################################
          SECTION: Scripts to control display of execution profiling records
          ################################################################# -->
-        <script type="text/javascript">
+        <script>
              function pTRAExpandOrCollapseDirectChildren( theElementId) {
                 // this function toggles the display of execution profiling records
                 
@@ -319,8 +317,9 @@ def pWriteScriptsForExecutionRecordPrintString( theOutput, ):
                 }
                 return true;
             }
-
-            function pTRAExpandOrCollapseAllChildren( theElementId) {
+        </script>
+        <script>
+             function pTRAExpandOrCollapseAllChildren( theElementId) {
                 // this function toggles the display of execution profiling records
                 
                 var unElement = document.getElementById( theElementId);
@@ -352,7 +351,8 @@ def pWriteScriptsForExecutionRecordPrintString( theOutput, ):
                 }
                 return true;
             }
-            
+        </script>
+        <script>
             function fTRAApplyDisplay( theElement, theRowClassCounter) {
                 // Set class as Display for children of expanded elements and NoDisplay for children of collapsed elements
                 
@@ -441,7 +441,8 @@ def pWriteScriptsForExecutionRecordPrintString( theOutput, ):
                 }                    
                 return unRowClassCounter;
             }
-
+        </script>
+        <script>
             function pTRAChangeClassInChildren( theElement, theExistingClass, theNewClass, theRecurse) {
                 // changes element's children class, optionally recursively
                 

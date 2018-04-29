@@ -2,7 +2,7 @@
 #
 # File: gvSIGi18n.py
 #
-# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
+# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
 # Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -79,25 +79,41 @@ def initialize(context):
 
     # imports packages and types for registration
 
+    import TRACatalogo_Autorizaciones
     import TRAColeccionInformes
     import TRAArquetipo
+    import TRACatalogo_Inicializacion
     import TRAModulo
+    import TRAIdioma_Operaciones
+    import TRAElemento_Permissions
     import TRAColeccionCadenas
+    import TRACatalogo_Informes
     import TRAInforme
     import TRAColeccionArquetipos
     import TRAColeccionImportaciones
     import TRACadena
-    import TRAColeccionSolicitudesCadenas
     import TRAElemento
+    import TRAElemento_Constants
+    import TRAElemento_Operaciones
     import TRACatalogo
     import TRAColeccionIdiomas
+    import TRACatalogo_CursorTraducciones
+    import TRAModulo_Operaciones
+    import TRAElemento_TraversalConfig
+    import TRACatalogo_Operaciones
+    import TRAImportacion_Operaciones
     import TRAContenidoIntercambio
-    import TRAConRegistroActividad
     import TRAImportacion
+    import TRAElemento_Meta
+    import TRACatalogo_Exportacion
+    import TRAContenidoIntercambio_Operaciones
     import TRAIdioma
+    import TRACatalogo_Eliminacion
+    import TRATraduccion_Operaciones
     import TRAColeccionModulos
     import TRATraduccion
-    import TRASolicitudCadena
+    import TRAInforme_Operaciones
+    import TRACadena_Operaciones
 
     # Initialize portal content
     all_content_types, all_constructors, all_ftis = process_types(

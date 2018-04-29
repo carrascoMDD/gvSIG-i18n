@@ -34,14 +34,10 @@
 <body>                     
 <metal:main fill-slot="main">
     <tal:main-macro metal:define-macro="main"
-        tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas.
-        global pStartTime       pStartTime | python: here.ModelDDvlPlone_tool.fMillisecondsNow()" 
+        tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas." 
         i18n:domain="gvSIGi18n">
 
-        <metal:block metal:use-macro="here/TRAProfileExecution/macros/tSetupProfileExecution" />   
-
-
-        <tal:block tal:define="pExecutionRecord python: here.fStartExecution( 'template', 'TRACompletar_action.pt', None, pAllowRootProfileExecution, { 'log_when': True, })" >
+        <tal:block tal:define="pExecutionRecord python: here.fStartExecution( 'template', 'TRACompletar_action.pt', None, True, { 'log_when': True, })" >
     
             <div metal:use-macro="here/document_actions/macros/document_actions">
                 Document actions (print, sendto etc)
@@ -56,13 +52,6 @@
             </div>
             
             
-            
-            <tal:block tal:condition="python: not here.fAllowWrite()" >
-                <div class="portalMessage" >
-                    <span tal:content="python: here.ModelDDvlPlone_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TranslationsCatalogIsLockedAgainstModifications', 'The Translations Catalog Is Locked Against Modifications')" />
-                </div>
-            </tal:block>
-                
      
             <tal:block tal:define="pPermiteEditar python: False; pPermiteEliminar python: False; pShowOrHideTrees python: False">
                 <metal:block metal:use-macro="here/TRACabeceraEnTabla_i18n_view/macros/tCabeceraEnTabla_i18n" />   
@@ -78,7 +67,7 @@
     
             
             <tal:block replace="nothing">
-                <tal:block tal:define="dummy python:request.response.redirect( '%s/Tabular/' % here.absolute_url())" />
+                <tal:block tal:define="dummy python:request.response.redirect( '%s/Tabular' % here.absolute_url())" />
             </tal:block>
             
         </tal:block>

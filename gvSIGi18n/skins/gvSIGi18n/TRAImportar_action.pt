@@ -34,14 +34,10 @@
 <body>                     
 <metal:main fill-slot="main">
     <tal:main-macro metal:define-macro="main"
-        tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas.
-        global pStartTime       pStartTime | python: here.ModelDDvlPlone_tool.fMillisecondsNow()" 
+        tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas." 
         i18n:domain="gvSIGi18n">
 
-        <metal:block metal:use-macro="here/TRAProfileExecution/macros/tSetupProfileExecution" />   
-
-
-        <tal:block tal:define="pExecutionRecord python: here.fStartExecution( 'template', 'TRAImportar_action.pt', None, pAllowRootProfileExecution, { 'log_what': 'details', 'log_when': True, })" >
+        <tal:block tal:define="pExecutionRecord python: here.fStartExecution( 'template', 'TRAImportar_action.pt', None, True, { 'log_what': 'details', 'log_when': True, })" >
     
             <div metal:use-macro="here/document_actions/macros/document_actions">
                 Document actions (print, sendto etc)
@@ -56,12 +52,6 @@
             </div>
             
             
-            <tal:block tal:condition="python: not here.fAllowWrite()" >
-                <div class="portalMessage" >
-                    <span tal:content="python: here.ModelDDvlPlone_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TranslationsCatalogIsLockedAgainstModifications', 'The Translations Catalog Is Locked Against Modifications')" />
-                </div>
-            </tal:block>
-            
      
             <tal:block tal:define="pPermiteEditar python: False; pPermiteEliminar python: False; pShowOrHideTrees python: False">
                 <metal:block metal:use-macro="here/TRACabeceraEnTabla_i18n_view/macros/tCabeceraEnTabla_i18n" />   
@@ -75,7 +65,7 @@
                                 tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_noPuedeImportarYVolverATabular_msgid',   'You can not import translations contents. Please navigate back to import tabular view.-' )"
                                 tal:attributes="
                                     title aLinkTitle;
-                                    href python: '%s/Tabular/' % here.absolute_url()">
+                                    href python: '%s/Tabular' % here.absolute_url()">
                                 <span tal:content="aLinkTitle" />
                             </a>
                         </strong>
@@ -98,7 +88,7 @@
                                             tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_cancelarImportacionYVolverATabular_msgid',   'Cancel import of translations contents and navigate back to import tabular view-' )"
                                             tal:attributes="
                                                 title aLinkTitle;
-                                                href python: '%s/Tabular/' % here.absolute_url()">
+                                                href python: '%s/Tabular' % here.absolute_url()">
                                             <span tal:content="aLinkTitle" />
                                         </a>
                                     </strong>
@@ -113,7 +103,7 @@
                                 pPermissionsCache python: {}; 
                                 pRolesCache python: {};
                                 dummy  python:here.fImportarContenidosIntercambio( False, pPermissionsCache, pRolesCache, pExecutionRecord)" />
-                            <tal:block tal:define="dummy python:request.response.redirect( '%s/TRAImportacionProgreso/' % here.absolute_url())" />
+                            <tal:block tal:define="dummy python:request.response.redirect( '%s/TRAInformeProgreso_action' % here.absolute_url())" />
                         </tal:block>
                     </tal:block>
                 </tal:block>
@@ -122,12 +112,9 @@
             <tal:block tal:define="dummy python: pExecutionRecord and here.pEndExecution( pExecutionRecord)" />
    
             <metal:block metal:use-macro="here/TRAFooter_i18n_view/macros/tFooter_i18n" />
-    
-            <!-- ACV 20090928 Execution details of an import operation my be really big. 
-                 Do not present to the user unless specifically asked for by passing a request parameter theRenderProfile set to string value "on"
-               -->            
-            <tal:block tal:condition="request/theRenderProfile | nothing"
-                tal:replace="structure python: pExecutionRecord and here.TRARenderExecutionDetails( pExecutionRecord)" />
+   
+            <tal:block tal:replace="structure python: pExecutionRecord and here.TRARenderExecutionDetails( pExecutionRecord)" />
+            
             
         </tal:block>
         

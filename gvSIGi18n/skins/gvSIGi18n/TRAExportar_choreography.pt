@@ -503,7 +503,7 @@
         tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_cancelarExportacionYVolverACatalogo_msgid',   'Cancel Export-' )"
         tal:attributes="
             title aLinkTitle;
-            href python: '%s/' % here.absolute_url()">
+            href python: '%s' % here.absolute_url()">
         <font size="3">
               <strong>
                   <span tal:content="aLinkTitle" />
@@ -520,7 +520,7 @@
         tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_valoresPorDefectoExportacion_msgid',   'Default export configuration-' )"
         tal:attributes="
             title aLinkTitle;
-            href python: '%s/TRAExportar/' % here.absolute_url()">
+            href python: '%s/TRAExportar' % here.absolute_url()">
         <font size="3">
               <strong>
                   <span tal:content="aLinkTitle" />

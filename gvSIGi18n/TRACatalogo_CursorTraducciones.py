@@ -45,7 +45,6 @@ import transaction
 
 from math import floor
 
-import time
 
 from DateTime import DateTime
 
@@ -61,14 +60,13 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore       import permissions
 
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow, fDateTimeNow
 
 
 from TRAElemento_Constants import *
 
-from TRAElemento_Permission_Definitions import cBoundObject, cUseCase_InvalidateStringTranslations
+from TRAElemento_Permission_Definitions import cBoundObject
 from TRAElemento_Permission_Definitions import cUseCase_BrowseTranslations, cUseCase_TRATraduccionStateChange, cUseCase_TRATraduccionComment
-from TRAElemento_Permission_Definitions import cStateChangeActionRoles, cInvalidateStringTranslationsRoles,cDeactivateStringsRoles, cActivateStringsRoles
+from TRAElemento_Permission_Definitions import cStateChangeActionRoles
 
 
 
@@ -106,7 +104,6 @@ cCriterioBusquedaTodas      = { 'getEstadoCadena':cEstadoCadenaActiva,  }
 
         
 
-cCriterioBusqueda_RecuperarDatosTraduccionesPorSimbolos   = { 'getEstadoCadena': cEstadoCadenaActiva,  'getSimbolo': [], }           
 
 
 cClavesBusquedaInformeTodasOSimbolos = cClavesBusquedaInformeTodas + [ 'getSimbolo',]
@@ -212,14 +209,9 @@ class TRACatalogo_CursorTraducciones:
             'traduccionesPorPagina'      : str( self.fTraduccionesPorPaginaPorDefecto()),
             'datosTraducciones'          : [],
             'read_permission'            : False,
-            'write_permission'           : False,            
             'use_case_query_results'     : [ ],        
-            'allowed_state_transitions'  : {},
-            'all_target_state_changes'   : [ ],
-            'allow_invalidate_string_translations': False,
-            'browsing_inactive_strings'  : False,
-            'allow_deactivate_strings'   : False,
-            'allow_activate_strings'     : False,
+            'allowed_state_transitions':   {},
+            'target_state_changes_anyTranslations':   set(),
             'from_translation_index':    0,
             'to_translation_index':      0,
             'total_translations':        0,
@@ -247,20 +239,6 @@ class TRACatalogo_CursorTraducciones:
         """Process Asynchronous change request.
         
         """
-
-        # ####################################################
-        """Delay used only during debug to cause a number of translations left unsent in the client and test the close page action.
-        
-        """
-        unSleepSecondsString = theChangeRequestParameters.get( 'sleep_seconds', '')
-        if unSleepSecondsString:
-            unSleepSeconds = 0.0
-            try:
-                unSleepSeconds = float( unSleepSecondsString)
-            except:
-                None
-            if unSleepSeconds > 0.0001:
-                time.sleep( unSleepSeconds)
 
         
         # ##################################################################
@@ -292,7 +270,6 @@ class TRACatalogo_CursorTraducciones:
             """
             
             unResult.update( {
-                'change_counter':               theChangeRequestParameters.get( 'change_counter',            ''),   
                 'requested_change_kind':        theChangeRequestParameters.get( 'requested_change_kind',     ''),                
                 'codigo_idioma_a_traducir':     theChangeRequestParameters.get( 'codigo_idioma_a_traducir',  ''),
                 'simbolo_cadena_a_traducir':    theChangeRequestParameters.get( 'simbolo_cadena_a_traducir', ''),
@@ -313,7 +290,7 @@ class TRACatalogo_CursorTraducciones:
             
             try: 
         
-                unBrowseStart       = fMillisecondsNow()
+                unBrowseStart       = self.fMillisecondsNow()
                 try:
                     try:
                     
@@ -327,12 +304,12 @@ class TRACatalogo_CursorTraducciones:
                     
                                             
                     finally:
-                        unResult[ 'change_duration']  = fMillisecondsNow() - unBrowseStart
+                        unResult[ 'change_duration']  = self.fMillisecondsNow() - unBrowseStart
     
                         
                         
                         
-                    unRetrieveStart       = fMillisecondsNow()
+                    unRetrieveStart       = self.fMillisecondsNow()
                     try:
                         
                         # ##################################################################
@@ -358,61 +335,78 @@ class TRACatalogo_CursorTraducciones:
                                                     
                     finally:
                          
-                        unResult[ 'retrieve_duration']   = fMillisecondsNow() - unBrowseStart
+                        unResult[ 'retrieve_duration']   = self.fMillisecondsNow() - unBrowseStart
     
                 finally:
-                    unResult[ 'duration'] = fMillisecondsNow() - unBrowseStart
+                    unResult[ 'duration'] = self.fMillisecondsNow() - unBrowseStart
                     unResult[ 'success'] = ( unResult.get( 'change_result', None) and unResult.get( 'change_result', None).get('success', False)) and \
                          ( unResult.get( 'retrieval_result', None) and unResult.get( 'retrieval_result', None).get('success', False))
                      
-                   
-                    # ####################################################################
-                    # ACV 20091209 We are now returning a response as HTML, which the client inserts into its DOM tree for inspection.
-                    # This means that values are encoded property, and shall be decoded properly, as all TAL generated content does.
-                    # Someday we may get back to using this with a JSON flavor, possibly the right decision for this communication (other than CORBA, but that's life ..., putting up with bad technological choices).
-                    #
-                    #unServiceSuccess    =       ( unResult or {}).get( 'success', False);
-                    #unChangeResult      =       (( unServiceSuccess and unResult)or {}).get( 'change_result', {});
-                    #unChangedSuccess    =       ( unChangeResult or {}).get( 'success', False);
-                    #unChangedStatus     =       ( unChangeResult or {}).get( 'status', '');
-                    #unRetrievalResult   =       (( unServiceSuccess and unResult)or {}).get( 'retrieval_result', {});
-                    #unRetrievalSuccess  =       ( unRetrievalResult or {}).get( 'success', False);
-                    #unDatosTraducciones =       (( unRetrievalSuccess and unRetrievalResult) or {}).get( 'datosTraducciones', []);
-                    #unosDatosTraduccion =       ( unDatosTraducciones and unDatosTraducciones[ 0]) or {};
-                    #unUsuarioTraduccion =       ( unosDatosTraduccion and unosDatosTraduccion[ 'getUsuarioTraductor']) or '';
-                    #unaFechaTraduccion  =       ( unosDatosTraduccion and unosDatosTraduccion[ 'getFechaTraduccionTextual']) or '';
-                    #unaNuevaCadenaTraducida =   ( unosDatosTraduccion and unosDatosTraduccion[ 'getCadenaTraducida']) or '';
-                    #unNuevoEstadoTraduccion=    ( unosDatosTraduccion and unosDatosTraduccion[ 'getEstadoTraduccion']) or '';
-                    #unNuevoContadorCambios   =  ( unosDatosTraduccion and unosDatosTraduccion[ 'getContadorCambios']) or 0;
-                    #unosTargetStateChanges =    (( unRetrievalSuccess and unRetrievalResult) or {}).get( 'target_state_changes_firstTranslation', []);
-                    #
-                    #aResultString ="""
-                    #[ 
-                        #[ 'success',                        '%(success)s'], 
-                        #[ 'theCodigoIdiomaATraducir',       '%(theCodigoIdiomaATraducir)s'],
-                        #[ 'theSimboloCadenaATraducir',      '%(theSimboloCadenaATraducir)s'],
-                        #[ 'theCadenaTraducida_solicitada',  '%(theCadenaTraducida_solicitada)s'],
-                        #[ 'theComentario_solicitado',       '%(theComentario_solicitado)s'],
-                        #[ 'changed',                        '%(changed)s'],
-                        #[ 'theCadenaTraducida',             '%(theCadenaTraducida)s'],
-                        #[ 'theEstadoTraduccion',            '%(theEstadoTraduccion)s'],
-                        #[ 'theContadorCambios',             '%(theContadorCambios)s'],
-                        #[ 'theTargetStateChanges',          [%(theTargetStateChanges)s]],
-                    #];
-                        #\n""" % {
+                    unServiceSuccess    =       ( unResult or {}).get( 'success', False);
+                    unChangeResult      =       (( unServiceSuccess and unResult)or {}).get( 'change_result', {});
+                    unChangedSuccess    =       ( unChangeResult or {}).get( 'success', False);
+                    unRetrievalResult   =       (( unServiceSuccess and unResult)or {}).get( 'retrieval_result', {});
+                    unRetrievalSuccess  =       ( unRetrievalResult or {}).get( 'success', False);
+                    unDatosTraducciones =       (( unRetrievalSuccess and unRetrievalResult) or {}).get( 'datosTraducciones', []);
+                    unosDatosTraduccion =       ( unDatosTraducciones and unDatosTraducciones[ 0]) or {};
+                    unaNuevaCadenaTraducida =   ( unosDatosTraduccion and unosDatosTraduccion[ 'getCadenaTraducida']) or '';
+                    unNuevoEstadoTraduccion=    ( unosDatosTraduccion and unosDatosTraduccion[ 'getEstadoTraduccion']) or '';
+                    unosTargetStateChanges =    (( unRetrievalSuccess and unRetrievalResult) or {}).get( 'target_state_changes_firstTranslation', []);
+                    
+                    
+                    aResultString ="""
+[ 
+    [ 'success',                        '%(success)s'], 
+    [ 'theCodigoIdiomaATraducir',       '%(theCodigoIdiomaATraducir)s'],
+    [ 'theSimboloCadenaATraducir',      '%(theSimboloCadenaATraducir)s'],
+    [ 'theCadenaTraducida_solicitada',  '%(theCadenaTraducida_solicitada)s'],
+    [ 'theComentario_solicitado',       '%(theComentario_solicitado)s'],
+    [ 'changed',                        '%(changed)s'],
+    [ 'theCadenaTraducida',             '%(theCadenaTraducida)s'],
+    [ 'theEstadoTraduccion',            '%(theEstadoTraduccion)s'],
+    [ 'theTargetStateChanges',          [%(theTargetStateChanges)s]],
+];
+                        \n""" % {
+                        'success':                        ( unChangedSuccess and u'true') or u'false',    
+                        'theCodigoIdiomaATraducir':       self.fAsUnicode( unResult.get( 'codigo_idioma_a_traducir', u'')),
+                        'theSimboloCadenaATraducir':      self.fAsUnicode( unResult.get( 'simbolo_cadena_a_traducir', u'')),
+                        'theCadenaTraducida_solicitada':  self.fAsUnicode( unResult.get( 'cadena_traducida_solicitada', u'')),
+                        'theComentario_solicitado':       self.fAsUnicode( unResult.get( 'comentario_solicitado', u'')),
+                        'changed':                        (( unChangedSuccess and unChangeResult.get( 'changed',False)) and u'true') or u'false',
+                        'theCadenaTraducida':             self.fAsUnicode( unaNuevaCadenaTraducida),
+                        'theEstadoTraduccion':            self.fAsUnicode( unNuevoEstadoTraduccion),
+                        'theTargetStateChanges':          u','.join( [ "'%s'" % unEstado for unEstado in unosTargetStateChanges]),
+                    }    
+                       
+                    #unDictValoresResultado = {
                         #'success':                        ( unChangedSuccess and u'true') or u'false',    
                         #'theCodigoIdiomaATraducir':       self.fAsUnicode( unResult.get( 'codigo_idioma_a_traducir', u'')),
-                        #'theSimboloCadenaATraducir':      self.fAsUnicode( unResult.get( 'simbolo_cadena_a_traducir', u'')),
-                        #'theCadenaTraducida_solicitada':  self.fAsUnicode( unResult.get( 'cadena_traducida_solicitada', u'')),
-                        #'theComentario_solicitado':       self.fAsUnicode( unResult.get( 'comentario_solicitado', u'')),
+                        #'theSimboloCadenaATraducir':      self.fAsUnicode( unResult.get( 'simbolo_cadena_a_traducir', u'')).replace( u'\t', u''),
+                        #'theCadenaTraducida_solicitada':  self.fAsUnicode( unResult.get( 'cadena_traducida_solicitada', u'')).replace( u'\t', u''),
+                        #'theComentario_solicitado':       self.fAsUnicode( unResult.get( 'comentario_solicitado', u'')).replace( u'\t', u''),
                         #'changed':                        (( unChangedSuccess and unChangeResult.get( 'changed',False)) and u'true') or u'false',
-                        #'theCadenaTraducida':             self.fAsUnicode( unaNuevaCadenaTraducida),
+                        #'theCadenaTraducida':             self.fAsUnicode( unaNuevaCadenaTraducida).replace( u'\t', u''),
                         #'theEstadoTraduccion':            self.fAsUnicode( unNuevoEstadoTraduccion),
-                        #'theContadorCambios':             ( unNuevoContadorCambios and str( unNuevoContadorCambios)) or '0',
-                        #'theTargetStateChanges':          u','.join( [ "'%s'" % unEstado for unEstado in unosTargetStateChanges]),
-                    #}    
+                        #'theTargetStateChanges':          u' '.join( [ self.fAsUnicode( unEstado) for unEstado in unosTargetStateChanges]),
+                    #}
+                    
+                    #aResultStringUnicode = ( u"success\t%(success)s\t" + \
+                        #u"theCodigoIdiomaATraducir\t%(theCodigoIdiomaATraducir)s\t" + \
+                        #u"theSimboloCadenaATraducir\t%(theSimboloCadenaATraducir)s\t" + \
+                        #u"theCadenaTraducida_solicitada\t%(theCadenaTraducida_solicitada)s\t" + \
+                        #u"theComentario_solicitado\t%(theComentario_solicitado)s\t" + \
+                        #u"changed\t%(changed)s\t" + \
+                        #u"theCadenaTraducida\t%(theCadenaTraducida)s\t" + \
+                        #u"theEstadoTraduccion\t%(theEstadoTraduccion)s\t" + \
+                        #u"theTargetStateChanges\t%(theTargetStateChanges)s") % unDictValoresResultado
+                    
+                    #aTranslationService = getToolByName( self, 'translation_service', None)
+                    #if aTranslationService:
+                        #aResultString = aTranslationService.encode( aResultStringUnicode, 'utf-8') 
+                    ##else:                        
+                        ##aResultString = aResultStringUnicode.encode( 'utf-8')
                
-                    #unResult[ 'result_string']   = aResultString
+                    unResult[ 'result_string']   = aResultString
                       
                     
                 return unResult
@@ -627,7 +621,6 @@ class TRACatalogo_CursorTraducciones:
     
                 
                 
-            unChangeCounter             = theChangeParameters.get( 'change_counter',       '')                    
             unRequestedChangeKind       = theChangeParameters.get( 'requested_change_kind',       '')                    
             unCodigoIdiomaATraducir     = theChangeParameters.get( 'codigo_idioma_a_traducir',    '')
             unSimboloCadenaATraducir    = theChangeParameters.get( 'simbolo_cadena_a_traducir',   '')
@@ -639,7 +632,7 @@ class TRACatalogo_CursorTraducciones:
             
             unChangeActionResult  = None
 
-            if ( not unSimboloCadenaATraducir) or ( ( not unCodigoIdiomaATraducir) and not ( unRequestedChangeKind in [ cRequestedChangeKind_InvalidarTraduccionesCadena, cRequestedChangeKind_DesactivarCadena, cRequestedChangeKind_ActivarCadena,])):
+            if not unCodigoIdiomaATraducir or not unSimboloCadenaATraducir:
 
                 unResult[ 'success']   = False
                 unResult[ 'condition'] = 'Missing_parameters'
@@ -647,7 +640,7 @@ class TRACatalogo_CursorTraducciones:
             
                 
             try:
-                unChangeStart       = fMillisecondsNow()
+                unChangeStart       = self.fMillisecondsNow()
                 
                 
                 # ##################################################################
@@ -656,119 +649,82 @@ class TRACatalogo_CursorTraducciones:
                 """
                 if unRequestedChangeKind == cRequestedChangeKind_IntentarTraducir:
                     unChangeActionResult = self.fIntentarTraducirCadena(            
-                        theSimboloCadena         =unSimboloCadenaATraducir, 
-                        theCodigoIdioma          =unCodigoIdiomaATraducir, 
-                        theCadenaTraducida       =unaCadenaTraducida, 
-                        theComentario            =unComentario, 
-                        theAdditionalParams      ={ 'theContadorCambios': unChangeCounter, },
-                        thePermissionsCache      =unPermissionsCache, 
-                        theRolesCache            =unRolesCache, 
-                        theParentExecutionRecord =unExecutionRecord,
+                        unSimboloCadenaATraducir, 
+                        unCodigoIdiomaATraducir, 
+                        unaCadenaTraducida,
+                        unComentario, 
+                        unPermissionsCache, 
+                        unRolesCache, 
+                        unExecutionRecord
                     )    
 
                 elif unRequestedChangeKind == cRequestedChangeKind_Comentar:
                     unChangeActionResult = self.fComentarTraduccionCadena(          
-                        theSimboloCadena         =unSimboloCadenaATraducir, 
-                        theCodigoIdioma          =unCodigoIdiomaATraducir, 
-                        theComentario            =unComentario, 
-                        theAdditionalParams      ={ 'theContadorCambios': unChangeCounter, },
-                        thePermissionsCache      =unPermissionsCache, 
-                        theRolesCache            =unRolesCache, 
-                        theParentExecutionRecord =unExecutionRecord,
+                        unSimboloCadenaATraducir, 
+                        unCodigoIdiomaATraducir, 
+                        unComentario, 
+                        unPermissionsCache, 
+                        unRolesCache, 
+                        unExecutionRecord
                     )    
                     
                 elif unRequestedChangeKind == cRequestedChangeKind_HacerPendiente:
                     unChangeActionResult = self.fHacerPendienteTraduccionCadena(    
-                        theSimboloCadena         =unSimboloCadenaATraducir, 
-                        theCodigoIdioma          =unCodigoIdiomaATraducir, 
-                        theComentario            =unComentario, 
-                        theAdditionalParams      ={ 'theContadorCambios': unChangeCounter, },
-                        thePermissionsCache      =unPermissionsCache, 
-                        theRolesCache            =unRolesCache, 
-                        theParentExecutionRecord =unExecutionRecord,
+                        unSimboloCadenaATraducir, 
+                        unCodigoIdiomaATraducir, 
+                        unComentario, 
+                        unPermissionsCache, 
+                        unRolesCache, 
+                        unExecutionRecord
                     )    
 
                 elif unRequestedChangeKind == cRequestedChangeKind_HacerTraducida:
                     unChangeActionResult = self.fHacerTraducidaTraduccionCadena(    
-                        theSimboloCadena         =unSimboloCadenaATraducir, 
-                        theCodigoIdioma          =unCodigoIdiomaATraducir, 
-                        theComentario            =unComentario, 
-                        theAdditionalParams      ={ 'theContadorCambios': unChangeCounter, },
-                        thePermissionsCache      =unPermissionsCache, 
-                        theRolesCache            =unRolesCache, 
-                        theParentExecutionRecord =unExecutionRecord,
+                        unSimboloCadenaATraducir, 
+                        unCodigoIdiomaATraducir, 
+                        unComentario, 
+                        unPermissionsCache, 
+                        unRolesCache, 
+                        unExecutionRecord
                     )    
 
                 elif unRequestedChangeKind == cRequestedChangeKind_HacerRevisada:
                     unChangeActionResult = self.fHacerRevisadaTraduccionCadena(     
-                        theSimboloCadena         =unSimboloCadenaATraducir, 
-                        theCodigoIdioma          =unCodigoIdiomaATraducir, 
-                        theComentario            =unComentario, 
-                        theAdditionalParams      ={ 'theContadorCambios': unChangeCounter, },
-                        thePermissionsCache      =unPermissionsCache, 
-                        theRolesCache            =unRolesCache, 
-                        theParentExecutionRecord =unExecutionRecord,
+                        unSimboloCadenaATraducir, 
+                        unCodigoIdiomaATraducir, 
+                        unComentario, 
+                        unPermissionsCache, 
+                        unRolesCache, 
+                        unExecutionRecord
                     )    
                     
                 elif unRequestedChangeKind == cRequestedChangeKind_HacerDefinitiva:
                     unChangeActionResult = self.fHacerDefinitivaTraduccionCadena(   
-                        theSimboloCadena         =unSimboloCadenaATraducir, 
-                        theCodigoIdioma          =unCodigoIdiomaATraducir, 
-                        theComentario            =unComentario, 
-                        theAdditionalParams      ={ 'theContadorCambios': unChangeCounter, },
-                        thePermissionsCache      =unPermissionsCache, 
-                        theRolesCache            =unRolesCache, 
-                        theParentExecutionRecord =unExecutionRecord,
+                        unSimboloCadenaATraducir, 
+                        unCodigoIdiomaATraducir, 
+                        unComentario, 
+                        unPermissionsCache, 
+                        unRolesCache, 
+                        unExecutionRecord
                     )    
                 elif unRequestedChangeKind == cRequestedChangeKind_BatchCambioEstado:
                     unChangeActionResult = self.fLoteCambiosEstadoTraduccionesCadenas(   
-                        theBatchIds_Traducida       =unBatchIds_Traducida, 
-                        theBatchIds_Revisada        =unBatchIds_Revisada,
-                        theBatchIds_Definitiva      =unBatchIds_Definitiva,        
-                        theCodigoIdioma             =unCodigoIdiomaATraducir,  
-                        theAdditionalParams         ={ 'theContadorCambios': unChangeCounter, },
-                        thePermissionsCache         =unPermissionsCache, 
-                        theRolesCache               =unRolesCache, 
-                        theParentExecutionRecord    =unExecutionRecord,
-                        
+                        unBatchIds_Traducida, 
+                        unBatchIds_Revisada,
+                        unBatchIds_Definitiva,
+                        unCodigoIdiomaATraducir, 
+                        unPermissionsCache, 
+                        unRolesCache, 
+                        unExecutionRecord
                     )    
 
-                elif unRequestedChangeKind == cRequestedChangeKind_InvalidarTraduccionesCadena:
-                    unChangeActionResult = self.fInvalidarTraduccionesCadenas(   
-                        theSimboloCadena            =unSimboloCadenaATraducir, 
-                        theComentario               =unComentario, 
-                        theAdditionalParams         ={ 'theContadorCambios': unChangeCounter, },
-                        thePermissionsCache         =unPermissionsCache, 
-                        theRolesCache               =unRolesCache, 
-                        theParentExecutionRecord    =unExecutionRecord,
-                    )    
-
-                elif unRequestedChangeKind == cRequestedChangeKind_DesactivarCadena:
-                    unChangeActionResult = self.fDesactivarCadena(   
-                        theSimboloCadena            =unSimboloCadenaATraducir, 
-                        theComentario               =unComentario, 
-                        theAdditionalParams         ={ 'theContadorCambios': unChangeCounter, },
-                        thePermissionsCache         =unPermissionsCache, 
-                        theRolesCache               =unRolesCache, 
-                        theParentExecutionRecord    =unExecutionRecord,
-                    )    
-
-                elif unRequestedChangeKind == cRequestedChangeKind_ActivarCadena:
-                    unChangeActionResult = self.fActivarCadena(   
-                        theSimboloCadena            =unSimboloCadenaATraducir, 
-                        theComentario               =unComentario, 
-                        theAdditionalParams         ={ 'theContadorCambios': unChangeCounter, },
-                        thePermissionsCache         =unPermissionsCache, 
-                        theRolesCache               =unRolesCache, 
-                        theParentExecutionRecord    =unExecutionRecord,
-                    )    
 
                 if unChangeActionResult:
-                    unChangeActionResult[ 'duration']    = fMillisecondsNow() - unChangeStart
+                    unChangeActionResult[ 'duration']    = self.fMillisecondsNow() - unChangeStart
                     
                     return unChangeActionResult
 
-                unResult[ 'duration']   = fMillisecondsNow() - unChangeStart
+                unResult[ 'duration']   = self.fMillisecondsNow() - unChangeStart
                 return unResult
 
 
@@ -848,7 +804,7 @@ class TRACatalogo_CursorTraducciones:
             
             
             try:
-                unBrowseStart       = fMillisecondsNow()
+                unBrowseStart       = self.fMillisecondsNow()
                 
                 try:
                     
@@ -871,7 +827,7 @@ class TRACatalogo_CursorTraducciones:
                     return self
 
                 finally:
-                    theBrowseResult[ 'duration']             = fMillisecondsNow() - unBrowseStart
+                    theBrowseResult[ 'duration']             = self.fMillisecondsNow() - unBrowseStart
 
                     
             except:
@@ -953,13 +909,6 @@ class TRACatalogo_CursorTraducciones:
 
                 try:
                     
-                    # ##################################################################
-                    """Check if the translations catalog allows modifications or is locked for writing.
-                    
-                    """
-                    unAllowWrite = self.fAllowWrite()
-                    
-                    
     
                     # ##################################################################
                     """Retrieve languages and modules available for translation browsing by the connected user.
@@ -968,7 +917,7 @@ class TRACatalogo_CursorTraducciones:
                     unBrowseUseCaseQueryResult = self.fUseCaseAssessment(  
                         theUseCaseName          = cUseCase_BrowseTranslations, 
                         theElementsBindings     = { cBoundObject: self,},
-                        theRulesToCollect       = [ 'languages', 'modules', 'changeable_languages', 'changeable_modules',], 
+                        theRulesToCollect       = [ 'languages', 'modules',], 
                         thePermissionsCache     = unPermissionsCache, 
                         theRolesCache           = unRolesCache, 
                         theParentExecutionRecord= unExecutionRecord
@@ -979,35 +928,12 @@ class TRACatalogo_CursorTraducciones:
                         return self    
                 
                     theReport[ 'use_case_query_results'].append( unBrowseUseCaseQueryResult)  
-                    
-                    
-                    # ACV 20090927 in support of UC22 Use Case Invalidate String translations to all languages
-                    #
-                    # Redundant with pAllowInvalidateStringTranslations
-                    #unInvalidateStringTranslationsUseCaseQueryResult = self.fUseCaseAssessment(  
-                        #theUseCaseName          = cUseCase_InvalidateStringTranslations, 
-                        #theElementsBindings     = { cBoundObject: self,},
-                        ## theRulesToCollect       = [ 'languages', 'modules', 'changeable_languages', 'changeable_modules',], 
-                        #thePermissionsCache     = unPermissionsCache, 
-                        #theRolesCache           = unRolesCache, 
-                        #theParentExecutionRecord= unExecutionRecord
-                    #)    
-                    #if unBrowseUseCaseQueryResult:
-                        #theReport[ 'use_case_query_results'].append( unInvalidateStringTranslationsUseCaseQueryResult)  
-                    
-                    
-                    unosIdiomasAccesibles   = unBrowseUseCaseQueryResult.get( 'collected_rule_assessments_by_name', {}).get( 'languages', {}).get( 'accepted_final_objects', [])
-                    unosIdiomasModificables = []
-                    if unAllowWrite:
-                        unosIdiomasModificables = unBrowseUseCaseQueryResult.get( 'collected_rule_assessments_by_name', {}).get( 'changeable_languages', {}).get( 'accepted_final_objects', [])
+                    unosIdiomasAccesibles = unBrowseUseCaseQueryResult.get( 'collected_rule_assessments_by_name', {}).get( 'languages', {}).get( 'accepted_final_objects', [])
                         
-                    # Nobody uses this, and is redundant with the use case assessment results above
-                    #
-                    # theReport[ 'writable_language_codes'] = [ unIdioma.getCodigoIdiomaEnGvSIG() for unIdioma in unosIdiomasModificables]
                     
     
-                        
-                        
+                   
+    
                     # ##################################################################
                     """Check language selected for browsing is among the accesible ones.
                     
@@ -1027,30 +953,12 @@ class TRACatalogo_CursorTraducciones:
                     
                     
                     
-                     # ##################################################################
-                    """Check language selected for browsing is among the modifiable ones.
                     
-                    """  
-                    unIdiomaCursorModifiable = unAllowWrite and ( unIdiomaCursor in unosIdiomasModificables)
-                    theReport[ 'write_permission'] = unIdiomaCursorModifiable
- 
-                      
-                    
-                     # ##################################################################
+                    # ##################################################################
                     """Get connected user roles at language to browse.
                     
                     """
                     unosRolesEnIdiomaCursor = self.fGetElementRoles( unIdiomaCursor, unRolesCache)
-                    
-                     
-                     # ##################################################################
-                    """Get connected user roles at root catalog. 
-                    Relevant for the Invalidate String Translations use case, which is not language specific, but rather affects all languages.
-                    
-                    """
-                    unCatalogo = unIdiomaCursor.getCatalogo()
-                    
-                    unosRolesEnCatalogo = self.fGetElementRoles( unCatalogo, unRolesCache)
                     
                      
                             
@@ -1061,14 +969,7 @@ class TRACatalogo_CursorTraducciones:
                     
                     """
                     unosModulosAccesibles = unBrowseUseCaseQueryResult.get( 'collected_rule_assessments_by_name', {}).get( 'modules', {}).get( 'accepted_final_objects', [])
-                    unosModulosModificables = []
-                    if unAllowWrite:
-                        unosModulosModificables = unBrowseUseCaseQueryResult.get( 'collected_rule_assessments_by_name', {}).get( 'changeable_modules', {}).get( 'accepted_final_objects', [])
 
-                    # Nobody uses this, and is redundant with the use case assessment results above
-                    #
-                    #theReport[ 'writable_module_names'] = [ unModulo.Title() for unModulo in unosModulosModificables]
-                    
                     
                     
                     
@@ -1084,57 +985,8 @@ class TRACatalogo_CursorTraducciones:
                     
                     
                     
-                    # #################################################################
-                    """Check for Roles for use case to invalidate string translations.
                     
-                    """
-                    if set( cInvalidateStringTranslationsRoles).intersection( unosRolesEnCatalogo):
-                        if unAllowWrite:
-                            theReport[ 'allow_invalidate_string_translations']  = True      
-                     
-                    
-                    
-                    
-                    # #################################################################
-                    """Report whether browsing only the translations for Strings in Inactive state.
-                    
-                    """
-                    if theSearchParameters.get( 'cadenasInactivas', '').strip().lower() == "on":
-                        theReport[ 'browsing_inactive_strings']  = True      
-                            
-                            
-                    
-                    
-                    # #################################################################
-                    """When not browsing Inactive Strings, Check for Roles for use case to invalidate string translations.
-                    
-                    """
-                    if not( theSearchParameters.get( 'cadenasInactivas', '').strip().lower() == "on"):
-                        if set( cDeactivateStringsRoles).intersection( unosRolesEnCatalogo):
-                            if unAllowWrite:
-                                theReport[ 'allow_deactivate_strings']  = True      
-                            
-                            
-                    
-                    # #################################################################
-                    """If browsing Inacive Strings, Check for Roles for use case to invalidate string translations.
-                    
-                    """
-                    if theSearchParameters.get( 'cadenasInactivas', '').strip().lower() == "on":
-                        if set( cActivateStringsRoles).intersection( unosRolesEnCatalogo):
-                            if unAllowWrite:
-                                theReport[ 'allow_activate_strings']    = True      
-                            
-                            
-                     
-                    # #################################################################
-                    """Unless the catalog or the language are not modifiable, determine state transitions permitted to the connected user for translations in the language requested to browse and accessible module.
-                    
-                    """
-                    unasAllowedStateTransitions     = { }
-                    unosAllTargetStateChanges       = set( )
-                    
-                    
+                    # ##################################################################
                     """Get connected user roles at any of the accessible modules.
                     
                     """
@@ -1143,32 +995,40 @@ class TRACatalogo_CursorTraducciones:
                     for unModulo in unosModulosAccesibles:
                         unosRolesEnModulo   = unModulo.fGetElementRoles( unModulo, unRolesCache)
                         unosRolesEnTodosModulos.update( unosRolesEnModulo)
-                    
-                    
-                    if unIdiomaCursorModifiable:
-                    
-                        for unEstado in cTodosEstados:
-                
-                            unasStateChangeRules = cStateChangeActionRoles.get( unEstado, None)
-                            unosEstadosFinales = set( )
-                
-                            unasAllowedStateTransitions[ unEstado] = unosEstadosFinales
-                            
-                            if unasStateChangeRules:
-                                unosEstadosFinalesInRule = unasStateChangeRules.keys()
-                                if unosEstadosFinalesInRule:
-                                    for unEstadoFinal in unosEstadosFinalesInRule:
-                                        unosRolesRequeridosParaTransicion = unasStateChangeRules.get( unEstadoFinal, set())
-                                        if unosRolesRequeridosParaTransicion:
-                                            if set( unosRolesRequeridosParaTransicion).intersection( unosRolesEnIdiomaCursor).intersection( unosRolesEnTodosModulos):
-                                                unosEstadosFinales.add( unEstadoFinal)
-                                                unosAllTargetStateChanges.add( unEstadoFinal)
                         
-                        theReport[ 'allowed_state_transitions'] = unasAllowedStateTransitions      
-                        theReport[ 'all_target_state_changes']  = unosAllTargetStateChanges      
+     
+                        
+                    
+                    
+                    
+                    # #################################################################
+                    """Determine state transitions permitted to the connected user for translations in the language requested to browse and accessible module.
+                    
+                    """
+                    unasAllowedStateTransitions     = { }
+                    unosAllTargetStateChanges       = set( )
+                    for unEstado in cTodosEstados:
+            
+                        unasStateChangeRules = cStateChangeActionRoles.get( unEstado, None)
+                        unosEstadosFinales = set( )
+            
+                        unasAllowedStateTransitions[ unEstado] = unosEstadosFinales
+                        
+                        if unasStateChangeRules:
+                            unosEstadosFinalesInRule = unasStateChangeRules.keys()
+                            if unosEstadosFinalesInRule:
+                                for unEstadoFinal in unosEstadosFinalesInRule:
+                                    unosRolesRequeridosParaTransicion = unasStateChangeRules.get( unEstadoFinal, set())
+                                    if unosRolesRequeridosParaTransicion:
+                                        if set( unosRolesRequeridosParaTransicion).intersection( unosRolesEnIdiomaCursor).intersection( unosRolesEnTodosModulos):
+                                            unosEstadosFinales.add( unEstadoFinal)
+                                            unosAllTargetStateChanges.add( unEstadoFinal)
+                    
+                    theReport[ 'allowed_state_transitions'] = unasAllowedStateTransitions      
+                    theReport[ 'all_target_state_changes']  = unosAllTargetStateChanges      
                     
                                             
-                           
+                                            
                                             
                     # ##############################################################            
                     """If requested browsing just one translation by its string id, 
@@ -1409,10 +1269,6 @@ class TRACatalogo_CursorTraducciones:
             unaBusqueda.update( cCriterioBusquedaPorId)
             unaBusqueda[ 'getId'] = aTraduccionId 
             
-            
-            if theSearchParameters.get( 'cadenasInactivas', '').strip().lower() == "on":
-                unCriterioBusqueda[ 'getEstadoCadena'] = cEstadoCadenaInactiva
-
             unosDatosTraducciones = self.fBuscarTraduccionesEnCatalogoConDatosDeIdioma( 
                 theIdioma, 
                 theCodigoIdioma, 
@@ -1446,13 +1302,9 @@ class TRACatalogo_CursorTraducciones:
                 unosDatosARetornar             = unosDatosTraducciones[0:1]                
 
                 theReport[ 'datosTraducciones'] = unosDatosARetornar
-                theReport[ 'total_translations'] = 1
-                theReport[ 'from_translation_index'] = 1
-                theReport[ 'to_translation_index'] = 1
                 theReport[ 'success'] = True
                 
                 if theElaborarInforme:
-                    
                     unosDatosTraduccion = unosDatosARetornar[ 0]
                     unEstadoTraduccion  = unosDatosTraduccion[ 'getEstadoTraduccion']
                     theReport[ 'informeEstadosTodasCadenas'][ 'Total'][ 1] = 1
@@ -1527,10 +1379,6 @@ class TRACatalogo_CursorTraducciones:
             unCriterioBusqueda.update( theCriterioSeleccionTraducciones)
             unCriterioBusqueda.update( theCriterioBusquedaTraducciones)
             unCriterioBusqueda.update( theCriterioFiltroTraducciones)
-            
-            if theSearchParameters.get( 'cadenasInactivas', '').strip().lower() == "on":
-                unCriterioBusqueda[ 'getEstadoCadena'] = cEstadoCadenaInactiva
-
             
             theReport[ 'read_permission']  = True
                
@@ -1683,10 +1531,6 @@ class TRACatalogo_CursorTraducciones:
             unCriterioBusqueda.update( theCriterioSeleccionTraducciones)
             unCriterioBusqueda.update( theCriterioBusquedaTraducciones)
             unCriterioBusqueda.update( theCriterioFiltroTraducciones)
-            
-            if theSearchParameters.get( 'cadenasInactivas', '').strip().lower() == "on":
-                unCriterioBusqueda[ 'getEstadoCadena'] = cEstadoCadenaInactiva
-
                       
             theReport[ 'read_permission']  = True
     
@@ -1707,7 +1551,6 @@ class TRACatalogo_CursorTraducciones:
             unInformeEstadosTodas = self.fInformeEstadosTodas( 
                 theIdioma, 
                 theCodigoIdioma, 
-                theSearchParameters,
                 theParentExecutionRecord=unExecutionRecord
             )
             theReport[ 'informeEstadosTodasCadenas'] = unInformeEstadosTodas
@@ -1872,7 +1715,7 @@ class TRACatalogo_CursorTraducciones:
 
                 
     security.declarePrivate( 'fInformeEstadosTodas')
-    def fInformeEstadosTodas( self, theIdioma, theCodigoIdioma, theSearchParameters, theParentExecutionRecord=None):
+    def fInformeEstadosTodas( self, theIdioma, theCodigoIdioma, theParentExecutionRecord=None):
         """Generate a Summary status report of ALL translations into the language.
         
         """
@@ -1887,10 +1730,6 @@ class TRACatalogo_CursorTraducciones:
                 return unInformeEstados        
             
             unCriterioBusqueda = cCriterioBusquedaTodas.copy()
-            
-            if theSearchParameters.get( 'cadenasInactivas', '').strip().lower() == "on":
-                unCriterioBusqueda[ 'getEstadoCadena'] = cEstadoCadenaInactiva
-
                     
             unTotalTraducciones = 0
             for unEstado in cTodosEstados:
@@ -2258,7 +2097,7 @@ class TRACatalogo_CursorTraducciones:
                 return []
     
             unCatalog = self.getCatalogo().fCatalogBusquedaTraduccionesParaIdioma( theIdioma)
-            if ( unCatalog == None):
+            if not unCatalog:
                 return []
             unosDatosTraducciones = unCatalog.searchResults( **theCriterioBusqueda)                
               
@@ -2292,7 +2131,7 @@ class TRACatalogo_CursorTraducciones:
                 return []
  
             unCatalog = self.getCatalogo().fCatalogFiltroTraduccionesParaIdioma( theIdioma)
-            if ( unCatalog == None):
+            if not unCatalog:
                 return []
             unosDatosTraducciones = unCatalog.searchResults( **theCriterioBusqueda)                
               
@@ -2335,7 +2174,7 @@ class TRACatalogo_CursorTraducciones:
                 return []
             
             unCatalog = self.getCatalogo().fCatalogTextoCadenas()
-            if ( unCatalog == None):
+            if not unCatalog:
                 return []
             unaBusqueda = { 'getSimboloEnPalabras': unTextoABuscar, }
             unosDatosTraducciones = []
@@ -2387,7 +2226,7 @@ class TRACatalogo_CursorTraducciones:
                 return None
             
             unCatalog = self.getCatalogo().fCatalogTextoTraduccionesParaIdioma( theIdioma)
-            if ( unCatalog == None):
+            if not unCatalog:
                 return []
             unaBusqueda = { 'getCadenaTraducida': unTextoABuscar, }
             unosDatosTraducciones = []            
@@ -2478,7 +2317,7 @@ class TRACatalogo_CursorTraducciones:
             
 
     security.declarePrivate( 'fIndiceSimboloCadenaCursor')
-    def fIndiceSimboloCadenaCursor( self, theSearchParameters, theSimboloCadena, theSimbolosCadenasOrdenados = [], theParentExecutionRecord=None):
+    def fIndiceSimboloCadenaCursor( self, theSimboloCadena, theSimbolosCadenasOrdenados = [], theParentExecutionRecord=None):
         """Locate the current cursor refrence symbol in the sorted list of all TRACadena symbols cached in the root TRACatalog.
     
         """
@@ -2488,10 +2327,7 @@ class TRACatalogo_CursorTraducciones:
             
         unosSimbolosCadenasOrdenados = theSimbolosCadenasOrdenados
         if not unosSimbolosCadenasOrdenados:
-            if theSearchParameters.get( 'cadenasInactivas', '').strip().lower() == "on":
-                unosSimbolosCadenasOrdenados = self.fListaSimbolosCadenasInactivasOrdenados( theParentExecutionRecord)
-            else:
-                unosSimbolosCadenasOrdenados = self.fListaSimbolosCadenasOrdenados( theParentExecutionRecord)
+            unosSimbolosCadenasOrdenados = self.fListaSimbolosCadenasOrdenados( theParentExecutionRecord)
         
         unNumeroSimbolos = len( unosSimbolosCadenasOrdenados)
         
@@ -2581,13 +2417,10 @@ class TRACatalogo_CursorTraducciones:
         if aSimboloCadenaCursor:
             
             unosSimbolosCadenasOrdenados = theSimbolosCadenasOrdenados
-            if not unosSimbolosCadenasOrdenados:                
-                if theSearchParameters.get( 'cadenasInactivas', '').strip().lower() == "on":
-                    unosSimbolosCadenasOrdenados = self.fListaSimbolosCadenasInactivasOrdenados( theParentExecutionRecord)
-                else:
-                    unosSimbolosCadenasOrdenados = self.fListaSimbolosCadenasOrdenados(          theParentExecutionRecord)
+            if not unosSimbolosCadenasOrdenados:
+                unosSimbolosCadenasOrdenados = self.fListaSimbolosCadenasOrdenados( theParentExecutionRecord)
     
-            unIndiceSimboloCadenaCursor  = self.fIndiceSimboloCadenaCursor( theSearchParameters, aSimboloCadenaCursor, unosSimbolosCadenasOrdenados, theParentExecutionRecord)
+            unIndiceSimboloCadenaCursor  = self.fIndiceSimboloCadenaCursor( aSimboloCadenaCursor, unosSimbolosCadenasOrdenados, theParentExecutionRecord)
             if unIndiceSimboloCadenaCursor >= 0:
             
                         
@@ -2657,12 +2490,7 @@ class TRACatalogo_CursorTraducciones:
         
         unosSimbolosCadenasOrdenados = theSimbolosCadenasOrdenados
         if not unosSimbolosCadenasOrdenados:
-            if theSearchParameters.get( 'cadenasInactivas', '').strip().lower() == "on":
-                unosSimbolosCadenasOrdenados = self.fListaSimbolosCadenasInactivasOrdenados( theParentExecutionRecord)
-            else:
-                unosSimbolosCadenasOrdenados = self.fListaSimbolosCadenasOrdenados(          theParentExecutionRecord)
-            
-            
+            unosSimbolosCadenasOrdenados = self.fListaSimbolosCadenasOrdenados( theParentExecutionRecord)
     
         unNumeroSimbolos              = len( unosSimbolosCadenasOrdenados) 
     
@@ -2709,10 +2537,7 @@ class TRACatalogo_CursorTraducciones:
     
         unosSimbolosCadenasOrdenados = theSimbolosCadenasOrdenados
         if not unosSimbolosCadenasOrdenados:
-            if theSearchParameters.get( 'cadenasInactivas', '').strip().lower() == "on":
-                unosSimbolosCadenasOrdenados = self.fListaSimbolosCadenasInactivasOrdenados( theParentExecutionRecord)
-            else:
-                unosSimbolosCadenasOrdenados = self.fListaSimbolosCadenasOrdenados(          theParentExecutionRecord)
+            unosSimbolosCadenasOrdenados = self.fListaSimbolosCadenasOrdenados( theParentExecutionRecord)
     
         unNumeroSimbolos              = len( unosSimbolosCadenasOrdenados) 
     
@@ -2771,13 +2596,9 @@ class TRACatalogo_CursorTraducciones:
             
             unosSimbolosCadenasOrdenados = theSimbolosCadenasOrdenados
             if not unosSimbolosCadenasOrdenados:
-                if theSearchParameters.get( 'cadenasInactivas', '').strip().lower() == "on":
-                    unosSimbolosCadenasOrdenados = self.fListaSimbolosCadenasInactivasOrdenados( theParentExecutionRecord)
-                else:
-                    unosSimbolosCadenasOrdenados = self.fListaSimbolosCadenasOrdenados(          theParentExecutionRecord)
-
+                unosSimbolosCadenasOrdenados = self.fListaSimbolosCadenasOrdenados( theParentExecutionRecord)
     
-            unIndiceSimboloCadenaCursor  = self.fIndiceSimboloCadenaCursor( theSearchParameters, aSimboloCadenaCursor, unosSimbolosCadenasOrdenados, theParentExecutionRecord)
+            unIndiceSimboloCadenaCursor  = self.fIndiceSimboloCadenaCursor( aSimboloCadenaCursor, unosSimbolosCadenasOrdenados, theParentExecutionRecord)
             if unIndiceSimboloCadenaCursor >= 0:
             
                 unNumeroSimbolos       = len( unosSimbolosCadenasOrdenados) 
@@ -2845,12 +2666,9 @@ class TRACatalogo_CursorTraducciones:
             
             unosSimbolosCadenasOrdenados = theSimbolosCadenasOrdenados
             if not unosSimbolosCadenasOrdenados:
-                if theSearchParameters.get( 'cadenasInactivas', '').strip().lower() == "on":
-                    unosSimbolosCadenasOrdenados = self.fListaSimbolosCadenasInactivasOrdenados( theParentExecutionRecord)
-                else:
-                    unosSimbolosCadenasOrdenados = self.fListaSimbolosCadenasOrdenados(          theParentExecutionRecord)
+                unosSimbolosCadenasOrdenados = self.fListaSimbolosCadenasOrdenados( theParentExecutionRecord)
     
-            unIndiceSimboloCadenaCursor  = self.fIndiceSimboloCadenaCursor( theSearchParameters, aSimboloCadenaCursor, unosSimbolosCadenasOrdenados, theParentExecutionRecord)
+            unIndiceSimboloCadenaCursor  = self.fIndiceSimboloCadenaCursor( aSimboloCadenaCursor, unosSimbolosCadenasOrdenados, theParentExecutionRecord)
             if unIndiceSimboloCadenaCursor >= 0:
             
                 unNumeroSimbolos       = len( unosSimbolosCadenasOrdenados) 
@@ -2944,12 +2762,10 @@ class TRACatalogo_CursorTraducciones:
      
             unosSimbolosARetornar = [ unosDatosTraduccion[ 'getSimbolo'] for  unosDatosTraduccion in unosDatosARetornar] 
             
-            unaBusqueda = cCriterioBusqueda_RecuperarDatosTraduccionesPorSimbolos.copy()
-            unaBusqueda[ 'getSimbolo'] =  unosSimbolosARetornar
-            
-            if theSearchParameters.get( 'cadenasInactivas', '').strip().lower() == "on":
-                unaBusqueda[ 'getEstadoCadena'] = cEstadoCadenaInactiva
-            
+            unaBusqueda = { 
+                'getEstadoCadena':          cEstadoCadenaActiva, 
+                'getSimbolo':               unosSimbolosARetornar,
+            }  
             unosDatosTraduccionesIdiomaBase = self.fBuscarTraduccionesEnCatalogoConDatosDeIdioma( 
                 theIdioma, 
                 unCodigoIdiomaBase, 
@@ -2985,13 +2801,10 @@ class TRACatalogo_CursorTraducciones:
                     if unIdiomaAccessible:
                         unDictTraduccionesIdiomaReferencia = { }
                         unosDictsIdiomaReferencia[ unCodigoIdiomaReferencia] = unDictTraduccionesIdiomaReferencia
-
-                        unaBusqueda = cCriterioBusqueda_RecuperarDatosTraduccionesPorSimbolos.copy()
-                        unaBusqueda[ 'getSimbolo'] =  unosSimbolosARetornar
-                        
-                        if theSearchParameters.get( 'cadenasInactivas', '').strip().lower() == "on":
-                            unaBusqueda[ 'getEstadoCadena'] = cEstadoCadenaInactiva
-                        
+                        unaBusqueda = { 
+                            'getEstadoCadena':          cEstadoCadenaActiva, 
+                            'getSimbolo':               unosSimbolosARetornar ,
+                        }  
                         unosDatosTraducciones = self.fBuscarTraduccionesEnCatalogoConDatosDeIdioma( 
                             unIdiomaAccessible, 
                             unCodigoIdiomaReferencia, 
@@ -3181,16 +2994,11 @@ class TRACatalogo_CursorTraducciones:
                 else:
                     unosNombresModulosAFiltrar = unosNombresModulos
                     
-                unosSimbolosModulo = [ ]
-                if theSearchParameters.get( 'cadenasInactivas', '').strip().lower() == "on":
-                    unosSimbolosModulos = self.fListaSimbolosCadenasInactivasOrdenados( unExecutionRecord)
-                else:
-                    unosSimbolosModulos = self.fListaSimbolosCadenasOrdenadosEnVariosModulos( unosNombresModulosAFiltrar, unIndexModuloNoEspecificado >= 0, unExecutionRecord)
-
-                if not unosSimbolosModulos:
+                unosSimbolosModulo = self.fListaSimbolosCadenasOrdenadosEnVariosModulos( unosNombresModulosAFiltrar, False, unExecutionRecord)
+                if not unosSimbolosModulo:
                     return unCriterioBusquedaNingunResultado
                 
-                unosSimbolosAFiltrar = unosSimbolosModulos                
+                unosSimbolosAFiltrar = unosSimbolosModulo                
                 
                 
             if aTextoEnSimbolo:
@@ -3289,7 +3097,7 @@ class TRACatalogo_CursorTraducciones:
             if not theCodigoIdioma or not theUseCaseQueryResult or not theUseCaseQueryResult.get( 'success', False):
                 return {}
             
-            unAhora = fDateTimeNow()
+            unAhora = self.fDateTimeNow()
 
             aUsuarioCreador                   = theSearchParameters.get( 'usuarioCreador', '').strip()
             

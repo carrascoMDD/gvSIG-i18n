@@ -56,25 +56,16 @@ from Products.ZCTextIndex.Lexicon   import CaseNormalizer
 from Products.ZCTextIndex.Lexicon   import Splitter
 from Products.ZCTextIndex.Lexicon   import StopWordRemover
 
-
-gCJKSplitter = None
-try:
-    from Products.CJKSplitter.CJKSplitter import CJKSplitter as gCJKSplitter
-except:
-    None
-    
+from Products.CJKSplitter.CJKSplitter import CJKSplitter
 
 from Products.CMFCore               import permissions
 from Products.CMFCore.utils         import getToolByName
+from Products.CMFCore.utils         import SimpleRecord
 
 
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneTool                   import cModelDDvlPloneToolId,          ModelDDvlPloneTool
-from Products.ModelDDvlPloneConfiguration.ModelDDvlPloneConfiguration import cModelDDvlPloneConfigurationId, ModelDDvlPloneConfiguration
+from Products.ModelDDvlPloneTool.ModelDDvlPloneTool import cModelDDvlPloneToolName, ModelDDvlPloneTool
 
-
-
-from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow
 
 
 from TRAElemento_Constants import *
@@ -83,16 +74,14 @@ from TRAElemento_Constants import *
 from TRACatalogo_Inicializacion_Constants import *
 
 
-from TRAElemento_Permission_Definitions import cTRAUserGroups_Catalogo
-from TRAElemento_Permission_Definitions import cUseCase_InitializeTRACatalogo, cUseCase_VerifyTRACatalogo, cBoundObject
+from TRAElemento_Permission_Definitions import cTRAUserGroups_Catalogo, cTRAUserGroups_AllIdiomas, cTRAUserGroups_Idioma, cTRAUserGroups_Modulo
+from TRAElemento_Permission_Definitions import cUseCase_InitializeTRACatalogo, cBoundObject
 from TRAElemento_Permission_Definitions import cTRAUserGroups_Catalogo_AuthorizedOnCatalogo
 from TRAElemento_Permission_Definitions import cTRAUserGroups_Catalogo_AuthorizedOnIndividualIdiomas, cTRAUserGroups_Catalogo_AuthorizedOnIndividualModulos
-# ACV 20090914 NOW approach: Simpler security schema: no user groups for languages or modules, shall assign local roles to users directly on the language or module element
-# from TRAElemento_Permission_Definitions import cTRAUserGroups_AllIdiomas, cTRAUserGroups_Idioma, cTRAUserGroups_Modulo
-# from TRAElemento_Permission_Definitions import cTRAUserGroups_AllIdiomas_AuthorizedOnColeccionIdiomas
-# from TRAElemento_Permission_Definitions import cTRAUserGroups_AllModulos_AuthorizedOnColeccionModulos
-# from TRAElemento_Permission_Definitions import cTRAUserGroups_Idioma_AuthorizedOnCatalogo, cTRAUserGroups_Idioma_AuthorizedOnIdioma
-# from TRAElemento_Permission_Definitions import cTRAUserGroups_Modulo_AuthorizedOnCatalogo, cTRAUserGroups_Modulo_AuthorizedOnModulo
+from TRAElemento_Permission_Definitions import cTRAUserGroups_AllIdiomas_AuthorizedOnColeccionIdiomas
+from TRAElemento_Permission_Definitions import cTRAUserGroups_AllModulos_AuthorizedOnColeccionModulos
+from TRAElemento_Permission_Definitions import cTRAUserGroups_Idioma_AuthorizedOnCatalogo, cTRAUserGroups_Idioma_AuthorizedOnIdioma
+from TRAElemento_Permission_Definitions import cTRAUserGroups_Modulo_AuthorizedOnCatalogo, cTRAUserGroups_Modulo_AuthorizedOnModulo
 
 
 
@@ -110,7 +99,18 @@ from TRAElemento_Permission_Definitions import cTRAUserGroups_Catalogo_Authorize
 cLogInformeLazyCrear     = True
 
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneTool import cInstall_Tools_On_PortalSkinsCustom, cInstallPath_PortalSkinsCustom
+
+cLazyCreateExternalMethod       = True
+cLazyCreateModelDDvlPloneTool   = True
+cLazyCreateCollections          = True
+cLazyCreateCatalogs             = True
+cLazyCreateIndexes              = True
+cLazyCreateLexicons             = True    
+cLazyCreateSchemaFields         = True
+cLazyCreateUserGroups           = True
+cLazyCreateSetLocalRoles        = True
+cLazyCreateSetAcquireRoleAssignments = True
+cLazyAddGroupToGroup            = True
 
 
 
@@ -134,42 +134,9 @@ class TRACatalogo_Inicializacion:
 
 
    
-            
+
     
-    security.declarePrivate('fInstallContainer_Tools')
-    def fInstallContainer_Tools( self):
-        
-        unPortalRoot = self.fPortalRoot()
-        
-        if unPortalRoot == None:
-            return None
-        
-        if not cInstall_Tools_On_PortalSkinsCustom:
-            return unPortalRoot
-        
-        if not cInstallPath_PortalSkinsCustom:
-            return unPortalRoot
-            
-        
-        aTraversedObject = unPortalRoot
-        for aTraversal in cInstallPath_PortalSkinsCustom:
-            aNextObject = None
-            try:
-                aNextObject = aTraversedObject[ aTraversal]
-            except ValueError, AttributeError:
-                None
-            if aNextObject == None:
-                return None
-            
-            aTraversedObject = aNextObject
-            
-        if aTraversedObject == None:
-            return None
-        
-        return aTraversedObject
-    
-    
-            
+
 
         
             
@@ -462,7 +429,7 @@ class TRACatalogo_Inicializacion:
                 unInforme[ 'title'] =  self.Title()
                 unInforme[ 'path']  =  '/'.join( self.getPhysicalPath())
 
-                if not self.Title(): # 'portal_factory' in self.getPhysicalPath(): 
+                if not self.Title():
                     unInforme[ 'success']   =  False
                     unInforme[ 'condition'] = 'Premature_initialization'
                     return unInforme
@@ -472,64 +439,40 @@ class TRACatalogo_Inicializacion:
             
                 if theCheckPermissions:
                     
-                    if theAllowCreation:
-                    
-                        unUseCaseQueryResult = self.fUseCaseAssessment(  
-                            theUseCaseName          = cUseCase_InitializeTRACatalogo, 
-                            theElementsBindings     = { cBoundObject: self,},
-                            theRulesToCollect       = [ ], 
-                            thePermissionsCache     = unPermissionsCache, 
-                            theRolesCache           = unRolesCache, 
-                            theParentExecutionRecord= unExecutionRecord
-                        )
-                        if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
-                            unInforme[ 'success']   =  False
-                            unInforme[ 'condition'] = 'user_can_NOT_initialize_TRACatalogo'
-                            return unInforme
-
-                        
-                        self.pFlushCachedTemplates_All()
-                        
-                        
-                    else:
-                        unUseCaseQueryResult = self.fUseCaseAssessment(  
-                            theUseCaseName          = cUseCase_VerifyTRACatalogo, 
-                            theElementsBindings     = { cBoundObject: self,},
-                            theRulesToCollect       = [ ], 
-                            thePermissionsCache     = unPermissionsCache, 
-                            theRolesCache           = unRolesCache, 
-                            theParentExecutionRecord= unExecutionRecord
-                        )
-                        if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
-                            unInforme[ 'success']   =  False
-                            unInforme[ 'condition'] = 'user_can_NOT_verify_TRACatalogo'
-                            return unInforme
-                                                         
+                    unUseCaseQueryResult = self.fUseCaseAssessment(  
+                        theUseCaseName          = cUseCase_InitializeTRACatalogo, 
+                        theElementsBindings     = { cBoundObject: self,},
+                        theRulesToCollect       = [ ], 
+                        thePermissionsCache     = unPermissionsCache, 
+                        theRolesCache           = unRolesCache, 
+                        theParentExecutionRecord= unExecutionRecord
+                    )
+                    if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
+                        unInforme[ 'success']   =  False
+                        unInforme[ 'condition'] = 'user_can_NOT_initialize_TRACatalogo'
+                        return unInforme
+                                    
                                 
                 unInforme[ 'ModelDDvlPloneTool']               = self.fLazyCrearModelDDvlPloneTool(            theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
-                unInforme[ 'ModelDDvlPloneConfiguration']      = self.fLazyCrearModelDDvlPloneConfiguration(   theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
                 unInforme[ 'external_methods']                 = self.fLazyCrearTodosExternalMethods(          theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
                 unInforme[ 'colecciones']                      = self.fLazyCrearCollections(                   theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
                 unInforme[ 'catalogs_cadenas']                 = self.fLazyCrearCatalogsEIndicesEnCatalogo(    theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
                 unInforme[ 'catalogs_idiomas']                 = self.fLazyCrearCatalogsEIndicesTodosIdiomas(  theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord) 
                 unInforme[ 'user_groups_catalogo']             = self.fLazyCrearUserGroupsCatalogo(            theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
-                # ACV 20090914 Simpler security schema: no user groups for languages or modules, shall assign local roles to users directly on the language or module element
-                # unInforme[ 'user_groups_all_idiomas']          = self.fLazyCrearUserGroupsAllIdiomas(          theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
+                unInforme[ 'user_groups_all_idiomas']          = self.fLazyCrearUserGroupsAllIdiomas(          theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
                 # unInforme[ 'user_groups_all_modulos']          = self.fLazyCrearUserGroupsAllModulos(          theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
-                # unInforme[ 'user_groups_idiomas']              = self.fLazyCrearUserGroupsIdiomas(             theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
+                unInforme[ 'user_groups_idiomas']              = self.fLazyCrearUserGroupsIdiomas(             theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
                 # unInforme[ 'user_groups_modulos']             = self.fLazyCrearUserGroupsModulos(             theAllowCreation, False, unPermissionsCache, unRolesCache, unExecutionRecord)
                 
                 unInforme[ 'success'] = \
                     unInforme[ 'ModelDDvlPloneTool']            and unInforme[ 'ModelDDvlPloneTool'][ 'success'] and  \
-                    unInforme[ 'ModelDDvlPloneConfiguration']   and unInforme[ 'ModelDDvlPloneConfiguration'][ 'success'] and  \
                     unInforme[ 'external_methods']              and unInforme[ 'external_methods'][ 'success'] and  \
                     unInforme[ 'colecciones']                   and unInforme[ 'colecciones'][ 'success']  and  \
                     unInforme[ 'catalogs_cadenas']              and unInforme[ 'catalogs_cadenas'][ 'success'] and \
                     (( not unInforme[ 'catalogs_idiomas'])      or len( [ unInformeCatalogs for unInformeCatalogs in unInforme[ 'catalogs_idiomas'] if unInformeCatalogs[ 'success']]) == len( unInforme[ 'catalogs_idiomas'])) and \
-                    unInforme[ 'user_groups_catalogo']          and unInforme[ 'user_groups_catalogo'][ 'success'] # and \
-                    # ACV 20090914 Simpler security schema: no user groups for languages or modules, shall assign local roles to users directly on the language or module element
-                    #unInforme[ 'user_groups_all_idiomas']       and unInforme[ 'user_groups_all_idiomas'][ 'success'] and \
-                    #(( not unInforme[ 'user_groups_idiomas'])   or len( [ unInformeGroups for unInformeGroups in unInforme[ 'user_groups_idiomas'] if unInformeGroups[ 'success']]) == len( unInforme[ 'user_groups_idiomas'])) # and
+                    unInforme[ 'user_groups_catalogo']          and unInforme[ 'user_groups_catalogo'][ 'success'] and \
+                    unInforme[ 'user_groups_all_idiomas']       and unInforme[ 'user_groups_all_idiomas'][ 'success'] and \
+                    (( not unInforme[ 'user_groups_idiomas'])   or len( [ unInformeGroups for unInformeGroups in unInforme[ 'user_groups_idiomas'] if unInformeGroups[ 'success']]) == len( unInforme[ 'user_groups_idiomas'])) # and
                     # unInforme[ 'user_groups_all_modulos']       and unInforme[ 'user_groups_all_modulos'][ 'success'] and  \
                     # (( not unInforme[ 'user_groups_modulos'])  or len( [ unInformeGroups for unInformeGroups in unInforme[ 'user_groups_modulos'] if unInformeGroups[ 'success']]) == len( unInforme[ 'user_groups_modulos'])) # and
             
@@ -699,22 +642,15 @@ class TRACatalogo_Inicializacion:
                         unInforme[ 'condition'] = 'user_can_NOT_initialize_TRACatalogo'
                         return unInforme
                     
-                unInforme.update( {
-                    'install_on_portalskinscustom': cInstall_Tools_On_PortalSkinsCustom,
-                    'installpath':                  ( cInstall_Tools_On_PortalSkinsCustom and cInstallPath_PortalSkinsCustom) or '',
-                })
-
-                unInstallContainer = self.fInstallContainer_Tools()
-                if not unInstallContainer:
-                    unInforme.update({
-                        'success':   False,
-                        'condition': 'No_InstallContainer',
-                    })
+                unPortalRoot = self.fPortalRoot()
+                if not unPortalRoot:
+                    unInforme[ 'success']   =  False
+                    unInforme[ 'condition'] = 'FAILURE_accessing_portal_root"'
                     return unInforme
                 
                 unExternalMethod = None
                 try:
-                    unExternalMethod = aq_get( unInstallContainer, theExtMethodId, None, 1)
+                    unExternalMethod = aq_get( unPortalRoot, theExtMethodId, None, 1)
                 except:
                     None  
                 if unExternalMethod:
@@ -760,10 +696,10 @@ class TRACatalogo_Inicializacion:
                     unInforme[ 'status']  = 'creation_failed'
                     return unInforme
                     
-                unInstallContainer._setObject( theExtMethodId,  unNewExternalMethod)
+                unPortalRoot._setObject( theExtMethodId,  unNewExternalMethod)
                 unExternalMethod = None
                 try:
-                    unExternalMethod = aq_get( unInstallContainer, theExtMethodId, None, 1)
+                    unExternalMethod = aq_get( unPortalRoot, theExtMethodId, None, 1)
                 except:
                     None  
                 if not unExternalMethod:
@@ -848,25 +784,21 @@ class TRACatalogo_Inicializacion:
                         unInforme[ 'condition'] = 'user_can_NOT_initialize_TRACatalogo'
                         return unInforme    
                     
-                unInforme.update({
-                    'install_on_portalskinscustom': cInstall_Tools_On_PortalSkinsCustom,
-                    'installpath':                  ( cInstall_Tools_On_PortalSkinsCustom and cInstallPath_PortalSkinsCustom) or '',
-                    'tool_id':                      cModelDDvlPloneToolId,
-                    'tool_class_name':              'ModelDDvlPloneTool',
-                })
                     
-                unInstallContainer = self.fInstallContainer_Tools()
-                if not unInstallContainer:
-                    unInforme.update({
-                        'success':   False,
-                        'condition': 'No_InstallContainer',
-                    })
+                unPortalRoot = self.fPortalRoot()
+                if not unPortalRoot:
+                    unInforme[ 'success']   =  False
+                    unInforme[ 'condition'] = 'No_portal_root'
                     return unInforme
                 
+                unInforme.update({
+                    'tool_id':          cModelDDvlPloneToolName,
+                    'tool_class_name':  'ModelDDvlPloneTool',
+                })
                 
                 aModelDDvlPloneTool = None
                 try:
-                    aModelDDvlPloneTool = aq_get( unInstallContainer, cModelDDvlPloneToolId, None, 1)
+                    aModelDDvlPloneTool = aq_get( unPortalRoot, cModelDDvlPloneToolName, None, 1)
                 except:
                     None  
                 if aModelDDvlPloneTool:
@@ -881,10 +813,10 @@ class TRACatalogo_Inicializacion:
          
                 
                 unaNuevaTool = ModelDDvlPloneTool( ) 
-                unInstallContainer._setObject( cModelDDvlPloneToolId,  unaNuevaTool)
+                unPortalRoot._setObject( cModelDDvlPloneToolName,  unaNuevaTool)
                 aModelDDvlPloneTool = None
                 try:
-                    aModelDDvlPloneTool = aq_get( unInstallContainer, cModelDDvlPloneToolId, None, 1)
+                    aModelDDvlPloneTool = aq_get( unPortalRoot, cModelDDvlPloneToolName, None, 1)
                 except:
                     None  
                 if not aModelDDvlPloneTool:
@@ -926,118 +858,7 @@ class TRACatalogo_Inicializacion:
         
 
  
-
-   
-    security.declarePrivate( 'fLazyCrearModelDDvlPloneConfiguration')
-    def fLazyCrearModelDDvlPloneConfiguration( self, theAllowCreation=False, theCheckPermissions=True, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
-       
-        unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearModelDDvlPloneConfiguration', theParentExecutionRecord, False) 
-
-        try:
-            unInforme = self.fNewVoidInformeLazyCrearTool()
-                
-            try:
-        
-                if not self.Title():
-                    unInforme[ 'success']   =  False
-                    unInforme[ 'condition'] = 'Premature_initialization'
-                    return unInforme
-                    
-                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
-
-                if theCheckPermissions:
-            
-                    unUseCaseQueryResult = self.fUseCaseAssessment(  
-                        theUseCaseName          = cUseCase_InitializeTRACatalogo, 
-                        theElementsBindings     = { cBoundObject: self,},
-                        theRulesToCollect       = [ ], 
-                        thePermissionsCache     = unPermissionsCache, 
-                        theRolesCache           = unRolesCache, 
-                        theParentExecutionRecord= unExecutionRecord
-                    )
-                    if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
-                        unInforme[ 'success']   =  False
-                        unInforme[ 'condition'] = 'user_can_NOT_initialize_TRACatalogo'
-                        return unInforme    
-                    
-                unInforme.update({
-                    'install_on_portalskinscustom': cInstall_Tools_On_PortalSkinsCustom,
-                    'installpath':                  ( cInstall_Tools_On_PortalSkinsCustom and cInstallPath_PortalSkinsCustom) or '',
-                    'tool_id':                      cModelDDvlPloneConfigurationId,
-                    'tool_class_name':              'ModelDDvlPloneConfiguration',
-                })
-                    
-                unInstallContainer = self.fInstallContainer_Tools()
-                if not unInstallContainer:
-                    unInforme.update({
-                        'success':   False,
-                        'condition': 'No_InstallContainer',
-                    })
-                    return unInforme                    
-                
-
-                
-                aModelDDvlPloneConfiguration = None
-                try:
-                    aModelDDvlPloneConfiguration = aq_get( unInstallContainer, cModelDDvlPloneConfigurationId, None, 1)
-                except:
-                    None  
-                if aModelDDvlPloneConfiguration:
-                    unInforme[ 'success'] = True
-                    unInforme[ 'status']  = 'exists'
-                    return unInforme
-                
-                if not ( theAllowCreation and cLazyCreateModelDDvlPloneConfiguration):
-                    unInforme[ 'success'] = False
-                    unInforme[ 'status'] = 'missing'         
-                    return unInforme
-         
-                
-                unaNuevaTool = ModelDDvlPloneConfiguration( ) 
-                unInstallContainer._setObject( cModelDDvlPloneConfigurationId,  unaNuevaTool)
-                aModelDDvlPloneConfiguration = None
-                try:
-                    aModelDDvlPloneConfiguration = aq_get( unInstallContainer, cModelDDvlPloneConfigurationId, None, 1)
-                except:
-                    None  
-                if not aModelDDvlPloneConfiguration:
-                    unInforme[ 'success'] = False
-                    unInforme[ 'status']  = 'creation_failed'
-                    return unInforme
-                
-                unInforme[ 'success'] = True
-                unInforme[ 'status']  = 'created'
-                
-                return unInforme
-            
-            except:
-                unaExceptionInfo = sys.exc_info()
-                unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
-                
-                unInformeExcepcion = 'Exception during Lazy Initialization operation fLazyCrearModelDDvlPloneConfiguration\n' 
-                unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
-                unInformeExcepcion += unaExceptionFormattedTraceback   
-                         
-                unInforme[ 'success'] = False
-                unInforme[ 'condition'] = 'exception'
-                unInforme[ 'exception'] = unInformeExcepcion
-                
-                unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
-
-                if cLogExceptions:
-                    logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
-
-                return unInforme
-             
-        finally:
-            unExecutionRecord and unExecutionRecord.pEndExecution()
-
-         
-
-        
-            
+    
     
     # #############################################################
     # Collections creation
@@ -1132,7 +953,7 @@ class TRACatalogo_Inicializacion:
                                 unaCollection = unaNuevaColeccion
                                 unHayCambio   = True
                     
-                    if not ( unaCollection == None):
+                    if unaCollection:
                         
                         if self.fLazySetAcquireRoleAssignments( 
                             theAllowCreation,
@@ -1186,7 +1007,7 @@ class TRACatalogo_Inicializacion:
         unExecutionRecord = self.fStartExecution( 'method',  'fLazySetAcquireRoleAssignments', theParentExecutionRecord, False, None, 'element: %s' % ( (theElement and '/'.join( theElement.getPhysicalPath())) or '')) 
 
         try:
-            if ( theElement == None):
+            if not theElement:
                 return theReport
             
             aAcquireRoleAssignments       = self.fAcquireRoleAssignmentsElement( theElement)
@@ -1353,7 +1174,7 @@ class TRACatalogo_Inicializacion:
                 if not unLanguage:
                     return self.fNewVoidInformeLazyCrearTodosCatalogs()
          
-                if (unLanguage in cLanguagesWithChineseJapaneseKoreanLexicon) and not ( gCJKSplitter == None):
+                if unLanguage in cLanguagesWithChineseJapaneseKoreanLexicon:
                     unSpecialPipelineSpec = cLexiconPipelineChineseJapaneseKorean[:]
                     
                 return  self.fLazyCrearCatalogsEIndicesEnContenedor( 
@@ -1538,7 +1359,7 @@ class TRACatalogo_Inicializacion:
                                 # special case for Chinese Japanese Korean indexing
                                 if theSpecialPipelineSpec:
                                     unosPipelineElementNames = theSpecialPipelineSpec
-                                            
+        
                                 unLexiconReportEntry = self.fNewVoidInformeLazyCrearLexicon( unCatalogReportEntry)
                                 unLexiconReportEntry.update( {            
                                     'type':                     'lexicon',
@@ -1576,17 +1397,13 @@ class TRACatalogo_Inicializacion:
                                             elif unPipelineElementName == 'StopWordRemover':
                                                 unosPipelineElements.append( StopWordRemover())  
                                             elif unPipelineElementName == 'CJKSplitter':
-                                                unosPipelineElements.append( gCJKSplitter())  
+                                                unosPipelineElements.append( CJKSplitter())  
                                         if not unosPipelineElements:
                                             unLexiconReportEntry.update( {
                                                 'status':                               'empty_pipeline',           
                                                 'success':                              False,
                                             }) 
                                         else:    
-                                            # ACV 20091105 Found in ZopeChinaPak::utils::modifyCatalogTextIndexToSupportChinese
-                                            # a call to method that may be better to add the lexicon to the catalog
-                                            #   ZCTextIndex.manage_addLexicon(catalog, 'CJKLexicon', 'Default Lexicon', elem)
-
                                             unLexicon = PLexicon( unNombreLexicon, unNombreLexicon, *unosPipelineElements)    
                                             unCatalog._setObject( unNombreLexicon, unLexicon)    
                                                                             
@@ -1735,11 +1552,11 @@ class TRACatalogo_Inicializacion:
                             if unIndexesOrSchemasOrLexiconsAdded and not unCatalogJustCreated:
                                 unCatalogsChanged = True
                                 
-                                unStartTime = fMillisecondsNow()
+                                unStartTime = self.fMillisecondsNow()
                                 
                                 unCatalog.refreshCatalog()
             
-                                unEndTime = fMillisecondsNow()
+                                unEndTime = self.fMillisecondsNow()
                                 unCatalogReportEntry[ 'catalog_refreshed'] = True
                                 unCatalogReportEntry[ 'catalog_refresh_duration'] = unEndTime - unStartTime
                                 
@@ -1807,10 +1624,9 @@ class TRACatalogo_Inicializacion:
                 lambda theGroupName: self.fUserGroupIdEnCatalogoFor( theGroupName), 
                 [ 
                     [ cTRAUserGroups_Catalogo_AuthorizedOnCatalogo,             [ self,], ], 
-                    # ACV 20090403 NOW discarded: Global catalogs not assigned roles in specific languages 
-                    # ACV 20090914 NOW approach: Simpler security schema: no user groups for languages or modules, shall assign local roles to users directly on the language or module element
-                    [ cTRAUserGroups_Catalogo_AuthorizedOnIndividualIdiomas,    self.fObtenerTodosIdiomas(), ], 
-                    [ cTRAUserGroups_Catalogo_AuthorizedOnIndividualModulos,  [] + self.fObtenerTodosModulos(), ], 
+                    # ACV 20090403 Global catalogs not assigned roles in specific languages 
+                    #[ cTRAUserGroups_Catalogo_AuthorizedOnIndividualIdiomas,    self.fObtenerTodosIdiomas(), ], 
+                    # [ cTRAUserGroups_Catalogo_AuthorizedOnIndividualModulos,  [] + self.fObtenerTodosModulos(), ], 
                 ], 
                 None,
                 theCheckPermissions,
@@ -1825,52 +1641,52 @@ class TRACatalogo_Inicializacion:
     
 
  
-    # ACV 20090914 Simpler security schema: no user groups for languages or modules, shall assign local roles to users directly on the language or module element
-    #security.declarePrivate( 'fLazyCrearUserGroupsAllIdiomas')
-    #def fLazyCrearUserGroupsAllIdiomas(self, theAllowCreation=False, theCheckPermissions=True, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
-        #unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearUserGroupsAllIdiomas', theParentExecutionRecord, False) 
+   
+    security.declarePrivate( 'fLazyCrearUserGroupsAllIdiomas')
+    def fLazyCrearUserGroupsAllIdiomas(self, theAllowCreation=False, theCheckPermissions=True, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
+        unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearUserGroupsAllIdiomas', theParentExecutionRecord, False) 
 
-        #try:
-            #return self.fLazyCrearUserGroups(
-                #theAllowCreation,
-                #cTRAUserGroups_AllIdiomas, 
-                #lambda theGroupName: self.fUserGroupIdAllIdiomasFor( theGroupName), 
-                #[ 
-                    #[ cTRAUserGroups_AllIdiomas_AuthorizedOnColeccionIdiomas,        [ self.fObtenerColeccionIdiomas(),], ], 
-                ##    [ cTRAUserGroups_AllIdiomas_AuthorizedOnIndividualIdiomas,       [ self.fObtenerColeccionIdiomas(),], ],  # ACV 200904040208 Added
-                #], 
-                #lambda theGroupName: self.fUserGroupIdEnCatalogoFor( theGroupName), 
-                #theCheckPermissions,
-                #thePermissionsCache,
-                #theRolesCache,
-                #unExecutionRecord
-            #)    
-        #finally:
-            #unExecutionRecord and unExecutionRecord.pEndExecution()
+        try:
+            return self.fLazyCrearUserGroups(
+                theAllowCreation,
+                cTRAUserGroups_AllIdiomas, 
+                lambda theGroupName: self.fUserGroupIdAllIdiomasFor( theGroupName), 
+                [ 
+                    [ cTRAUserGroups_AllIdiomas_AuthorizedOnColeccionIdiomas,        [ self.fObtenerColeccionIdiomas(),], ], 
+                #    [ cTRAUserGroups_AllIdiomas_AuthorizedOnIndividualIdiomas,       [ self.fObtenerColeccionIdiomas(),], ],  # ACV 200904040208 Added
+                ], 
+                lambda theGroupName: self.fUserGroupIdEnCatalogoFor( theGroupName), 
+                theCheckPermissions,
+                thePermissionsCache,
+                theRolesCache,
+                unExecutionRecord
+            )    
+        finally:
+            unExecutionRecord and unExecutionRecord.pEndExecution()
     
    
     
    
-    #security.declarePrivate( 'fLazyCrearUserGroupsAllModulos')
-    #def fLazyCrearUserGroupsAllModulos(self, theAllowCreation=False, theCheckPermissions=True, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
-        #unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearUserGroupsAllModulos', theParentExecutionRecord, False) 
+    security.declarePrivate( 'fLazyCrearUserGroupsAllModulos')
+    def fLazyCrearUserGroupsAllModulos(self, theAllowCreation=False, theCheckPermissions=True, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
+        unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearUserGroupsAllModulos', theParentExecutionRecord, False) 
 
-        #try:
-            #return self.fLazyCrearUserGroups(
-                #theAllowCreation,
-                #cTRAUserGroups_AllModulos, 
-                #lambda theGroupName: self.fUserGroupIdAllModulosFor( theGroupName), 
-                #[ 
-                    #[ cTRAUserGroups_AllModulos_AuthorizedOnColeccionModulos,          [ self.fObtenerColeccionModulos(),], ], 
-                #], 
-                #None,
-                #theCheckPermissions,
-                #thePermissionsCache,
-                #theRolesCache,
-                #unExecutionRecord
-            #)    
-        #finally:
-            #unExecutionRecord and unExecutionRecord.pEndExecution()
+        try:
+            return self.fLazyCrearUserGroups(
+                theAllowCreation,
+                cTRAUserGroups_AllModulos, 
+                lambda theGroupName: self.fUserGroupIdAllModulosFor( theGroupName), 
+                [ 
+                    [ cTRAUserGroups_AllModulos_AuthorizedOnColeccionModulos,          [ self.fObtenerColeccionModulos(),], ], 
+                ], 
+                None,
+                theCheckPermissions,
+                thePermissionsCache,
+                theRolesCache,
+                unExecutionRecord
+            )    
+        finally:
+            unExecutionRecord and unExecutionRecord.pEndExecution()
     
    
     
@@ -1879,69 +1695,69 @@ class TRACatalogo_Inicializacion:
     
     
    
-    #security.declarePrivate( 'fLazyCrearUserGroupsIdiomas')
-    #def fLazyCrearUserGroupsIdiomas(self, 
-        #theAllowCreation=False, 
-        #theCheckPermissions=True, 
-        #thePermissionsCache=None, 
-        #theRolesCache=None, 
-        #theParentExecutionRecord=None):
+    security.declarePrivate( 'fLazyCrearUserGroupsIdiomas')
+    def fLazyCrearUserGroupsIdiomas(self, 
+        theAllowCreation=False, 
+        theCheckPermissions=True, 
+        thePermissionsCache=None, 
+        theRolesCache=None, 
+        theParentExecutionRecord=None):
         
-        #unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearUserGroupsIdiomas', theParentExecutionRecord, False) 
+        unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearUserGroupsIdiomas', theParentExecutionRecord, False) 
 
-        #try:
-            #unosIdiomas = self.fObtenerTodosIdiomas()
-            #unosInformesIdiomas = []
-            #for unIdioma in unosIdiomas:
-                #unInforme = self.fLazyCrearUserGroupsParaIdioma(  
-                    #theAllowCreation, 
-                    #unIdioma, 
-                    #theCheckPermissions, 
-                    #thePermissionsCache, 
-                    #theRolesCache, 
-                    #unExecutionRecord
-                #)    
-                #if unInforme:
-                    #unosInformesIdiomas.append( unInforme)
+        try:
+            unosIdiomas = self.fObtenerTodosIdiomas()
+            unosInformesIdiomas = []
+            for unIdioma in unosIdiomas:
+                unInforme = self.fLazyCrearUserGroupsParaIdioma(  
+                    theAllowCreation, 
+                    unIdioma, 
+                    theCheckPermissions, 
+                    thePermissionsCache, 
+                    theRolesCache, 
+                    unExecutionRecord
+                )    
+                if unInforme:
+                    unosInformesIdiomas.append( unInforme)
          
-            #return unosInformesIdiomas
-        #finally:
-            #unExecutionRecord and unExecutionRecord.pEndExecution()
+            return unosInformesIdiomas
+        finally:
+            unExecutionRecord and unExecutionRecord.pEndExecution()
     
   
     
     
-    #security.declarePrivate( 'fLazyCrearUserGroupsParaIdioma')
-    #def fLazyCrearUserGroupsParaIdioma(self, 
-        #theAllowCreation=False, 
-        #theIdioma=None, 
-        #theCheckPermissions=True, 
-        #thePermissionsCache=None, 
-        #theRolesCache=None, 
-        #theParentExecutionRecord=None):
+    security.declarePrivate( 'fLazyCrearUserGroupsParaIdioma')
+    def fLazyCrearUserGroupsParaIdioma(self, 
+        theAllowCreation=False, 
+        theIdioma=None, 
+        theCheckPermissions=True, 
+        thePermissionsCache=None, 
+        theRolesCache=None, 
+        theParentExecutionRecord=None):
         
-        #unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearUserGroupsParaIdioma', theParentExecutionRecord, False, None, 'language: %s' %  theIdioma or 'unknown') 
+        unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearUserGroupsParaIdioma', theParentExecutionRecord, False, None, 'language: %s' %  theIdioma or 'unknown') 
 
-        #try:
-            #if not theIdioma:
-                #return []
+        try:
+            if not theIdioma:
+                return []
             
-            #return self.fLazyCrearUserGroups(  
-                #theAllowCreation, 
-                #cTRAUserGroups_Idioma, 
-                #lambda theGroupName: self.fUserGroupIdIdiomaFor( theGroupName, theIdioma), 
-                #[ 
-                    #[ cTRAUserGroups_Idioma_AuthorizedOnCatalogo,             [ self,], ], 
-                    #[ cTRAUserGroups_Idioma_AuthorizedOnIdioma,               [ theIdioma,], ], 
-                #], 
-                #lambda theGroupName: self.fUserGroupIdEnCatalogoFor( theGroupName), 
-                #theCheckPermissions, 
-                #thePermissionsCache,
-                #theRolesCache,
-                #unExecutionRecord
-            #)  
-        #finally:
-            #unExecutionRecord and unExecutionRecord.pEndExecution()
+            return self.fLazyCrearUserGroups(  
+                theAllowCreation, 
+                cTRAUserGroups_Idioma, 
+                lambda theGroupName: self.fUserGroupIdIdiomaFor( theGroupName, theIdioma), 
+                [ 
+                    [ cTRAUserGroups_Idioma_AuthorizedOnCatalogo,             [ self,], ], 
+                    [ cTRAUserGroups_Idioma_AuthorizedOnIdioma,               [ theIdioma,], ], 
+                ], 
+                lambda theGroupName: self.fUserGroupIdEnCatalogoFor( theGroupName), 
+                theCheckPermissions, 
+                thePermissionsCache,
+                theRolesCache,
+                unExecutionRecord
+            )  
+        finally:
+            unExecutionRecord and unExecutionRecord.pEndExecution()
   
     
     
@@ -1950,64 +1766,64 @@ class TRACatalogo_Inicializacion:
   
     
    
-    #security.declarePrivate( 'fLazyCrearUserGroupsModulos')
-    #def fLazyCrearUserGroupsModulos(self, theAllowCreation=False, theCheckPermissions=True, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
-        #unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearUserGroupsModulos', theParentExecutionRecord, False) 
+    security.declarePrivate( 'fLazyCrearUserGroupsModulos')
+    def fLazyCrearUserGroupsModulos(self, theAllowCreation=False, theCheckPermissions=True, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
+        unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearUserGroupsModulos', theParentExecutionRecord, False) 
 
-        #try:
-            #unosModulos = self.fObtenerTodosModulos()
-            #unosInformesModulos = []
-            #for unModulo in unosModulos:
-                #unInforme = self.fLazyCrearUserGroupsParaModulo(  
-                    #theAllowCreation, 
-                    #unModulo, 
-                    #theCheckPermissions, 
-                    #thePermissionsCache, 
-                    #theRolesCache, 
-                    #unExecutionRecord
-                #)    
-                #if unInforme:
-                    #unosInformesModulos.append( unInforme)
+        try:
+            unosModulos = self.fObtenerTodosModulos()
+            unosInformesModulos = []
+            for unModulo in unosModulos:
+                unInforme = self.fLazyCrearUserGroupsParaModulo(  
+                    theAllowCreation, 
+                    unModulo, 
+                    theCheckPermissions, 
+                    thePermissionsCache, 
+                    theRolesCache, 
+                    unExecutionRecord
+                )    
+                if unInforme:
+                    unosInformesModulos.append( unInforme)
          
-            #return unosInformesModulos
-        #finally:
-            #unExecutionRecord and unExecutionRecord.pEndExecution()
+            return unosInformesModulos
+        finally:
+            unExecutionRecord and unExecutionRecord.pEndExecution()
     
     
     
         
         
-    #security.declarePrivate( 'fLazyCrearUserGroupsParaModulo')
-    #def fLazyCrearUserGroupsParaModulo(self, 
-        #theAllowCreation=False, 
-        #theModulo=None, 
-        #theCheckPermissions=True, 
-        #thePermissionsCache=None, 
-        #theRolesCache=None, 
-        #theParentExecutionRecord=None):
+    security.declarePrivate( 'fLazyCrearUserGroupsParaModulo')
+    def fLazyCrearUserGroupsParaModulo(self, 
+        theAllowCreation=False, 
+        theModulo=None, 
+        theCheckPermissions=True, 
+        thePermissionsCache=None, 
+        theRolesCache=None, 
+        theParentExecutionRecord=None):
         
-        #unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearUserGroupsParaModulo', theParentExecutionRecord, False) 
+        unExecutionRecord = self.fStartExecution( 'method',  'fLazyCrearUserGroupsParaModulo', theParentExecutionRecord, False) 
 
-        #try:
-            #if not theModulo:
-                #return []
+        try:
+            if not theModulo:
+                return []
             
-            #return self.fLazyCrearUserGroups( 
-                #theAllowCreation, 
-                #cTRAUserGroups_Modulo, 
-                #lambda theGroupName: self.fUserGroupIdModuloFor( theGroupName, theModulo), 
-                #[  
-                    #[ cTRAUserGroups_Modulo_AuthorizedOnCatalogo,             [ self,], ], 
-                    #[ cTRAUserGroups_Modulo_AuthorizedOnModulo,               [ theModulo,], ], 
-                #], 
-                #None,
-                #theCheckPermissions, 
-                #thePermissionsCache,
-                #theRolesCache,
-                #unExecutionRecord
-            #)  
-        #finally:
-            #unExecutionRecord and unExecutionRecord.pEndExecution()
+            return self.fLazyCrearUserGroups( 
+                theAllowCreation, 
+                cTRAUserGroups_Modulo, 
+                lambda theGroupName: self.fUserGroupIdModuloFor( theGroupName, theModulo), 
+                [  
+                    [ cTRAUserGroups_Modulo_AuthorizedOnCatalogo,             [ self,], ], 
+                    [ cTRAUserGroups_Modulo_AuthorizedOnModulo,               [ theModulo,], ], 
+                ], 
+                None,
+                theCheckPermissions, 
+                thePermissionsCache,
+                theRolesCache,
+                unExecutionRecord
+            )  
+        finally:
+            unExecutionRecord and unExecutionRecord.pEndExecution()
     
   
     
@@ -2458,21 +2274,6 @@ class TRACatalogo_Inicializacion:
                 self.pWriteLine( anOutput,  '\n', 1)
                 
                 
-                
-                
-            unResultadoModelDDvlPloneConfiguration = theInforme.get( 'ModelDDvlPloneConfiguration', {})        
-            if not unResultadoModelDDvlPloneConfiguration:
-                self.pWriteLine( anOutput,  'no ModelDDvlPloneConfiguration initialization\n\n', 1)
-            else:
-                if unResultadoModelDDvlPloneConfiguration.get( 'success', False):
-                    self.pWriteLine( anOutput,  'success ModelDDvlPloneConfiguration status: %s' % unResultadoModelDDvlPloneConfiguration.get( 'status', ''), 1)    
-                else:
-                    self.pWriteLine( anOutput,  'FAILURE ModelDDvlPloneConfiguration status: %s' % unResultadoModelDDvlPloneConfiguration.get( 'status', ''), 1)    
-                    if unResultadoModelDDvlPloneConfiguration.get( 'exception', ''):
-                        self.pWriteLine( anOutput,  'exception:\n%s\n\n' % unResultadoModelDDvlPloneConfiguration.get( 'exception', ''), 1)
-
-                self.pWriteLine( anOutput,  '\n', 1)
-                                
                
             unResultadoExtMethods = theInforme.get( 'external_methods', {})        
             if not unResultadoExtMethods:
@@ -2501,13 +2302,12 @@ class TRACatalogo_Inicializacion:
             unResultadoUserGroups = theInforme.get( 'user_groups_catalogo', {})  
             self.fPrettyPrintLazyUserGroupsCreationResult_AtLevel( anOutput, unResultadoUserGroups, 'TRACatalogo')
 
-            # ACV 20090914 Simpler security schema: no user groups for languages or modules, shall assign local roles to users directly on the language or module element
-            #unResultadoUserGroups = theInforme.get( 'user_groups_all_idiomas', {})  
-            #self.fPrettyPrintLazyUserGroupsCreationResult_AtLevel( anOutput, unResultadoUserGroups, 'TRACatalogo_AllIdiomas')
+            unResultadoUserGroups = theInforme.get( 'user_groups_all_idiomas', {})  
+            self.fPrettyPrintLazyUserGroupsCreationResult_AtLevel( anOutput, unResultadoUserGroups, 'TRACatalogo_AllIdiomas')
 
-            #unosResultadosUserGroupsIdiomas = theInforme.get( 'user_groups_idiomas', [])  
-            #for unResultadoUserGroups in unosResultadosUserGroupsIdiomas:
-                #self.fPrettyPrintLazyUserGroupsCreationResult_AtLevel( anOutput, unResultadoUserGroups, 'TRAIdioma')
+            unosResultadosUserGroupsIdiomas = theInforme.get( 'user_groups_idiomas', [])  
+            for unResultadoUserGroups in unosResultadosUserGroupsIdiomas:
+                self.fPrettyPrintLazyUserGroupsCreationResult_AtLevel( anOutput, unResultadoUserGroups, 'TRAIdioma')
 
             #unosResultadosUserGroupsModulos = theInforme.get( 'user_groups_modulos', [])  
             #for unResultadoUserGroups in unosResultadosUserGroupsModulos:

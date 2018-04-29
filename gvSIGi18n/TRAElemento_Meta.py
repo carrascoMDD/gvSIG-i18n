@@ -1,5 +1,5 @@
 
-# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
+# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
 # Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -35,19 +35,12 @@ from AccessControl                  import ClassSecurityInfo
 from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.config import *
 
+schema = Schema((
 
-# Classes added here during runtime will be acceptable roots,
-# after invocation of the fParentArchetypeClassNames_ResetCache method
-#
-gAdditionalParentArchetypeClassNames = [ ]
+),
+)
 
-
-
-# Private Cache of class names
-# 
-gParentArchetypeClassNamesCache      = [ ]
-
-
+TRAElemento_Meta_schema = BaseSchema.copy() +     schema.copy()
 
 
 class TRAElemento_Meta:            
@@ -56,48 +49,14 @@ class TRAElemento_Meta:
     """
     security = ClassSecurityInfo()
 
+    # This name appears in the 'add' box
+    archetype_name = 'TRAElemento_Meta'
+    
+    meta_type = 'TRAElemento_Meta'
+    portal_type = 'TRAElemento_Meta'
 
-    
+    schema = TRAElemento_Meta_schema
 
-
-
-  
-  
-  
-    security.declarePrivate('fParentArchetypeClassNames')
-    def fParentArchetypeClassNames( self):
-    
-        if gParentArchetypeClassNamesCache:
-            return gParentArchetypeClassNamesCache
-        
-        return self.fParentArchetypeClassNames_ResetCache()
-        
-        
-        
-        
-        
-        
-        
-    security.declarePrivate('fParentArchetypeClassNames_ResetCache')
-    def fParentArchetypeClassNames_ResetCache( self):
-    
-        aWorkingCopy = self.fArchetypeClassNames()[:]
-        
-        # Thread safety to be assured here for cases when simultaneusly:
-        #
-        # Others may be adding to the gAdditionalParentArchetypeClassNames
-        # Others may also invoke this method
-        #
-        if gAdditionalParentArchetypeClassNames:
-            aWorkingCopy += gAdditionalParentArchetypeClassNames
-        
-        gParentArchetypeClassNamesCache = aWorkingCopy
-        
-        return gParentArchetypeClassNamesCache
-        
-            
-    
-    
     
     security.declarePrivate('fArchetypeSchemaByName')
     def fArchetypeSchemaByName( self, theMetaTypeName):
@@ -120,13 +79,11 @@ class TRAElemento_Meta:
             'TRAColeccionImportaciones',
             'TRAColeccionInformes',
             'TRAColeccionModulos',
-            'TRAColeccionSolicitudesCadenas',
             'TRAContenidoIntercambio',
             'TRAIdioma',
             'TRAImportacion',
             'TRAInforme',
             'TRAModulo',
-            'TRASolicitudCadena',
             'TRATraduccion',
  
         ]
@@ -168,10 +125,6 @@ class TRAElemento_Meta:
                 from Products.gvSIGi18n.TRAColeccionModulos         import TRAColeccionModulos
                 return TRAColeccionModulos            
 
-            if theMetaTypeName == 'TRAColeccionSolicitudesCadenas':
-                from Products.gvSIGi18n.TRAColeccionSolicitudesCadenas         import TRAColeccionSolicitudesCadenas
-                return TRAColeccionSolicitudesCadenas            
-
             if theMetaTypeName == 'TRAContenidoIntercambio':
                 from Products.gvSIGi18n.TRAContenidoIntercambio         import TRAContenidoIntercambio
                 return TRAContenidoIntercambio            
@@ -191,10 +144,6 @@ class TRAElemento_Meta:
             if theMetaTypeName == 'TRAModulo':
                 from Products.gvSIGi18n.TRAModulo         import TRAModulo
                 return TRAModulo            
-
-            if theMetaTypeName == 'TRASolicitudCadena':
-                from Products.gvSIGi18n.TRASolicitudCadena         import TRASolicitudCadena
-                return TRASolicitudCadena            
 
             if theMetaTypeName == 'TRATraduccion':
                 from Products.gvSIGi18n.TRATraduccion         import TRATraduccion

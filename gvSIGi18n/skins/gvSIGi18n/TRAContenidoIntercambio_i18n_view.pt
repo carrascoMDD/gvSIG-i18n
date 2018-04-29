@@ -34,52 +34,25 @@
 
 
     <div metal:define-macro="tInformeContenidoIntercambio_i18n" >
-    
-        <tal:block tal:replace="nothing">
-        # ###############################################
-        """Visual rendering component for a table of a contents result (i.e. summary for all the contents in an import, or for each of the contents.
-        
-        """
-        </tal:block>
 
         <tal:block tal:define="        
             pParentExecutionRecord  pExecutionRecord | nothing;
-            pExecutionRecord python: here.fStartExecution( 'template', 'TRAContenidoIntercambio_i18n_view.pt', pParentExecutionRecord, False)" >
+            pExecutionRecord python: here.fStartExecution( 'template', 'TRAInformeContenidoIntercambio_i18n_view.pt', pParentExecutionRecord, False)" >
     
             <tal:block tal:define="
                 global unIndexClassFila python: 0; 
                 global unasClasesFilas  python: ('odd','even');
-                global aTranslationsCache      python: {};
-                dummy  python:           here.fTranslateI18NManyIntoDict( [
-                    [ 'gvSIGi18n', [    
-                        [ 'gvSIGi18n_numeroIdiomas_property_label',                                     'Total number of Strings-', ],
-                        [ 'gvSIGi18n_idioma_msgid',                                                     'Language-' ,           ],
-                        [ 'gvSIGi18n_bandera_msgid',                                                    'Flag-' ,               ],
-                        [ 'gvSIGi18n_traducciones_msgid',                                               'Translations-' ,       ],
-                        [ 'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Pendiente',             'Pending-' ,            ],
-                        [ 'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Traducida',             'Translated-' ,         ],
-                        [ 'gvSIGi18n_traduccion_conEncodingError',                                      'Error-' ,              ],
-                        [ 'gvSIGi18n_TRAIdioma_attr_nombreIdioma_label_abbreviated',                    'Name-' ,               ],
-                        [ 'gvSIGi18n_TRAIdioma_attr_nombreNativoDeIdioma_label_abbreviated',            'Native name-' ,        ],
- 
-                        [ 'gvSIGi18n_fechaInformeModulos_label',                                        'Modules Report Date-'  ],
-                        [ 'gvSIGi18n_cadenas_msgid',                                                    'Strings-' ,            ],
-                        [ 'gvSIGi18n_total_msgid',                                                      'Total-' ,              ],
-                        [ 'gvSIGi18n_comprobacion_msgid',                                               'Check-' ,              ],
-                        [ 'gvSIGi18n_TRAColeccionModulos_contents_modulos_label',                       'Modules-' ,            ],
-                        [ 'gvSIGi18n_TRAColeccionIdiomas_contents_idiomas_label',                       'Languages-' ,          ],
-                        [ 'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Pendiente',             'Pending-' ,            ],
-                        [ 'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Traducida',             'Translated-' ,         ],
-                        [ 'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Revisada',              'Reviewed-' ,           ],
-                        [ 'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Definitiva',            'Definitive-' ,         ],
-                        [ 'gvSIGi18n_fechaInformeModulos_label',                                        'Modules report date-' ,],
-                        [ 'gvSIGi18n_bandera_label',                                                    'Flag-' ,               ],
-                        [ 'gvSIGi18n_TRAIdioma_attr_codigoIdiomaEnGvSIG_label_abbreviated',             'Code-' ,               ],
-                        [ 'gvSIGi18n_TRAIdioma_attr_codigoInternacionalDeIdioma_label_abbreviated',     'Intl. Code-' ,         ],
-                        [ 'gvSIGi18n_TRAIdioma_attr_nombreIdioma_label_abbreviated',                    'Name-' ,               ],
-                        [ 'gvSIGi18n_TRAIdioma_attr_nombreNativoDeIdioma_label_abbreviated',            'Native name-' ,        ],
-                    ]]
-                ], aTranslationsCache)" />
+                global aTranslationsCache       python: {
+                    'gvSIGi18n_numeroCadenas_property_label':                           here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_numeroCadenas_property_label',                             'Total number of Strings-' ),
+                    'gvSIGi18n_idioma_msgid':                                           here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_idioma_msgid',                                             'Language-' ),
+                    'gvSIGi18n_bandera_msgid':                                          here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_bandera_msgid',                                            'Flag-' ),
+                    'gvSIGi18n_traducciones_msgid':                                     here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_traducciones_msgid',                                       'Translations-' ),
+                    'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Pendiente':   here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Pendiente',     'Pending-' ),
+                    'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Traducida':   here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Traducida',     'Translated-' ),
+                    'gvSIGi18n_traduccion_conEncodingError':                            here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_traduccion_conEncodingError',     'Error-' ),
+                    'gvSIGi18n_TRAIdioma_attr_nombreIdioma_label_abbreviated':          here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TRAIdioma_attr_nombreIdioma_label_abbreviated',    'Name-' ),
+                    'gvSIGi18n_TRAIdioma_attr_nombreNativoDeIdioma_label_abbreviated':  here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TRAIdioma_attr_nombreNativoDeIdioma_label_abbreviated',    'Native name-' ),
+                }" />
                     
             <tal:block tal:define="pInforme pInforme | nothing"
                 tal:condition="pInforme" >
@@ -89,19 +62,12 @@
                 <tal:block tal:condition="pInforme">
                     
                     <br/>  
-
-
                     <p>
                         <font size="2">
-                            <strong tal:content="python: len( pInforme[ 'languages'])" />
-                            <em tal:content="aTranslationsCache/gvSIGi18n_TRAColeccionIdiomas_contents_idiomas_label" />
-                            &nbsp;-&nbsp;
+                            <em tal:content="aTranslationsCache/gvSIGi18n_numeroCadenas_property_label"/>
                             <strong tal:content="python: pInforme[ 'num_strings']" />
-                            <em tal:content="aTranslationsCache/gvSIGi18n_cadenas_msgid" />
                         </font>
-                    </p>
-                    
-                    
+                    </p>          
                     <table class="listing" summary="TranslationsInterchangeContents" id="#" tal:attributes="id python: 'Report'">
                         <thead>
                             <tr>

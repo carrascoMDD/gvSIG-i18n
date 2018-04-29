@@ -2,7 +2,7 @@
 #
 # File: TRAColeccionArquetipos.py
 #
-# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
+# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
 # Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -42,6 +42,38 @@ from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import Reference
 
 schema = Schema((
 
+    ComputedField(
+        name='pathDelRaiz',
+        widget=ComputedField._properties['widget'](
+            label="Path del Raiz",
+            label2="Root's Path",
+            description="Path del Catalogo raiz de este elemento.",
+            description2="This element's root Catalog path.",
+            label_msgid='gvSIGi18n_TRAColeccionArquetipos_attr_pathDelRaiz_label',
+            description_msgid='gvSIGi18n_TRAColeccionArquetipos_attr_pathDelRaiz_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Path del Catalogo raiz de este elemento.",
+        duplicates="0",
+        label2="Root's Path",
+        ea_localid="1153",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="This element's root Catalog path.",
+        ea_guid="{B7179848-3F34-4d34-853D-337C1259FDD4}",
+        scale="0",
+        expression="context.fPathDelRaiz()",
+        label="Path del Raiz",
+        length="0",
+        exclude_from_traversalconfig="True",
+        containment="Not Specified",
+        position="0",
+        owner_class_name="TRAColeccionArquetipos",
+        exclude_from_views="[ 'Textual', 'Tabular',  ]"
+    ),
+
 ),
 )
 
@@ -70,7 +102,7 @@ class TRAColeccionArquetipos(TRAElemento):
         'id': 'folderlisting',
         'name': 'Folder Listing',
         'permissions': ("View",),
-        'condition': """python:0"""
+        'condition': 'python:0'
        },
 
 
@@ -79,7 +111,7 @@ class TRAColeccionArquetipos(TRAElemento):
         'id': 'references',
         'name': 'References',
         'permissions': ("Modify portal content",),
-        'condition': """python:0"""
+        'condition': 'python:0'
        },
 
 
@@ -88,16 +120,7 @@ class TRAColeccionArquetipos(TRAElemento):
         'id': 'view',
         'name': 'View',
         'permissions': ("View",),
-        'condition': """python:1"""
-       },
-
-
-       {'action': "string:${object_url}/MDDChanges",
-        'category': "object_buttons",
-        'id': 'mddchanges',
-        'name': 'Changes',
-        'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': 'python:1'
        },
 
 
@@ -106,7 +129,7 @@ class TRAColeccionArquetipos(TRAElemento):
         'id': 'edit',
         'name': 'Edit',
         'permissions': ("Modify portal content",),
-        'condition': """python:object.fAllowWrite()"""
+        'condition': 'python:0'
        },
 
 
@@ -115,16 +138,7 @@ class TRAColeccionArquetipos(TRAElemento):
         'id': 'local_roles',
         'name': 'Sharing',
         'permissions': ("Manage properties",),
-        'condition': """python:0"""
-       },
-
-
-       {'action': "string:${object_url}/TRASeguridadUsuarioConectado",
-        'category': "object_buttons",
-        'id': 'TRA_SeguridadUsuarioConectado',
-        'name': 'Permissions',
-        'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': 'python:0'
        },
 
 
@@ -133,16 +147,7 @@ class TRAColeccionArquetipos(TRAElemento):
         'id': 'content_status_history',
         'name': 'State',
         'permissions': ("View",),
-        'condition': """python:0"""
-       },
-
-
-       {'action': "string:${object_url}/MDDCacheStatus/",
-        'category': "object_buttons",
-        'id': 'mddcachestatus',
-        'name': 'Cache',
-        'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': 'python:0'
        },
 
 
@@ -164,27 +169,6 @@ class TRAColeccionArquetipos(TRAElemento):
         
         return True
 
-    security.declarePublic('cb_isCopyable')
-    def cb_isCopyable(self):
-        """
-        """
-        
-        return False
-
-    security.declarePublic('displayContentsTab')
-    def displayContentsTab(self):
-        """
-        """
-        
-        return False
-
-    security.declarePublic('externalEditorEnabled')
-    def externalEditorEnabled(self):
-        """
-        """
-        
-        return False
-
     security.declarePublic('manage_afterAdd')
     def manage_afterAdd(self,item,container):
         """
@@ -198,13 +182,6 @@ class TRAColeccionArquetipos(TRAElemento):
         """
         
         return TRAElemento.manage_beforeDelete( self, item, container)
-
-    security.declarePublic('cb_isMoveable')
-    def cb_isMoveable(self):
-        """
-        """
-        
-        return False
 # end of class TRAColeccionArquetipos
 
 ##code-section module-footer #fill in your manual code here

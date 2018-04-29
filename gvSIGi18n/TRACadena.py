@@ -2,7 +2,7 @@
 #
 # File: TRACadena.py
 #
-# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
+# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
 # Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -32,12 +32,11 @@ __docformat__ = 'plaintext'
 from AccessControl import ClassSecurityInfo
 from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.TRAArquetipo import TRAArquetipo
-from TRACadena_Operaciones import TRACadena_Operaciones
+from Products.gvSIGi18n.TRACadena_Operaciones import TRACadena_Operaciones
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
 from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import ReferenceBrowserWidget
-from TRAElemento_Operaciones import TRAElemento_Operaciones
 
 ##code-section module-header #fill in your manual code here
 ##/code-section module-header
@@ -266,14 +265,44 @@ schema = Schema((
         label2='Translations',
         additional_columns=['codigoIdiomaEnGvSIG', 'estadoTraduccion', 'fechaTraduccion', 'usuarioTraductor', 'fechaRevision', 'usuarioRevisor', 'fechaDefinitivo', 'usuarioCoordinador'],
         label='Traducciones',
-        represents_aggregation=True,
         description2='Translations of one string to the various languages.',
         multiValued=1,
         owner_class_name="TRACadena",
         expression="context.objectValues(['TRATraduccion'])",
         computed_types=['TRATraduccion'],
-        non_framework_elements=False,
+        represents_aggregation=True,
         description='Traducciones de una de las Cadenas los varios Idiomas.'
+    ),
+
+    StringField(
+        name='pathDelRaiz',
+        widget=StringWidget(
+            label="Path del Raiz",
+            label2="Root's Path",
+            description="Path del Catalogo raiz de este elemento.",
+            description2="This element's root Catalog path.",
+            label_msgid='gvSIGi18n_TRACadena_attr_pathDelRaiz_label',
+            description_msgid='gvSIGi18n_TRACadena_attr_pathDelRaiz_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Path del Catalogo raiz de este elemento.",
+        duplicates="0",
+        label2="Root's Path",
+        ea_localid="1118",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="This element's root Catalog path.",
+        ea_guid="{0970FA45-8541-423a-B514-3147F4681D19}",
+        scale="0",
+        label="Path del Raiz",
+        length="0",
+        exclude_from_traversalconfig="True",
+        containment="Not Specified",
+        position="2",
+        owner_class_name="TRACadena",
+        exclude_from_views="[ 'Textual', 'Tabular',  ]"
     ),
 
     ComputedField(
@@ -335,42 +364,22 @@ class TRACadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones):
     use_folder_tabs = 0
 
     allowed_content_types = ['TRATraduccion'] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRACadena_Operaciones, 'allowed_content_types', []))
-    filter_content_types             = 1
-    global_allow                     = 0
+    filter_content_types = 1
+    global_allow = 0
     content_icon = 'tracadena.gif'
-    immediate_view                   = 'Tabular'
-    default_view                     = 'Tabular'
-    suppl_views                      = ['Tabular',]
-    typeDescription                  = "Una de las cadenas originales del producto a traducir, identificada por el simbolo original."
-    typeDescMsgId                    =  'gvSIGi18n_TRACadena_help'
-    archetype_name2                  = 'String to translate'
-    typeDescription2                 = '''One of the original product strings to translate, identified by a the original symbol string.'''
-    archetype_name_msgid             = 'gvSIGi18n_TRACadena_label'
-    factory_methods                  = None
-    factory_enablers                 = None
-    propagate_delete_impact_to       = None
+    immediate_view = 'Tabular'
+    default_view = 'Tabular'
+    suppl_views = ['Tabular',]
+    typeDescription = "Una de las cadenas originales del producto a traducir, identificada por el simbolo original."
+    typeDescMsgId =  'gvSIGi18n_TRACadena_help'
+    archetype_name2 = 'String to translate'
+    typeDescription2 = '''One of the original product strings to translate, identified by a the original symbol string.'''
+    archetype_name_msgid = 'gvSIGi18n_TRACadena_label'
+    factory_methods = None
     allow_discussion = 0
 
 
     actions =  (
-
-
-       {'action': "string:${object_url}/Tabular",
-        'category': "object",
-        'id': 'view',
-        'name': 'View',
-        'permissions': ("View",),
-        'condition': """python:1"""
-       },
-
-
-       {'action': "string:$object_url/Editar",
-        'category': "object",
-        'id': 'edit',
-        'name': 'Edit',
-        'permissions': ("Modify portal content",),
-        'condition': """python:0"""
-       },
 
 
        {'action': "string:${object_url}/sharing",
@@ -378,7 +387,7 @@ class TRACadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones):
         'id': 'local_roles',
         'name': 'Sharing',
         'permissions': ("Manage properties",),
-        'condition': """python:0"""
+        'condition': 'python:1'
        },
 
 
@@ -387,16 +396,7 @@ class TRACadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones):
         'id': 'folderlisting',
         'name': 'Folder Listing',
         'permissions': ("View",),
-        'condition': """python:0"""
-       },
-
-
-       {'action': "string:${object_url}/MDDChanges",
-        'category': "object_buttons",
-        'id': 'mddchanges',
-        'name': 'Changes',
-        'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': 'python:0'
        },
 
 
@@ -405,16 +405,7 @@ class TRACadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones):
         'id': 'references',
         'name': 'References',
         'permissions': ("Modify portal content",),
-        'condition': """python:0"""
-       },
-
-
-       {'action': "string:${object_url}/TRASeguridadUsuarioConectado",
-        'category': "object_buttons",
-        'id': 'TRA_SeguridadUsuarioConectado',
-        'name': 'Permissions',
-        'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': 'python:0'
        },
 
 
@@ -423,16 +414,34 @@ class TRACadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones):
         'id': 'content_status_history',
         'name': 'State',
         'permissions': ("View",),
-        'condition': """python:0"""
+        'condition': 'python:0'
        },
 
 
-       {'action': "string:${object_url}/MDDCacheStatus/",
-        'category': "object_buttons",
-        'id': 'mddcachestatus',
-        'name': 'Cache',
+       {'action': "string:${object_url}/sharing",
+        'category': "object",
+        'id': 'local_roles',
+        'name': 'Sharing',
+        'permissions': ("Manage properties",),
+        'condition': 'python:0'
+       },
+
+
+       {'action': "string:${object_url}/Tabular",
+        'category': "object",
+        'id': 'view',
+        'name': 'View',
         'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': 'python:1'
+       },
+
+
+       {'action': "string:$object_url/Editar",
+        'category': "object",
+        'id': 'edit',
+        'name': 'Edit',
+        'permissions': ("Modify portal content",),
+        'condition': 'python:0'
        },
 
 
@@ -454,27 +463,6 @@ class TRACadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones):
         
         return self.pPropagarCambioDeEstadoATraducciones()
 
-    security.declarePublic('cb_isCopyable')
-    def cb_isCopyable(self):
-        """
-        """
-        
-        return False
-
-    security.declarePublic('fIsActive')
-    def fIsActive(self):
-        """
-        """
-        
-        return self.getEstadoCadena() =='Activa'
-
-    security.declarePublic('fIsInactive')
-    def fIsInactive(self):
-        """
-        """
-        
-        return self.getEstadoCadena() =='Inactiva'
-
     security.declarePublic('manage_afterAdd')
     def manage_afterAdd(self,item,container):
         """
@@ -489,37 +477,16 @@ class TRACadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones):
         
         return TRACadena_Operaciones.pHandle_reindexObject( self, idxs)
 
-    security.declarePublic('displayContentsTab')
-    def displayContentsTab(self):
-        """
-        """
-        
-        return False
-
     security.declarePublic('manage_beforeDelete')
     def manage_beforeDelete(self,item,container):
         """
         """
         
         return TRAArquetipo.manage_beforeDelete( self, item, container)
-
-    security.declarePublic('manage_pasteObjects')
-    def manage_pasteObjects(self,cb_copy_data,REQUEST):
-        """
-        """
-        
-        return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
-
-    security.declarePublic('fExtraLinks')
-    def fExtraLinks(self):
-        """
-        """
-        
-        return TRAElemento_Operaciones.fExtraLinks( self)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:
-        if a['id'] in ['metadata', 'sharing', 'folderContents']:
+        if a['id'] in ['metadata', 'sharing']:
             a['visible'] = 0
     return fti
 

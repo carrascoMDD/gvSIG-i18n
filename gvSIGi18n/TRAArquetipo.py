@@ -2,7 +2,7 @@
 #
 # File: TRAArquetipo.py
 #
-# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
+# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
 # Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -70,7 +70,7 @@ class TRAArquetipo(TRAElemento):
         'id': 'local_roles',
         'name': 'Sharing',
         'permissions': ("Manage properties",),
-        'condition': """python:0"""
+        'condition': 'python:1'
        },
 
 
@@ -79,16 +79,7 @@ class TRAArquetipo(TRAElemento):
         'id': 'folderlisting',
         'name': 'Folder Listing',
         'permissions': ("View",),
-        'condition': """python:0"""
-       },
-
-
-       {'action': "string:${object_url}/MDDChanges",
-        'category': "object_buttons",
-        'id': 'mddchanges',
-        'name': 'Changes',
-        'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': 'python:0'
        },
 
 
@@ -97,16 +88,7 @@ class TRAArquetipo(TRAElemento):
         'id': 'references',
         'name': 'References',
         'permissions': ("Modify portal content",),
-        'condition': """python:0"""
-       },
-
-
-       {'action': "string:${object_url}/TRASeguridadUsuarioConectado",
-        'category': "object_buttons",
-        'id': 'TRA_SeguridadUsuarioConectado',
-        'name': 'Permissions',
-        'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': 'python:0'
        },
 
 
@@ -115,16 +97,7 @@ class TRAArquetipo(TRAElemento):
         'id': 'content_status_history',
         'name': 'State',
         'permissions': ("View",),
-        'condition': """python:0"""
-       },
-
-
-       {'action': "string:${object_url}/MDDCacheStatus/",
-        'category': "object_buttons",
-        'id': 'mddcachestatus',
-        'name': 'Cache',
-        'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': 'python:0'
        },
 
 
@@ -139,27 +112,6 @@ class TRAArquetipo(TRAElemento):
 
     # Methods
 
-    security.declarePublic('cb_isCopyable')
-    def cb_isCopyable(self):
-        """
-        """
-        
-        return False
-
-    security.declarePublic('displayContentsTab')
-    def displayContentsTab(self):
-        """
-        """
-        
-        return False
-
-    security.declarePublic('externalEditorEnabled')
-    def externalEditorEnabled(self):
-        """
-        """
-        
-        return False
-
     security.declarePublic('manage_afterAdd')
     def manage_afterAdd(self,item,container):
         """
@@ -173,13 +125,6 @@ class TRAArquetipo(TRAElemento):
         """
         
         return TRAElemento.manage_beforeDelete( self, item, container)
-
-    security.declarePublic('cb_isMoveable')
-    def cb_isMoveable(self):
-        """
-        """
-        
-        return False
 # end of class TRAArquetipo
 
 ##code-section module-footer #fill in your manual code here

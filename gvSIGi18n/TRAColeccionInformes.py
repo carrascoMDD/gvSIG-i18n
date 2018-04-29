@@ -2,7 +2,7 @@
 #
 # File: TRAColeccionInformes.py
 #
-# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
+# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
 # Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -31,13 +31,8 @@ __docformat__ = 'plaintext'
 
 from AccessControl import ClassSecurityInfo
 from Products.Archetypes.atapi import *
-from TRAColeccionInformes_Operaciones import TRAColeccionInformes_Operaciones
 from Products.gvSIGi18n.TRAColeccionArquetipos import TRAColeccionArquetipos
-from Products.gvSIGi18n.TRAConRegistroActividad import TRAConRegistroActividad
 from Products.gvSIGi18n.config import *
-
-# additional imports from tagged value 'import'
-from TRAElemento_Operaciones import TRAElemento_Operaciones
 
 ##code-section module-header #fill in your manual code here
 ##/code-section module-header
@@ -57,16 +52,14 @@ schema = Schema((
         ),
         contains_collections=False,
         label2='Reports',
-        additional_columns=['haCompletadoConExito'],
+        additional_columns=['esAutoActualizable', 'estadoProceso', 'fechaFinProceso', 'haCompletadoConExito'],
         label='Informes',
-        represents_aggregation=True,
         description2='Status Reports of Translations to  Languages and Modules',
         multiValued=1,
-        factory_views={ 'TRAInforme' : 'TRACrear_Informe',},
         owner_class_name="TRAColeccionInformes",
         expression="context.objectValues(['TRAInforme'])",
         computed_types=['TRAInforme'],
-        non_framework_elements=False,
+        represents_aggregation=True,
         description='Informes del estado de Traducciones a Idiomas y Modulos'
     ),
 
@@ -77,71 +70,42 @@ schema = Schema((
 ##/code-section after-local-schema
 
 TRAColeccionInformes_schema = OrderedBaseFolderSchema.copy() + \
-    getattr(TRAColeccionInformes_Operaciones, 'schema', Schema(())).copy() + \
     getattr(TRAColeccionArquetipos, 'schema', Schema(())).copy() + \
-    getattr(TRAConRegistroActividad, 'schema', Schema(())).copy() + \
     schema.copy()
 
 ##code-section after-schema #fill in your manual code here
 ##/code-section after-schema
 
-class TRAColeccionInformes(OrderedBaseFolder, TRAColeccionInformes_Operaciones, TRAColeccionArquetipos, TRAConRegistroActividad):
+class TRAColeccionInformes(OrderedBaseFolder, TRAColeccionArquetipos):
     """
     """
     security = ClassSecurityInfo()
-    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAColeccionInformes_Operaciones,'__implements__',()),) + (getattr(TRAColeccionArquetipos,'__implements__',()),) + (getattr(TRAConRegistroActividad,'__implements__',()),)
+    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAColeccionArquetipos,'__implements__',()),)
 
     # This name appears in the 'add' box
     archetype_name = 'Coleccion de Informes de Estado'
 
     meta_type = 'TRAColeccionInformes'
     portal_type = 'TRAColeccionInformes'
-
-
-    # Change Audit fields
-
-    creation_date_field = 'fechaCreacion'
-    creation_user_field = 'usuarioCreador'
-    modification_date_field = 'fechaModificacion'
-    modification_user_field = 'usuarioModificador'
-    deletion_date_field = 'fechaEliminacion'
-    deletion_user_field = 'usuarioEliminador'
-    is_inactive_field = 'estaInactivo'
-    change_counter_field = 'contadorCambios'
-    change_log_field = 'registroDeCambios'
-
-
-
     use_folder_tabs = 0
 
-    allowed_content_types = ['TRAInforme'] + list(getattr(TRAColeccionInformes_Operaciones, 'allowed_content_types', [])) + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', []))
-    filter_content_types             = 1
-    global_allow                     = 0
+    allowed_content_types = ['TRAInforme'] + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', []))
+    filter_content_types = 1
+    global_allow = 0
     #content_icon = 'TRAColeccionInformes.gif'
-    immediate_view                   = 'Tabular'
-    default_view                     = 'Tabular'
-    suppl_views                      = ['Tabular',]
-    typeDescription                  = "Coleccion de informes del Estado de Traducciones a Idiomas y Modulos"
-    typeDescMsgId                    =  'gvSIGi18n_TRAColeccionInformes_help'
-    archetype_name2                  = 'Status Reports Collection'
-    typeDescription2                 = '''Collection of Status Reports of Translations to  Languages and Modules'''
-    archetype_name_msgid             = 'gvSIGi18n_TRAColeccionInformes_label'
-    factory_methods                  = { 'TRAInforme' : 'fCrearInforme',}
-    factory_enablers                 = { 'TRAInforme' : [ 'fUseCaseCheckDoableFactory', 'Create_TRAInforme',]}
-    propagate_delete_impact_to       = None
+    immediate_view = 'Tabular'
+    default_view = 'Tabular'
+    suppl_views = ['Tabular',]
+    typeDescription = "Coleccion de informes del Estado de Traducciones a Idiomas y Modulos"
+    typeDescMsgId =  'gvSIGi18n_TRAColeccionInformes_help'
+    archetype_name2 = 'Status Reports Collection'
+    typeDescription2 = '''Collection of Status Reports of Translations to  Languages and Modules'''
+    archetype_name_msgid = 'gvSIGi18n_TRAColeccionInformes_label'
+    factory_methods = None
     allow_discussion = False
 
 
     actions =  (
-
-
-       {'action': "string:${object_url}/TRACrear_Informe",
-        'category': "object_buttons",
-        'id': 'TRACreateInforme',
-        'name': 'Create Report',
-        'permissions': ("Modify portal content",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Create_TRAInforme')"""
-       },
 
 
        {'action': "string:${object_url}/folder_listing",
@@ -149,7 +113,7 @@ class TRAColeccionInformes(OrderedBaseFolder, TRAColeccionInformes_Operaciones, 
         'id': 'folderlisting',
         'name': 'Folder Listing',
         'permissions': ("View",),
-        'condition': """python:0"""
+        'condition': 'python:0'
        },
 
 
@@ -158,7 +122,7 @@ class TRAColeccionInformes(OrderedBaseFolder, TRAColeccionInformes_Operaciones, 
         'id': 'references',
         'name': 'References',
         'permissions': ("Modify portal content",),
-        'condition': """python:0"""
+        'condition': 'python:0'
        },
 
 
@@ -167,16 +131,7 @@ class TRAColeccionInformes(OrderedBaseFolder, TRAColeccionInformes_Operaciones, 
         'id': 'view',
         'name': 'View',
         'permissions': ("View",),
-        'condition': """python:1"""
-       },
-
-
-       {'action': "string:${object_url}/MDDChanges",
-        'category': "object_buttons",
-        'id': 'mddchanges',
-        'name': 'Changes',
-        'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': 'python:1'
        },
 
 
@@ -185,7 +140,7 @@ class TRAColeccionInformes(OrderedBaseFolder, TRAColeccionInformes_Operaciones, 
         'id': 'edit',
         'name': 'Edit',
         'permissions': ("Modify portal content",),
-        'condition': """python:object.fAllowWrite()"""
+        'condition': 'python:0'
        },
 
 
@@ -194,16 +149,7 @@ class TRAColeccionInformes(OrderedBaseFolder, TRAColeccionInformes_Operaciones, 
         'id': 'local_roles',
         'name': 'Sharing',
         'permissions': ("Manage properties",),
-        'condition': """python:0"""
-       },
-
-
-       {'action': "string:${object_url}/TRASeguridadUsuarioConectado",
-        'category': "object_buttons",
-        'id': 'TRA_SeguridadUsuarioConectado',
-        'name': 'Permissions',
-        'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': 'python:0'
        },
 
 
@@ -212,16 +158,16 @@ class TRAColeccionInformes(OrderedBaseFolder, TRAColeccionInformes_Operaciones, 
         'id': 'content_status_history',
         'name': 'State',
         'permissions': ("View",),
-        'condition': """python:0"""
+        'condition': 'python:0'
        },
 
 
-       {'action': "string:${object_url}/MDDCacheStatus/",
-        'category': "object_buttons",
-        'id': 'mddcachestatus',
-        'name': 'Cache',
-        'permissions': ("View",),
-        'condition': """python:1"""
+       {'action': "string:${object_url}/sharing",
+        'category': "object",
+        'id': 'local_roles',
+        'name': 'Sharing',
+        'permissions': ("Manage properties",),
+        'condition': 'python:0'
        },
 
 
@@ -243,51 +189,16 @@ class TRAColeccionInformes(OrderedBaseFolder, TRAColeccionInformes_Operaciones, 
         
         return TRAColeccionArquetipos.manage_beforeDelete( self, item, container)
 
-    security.declarePublic('displayContentsTab')
-    def displayContentsTab(self):
-        """
-        """
-        
-        return False
-
     security.declarePublic('manage_afterAdd')
     def manage_afterAdd(self,item,container):
         """
         """
         
         return TRAColeccionArquetipos.manage_afterAdd( self, item, container)
-
-    security.declarePublic('fIsCacheable')
-    def fIsCacheable(self):
-        """
-        """
-        
-        return True
-
-    security.declarePublic('manage_pasteObjects')
-    def manage_pasteObjects(self,cb_copy_data,REQUEST):
-        """
-        """
-        
-        return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
-
-    security.declarePublic('fExtraLinks')
-    def fExtraLinks(self):
-        """
-        """
-        
-        return TRAElemento_Operaciones.fExtraLinks( self)
-
-    security.declarePublic('cb_isCopyable')
-    def cb_isCopyable(self):
-        """
-        """
-        
-        return False
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:
-        if a['id'] in ['metadata', 'sharing', 'folderContents']:
+        if a['id'] in ['metadata']:
             a['visible'] = 0
     return fti
 

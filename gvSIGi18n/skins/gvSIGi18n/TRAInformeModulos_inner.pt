@@ -34,359 +34,165 @@
 
 
 
-<div metal:define-macro="tInformeModulos_inner" >
+    <div metal:define-macro="tInformeModulos_inner" >
 
 
      
-    <tal:block tal:define="
-         pPermiteCrearElementos pPermiteCrearElementos | python: False;
-         pHeaderPostfix         pHeaderPostfix | string:;
-         pInformeModulos        pInformeModulos | nothing" 
-         tal:condition="pInformeModulos">
-         
-        <h2>
-            <span tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TRAColeccionModulos_contents_modulos_label',   'Modules-' )" />
-            <span tal:condition="pHeaderPostfix" tal:content="pHeaderPostfix" />
-        </h2>                
-        <p class="formHelp" tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_InformeModulosIntensiveWarning_msgid',  'Reporting the Modules and Languages Status is an intensive process. therefore it is performed periodically by the Coordinator, but not at each user request-' )" />
-    
-        <tal:block tal:condition="pInformeModulos" >
-            
-            <tal:block tal:define="
-                pEstados                 python: pInformeModulos[ 'estados'];
-                pCabecerasIdiomas        python: pInformeModulos[ 'cabeceras_idiomas'];
-                pInformesModulos         python: pInformeModulos[ 'informes_modulos'];
-                pClasesFilas             python: ['even', 'odd',];
-                pColors                  python: ['Red', 'Yellow', 'Green', 'Blue'];
-                pIconsDict               python: { 'Pendiente' : 'tra_pendiente.gif', 'Traducida' : 'tra_traducida.gif', 'Revisada'  : 'tra_revisada.gif', 'Definitiva': 'tra_definitiva.gif',};
-                pColorsDict              python: {'Pendiente' : 'Red', 'Traducida' : 'Yellow', 'Revisada'  : 'Green', 'Definitiva': 'Blue',};            
-                pColorImagesDict         python: {'Pendiente' : 'tra_pendiente_color.gif', 'Traducida' : 'tra_traducida_color.gif', 'Revisada'  : 'tra_revisada_color.gif', 'Definitiva': 'tra_definitiva_color.gif',};            
-                pTextColorsDict          python: {'Pendiente' : 'Red', 'Traducida' : 'Black', 'Revisada'  : 'Green', 'Definitiva': 'Blue',};            
-         global pIndex                   python: 0;
-                aTranslationsCache      python: {};
-                dummy       python:           here.fTranslateI18NManyIntoDict( [
-                    [ 'gvSIGi18n', [    
-                        [ 'gvSIGi18n_summary_label',                                                    'Summary-'  ],
-                        [ 'gvSIGi18n_fechaInformeModulos_label',                                        'Modules Report Date-'  ],
-                        [ 'gvSIGi18n_cadenas_msgid',                                                    'Strings-' ,            ],
-                        [ 'gvSIGi18n_traducciones_msgid',                                               'Translations-' ,       ],
-                        [ 'gvSIGi18n_total_msgid',                                                      'Total-' ,              ],
-                        [ 'gvSIGi18n_comprobacion_msgid',                                               'Check-' ,              ],
-                        [ 'gvSIGi18n_TRAColeccionModulos_contents_modulos_label',                       'Modules-' ,            ],
-                        [ 'gvSIGi18n_TRAModulo_label',                                                  'Module-' ,            ],
-                        [ 'gvSIGi18n_TRAColeccionIdiomas_contents_idiomas_label',                       'Languages-' ,          ],
-                        [ 'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Pendiente',             'Pending-' ,            ],
-                        [ 'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Traducida',             'Translated-' ,         ],
-                        [ 'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Revisada',              'Reviewed-' ,           ],
-                        [ 'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Definitiva',            'Definitive-' ,         ],
-                        [ 'gvSIGi18n_fechaInformeModulos_label',                                        'Modules report date-' , ],
-                        [ 'gvSIGi18n_bandera_label',                                                    'Flag-' ,               ],
-                        [ 'gvSIGi18n_TRAIdioma_attr_codigoIdiomaEnGvSIG_label_abbreviated',             'Code-' ,               ],
-                        [ 'gvSIGi18n_TRAIdioma_attr_codigoInternacionalDeIdioma_label_abbreviated',     'Intl. Code-' ,         ],
-                        [ 'gvSIGi18n_TRAIdioma_attr_nombreIdioma_label_abbreviated',                    'Name-' ,               ],
-                        [ 'gvSIGi18n_TRAIdioma_attr_nombreNativoDeIdioma_label_abbreviated',            'Native name-' ,        ],
-                        [ 'gvSIGi18n_LanguageLocked_label',                                             'Locked-' ,               ],
-                    ]]
-                ], aTranslationsCache)">
-    
-                <br/>
-                <p>
-                    <font size="2">
-                        <em tal:content="aTranslationsCache/gvSIGi18n_fechaInformeModulos_label" />
-                        &nbsp;
-                        <strong tal:content="python: here.fAsUnicode( pInformeModulos.get( 'report_date', ''))" />            
-                    </font>
-                </p>
-                
-                
-                <h2>
-                    <span tal:content="python: aTranslationsCache[ 'gvSIGi18n_summary_label']" />
-                </h2>
-                            
-                
-                <p>
-                
-                    <strong>
-                        <tal:block tal:content="python: len( pInformesModulos)" />
-                        <span tal:content="aTranslationsCache/gvSIGi18n_TRAColeccionModulos_contents_modulos_label" />
-                    </strong>
-                    -
-                    <strong>
-                        <tal:block tal:content="python: len( pCabecerasIdiomas)" />
-                        <span tal:content="aTranslationsCache/gvSIGi18n_TRAColeccionIdiomas_contents_idiomas_label" />
-                    </strong>
-                    -
-                    <strong>
-                        <span tal:content="python: pInformeModulos[ 'numero_cadenas']" />
-                        <span tal:content="aTranslationsCache/gvSIGi18n_cadenas_msgid" />
-                    </strong>
-                </p>
-                
-                
-    
-                <table id="id_TRAInformeModulesSummary_Table" class="listing" summary="#"  tal:attributes="summary string: Translations Report By Modules Summary">
-                    <COL width="*" class="sortable"/>
-                    <COL width="70" class="sortable"/>
-                    <COL width="70" class="sortable"/>
-                    <COL width="85" class="sortable"  tal:repeat="unEstado pEstados"/>
-                    <COL />                    
-                    <thead>
-                        <tr>
-                            <th class="sortable" align="center" tal:content="aTranslationsCache/gvSIGi18n_TRAColeccionModulos_contents_modulos_label" />
-                            <th class="sortable" align="left"   tal:content="aTranslationsCache/gvSIGi18n_cadenas_msgid" />
-                            <th class="sortable" align="left"   tal:content="aTranslationsCache/gvSIGi18n_traducciones_msgid" />
-                            <tal:block tal:repeat="unEstado pEstados">
-                                <th class="sortable" align="center" bgColor="" tal:attributes="bgColor python: pColorsDict[ unEstado]"  >
-                                    <span tal:content="python: aTranslationsCache[ 'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_%s' % unEstado]" />
-                                    <br/>
-                                    <img 
-                                        alt="TranslationStatus_%(unEstado)s" src="" title="%(unEstado)s" 
-                                        tal:attributes="src python: '%s/%s' % ( here.absolute_url(), pIconsDict.get( unEstado, 'tra_pendiente.gif'))"/>                        
-                                    <br/>
-                                    <img height="8" src="#" width="75"  tal:attributes="src python: '%s/%s' % ( here.portal_url(), pColorImagesDict[ unEstado], )" />
-                                </th>                                    
-                            </tal:block>
-                            <th class="nosort" align="left">&ensp;</th>
-                        </tr>
-                    </thead>
-                    
-                    
-                    <tbody>
-                        <tr class="#" tal:attributes="class python: pClasesFilas[pIndex % 2]" >
-                            <td valign="baseline" tal:content="aTranslationsCache/gvSIGi18n_total_msgid" />
-                            <td align="right" valign="baseline"><span tal:content="python: '%d' % pInformeModulos[ 'numero_cadenas']"></span></td>
-                            <td align="right" valign="baseline"><span tal:content="python: '%d' % pInformeModulos[ 'total_traducciones']"></span></td>
-                            <tal:block tal:repeat="unInformeEstado python: pInformeModulos[  'totales_estados']" >
-                                <td align="right" valign="baseline">
-                                    <font size="1" >
-                                        <strong tal:content="python: unInformeEstado[ 'cantidad']"/>
-                                        <span tal:condition="python: len( str( unInformeEstado[ 'porcentaje'])) < 2">
-                                            &ensp;
-                                        </span>
-                                        <span tal:content="python: '%d%%' %  int( unInformeEstado[ 'porcentaje'])"/>
-                                    </font>
-                                </td> 
-                            </tal:block>
-                            <td valign="center">
-                                <tal:block tal:repeat="unInformeEstado python: pInformeModulos[  'totales_estados']" >
-                                    <tal:block tal:define="unPercentWidth python: unInformeEstado[ 'porcentaje']" >
-                                        <tal:block tal:condition="python: (int( unInformeEstado[  'porcentaje']) == 0) and not( int( unInformeEstado[ 'cantidad']) == 0)">
-                                            <tal:block tal:define="global unPercentWidth python: 1" />
-                                        </tal:block>                                                                        
-                                        <tal:block tal:condition="python: unPercentWidth > 0">
-                                            <img height="8" src="#" width="#" tal:attributes="width python: int( unPercentWidth); src python: '%s/%s' % ( here.portal_url(), pColorImagesDict[ unInformeEstado[ 'nombre_estado']], )" />
-                                        </tal:block>                                    
-                                    </tal:block>                                    
-                                </tal:block>
-                            </td> 
-                            <tal:block tal:define="global pIndex python: pIndex + 1" />
-                        </tr>
-                        
-                        <tr class="#" 
-                            tal:attributes="class python: pClasesFilas[pIndex % 2]"
-                            tal:repeat="unInformeModulo pInformesModulos">
-                            <td align="left" tal:content="python: here.fAsUnicode( unInformeModulo[ 'nombre_modulo'])" />
-                            <td align="right" valign="baseline" tal:content="python: '%d' % unInformeModulo[ 'numero_cadenas']" />
-                            <td align="right" valign="baseline" tal:content="python: '%d' % unInformeModulo[ 'total_traducciones']" />
-                            <tal:block tal:repeat="unInformeEstado python: unInformeModulo[  'totales_estados']" >
-                                <td align="right" valign="baseline">
-                                    <font size="1" >
-                                        <strong tal:content="python: unInformeEstado[ 'cantidad']"/>
-                                        <span tal:condition="python: len( str( unInformeEstado[ 'porcentaje'])) < 2">
-                                            &ensp;
-                                        </span>
-                                        <span tal:content="python: '%d%%' %  int( unInformeEstado[ 'porcentaje'])"/>
-                                    </font>
-                                </td> 
-                            </tal:block>
-                            <td valign="center">
-                                <tal:block tal:repeat="unInformeEstado python: unInformeModulo[  'totales_estados']" >
-                                    <tal:block tal:define="unPercentWidth python: unInformeEstado[ 'porcentaje']" >
-                                        <tal:block tal:condition="python: (int( unInformeEstado[  'porcentaje']) == 0) and not( int( unInformeEstado[ 'cantidad']) == 0)">
-                                            <tal:block tal:define="global unPercentWidth python: 1" />
-                                        </tal:block>                                                                        
-                                        <tal:block tal:condition="python: unPercentWidth > 0">
-                                            <img height="8" src="#" width="#" tal:attributes="width python: int( unPercentWidth); src python: '%s/%s' % ( here.portal_url(), pColorImagesDict[ unInformeEstado[ 'nombre_estado']], )" />
-                                        </tal:block>                                    
-                                    </tal:block>                                    
-                                </tal:block>
-                            </td> 
-                            <tal:block tal:define="global pIndex python: pIndex + 1" />
-                        </tr>
-                            
-                    </tbody>
-                </table>            
-                
-                
-                <br/>
-    
-                
-                <tal:block tal:repeat="unInformeModulo pInformesModulos">
-                    <tal:block tal:define="pInformeIdiomas python: {
-                        'numero_cadenas':   unInformeModulo[ 'numero_cadenas'],
-                        'estados':          [ unInformeEstado[ 'nombre_estado'] for unInformeEstado in unInformeModulo[ 'totales_estados']],
-                        'informes_idiomas': unInformeModulo[ 'informes_idiomas'],
-                        };
-                        pExtraParmsLinkToTranslation python: u'&theSearchNombresModulos=%s' % here.fAsUnicode( unInformeModulo[ 'nombre_modulo'])" >
-                        
-                        <br/>                   
-                        <h2>
-                            <span tal:content="python: aTranslationsCache[ 'gvSIGi18n_TRAModulo_label']" />
-                            <strong tal:content="python: here.fAsUnicode( unInformeModulo[ 'nombre_modulo'])" />
-                        </h2>
-            
-                        <p>
-                            <font size="2">
-                                <strong>
-                                    <span tal:content="python: '%d' % unInformeModulo[ 'total_traducciones']" />
-                                    <span tal:content="aTranslationsCache/gvSIGi18n_traducciones_msgid" />
-                                </strong>
-                            </font>
-                        </p>
-
-                        
-                        <metal:block metal:use-macro="here/TRAInformeIdiomas_inner/macros/tInformeIdiomas_NoHeader" />
-                            
-                
-                    </tal:block>
-                </tal:block>
-                
-                <br/>
-                <br/>
-                
-            <metal:block metal:use-macro="here/TRAInformeModulos_inner/macros/tInformeModulos_Numbers" />
-                
-                
-            </tal:block>
-        </tal:block>
-            
-        <tal:block tal:condition="not: pInformeModulos" >
-            <br/>
-            <h3 tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_noHayInfomeModulos_msgid',   'No Modules Status Report available-' )" />
-            <br/>
-        </tal:block>
-    </tal:block>
-</div>
-            
-            
-            
-            
-
-            
-            
-            
-<div metal:define-macro="tInformeModulos_Numbers" >
-            
+<tal:block tal:define="
+     pPermiteCrearElementos pPermiteCrearElementos | python: False;
+     pHeaderPostfix         pHeaderPostfix | string:;
+     pInformeModulos        pInformeModulos | nothing" 
+     tal:condition="pInformeModulos">
+     
     <h2>
-        <span tal:content="python: aTranslationsCache[ 'gvSIGi18n_TRAColeccionModulos_contents_modulos_label']" />
-    </h2>
-    
-    
-    <table width="100%" id="cid_ProgressReportByModules" class="listing" summary="#"  tal:attributes="summary string: Informe de Progreso por Modulos">
-        <thead>
-            <tr tal:define="global pColorIndex python: -1">
-                <th class="nosort" align="left">
-                    <tal:block tal:content="python: len( pInformesModulos)" />
-                    <span tal:content="aTranslationsCache/gvSIGi18n_TRAColeccionModulos_contents_modulos_label" />
-                    -
-                    <tal:block tal:content="python: len( pCabecerasIdiomas)" />
-                    <span tal:content="aTranslationsCache/gvSIGi18n_TRAColeccionIdiomas_contents_idiomas_label" />
-                </th>
-                
-                <th class="nosort" align="right">
-                    <span tal:content="aTranslationsCache/gvSIGi18n_cadenas_msgid" />
-                </th>
-                <th class="nosort" align="right">
-                    <span tal:content="aTranslationsCache/gvSIGi18n_total_msgid" />
-                </th>
-                
-                <tal:block tal:repeat="unaCabeceraIdioma pCabecerasIdiomas">
-                    <tal:block tal:define="pURLIdiomaOCatalogo python: '%s/TRATraducir/?theCodigoIdiomaCursor=%s&theMostrarInforme=on&theMostrarLista=on&theIdiomasReferencia=es&theIdiomasReferencia=en' % ( here.absolute_url(), unaCabeceraIdioma[ 'codigo_idioma_en_gvsig'], )" >
-                        <th class="nosort" align="center" valign="top" >
-                            <a href="#" title="#"  tal:attributes="href python:  pURLIdiomaOCatalogo; title python: unaCabeceraIdioma[ 'nombre_idioma']">
-                                <span tal:content="python: unaCabeceraIdioma[ 'codigo_idioma_en_gvsig']" />
-                                <br/>
-                                <tal:block tal:define="
-                                    pCode           python: unaCabeceraIdioma[ 'codigo_idioma_en_gvsig'];
-                                    pFlagURL        python: unaCabeceraIdioma.get( 'flag_url', '');
-                                    pFlag python:   here.portal_languages.getFlagForLanguageCode( pCode)">
-                                    <tal:block condition="pFlagURL">
-                                        <img width="14" height="11" alt=""
-                                            tal:attributes="
-                                                src pFlagURL;
-                                                title python: unaCabeceraIdioma[ 'codigo_idioma_en_gvsig']" />
-                                    </tal:block>
-                                    <tal:block condition="python: not pFlagURL">
-                                        <img width="14" height="11" alt=""
-                                            tal:attributes="
-                                                src python: '%s/%s' % ( here.portal_url(), 'tra_flag-ninguna.gif');
-                                                title python: unaCabeceraIdioma[ 'codigo_idioma_en_gvsig']" />
-                                    </tal:block>
-                                    <br/>
-                                    <tal:block
-                                        tal:define="pLanguageLocked  python: not( (unaCabeceraIdioma.get( 'modifiable', False) and True) or False)"
-                                        tal:condition="pLanguageLocked" >
-                                        <img src="#" title="#" alt="#" tal:attributes="src python: '%s/%s' % ( here.absolute_url(), 'tra_locked.gif',); title python: aTranslationsCache[ 'gvSIGi18n_LanguageLocked_label']; alt python: aTranslationsCache[ 'gvSIGi18n_LanguageLocked_label']"/>
-                                        <span tal:content="python: aTranslationsCache[ 'gvSIGi18n_LanguageLocked_label']" />
-                                    </tal:block>
-                                 </tal:block>
-                            </a>
-                        </th>
-                    </tal:block>
-                 </tal:block>
-            </tr>
-       </thead>
-       
-       
-       <tbody>
+        <span tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TRAColeccionModulos_contents_modulos_label',   'Modules-' )" />
+        <span tal:condition="pHeaderPostfix" tal:content="pHeaderPostfix" />
+    </h2>                
+    <p class="formHelp" tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_InformeModulosIntensiveWarning_msgid',  'Reporting the Modules and Languages Status is an intensive process. therefore it is performed periodically by the Coordinator, but not at each user request-' )" />
 
-
-
-            <tr class="#" 
-                tal:attributes="class python: pClasesFilas[pIndex % 2]">
-                <td align="left" valign="top" >
-                    <strong tal:content="aTranslationsCache/gvSIGi18n_total_msgid" />
-                    <br/>
-                    <tal:block tal:repeat="unInformeEstado python: pInformeModulos[ 'totales_estados']" >                                
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <strong>
-                            <font color="#" tal:attributes="color python: pTextColorsDict[ unInformeEstado[ 'nombre_estado'] ]" 
-                               tal:content="python: aTranslationsCache[ 'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_%s' % unInformeEstado[ 'nombre_estado']]" />                                
-                        </strong>
-                        <br/>
-                    </tal:block>                    
-
-                </td>
-
-                <td align="right" valign="top" >
-                    <span tal:content="python: pInformeModulos[ 'numero_cadenas']" />
-                </td>
-                
-                <td align="right" valign="top" >
-                    <span tal:content="python: pInformeModulos[ 'total_traducciones']" />
-                    <br/>
-                    <tal:block tal:repeat="unInformeEstado python: pInformeModulos[  'totales_estados']" >
-                        <tal:block tal:condition="python: unInformeEstado[ 'cantidad']">                                    
-                            <font color="#" tal:attributes="color python: pTextColorsDict[ unInformeEstado[ 'nombre_estado']]"
-                                tal:content="python: unInformeEstado[ 'cantidad']" />
-                        </tal:block>                    
-                        <tal:block tal:condition="python: not unInformeEstado[ 'cantidad']">                                    
-                            <font color="#" tal:attributes="color python: pTextColorsDict[ unInformeEstado[ 'nombre_estado'] ]" >
+    <tal:block tal:condition="pInformeModulos" >
+        
+        <tal:block tal:define="
+            pEstados                 python: pInformeModulos[ 'estados'];
+            pCabecerasIdiomas        python: pInformeModulos[ 'cabeceras_idiomas'];
+            pInformesModulos         python: pInformeModulos[ 'informes_modulos'];
+            pClasesFilas             python: ['even', 'odd',];
+            pColors                  python: ['Red', 'Yellow', 'Green', 'Blue'];
+            pColorsDict              python: {'Pendiente' : 'Red', 'Traducida' : 'Yellow', 'Revisada'  : 'Green', 'Definitiva': 'Blue',};            
+            pTextColorsDict          python: {'Pendiente' : 'Red', 'Traducida' : 'Black', 'Revisada'  : 'Green', 'Definitiva': 'Blue',};            
+     global pIndex                   python: 0;
+            aTranslationsCache       python: {
+                'gvSIGi18n_fechaInformeModulos_label':                              here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_fechaInformeModulos_label',                                'Modules Report Date-' ),
+                'gvSIGi18n_cadenas_msgid':                                          here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_cadenas_msgid',                                            'Strings-' ),
+                'gvSIGi18n_total_msgid':                                            here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_total_msgid',                                              'Total-' ),
+                'gvSIGi18n_TRAColeccionModulos_contents_modulos_label':             here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TRAColeccionModulos_contents_modulos_label',               'Modules-' ),
+                'gvSIGi18n_TRAColeccionIdiomas_contents_idiomas_label':             here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TRAColeccionIdiomas_contents_idiomas_label',               'Languages-' ),
+                'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Pendiente':   here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Pendiente',     'Pending-' ),
+                'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Traducida':   here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Traducida',     'Translated-' ),
+                'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Revisada':    here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Revisada',      'Reviewed-' ),
+                'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Definitiva':  here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_Definitiva',    'Definitive-' ),
+                'gvSIGi18n_fechaInformeModulos_label':                              here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_fechaInformeModulos_label',                                'Modules report date-' ),
+            }" >
+     
+            <br/>
+            <p>
+                <font size="2">
+                    <em tal:content="aTranslationsCache/gvSIGi18n_fechaInformeModulos_label" />
+                    &nbsp;
+                    <strong tal:content="python: here.fAsUnicode( pInformeModulos.get( 'report_date', ''))" />            
+                </font>
+            </p>
+            
+            <table width="100%" id="cid_ProgressReportByModules" class="listing" summary="#"  tal:attributes="summary string: Informe de Progreso por Modulos">
+                <thead>
+                    <tr tal:define="global pColorIndex python: -1">
+                        <th class="nosort" align="left">
+                            <tal:block tal:content="python: len( pInformesModulos)" />
+                            <span tal:content="aTranslationsCache/gvSIGi18n_TRAColeccionModulos_contents_modulos_label" />
                             -
-                            </font>
-                        </tal:block>                    
-                        <br/>
-                    </tal:block>                    
-                </td>
-                <td align="right" tal:repeat="unIndexIdioma python: range( len( pCabecerasIdiomas))">
-                   <tal:block tal:define="
-                            unaCabeceraIdioma python: pCabecerasIdiomas[ unIndexIdioma];">
-                        <tal:block tal:define="pURLIdiomaOCatalogo python: '%s/TRATraducir/?theCodigoIdiomaCursor=%s&theMostrarInforme=on&theMostrarLista=on&theIdiomasReferencia=es&theIdiomasReferencia=en' % (  here.absolute_url(), unaCabeceraIdioma[ 'codigo_idioma_en_gvsig'], )">
-                            <a href="#" title="#"  tal:attributes="href python: pURLIdiomaOCatalogo; title python: unaCabeceraIdioma[ 'codigo_idioma_en_gvsig']"
-                                tal:content="python: unaCabeceraIdioma[ 'numero_cadenas']" />                                
+                            <tal:block tal:content="python: len( pCabecerasIdiomas)" />
+                            <span tal:content="aTranslationsCache/gvSIGi18n_TRAColeccionIdiomas_contents_idiomas_label" />
+                        </th>
+                        
+                        <th class="nosort" align="right">
+                            <span tal:content="aTranslationsCache/gvSIGi18n_cadenas_msgid" />
+                        </th>
+                        <th class="nosort" align="right">
+                            <span tal:content="aTranslationsCache/gvSIGi18n_total_msgid" />
+                        </th>
+                        
+                        <tal:block tal:repeat="unaCabeceraIdioma pCabecerasIdiomas">
+                            <tal:block tal:condition="python: unaCabeceraIdioma[ 'list_contents_permission']">
+                               <tal:block tal:define="global pURLIdiomaOCatalogo python: '%s/TRATraducir?theCodigoIdiomaCursor=%s&theMostrarInforme=on&theMostrarLista=on' % ( here.absolute_url(), unaCabeceraIdioma[ 'codigo_idioma_en_gvsig'], )" />
+                            </tal:block>  
+                            <tal:block tal:condition="python: not unaCabeceraIdioma[ 'list_contents_permission']">
+                               <tal:block tal:define="global pURLIdiomaOCatalogo python: '%s/TRACatalogo' % here.absolute_url()" />
+                            </tal:block>  
+                            <th class="nosort" align="center" valign="top" >
+                                <a href="#" title="#"  tal:attributes="href python:  pURLIdiomaOCatalogo; title python: unaCabeceraIdioma[ 'nombre_idioma']">
+                                    <span tal:content="python: unaCabeceraIdioma[ 'codigo_idioma_en_gvsig']" />
+                                    <br/>
+                                    <tal:block tal:define="
+                                        pCode python: unaCabeceraIdioma[ 'codigo_idioma_en_gvsig'];
+                                        pFlag python: here.portal_languages.getFlagForLanguageCode( pCode)">
+                                        <tal:block condition="pFlag">
+                                            <img width="14" height="11" alt=""
+                                                tal:attributes="
+                                                    src python: '%s/%s' % ( here.absolute_url(), pFlag);
+                                                    title python: unaCabeceraIdioma[ 'codigo_idioma_en_gvsig']" />
+                                        </tal:block>
+                                        <tal:block condition="python: not pFlag">
+                                            <img width="14" height="11" alt=""
+                                                tal:attributes="
+                                                    src python: '%s/%s' % ( here.absolute_url(), 'tra_flag-ninguna.gif');
+                                                    title python: unaCabeceraIdioma[ 'codigo_idioma_en_gvsig']" />
+                                        </tal:block>
+                                     </tal:block>
+                                </a>
+                            </th>
+                         </tal:block>
+                    </tr>
+               </thead>
+               
+               
+               <tbody>
+
+
+
+                    <tr class="#" 
+                        tal:attributes="class python: pClasesFilas[pIndex % 2]">
+                        <td align="left" valign="top" >
+                            <strong tal:content="aTranslationsCache/gvSIGi18n_total_msgid" />
                             <br/>
-                            <tal:block tal:repeat="unInformeEstado python: unaCabeceraIdioma[ 'totales_estados']">
-                                <tal:block tal:define="pURLIdiomaOCatalogo python: '%s/TRATraducir/?theCodigoIdiomaCursor=%s&theMostrarInforme=on&theMostrarLista=on&%s=1' % ( here.absolute_url(), unaCabeceraIdioma[ 'codigo_idioma_en_gvsig'],  unInformeEstado[ 'nombre_estado'])">
+                            <tal:block tal:repeat="unInformeEstado python: pInformeModulos[ 'totales_estados']" >                                
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <strong>
+                                    <font color="#" tal:attributes="color python: pTextColorsDict[ unInformeEstado[ 'nombre_estado'] ]" 
+                                       tal:content="python: aTranslationsCache[ 'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_%s' % unInformeEstado[ 'nombre_estado']]" />                                
+                                </strong>
+                                <br/>
+                            </tal:block>                    
+
+                        </td>
+
+                        <td align="right" valign="top" >
+                            <span tal:content="python: pInformeModulos[ 'numero_cadenas']" />
+                        </td>
+                        
+                        <td align="right" valign="top" >
+                            <span tal:content="python: pInformeModulos[ 'total_traducciones']" />
+                            <br/>
+                            <tal:block tal:repeat="unInformeEstado python: pInformeModulos[  'totales_estados']" >
+                                <tal:block tal:condition="python: unInformeEstado[ 'cantidad']">                                    
+                                    <font color="#" tal:attributes="color python: pTextColorsDict[ unInformeEstado[ 'nombre_estado']]"
+                                        tal:content="python: unInformeEstado[ 'cantidad']" />
+                                </tal:block>                    
+                                <tal:block tal:condition="python: not unInformeEstado[ 'cantidad']">                                    
+                                    <font color="#" tal:attributes="color python: pTextColorsDict[ unInformeEstado[ 'nombre_estado'] ]" >
+                                    -
+                                    </font>
+                                </tal:block>                    
+                                <br/>
+                            </tal:block>                    
+                        </td>
+                        <td align="right" tal:repeat="unIndexIdioma python: range( len( pCabecerasIdiomas))">
+                           <tal:block tal:define="unaCabeceraIdioma python: pCabecerasIdiomas[ unIndexIdioma]" >
+                                <tal:block tal:condition="python:  unaCabeceraIdioma[ 'list_contents_permission']">
+                                   <tal:block tal:define="global pURLIdiomaOCatalogo python: '%s/TRATraducir?theCodigoIdiomaCursor=%s&theMostrarInforme=on&theMostrarLista=on' % (  here.absolute_url(), unaCabeceraIdioma[ 'codigo_idioma_en_gvsig'], )" />
+                                </tal:block>  
+                                <tal:block tal:condition="python: not unaCabeceraIdioma[ 'list_contents_permission']">
+                                   <tal:block tal:define="global pURLIdiomaOCatalogo python: '%s/TRACatalogo' % here.absolute_url()" />
+                                </tal:block>  
+                                <a href="#" title="#"  tal:attributes="href python: pURLIdiomaOCatalogo; title python: unaCabeceraIdioma[ 'codigo_idioma_en_gvsig']"
+                                    tal:content="python: unaCabeceraIdioma[ 'numero_cadenas']" />                                
+                                <br/>
+                                <tal:block tal:repeat="unInformeEstado python: unaCabeceraIdioma[ 'totales_estados']">
+                                    <tal:block tal:condition="python:  unaCabeceraIdioma[ 'list_contents_permission']">
+                                       <tal:block tal:define="global pURLIdiomaOCatalogo python: '%s/TRATraducir?theCodigoIdiomaCursor=%s&theMostrarInforme=on&theMostrarLista=on&%s=1' % ( here.absolute_url(), unaCabeceraIdioma[ 'codigo_idioma_en_gvsig'],  unInformeEstado[ 'nombre_estado'])" />
+                                    </tal:block>  
+                                    <tal:block tal:condition="python: not unaCabeceraIdioma[ 'list_contents_permission']">
+                                       <tal:block tal:define="global pURLIdiomaOCatalogo python: '%s/TRACatalogo' % here.absolute_url()" />
+                                    </tal:block>  
                                     <tal:block tal:condition="python: unInformeEstado[ 'cantidad']">                                    
                                         <a href="#" title="#"  tal:attributes="href python: pURLIdiomaOCatalogo; title python: unaCabeceraIdioma[ 'codigo_idioma_en_gvsig']">
                                             <font color="#" tal:attributes="color python: pTextColorsDict[ unInformeEstado[ 'nombre_estado'] ]" 
@@ -400,89 +206,102 @@
                                     </tal:block>                                    
                                     <br/>
                                 </tal:block>
-                            </tal:block>
-                        </tal:block>                    
-                    </tal:block>                    
-                </td>
-                <tal:block tal:define="global pIndex python: pIndex + 1" />                        
-            </tr>
+                            </tal:block>                    
+                        </td>
+                        <tal:block tal:define="global pIndex python: pIndex + 1" />                        
+                    </tr>
 
 
-            <tr class="#" 
-                tal:attributes="class python: pClasesFilas[pIndex % 2]"
-                tal:repeat="unInformeModulo pInformesModulos">
-                
-                
-                <td align="left" valign="top" >
-                    <span tal:content="python: here.fAsUnicode( unInformeModulo[ 'nombre_modulo'])" />
-                    <br/>
-                    <tal:block tal:repeat="unInformeEstado python: unInformeModulo[ 'totales_estados']" >                                
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <font color="#" tal:attributes="color python: pTextColorsDict[ unInformeEstado[ 'nombre_estado'] ]" 
-                           tal:content="python: aTranslationsCache[ 'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_%s' % unInformeEstado[ 'nombre_estado']]" />                                
-                        <br/>
-                    </tal:block>                    
-
-                </td>
-
-                <td align="right" valign="top" >
-                    <span tal:content="python: unInformeModulo[ 'numero_cadenas']" />
-                </td>
-                
-                <td align="right" valign="top" >
-                    <span tal:content="python: unInformeModulo[ 'total_traducciones']" />
-                    <br/>
-                    <tal:block tal:repeat="unInformeEstado python: unInformeModulo[  'totales_estados']" >
-                        <tal:block tal:condition="python: unInformeEstado[ 'cantidad']">                                    
-                            <font color="#" tal:attributes="color python: pTextColorsDict[ unInformeEstado[ 'nombre_estado']]"
-                                tal:content="python: unInformeEstado[ 'cantidad']" />
-                        </tal:block>                    
-                        <tal:block tal:condition="python: not unInformeEstado[ 'cantidad']">                                    
-                            <font color="#" tal:attributes="color python: pTextColorsDict[ unInformeEstado[ 'nombre_estado'] ]" >
-                            -
-                            </font>
-                        </tal:block>                    
-                        <br/>
-                    </tal:block>                    
-                </td>
-                                        
-                <td align="right" valign="top"
-                    tal:define="unosInformesIdiomas python: unInformeModulo[ 'informes_idiomas']" 
-                    tal:repeat="unIndexIdioma python: range( len( pCabecerasIdiomas))" >
-                    
-                    <tal:block tal:define="unInformeIdioma python: unosInformesIdiomas[ unIndexIdioma]; 
-                        unaCabeceraIdioma python: pCabecerasIdiomas[ unIndexIdioma]">
-                        <tal:block tal:define="pURLIdiomaOCatalogo python: '%s/TRATraducir/?theCodigoIdiomaCursor=%s&theMostrarInforme=on&theMostrarLista=on&theIdiomasReferencia=es&theIdiomasReferencia=en&theSearchNombreModulo=%s' % (  here.absolute_url(), unaCabeceraIdioma[ 'codigo_idioma_en_gvsig'], unInformeModulo[ 'nombre_modulo'])">
-                            <a href="#" title="#"  tal:attributes="href python: pURLIdiomaOCatalogo; title python: unaCabeceraIdioma[ 'codigo_idioma_en_gvsig']"
-                                tal:content="python: unInformeIdioma[ 'total_traducciones']" />                                
+                    <tr class="#" 
+                        tal:attributes="class python: pClasesFilas[pIndex % 2]"
+                        tal:repeat="unInformeModulo pInformesModulos">
+                        <td align="left" valign="top" >
+                            <span tal:content="python: here.fAsUnicode( unInformeModulo[ 'nombre_modulo'])" />
                             <br/>
-                            <tal:block tal:repeat="unInformeEstado python: unInformeIdioma[ 'informes_estados']">
-                                <tal:block tal:condition="python:  unaCabeceraIdioma[ 'list_contents_permission']">
-                                   <tal:block tal:define="global pURLIdiomaOCatalogo python: '%s/TRATraducir/?theCodigoIdiomaCursor=%s&theMostrarInforme=on&theMostrarLista=on&theIdiomasReferencia=es&theIdiomasReferencia=en&theSearchNombreModulo=%s&%s=1' % (  here.absolute_url(), unaCabeceraIdioma[ 'codigo_idioma_en_gvsig'], unInformeModulo[ 'nombre_modulo'], unInformeEstado[ 'nombre_estado'])" />
-                                </tal:block>  
-                                <tal:block tal:condition="python: not unaCabeceraIdioma[ 'list_contents_permission']">
-                                   <tal:block tal:define="global pURLIdiomaOCatalogo python: '%s/TRACatalogo/' % here.absolute_url()" />
-                                </tal:block>  
+                            <tal:block tal:repeat="unInformeEstado python: unInformeModulo[ 'totales_estados']" >                                
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <font color="#" tal:attributes="color python: pTextColorsDict[ unInformeEstado[ 'nombre_estado'] ]" 
+                                   tal:content="python: aTranslationsCache[ 'gvSIGi18n_TRATraduccion_attr_estadoTraduccion_option_%s' % unInformeEstado[ 'nombre_estado']]" />                                
+                                <br/>
+                            </tal:block>                    
+
+                        </td>
+
+                        <td align="right" valign="top" >
+                            <span tal:content="python: unInformeModulo[ 'numero_cadenas']" />
+                        </td>
+                        
+                        <td align="right" valign="top" >
+                            <span tal:content="python: unInformeModulo[ 'total_traducciones']" />
+                            <br/>
+                            <tal:block tal:repeat="unInformeEstado python: unInformeModulo[  'totales_estados']" >
                                 <tal:block tal:condition="python: unInformeEstado[ 'cantidad']">                                    
-                                    <a href="#" title="#"  tal:attributes="href python: pURLIdiomaOCatalogo; title python: unaCabeceraIdioma[ 'codigo_idioma_en_gvsig']">
-                                        <font color="#" tal:attributes="color python: pTextColorsDict[ unInformeEstado[ 'nombre_estado'] ]" 
-                                            tal:content="python: unInformeEstado[ 'cantidad']" />
-                                    </a>
-                                </tal:block>
+                                    <font color="#" tal:attributes="color python: pTextColorsDict[ unInformeEstado[ 'nombre_estado']]"
+                                        tal:content="python: unInformeEstado[ 'cantidad']" />
+                                </tal:block>                    
                                 <tal:block tal:condition="python: not unInformeEstado[ 'cantidad']">                                    
                                     <font color="#" tal:attributes="color python: pTextColorsDict[ unInformeEstado[ 'nombre_estado'] ]" >
                                     -
                                     </font>
-                                </tal:block>                                    
+                                </tal:block>                    
                                 <br/>
-                            </tal:block>
-                        </tal:block>                    
-                    </tal:block>                    
-                </td>
-                <tal:block tal:define="global pIndex python: pIndex + 1" />
-            </tr>
-        </tbody>
-    </table>
+                            </tal:block>                    
+                        </td>
+                                                
+                        <td align="right" valign="top"
+                            tal:define="unosInformesIdiomas python: unInformeModulo[ 'informes_idiomas']" 
+                            tal:repeat="unIndexIdioma python: range( len( pCabecerasIdiomas))" >
+                            
+                            <tal:block tal:define="unInformeIdioma python: unosInformesIdiomas[ unIndexIdioma]; 
+                                unaCabeceraIdioma python: pCabecerasIdiomas[ unIndexIdioma]">
+                                <tal:block tal:condition="python:  unaCabeceraIdioma[ 'list_contents_permission']">
+                                   <tal:block tal:define="global pURLIdiomaOCatalogo python: '%s/TRATraducir?theCodigoIdiomaCursor=%s&theMostrarInforme=on&theMostrarLista=on&theSearchNombreModulo=%s' % (  here.absolute_url(), unaCabeceraIdioma[ 'codigo_idioma_en_gvsig'], unInformeModulo[ 'nombre_modulo'])" />
+                                </tal:block>  
+                                <tal:block tal:condition="python: not unaCabeceraIdioma[ 'list_contents_permission']">
+                                   <tal:block tal:define="global pURLIdiomaOCatalogo python: '%s/TRACatalogo' % here.absolute_url()" />
+                                </tal:block>  
+                                <a href="#" title="#"  tal:attributes="href python: pURLIdiomaOCatalogo; title python: unaCabeceraIdioma[ 'codigo_idioma_en_gvsig']"
+                                    tal:content="python: unInformeIdioma[ 'total_traducciones']" />                                
+                                <br/>
+                                <tal:block tal:repeat="unInformeEstado python: unInformeIdioma[ 'informes_estados']">
+                                    <tal:block tal:condition="python:  unaCabeceraIdioma[ 'list_contents_permission']">
+                                       <tal:block tal:define="global pURLIdiomaOCatalogo python: '%s/TRATraducir?theCodigoIdiomaCursor=%s&theMostrarInforme=on&theMostrarLista=on&theSearchNombreModulo=%s&%s=1' % (  here.absolute_url(), unaCabeceraIdioma[ 'codigo_idioma_en_gvsig'], unInformeModulo[ 'nombre_modulo'], unInformeEstado[ 'nombre_estado'])" />
+                                    </tal:block>  
+                                    <tal:block tal:condition="python: not unaCabeceraIdioma[ 'list_contents_permission']">
+                                       <tal:block tal:define="global pURLIdiomaOCatalogo python: '%s/TRACatalogo' % here.absolute_url()" />
+                                    </tal:block>  
+                                    <tal:block tal:condition="python: unInformeEstado[ 'cantidad']">                                    
+                                        <a href="#" title="#"  tal:attributes="href python: pURLIdiomaOCatalogo; title python: unaCabeceraIdioma[ 'codigo_idioma_en_gvsig']">
+                                            <font color="#" tal:attributes="color python: pTextColorsDict[ unInformeEstado[ 'nombre_estado'] ]" 
+                                                tal:content="python: unInformeEstado[ 'cantidad']" />
+                                        </a>
+                                    </tal:block>
+                                    <tal:block tal:condition="python: not unInformeEstado[ 'cantidad']">                                    
+                                        <font color="#" tal:attributes="color python: pTextColorsDict[ unInformeEstado[ 'nombre_estado'] ]" >
+                                        -
+                                        </font>
+                                    </tal:block>                                    
+                                    <br/>
+                                </tal:block>
+                            </tal:block>                    
+                        </td>
+                        <tal:block tal:define="global pIndex python: pIndex + 1" />
+                        
+                    </tr>
+                </tbody>
+            </table>
+        </tal:block>
+    </tal:block>
+        
+    <tal:block tal:condition="not: pInformeModulos" >
+        <br/>
+        <h3 tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_noHayInfomeModulos_msgid',   'No Modules Status Report available-' )" />
+        <br/>
+    </tal:block>
+</tal:block>
+
+
+
 </div>
 
 

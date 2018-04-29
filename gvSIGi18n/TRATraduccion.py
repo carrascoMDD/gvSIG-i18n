@@ -2,7 +2,7 @@
 #
 # File: TRATraduccion.py
 #
-# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
+# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
 # Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -32,12 +32,11 @@ __docformat__ = 'plaintext'
 from AccessControl import ClassSecurityInfo
 from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.TRAArquetipo import TRAArquetipo
-from TRATraduccion_Operaciones import TRATraduccion_Operaciones
+from Products.gvSIGi18n.TRATraduccion_Operaciones import TRATraduccion_Operaciones
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
 from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import ReferenceBrowserWidget
-from TRAElemento_Operaciones import TRAElemento_Operaciones
 
 ##code-section module-header #fill in your manual code here
 ##/code-section module-header
@@ -68,7 +67,7 @@ schema = Schema((
         description2="The original symbol identifying the string to be translated.",
         containment="Not Specified",
         ea_guid="{9601C385-3396-492f-BC82-10FC4DED739A}",
-        position="0",
+        position="1",
         owner_class_name="TRATraduccion",
         label="Simbolo"
     ),
@@ -97,7 +96,7 @@ schema = Schema((
         description2="Language code in gvSIG, as gvSIG supports some languages for which there is no international code (yet).",
         containment="Not Specified",
         ea_guid="{084C77CD-8E2C-4ba3-ABAE-502699EF3196}",
-        position="1",
+        position="2",
         owner_class_name="TRATraduccion",
         label="Codigo de Idioma en gvSIG"
     ),
@@ -126,7 +125,7 @@ schema = Schema((
         description2="String translated to the Language.",
         containment="Not Specified",
         ea_guid="{E3340BC4-DCC7-49a3-AB41-C4EB29E64EC1}",
-        position="5",
+        position="6",
         owner_class_name="TRATraduccion",
         label="Traduccion"
     ),
@@ -159,7 +158,7 @@ schema = Schema((
         label="Estado de Traduccion",
         length="0",
         containment="Not Specified",
-        position="3",
+        position="4",
         owner_class_name="TRATraduccion"
     ),
 
@@ -187,7 +186,7 @@ schema = Schema((
         description2="Date when the String was translated to the Language.",
         containment="Not Specified",
         ea_guid="{B62B3CB4-0EAC-4e31-8FA4-E06046DEDB9E}",
-        position="8",
+        position="9",
         owner_class_name="TRATraduccion",
         label="Fecha de Traduccion"
     ),
@@ -394,7 +393,7 @@ schema = Schema((
         label="Estado de la Cadena",
         length="0",
         containment="Not Specified",
-        position="2",
+        position="3",
         owner_class_name="TRATraduccion"
     ),
 
@@ -422,7 +421,7 @@ schema = Schema((
         description2="Names of the Modules using this String.",
         containment="Not Specified",
         ea_guid="{F0B3B52D-CCE4-44df-AA40-8BE97DFA8BE1}",
-        position="4",
+        position="5",
         owner_class_name="TRATraduccion",
         label="Modulos"
     ),
@@ -514,40 +513,6 @@ schema = Schema((
         label="Historia"
     ),
 
-    IntegerField(
-        name='contadorCambios',
-        widget=IntegerField._properties['widget'](
-            label="Contador de Cambios",
-            label2="Change Counter",
-            description="Contador de cambios realizados a lo largo del tiempo. Util para descubrir si han tenido lugar cambios desde que se leyeron los datos del elemento.",
-            description2="Counter of changes over time. Useful to learn if any changes happened since the reading of the element information.",
-            label_msgid='gvSIGi18n_TRATraduccion_attr_contadorCambios_label',
-            description_msgid='gvSIGi18n_TRATraduccion_attr_contadorCambios_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        description="Contador de cambios realizados a lo largo del tiempo. Util para descubrir si han tenido lugar cambios desde que se leyeron los datos del elemento.",
-        duplicates="0",
-        label2="Change Counter",
-        ea_localid="1582",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="IsLiteral=0;volatile=0;",
-        description2="Counter of changes over time. Useful to learn if any changes happened since the reading of the element information.",
-        ea_guid="{21C32FA2-F89A-439b-9D80-587F1A7F34F1}",
-        read_only="True",
-        scale="0",
-        default="0",
-        label="Contador de Cambios",
-        length="0",
-        is_change_counter="True",
-        exclude_from_traversalconfig="True",
-        containment="Not Specified",
-        position="8",
-        owner_class_name="TRATraduccion",
-        exclude_from_copyconfig="True"
-    ),
-
     StringField(
         name='fechaCreacionTextual',
         widget=StringWidget(
@@ -572,9 +537,40 @@ schema = Schema((
         description2="Date when the translation into the Language was created, either in Translated or Pending state.",
         containment="Not Specified",
         ea_guid="{38A791EF-7F1A-4824-86D9-4C670C7643C9}",
-        position="6",
+        position="7",
         owner_class_name="TRATraduccion",
         label="Fecha de Creacion"
+    ),
+
+    StringField(
+        name='pathDelRaiz',
+        widget=StringWidget(
+            label="Path del Raiz",
+            label2="Root's Path",
+            description="Path del Catalogo raiz de este elemento.",
+            description2="This element's root Catalog path.",
+            label_msgid='gvSIGi18n_TRATraduccion_attr_pathDelRaiz_label',
+            description_msgid='gvSIGi18n_TRATraduccion_attr_pathDelRaiz_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Path del Catalogo raiz de este elemento.",
+        duplicates="0",
+        label2="Root's Path",
+        ea_localid="1122",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="This element's root Catalog path.",
+        ea_guid="{7C2708E5-D8E5-406a-A71B-3F907D42F689}",
+        scale="0",
+        label="Path del Raiz",
+        length="0",
+        exclude_from_traversalconfig="True",
+        containment="Not Specified",
+        position="0",
+        owner_class_name="TRATraduccion",
+        exclude_from_views="[ 'Textual', 'Tabular',  ]"
     ),
 
     StringField(
@@ -601,7 +597,7 @@ schema = Schema((
         description2="User who created the translation into the language in Translated or Pending state, during an import or language creation process.",
         containment="Not Specified",
         ea_guid="{E2D4ACFF-A4BB-4dc9-A8B8-149E7033FB14}",
-        position="7",
+        position="8",
         owner_class_name="TRATraduccion",
         label="Creador"
     ),
@@ -631,53 +627,25 @@ class TRATraduccion(OrderedBaseFolder, TRAArquetipo, TRATraduccion_Operaciones):
 
     meta_type = 'TRATraduccion'
     portal_type = 'TRATraduccion'
-
-
-    # Change Audit fields
-
-    change_counter_field = 'contadorCambios'
-
-
-
     use_folder_tabs = 0
 
     allowed_content_types = [] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRATraduccion_Operaciones, 'allowed_content_types', []))
-    filter_content_types             = 1
-    global_allow                     = 0
+    filter_content_types = 1
+    global_allow = 0
     content_icon = 'tratraduccion.gif'
-    immediate_view                   = 'Tabular'
-    default_view                     = 'Tabular'
-    suppl_views                      = ['Tabular',]
-    typeDescription                  = "Traduccion de una de las Cadenas a uno de los Idiomas."
-    typeDescMsgId                    =  'gvSIGi18n_TRATraduccion_help'
-    archetype_name2                  = 'Translation'
-    typeDescription2                 = '''Translation of one of the strings into one of the languages.'''
-    archetype_name_msgid             = 'gvSIGi18n_TRATraduccion_label'
-    factory_methods                  = None
-    factory_enablers                 = None
-    propagate_delete_impact_to       = None
+    immediate_view = 'Tabular'
+    default_view = 'Tabular'
+    suppl_views = ['Tabular',]
+    typeDescription = "Traduccion de una de las Cadenas a uno de los Idiomas."
+    typeDescMsgId =  'gvSIGi18n_TRATraduccion_help'
+    archetype_name2 = 'Translation'
+    typeDescription2 = '''Translation of one of the strings into one of the languages.'''
+    archetype_name_msgid = 'gvSIGi18n_TRATraduccion_label'
+    factory_methods = None
     allow_discussion = False
 
 
     actions =  (
-
-
-       {'action': "string:${object_url}/Tabular",
-        'category': "object",
-        'id': 'view',
-        'name': 'View',
-        'permissions': ("View",),
-        'condition': """python:1"""
-       },
-
-
-       {'action': "string:$object_url/Editar",
-        'category': "object",
-        'id': 'edit',
-        'name': 'Edit',
-        'permissions': ("Modify portal content",),
-        'condition': """python:0"""
-       },
 
 
        {'action': "string:${object_url}/sharing",
@@ -685,7 +653,7 @@ class TRATraduccion(OrderedBaseFolder, TRAArquetipo, TRATraduccion_Operaciones):
         'id': 'local_roles',
         'name': 'Sharing',
         'permissions': ("Manage properties",),
-        'condition': """python:0"""
+        'condition': 'python:1'
        },
 
 
@@ -694,16 +662,7 @@ class TRATraduccion(OrderedBaseFolder, TRAArquetipo, TRATraduccion_Operaciones):
         'id': 'folderlisting',
         'name': 'Folder Listing',
         'permissions': ("View",),
-        'condition': """python:0"""
-       },
-
-
-       {'action': "string:${object_url}/MDDChanges",
-        'category': "object_buttons",
-        'id': 'mddchanges',
-        'name': 'Changes',
-        'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': 'python:0'
        },
 
 
@@ -712,16 +671,7 @@ class TRATraduccion(OrderedBaseFolder, TRAArquetipo, TRATraduccion_Operaciones):
         'id': 'references',
         'name': 'References',
         'permissions': ("Modify portal content",),
-        'condition': """python:0"""
-       },
-
-
-       {'action': "string:${object_url}/TRASeguridadUsuarioConectado",
-        'category': "object_buttons",
-        'id': 'TRA_SeguridadUsuarioConectado',
-        'name': 'Permissions',
-        'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': 'python:0'
        },
 
 
@@ -730,16 +680,34 @@ class TRATraduccion(OrderedBaseFolder, TRAArquetipo, TRATraduccion_Operaciones):
         'id': 'content_status_history',
         'name': 'State',
         'permissions': ("View",),
-        'condition': """python:0"""
+        'condition': 'python:0'
        },
 
 
-       {'action': "string:${object_url}/MDDCacheStatus/",
-        'category': "object_buttons",
-        'id': 'mddcachestatus',
-        'name': 'Cache',
+       {'action': "string:${object_url}/sharing",
+        'category': "object",
+        'id': 'local_roles',
+        'name': 'Sharing',
+        'permissions': ("Manage properties",),
+        'condition': 'python:0'
+       },
+
+
+       {'action': "string:${object_url}/Tabular",
+        'category': "object",
+        'id': 'view',
+        'name': 'View',
         'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': 'python:1'
+       },
+
+
+       {'action': "string:$object_url/Editar",
+        'category': "object",
+        'id': 'edit',
+        'name': 'Edit',
+        'permissions': ("Modify portal content",),
+        'condition': 'python:0'
        },
 
 
@@ -774,38 +742,10 @@ class TRATraduccion(OrderedBaseFolder, TRAArquetipo, TRATraduccion_Operaciones):
         """
         
         return TRATraduccion_Operaciones.pHandle_reindexObject( self, idxs)
-
-    security.declarePublic('cb_isCopyable')
-    def cb_isCopyable(self):
-        """
-        """
-        
-        return False
-
-    security.declarePublic('displayContentsTab')
-    def displayContentsTab(self):
-        """
-        """
-        
-        return False
-
-    security.declarePublic('fExtraLinks')
-    def fExtraLinks(self):
-        """
-        """
-        
-        return TRAElemento_Operaciones.fExtraLinks( self)
-
-    security.declarePublic('manage_pasteObjects')
-    def manage_pasteObjects(self,cb_copy_data,REQUEST):
-        """
-        """
-        
-        return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:
-        if a['id'] in ['metadata', 'sharing', 'folderContents']:
+        if a['id'] in ['metadata', 'sharing']:
             a['visible'] = 0
     return fti
 

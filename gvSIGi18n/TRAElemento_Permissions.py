@@ -65,7 +65,7 @@ from Products.CMFCore.utils                 import getToolByName
 
 from Products.Archetypes.atapi              import OrderedBaseFolder
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow
+
 
 
 
@@ -509,7 +509,7 @@ class TRAElemento_Permissions:
     def fAcquireRoleAssignmentsElement(self, theElement=None):
 
         unElement = theElement
-        if unElement == None:
+        if not fsISS( unElement):
             unElement = self
 
         unType = unElement.__class__.__name__
@@ -537,7 +537,7 @@ class TRAElemento_Permissions:
     def fIsAcquiringRoleAssignments(self, theElement=None):
             
         unElement = theElement
-        if  unElement == None:
+        if not fsISS( unElement):
             unElement = self
             
         aPloneUtilsTool = self.getPloneUtilsToolForRoleAcquisition()
@@ -551,7 +551,7 @@ class TRAElemento_Permissions:
     def fSetAcquiringRoleAssignments(self, theElement=None, theMustAcquire=True):
             
         unElement = theElement
-        if  unElement == None:
+        if not fsISS( unElement):
             unElement = self
             
         aPloneUtilsTool = self.getPloneUtilsToolForRoleAcquisition()
@@ -586,15 +586,6 @@ class TRAElemento_Permissions:
         if not unasPermissionsSpec:
             return self
         
-        # It is used to unset the 'Copy or Move' permission
-        # but it is cheked when the id of the temporary element is changed upon saving the id/title imput form.
-        # We must detect whether the object is temporaty
-        #
-        #if not ( 'portal_factory' in self.getPhysicalPath()):    
-            #for unaPermission in cPermissionsToDenyEverywhereToEverybody:
-                #self.manage_permission( unaPermission, roles=[], acquire=False)
-            
-            
         for unaPermission in unasPermissionsSpec.keys():
             unaPermissionSpec        = unasPermissionsSpec[ unaPermission]
             unAcquire                = unaPermissionSpec[ 'acquire_permissions'] 
@@ -604,29 +595,29 @@ class TRAElemento_Permissions:
                 self.manage_permission( unaPermission, roles=unosRoles, acquire=unAcquire)
                 
     
-        aAcquireRoleAssignments       = self.fAcquireRoleAssignmentsElement( self)
-        aIsAcquiringRoleAssignments   = self.fIsAcquiringRoleAssignments(    self)
-        
-        if aAcquireRoleAssignments:
-            if aIsAcquiringRoleAssignments:
-                pass # it's already ok 
-            else:
-                self.fSetAcquiringRoleAssignments( self, True)
-                
-                if self.fIsAcquiringRoleAssignments( self):                                
-                    pass # has been set ok
+            aAcquireRoleAssignments       = self.fAcquireRoleAssignmentsElement( self)
+            aIsAcquiringRoleAssignments   = self.fIsAcquiringRoleAssignments(    self)
+            
+            if aAcquireRoleAssignments:
+                if aIsAcquiringRoleAssignments:
+                    pass # it's already ok 
                 else:
-                    pass # error setting role assignment acquisition                 
-        else:
-            if aIsAcquiringRoleAssignments:
-                self.fSetAcquiringRoleAssignments( self, False)
-                
-                if self.fIsAcquiringRoleAssignments( self):                                
-                    pass # error setting role assignment acquisition
-                else:
-                    pass # has been set ok                
+                    self.fSetAcquiringRoleAssignments( self, True)
+                    
+                    if self.fIsAcquiringRoleAssignments( self):                                
+                        pass # has been set ok
+                    else:
+                        pass # error setting role assignment acquisition                 
             else:
-                pass # it's already ok 
+                if aIsAcquiringRoleAssignments:
+                    self.fSetAcquiringRoleAssignments( self, False)
+                    
+                    if self.fIsAcquiringRoleAssignments( self):                                
+                        pass # error setting role assignment acquisition
+                    else:
+                        pass # has been set ok                
+                else:
+                    pass # it's already ok 
                                 
                 
         return self
@@ -668,14 +659,10 @@ class TRAElemento_Permissions:
                     aPermissionsToCheck.append( [ aPermission,])
         
 
-        unaObjectKey = None
-        try:
-            unaObjectKey = theObject.UID()
-        except:
-            None
+        unaObjectKey = theObject.UID()
         
         unCachedPermissions = None
-        if thePermissionsCache and unaObjectKey:
+        if thePermissionsCache:
             if thePermissionsCache.has_key( unaObjectKey):
                 unCachedPermissions = thePermissionsCache.get( unaObjectKey, None)
             if unCachedPermissions == None:
@@ -829,16 +816,6 @@ class TRAElemento_Permissions:
     def fRoleQuery_IsCoordinator(self, theElement=None):
         return self.fRoleQuery_IsAnyRol( cTRACoordinator_role, theElement)
       
-    security.declareProtected( permissions.View, 'fRoleQuery_IsCoordinatorOrDeveloper')
-    def fRoleQuery_IsCoordinatorOrDeveloper(self, theElement=None):
-        return self.fRoleQuery_IsAnyRol( [ cTRACoordinator_role , cTRADeveloper_role, ], theElement)
-      
-    security.declareProtected( permissions.View, 'fRoleQuery_IsDeveloper')
-    def fRoleQuery_IsDeveloper(self, theElement=None):
-        return self.fRoleQuery_IsAnyRol( cTRADeveloper_role, theElement)
-      
-        
-        
     security.declareProtected( permissions.View, 'fRoleQuery_IsManagerOrCoordinator')
     def fRoleQuery_IsManagerOrCoordinator(self, theElement=None):
         return self.fRoleQuery_IsAnyRol( cManagerRoles + [ cTRACoordinator_role, ], theElement)
@@ -878,16 +855,12 @@ class TRAElemento_Permissions:
         if not unUser:
             return []
         
-        unaObjectKey = None
-        try:
-            unaObjectKey = theObject.UID()
-        except:
-            None
+        unaObjectKey = theObject.UID()
         
         unCachedRoles = None
         
         unosCachedRoles    = None
-        if not ( theRolesCache == None) and unaObjectKey:        
+        if not ( theRolesCache == None):        
             """Attempt to retrieve from cache roles held by the user.
             
             """
@@ -955,17 +928,12 @@ class TRAElemento_Permissions:
         if not unUser:
             return []
         
-        unaObjectKey = None
-        try:
-            unaObjectKey = theObject.UID()
-        except:
-            None
-            
+        unaObjectKey = theObject.UID()
         
         
         unosCachedRoles    = None
         unosHeldRoles      = None
-        if not ( theRolesCache == None) and unaObjectKey:        
+        if not ( theRolesCache == None):        
             """Attempt to retrieve from cache roles held by the user.
             
             """
@@ -1033,7 +1001,7 @@ class TRAElemento_Permissions:
             
         todosRolesPoseidos = set( self.fGetRequestingUserRoles())
         
-        unosRoles = set( unosRolesUsuario).intersection(  todosRolesPoseidos)
+        unosRoles = set( theRolesUsuario).intersection(  todosRolesPoseidos)
         
         return unosRoles
     
@@ -1106,11 +1074,7 @@ class TRAElemento_Permissions:
         if not unMember:
             return ''
         
-        if unMember.getUserName() == 'Anonymous User':
-            unMemberId = unMember.getUserName()
-        else:
-            unMemberId = unMember.getMemberId()   
-            
+        unMemberId = unMember.getMemberId()           
         return unMemberId
         
     
@@ -1165,55 +1129,54 @@ class TRAElemento_Permissions:
     
     
     
-      
-    # ####################################
-    #  General Use Case queries: 
-    #    Is the Use Case available for the connected user
-    #    on the specified element ?
-    # ####################################
+  
+# ####################################
+#  General Use Case queries: 
+#    Is the Use Case available for the connected user
+#    on the specified element ?
+# ####################################
               
     
-    # ACV 20090924 Still Unused. Commented out until used.
-    #
-    #security.declarePrivate( 'fUseCaseAssementReuse')
-    #def fUseCaseAssementReuse(self, 
-        #theAlreadyQueriedUseCaseResults,
-        #theUseCaseName, 
-        #theElementsBindings, 
-        #theRulesToCollect=False, 
-        #thePermissionsCache=None, 
-        #theRolesCache=None, 
-        #theParentExecutionRecord=None):  
+
+    security.declarePrivate( 'fUseCaseAssementReuse')
+    def fUseCaseAssementReuse(self, 
+        theAlreadyQueriedUseCaseResults,
+        theUseCaseName, 
+        theElementsBindings, 
+        theRulesToCollect=False, 
+        thePermissionsCache=None, 
+        theRolesCache=None, 
+        theParentExecutionRecord=None):  
 
     
-        #if not theAlreadyQueriedUseCaseResults:
-            #return self.fUseCaseAssessment( 
-                #theUseCaseName, 
-                #theElementsBindings, 
-                #theRulesToCollect=False, 
-                #thePermissionsCache=None, 
-                #theRolesCache=None, 
-                #theParentExecutionRecord=None)
+        if not theAlreadyQueriedUseCaseResults:
+            return self.fUseCaseAssessment( 
+                theUseCaseName, 
+                theElementsBindings, 
+                theRulesToCollect=False, 
+                thePermissionsCache=None, 
+                theRolesCache=None, 
+                theParentExecutionRecord=None)
         
-        #for aUseCaseQueryResult in theAlreadyQueriedUseCaseResults:
-            #if ( aUseCaseQueryResult.get( 'use_case_name', '')      == theUseCaseName) and \
-               #( aUseCaseQueryResult.get( 'report_details', '')     == theRulesToCollect):
+        for aUseCaseQueryResult in theAlreadyQueriedUseCaseResults:
+            if ( aUseCaseQueryResult.get( 'use_case_name', '')      == theUseCaseName) and \
+               ( aUseCaseQueryResult.get( 'report_details', '')     == theRulesToCollect):
             
-                #unosElementsBindings = aUseCaseQueryResult.get( 'elements_bindings', '')
-                #if not unosElementsBindings and not theElementsBindings:
-                    #return aUseCaseQueryResult
+                unosElementsBindings = aUseCaseQueryResult.get( 'elements_bindings', '')
+                if not unosElementsBindings and not theElementsBindings:
+                    return aUseCaseQueryResult
                 
-                #if unosElementsBindings.keys().intersection(  theElementsBindings.keys()):
-                    #if len( [ unaBindingKey for unaBindingKey in theElementsBindings.keys() if unosElementsBindings.get( unaBindingKey, None) ==  theElementsBindings.get( unaBindingKey, None)]) == len( theElementsBindings):
-                        #return aUseCaseQueryResult
+                if unosElementsBindings.keys().intersection(  theElementsBindings.keys()):
+                    if len( [ unaBindingKey for unaBindingKey in theElementsBindings.keys() if unosElementsBindings.get( unaBindingKey, None) ==  theElementsBindings.get( unaBindingKey, None)]) == len( theElementsBindings):
+                        return aUseCaseQueryResult
                      
-        #return self.fUseCaseAssessment( 
-            #theUseCaseName, 
-            #theElementsBindings, 
-            #theRulesToCollect=False, 
-            #thePermissionsCache=None, 
-            #theRolesCache=None, 
-            #theParentExecutionRecord=None)
+        return self.fUseCaseAssessment( 
+            theUseCaseName, 
+            theElementsBindings, 
+            theRulesToCollect=False, 
+            thePermissionsCache=None, 
+            theRolesCache=None, 
+            theParentExecutionRecord=None)
 
     
     
@@ -1225,66 +1188,7 @@ class TRAElemento_Permissions:
             
             
             
-
-    security.declarePublic('fUseCaseCheckDoableFactory')
-    def fUseCaseCheckDoableFactory(self, theTypeName, theUseCaseName, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):     
-        return self.fUseCaseCheckDoable( 
-            theUseCaseName = theUseCaseName,
-            thePermissionsCache = thePermissionsCache,
-            theRolesCache = theRolesCache,
-            theParentExecutionRecord = theParentExecutionRecord
-        )
-    
-        
-        
-        
-    security.declarePublic('fUseCaseCheckDoable')
-    def fUseCaseCheckDoable(self, theUseCaseName, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):     
-
- 
-        unExecutionRecord = self.fStartExecution( 'method',  'fUseCaseCheckDoable', theParentExecutionRecord, False) 
-        
-        try:
-            try:
-                if not theUseCaseName:
-                    return False
-                
-                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
-                    
-                unUseCaseAssessmentResult = self.fUseCaseAssessment( 
-                    theUseCaseName          = theUseCaseName, 
-                    theElementsBindings     = { 'object': self,},
-                    theRulesToCollect       = None, 
-                    thePermissionsCache     = unPermissionsCache, 
-                    theRolesCache           = unRolesCache, 
-                    theParentExecutionRecord= unExecutionRecord)
-                
-                unResult = unUseCaseAssessmentResult and unUseCaseAssessmentResult.get( 'success', False)
-                return unResult 
-    
-    
-            except:
-                unaExceptionInfo = sys.exc_info()
-                unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
-                
-                unInformeExcepcion = 'Exception during fUseCaseCheckDoable for UseCase named: %s\n'  % str( theUseCaseName)
-                unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
-                unInformeExcepcion += unaExceptionFormattedTraceback   
-                         
-                unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
-    
-                if cLogExceptions:
-                    logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
-                
-                return False
-
-        finally:
-            unExecutionRecord and unExecutionRecord.pEndExecution()
-     
-        
-                
+            
             
             
             
@@ -1294,10 +1198,8 @@ class TRAElemento_Permissions:
     security.declarePrivate( 'fUseCaseAssessment')
     def fUseCaseAssessment(self, 
         theUseCaseName, 
-        theElementsBindings     ={}, 
+        theElementsBindings, 
         theRulesToCollect       =False, 
-        theRulesToBypass        =[],
-        thePredicateOverrides   ={},
         thePermissionsCache     =None, 
         theRolesCache           =None, 
         theParentExecutionRecord=None):  
@@ -1306,7 +1208,7 @@ class TRAElemento_Permissions:
         """
         unExecutionRecord = self.fStartExecution( 'method',  'fUseCaseAssessment', theParentExecutionRecord, False, None, 'usecase %s' % (theUseCaseName or 'unknown')) 
 
-        unStartTime = fMillisecondsNow() 
+        unStartTime = self.fMillisecondsNow() 
         unUseCaseAssesment = None
 
         try:
@@ -1386,10 +1288,6 @@ class TRAElemento_Permissions:
                     
                     
                     unBaseRuleName  = unaUseCaseRule.get( 'name',  cPermissionRuleNameDefault)    
-                    
-                    if unBaseRuleName and ( unBaseRuleName in theRulesToBypass):
-                        continue
-                    
                     unRuleName = unBaseRuleName
                     unNameCounter = 0
                     while unRuleName in unosUsedUseCaseRuleNames:
@@ -1403,7 +1301,6 @@ class TRAElemento_Permissions:
                         theRuleName             = unRuleName,
                         theUseCaseAssessment    = unUseCaseAssesment,
                         theMustCollect          = unBaseRuleName in unasRulesToCollect,
-                        thePredicateOverrides   = thePredicateOverrides,
                         thePermissionsCache     = unPermissionsCache, 
                         theRolesCache           = unRolesCache, 
                         theParentExecutionRecord= unExecutionRecord)
@@ -1449,7 +1346,7 @@ class TRAElemento_Permissions:
                  
                 
         finally:
-            unEndTime = fMillisecondsNow() 
+            unEndTime = self.fMillisecondsNow() 
             if unUseCaseAssesment:
                 unUseCaseAssesment[ 'duration']  = unEndTime - unStartTime
  
@@ -1471,7 +1368,6 @@ class TRAElemento_Permissions:
         theRuleName,
         theUseCaseAssessment,
         theMustCollect          =False,
-        thePredicateOverrides   ={},
         thePermissionsCache     =None, 
         theRolesCache           =None, 
         theParentExecutionRecord=None):  
@@ -1502,7 +1398,6 @@ class TRAElemento_Permissions:
             theRuleName,
             theUseCaseAssessment,
             theMustCollect          = theMustCollect,
-            thePredicateOverrides   = thePredicateOverrides,
             thePermissionsCache     = thePermissionsCache, 
             theRolesCache           = theRolesCache, 
             theParentExecutionRecord= theParentExecutionRecord)
@@ -1522,7 +1417,6 @@ class TRAElemento_Permissions:
         theRuleName,
         theUseCaseAssessment,
         theMustCollect          =False,
-        thePredicateOverrides   = {},
         thePermissionsCache     =None, 
         theRolesCache           =None, 
         theParentExecutionRecord=None):  
@@ -1574,7 +1468,6 @@ class TRAElemento_Permissions:
                 unosTypes       = theUseCaseRule.get( 'types', [])
                 unasPerms       = theUseCaseRule.get( 'perms', [])
                 unosRoles       = theUseCaseRule.get( 'roles', [])
-                unosPredicates  = theUseCaseRule.get( 'pred',  [])
                 
                 unosRetrievedObjects = self.fUseCaseRuleAssessment_ObjectsRetrieval( 
                     theUseCaseAssessment     = theUseCaseAssessment,
@@ -1625,7 +1518,6 @@ class TRAElemento_Permissions:
                 """Assess rule constraints against each retrieved, non previously rejected object.
                 
                 """
-                
                 for unInitialObject, unObjectToCheck in unosNotPreviouslyRejectedObjects:
 
                     unObjectPassed  = True
@@ -1645,57 +1537,6 @@ class TRAElemento_Permissions:
                     if unObjectPassed and unasPerms and not self.fCheckElementPermission( unObjectToCheck, unasPerms, unPermissionsCache):
                         unObjectPassed  = False
                         unNonPassingReason = cRuleAssessment_Failure_UserWithoutPermissions
-                        
-                    if unosPredicates:
-                        unPassedAllPredicates = True
-                        
-                        unaObjectToCheckUID = unObjectToCheck.UID()
-
-                        for aPredicateSpec in unosPredicates:
-                            
-                            aPredicate = aPredicateSpec
-                            unNegatePredicateResult = False
-                            
-                            if aPredicateSpec.startswith( 'not:'):
-                                unNegatePredicateResult = True
-                                aPredicate = aPredicateSpec[ len( 'not:'):].strip()
-                                
-                            
-                            unPredicateResult = None
-                            
-                            if thePredicateOverrides and thePredicateOverrides.has_key( unaObjectToCheckUID):
-                                unPredicateValues = thePredicateOverrides.get( unaObjectToCheckUID, False)
-                                if unPredicateValues:
-                                    unPredicateResult = unPredicateValues.get( aPredicate, False)
-                                    
-                            else:
-                                unMethod = None
-                                try:
-                                    unMethod = unObjectToCheck[ aPredicate]
-                                except:
-                                    None
-                                if unMethod:
-                                    try:
-                                        unPredicateResult =  unMethod()   
-                                    except:
-                                        None
-                            if not unPredicateResult:
-                                if unNegatePredicateResult:
-                                    continue
-                                else:
-                                    unPassedAllPredicates = False
-                                    break
-                            else:
-                                if unNegatePredicateResult:
-                                    unPassedAllPredicates = False
-                                    break
-                                else:
-                                    continue
-                        
-                        if not unPassedAllPredicates:       
-                            unObjectPassed  = False
-                            unNonPassingReason = cRuleAssessment_Failure_Predicate
-                                                                    
  
                             
                     if not unObjectPassed:
@@ -1775,7 +1616,6 @@ class TRAElemento_Permissions:
         theRuleName,
         theUseCaseAssessment,
         theMustCollect          =False,
-        thePredicateOverrides   = {},
         thePermissionsCache     =None, 
         theRolesCache           =None, 
         theParentExecutionRecord=None):  
@@ -1825,7 +1665,6 @@ class TRAElemento_Permissions:
                 unosTypes       = theUseCaseRule.get( 'types', [])
                 unasPerms       = theUseCaseRule.get( 'perms', [])
                 unosRoles       = theUseCaseRule.get( 'roles', [])
-                unosPredicates  = theUseCaseRule.get( 'pred',  [])
                 
                 unosRetrievedObjects = self.fUseCaseRuleAssessment_ObjectsRetrieval( 
                     theUseCaseAssessment     = theUseCaseAssessment,
@@ -1895,38 +1734,6 @@ class TRAElemento_Permissions:
                         unObjectPassed  = False
                         unNonPassingReason = cRuleAssessment_Failure_UserWithoutPermissions
  
-                    if unosPredicates:
-                        unPassedAllPredicates = True
-
-                        unaObjectToCheckUID = unObjectToCheck.UID()
-
-                        for aPredicate in unosPredicates:
-                            
-                            unPredicateResult = None
-                            
-                            if thePredicateOverrides and thePredicateOverrides.has_key( unaObjectToCheckUID):
-                                unPredicateValues = thePredicateOverrides.get( unaObjectToCheckUID, False)
-                                if unPredicateValues:
-                                    unPredicateResult = unPredicateValues.get( aPredicate, False)
-                                    
-                            else:
-                                unMethod = None
-                                try:
-                                    unMethod = unObjectToCheck[ aPredicate]
-                                except:
-                                    None
-                                if unMethod:
-                                    try:
-                                        unPredicateResult =  unMethod()   
-                                    except:
-                                        None
-                            if not unPredicateResult:
-                                unPassedAllPredicates = False
-                                break
-                        
-                        if not unPassedAllPredicates:       
-                            unObjectPassed  = False
-                            unNonPassingReason = cRuleAssessment_Failure_Predicate
                             
                     if not unObjectPassed:
                         unosRejectedObjects.add( unObjectToCheck)                                
@@ -1992,7 +1799,6 @@ class TRAElemento_Permissions:
         theRuleName,
         theUseCaseAssessment,
         theMustCollect          =False,
-        thePredicateOverrides   = {},
         thePermissionsCache     =None, 
         theRolesCache           =None, 
         theParentExecutionRecord=None):  
@@ -2042,7 +1848,6 @@ class TRAElemento_Permissions:
                 unosTypes       = theUseCaseRule.get( 'types', [])
                 unasPerms       = theUseCaseRule.get( 'perms', [])
                 unosRoles       = theUseCaseRule.get( 'roles', [])
-                unosPredicates  = theUseCaseRule.get( 'pred',  [])
                 
                 unosRetrievedObjects = self.fUseCaseRuleAssessment_ObjectsRetrieval(
                     theUseCaseAssessment     = theUseCaseAssessment,
@@ -2121,39 +1926,6 @@ class TRAElemento_Permissions:
                         unObjectPassed  = False
                         unNonPassingReason = cRuleAssessment_Failure_UserWithoutPermissions
  
-                    if unosPredicates:
-                        unPassedAllPredicates = True
-
-                        unaObjectToCheckUID = unObjectToCheck.UID()
-
-                        for aPredicate in unosPredicates:
-                            
-                            unPredicateResult = None
-                            
-                            if thePredicateOverrides and thePredicateOverrides.has_key( unaObjectToCheckUID):
-                                unPredicateValues = thePredicateOverrides.get( unaObjectToCheckUID, False)
-                                if unPredicateValues:
-                                    unPredicateResult = unPredicateValues.get( aPredicate, False)
-                                    
-                            else:
-                                unMethod = None
-                                try:
-                                    unMethod = unObjectToCheck[ aPredicate]
-                                except:
-                                    None
-                                if unMethod:
-                                    try:
-                                        unPredicateResult =  unMethod()   
-                                    except:
-                                        None
-                            if not unPredicateResult:
-                                unPassedAllPredicates = False
-                                break
-
-                        
-                        if not unPassedAllPredicates:       
-                            unObjectPassed  = False
-                            unNonPassingReason = cRuleAssessment_Failure_Predicate
                             
                     if not unObjectPassed:
                         unosRejectedObjects.add( unObjectToCheck)                                
@@ -2241,7 +2013,6 @@ class TRAElemento_Permissions:
         theRuleName,
         theUseCaseAssessment,
         theMustCollect          =False,
-        thePredicateOverrides   = {},
         thePermissionsCache     =None, 
         theRolesCache           =None, 
         theParentExecutionRecord=None):  
@@ -2291,7 +2062,6 @@ class TRAElemento_Permissions:
                 unosTypes       = theUseCaseRule.get( 'types', [])
                 unasPerms       = theUseCaseRule.get( 'perms', [])
                 unosRoles       = theUseCaseRule.get( 'roles', [])
-                unosPredicates  = theUseCaseRule.get( 'pred',  [])
                 
                 unosRetrievedObjects = self.fUseCaseRuleAssessment_ObjectsRetrieval( 
                     theUseCaseAssessment    = theUseCaseAssessment,
@@ -2370,39 +2140,6 @@ class TRAElemento_Permissions:
                         unObjectPassed  = False
                         unNonPassingReason = cRuleAssessment_Failure_UserWithoutPermissions
  
-                    if unosPredicates:
-                        unPassedAllPredicates = True
-
-                        unaObjectToCheckUID = unObjectToCheck.UID()
-
-                        for aPredicate in unosPredicates:
-                            
-                            unPredicateResult = None
-                            
-                            if thePredicateOverrides and thePredicateOverrides.has_key( unaObjectToCheckUID):
-                                unPredicateValues = thePredicateOverrides.get( unaObjectToCheckUID, False)
-                                if unPredicateValues:
-                                    unPredicateResult = unPredicateValues.get( aPredicate, False)
-                                    
-                            else:
-                                unMethod = None
-                                try:
-                                    unMethod = unObjectToCheck[ aPredicate]
-                                except:
-                                    None
-                                if unMethod:
-                                    try:
-                                        unPredicateResult =  unMethod()   
-                                    except:
-                                        None
-                            if not unPredicateResult:
-                                unPassedAllPredicates = False
-                                break
-
-                        
-                        if not unPassedAllPredicates:       
-                            unObjectPassed  = False
-                            unNonPassingReason = cRuleAssessment_Failure_Predicate
                             
                     if not unObjectPassed:
                         unosRejectedObjects.add( unObjectToCheck)                                
@@ -2606,7 +2343,7 @@ class TRAElemento_Permissions:
                                     unNextObject =  unMethod()   
                                 except:
                                     None
-                                if not ( unNextObject == None):
+                                if unNextObject or ( unNextObject.__class__.__name__ == 'TRAColeccionCadenas'):
                                     if not ( unNextObject.__class__.__name__ in [ 'list', 'tuple', 'set', ]):
                                         unosObjectsRetrievedThisObject = [ ( unInitialObject, unNextObject, ), ]
                                     else:
@@ -2621,8 +2358,16 @@ class TRAElemento_Permissions:
                 if not unosObjectsPassingLastStep:
                     return []
                 
+                """From the objects obtained by traversing the whole path, discard the ones that may have been discarded in a previous rule.
+                 
+                 Note that only rules of special modes may reject objects without 
+                 making fail the use case assessment, and therefore allow the case
+                 of retrieving for assessment in the initial step of a rule, 
+                 objects rejected by previous rules: normal rules will fail and stop us case assessment.
+                 """
+                
                 return unosObjectsPassingLastStep
-
+         
             except:
                     
                 unaExceptionInfo = sys.exc_info()
@@ -2710,12 +2455,12 @@ class TRAElemento_Permissions:
             
             for unUseCaseName in unosUseCaseNames:
                 unUseCaseQueryResult = self.fUseCaseAssessment( 
-                    theUseCaseName          = unUseCaseName, 
-                    theElementsBindings     = { cBoundObject: theElement,},
-                    theRulesToCollect       = theRulesToCollect, 
-                    thePermissionsCache     = unPermissionsCache, 
-                    theRolesCache           = unRolesCache, 
-                    theParentExecutionRecord= unExecutionRecord,
+                    unUseCaseName,  
+                    { cBoundObject: theElement,}, 
+                    theRulesToCollect, 
+                    unPermissionsCache, 
+                    unRolesCache, 
+                    unExecutionRecord
                 )
                 
                 if unUseCaseQueryResult:
@@ -2729,57 +2474,15 @@ class TRAElemento_Permissions:
    
 
     # #############################################################
-    """Initialization of Global to hold the rule handler jump table on rule mode.
+    """Global to hold the rule handler jump table on rule mode.
     
     """    
     gUseCaseRuleModeHandlers = { 
-        cUseCaseRuleMode_ForAll:        fUseCaseRuleAssessment_ForAll,
-        cUseCaseRuleMode_Filter:        fUseCaseRuleAssessment_Filter,
-        cUseCaseRuleMode_EmptyOrAll:    fUseCaseRuleAssessment_EmptyOrAll,
+        cUseCaseRuleMode_ForAll:                    fUseCaseRuleAssessment_ForAll,
+        cUseCaseRuleMode_Filter:                    fUseCaseRuleAssessment_Filter,
+        cUseCaseRuleMode_EmptyOrAll:           fUseCaseRuleAssessment_EmptyOrAll,
         cUseCaseRuleMode_EmptyOrAny:    fUseCaseRuleAssessment_EmptyOrAny,
     }       
     
          
             
-
-    
-    
-    
-    
-        
-    security.declarePrivate( 'fApplicationRolesAndRoleKinds')
-    def fApplicationRolesAndRoleKinds(self, ):
-        """Deep copy the array, to avoid clients modifiying the constant.
-        
-        """
-        
-        if not cTRAApplicationRolesAndRoleKinds:
-            return []
-        
-        unosRolesAndKinds = [ ]
-        for someRolesAndKind in cTRAApplicationRolesAndRoleKinds:
-            unosRolesAndKinds.append( [ someRolesAndKind[0][:], someRolesAndKind[1],])
-
-        return unosRolesAndKinds
-    
-    
-    
-    
-    
-    
-    
-
-    # #############################################################
-    """Configuration method.
-    
-    """
-        
-    security.declarePrivate( 'fIsPrivateCacheViewForNonAnonymousUsers')
-    def fIsPrivateCacheViewForQualifiedUsers(self , theTemplateName):
-        """Shall return true when the template name is for a view sensitive to write user permissions ( modify portal content, delete, add folders, ) on rendered objects, in addition to the permissions required by Zope/Plone to deliver data to the requester (view, list folder contents, access content information,).
-        
-        """
-        return  theTemplateName in cTRAPrivateCacheViewsForQualifiedUsers
-        
-    
-   

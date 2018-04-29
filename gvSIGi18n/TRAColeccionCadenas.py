@@ -2,7 +2,7 @@
 #
 # File: TRAColeccionCadenas.py
 #
-# Copyright (c) 2010 by Conselleria de Infraestructuras y Transporte de la
+# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
 # Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -34,9 +34,6 @@ from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.TRAColeccionArquetipos import TRAColeccionArquetipos
 from Products.gvSIGi18n.config import *
 
-# additional imports from tagged value 'import'
-from TRAElemento_Operaciones import TRAElemento_Operaciones
-
 ##code-section module-header #fill in your manual code here
 ##/code-section module-header
 
@@ -57,13 +54,12 @@ schema = Schema((
         label2='Strings to translate',
         additional_columns=['simbolo', 'estadoCadena', 'fechaCreacionTextual', 'usuarioCreador', 'fechaCancelacionTextual'],
         label='Cadenas a traducir',
-        represents_aggregation=True,
         description2='Strings to translate to the various languages.',
         multiValued=1,
         owner_class_name="TRAColeccionCadenas",
         expression="context.objectValues(['TRACadena'])",
         computed_types=['TRACadena'],
-        non_framework_elements=False,
+        represents_aggregation=True,
         description='Cadenas para ser traducidas a los varios idiomas.'
     ),
 
@@ -94,20 +90,18 @@ class TRAColeccionCadenas(BaseBTreeFolder, TRAColeccionArquetipos):
     use_folder_tabs = 0
 
     allowed_content_types = ['TRACadena'] + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', []))
-    filter_content_types             = 1
-    global_allow                     = 0
+    filter_content_types = 1
+    global_allow = 0
     #content_icon = 'TRAColeccionCadenas.gif'
-    immediate_view                   = 'Tabular'
-    default_view                     = 'Tabular'
-    suppl_views                      = ['Tabular',]
-    typeDescription                  = "Coleccion de cadenas a traducir a los varios idiomas."
-    typeDescMsgId                    =  'gvSIGi18n_TRAColeccionCadenas_help'
-    archetype_name2                  = 'Strings collection'
-    typeDescription2                 = '''Collection of strings to translate to a number of languages.'''
-    archetype_name_msgid             = 'gvSIGi18n_TRAColeccionCadenas_label'
-    factory_methods                  = None
-    factory_enablers                 = None
-    propagate_delete_impact_to       = None
+    immediate_view = 'Tabular'
+    default_view = 'Tabular'
+    suppl_views = ['Tabular',]
+    typeDescription = "Coleccion de cadenas a traducir a los varios idiomas."
+    typeDescMsgId =  'gvSIGi18n_TRAColeccionCadenas_help'
+    archetype_name2 = 'Strings collection'
+    typeDescription2 = '''Collection of strings to translate to a number of languages.'''
+    archetype_name_msgid = 'gvSIGi18n_TRAColeccionCadenas_label'
+    factory_methods = None
     allow_discussion = False
 
 
@@ -119,7 +113,7 @@ class TRAColeccionCadenas(BaseBTreeFolder, TRAColeccionArquetipos):
         'id': 'folderlisting',
         'name': 'Folder Listing',
         'permissions': ("View",),
-        'condition': """python:0"""
+        'condition': 'python:0'
        },
 
 
@@ -128,7 +122,7 @@ class TRAColeccionCadenas(BaseBTreeFolder, TRAColeccionArquetipos):
         'id': 'references',
         'name': 'References',
         'permissions': ("Modify portal content",),
-        'condition': """python:0"""
+        'condition': 'python:0'
        },
 
 
@@ -137,16 +131,7 @@ class TRAColeccionCadenas(BaseBTreeFolder, TRAColeccionArquetipos):
         'id': 'view',
         'name': 'View',
         'permissions': ("View",),
-        'condition': """python:1"""
-       },
-
-
-       {'action': "string:${object_url}/MDDChanges",
-        'category': "object_buttons",
-        'id': 'mddchanges',
-        'name': 'Changes',
-        'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': 'python:1'
        },
 
 
@@ -155,7 +140,7 @@ class TRAColeccionCadenas(BaseBTreeFolder, TRAColeccionArquetipos):
         'id': 'edit',
         'name': 'Edit',
         'permissions': ("Modify portal content",),
-        'condition': """python:object.fAllowWrite()"""
+        'condition': 'python:0'
        },
 
 
@@ -164,16 +149,7 @@ class TRAColeccionCadenas(BaseBTreeFolder, TRAColeccionArquetipos):
         'id': 'local_roles',
         'name': 'Sharing',
         'permissions': ("Manage properties",),
-        'condition': """python:0"""
-       },
-
-
-       {'action': "string:${object_url}/TRASeguridadUsuarioConectado",
-        'category': "object_buttons",
-        'id': 'TRA_SeguridadUsuarioConectado',
-        'name': 'Permissions',
-        'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': 'python:0'
        },
 
 
@@ -182,16 +158,16 @@ class TRAColeccionCadenas(BaseBTreeFolder, TRAColeccionArquetipos):
         'id': 'content_status_history',
         'name': 'State',
         'permissions': ("View",),
-        'condition': """python:0"""
+        'condition': 'python:0'
        },
 
 
-       {'action': "string:${object_url}/MDDCacheStatus/",
-        'category': "object_buttons",
-        'id': 'mddcachestatus',
-        'name': 'Cache',
-        'permissions': ("View",),
-        'condition': """python:1"""
+       {'action': "string:${object_url}/sharing",
+        'category': "object",
+        'id': 'local_roles',
+        'name': 'Sharing',
+        'permissions': ("Manage properties",),
+        'condition': 'python:0'
        },
 
 
@@ -213,51 +189,16 @@ class TRAColeccionCadenas(BaseBTreeFolder, TRAColeccionArquetipos):
         
         return TRAColeccionArquetipos.manage_beforeDelete( self, item, container)
 
-    security.declarePublic('displayContentsTab')
-    def displayContentsTab(self):
-        """
-        """
-        
-        return False
-
-    security.declarePublic('cb_isCopyable')
-    def cb_isCopyable(self):
-        """
-        """
-        
-        return False
-
     security.declarePublic('manage_afterAdd')
     def manage_afterAdd(self,item,container):
         """
         """
         
         return TRAColeccionArquetipos.manage_afterAdd( self, item, container)
-
-    security.declarePublic('fIsCacheable')
-    def fIsCacheable(self):
-        """
-        """
-        
-        return True
-
-    security.declarePublic('manage_pasteObjects')
-    def manage_pasteObjects(self,cb_copy_data,REQUEST):
-        """
-        """
-        
-        return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
-
-    security.declarePublic('fExtraLinks')
-    def fExtraLinks(self):
-        """
-        """
-        
-        return TRAElemento_Operaciones.fExtraLinks( self)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:
-        if a['id'] in ['metadata', 'sharing', 'folderContents']:
+        if a['id'] in ['metadata', 'sharing']:
             a['visible'] = 0
     return fti
 

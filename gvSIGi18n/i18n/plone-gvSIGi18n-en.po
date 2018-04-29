@@ -1,7 +1,32 @@
-# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>, 2010.
+# Copyright (c) 2008, 2009 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+#
+# GNU General Public License (GPL)
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+#
+# Authors: 
+# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana 
+# Model Driven Development sl  Valencia (Spain) www.ModelDD.org 
+# Antonio Carrasco Valero                       carrasco@ModelDD.org
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: gvSIGi18n\n"
+"Project-Id-Version: gvSIGtraducciones\n"
+"POT-Creation-Date: Fri Mar 20 11:10:50 2009\n"
+"PO-Revision-Date: Fri Mar 20 11:10:50 2009\n"
 "Last-Translator: Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>\n"
 "Language-Team: Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>\n"
 "MIME-Version: 1.0\n"
@@ -14,227 +39,54 @@ msgstr ""
 "Domain: plone\n"
 "X-Is-Fallback-For: en-au en-bz en-ca en-ie en-jm en-nz en-ph en-za en-tt en-gb en-us en-zw\n"
 
-#. Default: "Cadena"
-#: TRACadena
-msgid "Cadena"
-msgstr "String to translate"
 
-#. Default: "Catalogo de Traducciones"
-#: TRACatalogo
-msgid "Catalogo de Traducciones"
-msgstr "Translations Catalog"
-
-#. Default: "Coleccion de Cadenas"
-#: TRAColeccionCadenas
-msgid "Coleccion de Cadenas"
-msgstr "Strings collection"
-
-#. Default: "Coleccion de Idiomas"
-#: TRAColeccionIdiomas
-msgid "Coleccion de Idiomas"
-msgstr "Languages collection"
-
-#. Default: "Coleccion de Importaciones"
-#: TRAColeccionImportaciones
-msgid "Coleccion de Importaciones"
-msgstr "Import processes collection"
-
-#. Default: "Coleccion de Informes de Estado"
-#: TRAColeccionInformes
-msgid "Coleccion de Informes de Estado"
-msgstr "Status Reports Collection"
-
-#. Default: "Coleccion de Modulos"
-#: TRAColeccionModulos
-msgid "Coleccion de Modulos"
-msgstr "Modules collection"
-
-#. Default: "Coleccion de Solicitudes de creacion de Cadenas"
-#: TRAColeccionSolicitudesCadenas
-msgid "Coleccion de Solicitudes de creacion de Cadenas"
-msgstr "Strings creation request collection"
-
-#. Default: "Contenido de Intercambio"
-#: TRAContenidoIntercambio
-msgid "Contenido de Intercambio"
-msgstr "Interchange Content"
-
-#. Default: "Idioma"
-#: TRAIdioma
-msgid "Idioma"
-msgstr "Language"
-
-#. Default: "Importacion"
-#: TRAImportacion
-msgid "Importacion"
-msgstr "Import process"
-
-#. Default: "Informe de Estado"
-#: TRAInforme
-msgid "Informe de Estado"
-msgstr "Status Report"
-
-#. Default: "Modulo"
-#: TRAModulo
-msgid "Modulo"
-msgstr "Module"
-
-#. Default: "Solicitud Creacion Cadena"
-#: TRASolicitudCadena
-msgid "Solicitud Creacion Cadena"
-msgstr "String creation request"
-
-#. Default: "Traduccion"
-#: TRATraduccion
-msgid "Traduccion"
-msgstr "Translation"
-
-
-
-
-
-
-
-#. Default: "Build Report"
-#: TRAInforme
-msgid "Build Report"
-msgstr "Build Report"
-
-
-#. Default: "Verify"
+#. Default: "Verificar"
 #: TRACatalogo
 msgid "Verify"
 msgstr "Verify"
 
 
-#. Default: "Initialize"
+#. Default: "Inicializar"
 #: TRAArquetipo
 msgid "Initialize"
 msgstr "Initialize"
 
-#. Default: "Export"
+#. Default: "Exportar"
 #: TRAArquetipo
 msgid "Export"
 msgstr "Export"
 
-#. Default: "Import"
+#. Default: "Importar"
 #: TRAArquetipo
 msgid "Import"
 msgstr "Import"
 
 
-#. Default: "Configure"
+#. Default: "Configurar"
 #: TRAArquetipo
 msgid "Configure"
 msgstr "Configure"
 
 
 
-#. Default: "Content"
+#. Default: "Contenido"
 #: TRAContenidoIntercambio
 msgid "Content"
 msgstr "Content"
 
-#. Default: "Contents"
+#. Default: "Contenidos"
 #: TRAImportacion
 msgid "Contents"
 msgstr "Contents"
 
 
-#. Default: "Data"
+#. Default: "Datos"
 #: TRAContenidoIntercambio TRAImportacion
 msgid "Data"
 msgstr "Data"
 
-#. Default: "Progress"
+#. Default: "Progreso"
 #: TRAImportacion
 msgid "Progress"
 msgstr "Progress"
-
-#. Default: "Copy Translations"
-#: TRAIdioma
-msgid "Copy Translations"
-msgstr "Copy Translations"
-
-#. Default: "Create Strings"
-#: TRAColeccionSolicitudesCadena
-msgid "Create Strings"
-msgstr "Create Strings"
-
-#. Default: "Clean-up Strings"
-#: TRAColeccionSolicitudesCadena
-msgid "Clean-up Strings"
-msgstr "Clean-up Strings"
-
-#. Default: "Lock Catalog"
-#: TRACatalogo
-msgid "Lock Catalog"
-msgstr "Lock Catalog"
-
-
-#. Default: "Unlock Catalog"
-#: TRACatalogo
-msgid "Unlock Catalog"
-msgstr "Unlock Catalog"
-
-
-#. Default: "Permisos"
-#: TRACatalogo
-msgid "Permissions"
-msgstr "Permissions"
-
-
-#. Default: "Crear Idioma"
-#: TRACatalogo
-msgid "Create Language"
-msgstr "Create Language"
-
-
-
-#. Default: "Reutilizar"
-#: TRAImportacion
-msgid "Reuse"
-msgstr "Reuse"
-
-
-
-#. Default: "Resumen"
-#: TRAImportacion
-msgid "Summary"
-msgstr "Summary"
-
-
-
-#. Default: "Detalle"
-#: TRAImportacion
-msgid "Details"
-msgstr "Details"
-
-
-#. Default: "Vista avanzada"
-#: TRACatalogo
-msgid "Advanced View"
-msgstr "Advanced View"
-
-
-
-#. Default: "Informe"
-#: TRACatalogo
-msgid "Report"
-msgstr "Report"
-
-
-#. Default: "Exportar para gvSIG"
-#: TRACatalogo
-msgid "Export for gvSIG"
-msgstr "Export for gvSIG"
-
-
-
-#. Default: "Bloquear Idioma"
-#: TRAIdioma
-msgid "Lock Language"
-msgstr "Lock Language"
-
-
 

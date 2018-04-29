@@ -45,9 +45,6 @@ from TRAElemento_Constants import *
 from TRARoles       import *
 
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Inicializacion_Constants import cExternalMetodDefinitions as cExternalMetodDefinitions_ModelDDvlPlone
-
-
 ##/code-section module-header
 
 ##code-section after-local-schema #fill in your manual code here
@@ -58,21 +55,15 @@ from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Inicializacion_Constants imp
 
 
 
-
-
-cLazyCreateExternalMethod       = True
-# ACV 20091004 Moved to TRAElemento_Constants.py as it is used also from TRAElemento_Operaciones.py
-# cLazyCreateModelDDvlPloneTool   = True
-cLazyCreateCollections          = True
-cLazyCreateCatalogs             = True
-cLazyCreateIndexes              = True
-cLazyCreateLexicons             = True    
-cLazyCreateSchemaFields         = True
-cLazyCreateUserGroups           = True
-cLazyCreateSetLocalRoles        = True
-cLazyCreateSetAcquireRoleAssignments = True
-cLazyAddGroupToGroup            = True
+cLazyCreateExternalMethod  = True
+cLazyCreateModelDDvlPloneTool  = True
+cLazyCreateCollections  = True
+cLazyCreateCollections  = True
+cLazyCreateCatalogs     = True
+cLazyCreateIndexes      = True
+cLazyCreateLexicons     = True    
 cLazyAddSchemaFields    = True
+
 
 
 
@@ -92,8 +83,6 @@ cColeccionInformes_Id   = "informes"
 cColeccionInformes_Title= "Reports"
 cColeccionImportaciones_Id    = "importaciones"
 cColeccionImportaciones_Title = "Imports"
-cColeccionSolicitudesCadenas_Id    = "solicitudescadenas"
-cColeccionSolicitudesCadenas_Title = "String Requests"
 
 
 cEspecificacionesColecciones = [ 
@@ -102,7 +91,6 @@ cEspecificacionesColecciones = [
     [ cNombreTipoTRAColeccionCadenas,        cColeccionCadenas_Id,       cColeccionCadenas_Title, ],
     [ cNombreTipoTRAColeccionImportaciones,  cColeccionImportaciones_Id, cColeccionImportaciones_Title, ],
     [ cNombreTipoTRAColeccionInformes,       cColeccionInformes_Id,      cColeccionInformes_Title, ],
-    [ cNombreTipoTRAColeccionSolicitudesCadenas,       cColeccionSolicitudesCadenas_Id,      cColeccionSolicitudesCadenas_Title, ],
 ]
 
 
@@ -137,12 +125,7 @@ cIndexesCatalogoBusquedaCadenas  = [
     [ 'getSimbolo',         'FieldIndex',  ],
     [ 'getEstadoCadena',    'KeywordIndex',],
 ]
-# ACV 20090814 
-#   EATR01 Remove Attribute pathDelRaiz from all entities; 	
-#   EATR02 Remove the Type attribute from catalog schemas
-#cSchemaFieldsCatalogoBusquedaCadenas  = [ 'Type', 'getPathDelRaiz', ] + [ aIdxSpec[ 0] for aIdxSpec in cIndexesCatalogoBusquedaCadenas]
-
-cSchemaFieldsCatalogoBusquedaCadenas  = [ aIdxSpec[ 0] for aIdxSpec in cIndexesCatalogoBusquedaCadenas]
+cSchemaFieldsCatalogoBusquedaCadenas  = [ 'Type', 'getPathDelRaiz', ] + [ aIdxSpec[ 0] for aIdxSpec in cIndexesCatalogoBusquedaCadenas]
 
 
 
@@ -156,15 +139,10 @@ cIndexesCatalogoFiltroCadenas  = cIndexesCatalogoBusquedaCadenas + [
     [ 'getUsuarioCreador',          'FieldIndex',  ],
     [ 'getFechaCancelacionTextual', 'FieldIndex',   ],
 ]
-# ACV 20090814 
-#   EATR01 Remove Attribute pathDelRaiz from all entities; 	
-#   EATR02 Remove the Type attribute from catalog schemas
-#cSchemaFieldsCatalogoFiltroCadenas  = [ 'Type', 'getPathDelRaiz', ] + \
-#                                      [ aIdxSpec[ 0] for aIdxSpec in cIndexesCatalogoFiltroCadenas] + \
-#                                      [ 'getNombresModulos',]
-
-cSchemaFieldsCatalogoFiltroCadenas  = [ aIdxSpec[ 0] for aIdxSpec in cIndexesCatalogoFiltroCadenas] + \
+cSchemaFieldsCatalogoFiltroCadenas  = [ 'Type', 'getPathDelRaiz', ] + \
+                                      [ aIdxSpec[ 0] for aIdxSpec in cIndexesCatalogoFiltroCadenas] + \
                                       [ 'getNombresModulos',]
+
 
 
 
@@ -220,12 +198,7 @@ cIndexesCatalogoBusquedaTraducciones  = [
     [ 'getIdCadena',            'FieldIndex',  ],
     [ 'getEstadoTraduccion',    'KeywordIndex',],
 ]
-# ACV 20090814 
-#   EATR01 Remove Attribute pathDelRaiz from all entities; 	
-#   EATR02 Remove the Type attribute from catalog schemas
-#cSchemaFieldsCatalogoBusquedaTraducciones  = [ 'Type', 'getPathDelRaiz', 'getCodigoIdiomaEnGvSIG', ] + \
-#                                             [ aIdxSpec[ 0] for aIdxSpec in cIndexesCatalogoBusquedaTraducciones]
-cSchemaFieldsCatalogoBusquedaTraducciones  = [ 'getCodigoIdiomaEnGvSIG', ] + \
+cSchemaFieldsCatalogoBusquedaTraducciones  = [ 'Type', 'getPathDelRaiz', 'getCodigoIdiomaEnGvSIG', ] + \
                                              [ aIdxSpec[ 0] for aIdxSpec in cIndexesCatalogoBusquedaTraducciones]
 
 
@@ -245,7 +218,7 @@ cIndexesCatalogoFiltroTraducciones  = cIndexesCatalogoBusquedaTraducciones + [
 ]
 cSchemaFieldsCatalogoFiltroTraducciones  = [ 'Type', 'getPathDelRaiz', 'getCodigoIdiomaEnGvSIG', ] + \
                                            [ aIdxSpec[ 0] for aIdxSpec in cIndexesCatalogoFiltroTraducciones] + \
-                                           [ 'getCadenaTraducida', 'getComentario', 'getNombresModulos', 'getContadorCambios',]
+                                           [ 'getCadenaTraducida', 'getComentario', 'getNombresModulos',]
        
 
 
@@ -296,33 +269,35 @@ cCatalogsDetailsParaIdioma = [
 # External methods to create
 #
 
-cExtMethod_ChangeAndBrowseTranslations           = "TRAChangeAndBrowseTranslations"
-cExtMethod_SizesIdioma                           = "TRASizesIdioma"
-cExtMethod_RenderPermissionDefinitions           = "TRARenderPermissionDefinitions"
-cExtMethod_RenderLoggedUsedAndRolesHere          = "TRARenderLoggedUsedHere"
-cExtMethod_RenderGroupsRolesHere                 = "TRARenderGroupsRolesHere"
-cExtMethod_RenderExecutionDetails                = "TRARenderExecutionDetails"
+cChangeAndBrowseTranslationsExtMethod           = "TRAChangeAndBrowseTranslations"
+cSizesIdiomaExtMethod                           = "TRASizesIdioma"
+cRenderPermissionDefinitionsExtMethod           = "TRARenderPermissionDefinitions"
+cRenderLoggedUsedAndRolesHereExtMethod          = "TRARenderLoggedUsedHere"
+cRenderGroupsRolesHereExtMethod                 = "TRARenderGroupsRolesHere"
+cRenderRenderExecutionDetails                   = "TRARenderExecutionDetails"
 
 
 
 cExternalMetodDefinitions = [
-    [ cExtMethod_ChangeAndBrowseTranslations,                 # module  
-        [ cExtMethod_ChangeAndBrowseTranslations,    ]   * 3, # function id title name
-        [ cExtMethod_SizesIdioma,                    ]   * 3, # function id title name
+    [ cChangeAndBrowseTranslationsExtMethod,                 # module  
+        [ cChangeAndBrowseTranslationsExtMethod,    ]   * 3, # function id title
+        [ cSizesIdiomaExtMethod,                    ]   * 3, # function id title
+    ],
+    [ cChangeAndBrowseTranslationsExtMethod,                 # module  
+        [ cChangeAndBrowseTranslationsExtMethod,    ]   * 3, # function id title
     ],
     [ 'TRARenderSecurity',                                   # module  
-       [ cExtMethod_RenderPermissionDefinitions,     ]   * 3, # function id title name
-       [ cExtMethod_RenderLoggedUsedAndRolesHere,    ]   * 3, # function id title name
-       [ cExtMethod_RenderGroupsRolesHere,           ]   * 3, # function id title name
+       [ cRenderPermissionDefinitionsExtMethod,     ]   * 3, # function id title
+       [ cRenderLoggedUsedAndRolesHereExtMethod,    ]   * 3, # function id title
+       [ cRenderGroupsRolesHereExtMethod,           ]   * 3, # function id title
     ],    
     [ 'TRARenderProfiling',                                  # module  
-        [ cExtMethod_RenderExecutionDetails,            ]   * 3, # function id title name
-
+        [ cRenderRenderExecutionDetails,            ]   * 3, # function id title
     ],
     [ 'TRAExport_ctrl',                                  # module  
-        [ 'TRAExport_ParametersCandidateValues',    ]   * 3, # function id title name
+        [ 'TRAExport_ParametersCandidateValues',    ]   * 3, # function id title
     ],
-] + cExternalMetodDefinitions_ModelDDvlPlone
+ ]
 
 
 ##/code-section module-footer

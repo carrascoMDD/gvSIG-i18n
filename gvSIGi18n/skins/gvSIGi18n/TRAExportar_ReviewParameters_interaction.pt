@@ -58,10 +58,6 @@
             ( 'theModulesToExport',         pModulesToExport,),
             ( 'theCodigosIdiomaReferencia', pCodigosIdiomaReferencia,),            
             ( 'theCodificacionesCaracteres',pCodificacionesCaracteres,),            
-            ( 'theFilenameForGvSIG',        request.get( 'theFilenameForGvSIG',         None),),
-            ( 'theProductName',             request.get( 'theProductName',              None),),
-            ( 'theProductVersion',          request.get( 'theProductVersion',           None),),
-            ( 'theL10NVersion',             request.get( 'theL10NVersion',              None),),
         ]));" />
 </div>
 
@@ -120,9 +116,9 @@
             pIncludeManifest                    python: pExport_ReviewParameters_Parameters_output.get( 'theIncludeManifest',                     '');
             pIncludeManifestVocabulary          python: pExport_ReviewParameters_Parameters_output.get( 'theIncludeManifest_vocabulary',          []);
             pIncludeManifestVocabularyMsgIds    python: pExport_ReviewParameters_Parameters_output.get( 'theIncludeManifest_vocabulary_msgids',   []);
-            pIncludeLocalesCSV                  python: pExport_ReviewParameters_Parameters_output.get( 'theIncludeLocalesCSV',                     '');
-            pIncludeLocalesCSVVocabulary        python: pExport_ReviewParameters_Parameters_output.get( 'theIncludeLocalesCSV_vocabulary',          []);
-            pIncludeLocalesCSVVocabularyMsgIds  python: pExport_ReviewParameters_Parameters_output.get( 'theIncludeLocalesCSV_vocabulary_msgids',   []);
+            pIncludeLocalesCSV                    python: pExport_ReviewParameters_Parameters_output.get( 'theIncludeLocalesCSV',                     '');
+            pIncludeLocalesCSVVocabulary          python: pExport_ReviewParameters_Parameters_output.get( 'theIncludeLocalesCSV_vocabulary',          []);
+            pIncludeLocalesCSVVocabularyMsgIds    python: pExport_ReviewParameters_Parameters_output.get( 'theIncludeLocalesCSV_vocabulary_msgids',   []);
             pSeparatedModules                   python: pExport_ReviewParameters_Parameters_output.get( 'theSeparatedModules',                    '');
             pSeparatedModulesVocabulary         python: pExport_ReviewParameters_Parameters_output.get( 'theSeparatedModules_vocabulary',         []);
             pSeparatedModulesVocabularyMsgIds   python: pExport_ReviewParameters_Parameters_output.get( 'theSeparatedModules_vocabulary_msgids',  []);
@@ -138,15 +134,9 @@
             pEncodingErrorHandleMode                    python: pExport_ReviewParameters_Parameters_output.get( 'theEncodingErrorHandleMode',   '');
             pEncodingErrorHandleModeVocabulary          python: pExport_ReviewParameters_Parameters_output.get( 'theEncodingErrorHandleMode_vocabulary',   []);
             pEncodingErrorHandleModeVocabularyMsgIds    python: pExport_ReviewParameters_Parameters_output.get( 'theEncodingErrorHandleMode_vocabulary_msgids',   []);
-            pFilenameForGvSIG                   python: pExport_ReviewParameters_Parameters_output.get( 'theFilenameForGvSIG',                    '');
-            pFilenameForGvSIGVocabulary         python: pExport_ReviewParameters_Parameters_output.get( 'theFilenameForGvSIG_vocabulary',          []);
-            pFilenameForGvSIGVocabularyMsgIds   python: pExport_ReviewParameters_Parameters_output.get( 'theFilenameForGvSIG_vocabulary_msgids',   []);
-            pProductName                        python: pExport_ReviewParameters_Parameters_output.get( 'theProductName',                         '');
-            pProductVersion                     python: pExport_ReviewParameters_Parameters_output.get( 'theProductVersion',                      '');
-            pL10NVersion                        python: pExport_ReviewParameters_Parameters_output.get( 'theL10NVersion',                         '');
             " >
       
-            <form  method="POST" id="cid_TRAExportar_form" action="#" tal:attributes="action python: '%s/TRAExportar/' % here.absolute_url()"
+            <form  method="POST" id="cid_TRAExportar_form" action="#" tal:attributes="action python: '%s/TRAExportar' % here.absolute_url()"
                 tal:define="
                     pCodigosIdioma python: [ unInformeIdioma.get( 'codigoIdiomaEnGvSIG', '') for unInformeIdioma in pInformesIdiomas];
                     pHayCodigosIdiomasInternacionalesDistintosCodigoEnGvSIG python: len( [ unInformeIdioma for unInformeIdioma in  pInformesIdiomas if not ( unInformeIdioma.get( 'codigoIdiomaEnGvSIG', '') == unInformeIdioma.get( 'codigoInternacionalDeIdioma', unInformeIdioma.get( 'codigoIdiomaEnGvSIG', '')))]) > 0;
@@ -285,7 +275,8 @@
                                     </tal:block>
                                 </tal:block>
                              </td>
-                        </tr>       
+                        </tr>                            
+                        
                         
                         <tr class="#" tal:attributes="class python: pClasesFilas[unIndexClassFila % 2]" tal:define="global unIndexClassFila python: unIndexClassFila + 1">
                             <td align="left" valign="baseline">
@@ -307,74 +298,7 @@
                                     tal:attributes="value pDefaultModuleName"/>
                             </td>
                         </tr>                     
-                    </tbody>
-                </table>
-                <br/>
-                <br/>
-                
-                  
-                
-                <!-- ###############################################################
-                #  SECTION: Export parameters specific to gvSIG
-                #
-                # -->
-                <table id="exportParameters" class="listing" summary="Export parameters"
-                    tal:define="global unIndexClassFila python: 0" >
-                    <thead>
-                        <th class="nosort" colspan="2">
-                            <strong  tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_exportar_Parameter_ExportParameters_SpecificToGvSIG_label',   'Export parametes specific to gvSIG-' )" />
-                        </th>
-                    </thead>
-                    <tbody>
-                        <tr class="#" tal:attributes="class python: pClasesFilas[unIndexClassFila % 2]" tal:define="global unIndexClassFila python: unIndexClassFila + 1">
-                            <td align="left" valign="baseline">
-                                <strong  tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_exportar_Parameter_ExportFilenameForGvSIG_label', 'Export Filename for gvSIG-' )" />
-                            </td>
-                            <td align="left" valign="baseline">
-                                <tal:block tal:repeat="aExportFilenameForGvSIGOptionIndex python: range( len( pFilenameForGvSIGVocabulary))" >
-                                    <tal:block tal:define="
-                                        aExportFilenameForGvSIGOption      python: pFilenameForGvSIGVocabulary[ aExportFilenameForGvSIGOptionIndex];
-                                        aExportFilenameForGvSIGOptionMsgId python: pFilenameForGvSIGVocabularyMsgIds[ aExportFilenameForGvSIGOptionIndex]">
-                                        <tal:block tal:condition="python: pFilenameForGvSIG == aExportFilenameForGvSIGOption" >
-                                            <input type="hidden"  name="theFilenameForGvSIG" id="#"  value="#"  
-                                                tal:attributes="
-                                                    id python: 'theFilenameForGvSIG_%s' % aExportFilenameForGvSIGOption;
-                                                    value aExportFilenameForGvSIGOption" />
-                                            <strong tal:content="python: here.fTranslateI18N( 'gvSIGi18n', aExportFilenameForGvSIGOptionMsgId,   aExportFilenameForGvSIGOption + '-' )" />
-                                        </tal:block>
-                                         
-                                    </tal:block>
-                                </tal:block>
-                            </td>
-                        </tr>                  
-                        <tr class="#" tal:attributes="class python: pClasesFilas[unIndexClassFila % 2]" tal:define="global unIndexClassFila python: unIndexClassFila + 1">
-                            <td align="left" valign="baseline">
-                                <strong  tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_exportar_Parameter_ProductName_label',   'Product name-' )" />
-                            </td>
-                            <td align="left" valign="baseline">
-                                <input type="text" readonly size="48"  value="#"  checked="checked" name="theProductName" id="theProductName"
-                                    tal:attributes="value pProductName"/>
-                            </td>
-                        </tr>                     
                         
-                        <tr class="#" tal:attributes="class python: pClasesFilas[unIndexClassFila % 2]" tal:define="global unIndexClassFila python: unIndexClassFila + 1">
-                            <td align="left" valign="baseline">
-                                <strong  tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_exportar_Parameter_ProductVersion_label',   'Product version-' )" />
-                            </td>
-                            <td align="left" valign="baseline">
-                                <input type="text" readonly size="48"  value="#"  checked="checked" name="theProductVersion" id="theProductVersion"
-                                    tal:attributes="value pProductVersion"/>
-                            </td>
-                        </tr>                     
-                        <tr class="#" tal:attributes="class python: pClasesFilas[unIndexClassFila % 2]" tal:define="global unIndexClassFila python: unIndexClassFila + 1">
-                            <td align="left" valign="baseline">
-                                <strong  tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_exportar_Parameter_L10NVersion_label',   'L10N version-' )" />
-                            </td>
-                            <td align="left" valign="baseline">
-                                <input type="text" readonly size="48"  value="#"  checked="checked" name="theL10NVersion" id="theL10NVersion"
-                                    tal:attributes="value pL10NVersion"/>
-                            </td>
-                        </tr>                     
                     </tbody>
                 </table>
                 <br/>
@@ -502,8 +426,7 @@
                                                     tal:attributes="
                                                         src python: '%s/%s' % ( here.absolute_url(), pFlag);
                                                         title python: pCode" />
-                                            </td>    
-                                            
+                                            </td>                                            
                                             <td align="left" valign="top" >
                                                 <tal:block tal:repeat="unIdiomaReferenciaIndex python: range( len(  pIdiomasReferenciaVocabulary))">
                                                     <tal:block tal:define="
@@ -632,7 +555,7 @@
         tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_cancelarExportacionYVolverACatalogo_msgid',   'Cancel Export-' )"
         tal:attributes="
             title aLinkTitle;
-            href python: '%s/' % here.absolute_url()">
+            href python: '%s' % here.absolute_url()">
         <font size="3">
               <strong>
                   <span tal:content="aLinkTitle" />
@@ -649,7 +572,7 @@
         tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_valoresPorDefectoExportacion_msgid',   'Default export configuration-' )"
         tal:attributes="
             title aLinkTitle;
-            href python: '%s/TRAExportar/' % here.absolute_url()">
+            href python: '%s/TRAExportar' % here.absolute_url()">
         <font size="3">
               <strong>
                   <span tal:content="aLinkTitle" />

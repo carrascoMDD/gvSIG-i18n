@@ -51,6 +51,11 @@ msgstr "Credits"
 msgid "gvSIGi18n_credits_ProjectTitle_PropertyName"
 msgstr "Project"
 
+#. Default: "gvSIGi18n"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_ProjectTitle_PropertyValue"
+msgstr "gvSIGi18n"
+
 #. Default: "Aplicacion colaborativa para la traduccion de los textos de interfaz de usuario de la aplicacion gvSIG, sus extensiones, y aplicaciones colaborativas usadas por gvSIG, como esta misma."
 #: gvSIGi18n_creditos_i18n_view
 msgid "gvSIGi18n_credits_ProjectTitle_Description_PropertyValue"
@@ -61,11 +66,35 @@ msgstr "Collaborative application for the translation of user interface texts in
 msgid "gvSIGi18n_credits_Copyright_PropertyName"
 msgstr "Copyright"
 
+#. Default: "(C) 2008, 2009 Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_Copyright_PropertyValue"
+msgstr "(C) 2008, 2009 Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana"
+
 #. Default: "Licencia"
 #: gvSIGi18n_creditos_i18n_view
 msgid "gvSIGi18n_credits_License_PropertyName"
 msgstr "License"
 
+#. Default: "GNU General Public License (GPL)"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_License_PropertyValue"
+msgstr "GNU General Public License (GPL)"
+
+#. Default: "www.fsf.org/licensing/licenses/gpl.html"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_License_URL_PropertyValue"
+msgstr "www.fsf.org/licensing/licenses/gpl.html"
+
+#. Default: "Free Software Foundation, Inc."
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_License_FreeSoftwareFoundation_PropertyValue"
+msgstr "Free Software Foundation, Inc."
+
+#. Default: "www.fsf.org"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_License_FreeSoftwareFoundation_URL_PropertyValue"
+msgstr "www.fsf.org"
 
 
 #. Default: "Autores"
@@ -76,22 +105,42 @@ msgstr "Authors"
 #. Default: "institucion del gobierno autonomico de la Comunidad Valenciana de España, Europa"
 #: gvSIGi18n_creditos_i18n_view
 msgid "gvSIGi18n_credits_Author_Conselleria_Institucion_PropertyValue"
-msgstr "Regional Ministry at Comunidad Valenciana in Spain, Europe"
+msgstr "autonomous government institution of the Comunidad Valenciana in Spain, Europe"
 
+#. Default: "Conselleria de Infraestructuras y Transporte de la Generalitat Valenciana"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_Author_Conselleria_PropertyValue"
+msgstr "Conselleria de Infraestructuras y Transporte de la Generalitat Valenciana"
 
-
+#. Default: "www.cit.gva.es"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_Author_Conselleria_URL_PropertyValue"
+msgstr "www.cit.gva.es"
 
 #. Default: "empresa"
 #: gvSIGi18n_creditos_i18n_view
 msgid "gvSIGi18n_credits_Author_ModelDrivenDevelopmentSL_Empresa_PropertyValue"
 msgstr "company"
 
+#. Default: "Model Driven Development, sl"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_Author_ModelDrivenDevelopmentSL_PropertyValue"
+msgstr "Model Driven Development, sl"
 
+#. Default: "Antonio Carrasco Valero"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_Author_AntonioCarrascoValero_PropertyValue"
+msgstr "Antonio Carrasco Valero"
 
 #. Default: "desarrollador"
 #: gvSIGi18n_creditos_i18n_view
 msgid "gvSIGi18n_credits_Author_AntonioCarrascoValero_Desarrollador_PropertyValue"
 msgstr "developer"
+
+#. Default: "gvsig.org/web/author/tcarrasco"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_Author_AntonioCarrascoValero_URL_PropertyValue"
+msgstr "gvsig.org/web/author/tcarrasco"
 
 #. Default: "Promotor y Director"
 #: gvSIGi18n_creditos_i18n_view
@@ -99,6 +148,10 @@ msgid "gvSIGi18n_credits_SponsorProjectTitle_PropertyName"
 msgstr "Sponsor and Director"
 
 
+#. Default: "proyecto gvSIG de la Conselleria de Infraestructuras y Transporte (CIT) de la Generalitat Valenciana (GVA)"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_SponsorProjectTitle_PropertyValue"
+msgstr "gvSIG project by Conselleria de Infraestructuras y Transporte de la Generalitat Valenciana"
 
 
 #. Default: "gvSIG es un programa aplicado a la gestion de informacion geoespacial. Distribuida como programa libre y gratis en codigo abierto Free Libre Open Source Software (FLOSS). Desarrollado como una aplicación programada en el lenguage Java. Disponible en el sistema operativo libre y gratis en codigo abierto GNU/Linux, y los propietarios Apple Macintosh (R) y Microsoft Windows (R). Localizado a muchos idiomas y paises. "
@@ -106,7 +159,10 @@ msgstr "Sponsor and Director"
 msgid "gvSIGi18n_credits_SponsorProjectTitle_Description_PropertyValue"
 msgstr "gvSIG is a software application for the management of geospatial information. Released as Free Libre Open Source Software (FLOSS). Developed as a dektop application programmed in the Java language. Available in the free libre open source software operating system GNU/Linux, and the proprietary Apple Macintosh(R) and Microsoft Windows(R). Localized to many languages and countries. gvSIG now facilitates the availability for even more languages and countries, with this gvSIGtraducciones application for collaborative translations of user interface strings."
 
-
+#. Default: "gvSIG.org"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_SponsorProjectTitle_URL_PropertyName"
+msgstr "gvSIG.org"
 
 #. Default: "Estandares"
 #: gvSIGi18n_creditos_i18n_view
@@ -118,7 +174,25 @@ msgstr "Standards"
 msgid "gvSIGi18n_credits_Standards_Intro_PropertyValue"
 msgstr "developed following the recommendations in the"
 
+#. Default: "Model Driven Architecture (MDA)"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_Standards_MDA_PropertyValue"
+msgstr "Model Driven Architecture (MDA)"
 
+#. Default: "www.omg.org/mda"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_Standards_MDA_URL_PropertyValue"
+msgstr "www.omg.org/mda"
+
+#. Default: "Object Management Group, inc"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_Standards_OMG_PropertyValue"
+msgstr "Object Management Group, inc"
+
+#. Default: "www.omg.org"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_Standards_OMG_URL_PropertyValue"
+msgstr "www.omg.org"
 
 #. Default: "Garantia"
 #: gvSIGi18n_creditos_i18n_view
@@ -148,6 +222,16 @@ msgid "gvSIGi18n_credits_RequirementsCoordination_Business_Title"
 msgstr "Translation Domain Requirements"
 
 
+#. Default: "Mario Carrera"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_RequirementsCoordination_Business_Name"
+msgstr "Mario Carrera"
+
+
+#. Default: "gvsig.org/web/author/mcarrera"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_RequirementsCoordination_Business_URL"
+msgstr "gvsig.org/web/author/mcarrera"
 
 
 
@@ -157,6 +241,16 @@ msgid "gvSIGi18n_credits_RequirementsCoordination_Organization_Title"
 msgstr "Organization Requirements"
 
 
+#. Default: "Manuel Madrid"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_RequirementsCoordination_Organization_Name"
+msgstr "Manuel Madrid"
+
+
+#. Default: "gvsig.org/web/author/mmadrid"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_RequirementsCoordination_Organization_URL"
+msgstr "gvsig.org/web/author/mmadrid"
 
 
 #. Default: "Requisitos de la Plataforma"
@@ -165,6 +259,16 @@ msgid "gvSIGi18n_credits_RequirementsCoordination_Platform_Title"
 msgstr "Platform Requirements"
 
 
+#. Default: "Joaquin del Cerro"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_RequirementsCoordination_Platform_Name"
+msgstr "Joaquin del Cerro"
+
+
+#. Default: "gvsig.org/web/author/jjdelcerro"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_RequirementsCoordination_Platform_URL"
+msgstr "gvsig.org/web/author/jjdelcerro"
 
 
 
@@ -174,6 +278,16 @@ msgid "gvSIGi18n_credits_RequirementsCoordination_Administration_Title"
 msgstr "Administration Requirements"
 
 
+#. Default: "Victor Acevedo"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_RequirementsCoordination_Administration_Name"
+msgstr "Victor Acevedo"
+
+
+#. Default: "gvsig.org/web/author/vacevedo"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_RequirementsCoordination_Administration_URL"
+msgstr "gvsig.org/web/author/vacevedo"
 
 
 #. Default: "Jefe del Departamento de Organizacion e Informatica de la CIT"
@@ -182,6 +296,10 @@ msgid "gvSIGi18n_credits_SponsorProjectTitle_Jefe_Title"
 msgstr "Chief Organization and Information Officer at CIT"
 
 
+#. Default: "Martin Garcia"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_SponsorProjectTitle_Jefe_Name"
+msgstr "Martin Garcia"
 
 
 #. Default: "Coordinador General de gvSIG"
@@ -190,6 +308,10 @@ msgid "gvSIGi18n_credits_SponsorProjectTitle_CoordinadorGeneral_Title"
 msgstr "gvSIG General Coordinator"
 
 
+#. Default: "Gabriel Carrion"
+#: gvSIGi18n_creditos_i18n_view
+msgid "gvSIGi18n_credits_SponsorProjectTitle_CoordinadorGeneral_Name"
+msgstr "Gabriel Carrion"
 
 
 #. Default: "Coordinador Tecnico de gvSIG"
@@ -198,87 +320,9 @@ msgid "gvSIGi18n_credits_SponsorProjectTitle_CoordinadorTecnico_Title"
 msgstr "gvSIG Technical Coordinator"
 
 
-
-#. Default: "por la"
+#. Default: "Luis W. Sevilla"
 #: gvSIGi18n_creditos_i18n_view
-msgid "gvSIGi18n_credits_PorLa"
-msgstr "by the"
-
-
-
-
-#. Default: "por"
-#: gvSIGi18n_creditos_i18n_view
-msgid "gvSIGi18n_credits_por"
-msgstr "by"
-
-
-#. Default: "Plataforma"
-#: gvSIGi18n_creditos_i18n_view
-msgid "gvSIGi18n_credits_Platform_PropertyName"
-msgstr "Platform"
-
-
-#. Default: "Intercambio de traducciones de acuerdo con"
-#: gvSIGi18n_creditos_i18n_view
-msgid "gvSIGi18n_credits_Standards_Interchange_Intro_PropertyName"
-msgstr "Translations interchange according to"
-
-
-#. Default: "Componentes"
-#: gvSIGi18n_creditos_i18n_view
-msgid "gvSIGi18n_credits_Components_PropertyName"
-msgstr "Components"
-
-#. Default: "Instalados"
-#: gvSIGi18n_creditos_i18n_view
-msgid "gvSIGi18n_credits_Components_Installed_PropertyName"
-msgstr "Installed"
-
-
-#. Default: "No Instalados"
-#: gvSIGi18n_creditos_i18n_view
-msgid "gvSIGi18n_credits_Components_NotInstalled_PropertyName"
-msgstr "Not Installed"
-
-#. Default: "Ausentes"
-#: gvSIGi18n_creditos_i18n_view
-msgid "gvSIGi18n_credits_Components_Missing_PropertyName"
-msgstr "Missing"
-
-#. Default: "Erroneos"
-#: gvSIGi18n_creditos_i18n_view
-msgid "gvSIGi18n_credits_Components_Error_PropertyName"
-msgstr "Failed"
-
-
-#. Default: "Opcionales"
-#: gvSIGi18n_creditos_i18n_view
-msgid "gvSIGi18n_credits_Components_Optional_PropertyName"
-msgstr "Optional"
-
-#. Default: "De terceras partes"
-#: gvSIGi18n_creditos_i18n_view
-msgid "gvSIGi18n_credits_Components_ThirdParty_PropertyName"
-msgstr "Third party"
-
-#. Default: "Desarrollados por"
-#: gvSIGi18n_creditos_i18n_view
-msgid "gvSIGi18n_credits_Components_DevelopedBy_PropertyName"
-msgstr "Developed by"
-
-
-
-#. Default: "Desarrollado por"
-#: gvSIGi18n_creditos_i18n_view
-msgid "gvSIGi18n_credits_DevelopedBy_PropertyName"
-msgstr "Developed by"
-
-
-#. Default: "Servidor de Aplicaciones, Gestor de Contenidos y Lenguage de Programacion"
-#: gvSIGi18n_creditos_i18n_view
-msgid "gvSIGi18n_credits_Platform_Intro_PropertyName"
-msgstr "Application Server, Content Management System and Programming Language"
-
+msgid "gvSIGi18n_credits_SponsorProjectTitle_CoordinadorTecnico_Name"
+msgstr "Luis W. Sevilla"
 
 

@@ -34,37 +34,38 @@ __docformat__ = 'plaintext'
 
 
 
-
-cLazyCreateModelDDvlPloneTool          = True
-cLazyCreateModelDDvlPloneConfiguration = True
-
-
 # #######################################
-"""Initial values for configuration of logging.
-Runtime values are held in globals in TRAElemento_Globals.
-Maintained through templates to change the enablement state.
-"""
+# Interaction modes
+#
 
-cExecutionLoggingEnabled         = False
-
-cDetailedExecutionLoggingEnabled = True
-
-cAllowRootProfileExecution       = True 
+cInteractionMode_Asynchronous       = 'Asincrono'
+cInteractionMode_Synchronous        = 'Sincrono'
 
 
 
-# #######################################
-"""Configuration of detailed execution logging.
+
+
+
+"""# #######################################
+Configuration of detailed execution logging.
+
 When true, the execution time profiling will be logged.
+
 Note that when enabled, the log file will grow very fast.
 """
+cExecutionLoggingEnabled         = False
+
+
+cLogTranslationChanges           = False
+
 
 # ACV20090519 removed
 #cLogTimeProfile       = True
-cLogTranslationChanges           = False
 cLogExceptions                   = True
 cTimeStampingEnabled             = True
 cTimeProfilingEnabled            = True
+cDetailedExecutionLoggingEnabled = True
+
 
 
 
@@ -87,7 +88,7 @@ When true, some restrictions are not enforced, to facilitate the developpers or 
        (while import is not allowed when not in develoment of debug, for import processes that started already).
 
 """
-cUnderDevelopmentOrDebug = False
+cUnderDevelopmentOrDebug = True
 
 
 
@@ -108,16 +109,6 @@ i.e., if there is no reference language slected, then a page can contain up to 1
 
 """
 cMaximoRegistrosExplorados   = 1000
-
-
-
-
-# #######################################
-# Interaction modes
-#
-
-cInteractionMode_Asynchronous       = 'Asincrono'
-cInteractionMode_Synchronous        = 'Sincrono'
 
 
 """# #######################################
@@ -204,23 +195,13 @@ fsISS = fsIsSomethingOrNonEmptyStringOrSequence
 # cCodigoNingunIdiomaReferencia = '--no_reference_language--'
 
 
-# #######################################
-# Keys used to supply specific language information when creating languages not well-known to Plone
-#   
-cAcceptedLanguageDetailKeys   = [
-    'codigo_internacional_idioma',
-    'english_name',
-    'nombre_nativo_de_idioma',
-]
-   
+
 
 # #######################################
 # UI actions
 #
-cAccion_Traducir                     = 'Traducir'
-cAccion_InvalidarTraduccionesCadena  = 'InvalidarTraduccionesCadena'
-cAccion_DesactivarCadena             = 'DesactivarCadena'
-cAccion_ActivarCadena                = 'ActivarCadena'
+cAccion_Traducir = 'Traducir'
+
 
 
 
@@ -259,15 +240,8 @@ cEncodingUTF8   = 'utf-8'
 cEncodingUTF16  = 'utf-16'
 cEncodingLatin  = 'ISO-8859-1'
 
-cEncodingUnicodeEscape   = 'unicode_escape'
-
-cMaxUnescapedCharOrdinal = 126
 
 
-
-
-
-cTranslationStatus_DifferentChangeCounter = 'DifferentChangeCounter'
 
 cRequestedChangeKind_IntentarTraducir   = 'TryToTranslate'
 cRequestedChangeKind_Comentar           = 'Comment'
@@ -276,9 +250,6 @@ cRequestedChangeKind_HacerTraducida     = 'ChangeToTranslated'
 cRequestedChangeKind_HacerRevisada      = 'ChangeToReviewed'
 cRequestedChangeKind_HacerDefinitiva    = 'ChangeToLocked'
 cRequestedChangeKind_BatchCambioEstado  = 'BatchStatusChange'
-cRequestedChangeKind_InvalidarTraduccionesCadena = 'InvalidarTraduccionesCadena'
-cRequestedChangeKind_DesactivarCadena   = 'DesactivarCadena'
-cRequestedChangeKind_ActivarCadena      = 'ActivarCadena'
 
 cRequestedChangeKinds = [
     cRequestedChangeKind_IntentarTraducir,  
@@ -286,10 +257,7 @@ cRequestedChangeKinds = [
     cRequestedChangeKind_HacerPendiente,    
     cRequestedChangeKind_HacerTraducida,    
     cRequestedChangeKind_HacerRevisada,     
-    cRequestedChangeKind_HacerDefinitiva,     
-    cRequestedChangeKind_InvalidarTraduccionesCadena,       
-    cRequestedChangeKind_DesactivarCadena,
-    cRequestedChangeKind_ActivarCadena,
+    cRequestedChangeKind_HacerDefinitiva,         
 ]
 
 
@@ -317,13 +285,11 @@ cNombreTipoTRATraduccion                = "TRATraduccion"
 cNombreTipoTRAImportacion               = "TRAImportacion"
 cNombreTipoTRAContenidoIntercambio      = "TRAContenidoIntercambio"
 cNombreTipoTRAInforme                   = "TRAInforme"
-cNombreTipoTRASolicitudCadena           = "TRASolicitudCadena"
 cNombreTipoTRAColeccionIdiomas          = "TRAColeccionIdiomas"
 cNombreTipoTRAColeccionModulos          = "TRAColeccionModulos"
 cNombreTipoTRAColeccionCadenas          = "TRAColeccionCadenas"
 cNombreTipoTRAColeccionInformes         = "TRAColeccionInformes"
 cNombreTipoTRAColeccionImportaciones    = "TRAColeccionImportaciones"
-cNombreTipoTRAColeccionSolicitudesCadenas    = "TRAColeccionSolicitudesCadenas"
 
 # cNombreTipo_cualquiera   = '--AnyType--'
 
@@ -340,9 +306,7 @@ cPreferredTypesOrder = [
     cNombreTipoTRAImportacion, 
     cNombreTipoTRAContenidoIntercambio,   
     cNombreTipoTRAColeccionInformes,      
-    cNombreTipoTRAInforme,      
-    cNombreTipoTRAColeccionSolicitudesCadenas,
-    cNombreTipoTRASolicitudCadena,
+    cNombreTipoTRAInforme,                
 ]
 
 
@@ -353,7 +317,6 @@ cTodosNombresTiposColecciones = [
     cNombreTipoTRAColeccionCadenas,       
     cNombreTipoTRAColeccionInformes,      
     cNombreTipoTRAColeccionImportaciones, 
-    cNombreTipoTRAColeccionSolicitudesCadenas,
 ]
 
 
@@ -370,27 +333,19 @@ cTodosNombresTiposWithChildren = cTodosNombresTiposColecciones + cTodosNombresTi
 cTodosNombresTiposWithoutChildren = [
     cNombreTipoTRATraduccion,             
     cNombreTipoTRAContenidoIntercambio,   
-    cNombreTipoTRAInforme,    
-    cNombreTipoTRASolicitudCadena,
+    cNombreTipoTRAInforme,                
  ]
 
 
 cTodosNombresTipos = cPreferredTypesOrder
 
 
-
-cNombreTraversal_Importacion_ContenidosIntercambio = 'contenido'
-
-
 cCadenaIdPrefix = 'ca-'
 cIdiomaIdPrefix = 'la-'
 cModuloIdPrefix = 'mo-'
-cSolicitudCadenaIdPrefix = 'sc-'
 
 cEstadoCadenaActiva         = 'Activa'
 cEstadoCadenaInactiva       = 'Inactiva'
-
-cTodosEstadosCadena = [ cEstadoCadenaActiva, cEstadoCadenaInactiva, ]
 
 
 cEstadoTraduccionPendiente  = 'Pendiente'
@@ -398,19 +353,8 @@ cEstadoTraduccionTraducida  = 'Traducida'
 cEstadoTraduccionRevisada   = 'Revisada'
 cEstadoTraduccionDefinitiva = 'Definitiva'
 
+
 cTodosEstados = [ cEstadoTraduccionPendiente, cEstadoTraduccionTraducida, cEstadoTraduccionRevisada, cEstadoTraduccionDefinitiva, ]
-
-
-
-
-cEstadoSolicitudCadenaPendiente   = 'Pendiente'
-cEstadoSolicitudCadenaDescartada  = 'Descartada'
-cEstadoSolicitudCadenaCreada      = 'Creada'
-
-cTodosEstadosSolicitudCadena = [ cEstadoSolicitudCadenaPendiente, cEstadoSolicitudCadenaDescartada, cEstadoSolicitudCadenaCreada, ]
-
-
-
 
 
 cNombreModuloNoEspecificadoLabel_MsgId  = 'gvSIGi18n_ModuloNoEspecificado_msgid'
@@ -445,40 +389,3 @@ cFirstMinuteForSearches      = 0
 cLastMinuteForSearches       = 59
 cFirstSecondForSearches      = 0
 cLastSecondForSearches       = 59
-
-
-
-
-
-
-
-
-
-
-# ##############################################
-"""Actions recorded in the history of changes of each translation.
-
-"""
-cTranslationHistoryAction_Importar       = 'Importar'
-cTranslationHistoryAction_Ignorar        = 'Ignorar'
-cTranslationHistoryAction_Traducir       = 'Traducir'
-cTranslationHistoryAction_Comentar       = 'Comentar'
-cTranslationHistoryAction_HacerPendiente = 'HacerPendiente'
-cTranslationHistoryAction_HacerTraducida = 'HacerTraducida'
-cTranslationHistoryAction_HacerRevisada  = 'HacerRevisada'
-cTranslationHistoryAction_HacerDefinitiva= 'HacerDefinitiva'
-cTranslationHistoryAction_Invalidar      = 'Invalidar'
-cTranslationHistoryAction_IntentarTraducirDifferentCounter       = 'IntentarTraducirDifferentCounter'
-
-cTranslationHistoryActions = [
-    cTranslationHistoryAction_Importar,       
-    cTranslationHistoryAction_Ignorar ,       
-    cTranslationHistoryAction_Traducir,       
-    cTranslationHistoryAction_Comentar,       
-    cTranslationHistoryAction_HacerPendiente, 
-    cTranslationHistoryAction_HacerTraducida, 
-    cTranslationHistoryAction_HacerRevisada,  
-    cTranslationHistoryAction_HacerDefinitiva,
-    cTranslationHistoryAction_Invalidar,      
-]
-

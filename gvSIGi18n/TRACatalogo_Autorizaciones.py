@@ -35,9 +35,8 @@ from Products.gvSIGi18n.config import *
 
 ##code-section module-header #fill in your manual code here
 
-#from  TRAElemento_Permission_Definitions import cUseCase_ReviewUsersAuthorizations
-# ACV 20090914 Simpler security schema: no user groups for languages or modules, shall assign local roles to users directly on the language or module element
-# from  TRAElemento_Permission_Definitions import cTRAUserGroups_AllIdiomas, cTRAUserGroups_Idioma
+from  TRAElemento_Permission_Definitions import cUseCase_ReviewUsersAuthorizations
+from  TRAElemento_Permission_Definitions import cTRAUserGroups_AllIdiomas, cTRAUserGroups_Idioma
 
 
 
@@ -64,168 +63,166 @@ class TRACatalogo_Autorizaciones:
 ##code-section module-footer #fill in your manual code here
 
     
-    #security.declarePrivate( 'fNewVoidInformeAutorizacionesUsuarioEnIdioma')
-    #def fNewVoidInformeAutorizacionesUsuarioEnIdioma(self,):
-        #unInforme = {
-            #'user_id':              '', 
-            #'user_name':            '', 
-            #'authorized_roles':     [ ],
-         #}
-        #return unInforme
+    security.declarePrivate( 'fNewVoidInformeAutorizacionesUsuarioEnIdioma')
+    def fNewVoidInformeAutorizacionesUsuarioEnIdioma(self,):
+        unInforme = {
+            'user_id':              '', 
+            'user_name':            '', 
+            'authorized_roles':     [ ],
+         }
+        return unInforme
     
  
-    #security.declarePrivate( 'fNewVoidInformeAutorizacionesIdioma')
-    #def fNewVoidInformeAutorizacionesIdioma(self,):
-        #unInforme = {
-            #'codigo_idioma_en_gvsig':           '', 
-            #'codigo_internacional_de_idioma':   '',
-            #'nombre':                           '',
-            #'nombre_nativo':                    '',
-            #'flag':                             '',
-            #'users_authorizations':             [],
-        #}
-        #return unInforme
+    security.declarePrivate( 'fNewVoidInformeAutorizacionesIdioma')
+    def fNewVoidInformeAutorizacionesIdioma(self,):
+        unInforme = {
+            'codigo_idioma_en_gvsig':           '', 
+            'codigo_internacional_de_idioma':   '',
+            'nombre':                           '',
+            'nombre_nativo':                    '',
+            'flag':                             '',
+            'users_authorizations':             [],
+        }
+        return unInforme
     
      
     
    
 
-    #security.declarePrivate( 'fNewVoidInformeAutorizacionesIdiomas')
-    #def fNewVoidInformeAutorizacionesIdiomas(self,):
-        #unInforme = {
-            #'success':                                  False,
-            #'users_authorizations_all_idiomas':         None, 
-            #'idiomas':                                  [], 
-            #'display_country_flags':                    False,
-        #}
-        #return unInforme
+    security.declarePrivate( 'fNewVoidInformeAutorizacionesIdiomas')
+    def fNewVoidInformeAutorizacionesIdiomas(self,):
+        unInforme = {
+            'success':                                  False,
+            'users_authorizations_all_idiomas':         None, 
+            'idiomas':                                  [], 
+            'display_country_flags':                    False,
+        }
+        return unInforme
        
 
     
-    ## ACV 20090914 Simpler security schema: no user groups for languages or modules, shall assign local roles to users directly on the language or module element
-    #security.declarePrivate( 'fInformeAuthorizacionesIdiomas')
-    #def fInformeAuthorizacionesIdiomas(self, 
-        #thePermissionsCache=None, 
-        #theRolesCache=None, 
-        #theParentExecutionRecord=None): 
-        #"""Report all languages and all the users authorized to play each role in each language.
+    
+    security.declarePrivate( 'fInformeAuthorizacionesIdiomas')
+    def fInformeAuthorizacionesIdiomas(self, 
+        thePermissionsCache=None, 
+        theRolesCache=None, 
+        theParentExecutionRecord=None): 
+        """Report all languages and all the users authorized to play each role in each language.
         
-        #"""
+        """
         
-        #unExecutionRecord = self.fStartExecution( 'method',  'fInformeAuthorizacionesIdiomas', theParentExecutionRecord, False) 
+        unExecutionRecord = self.fStartExecution( 'method',  'fInformeAuthorizacionesIdiomas', theParentExecutionRecord, False) 
 
-        #try:       
+        try:       
             
-            #unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-            #unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+            unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
+            unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
             
             
-            #unInforme = self.fNewVoidInformeAutorizacionesIdiomas()
+            unInforme = self.fNewVoidInformeAutorizacionesIdiomas()
             
-            ## ##############################################################################
-            #"""Query for all languages .
+            # ##############################################################################
+            """Query for all languages .
             
-            #"""
-            #unUseCaseQueryResult = self.fUseCaseAssessment(  
-                #theUseCaseName          = cUseCase_ReviewUsersAuthorizations, 
-                #theElementsBindings     = { cBoundObject: self,},
-                #theRulesToCollect       = [ 'languages',], 
-                #thePermissionsCache     = unPermissionsCache, 
-                #theRolesCache           = unRolesCache, 
-                #theParentExecutionRecord= unExecutionRecord) 
-            #if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
-                #return unInforme  
+            """
+            unUseCaseQueryResult = self.fUseCaseAssessment(  
+                theUseCaseName          = cUseCase_ReviewUsersAuthorizations, 
+                theElementsBindings     = { cBoundObject: self,},
+                theRulesToCollect       = [ 'languages',], 
+                thePermissionsCache     = unPermissionsCache, 
+                theRolesCache           = unRolesCache, 
+                theParentExecutionRecord= unExecutionRecord) 
+            if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
+                return unInforme  
              
-            #unInforme[ 'display_country_flags'] = self.fDisplayCountryFlags()
+            unInforme[ 'display_country_flags'] = self.fDisplayCountryFlags()
             
-            #unosLanguagesNamesAndFlagsPorCodigo = self.fLanguagesNamesAndFlagsPorCodigo()
+            unosLanguagesNamesAndFlagsPorCodigo = self.fLanguagesNamesAndFlagsPorCodigo()
             
-            #unosInformesIdiomas = [ ]
+            unosInformesIdiomas = [ ]
             
-            #unosIdiomasAccesibles = unUseCaseQueryResult.get( 'collected_rule_assessments_by_name', {}).get( 'languages', {}).get( 'accepted_final_objects', [])
-            #for unIdioma in unosIdiomasAccesibles: 
+            unosIdiomasAccesibles = unUseCaseQueryResult.get( 'collected_rule_assessments_by_name', {}).get( 'languages', {}).get( 'accepted_final_objects', [])
+            for unIdioma in unosIdiomasAccesibles: 
 
-                #unCodigoIdioma = unIdioma.getCodigoIdiomaEnGvSIG()
+                unCodigoIdioma = unIdioma.getCodigoIdiomaEnGvSIG()
                 
-                #unInformeIdioma = self.fNewVoidInformeAutorizacionesIdioma()
-                #unInformeIdioma.update( {
-                    #'codigoIdiomaEnGvSIG':           self.fAsUnicode( unCodigoIdioma), 
-                    #'codigoInternacionalDeIdioma':   self.fAsUnicode( unIdioma.getCodigoInternacionalDeIdioma() or ''),
-                    #'nombreIdioma':                  self.fAsUnicode( unIdioma.Title() or ''),
-                    #'nombreNativoDeIdioma':          self.fAsUnicode( unIdioma.getNombreNativoDeIdioma() or ''),
-                    #'flag':                          self.fAsUnicode( unosLanguagesNamesAndFlagsPorCodigo.get( unCodigoIdioma, {}).get( 'flag', cTRAFlagIdiomaDesconocida)),
-                    #'displayTitle':                  self.fAsUnicode( unIdioma.fDisplayTitleAsUnicode())
-                #})
+                unInformeIdioma = self.fNewVoidInformeAutorizacionesIdioma()
+                unInformeIdioma.update( {
+                    'codigoIdiomaEnGvSIG':           self.fAsUnicode( unCodigoIdioma), 
+                    'codigoInternacionalDeIdioma':   self.fAsUnicode( unIdioma.getCodigoInternacionalDeIdioma() or ''),
+                    'nombreIdioma':                  self.fAsUnicode( unIdioma.Title() or ''),
+                    'nombreNativoDeIdioma':          self.fAsUnicode( unIdioma.getNombreNativoDeIdioma() or ''),
+                    'flag':                          self.fAsUnicode( unosLanguagesNamesAndFlagsPorCodigo.get( unCodigoIdioma, {}).get( 'flag', cTRAFlagIdiomaDesconocida)),
+                    'displayTitle':                  self.fAsUnicode( unIdioma.fDisplayTitleAsUnicode())
+                })
                 
-                #unosInformesUsuariosIdiomaByUserId = { }
+                unosInformesUsuariosIdiomaByUserId = { }
                 
-                ## ACV 20090914 Simpler security schema: no user groups for languages or modules, shall assign local roles to users directly on the language or module element
-                ##for unGroupSpec in cTRAUserGroups_Idioma:
+                for unGroupSpec in cTRAUserGroups_Idioma:
                     
-                    ##unGroupName     = unGroupSpec[ 0]
-                    ##unGroupRoles    = unGroupSpec[ 1]
+                    unGroupName     = unGroupSpec[ 0]
+                    unGroupRoles    = unGroupSpec[ 1]
                     
-                    ##unGroupId = self.fUserGroupIdIdiomaFor( unGroupName, theIdioma)
-                    ##unosUsuariosEnGrupo = self.fUsersInGroupId( unGroupId)
+                    unGroupId = self.fUserGroupIdIdiomaFor( unGroupName, theIdioma)
+                    unosUsuariosEnGrupo = self.fUsersInGroupId( unGroupId)
                     
-                    ##for unUserIdAndName in unosUsuariosEnGrupo:
-                        ##unUserId   = unUserIdAndName[ 0]
-                        ##unUserName = unUserIdAndName[ 1]
-                        ##unInformeAutorizacionesUsuarioEnIdioma = unosInformesUsuariosIdiomaByUserId.get( unUserId, None)
-                        ##if not unInformeAutorizacionesUsuarioEnIdioma:
-                            ##unInformeAutorizacionesUsuarioEnIdioma = self.fNewVoidInformeAutorizacionesUsuarioEnIdioma()
-                            ##unInformeAutorizacionesUsuarioEnIdioma[ 'user_id']   = unUserId
-                            ##unInformeAutorizacionesUsuarioEnIdioma[ 'user_name'] = unUserName
-                            ##unosInformesUsuariosIdiomaByUserId[ unUserId] = unInformeAutorizacionesUsuarioEnIdioma
+                    for unUserIdAndName in unosUsuariosEnGrupo:
+                        unUserId   = unUserIdAndName[ 0]
+                        unUserName = unUserIdAndName[ 1]
+                        unInformeAutorizacionesUsuarioEnIdioma = unosInformesUsuariosIdiomaByUserId.get( unUserId, None)
+                        if not unInformeAutorizacionesUsuarioEnIdioma:
+                            unInformeAutorizacionesUsuarioEnIdioma = self.fNewVoidInformeAutorizacionesUsuarioEnIdioma()
+                            unInformeAutorizacionesUsuarioEnIdioma[ 'user_id']   = unUserId
+                            unInformeAutorizacionesUsuarioEnIdioma[ 'user_name'] = unUserName
+                            unosInformesUsuariosIdiomaByUserId[ unUserId] = unInformeAutorizacionesUsuarioEnIdioma
                             
-                        ##unosRolesUsuarioEnIdioma = unInformeAutorizacionesUsuarioEnIdioma.get( 'authorized_roles', [])
+                        unosRolesUsuarioEnIdioma = unInformeAutorizacionesUsuarioEnIdioma.get( 'authorized_roles', [])
                         
-                        ##for unRole in unGroupRoles:
-                            ##if not ( unRole in unosRolesUsuarioEnIdioma):    
-                                ##unosRolesUsuarioEnIdioma.append( unRole)
+                        for unRole in unGroupRoles:
+                            if not ( unRole in unosRolesUsuarioEnIdioma):    
+                                unosRolesUsuarioEnIdioma.append( unRole)
                                 
-                #unInformeIdioma[ 'users_authorizations'] = unosInformesUsuariosIdiomaByUserId.values()
-                #unosInformesIdiomas.append( unInformeIdioma)
+                unInformeIdioma[ 'users_authorizations'] = unosInformesUsuariosIdiomaByUserId.values()
+                unosInformesIdiomas.append( unInformeIdioma)
                 
-            #unosInformesIdiomasSorted = sorted( unosInformesIdiomas, lambda uno, otro: cmp( uno[ 'codigoIdiomaEnGvSIG'], otro[ 'codigoIdiomaEnGvSIG']))
+            unosInformesIdiomasSorted = sorted( unosInformesIdiomas, lambda uno, otro: cmp( uno[ 'codigoIdiomaEnGvSIG'], otro[ 'codigoIdiomaEnGvSIG']))
             
-            #unInforme[ 'idiomas'] = unosInformesIdiomasSorted
+            unInforme[ 'idiomas'] = unosInformesIdiomasSorted
             
             
             
-            #unosInformesUsuariosAllIdiomasByUserId = { }
+            unosInformesUsuariosAllIdiomasByUserId = { }
 
-            ## ACV 20090914 Simpler security schema: no user groups for languages or modules, shall assign local roles to users directly on the language or module element
-            ##for unGroupSpec in cTRAUserGroups_AllIdiomas:
+            for unGroupSpec in cTRAUserGroups_AllIdiomas:
                 
-                ##unGroupName     = unGroupSpec[ 0]
-                ##unGroupRoles    = unGroupSpec[ 1]
+                unGroupName     = unGroupSpec[ 0]
+                unGroupRoles    = unGroupSpec[ 1]
                 
-                ##unGroupId = self.fUserGroupIdAllIdiomasFor( unGroupName)
-                ##unosUsuariosEnGrupo = self.fUsersInGroupId( unGroupId)
+                unGroupId = self.fUserGroupIdAllIdiomasFor( unGroupName)
+                unosUsuariosEnGrupo = self.fUsersInGroupId( unGroupId)
                 
-                ##for unUserIdAndName in unosUsuariosEnGrupo:
-                    ##unUserId   = unUserIdAndName[ 0]
-                    ##unUserName = unUserIdAndName[ 1]
-                    ##unInformeAutorizacionesUsuarioEnIdioma = unosInformesUsuariosAllIdiomasByUserId.get( unUserId, None)
-                    ##if not unInformeAutorizacionesUsuarioAllIdiomas:
-                        ##unInformeAutorizacionesUsuarioAllIdiomas = self.fNewVoidInformeAutorizacionesUsuarioEnIdioma()
-                        ##unInformeAutorizacionesUsuarioAllIdiomas[ 'user_id']   = unUserId
-                        ##unInformeAutorizacionesUsuarioAllIdiomas[ 'user_name'] = unUserName
-                        ##unosInformesUsuariosAllIdiomasByUserId[ unUserId] = unInformeAutorizacionesUsuarioAllIdiomas
+                for unUserIdAndName in unosUsuariosEnGrupo:
+                    unUserId   = unUserIdAndName[ 0]
+                    unUserName = unUserIdAndName[ 1]
+                    unInformeAutorizacionesUsuarioEnIdioma = unosInformesUsuariosAllIdiomasByUserId.get( unUserId, None)
+                    if not unInformeAutorizacionesUsuarioAllIdiomas:
+                        unInformeAutorizacionesUsuarioAllIdiomas = self.fNewVoidInformeAutorizacionesUsuarioEnIdioma()
+                        unInformeAutorizacionesUsuarioAllIdiomas[ 'user_id']   = unUserId
+                        unInformeAutorizacionesUsuarioAllIdiomas[ 'user_name'] = unUserName
+                        unosInformesUsuariosAllIdiomasByUserId[ unUserId] = unInformeAutorizacionesUsuarioAllIdiomas
                         
-                    ##unosRolesUsuarioAllIdiomas = unInformeAutorizacionesUsuarioEnIdioma.get( 'authorized_roles', [])
+                    unosRolesUsuarioAllIdiomas = unInformeAutorizacionesUsuarioEnIdioma.get( 'authorized_roles', [])
                     
-                    ##for unRole in unGroupRoles:
-                        ##if not ( unRole in unosRolesUsuarioAllIdiomas):    
-                            ##unosRolesUsuarioAllIdiomas.append( unRole)
+                    for unRole in unGroupRoles:
+                        if not ( unRole in unosRolesUsuarioAllIdiomas):    
+                            unosRolesUsuarioAllIdiomas.append( unRole)
                             
-            #unInforme[ 'users_authorizations_all_idiomas'] = unosInformesUsuariosAllIdiomasByUserId.values()
+            unInforme[ 'users_authorizations_all_idiomas'] = unosInformesUsuariosAllIdiomasByUserId.values()
             
                
             
-        #finally:
-            #unExecutionRecord and unExecutionRecord.pEndExecution()
+        finally:
+            unExecutionRecord and unExecutionRecord.pEndExecution()
                       
                 
                   

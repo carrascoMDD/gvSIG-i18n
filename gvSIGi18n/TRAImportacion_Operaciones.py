@@ -46,13 +46,9 @@ import traceback
 import os
 import logging
 
-import time
-
 import transaction
 
 from math import floor
-
-from DateTime import DateTime
 
 
 from StringIO import StringIO
@@ -71,13 +67,10 @@ from Products.gvSIGi18n.TRATraduccion_Operaciones import cMarcaDeComentarioSinCa
 
 from Products.Archetypes.utils import getRelURL
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneTool          import ModelDDvlPloneTool
+from Products.ModelDDvlPloneTool.ModelDDvlPloneTool import ModelDDvlPloneTool
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators  import ModelDDvlPloneTool_Mutators, cModificationKind_CreateSubElement, cModificationKind_Create, cModificationKind_ChangeValues
-from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Retrieval import ModelDDvlPloneTool_Retrieval
 
-from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fMillisecondsNow, fDateTimeNow
-
+from TRAElemento_Permissions import cBoundObject
 
 
 
@@ -85,13 +78,9 @@ from TRAElemento_Constants import *
 
 from TRAImportarExportar_Constants import *
 
-from TRAElemento_Permission_Definitions import cUseCase_CreateTRAContenidoIntercambio, cUseCase_DeleteTRAContenidoIntercambio
-from TRAElemento_Permission_Definitions import cUseCase_ImportTRAImportacion, cUseCase_CreateMissingTRATraduccion, cUseCase_ReuseTRAImportacion
+from TRAElemento_Permission_Definitions import cUseCase_CreateTRAContenidoIntercambio, cUseCase_ImportTRAImportacion, cUseCase_CreateMissingTRATraduccion
 from TRAElemento_Permission_Definitions import cBoundObject
 
-from TRAElemento_Permission_Definitions import cPermissionsToDenyEverywhereToEverybody
-
-from TRAElemento_Operaciones            import TRAElemento_Operaciones
 
 
 
@@ -104,7 +93,24 @@ class TRAImportacion_Operaciones:
     """
     security = ClassSecurityInfo()
      
-
+    
+      
+    security.declarePrivate( 'fNewVoidUploadedContent')    
+    def fNewVoidUploadedContent( self,):
+        unUploadedContent = {
+            'import_report':                          None,
+#            'reference_uploaded_entries':             [],
+            'uploaded_entries':                       [],
+            'languages':                              [],
+            'module':                                 '',
+            'strings_and_translations':               {},
+            'strings_with_encoding_errors':           {},
+            'strings_sources':                        {},
+        }
+        return unUploadedContent
+    
+    
+    
     security.declarePrivate( 'fNewVoidUploadedEntry')    
     def fNewVoidUploadedEntry( self,):
         unUploadedEntry = {
@@ -376,7 +382,7 @@ class TRAImportacion_Operaciones:
                     anActionReport = { 'effect': 'error', 'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_no_permission_msgid', "User does not have permission to create interchange contents.-"), }
                     return anActionReport  
                             
-                aModelDDvlPlone_tool = self.fModelDDvlPloneTool()
+                aModelDDvlPlone_tool = ModelDDvlPloneTool()
                              
                 
                 unNewTypeName = theNewTypeName
@@ -402,8 +408,6 @@ class TRAImportacion_Operaciones:
                 unosClavesYContenidosParaOrdenar = [ [ '%s|||%s' % ( unUploadedContent.get( 'module', ''), '|'.join( sorted( unUploadedContent.get('languages',[]))), ), unUploadedContent] for unUploadedContent in unosContenidos]
                 unosClavesYContenidosOrdenados = sorted( unosClavesYContenidosParaOrdenar, lambda unC, otroC : cmp( unC[ 0] , otroC[ 0]) )
                 
-                aPloneUtilsTool = self.getPloneUtilsToolForNormalizeString()  
-                
                 for unaClavesYUploadedContent in unosClavesYContenidosOrdenados:  
                     
                     unUploadedContent = unaClavesYUploadedContent[ 1]
@@ -417,8 +421,8 @@ class TRAImportacion_Operaciones:
                             unModulo = self.fNombreModuloPorDefecto()
                     
                         unosLenguages = sorted( unUploadedContent[ 'languages'])
-                        unLenguagesString = ', '.join( [ ('[%s]' % unLenguage) for unLenguage in unosLenguages ])
-                        unBaseTitle = '%s %s' % ( unModulo, unLenguagesString, )
+                        unLenguagesString = cLanguageSeparatorCountry.join( unosLenguages )
+                        unBaseTitle = '%s [%s]' % ( unModulo, unLenguagesString, )
                         
                         unasUploadedEntries = unUploadedContent.get( 'uploaded_entries', [])
                         unasDescripciones = [ 'file: %(file_name)s, kind: %(file_kind)s, ref: %(is_reference)d, language: %(language)s, country: %(country)s, charset: %(charset)s, fallback for: %(is_fallback_for)s, domain: %(domain)s,'  % unUploadedEntry for unUploadedEntry in unasUploadedEntries]
@@ -438,6 +442,7 @@ class TRAImportacion_Operaciones:
                         someIds = [ unContInter.getId() for unContInter in someContenidosIntercambio]
                         
    
+                        aPloneUtilsTool = self.getPloneUtilsToolForNormalizeString()  
                         
                                  
                         unTitle = unBaseTitle
@@ -477,12 +482,18 @@ class TRAImportacion_Operaciones:
                             anActionReport = { 'effect': 'error', 'failure': '%s module %s' % (   self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorcreacioncontenidointercambio_errorencreacion', "No se ha podido crear Contenido de Intercambio."), unModulo, ) }
                             return anActionReport     
     
-                        unNuevoContenidoIntercambio.pSetContenido( unUploadedContent)   
+                        unNuevoContenidoIntercambio.pSetContenido( unUploadedContent)                
+        
                         
                         unasDescripcionesContenidosCreados.append( unaDescripcion)
                         
+                        transaction.commit()
+                        
+                        logging.getLogger( 'gvSIGi18n::fCrearContenidoIntercambio').info("COMMIT new %s %s with module %s description\n%s\nand text:\n%s\n" % ( unNewTypeName, unTitle,  unModulo, unaDescripcion, unTexto, )) 
+                        
+                        unTimeProfilingResults = { }
                         unResultadoNuevoContenidoIntercambio = aModelDDvlPlone_tool.fRetrieveTypeConfig( 
-                            theTimeProfilingResults     =None,
+                            theTimeProfilingResults     =unTimeProfilingResults,
                             theElement                  =unNuevoContenidoIntercambio, 
                             theParent                   =None,
                             theParentTraversalName      ='',
@@ -494,7 +505,7 @@ class TRAImportacion_Operaciones:
                             theFeatureFilters           ={ 'attrs': [ 'title',], 'relations': [], 'do_not_recurse_collections': True,}, 
                             theInstanceFilters          =None,
                             theTranslationsCaches       =None,
-                            theCheckedPermissionsCache  =thePermissionsCache,
+                            theCheckedPermissionsCache  =None,
                             theAdditionalParams         =None                
                         )
                         if not unResultadoNuevoContenidoIntercambio:
@@ -502,50 +513,6 @@ class TRAImportacion_Operaciones:
                             return anActionReport     
          
                         unContenidoIntercambioCreationReport = { 'effect': 'created', 'new_object_result': unResultadoNuevoContenidoIntercambio, }
-                             
-                        aModelDDvlPloneTool_Mutators = theModelDDvlPloneTool_Mutators
-                        if not aModelDDvlPloneTool_Mutators:
-                            aModelDDvlPloneTool_Mutators = ModelDDvlPloneTool_Mutators()
-                            
-                        aCreateElementReport = aModelDDvlPloneTool_Mutators.fNewVoidCreateElementReport()
-                        aCreateElementReport.update( { 'effect': 'created', 'new_object_result': unResultadoNuevoContenidoIntercambio, })
-                        
-                        someFieldReports    = aCreateElementReport[ 'field_reports']
-                        aFieldReportsByName = aCreateElementReport[ 'field_reports_by_name']
-                        
-                        aReportForField = { 'attribute_name': 'id',          'effect': 'changed', 'new_value': aNewId, 'previous_value': '',}
-                        someFieldReports.append( aReportForField)            
-                        aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
-                        
-                        aReportForField = { 'attribute_name': 'title',       'effect': 'changed', 'new_value': unTitle,           'previous_value': '',}
-                        someFieldReports.append( aReportForField)            
-                        aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
-                        
-                        aReportForField = { 'attribute_name': 'description', 'effect': 'changed', 'new_value': unaDescripcion,    'previous_value': '',}
-                        someFieldReports.append( aReportForField)            
-                        aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
-                                           
-                        aReportForField = { 'attribute_name': 'text', 'effect': 'changed', 'new_value': unTexto,    'previous_value': '',}
-                        someFieldReports.append( aReportForField)            
-                        aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
-                                           
-                        aReportForField = { 'attribute_name': 'nombreModulo', 'effect': 'changed', 'new_value': unModulo,    'previous_value': '',}
-                        someFieldReports.append( aReportForField)            
-                        aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
-                                           
-                        aReportForField = { 'attribute_name': 'usuarioContribuidor', 'effect': 'changed', 'new_value': unMemberId,    'previous_value': '',}
-                        someFieldReports.append( aReportForField)            
-                        aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
-                                           
-                        aModelDDvlPloneTool_Mutators.pSetAudit_Creation( self,                        cModificationKind_CreateSubElement, aCreateElementReport, theUseCounter=True)       
-                        aModelDDvlPloneTool_Mutators.pSetAudit_Creation( unNuevoContenidoIntercambio, cModificationKind_Create,           aCreateElementReport)       
-
-                        self.pFlushCachedTemplates_All()                            
-                        
-                        transaction.commit()
-                        
-                        
-                        logging.getLogger( 'gvSIGi18n::fCrearContenidoIntercambio').info("COMMIT new %s %s with module %s description\n%s\nand text:\n%s\n" % ( unNewTypeName, unTitle,  unModulo, unaDescripcion, unTexto, )) 
         
                     finally:
                         unSubExecutionRecord and unSubExecutionRecord.pEndExecution()
@@ -599,9 +566,9 @@ class TRAImportacion_Operaciones:
             unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
                 
             unUseCaseQueryResult = theUseCaseQueryResult
-            if not theUseCaseQueryResult or not ( theUseCaseQueryResult.get( 'use_case_name', '') == cUseCase_DeleteTRAContenidoIntercambio):
+            if not theUseCaseQueryResult or not ( theUseCaseQueryResult.get( 'use_case_name', '') == cUseCase_ImportTRAImportacion):
                 unUseCaseQueryResult = self.fUseCaseAssessment(  
-                    theUseCaseName          = cUseCase_DeleteTRAContenidoIntercambio,             
+                    theUseCaseName          = cUseCase_ImportTRAImportacion,             
                     theElementsBindings     = { cBoundObject: self,},                    
                     theRulesToCollect       = None,                                      
                     thePermissionsCache     = unPermissionsCache,    
@@ -688,56 +655,35 @@ class TRAImportacion_Operaciones:
                 if ( unUploadedEntry[ 'file_kind'] == cPropertiesFilePostfix) and unUploadedEntry[ 'is_reference']:
                     continue
                 
-                
-                # #########################################
-                """ACV 20091206 Remove reuse of content objects of same module name, to Force One Content Per File, such that they can be individually configured (module name), deleted or excluded from import.
-                
-                """
-                # ACV 20091206 Was:
-                #unUploadedContent = None
+                unUploadedContent = None
 
-                #unFileName = unUploadedEntry[ 'file_name']
-                #unBaseName = os.path.basename( unFileName)
-                #unDirName  = os.path.dirname(  unFileName)
-                #unModuleName = unUploadedEntry.get( 'module', '')
-                #if ( not unModuleName) and unDirName:
-                    #unModuleName = unDirName
+                unFileName = unUploadedEntry[ 'file_name']
+                unBaseName = os.path.basename( unFileName)
+                unDirName  = os.path.dirname(  unFileName)
+                unModuleName = ''
+                if unDirName:
+                    unModuleName = unDirName
                 
-                #if unModuleName:
-                    #for unContenido in unosContenidos:
-                        #if unModuleName == unContenido.get( 'module', ''):
-                            #unUploadedContent = unContenido
-                            #break
-                #if not unUploadedContent:
-                    #unUploadedContent = self.fNewVoidUploadedContent( )
-                    #unUploadedContent[ 'module'] = unModuleName
-                    #unosContenidos.append( unUploadedContent)
-                    
+                if unModuleName:
+                    for unContenido in unosContenidos:
+                        if unModuleName == unContenido.get( 'module', ''):
+                            unUploadedContent = unContenido
+                            break
+                if not unUploadedContent:
+                    unUploadedContent = self.fNewVoidUploadedContent( )
+                    unUploadedContent[ 'module'] = unModuleName
+                    unosContenidos.append( unUploadedContent)
                     
                 if unUploadedEntry[ 'file_kind'] == cPropertiesFilePostfix:
                     #if unUploadedEntry[ 'is_reference']:                    
                         #unUploadedContent [ 'reference_uploaded_entries'].append( unUploadedEntry)
                     #else:
-                    
-                    unUploadedContent = self.fNewVoidUploadedContent( )
-                    unFileName = unUploadedEntry[ 'file_name']
-                    unDirName  = os.path.dirname(  unFileName)
-                    if unDirName:
-                        unUploadedContent[ 'module'] = unDirName
-                    else:
-                        unUploadedContent[ 'module'] = unUploadedEntry.get( 'module', '')
-                    unosContenidos.append( unUploadedContent)
-                    
                     unUploadedContent [ 'uploaded_entries'].append( unUploadedEntry)
                     if not ( unUploadedEntry[ 'language_and_country'] in unUploadedContent [ 'languages']):
                         unUploadedContent [ 'languages'].append( unUploadedEntry[ 'language_and_country'])                                
                     self.pScanTranslationsProperties( theParentExecutionRecord , theUploadedFile, unZipFile, unUploadedContent, unUploadedEntry, theAdditionalParams)
 
                 elif unUploadedEntry[ 'file_kind'] == cPOFilePostfix:
-                    unUploadedContent = self.fNewVoidUploadedContent( )
-                    unUploadedContent[ 'module'] = unUploadedEntry.get( 'module', '')
-                    unosContenidos.append( unUploadedContent)
-                    
                     unUploadedContent [ 'uploaded_entries'].append( unUploadedEntry)
                     if not ( unUploadedEntry[ 'language_and_country'] in unUploadedContent [ 'languages']):
                         unUploadedContent [ 'languages'].append( unUploadedEntry[ 'language_and_country'])   
@@ -793,8 +739,6 @@ class TRAImportacion_Operaciones:
 
             someUploadedEntries = []
             
-            aDefaultModule = self.fNombreModuloPorDefecto()
-            
             unLineIndex = 0
             unUploadedEntry = None
             while unLineIndex < unNumLines:
@@ -817,9 +761,6 @@ class TRAImportacion_Operaciones:
                             
                             if unFileName.lower().endswith( cPropertiesFilePostfix.lower()):
                                 unUploadedEntry[ 'file_kind'] = cPropertiesFilePostfix
-                                unModuleName, aVoidLanguage, aVoidCountry = self.fModuleLocaleLanguageAndCountryFromPropertiesFileName( unFileName, aDefaultModule, '')
-                                if  unModuleName:
-                                    unUploadedEntry[ 'module'] = unModuleName
                             elif unFileName.lower().endswith( cPOFilePostfix.lower()):
                                 unUploadedEntry[ 'file_kind'] = cPOFilePostfix
                             elif unFileName.lower().endswith( cPOTFilePostfix.lower()):
@@ -915,8 +856,6 @@ class TRAImportacion_Operaciones:
 
             someUploadedEntries = []
             
-            aDefaultModule = self.fNombreModuloPorDefecto()
-            
             unLineIndex = 0
             while unLineIndex < unNumLines:
                 unaLine =  someLines[ unLineIndex].strip()
@@ -954,17 +893,11 @@ class TRAImportacion_Operaciones:
                             else:
                                 unUploadedEntry = self.fNewVoidUploadedEntry()
                                 someUploadedEntries.append( unUploadedEntry)
-                                
-                                unModuleName, aVoidLanguage, aVoidCountry = self.fModuleLocaleLanguageAndCountryFromPropertiesFileName( unFileName, aDefaultModule, '')
-                                
                                 unUploadedEntry[ 'file_name']       = unFileName
                                 unUploadedEntry[ 'in_zip']          = True
                                 unUploadedEntry[ 'is_reference']    = unIsReference
                                 unUploadedEntry[ 'language']        = unLocaleLanguage
                                 unUploadedEntry[ 'country']         = unLocaleCountry
-                                if unModuleName:
-                                    unUploadedEntry[ 'module']      = unModuleName
-                                
                                 if unLocaleCountry:
                                     unUploadedEntry[ 'language_and_country']  = '%s-%s' % ( unLocaleLanguage, unLocaleCountry,)
                                 else:
@@ -1010,8 +943,6 @@ class TRAImportacion_Operaciones:
             if not aDefaultLanguage:
                 aDefaultLanguage = self.fCodigoIdiomaPorDefecto()
                 
-            aDefaultModule = self.fNombreModuloPorDefecto()
-
             someUploadedEntries = []
             
             someFileNames = theZipFile.namelist()
@@ -1029,35 +960,29 @@ class TRAImportacion_Operaciones:
                          
                         if aBaseNamePostfix == cPropertiesFilePostfix.lower():
 
-                            aModuleName, unLocaleLanguage, unLocaleCountry = self.fModuleLocaleLanguageAndCountryFromPropertiesFileName( aBaseName, aDefaultModule, aDefaultLanguage)
-   
-                            #if aBaseNameLower == cDefaultLanguagePropertiesFileName:
-                                #unLocaleLanguage = aDefaultLanguage
-                                #unLocaleCountry = ''
-                            #else:
+                            if aBaseNameLower.startswith( cFilenamePropertiesBase):
                                 
-                                #if aBaseNameLower.startswith( cFilenamePropertiesBase):
-                                    #unLocaleLanguage, unLocaleCountry = self.fLocaleLanguageAndCountryFromPropertiesFileName(  aBaseName, aDefaultLanguage)   
-                                #else:                        
-                                    #unLocaleLanguage, unLocaleCountry = self.fLocaleLanguageAndCountryFromNonDefaultPropertiesFileName(  aBaseName, aDefaultLanguage)   
-                                
-                                #if not unLocaleLanguage:
-                                    #unLocaleLanguage, unLocaleCountry = self.fLocaleLanguageAndCountryFromZipPropertiesFile( theParentExecutionRecord, theZipFile, aFullFileName)   
-                                
-                            if unLocaleLanguage:
-                                unUploadedEntry = self.fNewVoidUploadedEntry()
-                                unUploadedEntry[ 'in_zip']    = True
-                                unUploadedEntry[ 'file_name'] = aFullFileName
-                                unUploadedEntry[ 'file_kind'] = cPropertiesFilePostfix
-                                if aModuleName:
-                                    unUploadedEntry[ 'module']    = aModuleName
-                                unUploadedEntry[ 'language']  = unLocaleLanguage.lower()
-                                if unLocaleCountry:
-                                    unUploadedEntry[ 'country']                 = unLocaleCountry.lower()
-                                    unUploadedEntry[ 'language_and_country']    = '%s-%s' % ( unLocaleLanguage.lower(), unLocaleCountry.lower(), )
+                                if aBaseNameLower == cDefaultLanguagePropertiesFileName:
+                                    unLocaleLanguage = aDefaultLanguage
+                                    unLocaleCountry = ''
                                 else:
-                                    unUploadedEntry[ 'country']                 = ''
-                                    unUploadedEntry[ 'language_and_country']    = unLocaleLanguage.lower()
+                                    unLocaleLanguage, unLocaleCountry = self.fLocaleLanguageAndCountryFromPropertiesFileName(  aBaseName)   
+                                                            
+                                    if not unLocaleLanguage:
+                                        unLocaleLanguage, unLocaleCountry = self.fLocaleLanguageAndCountryFromZipPropertiesFile( theParentExecutionRecord, theZipFile, aFullFileName)   
+                                    
+                                if unLocaleLanguage:
+                                    unUploadedEntry = self.fNewVoidUploadedEntry()
+                                    unUploadedEntry[ 'in_zip']    = True
+                                    unUploadedEntry[ 'file_name'] = aFullFileName
+                                    unUploadedEntry[ 'file_kind'] = cPropertiesFilePostfix
+                                    unUploadedEntry[ 'language']  = unLocaleLanguage.lower()
+                                    if unLocaleCountry:
+                                        unUploadedEntry[ 'country']                 = unLocaleCountry.lower()
+                                        unUploadedEntry[ 'language_and_country']    = '%s-%s' % ( unLocaleLanguage.lower(), unLocaleCountry.lower(), )
+                                    else:
+                                        unUploadedEntry[ 'country']                 = ''
+                                        unUploadedEntry[ 'language_and_country']    = unLocaleLanguage.lower()
                                       
                         elif aBaseNamePostfix in [  cPOFilePostfix.lower(), cPOTFilePostfix.lower(),]:
                       
@@ -1123,143 +1048,38 @@ class TRAImportacion_Operaciones:
             unExecutionRecord and unExecutionRecord.pEndExecution()
 
                 
+   
+                
 
-            
-            
-
-
-    security.declarePrivate( 'fModuleLocaleLanguageAndCountryFromPropertiesFileName')    
-    def fModuleLocaleLanguageAndCountryFromPropertiesFileName( self, theFileName, theDefaultModule, theDefaultLanguage):
+    security.declarePrivate( 'fLocaleLanguageAndCountryFromPropertiesFileName')    
+    def fLocaleLanguageAndCountryFromPropertiesFileName( self, theFileName):
         
         if not theFileName :
-            return (  None, None, None, )
-        
-        aFileNameLower = theFileName.lower()
+            return ( None, None, )
  
-        if aFileNameLower in [ cManifestFileFullName.lower(), cLocalesCSVFileFullName.lower(),]:
-            return (  None, None, None, )
-             
-        if aFileNameLower == cDefaultLanguagePropertiesFileName:
-            return ( theDefaultModule, theDefaultLanguage, None)
+        aFileNameLower = theFileName.lower()
+        if not aFileNameLower.startswith( cFilenamePropertiesBase):
+            return ( None, None, )
         
-        aFileNameWOPostfix, aFileNamePostfix = os.path.splitext(  theFileName)
-        
-        if not( aFileNamePostfix.lower() == cPropertiesFilePostfix.lower()):
-            return (  None, None, None, )
-        
-        unModule = ''
         unLocaleLanguage = ''
         unLocaleCountry  = ''
         
-        aFileNameWOPostfixLower = aFileNameWOPostfix.lower()
-
-        if aFileNameWOPostfixLower.startswith( cFilenamePropertiesBase):
-            unModule = theDefaultModule
-            unIndexCharBeforeLanguage = len( cFilenamePropertiesBase)
-
-        else:
-            unIndexCharBeforeLanguage = aFileNameWOPostfixLower.find( cPropertiesFileCharBeforeLanguage, 0)
-            if not ( unIndexCharBeforeLanguage >= 0):
-                unModule = aFileNameWOPostfix
-                return ( unModule, theDefaultLanguage, None)
+        aFileNameWOPostfix = aFileNameLower[ :len( aFileNameLower) - len( cPropertiesFilePostfix)]
+        unIndexCharBeforeLanguage = aFileNameWOPostfix.find( cPropertiesFileCharBeforeLanguage, 0)
+        if unIndexCharBeforeLanguage >= 0:
+            unIndexCharBeforeCountry = aFileNameWOPostfix.find( cPropertiesFileCharBeforeCountry, unIndexCharBeforeLanguage + 1)
+            if unIndexCharBeforeCountry >= 0:
+                unLocaleLanguage = aFileNameWOPostfix[ unIndexCharBeforeLanguage + len( cPropertiesFileCharBeforeLanguage):unIndexCharBeforeCountry].lower()   
+                unLocaleCountry  = aFileNameWOPostfix[  unIndexCharBeforeCountry + len( cPropertiesFileCharBeforeCountry):].lower()   
             else:
-                unModule = aFileNameWOPostfix[:unIndexCharBeforeLanguage]
-            
-        unIndexCharBeforeCountry = aFileNameWOPostfixLower.find( cPropertiesFileCharBeforeCountry, unIndexCharBeforeLanguage + 1)
-        if unIndexCharBeforeCountry >= 0:
-            unLocaleLanguage = aFileNameWOPostfixLower[ unIndexCharBeforeLanguage + len( cPropertiesFileCharBeforeLanguage):unIndexCharBeforeCountry].lower()   
-            unLocaleCountry  = aFileNameWOPostfixLower[  unIndexCharBeforeCountry + len( cPropertiesFileCharBeforeCountry):].lower()   
-        else:
-            unLocaleLanguage = aFileNameWOPostfixLower[ unIndexCharBeforeLanguage + len( cPropertiesFileCharBeforeLanguage):].lower()   
-            unLocaleCountry = ''
+                unLocaleLanguage = aFileNameWOPostfix[ unIndexCharBeforeLanguage + len( cPropertiesFileCharBeforeLanguage):].lower()   
+                unLocaleCountry = ''
                 
-        return ( unModule, unLocaleLanguage, unLocaleCountry, )       
-                
-    
-    
-                            
-            
-            
-                
-
-    #security.declarePrivate( 'fLocaleLanguageAndCountryFromPropertiesFileName')    
-    #def fLocaleLanguageAndCountryFromPropertiesFileName( self, theFileName, theDefaultLanguage):
-        
-        #if not theFileName :
-            #return ( None, None, )
- 
-        #aFileNameLower = theFileName.lower()
-        #if not aFileNameLower.startswith( cFilenamePropertiesBase):
-            #return ( None, None, )
-        
-        #unLocaleLanguage = ''
-        #unLocaleCountry  = ''
-        
-        #aFileNameWOPostfix, aFileNamePostfix = os.path.splitext(  theFileName)
-        #if not aFileNamePostfix.lower() == cPropertiesFilePostfix:
-            #return ( None, None, )
-        
-        #unIndexCharBeforeLanguage = aFileNameWOPostfix.find( cPropertiesFileCharBeforeLanguage, 0)
-        
-        #if not( unIndexCharBeforeLanguage >= 0):
-            #return ( theDefaultLanguage, None)
-        
-        #unIndexCharBeforeCountry = aFileNameWOPostfix.find( cPropertiesFileCharBeforeCountry, unIndexCharBeforeLanguage + 1)
-        #if unIndexCharBeforeCountry >= 0:
-            #unLocaleLanguage = aFileNameWOPostfix[ unIndexCharBeforeLanguage + len( cPropertiesFileCharBeforeLanguage):unIndexCharBeforeCountry].lower()   
-            #unLocaleCountry  = aFileNameWOPostfix[  unIndexCharBeforeCountry + len( cPropertiesFileCharBeforeCountry):].lower()   
-        #else:
-            #unLocaleLanguage = aFileNameWOPostfix[ unIndexCharBeforeLanguage + len( cPropertiesFileCharBeforeLanguage):].lower()   
-            #unLocaleCountry = ''
-                
-        #return ( unLocaleLanguage, unLocaleCountry, )       
-                
-    
-    
-
-    #security.declarePrivate( 'fLocaleLanguageAndCountryFromNonDefaultPropertiesFileName')    
-    #def fLocaleLanguageAndCountryFromNonDefaultPropertiesFileName( self, theFileName, theDefaultLanguage):
-        
-        #if not theFileName :
-            #return ( None, None, )
-        
-        #aFileNameLower = theFileName.lower()
- 
-        #if aFileNameLower in [ cManifestFileFullName.lower(), cLocalesCSVFileFullName.lower(),]:
-            #return ( None, None, )
-             
-        #if aFileNameLower == cDefaultLanguagePropertiesFileName:
-            #return ( theDefaultLanguage, None)
-        
-        #if aFileNameLower.startswith( cFilenamePropertiesBase):
-            #return self.fLocaleLanguageAndCountryFromPropertiesFileName( theFileName, theDefaultLanguage)
-
-        #aFileNameWOPostfix, aFileNamePostfix = os.path.splitext(  aFileNameLower)
-        #if not( aFileNamePostfix == cPropertiesFilePostfix.lower()):
-            #return ( None, None, )
-        
-
-        #unLocaleLanguage = ''
-        #unLocaleCountry  = ''
-        
-        #unIndexCharBeforeLanguage = aFileNameWOPostfix.find( cPropertiesFileCharBeforeLanguage, 0)
-        #if not ( unIndexCharBeforeLanguage >= 0):
-            #return ( theDefaultLanguage, None)
-        
-        #unIndexCharBeforeCountry = aFileNameWOPostfix.find( cPropertiesFileCharBeforeCountry, unIndexCharBeforeLanguage + 1)
-        #if unIndexCharBeforeCountry >= 0:
-            #unLocaleLanguage = aFileNameWOPostfix[ unIndexCharBeforeLanguage + len( cPropertiesFileCharBeforeLanguage):unIndexCharBeforeCountry].lower()   
-            #unLocaleCountry  = aFileNameWOPostfix[  unIndexCharBeforeCountry + len( cPropertiesFileCharBeforeCountry):].lower()   
-        #else:
-            #unLocaleLanguage = aFileNameWOPostfix[ unIndexCharBeforeLanguage + len( cPropertiesFileCharBeforeLanguage):].lower()   
-            #unLocaleCountry = ''
-                
-        #return ( unLocaleLanguage, unLocaleCountry, )       
+        return ( unLocaleLanguage, unLocaleCountry, )       
                 
     
     
                 
-                  
   
     
     
@@ -1280,20 +1100,20 @@ class TRAImportacion_Operaciones:
     
     
     
-    #security.declarePrivate( 'fLocaleLanguageAndCountryFromZipPropertiesFile')    
-    #def fLocaleLanguageAndCountryFromZipPropertiesFile( self, theParentExecutionRecord, theZipFile, theFileName):
+    security.declarePrivate( 'fLocaleLanguageAndCountryFromZipPropertiesFile')    
+    def fLocaleLanguageAndCountryFromZipPropertiesFile( self, theParentExecutionRecord, theZipFile, theFileName):
         
-        #if not theFileName or not theZipFile:
-            #return ( None, None, )
+        if not theFileName or not theZipFile:
+            return ( None, None, )
         
-        #if not ( theFileName.lower().endswith( cPropertiesFilePostfix.lower())):
-            #return ( None, None, )
+        if not ( theFileName.lower().endswith( cPropertiesFilePostfix.lower())):
+            return ( None, None, )
 
-        #unContentData = self.fZipFileElementContent( theZipFile, theFileName)
-        #if not unContentData:
-            #return ( None, None, )
+        unContentData = self.fZipFileElementContent( theZipFile, theFileName)
+        if not unContentData:
+            return ( None, None, )
         
-        #return self.fLocaleLanguageAndCountryFromPropertiesContent( theParentExecutionRecord, unContentData)
+        return self.fLocaleLanguageAndCountryFromPropertiesContent( theParentExecutionRecord, unContentData)
             
      
 
@@ -1474,7 +1294,7 @@ class TRAImportacion_Operaciones:
                     if unQuoteIndex>= 0:
                         unValue = unValue[:unQuoteIndex] 
                     if unValue:
-                        unPOHeader[ 'domain'] = unValue
+                        unPOHeader[ 'domain'] = unValue.lower()
                         unKeysFound.add( 'domain')
                 
                 if unKeysFound == unKeysToFind:
@@ -1570,39 +1390,31 @@ class TRAImportacion_Operaciones:
                     return unUploadedEntry
             
             
+            unLocaleLanguage, unLocaleCountry = self.fLocaleLanguageAndCountryFromPropertiesContent( theParentExecutionRecord, unContent)   
+            if unLocaleLanguage:
                 
-            aFileName = ''
-            try:
-                aFileName = theUploadedFile.filename
-            except:
-                None
-            if not aFileName:
-                aFileName = cPropertiesUnknownFileName  
-            
-            aDefaultModule   = self.fNombreModuloPorDefecto()
-            aDefaultLanguage = self.fCodigoIdiomaPorDefecto()
+                aFileName = ''
+                try:
+                    aFileName = theUploadedFile.filename
+                except:
+                    None
+                if not aFileName:
+                    aFileName = cPropertiesUnknownFileName      
                 
-            aModuleName, unLocaleLanguage, unLocaleCountry = self.fModuleLocaleLanguageAndCountryFromPropertiesFileName( aFileName, aDefaultModule, aDefaultLanguage)                
-            if not unLocaleLanguage:
-                unLocaleLanguage, unLocaleCountry = self.fLocaleLanguageAndCountryFromPropertiesContent( theParentExecutionRecord, unContent)   
-            
-            if not unLocaleLanguage:
-                return None
-                
-            unUploadedEntry = self.fNewVoidUploadedEntry()
-            unUploadedEntry[ 'in_zip']    = False
-            unUploadedEntry[ 'file_name'] = aFileName
-            unUploadedEntry[ 'file_kind'] = cPropertiesFilePostfix
-            unUploadedEntry[ 'module']    = aModuleName
-            unUploadedEntry[ 'language']  = unLocaleLanguage
-            if unLocaleCountry:
-                unUploadedEntry[ 'country']                 = unLocaleCountry
-                unUploadedEntry[ 'language_and_country']    = '%s-%s' % ( unLocaleLanguage, unLocaleCountry, )
-            else:
-                unUploadedEntry[ 'country']                 = ''
-                unUploadedEntry[ 'language_and_country']    = unLocaleLanguage
-            return unUploadedEntry
+                unUploadedEntry = self.fNewVoidUploadedEntry()
+                unUploadedEntry[ 'in_zip']    = False
+                unUploadedEntry[ 'file_name'] = aFileName
+                unUploadedEntry[ 'file_kind'] = cPropertiesFilePostfix
+                unUploadedEntry[ 'language']  = unLocaleLanguage
+                if unLocaleCountry:
+                    unUploadedEntry[ 'country']                 = unLocaleCountry
+                    unUploadedEntry[ 'language_and_country']    = '%s-%s' % ( unLocaleLanguage, unLocaleCountry, )
+                else:
+                    unUploadedEntry[ 'country']                 = ''
+                    unUploadedEntry[ 'language_and_country']    = unLocaleLanguage
+                return unUploadedEntry
     
+            return None
               
         finally:
             unExecutionRecord and unExecutionRecord.pEndExecution()
@@ -1953,19 +1765,18 @@ class TRAImportacion_Operaciones:
                     unaEncodedTranslation = ''
                     unTranslationError = ''
                     
-                                
                     unSources = unCursorRecord.get( 'sources', '')
                     if unSources:
-                        unaStringSources = unasStringsSources.get( unSimbolo, [])
-                        if not unaStringSources:
-                            unaStringSources = [ unSources, ]
-                        else:
-                            if not unSources in unaStringSources:
-                                unaStringSources.append( unSources)
-                                
-                        if unaStringSources:
-                            unasStringsSources[ unSimbolo] = unaStringSources 
-                                
+                        unSources = unSources.strip()
+                        if unSources:
+                            unaStringSources = unasStringsSources.get( unSimbolo, '')
+                            if not unaStringSources:
+                                unaStringSources = unSources
+                            else:
+                                if not ( unaStringSources.find( unSources) >= 0):
+                                    unaStringSources = '%s %s' % ( unaStringSources, unSources,)    
+                            if unaStringSources:
+                                unasStringsSources[ unSimbolo] = unaStringSources
                     
                     if unEsPOTfile:
                         unaEncodedTranslation = unCursorRecord.get( 'encoded_default', '')
@@ -2267,7 +2078,7 @@ class TRAImportacion_Operaciones:
                        
                         for unaString in unasStrings:
                             if not unasCombinedStringsModulesAndTranslations.has_key( unaString):
-                                unaCombinedStringModulesAndTranslations = { 'modules': set(), 'translations': {}, 'encoding_errors': set(), 'sources': [], 'translations_flags': {}, 'translations_comments': {},}
+                                unaCombinedStringModulesAndTranslations = { 'modules': set(), 'translations': {}, 'encoding_errors': set(), 'sources': '', 'translations_flags': {}, 'translations_comments': {},}
                                 unasCombinedStringsModulesAndTranslations[ unaString] = unaCombinedStringModulesAndTranslations
                             else: 
                                 unaCombinedStringModulesAndTranslations = unasCombinedStringsModulesAndTranslations[ unaString]
@@ -2291,15 +2102,14 @@ class TRAImportacion_Operaciones:
                                     
                             unaCombinedStringModulesAndTranslations[ 'modules'].add( unNombreModulo)   
                             
-                            unSources = unasStringsSources.get( unaString, [])
+                            unSources = unasStringsSources.get( unaString, '').strip()
                             if unSources:
-                                unaStringSources = unaCombinedStringModulesAndTranslations.get( 'sources', [])
+                                unaStringSources = unaCombinedStringModulesAndTranslations.get( 'sources', '')
                                 if not unaStringSources:
                                     unaStringSources = unSources
                                 else:
-                                    for unSource in unSources:
-                                        if not unSource in unaStringSources:
-                                            unaStringSources.append( unSource)
+                                    if not ( unaStringSources.find( unSources) >=0):
+                                        unaStringSources = '%s %s' % ( unaStringSources, unSources)
                                         
                                 if unaStringSources:
                                     unaCombinedStringModulesAndTranslations[ 'sources'] = unaStringSources 
@@ -2408,408 +2218,248 @@ class TRAImportacion_Operaciones:
         try:
 
             unSubExecutionRecord = self.fStartExecution( 'block',  'fImportarContenidosIntercambio-SubExecution to retrieve TRACatalog and accessible languages and modules', unExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
-            
-            unAlInicio_PermiteModificar = False
-            unCambiado_PermiteModificar = False
-            
             try:
-                
                 unInformeImportarContenidos = self.fNewVoidInformeImportarContenidos()
                 
-                unInformeImportarContenidos[ 'start_date'] =self.fDateTimeNowTextual()
+                unInformeImportarContenidos[ 'start_date'] = self.fDateTimeNowTextual()
                 
+                if not self.fNoHaComenzadoOEnDevelopmentODebug():
+                    unInformeImportarContenidos[ 'error'] = "gvSIGi18n_ImportAlreadyStarted_error_msgid"
+                    unInformeImportarContenidos[ 'end_date'] = self.fDateTimeNow()
+                    return unInformeImportarContenidos
+        
+                  
+                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
+                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+                    
+                unUseCaseQueryResult = self.fUseCaseAssessment(  
+                    theUseCaseName          = cUseCase_ImportTRAImportacion, 
+                    theElementsBindings     = { cBoundObject: self,}, 
+                    theRulesToCollect       = ['languages', 'modules',], 
+                    thePermissionsCache     = unPermissionsCache, 
+                    theRolesCache           = unRolesCache, 
+                    theParentExecutionRecord= unExecutionRecord
+                )
+                                
+                                
+                if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
+                    unInformeImportarContenidos[ 'error'] = "gvSIGi18n_NoPermission_error_msgid"
+                    unInformeImportarContenidos[ 'end_date'] = self.fDateTimeNowTextual()
+                    return unInformeImportarContenidos
+                                
+                unosIdiomasAccesibles = unUseCaseQueryResult.get( 'collected_rule_assessments_by_name', {}).get( 'languages', {}).get( 'accepted_final_objects', [])
+                unosModulosAccesibles = unUseCaseQueryResult.get( 'collected_rule_assessments_by_name', {}).get( 'modules', {}).get( 'accepted_final_objects', [])
+        
                 unCatalogo = self.getCatalogo()
                 if not unCatalogo:
-                    unInformeImportarContenidos[ 'end_date'] =self.fDateTimeNowTextual()
+                    unInformeImportarContenidos[ 'end_date'] = self.fDateTimeNowTextual()
                     return unInformeImportarContenidos
+
+                unDebeCrearTraduccionesQueFaltan = self.getDebeCrearTraduccionesQueFaltan()
                 
-                unAlInicio_PermiteModificar =  unCatalogo.getPermiteModificar( )
-                unCambiado_PermiteModificar = False
-                
-                if not theJustEstimateCost:
-                    if unAlInicio_PermiteModificar:
-                        
-                        unCatalogo.setPermiteModificar( False)
-                        unCambiado_PermiteModificar = True
-                        
-                        
-                        aModelDDvlPloneTool_Mutators = ModelDDvlPloneTool_Mutators()
-                        
-                        aSetPermiteModificarChangeReport = aModelDDvlPloneTool_Mutators.fNewVoidChangeValuesReport()
-                        
-                        someFieldReports    = aSetPermiteModificarChangeReport.get( 'field_reports')
-                        aFieldReportsByName = aSetPermiteModificarChangeReport.get( 'field_reports_by_name')
-                                                
-                        aReportForField = { 'attribute_name': 'permiteModificar',  'effect': 'changed', 'new_value': False, 'previous_value': True,}
-                        someFieldReports.append( aReportForField)            
-                        aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
-                        
-                        aModelDDvlPloneTool_Mutators.pSetAudit_Modification( unCatalogo, cModificationKind_ChangeValues, aSetPermiteModificarChangeReport)       
-                        
-                        unCatalogo.pFlushCachedTemplates_All()
-                        
-                        transaction.commit( )            
-                        logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT at the begining to change translations catalog allow write flag to False")        
-                
-                try:
-                     
-                    if not self.fNoHaComenzadoOEnDevelopmentODebug():
-                        unInformeImportarContenidos[ 'error'] = "gvSIGi18n_ImportAlreadyStarted_error_msgid"
-                        unInformeImportarContenidos[ 'end_date'] = fDateTimeNow()
-                        return unInformeImportarContenidos
-            
-                      
-                    unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-                    unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
-                        
-                    unUseCaseQueryResult = self.fUseCaseAssessment(  
-                        theUseCaseName          = cUseCase_ImportTRAImportacion, 
+                unUseCaseQueryResult_CrearTraduccionesQueFaltan = None
+                if unDebeCrearTraduccionesQueFaltan:
+                    unUseCaseQueryResult_CrearTraduccionesQueFaltan = self.fUseCaseAssessment(  
+                        theUseCaseName          = cUseCase_CreateMissingTRATraduccion, 
                         theElementsBindings     = { cBoundObject: self,}, 
-                        theRulesToCollect       = ['languages', 'modules',], 
-                        thePredicateOverrides   = { self.getCatalogo().UID(): { 'fAllowWrite': True, }, },
+                        theRulesToCollect       = None, 
                         thePermissionsCache     = unPermissionsCache, 
                         theRolesCache           = unRolesCache, 
                         theParentExecutionRecord= unExecutionRecord
                     )
-                                    
-                                    
-                    if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
-                        unInformeImportarContenidos[ 'error'] = "gvSIGi18n_NoPermission_error_msgid"
-                        unInformeImportarContenidos[ 'end_date'] =self.fDateTimeNowTextual()
-                        return unInformeImportarContenidos
-                                    
-                    unosIdiomasAccesibles = unUseCaseQueryResult.get( 'collected_rule_assessments_by_name', {}).get( 'languages', {}).get( 'accepted_final_objects', [])
-                    unosModulosAccesibles = unUseCaseQueryResult.get( 'collected_rule_assessments_by_name', {}).get( 'modules', {}).get( 'accepted_final_objects', [])
-            
-    
-                    unDebeCrearTraduccionesQueFaltan = self.getDebeCrearTraduccionesQueFaltan()
-                    
-                    unUseCaseQueryResult_CrearTraduccionesQueFaltan = None
-                    if unDebeCrearTraduccionesQueFaltan:
-                        unUseCaseQueryResult_CrearTraduccionesQueFaltan = self.fUseCaseAssessment(  
-                            theUseCaseName          = cUseCase_CreateMissingTRATraduccion, 
-                            theElementsBindings     = { cBoundObject: self,}, 
-                            theRulesToCollect       = None, 
-                            thePredicateOverrides   = { self.getCatalogo().UID(): { 'fAllowWrite': True, }, },
-                            thePermissionsCache     = unPermissionsCache, 
-                            theRolesCache           = unRolesCache, 
-                            theParentExecutionRecord= unExecutionRecord
-                        )
-                        
-                        
-                finally:
-                    unSubExecutionRecord and unSubExecutionRecord.pEndExecution()
-                    unSubExecutionRecord and unSubExecutionRecord.pClearLoggedAll()
-                    
-              
-                     
-                unSubExecutionRecord = self.fStartExecution( 'block',  'fImportarContenidosIntercambio-SubExecution to retrieve translations interchange contents', unExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
-                try:
-                    unContenido = self.fCombinedContenidosIntercambio( 
-                        theParentExecutionRecord= unExecutionRecord
-                    )
-                    if not unContenido:
-                        unInformeImportarContenidos[ 'end_date'] =self.fDateTimeNowTextual()
-                        return unInformeImportarContenidos
-                    
-                finally:
-                    unSubExecutionRecord and unSubExecutionRecord.pEndExecution()
-                    unSubExecutionRecord and unSubExecutionRecord.pClearLoggedAll()
-                    
-              
-                unSubExecutionRecord = self.fStartExecution( 'block',  'fImportarContenidosIntercambio-SubExecution to create status report before import and to set the first import progress report.', unExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
-                try:
-                 
-                    unaColeccionCadenas = unCatalogo.fObtenerColeccionCadenas()
-                    if ( unaColeccionCadenas == None):
-                        unInformeImportarContenidos[ 'end_date'] =self.fDateTimeNowTextual()
-                        return unInformeImportarContenidos
-            
-            
-            
-                    unMemberId = self.fGetMemberId()
-                    unIdNumber = unCatalogo.getHighestCadenaIdNumber()
-                    unIdNumberHolder = [ unIdNumber, ]
-                    
-                    aPloneUtilsTool = self.getPloneUtilsToolForNormalizeString()  
-                           
-                    unAhora = fDateTimeNow()
-                    
-                    unInformeImportarContenidos[ 'fecha_informe'] = self.fDateToStoreString( unAhora)
-    
-                    if not theJustEstimateCost:
-                                                
-                        self.setHaComenzado( True)
-                        self.setEstadoProceso( 'Activo')
-                        self.setUsuarioImportador( unMemberId)
-                        self.setFechaComienzoProceso( unAhora)
-                        self.setHaCompletadoConExito( False)
-                        
-                        self.setInformeProgreso( str( unInformeImportarContenidos))
-                        self.setFechaUltimoInformeProgreso( unAhora)
-                        self.setFechaFinProceso( None)
-                        self.setInformeFinal(    '')
-                        self.setInformeExcepcion(    '')
-    
-                        self.pEliminarInformesEstado( 
-                            unUseCaseQueryResult, 
-                            False, 
-                            thePermissionsCache=unPermissionsCache, 
-                            theRolesCache=unRolesCache, 
-                            theParentExecutionRecord=unExecutionRecord
-                        )
-                    
-                        self.pCrearInformeEstado( 
-                            'antes', 
-                            unUseCaseQueryResult, 
-                            False, 
-                            thePermissionsCache=unPermissionsCache, 
-                            theRolesCache=unRolesCache, 
-                            theParentExecutionRecord=unExecutionRecord
-                        )
-            
-
-                        unCatalogo.setUltimaImportacion( self)
-                        
-                        
-                        aModelDDvlPloneTool_Mutators = ModelDDvlPloneTool_Mutators()
-                        
-                        
-                        
-                        aImportStatusChangeReport = aModelDDvlPloneTool_Mutators.fNewVoidChangeValuesReport()
-                        
-                        someFieldReports    = aImportStatusChangeReport.get( 'field_reports')
-                        aFieldReportsByName = aImportStatusChangeReport.get( 'field_reports_by_name')
-                                                
-                        aReportForField = { 'attribute_name': 'haComenzado',  'effect': 'changed', 'new_value': True, 'previous_value': False,}
-                        someFieldReports.append( aReportForField)            
-                        aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
-                                                
-                        aReportForField = { 'attribute_name': 'estadoProceso',  'effect': 'changed', 'new_value': 'Activo', 'previous_value': 'Inactivo',}
-                        someFieldReports.append( aReportForField)            
-                        aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
-                        
-                        aReportForField = { 'attribute_name': 'usuarioImportador',  'effect': 'changed', 'new_value': unMemberId, 'previous_value': None,}
-                        someFieldReports.append( aReportForField)            
-                        aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
-                                                
-                        aReportForField = { 'attribute_name': 'fechaComienzoProceso',  'effect': 'changed', 'new_value': unAhora, 'previous_value': None,}
-                        someFieldReports.append( aReportForField)            
-                        aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
-                                                
-                        aReportForField = { 'attribute_name': 'haCompletadoConExito',  'effect': 'changed', 'new_value': False, 'previous_value': False,}
-                        someFieldReports.append( aReportForField)            
-                        aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
-                        
-                        aModelDDvlPloneTool_Mutators.pSetAudit_Modification( self, cModificationKind_ChangeValues, aImportStatusChangeReport)       
-                        
-                        unCatalogo.pFlushCachedTemplates_All()
-                    
-                        transaction.commit( )
-            
-                        logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT status report before import.") 
-                    
-                finally:
-                    unSubExecutionRecord and unSubExecutionRecord.pEndExecution()
-                    unSubExecutionRecord and unSubExecutionRecord.pClearLoggedAll()
-                    
-                unaExceptionInfo = None
-                try:
-                    try:
-                        self.pImportarContenidosIntercambio( 
-                            theJustEstimateCost         =theJustEstimateCost,
-                            theCatalogo                 =unCatalogo, 
-                            theUseCaseQueryResult       =unUseCaseQueryResult, 
-                            theUseCaseQueryResult_CrearTraduccionesQueFaltan=unUseCaseQueryResult_CrearTraduccionesQueFaltan,
-                            theIdiomasAccesibles        =unosIdiomasAccesibles, 
-                            theModulosAccesibles        =unosModulosAccesibles, 
-                            theColeccionCadenas         =unaColeccionCadenas, 
-                            theIdNumberHolder           =unIdNumberHolder, 
-                            theMemberId                 =unMemberId, 
-                            theContenido                =unContenido, 
-                            theInformeImportarContenidos=unInformeImportarContenidos, 
-                            thePloneUtilsTool           =aPloneUtilsTool,
-                            thePermissionsCache         =unPermissionsCache, 
-                            theRolesCache               =unRolesCache, 
-                            theParentExecutionRecord    =unExecutionRecord,
-                        )
-                    except:
-                        unaExceptionInfo = sys.exc_info()
-                        unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
-                        
-                        unInformeExcepcion = 'Exception during Import operation\n' 
-                        unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-                        unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
-                        unInformeExcepcion += unaExceptionFormattedTraceback   
-                        
-                        unaFechaString =self.fDateTimeNowTextual()
-                        unInformeImportarContenidos[ 'fecha_informe'] = unaFechaString
-                        unInformeImportarContenidos[ 'end_date']      = unaFechaString
-                        unInformeImportarContenidos[ 'valid'] = False
-                        unInformeImportarContenidos[ 'error'] = 'exception'
-                        unInformeImportarContenidos[ 'error_detail'] = unInformeExcepcion
-    
-                        unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
-                        
-                        if not theJustEstimateCost:
-                            self.setInformeFinal(      str( unInformeImportarContenidos))
-                            self.setInformeExcepcion(  unInformeExcepcion)
-                            
-                            unCatalogo.pFlushCachedTemplates_All()                            
-                        
-                            transaction.commit( )
-                            logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT ON EXCEPTION changes") 
-                        
-                        logging.getLogger( 'gvSIGi18n::Importar').info("EXCEPTION: exception details follow:\n%s\n" % unInformeExcepcion) 
-                                
-                        return unInformeImportarContenidos
-                                
                     
                     
-                finally:
-                    
-                    unSubExecutionRecord = self.fStartExecution( 'block',  'fImportarContenidosIntercambio-SubExecution to create status report after import and to clear the import progress report.', unExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
-                    try:
-                        if not theJustEstimateCost:
-
-                            unCatalogo.pFlushCachedTemplates_All()                            
-                            
-                            transaction.commit( )
-                        
-                            logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT FINAL changes")        
-            
-                        unAhora = fDateTimeNow()
-                        
-                        unInformeImportarContenidos[ 'fecha_informe'] = self.fDateToStoreString( unAhora)
-                        unInformeImportarContenidos[ 'end_date']      = self.fDateToStoreString( unAhora)
-                        
-                        if not theJustEstimateCost:
-                            
-                            if unaExceptionInfo:
-                                self.setHaCompletadoConExito( False)
-                            else:
-                                self.setHaCompletadoConExito( True)
-                            
-                        
-                            self.setEstadoProceso(  'Inactivo')
-                            self.setInformeFinal(    str( unInformeImportarContenidos))
-                            self.setFechaFinProceso( unAhora)
-                            self.setInformeProgreso( '')
-                            self.setFechaUltimoInformeProgreso( None)                
-                    
-                            
-                            aModelDDvlPloneTool_Mutators = ModelDDvlPloneTool_Mutators()
-                            
-                              
-                            
-                            
-                            aImportStatusChangeReport = aModelDDvlPloneTool_Mutators.fNewVoidChangeValuesReport()
-                            
-                            someFieldReports    = aImportStatusChangeReport.get( 'field_reports')
-                            aFieldReportsByName = aImportStatusChangeReport.get( 'field_reports_by_name')
-                                                    
-                            aReportForField = { 'attribute_name': 'estadoProceso',  'effect': 'changed', 'new_value': 'Inactivo', 'previous_value': 'Activo',}
-                            someFieldReports.append( aReportForField)            
-                            aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
-                                                     
-                            aReportForField = { 'attribute_name': 'haCompletadoConExito',  'effect': 'changed', 'new_value': True, 'previous_value': False,}
-                            someFieldReports.append( aReportForField)            
-                            aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
-                            
-                            aModelDDvlPloneTool_Mutators.pSetAudit_Modification( self, cModificationKind_ChangeValues, aImportStatusChangeReport)       
-                        
-                            
-                            unCatalogo.pFlushCachedTemplates_All()
-                            
-                            
-                            transaction.commit( )
-                            
-                            logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT FINAL status")        
-                         
-                            
-                            self.pCrearInformeEstado( 
-                                'despues', 
-                                unUseCaseQueryResult, 
-                                False, 
-                                thePermissionsCache=unPermissionsCache, 
-                                theRolesCache=unRolesCache, 
-                                theParentExecutionRecord=unExecutionRecord
-                            )
-                            
-                            unCatalogo.pFlushCachedTemplates_All()
-                            
-                            
-                            transaction.commit( )
-                            logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT FINAL report")        
-            
-                        if not theJustEstimateCost:
-                            unCatalogo.pInvalidateSimbolosCadenasOrdenados()  
-                            
-                            unCatalogo.pFlushCachedTemplates_All()                            
-                            
-                            transaction.commit( )            
-                            logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT pInvalidateSimbolosCadenasOrdenados")        
-            
-                        unInformeImportarContenidos[ 'end_date'] =self.fDateTimeNowTextual()
-                        
-                        return unInformeImportarContenidos
-                    
-                    finally:
-                        unSubExecutionRecord and unSubExecutionRecord.pEndExecution()
-                        unSubExecutionRecord and unSubExecutionRecord.pClearLoggedAll()
-                        
             finally:
+                unSubExecutionRecord and unSubExecutionRecord.pEndExecution()
+                unSubExecutionRecord and unSubExecutionRecord.pClearLoggedAll()
+                
+          
+                 
+            unSubExecutionRecord = self.fStartExecution( 'block',  'fImportarContenidosIntercambio-SubExecution to retrieve translations interchange contents', unExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
+            try:
+                unContenido = self.fCombinedContenidosIntercambio( 
+                    theParentExecutionRecord= unExecutionRecord
+                )
+                if not unContenido:
+                    unInformeImportarContenidos[ 'end_date'] = self.fDateTimeNowTextual()
+                    return unInformeImportarContenidos
+                
+            finally:
+                unSubExecutionRecord and unSubExecutionRecord.pEndExecution()
+                unSubExecutionRecord and unSubExecutionRecord.pClearLoggedAll()
+                
+          
+            unSubExecutionRecord = self.fStartExecution( 'block',  'fImportarContenidosIntercambio-SubExecution to create status report before import and to set the first import progress report.', unExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
+            try:
+             
+                unaColeccionCadenas = unCatalogo.fObtenerColeccionCadenas()
+                if ( unaColeccionCadenas == None):
+                    unInformeImportarContenidos[ 'end_date'] = self.fDateTimeNowTextual()
+                    return unInformeImportarContenidos
+        
+        
+        
+                unMemberId = self.fGetMemberId()
+                unIdNumber = unCatalogo.getHighestCadenaIdNumber()
+                unIdNumberHolder = [ unIdNumber, ]
+                
+                aPloneUtilsTool = self.getPloneUtilsToolForNormalizeString()  
+                       
+                unAhora = self.fDateTimeNow()
+
+                if not theJustEstimateCost:
+                    self.setHaComenzado( True)
+                    self.setEstadoProceso( 'Activo')
+                    self.setUsuarioImportador( unMemberId)
+                    self.setFechaComienzoProceso( unAhora)
+                    self.setHaCompletadoConExito( False)
+        
+                unInformeImportarContenidos[ 'fecha_informe'] = self.fDateToStoreString( unAhora)
                 
                 if not theJustEstimateCost:
-                    unaColeccionImportaciones = self.getContenedor()
-                    if unaColeccionImportaciones:
-                        
-                        unasImportaciones = unaColeccionImportaciones.objectValues( 'TRAImportacion')
-                        
-                        unaSiguienteImportacionAEjecutar = None
-                        
-                        for unaSiguienteImportacion in unasImportaciones:
-                            
-                            if ( not unaSiguienteImportacion == self):
-                                if ( not unaSiguienteImportacion.getHaComenzado()) and unaSiguienteImportacion.getComenzarAlFinalizarAnterior():
-                                    unaSiguienteImportacionAEjecutar = unaSiguienteImportacion
-                                    break
-                        
-                        if unaSiguienteImportacionAEjecutar:
-                            unaSiguienteImportacionAEjecutar.fImportarContenidosIntercambio( 
-                                theJustEstimateCost      =theJustEstimateCost, 
-                                thePermissionsCache      =thePermissionsCache, 
-                                theRolesCache            =theRolesCache, 
-                                theParentExecutionRecord =unExecutionRecord
-                            )
+                    self.setInformeProgreso( str( unInformeImportarContenidos))
+                    self.setFechaUltimoInformeProgreso( unAhora)
+                    self.setFechaFinProceso( None)
+                    self.setInformeFinal(    '')
+                    self.setInformeExcepcion(    '')
 
-                if not theJustEstimateCost:
-                    if unCambiado_PermiteModificar:
-                        unCatalogo.setPermiteModificar( unAlInicio_PermiteModificar)
+                    self.pEliminarInformesEstado( 
+                        unUseCaseQueryResult, 
+                        False, 
+                        thePermissionsCache=unPermissionsCache, 
+                        theRolesCache=unRolesCache, 
+                        theParentExecutionRecord=unExecutionRecord
+                    )
+                
+                    self.pCrearInformeEstado( 
+                        'antes', 
+                        unUseCaseQueryResult, 
+                        False, 
+                        thePermissionsCache=unPermissionsCache, 
+                        theRolesCache=unRolesCache, 
+                        theParentExecutionRecord=unExecutionRecord
+                    )
+        
+                
+                    transaction.commit( )
+        
+                    logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT status report before import.") 
+                
+            finally:
+                unSubExecutionRecord and unSubExecutionRecord.pEndExecution()
+                unSubExecutionRecord and unSubExecutionRecord.pClearLoggedAll()
+                
+            unaExceptionInfo = None
+            try:
+                try:
+                    self.pImportarContenidosIntercambio( 
+                        theJustEstimateCost         =theJustEstimateCost,
+                        theCatalogo                 =unCatalogo, 
+                        theUseCaseQueryResult       =unUseCaseQueryResult, 
+                        theUseCaseQueryResult_CrearTraduccionesQueFaltan=unUseCaseQueryResult_CrearTraduccionesQueFaltan,
+                        theIdiomasAccesibles        =unosIdiomasAccesibles, 
+                        theModulosAccesibles        =unosModulosAccesibles, 
+                        theColeccionCadenas         =unaColeccionCadenas, 
+                        theIdNumberHolder           =unIdNumberHolder, 
+                        theMemberId                 =unMemberId, 
+                        theContenido                =unContenido, 
+                        theInformeImportarContenidos=unInformeImportarContenidos, 
+                        thePloneUtilsTool           =aPloneUtilsTool,
+                        thePermissionsCache         =unPermissionsCache, 
+                        theRolesCache               =unRolesCache, 
+                        theParentExecutionRecord    =unExecutionRecord,
+                    )
+                except:
+                    unaExceptionInfo = sys.exc_info()
+                    unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
+                    
+                    unInformeExcepcion = 'Exception during Import operation\n' 
+                    unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
+                    unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                    unInformeExcepcion += unaExceptionFormattedTraceback   
+                    
+                    unaFechaString = self.fDateTimeNowTextual()
+                    unInformeImportarContenidos[ 'fecha_informe'] = unaFechaString
+                    unInformeImportarContenidos[ 'end_date']      = unaFechaString
+                    unInformeImportarContenidos[ 'valid'] = False
+                    unInformeImportarContenidos[ 'error'] = 'exception'
+                    unInformeImportarContenidos[ 'error_detail'] = unInformeExcepcion
+
+                    unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
+                    
+                    if not theJustEstimateCost:
+                        self.setInformeFinal(      str( unInformeImportarContenidos))
+                        self.setInformeExcepcion(  unInformeExcepcion)
+                    
+                        transaction.commit( )
+                        logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT ON EXCEPTION changes") 
+                    
+                    logging.getLogger( 'gvSIGi18n::Importar').info("EXCEPTION: exception details follow:\n%s\n" % unInformeExcepcion) 
+                            
+                    return unInformeImportarContenidos
+                            
+                
+                
+            finally:
+                
+                unSubExecutionRecord = self.fStartExecution( 'block',  'fImportarContenidosIntercambio-SubExecution to create status report after import and to clear the import progress report.', unExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
+                try:
+                    if not theJustEstimateCost:
+                        transaction.commit( )
+                    
+                    logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT FINAL changes")        
+        
+                    unAhora = self.fDateTimeNow()
+                    
+                    if not theJustEstimateCost:
+                        if unaExceptionInfo:
+                            self.setHaCompletadoConExito( False)
+                        else:
+                            self.setHaCompletadoConExito( True)
                         
+                    unInformeImportarContenidos[ 'fecha_informe'] = self.fDateToStoreString( unAhora)
+                    unInformeImportarContenidos[ 'end_date']      = self.fDateToStoreString( unAhora)
+                    
+                    logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT FINAL status")        
+                    
+                    if not theJustEstimateCost:
+                        self.setEstadoProceso(  'Inactivo')
+                        self.setInformeFinal(    str( unInformeImportarContenidos))
+                        self.setFechaFinProceso( unAhora)
+                        self.setInformeProgreso( '')
+                        self.setFechaUltimoInformeProgreso( None)                
+                
+                        transaction.commit( )
+                     
+        
+                        unCatalogo.setUltimaImportacion( self)
+            
+                        self.pCrearInformeEstado( 
+                            'despues', 
+                            unUseCaseQueryResult, 
+                            False, 
+                            thePermissionsCache=unPermissionsCache, 
+                            theRolesCache=unRolesCache, 
+                            theParentExecutionRecord=unExecutionRecord
+                        )
                         
-                        
-                        aModelDDvlPloneTool_Mutators = ModelDDvlPloneTool_Mutators()
-                        
-                        aSetPermiteModificarChangeReport = aModelDDvlPloneTool_Mutators.fNewVoidChangeValuesReport()
-                        
-                        someFieldReports    = aSetPermiteModificarChangeReport.get( 'field_reports')
-                        aFieldReportsByName = aSetPermiteModificarChangeReport.get( 'field_reports_by_name')
-                        
-                        aSetPermiteModificarChangeReport.update( { 'effect': 'changed', 'new_object_result': None, })
-                        
-                        aReportForField = { 'attribute_name': 'permiteModificar',   'effect': 'changed', 'new_value': unAlInicio_PermiteModificar, 'previous_value': not unAlInicio_PermiteModificar,}
-                        someFieldReports.append( aReportForField)            
-                        aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
-                        
-                        aModelDDvlPloneTool_Mutators.pSetAudit_Modification( unCatalogo, cModificationKind_ChangeValues, aSetPermiteModificarChangeReport)       
-                        
-                        unCatalogo.pFlushCachedTemplates_All()
+                        transaction.commit( )
+                        logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT FINAL report")        
+        
+                    if not theJustEstimateCost:
+                        unCatalogo.pInvalidateSimbolosCadenasOrdenados()  
                         
                         transaction.commit( )            
-                        logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT at the end to change translations catalog allow write flag to %s" % str( unAlInicio_PermiteModificar))        
-    
-                        
+                        logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT pInvalidateSimbolosCadenasOrdenados")        
+        
+                    unInformeImportarContenidos[ 'end_date'] = self.fDateTimeNowTextual()
+                    
+                    return unInformeImportarContenidos
+                
+                finally:
+                    unSubExecutionRecord and unSubExecutionRecord.pEndExecution()
+                    unSubExecutionRecord and unSubExecutionRecord.pClearLoggedAll()
+        
  
         finally:
             unExecutionRecord and unExecutionRecord.pEndExecution()
@@ -2875,18 +2525,11 @@ class TRAImportacion_Operaciones:
             unSubExecutionRecord = self.fStartExecution( 'block',  'pImportarContenidosIntercambio-SubExecution to determine elements to create (languages, modules, strings) and count the number of translations to process.', unExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
             try:
             
-                unCurrentChangesHolder = [ 0, 0, 0, ] # Changes since last commit, changes since last log, 
-                unaEsperaEntreTransaccionesEnSegundos = self.getEsperaEntreTransaccionesEnSegundos()
+                unCurrentChangesHolder = [ 0,]
                 unIntervaloRefrescoEnMinutos          = self.getIntervaloRefrescoEnMinutos()
                 unIntervaloRefrescoEnNumeroEscrituras = self.getIntervaloRefrescoEnNumeroEscrituras()
-                unaEsperaEntreTransaccionesEnSegundos = self.getEsperaEntreTransaccionesEnSegundos()
-                unCurrentCommitsHolder = [ 0,]
-                unNumeroDeRefrescosPorEscrituraEnLog  = self.getNumeroDeRefrescosPorEscrituraEnLog()
-                
-                
                 unaFechaUltimoInformeProgresoHolder   = [ self.getFechaUltimoInformeProgreso(), ]
-    
-
+        
                 # ######################################################
                 """Determine Modules to Create.
                 
@@ -2902,12 +2545,12 @@ class TRAImportacion_Operaciones:
                 unosNombresModulos = theContenido[ 'modules']
               
                 for unNombreModulo in unosNombresModulos:
-                    if unNombreModulo:
-                        if unNombreModulo in todosNombresModulos:
-                            if not ( unNombreModulo in unosNombresModulosAccesibles):
-                                unosNombresModulosAIgnorar.append( unNombreModulo)   
-                        else:
-                            unosNombresModulosACrear.append( unNombreModulo)
+                    
+                    if unNombreModulo in todosNombresModulos:
+                        if not ( unNombreModulo in unosNombresModulosAccesibles):
+                            unosNombresModulosAIgnorar.append( unNombreModulo)   
+                    else:
+                        unosNombresModulosACrear.append( unNombreModulo)
                         
                 theInformeImportarContenidos[ 'modules_to_create'] = len( unosNombresModulosACrear)
                 theInformeImportarContenidos[ 'expected_operations'] += len( unosNombresModulosACrear)
@@ -2926,8 +2569,7 @@ class TRAImportacion_Operaciones:
                 unosCodigosIdiomasACrear        = []
                 unosCodigosIdiomasAImportar     = []
                 
-                unosCodigosIdiomas  = theContenido[ 'languages']
-                todosDetallesIdiomas = theContenido.get( 'languages_details', {})
+                unosCodigosIdiomas = theContenido[ 'languages']
                 
                 for unCodigoIdioma in unosCodigosIdiomas:
                     if unCodigoIdioma in todosCodigosIdiomas:
@@ -3022,19 +2664,16 @@ class TRAImportacion_Operaciones:
                                 theInformeImportarContenidos, 
                                 unIntervaloRefrescoEnNumeroEscrituras, 
                                 unIntervaloRefrescoEnMinutos, 
-                                unaEsperaEntreTransaccionesEnSegundos,
-                                unNumeroDeRefrescosPorEscrituraEnLog,
-                                unCurrentChangesHolder, unCurrentCommitsHolder, 
+                                unCurrentChangesHolder, 
                                 unaFechaUltimoInformeProgresoHolder, 
                                 True,
                                 thePermissionsCache         =unPermissionsCache, 
                                 theRolesCache               =unRolesCache, 
                                 theParentExecutionRecord    =unSubSubExecutionRecord,
                             )
-
-
+                            
                         if not unNuevoModulo:
-                            unAhora = fDateTimeNow()
+                            unAhora = self.fDateTimeNow()
                             theInformeImportarContenidos[ 'fecha_informe'] = self.fDateToStoreString( unAhora)
                             theInformeImportarContenidos[ 'error'] = "gvSIGi18n_ModuleCreationError_error_msgid"
                             theInformeImportarContenidos[ 'error_detail'] = unNombreModulo            
@@ -3054,7 +2693,7 @@ class TRAImportacion_Operaciones:
             """"Retrieve well-known language information
             
             """
-            unosIntlLanguagesNamesAndFlagsPorCodigo = theCatalogo.fLanguagesNamesAndFlagsPorCodigo( ) # Was fLanguagesNamesAndFlagsPorCodigo_AvailableInPlone( )
+            unosIntlLanguagesNamesAndFlagsPorCodigo = theCatalogo.fLanguagesNamesAndFlagsPorCodigo( )
             
             
             
@@ -3068,29 +2707,18 @@ class TRAImportacion_Operaciones:
                      
                 for unCodigoIdioma in unosCodigosIdiomasACrear:
                     
-                    unosDetallesIdioma = todosDetallesIdiomas.get( unCodigoIdioma, {})
-                    
                     unSubSubExecutionRecord = self.fStartExecution( 'block',  'pImportarContenidosIntercambio-SubExecution to create one language (TRAIdioma).', unSubExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }, 'language_code: %s' % unCodigoIdioma) 
                     try:
                     
-                        unCodigoInternacionalIdioma = unCodigoIdioma
-                        unNombreEnglishIdioma       = unCodigoIdioma
-                        unNombreNativoIdioma        = unCodigoIdioma
-                        
-                        if unosDetallesIdioma:
-                            unCodigoInternacionalIdioma = unosDetallesIdioma.get( 'codigo_internacional_idioma', '')
-                            unNombreEnglishIdioma       = unosDetallesIdioma.get( 'english_name', '')
-                            unNombreNativoIdioma        = unosDetallesIdioma.get( 'nombre_nativo_de_idioma', '')
-                        else:
-                            unosIntlDatosIdioma     = unosIntlLanguagesNamesAndFlagsPorCodigo.get( unCodigoIdioma, { 'english': unCodigoIdioma, 'native': unCodigoIdioma, 'flag': cTRAFlagIdiomaDesconocida,})
-                            unNombreEnglishIdioma   = unosIntlDatosIdioma.get( 'english', '')
-                            unNombreNativoIdioma    = unosIntlDatosIdioma.get( 'native', '')
+                        unosIntlDatosIdioma     = unosIntlLanguagesNamesAndFlagsPorCodigo.get( unCodigoIdioma, { 'english': unCodigoIdioma, 'native': unCodigoIdioma, 'flag': cTRAFlagIdiomaDesconocida,})
+                        unNombreEnglishIdioma   = unosIntlDatosIdioma.get( 'english', '')
+                        unNombreNativoIdioma    = unosIntlDatosIdioma.get( 'native', '')
             
                       
                         unNuevoIdioma =  theCatalogo.fCrearIdioma(  
                             theUseCaseQueryResult, 
                             unCodigoIdioma, 
-                            unCodigoInternacionalIdioma,
+                            unCodigoIdioma,
                             unNombreEnglishIdioma, 
                             unNombreEnglishIdioma, 
                             unNombreNativoIdioma,
@@ -3110,9 +2738,7 @@ class TRAImportacion_Operaciones:
                                 theInformeImportarContenidos, 
                                 unIntervaloRefrescoEnNumeroEscrituras, 
                                 unIntervaloRefrescoEnMinutos, 
-                                unaEsperaEntreTransaccionesEnSegundos,
-                                unNumeroDeRefrescosPorEscrituraEnLog,
-                                unCurrentChangesHolder, unCurrentCommitsHolder, 
+                                unCurrentChangesHolder, 
                                 unaFechaUltimoInformeProgresoHolder, 
                                 True,
                                 thePermissionsCache         =unPermissionsCache, 
@@ -3125,7 +2751,7 @@ class TRAImportacion_Operaciones:
                             """Exit with error condition.
                             
                             """
-                            unAhora = fDateTimeNow()  
+                            unAhora = self.fDateTimeNow()  
                             theInformeImportarContenidos[ 'fecha_informe'] = self.fDateToStoreString( unAhora)
                             theInformeImportarContenidos[ 'error'] = "gvSIGi18n_TRAIdiomaCreationFailure_error_msgid"
                             theInformeImportarContenidos[ 'error_detail'] = unCodigoIdioma
@@ -3235,7 +2861,7 @@ class TRAImportacion_Operaciones:
                     )
         
                     if not unaCadenaEIdNumber:
-                        unAhora = fDateTimeNow()  # SALIENDO EN CONDICION DE ERROR
+                        unAhora = self.fDateTimeNow()  # SALIENDO EN CONDICION DE ERROR
                         theInformeImportarContenidos[ 'fecha_informe'] = self.fDateToStoreString( unAhora)
                         theInformeImportarContenidos[ 'error'] = "gvSIGi18n_TRACadenaCreationError_error_msgid"
                         theInformeImportarContenidos[ 'error_detail'] = unSimboloCadena            
@@ -3244,9 +2870,7 @@ class TRAImportacion_Operaciones:
                             theInformeImportarContenidos, 
                             unIntervaloRefrescoEnNumeroEscrituras, 
                             unIntervaloRefrescoEnMinutos, 
-                            unaEsperaEntreTransaccionesEnSegundos,
-                            unNumeroDeRefrescosPorEscrituraEnLog,
-                            unCurrentChangesHolder, unCurrentCommitsHolder, 
+                            unCurrentChangesHolder, 
                             unaFechaUltimoInformeProgresoHolder, 
                             True,
                             thePermissionsCache         =unPermissionsCache, 
@@ -3274,9 +2898,7 @@ class TRAImportacion_Operaciones:
                         theInformeImportarContenidos, 
                         unIntervaloRefrescoEnNumeroEscrituras, 
                         unIntervaloRefrescoEnMinutos, 
-                        unaEsperaEntreTransaccionesEnSegundos,
-                        unNumeroDeRefrescosPorEscrituraEnLog,
-                        unCurrentChangesHolder, unCurrentCommitsHolder, 
+                        unCurrentChangesHolder, 
                         unaFechaUltimoInformeProgresoHolder, 
                         False,
                         thePermissionsCache         =unPermissionsCache, 
@@ -3289,9 +2911,7 @@ class TRAImportacion_Operaciones:
                     theInformeImportarContenidos, 
                     unIntervaloRefrescoEnNumeroEscrituras, 
                     unIntervaloRefrescoEnMinutos, 
-                    unaEsperaEntreTransaccionesEnSegundos,
-                    unNumeroDeRefrescosPorEscrituraEnLog,
-                    unCurrentChangesHolder, unCurrentCommitsHolder,
+                    unCurrentChangesHolder, 
                     unaFechaUltimoInformeProgresoHolder, 
                     True,
                     thePermissionsCache         =unPermissionsCache, 
@@ -3359,9 +2979,7 @@ class TRAImportacion_Operaciones:
                                     theInformeImportarContenidos, 
                                     unIntervaloRefrescoEnNumeroEscrituras, 
                                     unIntervaloRefrescoEnMinutos, 
-                                    unCurrentChangesHolder, unCurrentCommitsHolder, 
-                                    unaEsperaEntreTransaccionesEnSegundos,
-                                    unNumeroDeRefrescosPorEscrituraEnLog,
+                                    unCurrentChangesHolder, 
                                     unaFechaUltimoInformeProgresoHolder, 
                                     True,
                                     thePermissionsCache         =unPermissionsCache, 
@@ -3442,7 +3060,7 @@ class TRAImportacion_Operaciones:
                                             """Exit with error condition.
                                             
                                             """
-                                            theInformeImportarContenidos[ 'fecha_informe'] =self.fDateTimeNowTextual()
+                                            theInformeImportarContenidos[ 'fecha_informe'] = self.fDateTimeNowTextual()
                                             theInformeImportarContenidos[ 'error'] = "gvSIGi18n_TRACadena_failedTranslationCreation_error_msgid"
                                             theInformeImportarContenidos[ 'error_detail'] = '%s %s' % ( unCodigoIdioma, unSimboloCadena , )
                                             self.pPeriodicCommit( 
@@ -3450,9 +3068,7 @@ class TRAImportacion_Operaciones:
                                                 theInformeImportarContenidos, 
                                                 unIntervaloRefrescoEnNumeroEscrituras, 
                                                 unIntervaloRefrescoEnMinutos, 
-                                                unaEsperaEntreTransaccionesEnSegundos,
-                                                unNumeroDeRefrescosPorEscrituraEnLog,
-                                                unCurrentChangesHolder, unCurrentCommitsHolder,
+                                                unCurrentChangesHolder, 
                                                 unaFechaUltimoInformeProgresoHolder, 
                                                 True,
                                                 thePermissionsCache         =unPermissionsCache, 
@@ -3473,7 +3089,7 @@ class TRAImportacion_Operaciones:
                                         
                                         if ( unEstadoTraduccion == cEstadoTraduccionPendiente) or ( not unaCadenaTraducida):
                                             
-                                            unAhoraStoreString =self.fDateTimeNowTextual()
+                                            unAhoraStoreString = self.fDateTimeNowTextual()
     
                                             unaTraduccionExistente.setCadenaTraducida(          unaTraduccionEncoded)
                                             unaTraduccionExistente.setEstadoTraduccion(         cEstadoTraduccionTraducida)    
@@ -3483,7 +3099,7 @@ class TRAImportacion_Operaciones:
                                             unaTraduccionExistente.setFechaRevisionTextual(            None)
                                             unaTraduccionExistente.setFechaDefinitivoTextual(          None)
                                             unaTraduccionExistente.pRegistrarHistoria( 
-                                                theAccion                   = cTranslationHistoryAction_Importar, 
+                                                theAccion                   = 'Importar', 
                                                 theFechaAccionTextual       = unAhoraStoreString, 
                                                 theUsuarioActor             = theMemberId, 
                                                 theEstadoTraduccion         = cEstadoTraduccionTraducida, 
@@ -3516,7 +3132,7 @@ class TRAImportacion_Operaciones:
                                                 theInformeImportarContenidos[ 'operations_done']   += 1
                                             else:
                                                 
-                                                unAhoraStoreString =self.fDateTimeNowTextual()
+                                                unAhoraStoreString = self.fDateTimeNowTextual()
                                                 
                                                 unaTraduccionExistente.setCadenaTraducida(   unaTraduccionEncoded)
                                                 unaTraduccionExistente.setEstadoTraduccion(  cEstadoTraduccionTraducida)    
@@ -3526,7 +3142,7 @@ class TRAImportacion_Operaciones:
                                                 unaTraduccionExistente.setFechaRevisionTextual(     None)
                                                 unaTraduccionExistente.setFechaDefinitivoTextual(   None)
                                                 unaTraduccionExistente.pRegistrarHistoria( 
-                                                    theAccion                   = cTranslationHistoryAction_Importar, 
+                                                    theAccion                   = 'Importar', 
                                                     theFechaAccionTextual       = unAhoraStoreString, 
                                                     theUsuarioActor             = theMemberId, 
                                                     theEstadoTraduccion         = cEstadoTraduccionTraducida, 
@@ -3562,10 +3178,10 @@ class TRAImportacion_Operaciones:
                                                 theInformeImportarContenidos[ 'operations_done']   += 1
                                                 
                                             else:
-                                                unAhoraStoreString =self.fDateTimeNowTextual()
+                                                unAhoraStoreString = self.fDateTimeNowTextual()
                                                 
                                                 unaTraduccionExistente.pRegistrarHistoria( 
-                                                   theAccion                    = cTranslationHistoryAction_Ignorar, 
+                                                   theAccion                   = 'Ignorar', 
                                                     theFechaAccionTextual       = unAhoraStoreString, 
                                                     theUsuarioActor             = theMemberId, 
                                                     theEstadoTraduccion         = cEstadoTraduccionRevisada, 
@@ -3643,7 +3259,7 @@ class TRAImportacion_Operaciones:
                                 """Exit with error condition.
                                 
                                 """
-                                theInformeImportarContenidos[ 'fecha_informe'] =self.fDateTimeNowTextual()
+                                theInformeImportarContenidos[ 'fecha_informe'] = self.fDateTimeNowTextual()
                                 theInformeImportarContenidos[ 'error'] = "gvSIGi18n_TRACadena_failedTranslationCreation_error_msgid"
                                 theInformeImportarContenidos[ 'error_detail'] = '%s %s' % ( unCodigoIdiomaQueFalta, unSimboloCadena , )
                                 self.pPeriodicCommit( 
@@ -3651,9 +3267,7 @@ class TRAImportacion_Operaciones:
                                     theInformeImportarContenidos, 
                                     unIntervaloRefrescoEnNumeroEscrituras, 
                                     unIntervaloRefrescoEnMinutos, 
-                                    unCurrentChangesHolder, unCurrentCommitsHolder, 
-                                    unaEsperaEntreTransaccionesEnSegundos,
-                                    unNumeroDeRefrescosPorEscrituraEnLog,
+                                    unCurrentChangesHolder, 
                                     unaFechaUltimoInformeProgresoHolder, 
                                     True,
                                     thePermissionsCache         =unPermissionsCache, 
@@ -3672,9 +3286,7 @@ class TRAImportacion_Operaciones:
                         theInformeImportarContenidos, 
                         unIntervaloRefrescoEnNumeroEscrituras, 
                         unIntervaloRefrescoEnMinutos, 
-                        unaEsperaEntreTransaccionesEnSegundos,
-                        unNumeroDeRefrescosPorEscrituraEnLog,
-                        unCurrentChangesHolder, unCurrentCommitsHolder, 
+                        unCurrentChangesHolder, 
                         unaFechaUltimoInformeProgresoHolder, 
                         False,
                         thePermissionsCache         =unPermissionsCache, 
@@ -3687,9 +3299,7 @@ class TRAImportacion_Operaciones:
                     theInformeImportarContenidos, 
                     unIntervaloRefrescoEnNumeroEscrituras, 
                     unIntervaloRefrescoEnMinutos, 
-                    unaEsperaEntreTransaccionesEnSegundos,
-                    unNumeroDeRefrescosPorEscrituraEnLog,
-                    unCurrentChangesHolder, unCurrentCommitsHolder,
+                    unCurrentChangesHolder, 
                     unaFechaUltimoInformeProgresoHolder, 
                     True,
                     thePermissionsCache         =unPermissionsCache, 
@@ -3718,7 +3328,7 @@ class TRAImportacion_Operaciones:
                             """Exit with error condition.
                             
                             """
-                            theInformeImportarContenidos[ 'fecha_informe'] =self.fDateTimeNowTextual()
+                            theInformeImportarContenidos[ 'fecha_informe'] = self.fDateTimeNowTextual()
                             theInformeImportarContenidos[ 'error'] = "gvSIGi18n_TRACadena_failedSearchBySimbolo_error_msgid"
                             theInformeImportarContenidos[ 'error_detail'] = unSimboloCadena        
                             self.pPeriodicCommit( 
@@ -3726,9 +3336,7 @@ class TRAImportacion_Operaciones:
                                 theInformeImportarContenidos, 
                                 unIntervaloRefrescoEnNumeroEscrituras, 
                                 unIntervaloRefrescoEnMinutos, 
-                                unaEsperaEntreTransaccionesEnSegundos,
-                                unNumeroDeRefrescosPorEscrituraEnLog,
-                                unCurrentChangesHolder, unCurrentCommitsHolder, 
+                                unCurrentChangesHolder, 
                                 unaFechaUltimoInformeProgresoHolder, 
                                 True,
                                 thePermissionsCache         =unPermissionsCache, 
@@ -3768,7 +3376,7 @@ class TRAImportacion_Operaciones:
                                 """Exit with error condition.
                                 
                                 """
-                                theInformeImportarContenidos[ 'fecha_informe'] =self.fDateTimeNowTextual()
+                                theInformeImportarContenidos[ 'fecha_informe'] = self.fDateTimeNowTextual()
                                 theInformeImportarContenidos[ 'error'] = "gvSIGi18n_TRACadena_failedTranslationCreation_error_msgid"
                                 theInformeImportarContenidos[ 'error_detail'] = '%s %s' % ( unCodigoIdioma, unSimboloCadena , )
                                 self.pPeriodicCommit( 
@@ -3776,9 +3384,7 @@ class TRAImportacion_Operaciones:
                                     theInformeImportarContenidos, 
                                     unIntervaloRefrescoEnNumeroEscrituras, 
                                     unIntervaloRefrescoEnMinutos, 
-                                    unaEsperaEntreTransaccionesEnSegundos,
-                                    unNumeroDeRefrescosPorEscrituraEnLog,
-                                    unCurrentChangesHolder, unCurrentCommitsHolder, 
+                                    unCurrentChangesHolder, 
                                     unaFechaUltimoInformeProgresoHolder, 
                                     True,
                                     thePermissionsCache         =unPermissionsCache, 
@@ -3794,9 +3400,7 @@ class TRAImportacion_Operaciones:
                             theInformeImportarContenidos, 
                             unIntervaloRefrescoEnNumeroEscrituras, 
                             unIntervaloRefrescoEnMinutos, 
-                            unaEsperaEntreTransaccionesEnSegundos,
-                            unNumeroDeRefrescosPorEscrituraEnLog,
-                            unCurrentChangesHolder, unCurrentCommitsHolder, 
+                            unCurrentChangesHolder, 
                             unaFechaUltimoInformeProgresoHolder, 
                             False,
                             thePermissionsCache         =unPermissionsCache, 
@@ -3809,9 +3413,7 @@ class TRAImportacion_Operaciones:
                         theInformeImportarContenidos, 
                         unIntervaloRefrescoEnNumeroEscrituras, 
                         unIntervaloRefrescoEnMinutos, 
-                        unaEsperaEntreTransaccionesEnSegundos,
-                        unNumeroDeRefrescosPorEscrituraEnLog,
-                        unCurrentChangesHolder, unCurrentCommitsHolder, 
+                        unCurrentChangesHolder, 
                         unaFechaUltimoInformeProgresoHolder, 
                         True,
                         thePermissionsCache         =unPermissionsCache, 
@@ -3836,7 +3438,7 @@ class TRAImportacion_Operaciones:
                 unSubExecutionRecord = self.fStartExecution( 'block',  'pImportarContenidosIntercambio-SubExecution to create missing translations in all strings and languages (TRATraduccion) into the Languages just created for all previously existing Strings.', unExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
                 try:
     
-                    unAhoraString =self.fDateTimeNowTextual()
+                    unAhoraString = self.fDateTimeNowTextual()
                     
                     unInformeCrearTraduccionesQueFaltan.update( {
                         'fecha_Informe': unAhoraString,
@@ -3844,7 +3446,7 @@ class TRAImportacion_Operaciones:
                     })                
                     if not theUseCaseQueryResult_CrearTraduccionesQueFaltan or not theUseCaseQueryResult_CrearTraduccionesQueFaltan.get( 'success', False):
                         unInformeCrearTraduccionesQueFaltan[ 'error'] = "gvSIGi18n_NoPermission_error_msgid"
-                        unInformeCrearTraduccionesQueFaltan[ 'end_date'] =self.fDateTimeNowTextual()
+                        unInformeCrearTraduccionesQueFaltan[ 'end_date'] = self.fDateTimeNowTextual()
                         return theInformeImportarContenidos
                                 
                         
@@ -3859,10 +3461,10 @@ class TRAImportacion_Operaciones:
                             """Exit with error condition.
                             
                             """
-                            unInformeCrearTraduccionesQueFaltan[ 'fecha_informe'] =self.fDateTimeNowTextual()
+                            unInformeCrearTraduccionesQueFaltan[ 'fecha_informe'] = self.fDateTimeNowTextual()
                             unInformeCrearTraduccionesQueFaltan[ 'error'] = "gvSIGi18n_TRACadena_failedSearchBySimbolo_error_msgid"
                             unInformeCrearTraduccionesQueFaltan[ 'error_detail'] = unSimboloCadena        
-                            theInformeImportarContenidos[ 'fecha_informe'] =self.fDateTimeNowTextual()
+                            theInformeImportarContenidos[ 'fecha_informe'] = self.fDateTimeNowTextual()
                             theInformeImportarContenidos[ 'error'] = "gvSIGi18n_TRACadena_failedSearchBySimbolo_error_msgid"
                             theInformeImportarContenidos[ 'error_detail'] = unSimboloCadena        
                             self.pPeriodicCommit( 
@@ -3870,9 +3472,7 @@ class TRAImportacion_Operaciones:
                                 theInformeImportarContenidos, 
                                 unIntervaloRefrescoEnNumeroEscrituras, 
                                 unIntervaloRefrescoEnMinutos, 
-                                unaEsperaEntreTransaccionesEnSegundos,
-                                unNumeroDeRefrescosPorEscrituraEnLog,
-                                unCurrentChangesHolder, unCurrentCommitsHolder, 
+                                unCurrentChangesHolder, 
                                 unaFechaUltimoInformeProgresoHolder, 
                                 True,
                                 thePermissionsCache         =unPermissionsCache, 
@@ -3923,10 +3523,10 @@ class TRAImportacion_Operaciones:
                                     """Exit with error condition.
                                     
                                     """
-                                    unInformeCrearTraduccionesQueFaltan[ 'fecha_informe'] =self.fDateTimeNowTextual()
+                                    unInformeCrearTraduccionesQueFaltan[ 'fecha_informe'] = self.fDateTimeNowTextual()
                                     unInformeCrearTraduccionesQueFaltan[ 'error'] = "gvSIGi18n_TRACadena_failedTranslationCreation_error_msgid"
                                     unInformeCrearTraduccionesQueFaltan[ 'error_detail'] = '%s %s' % ( unCodigoIdioma, unSimboloCadena , )
-                                    theInformeImportarContenidos[ 'fecha_informe'] =self.fDateTimeNowTextual()
+                                    theInformeImportarContenidos[ 'fecha_informe'] = self.fDateTimeNowTextual()
                                     theInformeImportarContenidos[ 'error'] = "gvSIGi18n_TRACadena_failedTranslationCreation_error_msgid"
                                     theInformeImportarContenidos[ 'error_detail'] = '%s %s' % ( unCodigoIdioma, unSimboloCadena , )
                                     self.pPeriodicCommit( 
@@ -3934,9 +3534,7 @@ class TRAImportacion_Operaciones:
                                         theInformeImportarContenidos, 
                                         unIntervaloRefrescoEnNumeroEscrituras, 
                                         unIntervaloRefrescoEnMinutos, 
-                                        unaEsperaEntreTransaccionesEnSegundos,
-                                        unNumeroDeRefrescosPorEscrituraEnLog,
-                                        unCurrentChangesHolder, unCurrentCommitsHolder, 
+                                        unCurrentChangesHolder, 
                                         unaFechaUltimoInformeProgresoHolder, 
                                         True,
                                         thePermissionsCache         =unPermissionsCache, 
@@ -3952,9 +3550,7 @@ class TRAImportacion_Operaciones:
                             theInformeImportarContenidos, 
                             unIntervaloRefrescoEnNumeroEscrituras, 
                             unIntervaloRefrescoEnMinutos, 
-                            unaEsperaEntreTransaccionesEnSegundos,
-                            unNumeroDeRefrescosPorEscrituraEnLog,
-                            unCurrentChangesHolder, unCurrentCommitsHolder, 
+                            unCurrentChangesHolder, 
                             unaFechaUltimoInformeProgresoHolder, 
                             False,
                             thePermissionsCache         =unPermissionsCache, 
@@ -3967,9 +3563,7 @@ class TRAImportacion_Operaciones:
                         theInformeImportarContenidos, 
                         unIntervaloRefrescoEnNumeroEscrituras, 
                         unIntervaloRefrescoEnMinutos, 
-                        unaEsperaEntreTransaccionesEnSegundos,
-                        unNumeroDeRefrescosPorEscrituraEnLog,
-                        unCurrentChangesHolder, unCurrentCommitsHolder, 
+                        unCurrentChangesHolder, 
                         unaFechaUltimoInformeProgresoHolder, 
                         True,
                         thePermissionsCache         =unPermissionsCache, 
@@ -3977,7 +3571,7 @@ class TRAImportacion_Operaciones:
                         theParentExecutionRecord    =unExecutionRecord,
                     )
                         
-                    unInformeCrearTraduccionesQueFaltan[ 'fecha_informe'] =self.fDateTimeNowTextual()
+                    unInformeCrearTraduccionesQueFaltan[ 'fecha_informe'] = self.fDateTimeNowTextual()
                     
                 finally:
                     unSubExecutionRecord and unSubExecutionRecord.pEndExecution()
@@ -4009,93 +3603,39 @@ class TRAImportacion_Operaciones:
         theInformeImportarContenidos, 
         theIntervaloRefrescoEnNumeroEscrituras, 
         theIntervaloRefrescoEnMinutos, 
-        theEsperaEntreTransaccionesEnSegundos,
-        theNumeroDeRefrescosPorEscrituraEnLog,
         theCurrentChangesHolder, 
-        theCurrentCommitsHolder,
         theFechaUltimoInformeProgresoHolder, 
         theForceCommit,
         thePermissionsCache         =None, 
         theRolesCache               =None, 
         theParentExecutionRecord    =None):
         
-        unosMillisNow = fMillisecondsNow()
+        unosMillisNow = self.fMillisecondsNow()
         if not ( theForceCommit or ( theCurrentChangesHolder[ 0] >= theIntervaloRefrescoEnNumeroEscrituras) or ( int(( unosMillisNow - theFechaUltimoInformeProgresoHolder[ 0].millis()) / 60000) >= theIntervaloRefrescoEnMinutos)):
             return self
         
         unExecutionRecord = self.fStartExecution( 'block',  'pPeriodicCommit', theParentExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }, '%d changes (total %d)' % (theCurrentChangesHolder[ 0], theCurrentChangesHolder[ 0]+theInformeImportarContenidos[ 'total_changes'], )) 
         try:
-            
-            aNumLastChanges   = theCurrentChangesHolder[ 0]
-            theCurrentChangesHolder[ 0] = 0
+            unAhora = self.fDateTimeNow()
+            aNumLastChanges = theCurrentChangesHolder[ 0]
             
             theInformeImportarContenidos[ 'total_changes'] += aNumLastChanges
+            theCurrentChangesHolder[ 0] = 0
+            theFechaUltimoInformeProgresoHolder[ 0] = unAhora
             
-            theCurrentChangesHolder[ 1] += aNumLastChanges
-            theCurrentCommitsHolder[ 0] += 1
-            
-            
-                
+            theInformeImportarContenidos[ 'fecha_informe'] = self.fDateToStoreString( unAhora)
+            self.setInformeProgreso( str( theInformeImportarContenidos))
+            self.setFechaUltimoInformeProgreso( unAhora)
     
-            # ################################################################
-            """If so configured,write to the log every certain number of commits, not at every commit.
-            
-            """
-            if theForceCommit or ( theNumeroDeRefrescosPorEscrituraEnLog <= 1) or ( theCurrentCommitsHolder[ 0] >= theNumeroDeRefrescosPorEscrituraEnLog):
-
-                
-                unAhora = fDateTimeNow()
-                theFechaUltimoInformeProgresoHolder[ 0] = unAhora
-                
-                theInformeImportarContenidos[ 'fecha_informe'] = self.fDateToStoreString( unAhora)
-                self.setInformeProgreso( str( theInformeImportarContenidos))
-                self.setFechaUltimoInformeProgreso( unAhora)
+            # ACV REMOVED 200903120100 
+            # We don't want to invite to transaction collisions by writing where others will lazy initialize
+            # We don't need to have available for visualization and translation
+            # the strings imported in a process still active
+            # theCatalogo.pInvalidateSimbolosCadenasOrdenados()        
+                        
+            transaction.commit( )
     
-                
-                # ################################################################
-                """If so configured, shall Go to sleep to give a change to execute to other processes and user requests. 
-                
-                """
-                unaEsperaEntreTransaccionesEnSegundos = 0
-                if theEsperaEntreTransaccionesEnSegundos:
-                    unaEsperaEntreTransaccionesEnSegundos = min( theEsperaEntreTransaccionesEnSegundos, cMaxWaitBetweenTransactions)
-                    if not ( unaEsperaEntreTransaccionesEnSegundos > cMinWaitBetweenTransactions):
-                        unaEsperaEntreTransaccionesEnSegundos = 0
-                
-                unSleepSentence = ''
-                if unaEsperaEntreTransaccionesEnSegundos > cMinWaitBetweenTransactions:
-                    unSleepSentence = 'Going to sleep %.1f' % unaEsperaEntreTransaccionesEnSegundos
-                
-                logging.getLogger( 'gvSIGi18n::Importar').info("%d COMMITS after %d changes (total changes %d)   %s" % ( theCurrentCommitsHolder[ 0], theCurrentChangesHolder[ 1], theInformeImportarContenidos[ 'total_changes'], unSleepSentence) )        
-
-                theCurrentChangesHolder[ 1] = 0
-                theCurrentCommitsHolder[ 0] = 0
-                
-                
-                
-                theCatalogo.pFlushCachedTemplates_All()                            
-                
-                # ACV OJO 200912161030 This was outside of theForceCommit .... condition above, committing every time !!! Now moved under the condition
-                # ################################################################
-                """COMMIT NOW
-                
-                """
-                transaction.commit( )
-                
-                
-            
-            
-                # ACV OJO 200912161030 This was outside of theForceCommit .... condition above, committing every time !!! Now moved under the condition
-                # ################################################################
-                """If so configured, Go to sleep NOW. Abort on wake-up to refresh the view on the object network.
-                
-                """
-                if unaEsperaEntreTransaccionesEnSegundos > cMinWaitBetweenTransactions:
-                    
-                    time.sleep( unaEsperaEntreTransaccionesEnSegundos * 1.0)
-                    
-                    transaction.abort( )
-                
+            logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT after %d changes (total changes %d)" % ( aNumLastChanges, theInformeImportarContenidos[ 'total_changes']) )        
                 
             return self
         
@@ -4106,7 +3646,19 @@ class TRAImportacion_Operaciones:
 
    
     
+  
+    security.declareProtected( permissions.View, 'getCatalogo')
+    def getCatalogo( self):
+        return self.getContenedorContenedor()
+        
 
+       
+        
+    
+    
+
+
+    
 
     
 
@@ -4152,15 +3704,12 @@ class TRAImportacion_Operaciones:
             aNewIdWithCounter = thePloneUtilsTool.normalizeString( aNewIdWithCounter)
             
         anAttrsDict = { 
-# ACV 20090814 
-#   EATR01 Remove Attribute pathDelRaiz from all entities; 	
-#   EATR02 Remove the Type attribute from catalog schemas
-#            'pathDelRaiz':              theCatalogo.fPathDelRaiz(),
+            'pathDelRaiz':              theCatalogo.fPathDelRaiz(),
             'title':                    theSimboloCadena,
             'description':              '',
             'simbolo':                  theSimboloCadena,
             'estadoCadena':             cEstadoCadenaActiva,  
-            'fechaCreacionTextual':    self.fDateTimeNowTextual(),
+            'fechaCreacionTextual':     self.fDateTimeNowTextual(),
             'usuarioCreador':           theMemberId,
             'fechaCancelacion':         None,
             'nombresModulos':           '\n'.join( theNombresModulos),
@@ -4213,9 +3762,6 @@ class TRAImportacion_Operaciones:
             
         theNuevaCadena.manage_fixupOwnershipAfterAdd()
         
-        for unaPermission in cPermissionsToDenyEverywhereToEverybody:
-            theNuevaCadena.manage_permission( unaPermission, roles=[], acquire=False)
-        
         if theCadenaPermissionsSpecs:
             for unaPermission in theCadenaPermissionsSpecs.keys():
                 unaPermissionSpec   = theCadenaPermissionsSpecs[ unaPermission]
@@ -4224,7 +3770,6 @@ class TRAImportacion_Operaciones:
                 
                 if unaPermission:
                     theNuevaCadena.manage_permission( unaPermission, roles=unosRoles, acquire=unAcquire)
-                    
                     
         self.fSetAcquiringRoleAssignments( theNuevaCadena, True)
                             
@@ -4261,7 +3806,7 @@ class TRAImportacion_Operaciones:
         unTitulo = '%s-%s' % ( theSimboloCadena, theCodigoIdioma)
         aNewId = theCadena.fIdTraduccionEnLenguage( theCodigoIdioma, thePloneUtilsTool)
 
-        unDateStoreString =self.fDateTimeNowTextual()
+        unDateStoreString = self.fDateTimeNowTextual()
         
         unEstadoTraduccion = cEstadoTraduccionPendiente
         unUsuarioTraductor = ''
@@ -4273,10 +3818,7 @@ class TRAImportacion_Operaciones:
 
                     
         anAttrsDict = { 
-# ACV 20090814 
-#   EATR01 Remove Attribute pathDelRaiz from all entities; 	
-#   EATR02 Remove the Type attribute from catalog schemas
-#            'pathDelRaiz':          theCadena.fPathDelRaiz(),
+            'pathDelRaiz':          theCadena.fPathDelRaiz(),
             'title':                unTitulo,
             'description':          '',
             'simbolo':              theSimboloCadena,
@@ -4353,13 +3895,10 @@ class TRAImportacion_Operaciones:
         unTitulo = '%s-%s' % ( theSimboloCadena, theCodigoIdioma)
         aNewId = theCadena.fIdTraduccionEnLenguage( theCodigoIdioma, thePloneUtilsTool)
         
-        unDateStoreString =self.fDateTimeNowTextual()
+        unDateStoreString = self.fDateTimeNowTextual()
 
         anAttrsDict = { 
-# ACV 20090814 
-#   EATR01 Remove Attribute pathDelRaiz from all entities; 	
-#   EATR02 Remove the Type attribute from catalog schemas
-#            'pathDelRaiz':          theCadena.fPathDelRaiz(),
+            'pathDelRaiz':          theCadena.fPathDelRaiz(),
             'title':                unTitulo,
             'description':          '',
             'simbolo':              theSimboloCadena,
@@ -4439,9 +3978,6 @@ class TRAImportacion_Operaciones:
                 if unaPermission:
                     theNuevaTraduccion.manage_permission( unaPermission, roles=unosRoles, acquire=unAcquire)
         
-        for unaPermission in cPermissionsToDenyEverywhereToEverybody:
-            theNuevaTraduccion.manage_permission( unaPermission, roles=[], acquire=False)
-        
         self.fSetAcquiringRoleAssignments( theNuevaTraduccion, True)
         
         return self
@@ -4474,7 +4010,11 @@ class TRAImportacion_Operaciones:
         if not unInformeString:
             return None
         
-        unInforme = self.fEvalString( unInformeString)
+        unInforme = None
+        try:
+            unInforme = eval( unInformeString)
+        except:
+            None
         return unInforme
     
     
@@ -4495,7 +4035,11 @@ class TRAImportacion_Operaciones:
         if not unInformeString:
             return None
         
-        unInforme = self.fEvalString( unInformeString)
+        unInforme = None
+        try:
+            unInforme = eval( unInformeString)
+        except:
+            None
         return unInforme
     
     
@@ -4516,7 +4060,11 @@ class TRAImportacion_Operaciones:
         if not unInformeString:
             return None
         
-        unInforme = self.fEvalString( unInformeString)
+        unInforme = None
+        try:
+            unInforme = eval( unInformeString)
+        except:
+            None
         return unInforme
         
     
@@ -4556,7 +4104,6 @@ class TRAImportacion_Operaciones:
                         theUseCaseName          = cUseCase_CreateAndDeleteTRAInformeInTRAImportacion,        
                         theElementsBindings     = { cBoundObject: self,},                                    
                         theRulesToCollect       = None,                                                      
-                        thePredicateOverrides   = { self.getCatalogo().UID(): { 'fAllowWrite': True, }, },
                         thePermissionsCache     = unPermissionsCache,                                        
                         theRolesCache           = unRolesCache,                                              
                         theParentExecutionRecord= unExecutionRecord,                                          
@@ -4566,9 +4113,9 @@ class TRAImportacion_Operaciones:
         
             unosInformesEstado = self.fObtenerTodosInformes()
             
-            someIdsToDelete = [ unInformeEstado.getId() for unInformeEstado in unosInformesEstado]
+            for unInformeEstado in unosInformesEstado:
             
-            self.manage_delObjects( someIdsToDelete)
+                self.manage_delObjects( [ unInformeEstado.getId(), ])
                 
             return self
 
@@ -4603,12 +4150,11 @@ class TRAImportacion_Operaciones:
                 
             if theCheckPermissions:
                 unUseCaseQueryResult = theUseCaseQueryResult
-                if not unUseCaseQueryResult or not ( unUseCaseQueryResult.get( 'use_case_name', '') == cUseCase_CreateAndDeleteTRAInformeInTRAImportacion):
+                if not unUseCaseQueryResult or not ( unUseCaseQueryResult.get( 'use_case_name', '') == cUseCase_ImportTRAImportacion):
                     unUseCaseQueryResult = self.fUseCaseAssessment(  
                         theUseCaseName          = cUseCase_CreateAndDeleteTRAInformeInTRAImportacion,        
                         theElementsBindings     = { cBoundObject: self,},                                    
-                        theRulesToCollect       = [ 'languages', 'modules',],                                                      
-                        thePredicateOverrides   = { self.getCatalogo().UID(): { 'fAllowWrite': True, }, },
+                        theRulesToCollect       = None,                                                      
                         thePermissionsCache     = unPermissionsCache,                                        
                         theRolesCache           = unRolesCache,                                              
                         theParentExecutionRecord= unExecutionRecord,                                          
@@ -4645,8 +4191,7 @@ class TRAImportacion_Operaciones:
             
             
             unInformeEstado.fElaborarInforme( 
-                theUseCaseQueryResult       =None,
-                theForceEllaboration        =True, 
+                True, 
                 theCheckPermissions         =False,
                 thePermissionsCache         =unPermissionsCache, 
                 theRolesCache               =unRolesCache, 
@@ -4766,7 +4311,11 @@ class TRAImportacion_Operaciones:
         if not unInformeString:
             return None
             
-        unInforme = self.fEvalString( unInformeString)
+        unInforme = None
+        try:
+            unInforme = eval( unInformeString)
+        except:
+            None
         return unInforme
          
     
@@ -4779,7 +4328,11 @@ class TRAImportacion_Operaciones:
         if not unInformeString:
             return None
             
-        unInforme = self.fEvalString( unInformeString)
+        unInforme = None
+        try:
+            unInforme = eval( unInformeString)
+        except:
+            None
         return unInforme
          
  
@@ -4792,7 +4345,11 @@ class TRAImportacion_Operaciones:
         if not unInformeString:
             return None
             
-        unInforme = self.fEvalString( unInformeString)
+        unInforme = None
+        try:
+            unInforme = eval( unInformeString)
+        except:
+            None
         return unInforme
          
     
@@ -4805,133 +4362,15 @@ class TRAImportacion_Operaciones:
         if not unInformeString:
             return None
             
-        unInforme = self.fEvalString( unInformeString)
+        unInforme = None
+        try:
+            unInforme = eval( unInformeString)
+        except:
+            None
         return unInforme
     
     
    
 
-    
-    
-
-    
-    security.declareProtected( permissions.ModifyPortalContent, 'fReutilizarImportacion')
-    def fReutilizarImportacion( self , thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):
-        
-        unExecutionRecord = self.fStartExecution( 'method',  'fReutilizarImportacion', theParentExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
-
-        try:
-            
-            try:
-                
-                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
-            
-                unUseCaseQueryResult = self.fUseCaseAssessment(  
-                    theUseCaseName          = cUseCase_ReuseTRAImportacion, 
-                    theElementsBindings     = { cBoundObject: self,},
-                    theRulesToCollect       = [ ], 
-                    thePermissionsCache     = unPermissionsCache, 
-                    theRolesCache           = unRolesCache, 
-                    theParentExecutionRecord= unExecutionRecord
-                )
-                if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
-                    return False
-                        
-                                    
-                unHaComenzado = self.getHaComenzado()
-                
-                if unHaComenzado:
-                    self.setHaComenzado( False)
-                    
-                    aModelDDvlPloneTool_Mutators = ModelDDvlPloneTool_Mutators()
-                   
-                    aReport = aModelDDvlPloneTool_Mutators.fNewVoidChangeValuesReport()
-                    someFieldReports    = aReport.get( 'field_reports')
-                    aFieldReportsByName = aReport.get( 'field_reports_by_name')       
-
-                    aReportForField = { 'attribute_name': 'haComenzado', 'effect': 'changed', 'new_value': False, 'previous_value': True,}                                                                                                                        
-                    
-                    someFieldReports.append( aReportForField)
-                    aFieldReportsByName[ 'haComenzado'] = aReportForField
-                    
-                    aModelDDvlPloneTool_Mutators.pSetAudit_Modification( self, cModificationKind_ChangeValues, aReport)  
-                    
-                    self.pFlushCachedTemplates_All()                            
-                
-                    transaction.commit()
-                    logging.getLogger( 'gvSIGi18n').info( "COMMIT TRAImportacion::fReutilizarImportacion %s" % '/'.join( self.getPhysicalPath()))
-                    
-                return True
-            
-            except:
-                unaExceptionInfo = sys.exc_info()
-                unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
-                
-                unInformeExcepcion = 'Exception during TRAIdioma::fReutilizarImportacion %s \n'  % '/'.join( self.getPhysicalPath())
-                unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
-                unInformeExcepcion += unaExceptionFormattedTraceback   
-
-                unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
-
-                if cLogExceptions:
-                    logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
-                
-                return False
-        
-             
-        finally:
-            unExecutionRecord and unExecutionRecord.pEndExecution()
-            unExecutionRecord and unExecutionRecord.pClearLoggedAll()
-
-                            
-        
-            
-    
-    security.declarePublic( 'fExtraLinks')    
-    def fExtraLinks( self):
-        
-        unosExtraLinks = TRAElemento_Operaciones.fExtraLinks( self)
-        if not unosExtraLinks:
-            unosExtraLinks = [ ]
-        
-        unaURL = self.absolute_url()
-        if not unaURL:
-            return unosExtraLinks
-        
-
-        unExtraLink = self.fNewVoidExtraLink()
-        unExtraLink.update( {
-            'label'   : self.fTranslateI18N( 'plone', 'Summary', 'Summary-',),
-            'href'    : '%s/TRAImportacionContenidosSumario/' % unaURL,
-            'icon'    : '',
-            'domain'  : 'plone',
-            'msgid'   : 'Summary',
-        })
-        unosExtraLinks.append( unExtraLink)
-                            
-        unExtraLink = self.fNewVoidExtraLink()
-        unExtraLink.update( {
-            'label'   : self.fTranslateI18N( 'plone', 'Details', 'Details-',),
-            'href'    : '%s/TRAImportacionContenidosDetalle/' % unaURL,
-            'icon'    : '',
-            'domain'  : 'plone',
-            'msgid'   : 'Details',
-        })
-        unosExtraLinks.append( unExtraLink)
-                            
-                            
-        unExtraLink = self.fNewVoidExtraLink()
-        unExtraLink.update( {
-            'label'   : self.fTranslateI18N( 'plone', 'Progress', 'Progress-',),
-            'href'    : '%s/TRAImportacionProgreso/' % unaURL,
-            'icon'    : '',
-            'domain'  : 'plone',
-            'msgid'   : 'Progress',
-        })
-        unosExtraLinks.append( unExtraLink)
-
-        return unosExtraLinks
     
     

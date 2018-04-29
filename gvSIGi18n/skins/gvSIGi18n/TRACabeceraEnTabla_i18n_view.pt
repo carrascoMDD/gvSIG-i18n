@@ -50,7 +50,7 @@
                 <td align="right" valign="baseline" 
                     tal:define="pPropietario                  python: here.getPropietario();
                                 pPropietarioAllMetaAndValues  python: pPropietario.getAttributesMetaAndValues( ['title'])">
-                    <a  href="#" tal:attributes="href python: '%s/' % pPropietario.absolute_url()"
+                    <a  href="#" tal:attributes="href python: '%s' % pPropietario.absolute_url()"
                         tal:condition="python: not (pPropietario is here)"
                         class="state-visible" title="">
                         <span  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_volver_action_label"/>

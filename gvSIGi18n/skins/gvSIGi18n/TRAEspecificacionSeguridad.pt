@@ -37,14 +37,10 @@
                              
 <metal:main fill-slot="main">
     <tal:main-macro metal:define-macro="main"
-        tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas.
-        global pStartTime       pStartTime | python: here.ModelDDvlPlone_tool.fMillisecondsNow()" 
+        tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas." 
         i18n:domain="gvSIGi18n">
 
-        <metal:block metal:use-macro="here/TRAProfileExecution/macros/tSetupProfileExecution" />   
-
-
-        <tal:block tal:define="pExecutionRecord python: here.fStartExecution( 'template', 'TRAEspecificacionSeguridad.pt', None, pAllowRootProfileExecution, { 'log_what': 'details', 'log_when': True, })" >
+        <tal:block tal:define="pExecutionRecord python: here.fStartExecution( 'template', 'TRAEspecificacionSeguridad.pt', None, True, { 'log_what': 'details', 'log_when': True, })" >
         
             <div metal:use-macro="here/document_actions/macros/document_actions">
                 Document actions (print, sendto etc)
@@ -59,12 +55,6 @@
             </div>
             
             
-            
-            <tal:block tal:condition="python: not here.fAllowWrite()" >
-                <div class="portalMessage" >
-                    <span tal:content="python: here.ModelDDvlPlone_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TranslationsCatalogIsLockedAgainstModifications', 'The Translations Catalog Is Locked Against Modifications')" />
-                </div>
-            </tal:block>
     
             <tal:block tal:define="pPermiteEditar python: False; pPermiteEliminar python: False; pShowOrHideTrees python: False">
                 <metal:block metal:use-macro="here/TRACabeceraEnTabla_i18n_view/macros/tCabeceraEnTabla_i18n" />   
@@ -124,7 +114,7 @@
                                             tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_volveracatalogo_msgid',   'Back to catalog-' )"
                                             tal:attributes="
                                                 title aLinkTitle;
-                                                href python: '%s/TRACatalogo/' % here.absolute_url()">
+                                                href python: '%s/TRACatalogo' % here.absolute_url()">
                                             <span tal:content="aLinkTitle" />
                                         </a>
                                     </strong>
@@ -135,7 +125,7 @@
                                             tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_mostrarinformedeestado_msgid',   'Show Status Report-' )"                                    
                                             tal:attributes="
                                                 title aLinkTitle;
-                                                href python: '%s/TRACatalogoInforme/' % here.getCatalogo().absolute_url()">
+                                                href python: '%s/TRACatalogoInforme' % here.getCatalogo().absolute_url()">
                                             <span tal:content="aLinkTitle" />
                                         </a>
                                     </strong>
