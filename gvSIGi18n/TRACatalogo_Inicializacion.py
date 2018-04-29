@@ -428,7 +428,7 @@ class TRACatalogo_Inicializacion:
                 unInforme[ 'title'] =  self.Title()
                 unInforme[ 'path']  =  '/'.join( self.getPhysicalPath())
 
-                if not self.Title():
+                if not self.Title(): # 'portal_factory' in self.getPhysicalPath(): 
                     unInforme[ 'success']   =  False
                     unInforme[ 'condition'] = 'Premature_initialization'
                     return unInforme
