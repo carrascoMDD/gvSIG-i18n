@@ -242,7 +242,7 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRAMod
         'id': 'TRADeleteModule',
         'name': 'Delete Module',
         'permissions': ("Delete objects",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Delete_TRAModulo')"""
+        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Delete_TRAModulo')"""
        },
 
 
@@ -251,7 +251,7 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRAMod
         'id': 'edit',
         'name': 'Edit',
         'permissions': ("Modify portal content",),
-        'condition': """python:object.fAllowWrite()"""
+        'condition': """python:object.fUseCaseCheckDoable( 'Edit_TRAModulo')"""
        },
 
 
@@ -260,7 +260,7 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRAMod
         'id': 'local_roles',
         'name': 'Sharing',
         'permissions': ("Manage properties",),
-        'condition': """python:object.fAllowWrite() and object.fRoleQuery_IsManagerOrCoordinator()"""
+        'condition': """python:object.fAllowWrite() and object.TRAgvSIGi18n_tool.fRoleQuery_IsAnyRol( object, [ 'Manager', 'Owner', 'TRACreator', 'TRAManager', 'TRACoordinator',])"""
        },
 
 
@@ -269,7 +269,7 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRAMod
         'id': 'view',
         'name': 'View',
         'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'View_any_TRA_element')"""
        },
 
 
@@ -278,7 +278,7 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRAMod
         'id': 'mddcachestatus',
         'name': 'Cache',
         'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'CacheStatus_on_any_TRA_element')"""
        },
 
 
@@ -287,16 +287,7 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRAMod
         'id': 'mddchanges',
         'name': 'Changes',
         'permissions': ("View",),
-        'condition': """python:1"""
-       },
-
-
-       {'action': "string:${object_url}/TRAConfigureProfiling_action",
-        'category': "object_buttons",
-        'id': 'TRA_configure_profiling',
-        'name': 'Configure Profiling',
-        'permissions': ("ManagePortal",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Configure_ExecutionProfilingEnablement_TRACatalogo')"""
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Changes_on_any_TRA_element')"""
        },
 
 
@@ -306,6 +297,15 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRAMod
         'name': 'State',
         'permissions': ("View",),
         'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/TRAFlushCache_action",
+        'category': "object_buttons",
+        'id': 'tra_flushcache',
+        'name': 'FlushCache',
+        'permissions': ("View",),
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fRoleQuery_IsAnyRol( object, [ 'Manager', 'Owner', 'TRACreator', 'TRAManager', 'TRACoordinator',])"""
        },
 
 
@@ -323,7 +323,7 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRAMod
         'id': 'TRA_inventario',
         'name': 'Inventory',
         'permissions': ("View",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Inventory_TRAElemento')"""
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Inventory_TRAElemento')"""
        },
 
 
@@ -332,7 +332,7 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRAMod
         'id': 'TRA_recatalogar',
         'name': 'ReCatalog',
         'permissions': ("View",),
-        'condition': """python:object.fUseCaseCheckDoable( 'ReCatalog_TRAElemento')"""
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'ReCatalog_TRAElemento')"""
        },
 
 
@@ -341,7 +341,16 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRAMod
         'id': 'TRA_reestablecerpermisos',
         'name': 'Reset Permissions',
         'permissions': ("View",),
-        'condition': """python:object.fUseCaseCheckDoable( 'ResetPermissions_TRAElemento')"""
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'ResetPermissions_TRAElemento')"""
+       },
+
+
+       {'action': "string:${object_url}/TRAVerifyPermissions_action",
+        'category': "object_buttons",
+        'id': 'TRA_verificarpermisos',
+        'name': 'Verify Permissions',
+        'permissions': ("View",),
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'VerifyPermissions_TRAElemento')"""
        },
 
 
@@ -359,7 +368,7 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRAMod
         'id': 'TRA_SeguridadUsuarioConectado',
         'name': 'Permissions',
         'permissions': ("View",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Permissions_on_any_TRA_element')"""
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Permissions_on_any_TRA_element')"""
        },
 
 
@@ -449,7 +458,7 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRAMod
         """
         """
         
-        return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
+        return self
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

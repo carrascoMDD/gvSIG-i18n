@@ -2,8 +2,7 @@
 #
 # File: TRAColeccionCadenas_Operaciones.py
 #
-# Copyright (c) 2008, 2009,2010 by Conselleria de Infraestructuras y Transporte de la
-# Generalidad Valenciana
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -62,6 +61,26 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore       import permissions
 
 
+from TRAElemento_Constants                 import *
+from TRAElemento_Constants_Activity        import *
+from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Dates           import *
+from TRAElemento_Constants_Encoding        import *
+from TRAElemento_Constants_Import          import *
+from TRAElemento_Constants_Languages       import *
+from TRAElemento_Constants_Logging         import *
+from TRAElemento_Constants_Modules         import *
+from TRAElemento_Constants_Profiling       import *
+from TRAElemento_Constants_Progress        import *
+from TRAElemento_Constants_String          import *
+from TRAElemento_Constants_StringRequests  import *
+from TRAElemento_Constants_Translate       import *
+from TRAElemento_Constants_Translation     import *
+from TRAElemento_Constants_TypeNames       import *
+from TRAElemento_Constants_Views           import *
+from TRAElemento_Constants_Vocabularies    import *
+from TRAUtils                              import *
+
 from TRAImportarExportar_Constants import *
 
 
@@ -76,7 +95,7 @@ class TRAColeccionCadenas_Operaciones:
 
  
     security.declarePrivate( 'pAllSubElements_into')    
-    def pAllSubElements_into( self, theCollection, theAdditionalParms=None):
+    def pAllSubElements_into( self, theCollection, theAdditionalParams=None):
         if theCollection == None:
             return self
         theCollection.append( self)
@@ -85,7 +104,7 @@ class TRAColeccionCadenas_Operaciones:
         unosElementos = self.fObtenerTodasCadenas()
         if unosElementos:
             for unElemento in unosElementos:
-                unElemento.pAllSubElements_into( theCollection, theAdditionalParms=theAdditionalParms)
+                unElemento.pAllSubElements_into( theCollection, theAdditionalParams=theAdditionalParams)
         
         return self
         
@@ -118,7 +137,7 @@ class TRAColeccionCadenas_Operaciones:
         """Retrieve all contained elements of type TRACadena.
         
         """
-        unosElementos = self.objectValues( cNombreTipoTRACadena) 
+        unosElementos = self.fObjectValues( cNombreTipoTRACadena) 
         return unosElementos
          
           

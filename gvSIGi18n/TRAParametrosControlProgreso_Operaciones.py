@@ -2,8 +2,7 @@
 #
 # File: TRAParametrosControlProgreso_Operaciones.py
 #
-# Copyright (c) 2008, 2009,2010 by Conselleria de Infraestructuras y Transporte de la
-# Generalidad Valenciana
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -52,7 +51,25 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore       import permissions
 
 
-from TRAElemento_Constants  import *
+from TRAElemento_Constants                 import *
+from TRAElemento_Constants_Activity        import *
+from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Dates           import *
+from TRAElemento_Constants_Encoding        import *
+from TRAElemento_Constants_Import          import *
+from TRAElemento_Constants_Languages       import *
+from TRAElemento_Constants_Logging         import *
+from TRAElemento_Constants_Modules         import *
+from TRAElemento_Constants_Profiling       import *
+from TRAElemento_Constants_Progress        import *
+from TRAElemento_Constants_String          import *
+from TRAElemento_Constants_StringRequests  import *
+from TRAElemento_Constants_Translate       import *
+from TRAElemento_Constants_Translation     import *
+from TRAElemento_Constants_TypeNames       import *
+from TRAElemento_Constants_Views           import *
+from TRAElemento_Constants_Vocabularies    import *
+from TRAUtils                              import *
 
 
 
@@ -82,7 +99,7 @@ class TRAParametrosControlProgreso_Operaciones:
 
 
     security.declarePrivate( 'pAllSubElements_into')    
-    def pAllSubElements_into( self, theCollection, theAdditionalParms=None):
+    def pAllSubElements_into( self, theCollection, theAdditionalParams=None):
         if theCollection == None:
             return self
         theCollection.append( self)
@@ -107,42 +124,65 @@ class TRAParametrosControlProgreso_Operaciones:
     
     
     security.declarePrivate( 'pInitDefaultProcessControlParms')    
-    def pInitDefaultProcessControlParms( self, theProcessType, theProgressControlParms, theElement):
+    def pInitDefaultProcessControlParms( self, theProcessType, theProgressControlParms, theProgressSupportKinds):
+        
         if not theProcessType:
             return self
         if theProgressControlParms == None:
             return self
         
-        someProgressSupportKinds = self.fProgressSupportKindsForProcessTypeOnTarget( theProcessType, theElement)
         
-        aProgressControlParms_Logging        = theProgressControlParms.get( cTRAProgress_SupportKind_Logging, {})
-        aProgressControlParms_Logging[ 'enabled']                    = ( cTRAProgress_SupportKind_Logging in someProgressSupportKinds) and ( self.getRegistro_habilitado() or True)
-        aProgressControlParms_Logging[ 'max_milliseconds']           = self.getRegistro_maximoMilisegundos() or 120000
-        aProgressControlParms_Logging[ 'max_elements_traversed']     = self.getRegistro_maximoElementosLeidos() or 10000
-        aProgressControlParms_Logging[ 'max_elements_changed']       = self.getRegistro_maximoElementosModificados() or 1000
-        aProgressControlParms_Logging[ 'log_every_nth_transactions'] = self.getRegistro_maximoTransacciones() or 10
+        theProgressControlParms[ 'CreateReportBefore'] = self.getCrearInformeAntes()
+        theProgressControlParms[ 'CreateReportAfter']  = self.getCrearInformeDespues()
         
+        
+        aProgressControlParms_StoreResults   = theProgressControlParms.get( cTRAProgress_SupportKind_StoreResults, None)
+        if aProgressControlParms_StoreResults == None:
+            aProgressControlParms_StoreResults = { }
+            theProgressControlParms[ cTRAProgress_SupportKind_StoreResults] = aProgressControlParms_StoreResults
 
-        aProgressControlParms_StoreResults   = theProgressControlParms.get( cTRAProgress_SupportKind_StoreResults, {})
-        aProgressControlParms_StoreResults[ 'enabled']                    = ( cTRAProgress_SupportKind_StoreResults in someProgressSupportKinds) and ( self.getGuardarResultados_habilitado() or True)
-        aProgressControlParms_StoreResults[ 'max_milliseconds']           = self.getGuardarResultados_maximoMilisegundos() or 60000
-        aProgressControlParms_StoreResults[ 'max_elements_traversed']     = self.getGuardarResultados_maximoElementosLeidos() or 5000
-        aProgressControlParms_StoreResults[ 'max_elements_changed']       = self.getGuardarResultados_maximoElementosModificados() or 500
+        aProgressControlParms_StoreResults[ 'enabled']                    = ( cTRAProgress_SupportKind_StoreResults in theProgressSupportKinds) and self.getGuardarResultados_habilitado()
+        aProgressControlParms_StoreResults[ 'max_milliseconds']           = self.getGuardarResultados_maximoMilisegundos()
+        aProgressControlParms_StoreResults[ 'max_elements_traversed']     = self.getGuardarResultados_maximoElementosLeidos()
+        aProgressControlParms_StoreResults[ 'max_elements_changed']       = self.getGuardarResultados_maximoElementosModificados()
  
         
-        aProgressControlParms_YieldProcessor = theProgressControlParms.get( cTRAProgress_SupportKind_YieldProcessor, {})
-        aProgressControlParms_YieldProcessor[ 'enabled']                    = ( cTRAProgress_SupportKind_YieldProcessor in someProgressSupportKinds) and ( self.getCederProcesador_habilitado() or True)
-        aProgressControlParms_YieldProcessor[ 'max_milliseconds']           = self.getCederProcesador_maximoMilisegundos() or 500
-        aProgressControlParms_YieldProcessor[ 'max_elements_traversed']     = self.getCederProcesador_maximoElementosLeidos() or 100
-        aProgressControlParms_YieldProcessor[ 'max_elements_changed']       = self.getCederProcesador_maximoElementosModificados() or 50
-        aProgressControlParms_YieldProcessor[ 'percent_active_time']        = self.getCederProcesador_porcentajeTiempoActividad() or 50
+        
+        aProgressControlParms_Transactional   = theProgressControlParms.get( cTRAProgress_SupportKind_Transactional, None)
+        if aProgressControlParms_Transactional == None:
+            aProgressControlParms_Transactional = { }
+            theProgressControlParms[ cTRAProgress_SupportKind_Transactional] = aProgressControlParms_Transactional
+
+        aProgressControlParms_Transactional[ 'enabled']                    = ( cTRAProgress_SupportKind_Transactional in theProgressSupportKinds) and self.getTransacciones_habilitado()
+        aProgressControlParms_Transactional[ 'max_milliseconds']           = self.getTransacciones_maximoMilisegundos()
+        aProgressControlParms_Transactional[ 'max_elements_traversed']     = self.getTransacciones_maximoElementosLeidos()
+        aProgressControlParms_Transactional[ 'max_elements_changed']       = self.getTransacciones_maximoElementosModificados()
         
         
-        aProgressControlParms_Transactional  = theProgressControlParms.get( cTRAProgress_SupportKind_Transactional, {})
-        aProgressControlParms_Transactional[ 'enabled']                    = ( cTRAProgress_SupportKind_Transactional in someProgressSupportKinds) and ( self.getTransacciones_habilitado() or True)
-        aProgressControlParms_Transactional[ 'max_milliseconds']           = self.getTransacciones_maximoMilisegundos() or 1000
-        aProgressControlParms_Transactional[ 'max_elements_traversed']     = self.getTransacciones_maximoElementosLeidos() or 1000
-        aProgressControlParms_Transactional[ 'max_elements_changed']       = self.getTransacciones_maximoElementosModificados() or 100
+        
+        aProgressControlParms_Logging        = theProgressControlParms.get( cTRAProgress_SupportKind_Logging, None)
+        if aProgressControlParms_Logging == None:
+            aProgressControlParms_Logging = { }
+            theProgressControlParms[ cTRAProgress_SupportKind_Logging] = aProgressControlParms_Logging
+            
+        aProgressControlParms_Logging[ 'enabled']                    = ( cTRAProgress_SupportKind_Logging in theProgressSupportKinds) and self.getRegistro_habilitado()
+        aProgressControlParms_Logging[ 'max_milliseconds']           = self.getRegistro_maximoMilisegundos()
+        aProgressControlParms_Logging[ 'max_elements_traversed']     = self.getRegistro_maximoElementosLeidos()
+        aProgressControlParms_Logging[ 'max_elements_changed']       = self.getRegistro_maximoElementosModificados()
+        aProgressControlParms_Logging[ 'log_every_nth_transactions'] = self.getRegistro_maximoTransacciones()
+        
+
+        
+        aProgressControlParms_YieldProcessor   = theProgressControlParms.get( cTRAProgress_SupportKind_YieldProcessor, None)
+        if aProgressControlParms_YieldProcessor == None:
+            aProgressControlParms_YieldProcessor = { }
+            theProgressControlParms[ cTRAProgress_SupportKind_YieldProcessor] = aProgressControlParms_YieldProcessor
+
+        aProgressControlParms_YieldProcessor[ 'enabled']                    = ( cTRAProgress_SupportKind_YieldProcessor in theProgressSupportKinds) and self.getCederProcesador_habilitado()
+        aProgressControlParms_YieldProcessor[ 'max_milliseconds']           = self.getCederProcesador_maximoMilisegundos()
+        aProgressControlParms_YieldProcessor[ 'max_elements_traversed']     = self.getCederProcesador_maximoElementosLeidos()
+        aProgressControlParms_YieldProcessor[ 'max_elements_changed']       = self.getCederProcesador_maximoElementosModificados()
+        aProgressControlParms_YieldProcessor[ 'percent_active_time']        = self.getCederProcesador_porcentajeTiempoActividad()
         
         return self
             

@@ -2,7 +2,7 @@
 #
 # File: TRAElemento_PloneTools.py
 #
-# Copyright (c) 2008, 2009,2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -41,15 +41,34 @@ from Products.Archetypes.utils  import shasattr
 from Products.CMFCore.utils     import getToolByName
 
 
-
-from TRAElemento_Constants              import *
-
-  
-            
-            
+           
+from Products.gvSIGi18nTool.TRAgvSIGi18nTool_Constants import cTRAgvSIGi18nToolId
             
             
     
+from TRAElemento_Constants                 import *
+from TRAElemento_Constants_Activity        import *
+from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Dates           import *
+from TRAElemento_Constants_Encoding        import *
+from TRAElemento_Constants_Import          import *
+from TRAElemento_Constants_Languages       import *
+from TRAElemento_Constants_Logging         import *
+from TRAElemento_Constants_Modules         import *
+from TRAElemento_Constants_Profiling       import *
+from TRAElemento_Constants_Progress        import *
+from TRAElemento_Constants_String          import *
+from TRAElemento_Constants_StringRequests  import *
+from TRAElemento_Constants_Translate       import *
+from TRAElemento_Constants_Translation     import *
+from TRAElemento_Constants_TypeNames       import *
+from TRAElemento_Constants_Views           import *
+from TRAElemento_Constants_Vocabularies    import *
+from TRAUtils                              import *
+
+  
+            
+ 
             
 # ########################################################################################################
     
@@ -60,7 +79,22 @@ class TRAElemento_PloneTools:
     
     security = ClassSecurityInfo()
 
+    
 
+    security.declarePublic('fHasTRAtool')
+    def fHasTRAtool(self, ):
+        
+        aTRAgvSIGi18nTool = getToolByName(self, cTRAgvSIGi18nToolId, None)
+        
+        if aTRAgvSIGi18nTool == None:
+            return False
+    
+        return True
+    
+    
+
+        
+        
     security.declarePublic('getPortalURLTool')
     def getPortalURLTool(self, ):
         
@@ -85,8 +119,8 @@ class TRAElemento_PloneTools:
            
     
     
-    security.declarePublic( 'getPloneUtilsToolForRoleAcquisition')
-    def getPloneUtilsToolForRoleAcquisition(self):
+    security.declarePublic( 'getPloneUtilsToolForRoles')
+    def getPloneUtilsToolForRoles(self):
     
         aTool = getToolByName(self, 'plone_utils', None)
         return aTool
@@ -142,7 +176,16 @@ class TRAElemento_PloneTools:
 
 
     
+               
     
+    security.declarePublic( 'getUIDCatalogTool')
+    def getUIDCatalogTool( self, ):
+        return getToolByName( self, 'uid_catalog', None)
+    
+
+
+    
+        
 
 
 

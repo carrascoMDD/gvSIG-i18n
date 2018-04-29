@@ -1,0 +1,207 @@
+<tal:block replace="nothing">
+# File: TRABloquearIdioma_action.pt
+#
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+#
+# GNU General Public License (GPL)
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+#
+# Authors: 
+# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana 
+# Model Driven Development sl  Valencia (Spain) www.ModelDD.org 
+# Antonio Carrasco Valero                       carrasco@ModelDD.org
+#
+#
+</tal:block>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+<body>                     
+
+                             
+<metal:main fill-slot="main">
+    <tal:main-macro metal:define-macro="main"
+        tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas.;
+        global pStartTime       pStartTime | python: here.MDDModelDDvlPlone_tool.fMillisecondsNow()" 
+        i18n:domain="gvSIGi18n">
+
+           
+
+
+        <tal:block tal:define="
+            pExecutionRecord python: here.TRAgvSIGi18n_tool.fStartExecution( here, 'template', 'TRABloquearIdioma_action.pt', None, True, { 'log_what': 'details', 'log_when': True, });
+            pPermissionsCache python: {};
+            pRolesCache python: {}" >
+            
+            <div metal:use-macro="here/document_actions/macros/document_actions">
+                Document actions (print, sendto etc)
+            </div>
+    
+            <h1 tal:content="object_title" class="documentFirstHeading">
+              Title or id
+            </h1>
+    
+            <div metal:use-macro="here/document_byline/macros/byline">
+              Get the byline - contains details about author and modification date.
+            </div>
+            
+            
+            <metal:block metal:use-macro="here/PerformanceAnalysis/macros/tSetupPerformanceAnalysis" />   
+
+            <tal:block tal:define="
+                pTrue                python: True;
+                pFalse               python: False;
+                pRetrievalStartTime  python: here.MDDModelDDvlPlone_tool.fMillisecondsNow();
+                pProfilingResults python: (pPerformanceAnalysis or {}).get( 'profiling_results', None);
+                unosArgs python: { 
+                    'theTimeProfilingResults'     :pProfilingResults,
+                    'theElement'                  :here, 
+                    'theParent'                   :None,
+                    'theParentTraversalName'      :'',
+                    'theTypeConfig'               :None, 
+                    'theAllTypeConfigs'           :None, 
+                    'theViewName'                 :'Tabular', 
+                    'theRetrievalExtents'         :[ 'traversals', 'owner', 'cursor', 'extra_links',],
+                    'theWritePermissions'         :[  ],
+                    'theFeatureFilters'           :None, 
+                    'theInstanceFilters'          :None,
+                    'theTranslationsCaches'       :None,
+                    'theCheckedPermissionsCache'  :None,
+                    'theAdditionalParams'         :None, };    
+                SRES  python: here.MDDModelDDvlPlone_tool.fRetrieveTypeConfig( **unosArgs);
+                pRetrievalEndTime  python: here.MDDModelDDvlPlone_tool.fMillisecondsNow();
+                pPermiteEditar  python: SRES[ 'read_permission'] and SRES[ 'write_permission']; 
+                pPermiteEliminar python: SRES[ 'read_permission'] and SRES[ 'write_permission'] and SRES[ 'delete_permission'] and SRES[ 'container_element'][ 'read_permission'] and SRES[ 'container_element'][ 'write_permission']; 
+                pShowOrHideTrees pTrue; 
+                pMostrarAnteriorPosterior pTrue;
+                pAllowTextualAndTabular pTrue;
+                pAllowRefrescar pTrue;
+                pPaginaRefrescar string:Tabular" >
+
+ 
+                <tal:block tal:replace="nothing">  
+                    <metal:block metal:use-macro="here/PerformanceAnalysis/macros/tRenderProfilingResults_HTML" />   
+                    <tal:block tal:replace="structure python: here.MDDModelDDvlPlone_tool.fPrettyPrintHTML( here [ TRAVRES  , ], [ 'object',  'values_by_uid', 'values_by_name', 'elements_by_UID', 'elements_by_id',  'traversals_by_name', 'type_config', 'traversal_config', 'column_translations',   'vocabulary_translations', ], here.MDDModelDDvlPlone_tool.fPreferredResultDictKeysOrder() )" />
+                </tal:block>
+
+
+
+                <metal:block metal:use-macro="here/PerformanceAnalysis/macros/tRenderRetrievalTime_HTML" />   
+
+            
+                <tal:block tal:condition="python: not here.TRAgvSIGi18n_tool.fCatalogoAllowWrite( here,)" >
+                    <div class="portalMessage" >
+                        <span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TranslationsCatalogIsLockedAgainstModifications', 'The Translations Catalog Is Locked Against Modifications')" />
+                    </div>
+                </tal:block>
+            
+                <tal:block tal:condition="python: not here.TRAgvSIGi18n_tool.fAllowWrite( here,)" >
+                    <div class="portalMessage" >
+                        <span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_SelectedLanguageIsLockedAgainstModifications', 'The Selected Language Is Locked Against Modifications')" />
+                    </div>
+                </tal:block>
+                
+         
+
+                <metal:block metal:use-macro="here/TRACabeceraEnTabla_i18n_view/macros/tCabeceraEnTabla_i18n" />   
+                    
+                
+                <tal:block tal:define="
+                    pRefreshPageName   string:;
+                    pShowActivityLink  python: True;
+                    pShowReportLink    python: True;
+                    pShowDetailsLink   python: True;
+                    pShowRootLink      python: True;
+                    ">
+                    <metal:block metal:use-macro="here/TRACatalogo_inner/macros/tTRACatalogoLinksMenu" />
+                </tal:block>
+
+
+        
+                
+                <tal:block tal:define="
+                    pBloquearUseCaseAssessmentResult python: here.TRAgvSIGi18n_tool.fUseCaseAssessment( 
+                        theContextualElement    = here, 
+                        theUseCaseName          = 'Lock_TRAIdioma', 
+                        theElementsBindings     = { 'object': here,},
+                        theRulesToCollect       = None, 
+                        thePermissionsCache     = pPermissionsCache, 
+                        theRolesCache           = pRolesCache, 
+                        theParentExecutionRecord= pExecutionRecord)" >
+                    <tal:block tal:condition="python: pBloquearUseCaseAssessmentResult and pBloquearUseCaseAssessmentResult.get( 'success', False)">  
+                        
+                        <tal:block tal:define="
+                            pConfirmMagicMilliseconds python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theConfirm', '');
+                            pVariousConfigurationDict  python: here.TRAgvSIGi18n_tool.fObtenerConfiguracionDict( here, 'Various');
+                            pSegundosParaConfirmarAccion  python: pVariousConfigurationDict.get( 'segundosParaConfirmarAccion', 120);
+                            pIsAcceptableMagicMilliseconds python: here.TRAgvSIGi18n_tool.fIsAcceptableMagicMilliseconds( here, pConfirmMagicMilliseconds, pSegundosParaConfirmarAccion)" >
+                            <tal:block tal:condition="not: pIsAcceptableMagicMilliseconds">
+                                <p><font size="3" color="red"><strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_demasiadaEsperaVuelvaASolicitarBloqueo_help', 'You have waited too long to confirm the lock catalog  operation. Please, request the operation again if you wish to do so.-')" /></font>                 
+                                <br/>
+                                <p>
+                                    <font size="3">
+                                        <strong>
+                                            <a href="#" title="#"  
+                                                tal:define="aLinkTitle python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_cancelarBloquearIdiomaYVolverATabular_msgid',   'Cancel lock language-' )"
+                                                tal:attributes="
+                                                    title aLinkTitle;
+                                                    href python: '%s/Tabular/' % here.TRAgvSIGi18n_tool.fAbsoluteURL( here,)">
+                                                <span tal:content="aLinkTitle" />
+                                            </a>
+                                        </strong>
+                                    </font>
+                                </p>
+                                <br/>
+                            </tal:block>
+                            <tal:block tal:condition="pIsAcceptableMagicMilliseconds">
+                                <tal:block tal:define="
+                                    pPermissionsCache python: {}; 
+                                    pRolesCache python: {};
+                                    dummy  python:here.TRAgvSIGi18n_tool.fBloquearIdioma( here, pPermissionsCache, pRolesCache, pExecutionRecord)" />
+                                <tal:block tal:define="dummy python: here.TRAgvSIGi18n_tool.pHTTPResponse_redirect( here, '%s/Tabular/' % here.TRAgvSIGi18n_tool.fAbsoluteURL( here,))" />
+                            </tal:block>
+                        </tal:block>
+                    </tal:block>
+                    <tal:block tal:condition="python: not( pBloquearUseCaseAssessmentResult and pBloquearUseCaseAssessmentResult.get( 'success', False))">    
+                        <br/>
+                        <br/>
+                        <font size="3" >
+                            <strong>
+                                <tal:block tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_userCanNotLockLanguage_msgid',   'You are not allowed to lock the language.-' )" />
+                            </strong>
+                        </font>
+                        <br/>
+                        <br/>
+                    </tal:block>
+                </tal:block>
+                
+                
+        
+                <tal:block tal:define="dummy python: pExecutionRecord and here.TRAgvSIGi18n_tool.pEndExecution( here, pExecutionRecord)" />
+        
+                <metal:block metal:use-macro="here/TRAFooter_i18n_view/macros/tFooter_i18n" />
+        
+                <tal:block tal:replace="structure python: pExecutionRecord and here.TRARenderExecutionDetails( pExecutionRecord)" />
+        
+            </tal:block>
+        </tal:block>
+     </tal:main-macro>
+</metal:main>
+
+</body>
+</html>

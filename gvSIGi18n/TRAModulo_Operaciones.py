@@ -2,8 +2,7 @@
 #
 # File: TRAModulo_Operaciones.py
 #
-# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la
-# Generalidad Valenciana
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -41,9 +40,27 @@ from Products.CMFCore       import permissions
 
 ##code-section after-local-schema #fill in your manual code here
 
-from TRAElemento_Constants         import *
+from TRAElemento_Constants                 import *
+from TRAElemento_Constants_Activity        import *
+from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Dates           import *
+from TRAElemento_Constants_Encoding        import *
+from TRAElemento_Constants_Import          import *
+from TRAElemento_Constants_Languages       import *
+from TRAElemento_Constants_Logging         import *
+from TRAElemento_Constants_Modules         import *
+from TRAElemento_Constants_Profiling       import *
+from TRAElemento_Constants_Progress        import *
+from TRAElemento_Constants_String          import *
+from TRAElemento_Constants_StringRequests  import *
+from TRAElemento_Constants_Translate       import *
+from TRAElemento_Constants_Translation     import *
+from TRAElemento_Constants_TypeNames       import *
+from TRAElemento_Constants_Views           import *
+from TRAElemento_Constants_Vocabularies    import *
+from TRAUtils                              import *
 
-from TRAElemento_Operaciones  import TRAElemento_Operaciones
+from TRAArquetipo  import TRAArquetipo
 
 
 
@@ -68,7 +85,7 @@ class TRAModulo_Operaciones:
     
 
     security.declarePrivate( 'pAllSubElements_into')    
-    def pAllSubElements_into( self, theCollection, theAdditionalParms=None):
+    def pAllSubElements_into( self, theCollection, theAdditionalParams=None):
         if theCollection == None:
             return self
         theCollection.append( self)
@@ -92,28 +109,10 @@ class TRAModulo_Operaciones:
     security.declarePublic( 'fExtraLinks')    
     def fExtraLinks( self):
         
-        unosExtraLinks = TRAElemento_Operaciones.fExtraLinks( self)
+        unosExtraLinks = TRAArquetipo.fExtraLinks( self)
         if not unosExtraLinks:
             unosExtraLinks = [ ]
         
-        unaURL = self.getCatalogo().absolute_url()
-        if not unaURL:
-            return unosExtraLinks
-        
-        unTitle = self.Title()
-        if not unTitle:
-            return unosExtraLinks
-        
-        unExtraLink = self.fNewVoidExtraLink()
-        unExtraLink.update( {
-            'label'   : self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Translate', 'Translate',),
-            'href'    : '%s/TRATraducir/?theCodigoIdiomaCursor=es&theSearchNombresModulos=%s&theMostrarInforme=on&theMostrarLista=on&theIdiomasReferencia=en ' % ( unaURL, unTitle,),
-            'icon'    : 'tratraduccion.gif',
-            'domain'  : 'gvSIGi18n',
-            'msgid'   : 'gvSIGi18n_GoTo_Root',
-        })
-        unosExtraLinks.append( unExtraLink)
-                            
         return unosExtraLinks
      
         

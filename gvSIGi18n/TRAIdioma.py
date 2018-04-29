@@ -71,7 +71,7 @@ schema = Schema((
         label="Permite ver Idioma",
         length="0",
         containment="Not Specified",
-        position="18",
+        position="17",
         owner_class_name="TRAIdioma",
         exclude_from_exportconfig="True",
         exclude_from_copyconfig="True"
@@ -104,7 +104,7 @@ schema = Schema((
         label="Permite Modificar Idioma",
         length="0",
         containment="Not Specified",
-        position="16",
+        position="18",
         owner_class_name="TRAIdioma",
         exclude_from_exportconfig="True",
         exclude_from_copyconfig="True"
@@ -135,7 +135,7 @@ schema = Schema((
         label="Bloqueado",
         length="0",
         containment="Not Specified",
-        position="17",
+        position="8",
         owner_class_name="TRAIdioma",
         expression="not context.fAllowWrite()",
         computed_types="Boolean",
@@ -167,7 +167,7 @@ schema = Schema((
         description2="Language code in gvSIG, as gvSIG supports some languages for which there is no international code (yet).",
         containment="Not Specified",
         ea_guid="{C8E57D89-5CEC-48f0-B926-DA83FCDC9EAD}",
-        position="0",
+        position="3",
         owner_class_name="TRAIdioma",
         label="Codigo de Idioma en gvSIG"
     ),
@@ -196,7 +196,7 @@ schema = Schema((
         description2="Standard international language code,according to the I18N conventions.",
         containment="Not Specified",
         ea_guid="{32F6E759-E25D-4145-8961-613BE5F817F3}",
-        position="1",
+        position="5",
         owner_class_name="TRAIdioma",
         label="Codigo internacional de Idioma"
     ),
@@ -225,7 +225,7 @@ schema = Schema((
         description2="Language name, expressed in english language.",
         containment="Not Specified",
         ea_guid="{B6FA4A49-ABED-41d7-B35E-4031AD105F59}",
-        position="2",
+        position="15",
         owner_class_name="TRAIdioma",
         label="Nombre en ingles"
     ),
@@ -254,7 +254,7 @@ schema = Schema((
         description2="Language name expressed in the native language.",
         containment="Not Specified",
         ea_guid="{27989BCF-643E-4730-87F2-939F42EA6F38}",
-        position="3",
+        position="16",
         owner_class_name="TRAIdioma",
         label="Nombre propio del idioma"
     ),
@@ -288,7 +288,7 @@ schema = Schema((
         label="Modo seleccion Bandera",
         length="0",
         containment="Not Specified",
-        position="5",
+        position="14",
         owner_class_name="TRAIdioma"
     ),
 
@@ -316,7 +316,7 @@ schema = Schema((
         description2="Name of a flag available in the Zope/Plone platform, or the id of an image attached to the language, to use as the flag for the language. Must have dimensions equal or smaller than 16 x 16 pixels, prefereably with transparent background.",
         containment="Not Specified",
         ea_guid="{288C7CCE-8ECB-48bb-89F3-C7A64259AFEB}",
-        position="6",
+        position="11",
         owner_class_name="TRAIdioma",
         label="Icono de la Bandera"
     ),
@@ -348,7 +348,7 @@ schema = Schema((
         label="Codigo de Idioma de referencia",
         length="0",
         containment="Not Specified",
-        position="13",
+        position="4",
         owner_class_name="TRAIdioma"
     ),
 
@@ -381,7 +381,7 @@ schema = Schema((
         label="Ambito",
         length="0",
         containment="Not Specified",
-        position="4",
+        position="0",
         owner_class_name="TRAIdioma"
     ),
 
@@ -409,7 +409,7 @@ schema = Schema((
         description2="Languages for which this is an acceptable fallback, in case they lack their own tranlation. This information appears in the files exported as GNU gettext PO format.",
         containment="Not Specified",
         ea_guid="{9FF87A07-8C98-4b8b-9CD3-38DCC86A29D9}",
-        position="14",
+        position="9",
         owner_class_name="TRAIdioma",
         label="Fallback de idiomas"
     ),
@@ -438,7 +438,7 @@ schema = Schema((
         description2="Team in charge of translations to the language. This information appears in the exported files of GNUgettext PO format.",
         containment="Not Specified",
         ea_guid="{CD852AC8-F684-4a10-A1C9-9E3C5A72F7FE}",
-        position="7",
+        position="6",
         owner_class_name="TRAIdioma",
         label="Equipo del idioma"
     ),
@@ -466,11 +466,11 @@ schema = Schema((
         description2="Charset to be used to encode exported files in Java Properties format. Usually takes the value=UTF-8.",
         ea_guid="{74268AAB-89C3-41c4-9214-E0ADC26DCCB1}",
         scale="0",
-        default="utf-8",
+        default="unicode_escape",
         label="Juego de caracteres para exportacion como Java Properties",
         length="0",
         containment="Not Specified",
-        position="8",
+        position="12",
         owner_class_name="TRAIdioma"
     ),
 
@@ -501,7 +501,7 @@ schema = Schema((
         label="Juego de caracteres para exportacion como GNU gettext PO",
         length="0",
         containment="Not Specified",
-        position="9",
+        position="13",
         owner_class_name="TRAIdioma"
     ),
 
@@ -531,7 +531,7 @@ schema = Schema((
         label="Codificacion de transferencia de contenido",
         length="0",
         containment="Not Specified",
-        position="10",
+        position="2",
         owner_class_name="TRAIdioma"
     ),
 
@@ -561,7 +561,7 @@ schema = Schema((
         label="Formas plurales",
         length="0",
         containment="Not Specified",
-        position="11",
+        position="10",
         owner_class_name="TRAIdioma"
     ),
 
@@ -591,7 +591,7 @@ schema = Schema((
         label="Codificaciones preferidas",
         length="0",
         containment="Not Specified",
-        position="12",
+        position="1",
         owner_class_name="TRAIdioma"
     ),
 
@@ -621,7 +621,7 @@ schema = Schema((
         label="Es Idioma Principal",
         length="0",
         containment="Not Specified",
-        position="15",
+        position="7",
         owner_class_name="TRAIdioma"
     ),
 
@@ -702,7 +702,7 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRe
         'id': 'TRACopyTranslations',
         'name': 'Copy Translations',
         'permissions': ("Modify portal content",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Copy_Translations')"""
+        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Copy_Translations')"""
        },
 
 
@@ -711,7 +711,7 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRe
         'id': 'TRADeleteLanguage',
         'name': 'Delete Language',
         'permissions': ("Delete objects",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Delete_TRAIdioma')"""
+        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Delete_TRAIdioma')"""
        },
 
 
@@ -720,7 +720,7 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRe
         'id': 'TRA_desbloquear_idioma',
         'name': 'Unlock Language',
         'permissions': ("Modify portal content",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Unlock_TRAIdioma')"""
+        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Unlock_TRAIdioma')"""
        },
 
 
@@ -729,7 +729,7 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRe
         'id': 'edit',
         'name': 'Edit',
         'permissions': ("Modify portal content",),
-        'condition': """python:object.fAllowWrite()"""
+        'condition': """python:object.fUseCaseCheckDoable( 'Edit_TRAIdioma')"""
        },
 
 
@@ -738,7 +738,7 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRe
         'id': 'TRA_export_language_for_gvSIG',
         'name': 'Export for gvSIG',
         'permissions': ("View",),
-        'condition': """python:object.fUseCaseCheckDoable( 'ExportGvSIG_TRAIdioma')"""
+        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'ExportGvSIG_TRAIdioma')"""
        },
 
 
@@ -747,7 +747,7 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRe
         'id': 'local_roles',
         'name': 'Sharing',
         'permissions': ("Manage properties",),
-        'condition': """python:object.fAllowWrite() and object.fRoleQuery_IsManagerOrCoordinator()"""
+        'condition': """python:object.fAllowWrite() and object.TRAgvSIGi18n_tool.fRoleQuery_IsAnyRol( object, [ 'Manager', 'Owner', 'TRACreator', 'TRAManager', 'TRACoordinator',])"""
        },
 
 
@@ -756,7 +756,7 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRe
         'id': 'view',
         'name': 'View',
         'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'View_any_TRA_element')"""
        },
 
 
@@ -765,7 +765,7 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRe
         'id': 'mddcachestatus',
         'name': 'Cache',
         'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'CacheStatus_on_any_TRA_element')"""
        },
 
 
@@ -774,16 +774,7 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRe
         'id': 'mddchanges',
         'name': 'Changes',
         'permissions': ("View",),
-        'condition': """python:1"""
-       },
-
-
-       {'action': "string:${object_url}/TRAConfigureProfiling_action",
-        'category': "object_buttons",
-        'id': 'TRA_configure_profiling',
-        'name': 'Configure Profiling',
-        'permissions': ("ManagePortal",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Configure_ExecutionProfilingEnablement_TRACatalogo')"""
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Changes_on_any_TRA_element')"""
        },
 
 
@@ -793,6 +784,15 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRe
         'name': 'State',
         'permissions': ("View",),
         'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/TRAFlushCache_action",
+        'category': "object_buttons",
+        'id': 'tra_flushcache',
+        'name': 'FlushCache',
+        'permissions': ("View",),
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fRoleQuery_IsAnyRol( object, [ 'Manager', 'Owner', 'TRACreator', 'TRAManager', 'TRACoordinator',])"""
        },
 
 
@@ -810,7 +810,7 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRe
         'id': 'TRA_inventario',
         'name': 'Inventory',
         'permissions': ("View",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Inventory_TRAElemento')"""
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Inventory_TRAElemento')"""
        },
 
 
@@ -819,7 +819,7 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRe
         'id': 'TRA_recatalogar',
         'name': 'ReCatalog',
         'permissions': ("View",),
-        'condition': """python:object.fUseCaseCheckDoable( 'ReCatalog_TRAElemento')"""
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'ReCatalog_TRAElemento')"""
        },
 
 
@@ -828,7 +828,16 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRe
         'id': 'TRA_reestablecerpermisos',
         'name': 'Reset Permissions',
         'permissions': ("View",),
-        'condition': """python:object.fUseCaseCheckDoable( 'ResetPermissions_TRAElemento')"""
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'ResetPermissions_TRAElemento')"""
+       },
+
+
+       {'action': "string:${object_url}/TRAVerifyPermissions_action",
+        'category': "object_buttons",
+        'id': 'TRA_verificarpermisos',
+        'name': 'Verify Permissions',
+        'permissions': ("View",),
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'VerifyPermissions_TRAElemento')"""
        },
 
 
@@ -846,7 +855,7 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRe
         'id': 'TRA_SeguridadUsuarioConectado',
         'name': 'Permissions',
         'permissions': ("View",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Permissions_on_any_TRA_element')"""
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Permissions_on_any_TRA_element')"""
        },
 
 
@@ -936,7 +945,7 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRe
         """
         """
         
-        return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
+        return self
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

@@ -2,7 +2,7 @@
 #
 # File: TRAElemento_LanguagesUtils.py
 #
-# Copyright (c) 2008, 2009,2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -45,7 +45,25 @@ from Products.CMFCore           import permissions
 from Products.PloneLanguageTool import availablelanguages as PloneLanguageToolAvailableLanguages
 
 
-from TRAElemento_Constants              import *
+from TRAElemento_Constants                 import *
+from TRAElemento_Constants_Activity        import *
+from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Dates           import *
+from TRAElemento_Constants_Encoding        import *
+from TRAElemento_Constants_Import          import *
+from TRAElemento_Constants_Languages       import *
+from TRAElemento_Constants_Logging         import *
+from TRAElemento_Constants_Modules         import *
+from TRAElemento_Constants_Profiling       import *
+from TRAElemento_Constants_Progress        import *
+from TRAElemento_Constants_String          import *
+from TRAElemento_Constants_StringRequests  import *
+from TRAElemento_Constants_Translate       import *
+from TRAElemento_Constants_Translation     import *
+from TRAElemento_Constants_TypeNames       import *
+from TRAElemento_Constants_Views           import *
+from TRAElemento_Constants_Vocabularies    import *
+from TRAUtils                              import *
 
 
 
@@ -111,7 +129,12 @@ class TRAElemento_LanguagesUtils:
                 unosLanguagesPorCodigo[ aCountrySpecificLanguageCode] = someCountrySpecificLanguagesPorCodigo[ aCountrySpecificLanguageCode].copy()   
                 unosLanguagesPorCodigo[ 'selected'] = False
                 
+                
+                
         unCatalogo = self.getCatalogo()
+        if unCatalogo == None:
+            return unosLanguagesPorCodigo.copy()
+        
         unosIdiomas = unCatalogo.fObtenerTodosIdiomas()
         
         unPortalURL = self.fPortalURL()
@@ -155,6 +178,7 @@ class TRAElemento_LanguagesUtils:
                         unosDatosIdioma[ 'flag_url'] = unFlagURL
 
         return unosLanguagesPorCodigo.copy()
+    
     
     
     
@@ -224,6 +248,146 @@ class TRAElemento_LanguagesUtils:
            
      
      
+    
+
+    
+       
+    security.declareProtected( permissions.View, 'fKnownIdiomaCodeAndNames')
+    def fKnownIdiomaCodeAndNames(self, theCodigoIdioma):
+        
+        if not theCodigoIdioma:
+            return []
+         
+        unosLanguagesNamesAndFlagsPorCodigo = self.fLanguagesNamesAndFlagsPorCodigo()
+        unosNamesAndFlagForLanguage = unosLanguagesNamesAndFlagsPorCodigo.get( theCodigoIdioma, None)
+        if not unosNamesAndFlagForLanguage:
+            return []
+         
+ 
+        unNombreInglesDeIdioma = unosNamesAndFlagForLanguage.get( 'english', theCodigoIdioma)
+        unNombreNativoDeIdioma = unosNamesAndFlagForLanguage.get( 'native', unNombreInglesDeIdioma)
+        if not unNombreInglesDeIdioma:
+            return []
+        
+        unCodeAndNames = [ 
+            self.fAsUnicode( theCodigoIdioma),
+            self.fAsUnicode( unNombreInglesDeIdioma), 
+            self.fAsUnicode( unNombreNativoDeIdioma),
+        ]
+    
+        return unCodeAndNames
+   
+     
+  
+    
+    
+    
+    
+    
+    security.declareProtected( permissions.View, 'fKnownIdiomaCodeAndDisplayName')
+    def fKnownIdiomaCodeAndDisplayName(self, theCodigoIdioma):
+ 
+        unCodeAndNames = self.fKnownIdiomaCodeAndNames( theCodigoIdioma)
+        if not unCodeAndNames:
+            return []
+        
+        unCodeAndDisplayName =  [ 
+            self.fAsUnicode( theCodigoIdioma),
+            u'[%s] %s (%s)' % ( self.fAsUnicode( unCodeAndNames[ 0]),self.fAsUnicode( unCodeAndNames[ 1]), self.fAsUnicode( unCodeAndNames[ 2]), ),
+        ]
+    
+        return unCodeAndDisplayName
+  
+    
+    
+    
+    
+    
+    
+    security.declareProtected( permissions.View, 'fKnownIdiomasCodesAndNames')
+    def fKnownIdiomasCodesAndNames(self,):
+ 
+        unosCodesAndNames = []
+        
+        unosLanguagesNamesAndFlagsPorCodigo = self.fLanguagesNamesAndFlagsPorCodigo()
+        unosCodigosIdioma = sorted( unosLanguagesNamesAndFlagsPorCodigo.keys())
+
+        for unCodigoIdioma in unosCodigosIdioma:
+            unosDatosIdioma = unosLanguagesNamesAndFlagsPorCodigo.get( unCodigoIdioma, {})
+            if unosDatosIdioma:
+                unNombreInglesDeIdioma = unosDatosIdioma.get( 'english', unCodigoIdioma)
+                unNombreNativoDeIdioma = unosDatosIdioma.get( 'native', unNombreInglesDeIdioma)
+                if unNombreInglesDeIdioma:
+                    unosCodesAndNames.append( [ 
+                        self.fAsUnicode( unCodigoIdioma),
+                        self.fAsUnicode( unNombreInglesDeIdioma), 
+                        self.fAsUnicode( unNombreNativoDeIdioma),
+                    ])
+    
+        return unosCodesAndNames
+   
+    
+    
+    security.declareProtected( permissions.View, 'fKnownIdiomasCodesAndDisplayNames')
+    def fKnownIdiomasCodesAndDisplayNames(self,):
+ 
+        unosCodesAndNames = self.fKnownIdiomasCodesAndNames()
+        
+        unosCodesAndDisplayNames = []
+        
+        for unCodigoIdioma, unNombreInglesDeIdioma, unNombreNativoDeIdioma in unosCodesAndNames:
+            if unCodigoIdioma and unNombreInglesDeIdioma:
+                unosCodesAndDisplayNames.append( [ 
+                    self.fAsUnicode( unCodigoIdioma),
+                    u'[%s] %s (%s)' % ( self.fAsUnicode( unCodigoIdioma),self.fAsUnicode( unNombreInglesDeIdioma), self.fAsUnicode( unNombreNativoDeIdioma), ),
+                ])
+    
+        return unosCodesAndDisplayNames
+   
+    
+    
+        
+    
+    security.declareProtected( permissions.View, 'fNonExistingKnownIdiomasCodesAndNames')
+    def fNonExistingKnownIdiomasCodesAndNames(self,):
+        
+        unosCodesAndNames = self.fKnownIdiomasCodesAndNames()
+
+        if not unosCodesAndNames:
+            return []
+        
+        unCatalogo = self.getCatalogo()
+        if unCatalogo == None:
+            return []
+        
+        unosIdiomas = unCatalogo.fObtenerTodosIdiomas()
+        unosCodigosIdioma = [ unIdioma.getCodigoIdiomaEnGvSIG() for unIdioma in unosIdiomas]
+        
+        unosNonExistingCodesAndNames = [ [ unCodigoIdioma, unNombreInglesDeIdioma, unNombreNativoDeIdioma] for unCodigoIdioma, unNombreInglesDeIdioma, unNombreNativoDeIdioma in unosCodesAndNames if not ( unCodigoIdioma in unosCodigosIdioma)]
+        unosSortedNonExistingCodesAndNames = sorted ( unosNonExistingCodesAndNames, lambda unCeDN, otroCeDN: cmp( unCeDN[ 0], otroCeDN[ 0]))
+        return unosSortedNonExistingCodesAndNames
+        
+    
+          
+      
+    
+    security.declareProtected( permissions.View, 'fNonExistingKnownIdiomasCodesAndDisplayNames')
+    def fNonExistingKnownIdiomasCodesAndDisplayNames(self,):
+ 
+        unosCodesAndNames = self.fNonExistingKnownIdiomasCodesAndNames()
+        
+        unosCodesAndDisplayNames = []
+        
+        for unCodigoIdioma, unNombreInglesDeIdioma, unNombreNativoDeIdioma in unosCodesAndNames:
+            if unCodigoIdioma and unNombreInglesDeIdioma:
+                unosCodesAndDisplayNames.append( [ 
+                    self.fAsUnicode( unCodigoIdioma),
+                    u'[%s] %s (%s)' % ( self.fAsUnicode( unCodigoIdioma),self.fAsUnicode( unNombreInglesDeIdioma), self.fAsUnicode( unNombreNativoDeIdioma), ),
+                ])
+    
+        return unosCodesAndDisplayNames
+     
+        
 
     
     

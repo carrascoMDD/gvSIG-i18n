@@ -1,0 +1,243 @@
+<tal:block replace="nothing">
+# File: TRAProcessInputParameters_inner.pt
+#
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+#
+# GNU General Public License (GPL)
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+#
+# Authors: 
+# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana 
+# Model Driven Development sl  Valencia (Spain) www.ModelDD.org 
+# Antonio Carrasco Valero                       carrasco@ModelDD.org
+#
+</tal:block>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en">
+<body>                     
+
+                             
+    <div metal:define-macro="tTRAProcessInputParametersInner" >
+
+
+        <tal:block tal:define="
+            global ACVojo_20101002_pStartTime       pStartTime | python: here.MDDModelDDvlPlone_tool.fMillisecondsNow();
+            pExecutionRecord python: here.TRAgvSIGi18n_tool.fStartExecution( here, 'template', 'TRAProcessInputParameters_inner.pt', None, True, { 'log_when': True, });
+            pPermissionsCache python: {};
+            pRolesCache python: {};
+            pIsOverProgressHandler python: here.TRAgvSIGi18n_tool.fIsOverProgressHandler(
+				theContextualElement = here,
+			);" >
+    
+           
+            <metal:block metal:use-macro="here/PerformanceAnalysis/macros/tSetupPerformanceAnalysis" />   
+            
+            <tal:block tal:define="
+                pTrue                python: True;
+                pFalse               python: False;
+                pRetrievalStartTime  python: here.MDDModelDDvlPlone_tool.fMillisecondsNow();
+                pProfilingResults python: (pPerformanceAnalysis or {}).get( 'profiling_results', None);
+                unosArgs python: { 
+                    'theTimeProfilingResults'     :pProfilingResults,
+                    'theElement'                  :here, 
+                    'theParent'                   :None,
+                    'theParentTraversalName'      :'',
+                    'theTypeConfig'               :None, 
+                    'theAllTypeConfigs'           :None, 
+                    'theViewName'                 :'Tabular', 
+                    'theRetrievalExtents'         :[ 'traversals', 'owner', 'cursor', 'extra_links',],
+                    'theWritePermissions'         :[ ],
+                    'theFeatureFilters'           :{'aggregations': [], 'relations': [], 'attrs': [ 'title', 'description',], },
+                    'theInstanceFilters'          :None,
+                    'theTranslationsCaches'       :None,
+                    'theCheckedPermissionsCache'  :None,
+                    'theAdditionalParams'         :None, };    
+                SRES  python: here.MDDModelDDvlPlone_tool.fRetrieveTypeConfig( **unosArgs);
+                pRetrievalEndTime  python: here.MDDModelDDvlPlone_tool.fMillisecondsNow();
+                pPermiteEditar  python: pFalse; 
+                pPermiteEliminar python: pFalse; 
+                pShowOrHideTrees pFalse; 
+                pMostrarAnteriorPosterior pTrue;
+                pAllowTextualAndTabular pTrue;
+                pAllowRefrescar pTrue;
+                pPagina          string:Textual; 
+                pPaginaAnteriorPosterior string:TRAProcessInputParameters;
+                pPaginaRefrescar string:TRAProcessInputParameters" >
+
+
+                <metal:block metal:use-macro="here/PerformanceAnalysis/macros/tRenderRetrievalTime_HTML" />   
+         
+                <metal:block metal:use-macro="here/CabeceraEnTabla_i18n_view/macros/tCabeceraEnTabla_i18n" />   				  
+				
+				<tal:block tal:replace="nothing" >
+					<table width="100%" cellspacing="0" cellpadding="0" frame="void" >
+						<tr>
+							<td width="10%"  align="left" valign="baseline" >
+								<font size="2">
+									<em><span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRACatalogo_attr_nombreProducto_label',   'Product Name-' )" /></em>
+								 </font>        
+								<font size="3">
+									<strong><span tal:content="python: here.TRAgvSIGi18n_tool.fAsUnicode( here, here.TRAgvSIGi18n_tool.fCatalogoNombreProducto( here,))" /></strong>
+								 </font>
+							</td>         
+							<td  width="15%" align="center" valign="baseline">
+								<tal:block tal:define="
+									pUseCaseAssessmentResult python: here.TRAgvSIGi18n_tool.fUseCaseAssessment( 
+										theContextualElement    = here, 
+										theUseCaseName          = 'Advanced_View_on_any_TRA_element', 
+										theElementsBindings     = { 'object': here,},
+										theRulesToCollect       = None, 
+										thePermissionsCache     = pPermissionsCache, 
+										theRolesCache           = pRolesCache, 
+										theParentExecutionRecord= pExecutionRecord)"
+									tal:condition="python: pUseCaseAssessmentResult and pUseCaseAssessmentResult.get( 'success', False)">    
+									<strong>
+										<a href="#" title="#" 
+											tal:define="aLinkTitle python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_vistaAvanzada_msgid',   'Details-')"
+											tal:attributes="
+												title aLinkTitle;
+												href python: '%s/Tabular/' % here.TRAgvSIGi18n_tool.fAbsoluteURL( here,)">
+											<img src="#" alt="#" title="#" 
+												 tal:attributes="src python: '%s/tabular.gif' % here.MDDModelDDvlPlone_tool.fPortalURL(); alt aLinkTitle; title aLinkTitle" 
+												 id="icon-tabular" />
+											<span tal:content="aLinkTitle" />
+										</a>
+									</strong>
+								</tal:block>
+							</td>
+							<td width="15%" align="right" valign="baseline">                    
+								<strong>
+								   <a href="#" title="#"
+									   tal:define="aLinkTitle python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_refrescar_action_label',   'Refresh-' )"
+									   tal:attributes="
+										   title aLinkTitle;
+										   href python: '%s/TRAProcessInputParameters/' % here.TRAgvSIGi18n_tool.fAbsoluteURL( here,)">
+										<img src="#" alt="#" title="#" 
+											 tal:attributes="src python: '%s/refrescar.gif' % here.MDDModelDDvlPlone_tool.fPortalURL(); alt aLinkTitle; title aLinkTitle" 
+											 id="icon-refrescar" />
+									   <span tal:content="aLinkTitle" />
+								   </a>
+								</strong>
+							</td>
+							<td width="15%"  align="right" valign="baseline">                    
+								<strong>
+									<a href="#" title="#"  
+										tal:define="aLinkTitle python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_volveracatalogo_msgid',   'Back to catalog-' )"
+										tal:attributes="
+											title aLinkTitle;
+											href python: '%s/TRACatalogo/' % here.TRAgvSIGi18n_tool.fCatalogoAbsoluteURL( here,)">
+										<span tal:content="aLinkTitle" />
+									</a>
+								</strong>
+							</td>                
+							<td width="15%" align="right" valign="baseline" tal:condition="not: pIsOverProgressHandler" >                    
+								<strong>
+									<a href="#" title="#" 
+										tal:define="aLinkTitle python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_ConfigureProgress_msgid',   'Configure Progress-' )"                                    
+										tal:attributes="
+											title aLinkTitle;
+											href python: '%s/TRAConfigureProgress_action/' % here.TRAgvSIGi18n_tool.fAbsoluteURL( here,)">
+										<span tal:content="aLinkTitle" />
+									</a>
+								</strong>
+							</td>
+							<td width="15%" align="right" valign="baseline" tal:condition="not: pIsOverProgressHandler" >                    
+								<strong>
+									<a href="#" title="#" 
+										tal:define="aLinkTitle python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_ControlProgress_msgid',   'Control Progress-' )"                                    
+										tal:attributes="
+											title aLinkTitle;
+											href python: '%s/TRAControlProgress_action/' % here.TRAgvSIGi18n_tool.fAbsoluteURL( here,)">
+										<span tal:content="aLinkTitle" />
+									</a>
+								</strong>
+							</td>
+							<td width="15%" align="right" valign="baseline"
+								tal:define="pElementoEspecificacionProceso python: here.TRAgvSIGi18n_tool.fDeriveElementoEspecificacionProceso(
+									theContextualElement = here,
+								)"
+								tal:condition="python: not ( pElementoEspecificacionProceso == None)">                    
+								<strong>
+									<a href="#" title="#" 
+										tal:define="aLinkTitle python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_ProcessSpecificacionElement_msgid',   'Process specificacion element-' )"                                    
+										tal:attributes="
+											title aLinkTitle;
+											href python: '%s/Tabular/' % pElementoEspecificacionProceso.absolute_url()">
+										<span tal:content="aLinkTitle" />
+									</a>
+								</strong>
+							</td>
+						</tr>
+					</table>
+								
+					<br/>
+					<br/>
+				</tal:block>
+							
+	 
+				 
+				<h2>
+					<strong  tal:define="
+						pTipoProceso python: here.TRAgvSIGi18n_tool.getAttributeValueByName( 
+							theContextualElement = here,
+							theName              = 'tipoProceso',
+						)"
+						tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_ProcessInputParameters_%s_title' % pTipoProceso,  'Input Parameters of %s long-lived process-' % pTipoProceso)" />
+				</h2>
+				 
+				
+				<tal:block tal:define="pParametrosEntrada python: here.TRAgvSIGi18n_tool.fParametrosEntrada( theContextualElement = here, )" >
+					
+					<tal:block tal:condition="python: not pParametrosEntrada">
+						 <p i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_nohayparametrosentrada_warning_msgid">There are no input parameters for the process available at this time-</p>
+					</tal:block>
+					
+					<tal:block tal:condition="pParametrosEntrada">
+						<metal:block metal:use-macro="here/TRAProgreso_ParametrosEntrada_i18n_view/macros/tProgreso_ParametrosEntrada_i18n" />   
+					</tal:block>
+					
+				</tal:block>
+			  
+				<tal:block tal:define="dummy python: pExecutionRecord and here.TRAgvSIGi18n_tool.pEndExecution( here, pExecutionRecord)" />
+				
+				<tal:block tal:replace="structure python: pExecutionRecord and here.TRARenderExecutionDetails( pExecutionRecord)" />
+
+			</tal:block>
+         
+        </tal:block>
+
+     </div>
+    
+         
+     
+   
+     
+     
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

@@ -2,7 +2,7 @@
 #
 # File: TRAElemento_DatesAndTime.py
 #
-# Copyright (c) 2008, 2009,2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -46,7 +46,25 @@ from Products.CMFCore           import permissions
 
 
 
-from TRAElemento_Constants              import *
+from TRAElemento_Constants                 import *
+from TRAElemento_Constants_Activity        import *
+from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Dates           import *
+from TRAElemento_Constants_Encoding        import *
+from TRAElemento_Constants_Import          import *
+from TRAElemento_Constants_Languages       import *
+from TRAElemento_Constants_Logging         import *
+from TRAElemento_Constants_Modules         import *
+from TRAElemento_Constants_Profiling       import *
+from TRAElemento_Constants_Progress        import *
+from TRAElemento_Constants_String          import *
+from TRAElemento_Constants_StringRequests  import *
+from TRAElemento_Constants_Translate       import *
+from TRAElemento_Constants_Translation     import *
+from TRAElemento_Constants_TypeNames       import *
+from TRAElemento_Constants_Views           import *
+from TRAElemento_Constants_Vocabularies    import *
+from TRAUtils                              import *
 
 
 from TRACatalogo_Globales    import TRACatalogo_Globales
@@ -404,14 +422,7 @@ class TRAElemento_DatesAndTime:
     def fDateTimeFromMilliseconds(self, theMilliseconds):   
         return DateTime( float( theMilliseconds / 1000))
     
-    
-    
-    security.declarePublic( 'fDateTimeFromMillisecondsTextual')
-    def fDateTimeFromMillisecondsTextual(self, theMilliseconds):   
-        return DateTime( float( theMilliseconds / 1000)).ISO()
-            
-    
-    
+   
     security.declarePublic( 'fDateTimeFromMillisecondsTextual')
     def fDateTimeFromMillisecondsTextual(self, theMilliseconds): 
         return self.fDateToStoreString( self.fDateTimeFromMilliseconds( theMilliseconds))

@@ -1,0 +1,259 @@
+<tal:block replace="nothing">
+# File: TRABackup_action.pt
+#
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+#
+# GNU General Public License (GPL)
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+#
+# Authors: 
+# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana 
+# Model Driven Development sl  Valencia (Spain) www.ModelDD.org 
+# Antonio Carrasco Valero                       carrasco@ModelDD.org
+#
+</tal:block>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+<body>                     
+<metal:main fill-slot="main">
+    <tal:main-macro metal:define-macro="main"
+        tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas.
+        global pStartTime       pStartTime | python: here.MDDModelDDvlPlone_tool.fMillisecondsNow()" 
+        i18n:domain="gvSIGi18n">
+
+           
+
+
+        <tal:block tal:define="
+            pExecutionRecord python: here.TRAgvSIGi18n_tool.fStartExecution( here, 'template', 'TRABackup_action.pt', None, True, { 'log_when': True, });
+            pPermissionsCache python: {};
+            pRolesCache python: {}" >
+    
+            <div metal:use-macro="here/document_actions/macros/document_actions">
+                Document actions (print, sendto etc)
+            </div>
+    
+            <h1 tal:content="object_title" class="documentFirstHeading">
+              Title or id
+            </h1>
+    
+            <div metal:use-macro="here/document_byline/macros/byline">
+              Get the byline - contains details about author and modification date.
+            </div>
+            
+            
+            <tal:block tal:condition="python: not here.TRAgvSIGi18n_tool.fAllowWrite( here,)" >
+                <div class="portalMessage" >
+                    <span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TranslationsCatalogIsLockedAgainstModifications', 'The Translations Catalog Is Locked Against Modifications')" />
+                </div>
+            </tal:block>
+            
+            <metal:block metal:use-macro="here/TRACabeceraEnTabla_i18n_view/macros/tCabeceraEnTabla_i18n" />   
+                
+         
+            <tal:block tal:define="
+                pRefreshPageName   string:;
+                pShowActivityLink  python: True;
+                pShowReportLink    python: True;
+                pShowDetailsLink   python: True;
+                pShowRootLink      python: True;
+                ">
+                <metal:block metal:use-macro="here/TRACatalogo_inner/macros/tTRACatalogoLinksMenu" />
+            </tal:block>
+
+            
+                
+            <h2>
+                <strong  tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_BackupOfAllElements',  'Export a Backup file with all Strings and Translations elements-' )" />
+                &ensp;
+                <strong  tal:content="python: here.TRAgvSIGi18n_tool.fTitle( here,)" />
+            </h2>
+            
+            <tal:block tal:define="
+                pBackupUseCaseAssessmentResult python: here.TRAgvSIGi18n_tool.fUseCaseAssessment( 
+                    theContextualElement    = here, 
+                    theUseCaseName          = 'Backup_TRACatalogo', 
+                    theElementsBindings     = { 'object': here,},
+                    theRulesToCollect       = None, 
+                    thePermissionsCache     = pPermissionsCache, 
+                    theRolesCache           = pRolesCache, 
+                    theParentExecutionRecord= pExecutionRecord)" >
+                <tal:block tal:condition="python: not( pBackupUseCaseAssessmentResult and pBackupUseCaseAssessmentResult.get( 'success', False))">    
+                    <br/>
+                    <br/>
+                    <font size="3" >
+                        <strong>
+                            <tal:block tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_userCanNotBackupCatalogo_msgid',   'You are not allowed to Export a Backup file with all Strings and Translations elements in the translations catalog.-' )" />
+                        </strong>
+                    </font>
+                    <br/>
+                    <br/>
+                </tal:block>
+                
+                
+                <tal:block tal:condition="python: pBackupUseCaseAssessmentResult and pBackupUseCaseAssessmentResult.get( 'success', False)">    
+                    <tal:block tal:define="
+                        pConfirmMagicMilliseconds python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theConfirm', '');
+                        pVariousConfigurationDict  python: here.TRAgvSIGi18n_tool.fObtenerConfiguracionDict( here, 'Various');
+                        pSegundosParaConfirmarAccion  python: pVariousConfigurationDict.get( 'segundosParaConfirmarAccion', 120)" >
+                    
+                        <tal:block tal:condition="not: pConfirmMagicMilliseconds" >
+
+                            <a href="#" title="#" 
+                               tal:define="aLinkTitle python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_confirmarBackup_msgid',   'Confirm request to Export a Backup file with all Strings and Translations elements in the Translations Catalog-' )"                                    
+                               tal:attributes="
+                                   title aLinkTitle;
+                                   href python: '%s/TRABackup_action/?theConfirm=%s' % ( here.TRAgvSIGi18n_tool.fAbsoluteURL( here,), here.TRAgvSIGi18n_tool.fMagicMillisecondsNowString( here,))">
+                                <font size="3" color="red">
+                                    <strong>
+                                        <span tal:content="aLinkTitle" />
+                                    </strong>
+                                </font>
+                            </a>
+                            &ensp;
+                            <span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_periodoParaConfirmarEnSegundos_msgid', 'Please confirm within the next (seconds)-')" />
+                            <span tal:content="python: str( pSegundosParaConfirmarAccion)" />
+                            <span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_segundosPeriodoParaConfirmar_help', 'seconds')" />
+                            <br/>
+                            <p class="formHelp">
+                                <span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_confirmarBackup_help', 'Confirm to perform an Backup of the elements in the translations Catalog, possibly taking a long time and demanding significant server resources, depending on the number of elements found, with usually higher cost with higher number of strings and languages (as seen in the root or summary report pages).-')" />
+                                <br/>
+                                <span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_confirmarTimeout_help', 'You must confirm within the allowed time, or  if you need more time to review the impact of the requested action, take your time to do so, and request the action again later.-')" />
+                            </p>            
+                            <br/>            
+                            <br/>
+                            <br/>                        
+                            <p>
+                                <font size="3">
+                                    <strong>
+                                        <a href="#" title="#"  
+                                            tal:define="aLinkTitle python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_cancelarAccion_msgid',   'Cancel action-' )"
+                                            tal:attributes="
+                                                title aLinkTitle;
+                                                href python: '%s/' % here.TRAgvSIGi18n_tool.fAbsoluteURL( here,)">
+                                            <span tal:content="aLinkTitle" />
+                                        </a>
+                                    </strong>
+                                </font>
+                            </p>
+                            <br/>
+                        </tal:block>
+                        
+                        
+                        <tal:block tal:condition="pConfirmMagicMilliseconds" >
+             
+            
+                            <tal:block tal:define="pIsAcceptableMagicMilliseconds python: here.TRAgvSIGi18n_tool.fIsAcceptableMagicMilliseconds( here, pConfirmMagicMilliseconds, pSegundosParaConfirmarAccion)" >
+                                
+                                <tal:block tal:condition="not: pIsAcceptableMagicMilliseconds">
+                                    <p><font size="3" color="red"><strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_demasiadaEsperaVuelvaASolicitarAccion_help', 'You have waited too long to confirm the action. Please, request the action again if you wish to do so.-')" /></font>                 
+                                    <br/>
+                                    <p>
+                                        <font size="3">
+                                            <strong>
+                                                <a href="#" title="#"  
+                                                    tal:define="aLinkTitle python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_cancelarAccion_msgid',   'Cancel action-' )"
+                                                    tal:attributes="
+                                                        title aLinkTitle;
+                                                        href python: '%s/' % here.TRAgvSIGi18n_tool.fAbsoluteURL( here,)">
+                                                    <span tal:content="aLinkTitle" />
+                                                </a>
+                                            </strong>
+                                        </font>
+                                    </p>
+                                    <br/>
+                                    <br/>
+                                </tal:block>
+                                
+                                <tal:block tal:condition="pIsAcceptableMagicMilliseconds">
+                                    <tal:block tal:define="
+                                        pProgressHandlerCreationResult python: here.TRAgvSIGi18n_tool.fCreateProgressHandlerFor_Backup( 
+                                            theContextualElement    =here,
+                                            theAdditionalParams     =None,  
+                                            thePermissionsCache     =pPermissionsCache, 
+                                            theRolesCache           =pRolesCache, 
+                                            theParentExecutionRecord=pExecutionRecord);
+                                        pProgressHandlerKey python: pProgressHandlerCreationResult and pProgressHandlerCreationResult.get( 'progress_handler_key', None);
+                                        pProgressHandlerCreationErrorCondition python: here.TRAgvSIGi18n_tool.fAsUnicode( here, pProgressHandlerCreationResult and pProgressHandlerCreationResult.get( 'condition', ''))" >
+
+                                        <tal:block tal:condition="not: pProgressHandlerKey">
+                                            <p>
+                                                <font size="3" color="red">
+                                                    <strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_CanNotCreateProgressControlForLongLivedProcess', 'Can Not Create Progress Control For Long-Lived Process.-')" />
+                                                    <tal:block tal:condition="pProgressHandlerCreationErrorCondition">
+                                                        <br/>
+                                                        <span tal:content="pProgressHandlerCreationErrorCondition" />    
+                                                    </tal:block>
+                                                </font>                 
+                                            </p>
+                                        </tal:block>
+                                        <tal:block tal:condition="pProgressHandlerKey">
+                                        
+                                            <tal:block tal:define="pProgressElementURL python: pProgressHandlerKey.get( 'progress_element_URL', '')" >
+                                        
+                                                <tal:block tal:condition="not: pProgressElementURL">
+                                                    <p><font size="3" color="red"><strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_NoURLForProgressElementForLongLivedProcess', 'No URL for Progress element for long-lived Process.-')" /></font>                 
+                                                </tal:block>
+                                        
+                                                <tal:block tal:condition="pProgressElementURL">
+                                                
+                                                    <p tal:content="python:  here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_RedirectingToProcessProgressControl_msgid',   'Redirecting to Process Progress Control ...-' )" />
+                                                    <tal:block tal:define="void python: here.TRAgvSIGi18n_tool.pHTTPResponse_redirect( here, '%s/TRAControlProgress_action/' % pProgressElementURL)" />
+                                        
+                                                </tal:block>
+                                                
+                                            </tal:block>
+                                        </tal:block>
+                                    </tal:block>
+                                </tal:block>
+                            </tal:block>
+                        </tal:block>
+                    </tal:block>            
+                </tal:block>
+            </tal:block>
+
+          
+            <tal:block tal:define="dummy python: pExecutionRecord and here.TRAgvSIGi18n_tool.pEndExecution( here, pExecutionRecord)" />
+            
+            <metal:block metal:use-macro="here/TRAFooter_i18n_view/macros/tFooter_i18n" />
+    
+    
+            <tal:block tal:replace="structure python: pExecutionRecord and here.TRARenderExecutionDetails( pExecutionRecord)" />
+     
+         
+        </tal:block>
+
+    </tal:main-macro>
+</metal:main>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

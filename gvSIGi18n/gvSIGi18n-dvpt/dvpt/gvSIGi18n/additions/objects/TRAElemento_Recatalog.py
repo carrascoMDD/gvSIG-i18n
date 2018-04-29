@@ -2,7 +2,7 @@
 #
 # File: TRAElemento_Recatalog.py
 #
-# Copyright (c) 2008, 2009,2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -55,11 +55,28 @@ from Products.CMFCore.utils     import getToolByName
 
 
 
-from TRAElemento_Constants      import *
+from TRAElemento_Constants                 import *
+from TRAElemento_Constants_Activity        import *
+from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Dates           import *
+from TRAElemento_Constants_Encoding        import *
+from TRAElemento_Constants_Import          import *
+from TRAElemento_Constants_Languages       import *
+from TRAElemento_Constants_Logging         import *
+from TRAElemento_Constants_Modules         import *
+from TRAElemento_Constants_Profiling       import *
+from TRAElemento_Constants_Progress        import *
+from TRAElemento_Constants_String          import *
+from TRAElemento_Constants_StringRequests  import *
+from TRAElemento_Constants_Translate       import *
+from TRAElemento_Constants_Translation     import *
+from TRAElemento_Constants_TypeNames       import *
+from TRAElemento_Constants_Views           import *
+from TRAElemento_Constants_Vocabularies    import *
+from TRAUtils                              import *
 
-from TRAElemento_Permission_Definitions import cUseCase_ReCatalogTRAElemento, cBoundObject
-
-from TRACatalogo_Globales       import TRACatalogo_Globales
+from TRAElemento_Permission_Definitions import cBoundObject
+from TRAElemento_Permission_Definitions_UseCaseNames import cUseCase_ReCatalogTRAElemento
 
 
     
@@ -78,9 +95,9 @@ class TRAElemento_Recatalog:
          
         
 
-    security.declareProtected( permissions.ManagePortal, 'fRequestNewRecatalog')
-    def fRequestNewRecatalog( self, 
-        theAdditionalParms      =None,  
+    security.declareProtected( permissions.ManagePortal, 'fCreateProgressHandlerFor_Recatalog')
+    def fCreateProgressHandlerFor_Recatalog( self, 
+        theAdditionalParams      =None,  
         thePermissionsCache     =None, 
         theRolesCache           =None, 
         theParentExecutionRecord=None):
@@ -142,7 +159,46 @@ class TRAElemento_Recatalog:
             
             return None        
                     
-         
+
+
+        
+        
+        def fRecatalogFinalize_lambda( 
+            theElement               =None, 
+            theProcessControlManager =None, 
+            theAdditionalParmsHere   =None, 
+            theTerminationRequested  =False, 
+            theThereWasException     =False):
+            
+            if theElement == None:
+                return None
+            
+            if not theProcessControlManager:
+                return None       
+            
+            if not ( theProcessControlManager.vStarted and theProcessControlManager.vCompleted):
+                return None
+            
+            
+            anInitialElement = theProcessControlManager.vInitialElement
+            if anInitialElement == None:
+                return None
+            
+            anInitialElementMetaType  = ''
+            try:
+                anInitialElementMetaType = anInitialElement.meta_type 
+            except:
+                None
+        
+            if not( anInitialElementMetaType == cNombreTipoTRACatalogo):
+                return None
+            
+            if anInitialElement.getDebeRecatalogar():
+                anInitialElement.setDebeRecatalogar( False)
+                
+            return None
+                
+            
         
             
         def fRecatalogElement_lambda( theElement, theProcessControlManager, theAdditionalParmsHere):  
@@ -183,22 +239,42 @@ class TRAElemento_Recatalog:
         
         
         
-        unExecutionRecord = self.fStartExecution( 'method',  'fRequestNewRecatalog', theParentExecutionRecord,  True, { 'log_what': 'details', 'log_when': True, }, ) 
+        unExecutionRecord = self.fStartExecution( 'method',  'fCreateProgressHandlerFor_Recatalog', theParentExecutionRecord,  True, { 'log_what': 'details', 'log_when': True, }, ) 
         
+        aThereWasException = False
         
         try:
-            unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-            unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
-                
-            aRecatalogResult = self.fNewVoidProgressResult()
+            unPermissionsCache = fDictOrNew( thePermissionsCache)
+            unRolesCache       = fDictOrNew( theRolesCache)
             
-            
-            aProgressElement = None
-            aThereWasException = False
-            aProgressHandler = None
-            
+            aResult = self.fNewVoidCreateProgressHandlerResult()
+
             try:
                 
+                
+                unCatalogoRaiz = self.getCatalogo()           
+                if unCatalogoRaiz == None:
+                    aResult.update( {
+                        'success':     False,
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_error_internal_Missing_RootCatalog', "Internal error: missing root translations catalog-."),
+                    })
+                    return aResult
+                
+                unaColeccionProgresos = unCatalogoRaiz.fObtenerColeccionProgresos()
+                if unaColeccionProgresos == None:
+                    aResult.update( {
+                        'success':     False,
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_error_internal_Missing_progresses_collection', "Internal error: missing progresses collection-."),
+                    })
+                    return aResult
+                            
+                
+                aRecatalogResult = self.fNewVoidProgressResult()
+                
+                
+                aProgressElement = None
+                aProgressHandler = None
+            
                 aMetaType = 'UnknownType'
                 try:
                     aMetaType = self.meta_type
@@ -223,7 +299,6 @@ class TRAElemento_Recatalog:
                 aMemberId = self.fGetMemberId()
                 aRecatalogResult[ 'member_id'] = aMemberId
                 
-                unCatalogoRaiz = self.getCatalogo()           
                 aRecatalogResult[ 'TRACatalogo_title']      = unCatalogoRaiz.Title()
                 aRecatalogResult[ 'TRACatalogo_path' ]      = unCatalogoRaiz.fPathDelRaiz()
                 aRecatalogResult[ 'TRACatalogo_UID' ]       = unCatalogoRaiz.UID()
@@ -238,30 +313,70 @@ class TRAElemento_Recatalog:
                     theParentExecutionRecord= unExecutionRecord
                 )
                 if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
-                    aRecatalogResult[ 'success']   =  False
-                    aRecatalogResult[ 'condition'] = 'user_can_NOT_RecatalogElementsIn_TRACatalogo'
-                    aRecatalogResult[ 'date_time_now_string']   = self.fDateTimeNowTextual()
-                    return None
+                    aResult.update( {
+                        'success':     False,
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_no_permission_ToRecatalog', "You do not have permission to Re-Catalog-."),
+                    })
+                    return aResult
                 
                 
 
-                aProgressHandler, aProgressElement = self.fCreateNewProgressAndHandlerForElement(  
+                aProgressHandlerCreationResult = unaColeccionProgresos.fCreateNewProgressAndHandlerForElement(  
                     theInitialElement       =self, 
                     theProcessType          =cTRAProgress_ProcessType_ReCatalog, 
                     theTimestamp            =aStartDateTimeNowTextual,
                     theResult               =aRecatalogResult, 
                     theElementLambda        =fRecatalogElement_lambda,
                     theInitializeLambda     =fRecatalogInitialize_lambda,
+                    theFinalizeLambda       =fRecatalogFinalize_lambda,
                     theLockCatalog          =True,
                     thePermissionsCache     =unPermissionsCache, 
                     theRolesCache           =unRolesCache, 
                     theParentExecutionRecord=unExecutionRecord,)
-                if ( not aProgressHandler) or ( aProgressElement == None):
-                    return None
+                if ( not aProgressHandlerCreationResult) or not aProgressHandlerCreationResult.get( 'success', False):
+                    aResult.update( {
+                        'success':    False,
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_error_TRAProgress_not_created_for_TRAImportacion_msgid', "Error creating Progress element for Import element-."),
+                    })
+                    return aResult     
                 
-                aProgressHandler_Key = aProgressHandler.fKey()
                 
-                return aProgressHandler_Key
+                aProgressElement = aProgressHandlerCreationResult.get( 'progress_element', None)
+                if ( aProgressElement == None):
+                    aResult = { 
+                        'success':   False, 
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorProgressElementNotKnownByImportProcessElement', "Progress element is not known by import process element-"),
+                    }
+                    return aResult
+                
+                aProgressHandler = aProgressHandlerCreationResult.get( 'progress_handler', None)
+                if not aProgressHandler:
+                    aResult = { 
+                        'success':   False, 
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorImportProgressHandlerNotFound', "Import Progress Handler has not been found-"),
+                    }
+                    return aResult
+
+                aProgressHandlerKey = aProgressHandlerCreationResult.get( 'progress_handler_key', None)
+                if not aProgressHandlerKey:
+                    aResult = { 
+                        'success':   False, 
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorImport_NoProgressHandlerKey', "Import has no Progress Handler Key-"),
+                    }
+                    return aResult
+
+                
+                aResult.update( {
+                    'success':               True,
+                    'condition':             '',
+                    'progress_element':      aProgressElement,
+                    'progress_handler':      aProgressHandler,
+                    'progress_handler_key':  aProgressHandlerKey,
+                })
+                
+                return aResult
+            
+            
             
             except:
                 unaExceptionInfo = sys.exc_info()
@@ -270,7 +385,7 @@ class TRAElemento_Recatalog:
                 aThereWasException = True
                 unInformeExcepcion = ''
                 try:
-                    unInformeExcepcion += 'Exception during fRequestNewRecatalog of element %s %s at %s\n'  % (  self.meta_type(), self.Title(), self.fPhysicalPathString())
+                    unInformeExcepcion += 'Exception during fCreateProgressHandlerFor_Recatalog of element %s %s at %s\n'  % (  self.meta_type(), self.Title(), self.fPhysicalPathString())
                 except:
                     None
                 try:
@@ -290,6 +405,7 @@ class TRAElemento_Recatalog:
                 
                 aRecatalogResult[ 'success'] = False
                 aRecatalogResult[ 'exception_date_time_string'] = self.fDateTimeNowTextual()
+                aRecatalogResultDump = ''
                 try:
                     aRecatalogResultDump = self.fProgressResult_dump( aRecatalogResult)
                 except:
@@ -305,7 +421,11 @@ class TRAElemento_Recatalog:
                 if cLogExceptions:
                     logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
                 
-                return None
+                aResult = { 
+                    'success':    False, 
+                    'condition':  '%s\n%s' % (   self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Exception_msgid', "Exception.-"), unInformeExcepcion, ),
+                }
+                return aResult
         
         finally:
             unExecutionRecord and unExecutionRecord.pEndExecution()

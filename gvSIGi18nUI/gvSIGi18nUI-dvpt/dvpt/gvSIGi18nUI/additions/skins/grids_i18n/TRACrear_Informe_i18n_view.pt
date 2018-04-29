@@ -1,0 +1,114 @@
+<tal:block replace="nothing">
+# File: TRACrear_Informe_i18n_view.pt
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+#
+# GNU General Public License (GPL)
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+#
+# Authors: 
+# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana 
+# Model Driven Development sl  Valencia (Spain) www.ModelDD.org 
+# Antonio Carrasco Valero                       carrasco@ModelDD.org
+#
+</tal:block>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en">
+<body>
+
+
+	<div metal:define-macro="tTRACrear_Informe_i18n_view" >
+	
+	
+		<metal:block metal:use-macro="here/PerformanceAnalysis/macros/tSetupPerformanceAnalysis" />   
+	
+		
+		<tal:block tal:define="
+				pTrue								python: True;
+				pFalse								python: False;
+				pPermissionsCache					python: { };
+				pRolesCache							python: { };
+				pParentExecutionRecord				pExecutionRecord | nothing;">
+				
+			<tal:block tal:define="
+				pUseCaseAssessmentResult python: here.TRAgvSIGi18n_tool.fUseCaseAssessment( 
+                    theContextualElement    = here, 
+					theUseCaseName          = 'Create_TRAInforme', 
+					theElementsBindings     = { 'object': here,},
+					theRulesToCollect       = [ 'languages', 'modules',], 
+					thePermissionsCache     = pPermissionsCache, 
+					theRolesCache           = pRolesCache, 
+					theParentExecutionRecord= pExecutionRecord);
+				pPermiteCrear python: pUseCaseAssessmentResult and pUseCaseAssessmentResult.get( 'success', False)" >
+				
+				
+				<tal:block tal:condition="not: pPermiteCrear" >
+					<br/>
+					<h2 > 
+						<a  href="#" tal:attributes="href python: '%s/Tabular/' % here.TRAgvSIGi18n_tool.fCatalogoAbsoluteURL( here,)" class="state-visible" title="">
+							<font color="Red">                    
+								<span  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearInforme_action_NoPermissionToCreate_ErrorMsg">You are not allowed to create a new Status Report by Modules and Languages.-</span>
+							</font>
+						</a>                
+					</h2>      
+				</tal:block>				
+
+				
+				<tal:block tal:condition="pPermiteCrear" >	
+				
+					<tal:block tal:define="
+						pProfilingResults python: (pPerformanceAnalysis or {}).get( 'profiling_results', None);
+						unosArgs python: {
+						    'theContextualElement':     here,
+							'thePermissionsCache':      pPermissionsCache, 
+							'theRolesCache':            pRolesCache, 
+							'theParentExecutionRecord': pExecutionRecord,
+						};
+						pCrearResult python: here.TRAgvSIGi18n_tool.fCrearInforme( **unosArgs)" >
+						
+						<tal:block tal:condition="python: pCrearResult and ( pCrearResult[ 'effect'] == 'created')" >
+						
+							<tal:block tal:define="
+								dummy python: here.TRAgvSIGi18n_tool.pHTTPResponse_redirect( here,  '%sTabular/' % pCrearResult[ 'new_object_result'][ 'url']);" />
+						</tal:block>
+						
+						
+						<tal:block tal:condition="python: not ( pCrearResult) or not ( pCrearResult[ 'effect'] == 'created')" >
+							<h4>
+								<font color="Red">
+									<span i18n:domain="ModelDDvlPlone"  i18n:translate="ModelDDvlPlone_nosehacreadoelemento_info_msgid" >ModelDDvlPlone_nosehacreadoelemento_info_msgid</span>
+								</font>
+							</h4>
+							<p>
+								<font color="Red">
+									<span tal:content="pCrearResult/failure" />
+								</font>
+							</p>
+							<br/>
+						</tal:block>
+					</tal:block>
+				</tal:block>
+			</tal:block>
+		</tal:block>
+		
+		<metal:block metal:use-macro="here/PerformanceAnalysis/macros/tRenderProcessingTime_HTML" />   
+			 
+	</div>
+    
+
+</body>
+</html>
+

@@ -2,7 +2,7 @@
 #
 # File: TRAElemento_ConversonUtils.py
 #
-# Copyright (c) 2008, 2009,2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -73,11 +73,28 @@ from Products.Archetypes.atapi  import OrderedBaseFolder, BaseBTreeFolder
 from Products.PloneLanguageTool import availablelanguages as PloneLanguageToolAvailableLanguages
 
 
-from TRAElemento_Constants              import *
+from TRAElemento_Constants                 import *
+from TRAElemento_Constants_Activity        import *
+from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Dates           import *
+from TRAElemento_Constants_Encoding        import *
+from TRAElemento_Constants_Import          import *
+from TRAElemento_Constants_Languages       import *
+from TRAElemento_Constants_Logging         import *
+from TRAElemento_Constants_Modules         import *
+from TRAElemento_Constants_Profiling       import *
+from TRAElemento_Constants_Progress        import *
+from TRAElemento_Constants_String          import *
+from TRAElemento_Constants_StringRequests  import *
+from TRAElemento_Constants_Translate       import *
+from TRAElemento_Constants_Translation     import *
+from TRAElemento_Constants_TypeNames       import *
+from TRAElemento_Constants_Views           import *
+from TRAElemento_Constants_Vocabularies    import *
+from TRAUtils                              import *
 
 
 
-from TRAImportarExportar_Constants      import cUTFEncodingsForAllLanguages, cDefaultEncodingsSourceMap, cWesternLanguageMarkInSourceMap, cEncodingSeparatorSentinelName
         
 
 
@@ -100,28 +117,44 @@ class TRAElemento_ConversionUtils:
     
     security = ClassSecurityInfo()
 
+
+      
+
     
     
-   
-    security.declarePublic( 'fConvertToList')
-    def fConvertToList( self, theObject):
+    security.declarePublic( 'fAsCollection')    
+    def fAsCollection( self, theObject):
         
         if theObject == None:
-            return None
+            return []
         
         if isinstance( theObject, list):
             return theObject
         
-        if isinstance( theObject, ( str, unicode, )):
-            return [ theObject, ]
+        if isinstance( theObject, tuple):
+            return list ( theObject)
         
-        if isinstance( theObject, ( tuple, set)):
-            return list( theObject)
+        if isinstance( theObject, set):
+            return list ( theObject)
         
-        return list( theObject)
+        return [ theObject,]
+    
+
+     
+
+    
+    #security.declarePublic( 'fIsCollection')    
+    #def fIsCollection( self, theObject):
+        #if theObject == None:
+            #return False
+        #return isinstance( theObject, type( [])) or isinstance( theObject, type( (1,2))) or isinstance( theObject, type( set())) 
     
          
-        
+    
+    
+    
+    
+    
 
     security.declarePublic( 'fDefaultEvalStringGlobalsDict')    
     def fDefaultEvalStringGlobalsDict(self, ):

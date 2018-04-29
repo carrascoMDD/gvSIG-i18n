@@ -1,0 +1,348 @@
+<tal:block replace="nothing">
+# File: TRACatalogoActividad_inner.pt
+#
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+#
+# GNU General Public License (GPL)
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+#
+# Authors: 
+# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana 
+# Model Driven Development sl  Valencia (Spain) www.ModelDD.org 
+# Antonio Carrasco Valero                       carrasco@ModelDD.org
+#
+#
+</tal:block>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en">
+<body>                     
+
+                             
+<div metal:define-macro="tTRACatalogoActividadInner" >
+
+
+       
+
+
+    <tal:block tal:define="
+        global pStartTime       pStartTime | python: here.MDDModelDDvlPlone_tool.fMillisecondsNow();
+        pExecutionRecord python: here.TRAgvSIGi18n_tool.fStartExecution( here, 'template', 'TRACatalogoActividad_inner.pt', None, True, { 'log_what': 'details', 'log_when': True, });
+        pPermissionsCache python: {};
+        pRolesCache python: {}" >
+
+        
+
+        <metal:block metal:use-macro="here/TRACabeceraEnTabla_i18n_view/macros/tCabeceraEnTabla_i18n" />   
+            
+        
+        <tal:block tal:define="
+            pRefreshPageName   string:TRACatalogoActividad/;
+            pShowActivityLink  python: False;
+            pShowReportLink    python: True;
+            pShowDetailsLink   python: True;
+            pShowRootLink      python: True;
+            ">
+            <metal:block metal:use-macro="here/TRACatalogo_inner/macros/tTRACatalogoLinksMenu" />
+        </tal:block>
+
+
+     
+        
+        <br/>
+        <tal:block tal:define="
+            pInformeActividad        python: here.TRAgvSIGi18n_tool.fElaborarInformeActividad(
+                theContextualElement        =here,
+                theCheckPermissions         =True, 
+                thePermissionsCache         =pPermissionsCache, 
+                theRolesCache               =pRolesCache, 
+                theParentExecutionRecord    =pExecutionRecord);
+            pDisplayCountryFlags python: here.TRAgvSIGi18n_tool.fDisplayCountryFlags( here);
+            pExtraParmsLinkToTranslation pExtraParmsLinkToTranslation | string:" >
+            
+            <tal:block tal:condition="python: (not pInformeActividad) or not pInformeActividad.get( 'success', False)" >
+                <br/>
+                <h3 tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_noHayInfomeActividad_msgid',   'No Activity Report available-' )" />
+                <br/>
+            </tal:block>
+    
+            <tal:block tal:condition="python: pInformeActividad and pInformeActividad.get( 'success', False)" >
+                <h2>
+                   <span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_ActivityReport_label',   'Recent Activity-' )" />
+                </h2>         
+                
+                <p>
+                    <font size="2">
+                        <em tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_fechaInformeActividad_label', 'Report date-' )" />
+                        &nbsp;
+                        <strong tal:content="python: here.TRAgvSIGi18n_tool.fAsUnicode( here, pInformeActividad.get( 'report_date', ''))" />            
+                    </font>
+                </p>
+                
+
+                <tal:block tal:define="
+                    pTotals                  python: pInformeActividad.get( 'totals', {});
+                    pTotals_Periods          python: pTotals.get( 'periods', {});
+                    pReportsByLanguage       python: pInformeActividad[ 'activity_reports_by_language'];
+                    pCodigosIdiomas          python: [ unInforme.get( 'codigo_idioma_en_gvsig', '') for unInforme in pReportsByLanguage.values()];
+                    pPeriodKeys              python: pInformeActividad[ 'period_keys'];
+                    pClasesFilas             python: ['even', 'odd',];
+                    global pIndex            python: 0;
+                    aTranslationsCache       python: {};
+                    dummy       python:           here.TRAgvSIGi18n_tool.fTranslateI18NManyIntoDict( here, [
+                        [ 'gvSIGi18n', [    
+                            [ 'gvSIGi18n_fechaInformeActividad_label',                                      'Activity Report Date-'  ],
+                            [ 'gvSIGi18n_cadenas_msgid',                                                    'Strings-' ,            ],
+                            [ 'gvSIGi18n_total_msgid',                                                      'Total-' ,              ],
+                            [ 'gvSIGi18n_ActivityReport_Period_Today',                                      'Today-' ,              ],
+                            [ 'gvSIGi18n_ActivityReport_Period_Yesterday',                                  'Yesterday-' ,              ],
+                            [ 'gvSIGi18n_ActivityReport_Period_Last7Days',                                  'Last 7 Days-' ,              ],
+                            [ 'gvSIGi18n_ActivityReport_Period_Last30Days',                                 'Last 30 Days-' ,              ],
+                            [ 'gvSIGi18n_ActivityReport_Period_Before30Days',                               'Before 30 Days-' ,              ],
+                            [ 'gvSIGi18n_bandera_label',                                                    'Flag-' ,               ],
+                            [ 'gvSIGi18n_TRAIdioma_attr_codigoIdiomaEnGvSIG_label_abbreviated',             'Code-' ,               ],
+                            [ 'gvSIGi18n_TRAIdioma_attr_codigoInternacionalDeIdioma_label_abbreviated',     'Intl. Code-' ,         ],
+                            [ 'gvSIGi18n_TRAIdioma_attr_nombreIdioma_label_abbreviated',                    'Name-' ,               ],
+                            [ 'gvSIGi18n_TRAIdioma_attr_nombreNativoDeIdioma_label_abbreviated',            'Native name-' ,        ],
+                            [ 'gvSIGi18n_LanguageLocked_label',                                             'Locked-' ,               ],
+                            [ 'gvSIGi18n_ActivityTotals_label',                                             'Activity Totals-' ,               ],
+                            [ 'gvSIGi18n_ActivityByLanguages_label',                                        'Activity by Languages-' ,               ],
+                            
+                            
+                        ]]
+                    ], aTranslationsCache);
+                    pHayCodigosIdiomasInternacionalesDistintosCodigoEnGvSIG python: len( [ unInformeIdioma for unInformeIdioma in  pReportsByLanguage.values() if not ( unInformeIdioma.get( 'codigoIdiomaEnGvSIG', '') == unInformeIdioma.get( 'codigoInternacionalDeIdioma', unInformeIdioma.get( 'codigoIdiomaEnGvSIG', '')))]) > 0;
+                    pHayIdiomasBloqueados python: len( [ unInformeIdioma for unInformeIdioma in  pReportsByLanguage.values() if not ( unInformeIdioma.get( 'modifiable', False) )]) > 0">
+                    
+              
+    
+                    <h3>
+                        <strong tal:content="aTranslationsCache/gvSIGi18n_ActivityTotals_label" />
+                    </h3>
+                      
+                    
+                    <table id="id_TRAInformeActividad_Totals_Table" class="listing" summary="#"  tal:attributes="summary string: Activity Report Totals">
+                        <col class="nosort" width="60" />
+                        <col class="nosort" width="60"  tal:repeat="unPeriodo pPeriodKeys"/>
+                         <thead>
+                            <tr>
+                                <th align="right"   tal:content="aTranslationsCache/gvSIGi18n_total_msgid" />
+                                <th align="right"  tal:content="aTranslationsCache/gvSIGi18n_ActivityReport_Period_Today" />
+                                <th align="right"  tal:content="aTranslationsCache/gvSIGi18n_ActivityReport_Period_Yesterday" />
+                                <th align="right"  tal:content="aTranslationsCache/gvSIGi18n_ActivityReport_Period_Last7Days" />
+                                <th align="right"  tal:content="aTranslationsCache/gvSIGi18n_ActivityReport_Period_Last30Days" />
+                                <th align="right"  tal:content="aTranslationsCache/gvSIGi18n_ActivityReport_Period_Before30Days" />
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                            <tr class="even" >
+                                <td tal:content="python: pTotals.get( 'num_activities', 0)" />
+                                <td align="right" tal:repeat="unPeriodo pPeriodKeys" >
+                                    <span tal:define="pInformePeriodo python: pTotals_Periods.get( unPeriodo, {})" tal:content="python:  pInformePeriodo.get( 'num_activities', 0)" />
+                                </td>
+                             </tr>
+                        </tbody>
+                    </table>                    
+                    <br/>
+                    
+                    
+                    
+                    
+                    
+                    <h3>
+                        <strong>
+                            <span tal:content="aTranslationsCache/gvSIGi18n_ActivityByLanguages_label" />
+                        </strong>
+                    </h3>
+                    
+                    
+                    <table id="id_TRAInformeActividad_ByLanguages_Table" class="listing" summary="#"  tal:attributes="summary string: Activity Report by Languages">
+                        <col width="40"  class="sortable" />
+                        <col  class="sortable" tal:condition="pHayCodigosIdiomasInternacionalesDistintosCodigoEnGvSIG" width="40" />
+                        <col width="70"  class="sortable" />
+                        <col width="70"  class="sortable"/>
+                        <col  class="sortable" width="20" tal:condition="pDisplayCountryFlags" />
+                        <col  class="sortable" width="20" tal:condition="pHayIdiomasBloqueados" />
+                        <col  class="sortable" width="60" />
+                        <tal:block tal:repeat="unPeriodo pPeriodKeys">
+                            <colgroup>
+                                <col  class="sortable" width="40"  />
+                                <col  class="sortable" width="160"  />
+                            </colgroup>
+                        </tal:block>                    
+                        <thead>
+                            <tr>
+                                <th align="center" tal:content="aTranslationsCache/gvSIGi18n_TRAIdioma_attr_codigoIdiomaEnGvSIG_label_abbreviated" />
+                                <th tal:condition="pHayCodigosIdiomasInternacionalesDistintosCodigoEnGvSIG"
+                                    align="center" tal:content="aTranslationsCache/gvSIGi18n_TRAIdioma_attr_codigoInternacionalDeIdioma_label_abbreviated" />
+                                <th align="left"   tal:content="aTranslationsCache/gvSIGi18n_TRAIdioma_attr_nombreIdioma_label_abbreviated" />
+                                <th align="left"   tal:content="aTranslationsCache/gvSIGi18n_TRAIdioma_attr_nombreNativoDeIdioma_label_abbreviated" />
+                                <th tal:condition="pDisplayCountryFlags"
+                                    class="nosort" align="center" tal:content="aTranslationsCache/gvSIGi18n_bandera_label" />
+                                <th tal:condition="pHayIdiomasBloqueados"
+                                    align="center" tal:content="aTranslationsCache/gvSIGi18n_LanguageLocked_label" />
+                                <th align="right"   tal:content="aTranslationsCache/gvSIGi18n_total_msgid" />
+                                <th colspan="2" align="center"  tal:content="aTranslationsCache/gvSIGi18n_ActivityReport_Period_Today" />
+                                <th colspan="2" align="center"  tal:content="aTranslationsCache/gvSIGi18n_ActivityReport_Period_Yesterday" />
+                                <th colspan="2" align="center"  tal:content="aTranslationsCache/gvSIGi18n_ActivityReport_Period_Last7Days" />
+                                <th colspan="2" align="center"  tal:content="aTranslationsCache/gvSIGi18n_ActivityReport_Period_Last30Days" />
+                                <th colspan="2" align="center"  tal:content="aTranslationsCache/gvSIGi18n_ActivityReport_Period_Before30Days" />
+                            </tr>
+                        </thead>
+                        
+                        
+                        <tbody>
+                            <tal:block tal:repeat="unInformeIdioma python: pReportsByLanguage.values()" >
+                                <tr class="#" tal:attributes="class python: pClasesFilas[pIndex % 2]"
+                                    tal:define="
+                                    global pIndex python: pIndex + 1;
+                                        pCode           python: here.TRAgvSIGi18n_tool.fAsUnicode( here, unInformeIdioma[ 'codigo_idioma_en_gvsig']);
+                                        pIntlCode       python: here.TRAgvSIGi18n_tool.fAsUnicode( here, unInformeIdioma[ 'codigo_internacional_idioma']);
+                                        pLanguageName   python: here.TRAgvSIGi18n_tool.fAsUnicode( here, unInformeIdioma[ 'nombre_idioma']);
+                                        pNativeName     python: here.TRAgvSIGi18n_tool.fAsUnicode( here, unInformeIdioma[ 'nombre_nativo_idioma']);
+                                        pFlag           python: unInformeIdioma.get( 'flag', '') or 'flag-ninguna.gif';
+                                        pFlagURL        python: unInformeIdioma.get( 'flag_url', '');
+                                        pModifiable     python: unInformeIdioma.get( 'modifiable', '');
+                                        pSizesIdioma        python: here.TRASizesIdioma( pCode);
+                                        pURLIdiomaOCatalogo python: '%s/TRATraducir/?theCodigoIdiomaCursor=%s&theMostrarInforme=on&theMostrarLista=on' % ( here.TRAgvSIGi18n_tool.fAbsoluteURL( here,), unInformeIdioma[ 'codigo_idioma_en_gvsig'], );
+                                        pURLIdiomaOCatalogo python: pURLIdiomaOCatalogo + ((( 'es' in pCodigosIdiomas) and '&theIdiomasReferencia=es')or '' );
+                                        pURLIdiomaOCatalogo python: pURLIdiomaOCatalogo + ((( 'en' in pCodigosIdiomas) and '&theIdiomasReferencia=en')or '' );
+                                        pURLIdiomaOCatalogo python: pURLIdiomaOCatalogo + pExtraParmsLinkToTranslation;
+                                        pLanguageLocked     python: not( (unInformeIdioma.get( 'modifiable', False) and True) or False)" >
+                             
+                                    <td align="left" valign="baseline" >
+                                        <a href="#" title="#"  tal:attributes="href python:  pURLIdiomaOCatalogo; title pLanguageName">
+                                            <font size="1" color="Black">
+                                                <strong tal:content="pCode" />
+                                            </font>
+                                        </a>
+                                    </td>
+                                    <td tal:condition="pHayCodigosIdiomasInternacionalesDistintosCodigoEnGvSIG" 
+                                        align="left" valign="baseline" >
+                                        <a tal:condition="python: not ( pIntlCode == pCode)"
+                                            href="#" title="#"  tal:attributes="href python:  pURLIdiomaOCatalogo; title pLanguageName">
+                                            <font size="1" color="Black">
+                                                <strong tal:content="pIntlCode" />
+                                            </font>
+                                        </a>
+                                    </td>
+                                    <td align="left" valign="baseline" >
+                                        <a href="#" title="#"  tal:attributes="href python:  pURLIdiomaOCatalogo; title pLanguageName">
+                                            <font size="1" color="Black">
+                                                <strong tal:content="pLanguageName" />
+                                            </font>
+                                        </a>
+                                    </td>
+                                    <td align="left" valign="baseline" >
+                                        <a href="#" title="#"  tal:attributes="href python:  pURLIdiomaOCatalogo; title pLanguageName">
+                                            <font  color="Black"  size="#" tal:attributes="size python: pSizesIdioma.get( 'display_font_size', '1')">
+                                                <strong tal:content="pNativeName" />
+                                            </font>
+                                        </a>
+                                    </td>
+                                     <td align="left" valign="baseline" tal:condition="pDisplayCountryFlags" >
+                                        <a href="#" title="#"  tal:attributes="href python:  pURLIdiomaOCatalogo; title pLanguageName">
+                                            <img width="14" height="11" alt="#" src="#"
+                                                tal:attributes="
+                                                    src python: pFlagURL;
+                                                    alt pLanguageName;
+                                                    title pLanguageName" />
+                                        </a>
+                                    </td>
+                                    <td align="center" tal:condition="pHayIdiomasBloqueados" >
+                                        <img tal:condition="pLanguageLocked" src="#" title="#" alt="#" tal:attributes="src python: '%s/%s' % ( here.TRAgvSIGi18n_tool.fAbsoluteURL( here,), 'tra_locked.gif',); title python: aTranslationsCache[ 'gvSIGi18n_LanguageLocked_label']; alt python: aTranslationsCache[ 'gvSIGi18n_LanguageLocked_label']"/>
+                                    </td>
+        
+        
+                                    <td align="right" valign="baseline">
+                                        <strong tal:content="python: unInformeIdioma[ 'num_activities']"/>
+                                    </td> 
+                                    
+                                    <tal:block tal:repeat="unPeriodKey pPeriodKeys">
+                                        <tal:block tal:define="
+                                            unInformePeriodo python: unInformeIdioma[ 'periods'].get( unPeriodKey, {});
+                                            pURLIdiomaEstadoOCatalogo python: '%s/TRATraducir/?theCodigoIdiomaCursor=%s&theMostrarInforme=on&theMostrarLista=on' % ( here.TRAgvSIGi18n_tool.fAbsoluteURL( here,), unInformeIdioma[ 'codigo_idioma_en_gvsig'],);
+                                            pURLIdiomaEstadoOCatalogo python: pURLIdiomaEstadoOCatalogo + ((( 'es' in pCodigosIdiomas) and '&theIdiomasReferencia=es')or '' );
+                                            pURLIdiomaEstadoOCatalogo python: pURLIdiomaEstadoOCatalogo + ((( 'en' in pCodigosIdiomas) and '&theIdiomasReferencia=en')or '' );                                            
+                                            pURLIdiomaEstadoOCatalogo python: pURLIdiomaEstadoOCatalogo + pExtraParmsLinkToTranslation;
+                                            " >
+                                    
+                                            <td align="right" valign="baseline">
+                                                <a href="#" title="#"  tal:attributes="href python: pURLIdiomaEstadoOCatalogo; title python: here.TRAgvSIGi18n_tool.fAsUnicode( here, unInformeIdioma[ 'nombre_idioma'])" >
+                                                    <font size="1" >
+                                                        <strong tal:content="python: unInformePeriodo[ 'num_activities']"/>
+                                                    </font>
+                                                </a>
+                                            </td> 
+                                            <td align="left" valign="baseline">
+                                                <tal:block tal:repeat="pUserActivities python: unInformePeriodo[ 'users_and_num_activities']" >
+                                                    <p>
+                                                        <font size="1" tal:content="python: '%s(%d)' % ( pUserActivities[ 0], pUserActivities[ 1],)"/>
+                                                    </p>
+                                                </tal:block>
+                                                <tal:block tal:replace="nothing">
+                                                    <a href="#" title="#"  tal:attributes="href python: pURLIdiomaEstadoOCatalogo; title python: here.TRAgvSIGi18n_tool.fAsUnicode( here, unInformeIdioma[ 'nombre_idioma'])" >
+                                                        <font size="1" >
+                                                            <strong tal:content="python: unInformePeriodo[ 'num_activities']"/>
+                                                        </font>
+                                                    </a>
+                                                </tal:block>
+                                            </td> 
+                                        </tal:block>
+                                    </tal:block>
+                                </tr>
+                            </tal:block>  
+                        </tbody>
+                    </table>
+                </tal:block>     
+            </tal:block>
+         
+                
+            
+            
+            
+        </tal:block>
+        <br/>      
+        <br/>      
+       
+
+
+        <tal:block tal:define="dummy python: pExecutionRecord and here.TRAgvSIGi18n_tool.pEndExecution( here, pExecutionRecord)" />
+     
+        <tal:block tal:replace="structure python: pExecutionRecord and here.TRARenderExecutionDetails( pExecutionRecord)" />
+    </tal:block>
+    
+    
+</div>
+
+    
+    
+    
+    
+
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+</body>
+</html>

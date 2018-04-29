@@ -1,0 +1,285 @@
+<tal:block replace="nothing">
+# File: TRAProgreso_EstadoControl_i18n_view.pt
+#
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+#
+# GNU General Public License (GPL)
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+#
+# Authors: 
+# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana 
+# Model Driven Development sl  Valencia (Spain) www.ModelDD.org 
+# Antonio Carrasco Valero                       carrasco@ModelDD.org
+#
+</tal:block>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en">
+<body>
+
+
+
+<div metal:define-macro="tProgreso_EstadoControl_i18n" >
+
+    <tal:block tal:define="
+		pEstadoControl pEstadoControl | nothing;
+		pLabelYes python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_Yes', 'Yes-');
+		pLabelNo  python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_No', 'No-')" >
+    
+        <h2>
+            <strong  tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_attr_estadoControl_label', 'Progress Control Status-')" />
+        </h2>
+        <p class="formHelp" tal:content="python:  here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_attr_estadoControl_help', 'Summary of the state of progress control for this long-lived process.-')" />
+        <br/>
+        
+        <tal:block tal:condition="python: not pEstadoControl" >
+            <p>
+                <strong i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_nohayEstadoControl_warning_msgid">There is no progress control status for the process available at this time-</strong>
+            </p>
+        </tal:block>
+        
+        
+        <tal:block tal:condition="python: pEstadoControl" >
+            <p>
+                <span>
+                    <strong  tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_Timestamp_msgid',  'Date and Time-' )" />
+                </span>
+                &nbsp;
+                <span  tal:content="python: pEstadoControl.get( 'timestamp', '')" />
+            </p>
+            <br/>
+            
+            <table id="cid_TRAProgress_ControlStatus" class="listing" tal:define="pClasesFilas python: [ 'even', 'odd',]" >
+                <thead>
+                    <tr>
+                        <th colspan="2" align="left"  class="nosort">
+                            <font size="2">
+                                <strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_attr_estadoControl_label', 'Progress Control Status-')" />
+                            </font>
+                        </th>
+                    </tr>
+                </thead>
+                
+                <tbody tal:define="global pRowIndex python: 0;" >
+                    <tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
+                        <td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_estadoControl_started_label', 'started-')"/>
+                        <td align="center" tal:content="python: ( pEstadoControl.get( 'started', False) and pLabelYes) or pLabelNo" />
+                    </tr>
+                    <tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
+                        <td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_estadoControl_paused_label', 'paused-')"/>
+                        <td align="center" tal:content="python: ( pEstadoControl.get( 'paused', False) and pLabelYes) or pLabelNo" />
+                    </tr>
+                    <tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
+                        <td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_estadoControl_completed_label', 'completed-')"/>
+                        <td align="center" tal:content="python: ( pEstadoControl.get( 'completed', False) and pLabelYes) or pLabelNo" />
+                    </tr>
+                    <tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
+                        <td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_estadoControl_terminated_label', 'terminated-')"/>
+                        <td align="center" tal:content="python: ( pEstadoControl.get( 'terminated', False) and pLabelYes) or pLabelNo" />
+                    </tr>
+                    <tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
+                        <td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_estadoControl_error_label', 'error-')"/>
+                        <td align="center" tal:content="python: ( pEstadoControl.get( 'error', False) and pLabelYes) or pLabelNo" />
+                    </tr>
+                    <tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
+                        <td tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_estadoControl_exception_label', 'exception-')"/>
+                        <td align="center" tal:content="python: ( pEstadoControl.get( 'exception', False) and pLabelYes) or pLabelNo" />
+                    </tr>
+                </tbody>
+            </table>
+            <br/>               
+            <br/>
+                            
+            <tal:block tal:condition="python: pEstadoControl.get( 'error', False)" >
+                <p>
+                    <font color="red">
+                        <font color="red" size="2">
+                            <strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_estadoControl_error_label', 'Error-')" />
+                        </font>
+                        <br/>
+                        <span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_estadoControl_errorMessage_label', 'Error Message-')" />
+                        &emsp;
+                        <span tal:content="python: pEstadoControl.get( 'error_message', False)" />
+                        <br/>
+                        <span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_estadoControl_errorDetails_label', 'Error Details-')" />
+                        &emsp;
+                        <span tal:content="python: pEstadoControl.get( 'error_details', False)" />
+                    </font>
+                </p>
+                <tal:block tal:define="pErrorTraceback python: pEstadoControl.get( 'error_traceback', False)" tal:condition="pErrorTraceback" >
+                    <textarea readonly style="font-size: 7pt"  cols="60"  rows="#"
+                        tal:define="pLines python: pErrorTraceback.splitlines()" 
+                        tal:attributes="rows python: max( 2, min( len( pLines), 4))">
+<tal:block tal:repeat="pLine pLines" tal:content="pLine"/>
+</textarea>
+                </tal:block>
+                <br/>
+            </tal:block>
+                            
+            <tal:block tal:condition="python: pEstadoControl.get( 'exception', False)" >
+                <p>
+                    <font color="red">
+                        <font color="red" size="2">
+                            <strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_estadoControl_exception_label', 'Exception-')" />
+                        </font>
+                        <br/>
+                        <span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_estadoControl_exceptionMessage_label', 'Exception Message-')" />
+                        &emsp;
+                        <span tal:content="python: pEstadoControl.get( 'exception_message', False)" />
+                        <br/>
+                        <span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_estadoControl_exceptionDetails_label', 'Exception Details-')" />
+                        &emsp;
+                        <span tal:content="python: pEstadoControl.get( 'exception_details', False)" />
+                    </font>
+                </p>
+                <tal:block tal:define="pExceptionTraceback python: pEstadoControl.get( 'exception_traceback', False)" tal:condition="pExceptionTraceback" >
+                    <textarea readonly style="font-size: 8pt"  cols="80"  rows="#"
+                        tal:define="pLines python: pExceptionTraceback.splitlines()" 
+                        tal:attributes="rows python: max( 2, min( len( pLines), 20))">
+<tal:block tal:repeat="pLine pLines" tal:content="pLine"/>
+</textarea>
+                </tal:block>
+                <br/>
+            </tal:block>
+                
+            <tal:block tal:define="pPendingControlRequests python: pEstadoControl.get( 'pending_control_requests', [])" >
+                <tal:block tal:condition="not: pPendingControlRequests" >
+                    <p tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_estadoControl_NoPendingControlRequests_label', 'There are NO Pending Control Requests-')" />
+                </tal:block>
+            
+                <tal:block tal:condition="pPendingControlRequests" >
+                
+                    <h3>
+                        <strong  tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_estadoControl_pendingControlRequests_label', 'Pending Control Requests-')" />
+                    </h3>
+                    <p class="formHelp" tal:content="python:  here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_estadoControl_pendingControlRequests_help', 'Control requests not yet accepted by the long-lived process.-')" />
+                    
+                    
+                    <table id="cid_TRAProgress_PendingControlRequests" class="listing" tal:define="pClasesFilas python: [ 'even', 'odd',]" >
+                        <thead>
+                            <tr>
+                                <th align="left"  class="sortable">
+                                    <strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_ControlRequest_Action_label', 'Requested Action-')" />
+                                </th>
+                                <th align="left"  class="sortable">
+                                    <strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_ControlRequest_RequestingUser_label', 'Requesting User-')" />
+                                </th>
+                                <th align="left"  class="sortable">
+                                    <strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_ControlRequest_RequestTime_label', 'Request Time-')" />
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody tal:define="global pRowIndex python: 0;" >
+                            <tal:block tal:repeat="pPendingControlRequest pPendingControlRequests" >
+                                <tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
+                                    <td align="left" tal:content="python: pPendingControlRequest.get( 'action', '')"/>
+                                    <td align="left" tal:content="python: pPendingControlRequest.get( 'member_id', '')"/>
+                                    <td align="left" tal:content="python: pPendingControlRequest.get( 'requested_timestamp', '')"/>
+                                </tr>
+                                
+                            </tal:block>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                </tal:block>
+            </tal:block>
+
+            
+            
+            
+                           
+                
+            <tal:block tal:define="
+				pPerformedControlRequests python: pEstadoControl.get( 'performed_control_requests', []);
+				pHasPerformedControlRequests python: pPerformedControlRequests and len( [ aCtrlRqst for aCtrlRqst in pPerformedControlRequests if aCtrlRqst.get( 'changes_applied', [])]) > 0" >
+                
+                <tal:block tal:condition="not: pHasPerformedControlRequests" >
+                    <p tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_estadoControl_NoPerformedControlRequests_label', 'There are NO Performed Control Requests-')" />
+                </tal:block>
+
+                <tal:block tal:condition="pHasPerformedControlRequests" >
+                
+                    <h3>
+                        <strong  tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_estadoControl_performedControlRequests_label', 'Performed Control Requests-')" />
+                    </h3>
+                    <p class="formHelp" tal:content="python:  here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_estadoControl_performedControlRequests_help', 'Control requests already accepted by the long-lived process.-')" />
+                    
+                    
+                    <table id="cid_TRAProgress_PerformedControlRequests" class="listing" tal:define="pClasesFilas python: [ 'even', 'odd',]" >
+                        <thead>
+                            <tr>
+                                <th align="left"  class="sortable">
+                                    <strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_ControlRequest_Action_label', 'Action-')" />
+                                </th>
+                                <th align="left"  class="sortable">
+                                    <strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_ControlRequest_RequestingUser_label', 'Requesting User-')" />
+                                </th>
+                                <th align="left"  class="sortable">
+                                    <strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_ControlRequest_RequestedTime_label', 'Requested Time-')" />
+                                </th>
+                                <th align="left"  class="sortable">
+                                    <strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_ControlRequest_PerformedTime_label', 'Performed Time-')" />
+                                </th>
+                                <th align="left"  class="sortable">
+                                    <strong tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TRAProgreso_ControlRequest_ChangesApplied_label', 'Changes Applied-')" />
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody tal:define="global pRowIndex python: 0;" >
+                            <tal:block tal:repeat="pPerformedControlRequest pPerformedControlRequests" >
+                                <tal:block tal:condition="python: pPerformedControlRequest.get( 'changes_applied', [])" >
+                                    <tr class="#" tal:define="global pRowIndex python: pRowIndex + 1"  tal:attributes="class python: pClasesFilas[ pRowIndex % 2]">
+                                        <td align="left" tal:content="python: pPerformedControlRequest.get( 'action', '')"/>
+                                        <td align="left" tal:content="python: pPerformedControlRequest.get( 'member_id', '')"/>
+                                        <td align="left" tal:content="python: pPerformedControlRequest.get( 'requested_timestamp', '')"/>
+                                        <td align="left" tal:content="python: pPerformedControlRequest.get( 'performed_timestamp', '')"/>
+                                        <td align="left">
+                                            <tal:block tal:repeat="pChangeApplied python: pPerformedControlRequest.get( 'changes_applied', [])" >
+                                                <span tal:content="python: '%s' % pChangeApplied" />
+                                                <br/>
+                                            </tal:block>
+                                        </td>
+                                    </tr>
+                                </tal:block>
+                                
+                            </tal:block>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                </tal:block>
+            </tal:block>
+
+            
+            
+            
+            
+            
+        </tal:block>
+     </tal:block>
+
+</div>
+
+
+
+
+
+
+
+
+</body>
+</html>

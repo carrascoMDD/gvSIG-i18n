@@ -2,7 +2,7 @@
 #
 # File: TRAElemento_PloneHandlers.py
 #
-# Copyright (c) 2008, 2009,2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -51,7 +51,25 @@ from Products.Archetypes.atapi  import OrderedBaseFolder, BaseBTreeFolder
 
 
 
-from TRAElemento_Constants              import *
+from TRAElemento_Constants                 import *
+from TRAElemento_Constants_Activity        import *
+from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Dates           import *
+from TRAElemento_Constants_Encoding        import *
+from TRAElemento_Constants_Import          import *
+from TRAElemento_Constants_Languages       import *
+from TRAElemento_Constants_Logging         import *
+from TRAElemento_Constants_Modules         import *
+from TRAElemento_Constants_Profiling       import *
+from TRAElemento_Constants_Progress        import *
+from TRAElemento_Constants_String          import *
+from TRAElemento_Constants_StringRequests  import *
+from TRAElemento_Constants_Translate       import *
+from TRAElemento_Constants_Translation     import *
+from TRAElemento_Constants_TypeNames       import *
+from TRAElemento_Constants_Views           import *
+from TRAElemento_Constants_Vocabularies    import *
+from TRAUtils                              import *
 
 
             
@@ -165,7 +183,7 @@ class TRAElemento_PloneHandlers:
             someIds = [ someIds,]
 
         aMovedNewPosition = -1
-        someObjectValues = self.objectValues()
+        someObjectValues = self.fObjectValues()
         for anObjectIndex in range( len( someObjectValues)):
             
             anObject = someObjectValues[ anObjectIndex]
@@ -256,83 +274,6 @@ class TRAElemento_PloneHandlers:
         """
         return None
     
-        # ACV 20091216 Should not paste nothing on no TRA element
-        ## Get the list of objects to be copied into this (self) container
-        ## Copied from class CopyContainer in file Zope lib python OFS  CopySupport.py
-        #if cb_copy_data is not None:
-            #cp = cb_copy_data
-        #elif REQUEST is not None and REQUEST.has_key('__cp'):
-            #cp = REQUEST['__cp']
-        #else:
-            #cp = None
-        #if cp is None:
-            #return CopyContainer.manage_objectPaste( self, cb_copy_data, REQUEST)
-             
-        #try:
-            #op, mdatas = loads(decompress(unquote(cp))) # _cb_decode(cp)
-        #except:
-            #return CopyContainer.manage_objectPaste( self, cb_copy_data, REQUEST)
-
-    
-        #oblist = []
-        #app = self.getPhysicalRoot()
-        #for mdata in mdatas:
-            #m = Moniker.loadMoniker(mdata)
-            #try:
-                #ob = m.bind(app)
-            #except:
-                #return CopyContainer.manage_objectPaste( self, cb_copy_data, REQUEST)
-            ## Do not verify here
-            ## self._verifyObjectPaste(ob, validate_src=op+1)
-            #oblist.append(ob)
-        ## End of code copied from class CopyContainer
-            
-        #someObjectsToPaste = oblist[:]
-        
-        #if not someObjectsToPaste:
-            #return CopyContainer.manage_objectPaste( self, cb_copy_data, REQUEST)
-        
-        #someAwareObjects = []
-        #for anObjectToPaste in someObjectsToPaste:
-            #anExportConfig = None
-            #try:
-                #anExportConfig = anObjectToPaste.exportConfig()
-            #except:
-                #None
-            #if anExportConfig:
-                #someAwareObjects.append( anObjectToPaste)
-                
-        #if not someAwareObjects:
-            #return CopyContainer.manage_objectPaste( self, cb_copy_data, REQUEST)
-        
-        
-        #aRequest = REQUEST
-        #if not aRequest:
-            #try:
-                #aRequest = self.REQUEST
-            #except:
-                #None
-        #if not aRequest:
-            #"""Default to Plone behavior.
-            
-            #"""
-            #return CopyContainer.manage_pasteObjects( self, cb_copy_data, REQUEST)
-        
-        
-        #unModelDDvlPloneTool = self.fModelDDvlPloneTool( True)
-        #if not unModelDDvlPloneTool:
-            #return CopyContainer.manage_pasteObjects( self, cb_copy_data, REQUEST)
-        
-        #return unModelDDvlPloneTool.fPaste( 
-            #theTimeProfilingResults     =None,
-            #theContainerObject          =self, 
-            #theObjectsToPaste           =someObjectsToPaste,
-            #theAdditionalParams         =None,
-        #)
-    
-        ## return CopyContainer.manage_pasteObjects( self, cb_copy_data, REQUEST)
-        ## aRequest.response.redirect( '%s/MDDpaste' % self.absolute_url())
-        
         
         
        

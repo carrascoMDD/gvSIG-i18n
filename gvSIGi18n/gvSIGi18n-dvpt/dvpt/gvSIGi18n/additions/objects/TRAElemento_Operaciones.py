@@ -2,7 +2,7 @@
 #
 # File: TRAElemento_Operaciones.py
 #
-# Copyright (c) 2008, 2009,2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -40,7 +40,25 @@ from Products.CMFCore           import permissions
 
 
 
-from TRAElemento_Constants              import *
+from TRAElemento_Constants                 import *
+from TRAElemento_Constants_Activity        import *
+from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Dates           import *
+from TRAElemento_Constants_Encoding        import *
+from TRAElemento_Constants_Import          import *
+from TRAElemento_Constants_Languages       import *
+from TRAElemento_Constants_Logging         import *
+from TRAElemento_Constants_Modules         import *
+from TRAElemento_Constants_Profiling       import *
+from TRAElemento_Constants_Progress        import *
+from TRAElemento_Constants_String          import *
+from TRAElemento_Constants_StringRequests  import *
+from TRAElemento_Constants_Translate       import *
+from TRAElemento_Constants_Translation     import *
+from TRAElemento_Constants_TypeNames       import *
+from TRAElemento_Constants_Views           import *
+from TRAElemento_Constants_Vocabularies    import *
+from TRAUtils                              import *
 
 
 
@@ -55,6 +73,7 @@ class TRAElemento_Operaciones:
     """
     
     security = ClassSecurityInfo()
+
 
     
 
@@ -83,7 +102,23 @@ class TRAElemento_Operaciones:
     
   
 
-
+   
+    security.declarePrivate( 'fParseNombresModulosString')    
+    def fParseNombresModulosString( self, theNombresModulosString, ):
+        
+        if not theNombresModulosString:
+            return []
+        
+        unosNombresModulosString = theNombresModulosString
+        unosNombresModulosString = unosNombresModulosString.strip()
+        unosNombresModulosString = unosNombresModulosString.replace( '\n', cTRAModuleNameSeparator)
+        unosNombresModulosString = unosNombresModulosString.replace( '\r', cTRAModuleNameSeparator)
+        unosNombresModulosString = unosNombresModulosString.strip()
+        
+        unosNombresModulos = unosNombresModulosString.split( cTRAModuleNameSeparator)
+           
+        return unosNombresModulos
+    
 
 
     # #############################################################

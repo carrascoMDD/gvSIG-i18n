@@ -2,7 +2,7 @@
 #
 # File: TRAElemento_Encoding.py
 #
-# Copyright (c) 2008, 2009,2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -46,11 +46,29 @@ from Products.CMFCore           import permissions
 from Products.PloneLanguageTool import availablelanguages as PloneLanguageToolAvailableLanguages
 
 
-from TRAElemento_Constants              import *
+from TRAElemento_Constants                 import *
+from TRAElemento_Constants_Activity        import *
+from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Dates           import *
+from TRAElemento_Constants_Encoding        import *
+from TRAElemento_Constants_Import          import *
+from TRAElemento_Constants_Languages       import *
+from TRAElemento_Constants_Logging         import *
+from TRAElemento_Constants_Modules         import *
+from TRAElemento_Constants_Profiling       import *
+from TRAElemento_Constants_Progress        import *
+from TRAElemento_Constants_String          import *
+from TRAElemento_Constants_StringRequests  import *
+from TRAElemento_Constants_Translate       import *
+from TRAElemento_Constants_Translation     import *
+from TRAElemento_Constants_TypeNames       import *
+from TRAElemento_Constants_Views           import *
+from TRAElemento_Constants_Vocabularies    import *
+from TRAUtils                              import *
 
 
 
-from TRAImportarExportar_Constants      import cUTFEncodingsForAllLanguages, cDefaultEncodingsSourceMap, cWesternLanguageMarkInSourceMap, cEncodingSeparatorSentinelName
+from TRAImportarExportar_Constants_Encodings      import cUTFEncodingsForAllLanguages, cDefaultEncodingsSourceMap, cWesternLanguageMarkInSourceMap, cTRAEncodingSeparatorSentinelName
         
 
 
@@ -60,13 +78,6 @@ from TRACatalogo_Globales    import TRACatalogo_Globales
 
 
 
-
-
-
-        
-
-            
-            
             
             
             
@@ -129,6 +140,57 @@ class TRAElemento_Encoding:
     
     
         
+        
+    
+    
+    security.declareProtected( permissions.View, 'fEncodingsCommonToLanguages')
+    def fEncodingsCommonToLanguages(self, theCodigosIdiomas):
+        if not theCodigosIdiomas:
+            return []
+        
+        someEncodingsAndCounters = { }
+        
+        someEncodingNames = [ ]
+        
+        unNumEncodedIdiomas = 0
+        
+        for unCodigoIdioma in theCodigosIdiomas:
+
+            unosEncodingsIdioma = self.fEncodingsForLanguage( unCodigoIdioma)
+            if unosEncodingsIdioma:
+                
+                unNumEncodedIdiomas += 1
+
+                for unEncodingIdioma in unosEncodingsIdioma:
+                    
+                    unNombreEncoding = unEncodingIdioma[ 0]
+                    
+                    if not ( unNombreEncoding in someEncodingNames):
+                        someEncodingNames.append( unNombreEncoding)
+                     
+                    unCounterAndEncodingIdioma = someEncodingsAndCounters.get( unNombreEncoding, None)
+                    if unCounterAndEncodingIdioma == None:
+                        unCounterAndEncodingIdioma = [ 0, unEncodingIdioma,]
+                        someEncodingsAndCounters[ unNombreEncoding] = unCounterAndEncodingIdioma
+     
+                    unCounterAndEncodingIdioma[ 0] += 1
+
+        
+        unosCommonEncodings = [ ]
+        
+        for unNombreEncoding in someEncodingNames:
+            
+            unCounterAndEncodingIdioma = someEncodingsAndCounters.get( unNombreEncoding, None)
+            
+            if len( unCounterAndEncodingIdioma) > 1:
+                
+                unCounter = unCounterAndEncodingIdioma[ 0]
+                if unCounter == unNumEncodedIdiomas:
+                    
+                    unEncoding = unCounterAndEncodingIdioma[ 1]
+                    unosCommonEncodings.append( unEncoding)
+        
+        return unosCommonEncodings
     
     
     
@@ -141,7 +203,7 @@ class TRAElemento_Encoding:
 
         someEncodingsForAllLanguages = set( [ unE[ 0] for unE in cUTFEncodingsForAllLanguages])
         
-        someEncodingsForAllLanguages.add( cEncodingUnicodeEscape)
+        someEncodingsForAllLanguages.add( cTRAEncodingUnicodeEscape)
         
         someEncodingsForLanguage     = [ unE[:] for unE in cUTFEncodingsForAllLanguages]
 
@@ -153,7 +215,7 @@ class TRAElemento_Encoding:
         
         todosEncodings = set()
         
-        someSpecificEncodings = set()
+        someSpecificTRAEncodings = set()
         someWesternEncodings   = set()
         
         for unEncoding, unosAliasesString, unTitle, unosLanguageCodesString in cDefaultEncodingsSourceMap:
@@ -181,30 +243,30 @@ class TRAElemento_Encoding:
                             if cWesternLanguageMarkInSourceMap in unosLanguageCodes:
                                 someWesternEncodings.add( unEncoding)   
                             if ( not ( unCodigoIdioma == cWesternLanguageMarkInSourceMap)) and ( ( theCodigoIdioma in unosLanguageCodes) or ( unCodigoIdioma in unosLanguageCodes)):
-                                someSpecificEncodings.add( unEncoding)   
+                                someSpecificTRAEncodings.add( unEncoding)   
                         else:
                             someWesternEncodings.add( unEncoding)   
                     
-        if someSpecificEncodings:
-            someEncodingsForLanguage.append( [ cEncodingSeparatorSentinelName, '', [], ])
-            for aEncoding in sorted( someSpecificEncodings):
+        if someSpecificTRAEncodings:
+            someEncodingsForLanguage.append( [ cTRAEncodingSeparatorSentinelName, '', [], ])
+            for aEncoding in sorted( someSpecificTRAEncodings):
                 someEncodingsForLanguage.append( [ aEncoding, someTitlesByEncodingName.get( aEncoding, aEncoding), someAliasesByEncodingName.get( aEncoding, []), ])
-            someEncodingsForLanguage.append( [ cEncodingSeparatorSentinelName, '', [], ])
-            for aEncoding in sorted( todosEncodings.difference( someSpecificEncodings)):
+            someEncodingsForLanguage.append( [ cTRAEncodingSeparatorSentinelName, '', [], ])
+            for aEncoding in sorted( todosEncodings.difference( someSpecificTRAEncodings)):
                 someEncodingsForLanguage.append( [ aEncoding, someTitlesByEncodingName.get( aEncoding, aEncoding), someAliasesByEncodingName.get( aEncoding, []), ])
 
         else:        
-            someEncodingsForLanguage.append( [ cEncodingSeparatorSentinelName, '', [], ])
+            someEncodingsForLanguage.append( [ cTRAEncodingSeparatorSentinelName, '', [], ])
             for aEncoding in sorted( someWesternEncodings):
                 someEncodingsForLanguage.append( [ aEncoding, someTitlesByEncodingName.get( aEncoding, aEncoding), someAliasesByEncodingName.get( aEncoding, []), ])
-            someEncodingsForLanguage.append( [ cEncodingSeparatorSentinelName, '', [], ])
+            someEncodingsForLanguage.append( [ cTRAEncodingSeparatorSentinelName, '', [], ])
             for aEncoding in sorted( todosEncodings.difference( someWesternEncodings)):
                 someEncodingsForLanguage.append( [ aEncoding, someTitlesByEncodingName.get( aEncoding, aEncoding), someAliasesByEncodingName.get( aEncoding, []), ])
         
         someEncodingsWithCompositeTitle = [ ]
         for unEncodingNameAndAliases in someEncodingsForLanguage:
             unCompositeTitle = ''
-            if not ( unEncodingNameAndAliases[ 0] == cEncodingSeparatorSentinelName):
+            if not ( unEncodingNameAndAliases[ 0] == cTRAEncodingSeparatorSentinelName):
                 unCompositeTitle = unEncodingNameAndAliases[ 0]
                 if unEncodingNameAndAliases[ 1] and not( unEncodingNameAndAliases[ 1] == unEncodingNameAndAliases[ 0]):
                     unCompositeTitle = '%s %s ' % ( unCompositeTitle, unEncodingNameAndAliases[ 1],)
@@ -228,7 +290,7 @@ class TRAElemento_Encoding:
 
 
     security.declarePublic( 'fAsUnicode')
-    def fAsUnicode( self, theString):
+    def fAsUnicode( self, theString, theTranslationService=None):
         """Return the parameter, expected to be encoded in the plone site default encoding, decoded into a unicode string.
         
         """
@@ -236,12 +298,18 @@ class TRAElemento_Encoding:
         if not theString:
             return u''
 
-        aTranslationService = self.getTranslationServiceTool()
+        aTranslationService = theTranslationService
+        if aTranslationService == None:
+            aTranslationService = self.getTranslationServiceTool()
 
+        if aTranslationService == None:
+            return u'fAsUnicode() not svce'
 
-        aUnicodeString = aTranslationService.asunicodetype( theString, errors="ignore")
-        if not aUnicodeString:
-            aUnicodeString = theString
+        aUnicodeString = u''
+        try:
+            aUnicodeString = aTranslationService.asunicodetype( theString, errors="ignore")
+        except:
+            None
         
         return aUnicodeString
         

@@ -122,13 +122,23 @@ class TRAElemento_Meta:
             'TRAColeccionModulos',
             'TRAColeccionProgresos',
             'TRAColeccionSolicitudesCadenas',
+            'TRAConfiguracionAlmacenPaginas',
+            'TRAConfiguracionExportacion',
+            'TRAConfiguracionImportacion',
+            'TRAConfiguracionPaginaTraducciones',
+            'TRAConfiguracionPerfilEjecucion',
+            'TRAConfiguracionPermisos',
+            'TRAConfiguracionSolicitudesCadenas',
+            'TRAConfiguracionVarios',
             'TRAContenidoIntercambio',
+            'TRAContenidoXML',
             'TRAIdioma',
             'TRAImportacion',
             'TRAInforme',
             'TRAModulo',
             'TRAParametrosControlProgreso',
             'TRAProgreso',
+            'TRASimbolosOrdenados',
             'TRASolicitudCadena',
             'TRATraduccion',
  
@@ -179,9 +189,45 @@ class TRAElemento_Meta:
                 from Products.gvSIGi18n.TRAColeccionSolicitudesCadenas         import TRAColeccionSolicitudesCadenas
                 return TRAColeccionSolicitudesCadenas            
 
+            if theMetaTypeName == 'TRAConfiguracionAlmacenPaginas':
+                from Products.gvSIGi18n.TRAConfiguracionAlmacenPaginas         import TRAConfiguracionAlmacenPaginas
+                return TRAConfiguracionAlmacenPaginas            
+
+            if theMetaTypeName == 'TRAConfiguracionExportacion':
+                from Products.gvSIGi18n.TRAConfiguracionExportacion         import TRAConfiguracionExportacion
+                return TRAConfiguracionExportacion            
+
+            if theMetaTypeName == 'TRAConfiguracionImportacion':
+                from Products.gvSIGi18n.TRAConfiguracionImportacion         import TRAConfiguracionImportacion
+                return TRAConfiguracionImportacion            
+
+            if theMetaTypeName == 'TRAConfiguracionPaginaTraducciones':
+                from Products.gvSIGi18n.TRAConfiguracionPaginaTraducciones         import TRAConfiguracionPaginaTraducciones
+                return TRAConfiguracionPaginaTraducciones            
+
+            if theMetaTypeName == 'TRAConfiguracionPerfilEjecucion':
+                from Products.gvSIGi18n.TRAConfiguracionPerfilEjecucion         import TRAConfiguracionPerfilEjecucion
+                return TRAConfiguracionPerfilEjecucion            
+
+            if theMetaTypeName == 'TRAConfiguracionPermisos':
+                from Products.gvSIGi18n.TRAConfiguracionPermisos         import TRAConfiguracionPermisos
+                return TRAConfiguracionPermisos            
+
+            if theMetaTypeName == 'TRAConfiguracionSolicitudesCadenas':
+                from Products.gvSIGi18n.TRAConfiguracionSolicitudesCadenas         import TRAConfiguracionSolicitudesCadenas
+                return TRAConfiguracionSolicitudesCadenas            
+
+            if theMetaTypeName == 'TRAConfiguracionVarios':
+                from Products.gvSIGi18n.TRAConfiguracionVarios         import TRAConfiguracionVarios
+                return TRAConfiguracionVarios            
+
             if theMetaTypeName == 'TRAContenidoIntercambio':
                 from Products.gvSIGi18n.TRAContenidoIntercambio         import TRAContenidoIntercambio
                 return TRAContenidoIntercambio            
+
+            if theMetaTypeName == 'TRAContenidoXML':
+                from Products.gvSIGi18n.TRAContenidoXML         import TRAContenidoXML
+                return TRAContenidoXML            
 
             if theMetaTypeName == 'TRAIdioma':
                 from Products.gvSIGi18n.TRAIdioma         import TRAIdioma
@@ -206,6 +252,10 @@ class TRAElemento_Meta:
             if theMetaTypeName == 'TRAProgreso':
                 from Products.gvSIGi18n.TRAProgreso         import TRAProgreso
                 return TRAProgreso            
+
+            if theMetaTypeName == 'TRASimbolosOrdenados':
+                from Products.gvSIGi18n.TRASimbolosOrdenados         import TRASimbolosOrdenados
+                return TRASimbolosOrdenados            
 
             if theMetaTypeName == 'TRASolicitudCadena':
                 from Products.gvSIGi18n.TRASolicitudCadena         import TRASolicitudCadena

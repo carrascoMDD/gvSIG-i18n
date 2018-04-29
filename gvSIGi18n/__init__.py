@@ -79,6 +79,7 @@ def initialize(context):
 
     # imports packages and types for registration
 
+    import TRAConfiguracion
     import TRAColeccionInformes
     import TRAArquetipo
     import TRAModulo
@@ -87,19 +88,29 @@ def initialize(context):
     import TRAInforme
     import TRAColeccionArquetipos
     import TRAParametrosControlProgreso
+    import TRAContenidoXML
     import TRAColeccionImportaciones
     import TRACadena
     import TRAColeccionSolicitudesCadenas
     import TRAElemento
+    import TRAConfiguracionSolicitudesCadenas
+    import TRAConfiguracionPaginaTraducciones
+    import TRASimbolosOrdenados
     import TRACatalogo
     import TRAColeccionIdiomas
+    import TRAConfiguracionAlmacenPaginas
+    import TRAConfiguracionVarios
     import TRAContenidoIntercambio
+    import TRAConfiguracionImportacion
+    import TRAConfiguracionExportacion
     import TRAConRegistroActividad
     import TRAImportacion
     import TRAIdioma
     import TRAColeccionModulos
     import TRATraduccion
     import TRAColeccionProgresos
+    import TRAConfiguracionPermisos
+    import TRAConfiguracionPerfilEjecucion
     import TRASolicitudCadena
 
     # Initialize portal content

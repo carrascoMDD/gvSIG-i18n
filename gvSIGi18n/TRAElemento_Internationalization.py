@@ -2,7 +2,7 @@
 #
 # File: TRAElemento_Internationalization.py
 #
-# Copyright (c) 2008, 2009,2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -40,7 +40,25 @@ from Products.CMFCore           import permissions
 
 
 
-from TRAElemento_Constants              import *
+from TRAElemento_Constants                 import *
+from TRAElemento_Constants_Activity        import *
+from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Dates           import *
+from TRAElemento_Constants_Encoding        import *
+from TRAElemento_Constants_Import          import *
+from TRAElemento_Constants_Languages       import *
+from TRAElemento_Constants_Logging         import *
+from TRAElemento_Constants_Modules         import *
+from TRAElemento_Constants_Profiling       import *
+from TRAElemento_Constants_Progress        import *
+from TRAElemento_Constants_String          import *
+from TRAElemento_Constants_StringRequests  import *
+from TRAElemento_Constants_Translate       import *
+from TRAElemento_Constants_Translation     import *
+from TRAElemento_Constants_TypeNames       import *
+from TRAElemento_Constants_Views           import *
+from TRAElemento_Constants_Vocabularies    import *
+from TRAUtils                              import *
 
 
 
@@ -58,11 +76,59 @@ class TRAElemento_Internationalization:
 
 
 
+    
+
+
+    security.declarePublic( 'fTranslateI18N')
+    def fTranslateI18N( self, 
+        theI18NDomain, 
+        theString, 
+        theDefault, 
+        theTranslationService=None):
+        """Localization: return the translated string from the specific domain into the language preferred by the connected user, or return the supplied default.
+        
+        """
+        
+        if not theString:
+            return ''
+
+        aI18NDomain = theI18NDomain
+        if not aI18NDomain:
+            try:
+                aI18NDomain = self.getNombreProyecto()
+            except:
+                None
+                
+        aI18NDomain = self.fTranslationI18NDomain( theI18NDomain)
+        if not aI18NDomain:
+            return unicode( theDefault)
+                
+
+        
+        aTranslationService = theTranslationService
+        if not aTranslationService:
+            aTranslationService = self.getTranslationServiceTool()
+            
+        aTranslation = theDefault
+        if aTranslationService:
+            aTranslation = aTranslationService.utranslate( aI18NDomain, theString, mapping=None, context=self , target_language= None, default=theDefault)            
+           
+        if not aTranslation:
+            aTranslation = theDefault
+
+        if not aTranslation:
+            aTranslation = theString
+
+        return aTranslation
+        
+    
+    
 
     security.declarePublic( 'fTranslateI18NManyIntoDict')
     def fTranslateI18NManyIntoDict( self, 
-        theI18NDomainsStringsAndDefaults, 
-        theResultDict                   =None):
+        theI18NDomainsStringsAndDefaults=[], 
+        theResultDict                   =None,
+        theTranslationService           =None,):
         """Internationalization: build or update a dictionaty with the translations of all requested strings from the specified domain into the language preferred by the connected user, or return the supplied default.
         
         """
@@ -74,9 +140,11 @@ class TRAElemento_Internationalization:
         if not theI18NDomainsStringsAndDefaults:
             return unResultDict
         
-        aTranslationService = self.getTranslationServiceTool()
+        aTranslationService = theTranslationService
         if not aTranslationService:
-            return unResultDict
+            aTranslationService = self.getTranslationServiceTool()
+            if not aTranslationService:
+                return unResultDict
         
         for aDomainStringsAndDefaults in theI18NDomainsStringsAndDefaults:
             aI18NDomain             = aDomainStringsAndDefaults[ 0] or cI18NDomainDefault
@@ -119,49 +187,6 @@ class TRAElemento_Internationalization:
         return aI18NDomain
 
     
-    
-    
-    
-
-
-    security.declarePublic( 'fTranslateI18N')
-    def fTranslateI18N( self, theI18NDomain, theString, theDefault, theTranslationService=None):
-        """Internationalization: return the translated string from the specific domain into the language preferred by the connected user, or return the supplied default.
-        
-        """
-        
-        if not theString:
-            return ''
-
-        aI18NDomain = theI18NDomain
-        if not aI18NDomain:
-            try:
-                aI18NDomain = self.getNombreProyecto()
-            except:
-                None
-                
-        aI18NDomain = self.fTranslationI18NDomain( theI18NDomain)
-        if not aI18NDomain:
-            return unicode( theDefault)
-                
-
-        
-        aTranslationService = theTranslationService
-        if not aTranslationService:
-            aTranslationService = self.getTranslationServiceTool()
-            
-        aTranslation = theDefault
-        if aTranslationService:
-            aTranslation = aTranslationService.utranslate( aI18NDomain, theString, mapping=None, context=self , target_language= None, default=theDefault)            
-           
-        if not aTranslation:
-            aTranslation = theDefault
-
-        if not aTranslation:
-            aTranslation = theString
-
-        return aTranslation
-        
     
     
     

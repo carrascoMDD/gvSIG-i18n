@@ -1,0 +1,160 @@
+<tal:block replace="nothing">
+# File: TRAImportacionContenidosDetalle_inner.pt
+#
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+#
+# GNU General Public License (GPL)
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+#
+# Authors: 
+# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana 
+# Model Driven Development sl  Valencia (Spain) www.ModelDD.org 
+# Antonio Carrasco Valero                       carrasco@ModelDD.org
+#
+</tal:block>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en">
+<body>                     
+
+                             
+    <div metal:define-macro="tTRAImportacionContenidosDetalleInner" >
+    
+           
+
+
+        <tal:block tal:define="
+            global pStartTime       pStartTime | python: here.MDDModelDDvlPlone_tool.fMillisecondsNow();
+            pExecutionRecord python: here.TRAgvSIGi18n_tool.fStartExecution( here, 'template', 'TRAImportacionContenidosDetalle_inner.pt', None, True, { 'log_what': 'details', 'log_when': True, });
+            pPermissionsCache python: {};
+            pRolesCache python: {}" >
+             
+            
+
+           
+            <metal:block metal:use-macro="here/PerformanceAnalysis/macros/tSetupPerformanceAnalysis" />   
+            
+            <tal:block tal:define="
+                pTrue                python: True;
+                pFalse               python: False;
+                pRetrievalStartTime  python: here.MDDModelDDvlPlone_tool.fMillisecondsNow();
+                pProfilingResults python: (pPerformanceAnalysis or {}).get( 'profiling_results', None);
+                unosArgs python: { 
+                    'theTimeProfilingResults'     :pProfilingResults,
+                    'theElement'                  :here, 
+                    'theParent'                   :None,
+                    'theParentTraversalName'      :'',
+                    'theTypeConfig'               :None, 
+                    'theAllTypeConfigs'           :None, 
+                    'theViewName'                 :'Tabular', 
+                    'theRetrievalExtents'         :[ 'traversals', 'owner', 'cursor', 'extra_links',],
+                    'theWritePermissions'         :[ ],
+                    'theFeatureFilters'           :{'aggregations': [], 'relations': [], 'attrs': [ 'title', 'description',], },
+                    'theInstanceFilters'          :None,
+                    'theTranslationsCaches'       :None,
+                    'theCheckedPermissionsCache'  :None,
+                    'theAdditionalParams'         :None, };    
+                SRES  python: here.MDDModelDDvlPlone_tool.fRetrieveTypeConfig( **unosArgs);
+                pRetrievalEndTime  python: here.MDDModelDDvlPlone_tool.fMillisecondsNow();
+                pPermiteEditar  python: pFalse; 
+                pPermiteEliminar python: pFalse; 
+                pShowOrHideTrees pFalse; 
+                pMostrarAnteriorPosterior pTrue;
+                pAllowTextualAndTabular pTrue;
+                pAllowRefrescar pTrue;
+                pPagina          string:Textual; 
+                pPaginaAnteriorPosterior string:TRAImportacionContenidosDetalle;
+                pPaginaRefrescar string:TRAImportacionContenidosDetalle" >
+
+
+                <tal:block tal:replace="nothing">  
+                    <metal:block metal:use-macro="here/PerformanceAnalysis/macros/tRenderProfilingResults_HTML" />   
+                    <tal:block tal:replace="structure python: here.MDDModelDDvlPlone_tool.fPrettyPrintHTML( here [ TRAVRES  , ], [ 'object',  'values_by_uid', 'values_by_name', 'elements_by_UID', 'elements_by_id',  'traversals_by_name', 'type_config', 'traversal_config', 'column_translations',   'vocabulary_translations', ], here.MDDModelDDvlPlone_tool.fPreferredResultDictKeysOrder() )" />
+                </tal:block>
+
+
+
+                <metal:block metal:use-macro="here/PerformanceAnalysis/macros/tRenderRetrievalTime_HTML" />   
+
+         
+                <metal:block metal:use-macro="here/CabeceraEnTabla_i18n_view/macros/tCabeceraEnTabla_i18n" />   
+
+                
+                <h2>
+                     <span i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAImportacion_attr_contenidosIntercambioTraducciones_label">All translations interchange archive contents report-</span>
+                </h2>
+                <p class="formHelp" i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_TRAImportacion_attr_contenidoIntercambioTraducciones_help" />
+         
+                <tal:block tal:define="pInforme python: here.TRAgvSIGi18n_tool.fInformeContenidosImportacion( here, pExecutionRecord)">
+                     <tal:block tal:condition="not: pInforme">
+                          <p i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_nohaycontenidosintercambiotraducciones_warning_msgid">There is no valid translation interchange content-</p>
+                     </tal:block>
+                     <tal:block  tal:condition="pInforme" >
+                         <metal:block metal:use-macro="here/TRAContenidoIntercambio_i18n_view/macros/tInformeContenidoIntercambio_i18n" />   
+                     </tal:block>
+                 </tal:block>
+                 <br/>
+                 
+                 
+                 <tal:block tal:define="pTodosInformesContenidosIntercambio python: here.TRAgvSIGi18n_tool.fInformesTodosContenidosIntercambio( here, pExecutionRecord)"
+                     tal:repeat="pInforme pTodosInformesContenidosIntercambio" >
+                     
+                    <tal:block tal:condition="not: pInforme">
+                         <p i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_nohaycontenidointercambiotraducciones_warning_msgid">There is no valid translation interchange content-</p>
+                    </tal:block>
+                
+                    <tal:block  tal:condition="pInforme" >
+                        <h2>
+                            <font size="2">
+                                <strong>
+                                    <a class="state-visible"
+                                        href="#" title="#" 
+                                        tal:define="aLinkTitle python: '%s %s' % ( here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_volver_action_label',   'Back to-'), here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_vista_tabular_label',   'Tabular view-'))"
+                                        tal:attributes="
+                                            title aLinkTitle;
+                                            href python: '%s/TRAContenidoIntercambioDatos/' % pInforme.get( 'absolute_url', '-unknown url TRAContenidoIntercambio-')">
+                                        <span tal:content="python: here.TRAgvSIGi18n_tool.fAsUnicode( here, pInforme.get( 'title', '-unknown title TRAContenidoIntercambio-'))" />
+                                    </a>
+                                </strong>
+                            </font>
+                        </h2>
+                        <span tal:content="python: here.TRAgvSIGi18n_tool.fAsUnicode( here, pInforme.get( 'description', '-unknown description TRAContenidoIntercambio-'))" />
+                 
+                        <metal:block metal:use-macro="here/TRAContenidoIntercambio_i18n_view/macros/tInformeContenidoIntercambio_i18n" />   
+                        
+                    </tal:block>
+                    <br/>
+                </tal:block>
+                
+                
+                
+                <tal:block tal:define="dummy python: pExecutionRecord and here.TRAgvSIGi18n_tool.pEndExecution( here, pExecutionRecord)" />
+        
+                 
+                <tal:block tal:replace="structure python: pExecutionRecord and here.TRARenderExecutionDetails( pExecutionRecord)" />
+            
+            </tal:block>
+             
+        </tal:block>
+        
+        
+    </div>
+
+</body>
+</html>
+
+
+

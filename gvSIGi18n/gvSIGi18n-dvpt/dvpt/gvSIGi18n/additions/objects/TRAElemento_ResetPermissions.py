@@ -2,7 +2,7 @@
 #
 # File: TRAElemento_ResetPermissions.py
 #
-# Copyright (c) 2008, 2009,2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -55,11 +55,29 @@ from Products.CMFCore.utils     import getToolByName
 
 
 
-from TRAElemento_Constants      import *
+from TRAElemento_Constants                 import *
+from TRAElemento_Constants_Activity        import *
+from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Dates           import *
+from TRAElemento_Constants_Encoding        import *
+from TRAElemento_Constants_Import          import *
+from TRAElemento_Constants_Languages       import *
+from TRAElemento_Constants_Logging         import *
+from TRAElemento_Constants_Modules         import *
+from TRAElemento_Constants_Profiling       import *
+from TRAElemento_Constants_Progress        import *
+from TRAElemento_Constants_String          import *
+from TRAElemento_Constants_StringRequests  import *
+from TRAElemento_Constants_Translate       import *
+from TRAElemento_Constants_Translation     import *
+from TRAElemento_Constants_TypeNames       import *
+from TRAElemento_Constants_Views           import *
+from TRAElemento_Constants_Vocabularies    import *
+from TRAUtils                              import *
 
-from TRAElemento_Permission_Definitions import cUseCase_ResetPermissionsTRAElemento, cBoundObject
+from TRAElemento_Permission_Definitions import cBoundObject
+from TRAElemento_Permission_Definitions_UseCaseNames import cUseCase_ResetPermissionsTRAElemento
 
-from TRACatalogo_Globales       import TRACatalogo_Globales
 
 
     
@@ -78,9 +96,9 @@ class TRAElemento_ResetPermissions:
          
         
 
-    security.declareProtected( permissions.ManagePortal, 'fRequestNewResetPermissions')
-    def fRequestNewResetPermissions( self, 
-        theAdditionalParms      =None,  
+    security.declareProtected( permissions.ManagePortal, 'fCreateProgressHandlerFor_ResetPermissions')
+    def fCreateProgressHandlerFor_ResetPermissions( self, 
+        theAdditionalParams      =None,  
         thePermissionsCache     =None, 
         theRolesCache           =None, 
         theParentExecutionRecord=None):
@@ -92,6 +110,25 @@ class TRAElemento_ResetPermissions:
         
         
         def fResetPermissionsInitialize_lambda( theContextualElement, theProcessControlManager, theAdditionalParmsHere):  
+            
+            if theContextualElement == None:
+                return None
+            
+            if not theProcessControlManager:
+                return None
+        
+            theContextualElement.pClearPermissionsByElementType()
+            theContextualElement.pClearUseCaseSpecificationsForTRACatalogsByName()
+            theContextualElement.pClearStateChangeActionRoles()
+
+            
+            somePermissionsByElementType = theContextualElement.fPermissionsByElementType()
+
+            unosInitializedObjects = {
+                'permissions_by_element_type': somePermissionsByElementType,
+            }
+                        
+            theProcessControlManager.pAddInitializedObjects( unosInitializedObjects)
  
             return None        
                     
@@ -106,14 +143,36 @@ class TRAElemento_ResetPermissions:
             if not theProcessControlManager:
                 return None
             
+            if not theProcessControlManager.vInitializedObjects:
+                return None
+
             
+            somePermissionsByElementType = theProcessControlManager.vInitializedObjects.get( 'permissions_by_element_type', None)
+            if not somePermissionsByElementType:
+                return None
+   
+            unElementMetaType = theElement.meta_type
+            
+            unElementPermissionSpec = somePermissionsByElementType.get( unElementMetaType, None)
+            if not unElementPermissionSpec:
+                return None
+           
             anElementsByTypeRead    = { theElement.meta_type: 1,}
             anElementsByTypeChanged = None
             
-            if theElement.fSetPermissions( theAdditionalParms=theAdditionalParmsHere):
-                anElementsByTypeChanged = { theElement.meta_type: 1,}
-               
             
+            aComplyWithPermissions = theElement.fCheckPermissionSpecificationCompliance( 
+                theElement                =theElement, 
+                theElementPermissionsSpec =unElementPermissionSpec, 
+            )
+            if not aComplyWithPermissions:
+            
+                if theElement.fSetPermissions( 
+                    theAdditionalParams      =theAdditionalParmsHere, 
+                    thePermissionsForElement =unElementPermissionSpec,
+                    ):
+                    anElementsByTypeChanged = { theElement.meta_type: 1,}
+               
             theProcessControlManager.pProcessStep( theElement, anElementsByTypeRead, anElementsByTypeChanged)
             
             return None        
@@ -121,21 +180,39 @@ class TRAElemento_ResetPermissions:
         
         
         
-        unExecutionRecord = self.fStartExecution( 'method',  'fRequestNewResetPermissions', theParentExecutionRecord,  True, { 'log_what': 'details', 'log_when': True, }, ) 
+        unExecutionRecord = self.fStartExecution( 'method',  'fCreateProgressHandlerFor_ResetPermissions', theParentExecutionRecord,  True, { 'log_what': 'details', 'log_when': True, }, ) 
         
+        aThereWasException = False
         
         try:
-            unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-            unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+            unPermissionsCache = fDictOrNew( thePermissionsCache)
+            unRolesCache       = fDictOrNew( theRolesCache)
                 
-            aResetPermissionsResult = self.fNewVoidProgressResult()
-            
-            
-            aProgressElement = None
-            aThereWasException = False
-            aProgressHandler = None
+            aResult = self.fNewVoidCreateProgressHandlerResult()
             
             try:
+                
+                unCatalogoRaiz = self.getCatalogo()           
+                if unCatalogoRaiz == None:
+                    aResult.update( {
+                        'success':     False,
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_error_internal_Missing_RootCatalog', "Internal error: missing root translations catalog-."),
+                    })
+                    return aResult
+                
+                unaColeccionProgresos = unCatalogoRaiz.fObtenerColeccionProgresos()
+                if unaColeccionProgresos == None:
+                    aResult.update( {
+                        'success':     False,
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_error_internal_Missing_progresses_collection', "Internal error: missing progresses collection-."),
+                    })
+                    return aResult
+                            
+                aResetPermissionsResult = self.fNewVoidProgressResult()
+                
+                
+                aProgressElement = None
+                aProgressHandler = None      
                 
                 aMetaType = 'UnknownType'
                 try:
@@ -161,7 +238,6 @@ class TRAElemento_ResetPermissions:
                 aMemberId = self.fGetMemberId()
                 aResetPermissionsResult[ 'member_id'] = aMemberId
                 
-                unCatalogoRaiz = self.getCatalogo()           
                 aResetPermissionsResult[ 'TRACatalogo_title']      = unCatalogoRaiz.Title()
                 aResetPermissionsResult[ 'TRACatalogo_path' ]      = unCatalogoRaiz.fPathDelRaiz()
                 aResetPermissionsResult[ 'TRACatalogo_UID' ]       = unCatalogoRaiz.UID()
@@ -176,14 +252,15 @@ class TRAElemento_ResetPermissions:
                     theParentExecutionRecord= unExecutionRecord
                 )
                 if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
-                    aResetPermissionsResult[ 'success']   =  False
-                    aResetPermissionsResult[ 'condition'] = 'user_can_NOT_ResetPermissionsElementsIn_TRACatalogo'
-                    aResetPermissionsResult[ 'date_time_now_string']   = self.fDateTimeNowTextual()
-                    return None
+                    aResult.update( {
+                        'success':     False,
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_no_permission_ToResetPermissions', "You do not have permission to Reset Permissions-."),
+                    })
+                    return aResult
                 
                 
 
-                aProgressHandler, aProgressElement = self.fCreateNewProgressAndHandlerForElement(  
+                aProgressHandlerCreationResult = unaColeccionProgresos.fCreateNewProgressAndHandlerForElement(  
                     theInitialElement       =self, 
                     theProcessType          =cTRAProgress_ProcessType_ResetPermissions, 
                     theTimestamp            =aStartDateTimeNowTextual,
@@ -194,12 +271,50 @@ class TRAElemento_ResetPermissions:
                     thePermissionsCache     =unPermissionsCache, 
                     theRolesCache           =unRolesCache, 
                     theParentExecutionRecord=unExecutionRecord,)
-                if ( not aProgressHandler) or ( aProgressElement == None):
-                    return None
+                if ( not aProgressHandlerCreationResult) or not aProgressHandlerCreationResult.get( 'success', False):
+                    aResult.update( {
+                        'success':    False,
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_error_TRAProgress_not_created_for_TRAImportacion_msgid', "Error creating Progress element for Import element-."),
+                    })
+                    return aResult     
                 
-                aProgressHandler_Key = aProgressHandler.fKey()
                 
-                return aProgressHandler_Key
+                aProgressElement = aProgressHandlerCreationResult.get( 'progress_element', None)
+                if ( aProgressElement == None):
+                    aResult = { 
+                        'success':   False, 
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorProgressElementNotKnownByImportProcessElement', "Progress element is not known by import process element-"),
+                    }
+                    return aResult
+                
+                aProgressHandler = aProgressHandlerCreationResult.get( 'progress_handler', None)
+                if not aProgressHandler:
+                    aResult = { 
+                        'success':   False, 
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorImportProgressHandlerNotFound', "Import Progress Handler has not been found-"),
+                    }
+                    return aResult
+
+                aProgressHandlerKey = aProgressHandlerCreationResult.get( 'progress_handler_key', None)
+                if not aProgressHandlerKey:
+                    aResult = { 
+                        'success':   False, 
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorImport_NoProgressHandlerKey', "Import has no Progress Handler Key-"),
+                    }
+                    return aResult
+
+                
+                aResult.update( {
+                    'success':               True,
+                    'condition':             '',
+                    'progress_element':      aProgressElement,
+                    'progress_handler':      aProgressHandler,
+                    'progress_handler_key':  aProgressHandlerKey,
+                })
+                
+                return aResult
+            
+            
             
             except:
                 unaExceptionInfo = sys.exc_info()
@@ -208,7 +323,7 @@ class TRAElemento_ResetPermissions:
                 aThereWasException = True
                 unInformeExcepcion = ''
                 try:
-                    unInformeExcepcion += 'Exception during fRequestNewResetPermissions of element %s %s at %s\n'  % (  self.meta_type(), self.Title(), self.fPhysicalPathString())
+                    unInformeExcepcion += 'Exception during fCreateProgressHandlerFor_ResetPermissions of element %s %s at %s\n'  % (  self.meta_type(), self.Title(), self.fPhysicalPathString())
                 except:
                     None
                 try:
@@ -228,6 +343,7 @@ class TRAElemento_ResetPermissions:
                 
                 aResetPermissionsResult[ 'success'] = False
                 aResetPermissionsResult[ 'exception_date_time_string'] = self.fDateTimeNowTextual()
+                aResetPermissionsResultDump = ''
                 try:
                     aResetPermissionsResultDump = self.fProgressResult_dump( aResetPermissionsResult)
                 except:
@@ -243,7 +359,11 @@ class TRAElemento_ResetPermissions:
                 if cLogExceptions:
                     logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
                 
-                return None
+                aResult = { 
+                    'success':    False, 
+                    'condition':  '%s\n%s' % (   self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Exception_msgid', "Exception.-"), unInformeExcepcion, ),
+                }
+                return aResult
         
         finally:
             unExecutionRecord and unExecutionRecord.pEndExecution()

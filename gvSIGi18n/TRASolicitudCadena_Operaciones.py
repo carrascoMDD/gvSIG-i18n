@@ -2,8 +2,7 @@
 #
 # File: TRASolicitudCadena_Operaciones.py
 #
-# Copyright (c) 2008, 2009,2010 by Conselleria de Infraestructuras y Transporte de la
-# Generalidad Valenciana
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -74,7 +73,7 @@ class TRASolicitudCadena_Operaciones:
 
 
     security.declarePrivate( 'pAllSubElements_into')    
-    def pAllSubElements_into( self, theCollection, theAdditionalParms=None):
+    def pAllSubElements_into( self, theCollection, theAdditionalParams=None):
         if theCollection == None:
             return self
         theCollection.append( self)

@@ -1,0 +1,83 @@
+<tal:block replace="nothing">
+# File: TRAProgreso_ParametrosEntrada_i18n_view.pt
+#
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+#
+# GNU General Public License (GPL)
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+#
+# Authors: 
+# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana 
+# Model Driven Development sl  Valencia (Spain) www.ModelDD.org 
+# Antonio Carrasco Valero                       carrasco@ModelDD.org
+#
+</tal:block>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en">
+<body>
+
+
+
+<div metal:define-macro="tProgreso_ParametrosEntrada_i18n" >
+
+    <tal:block tal:define="pParametrosEntrada pParametrosEntrada | nothing" >
+        <tal:block tal:condition="python: not pParametrosEntrada" >
+            <p>
+                <strong i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_nohayParametrosEntrada_warning_msgid">There are no input parameters available for the process at this time-</strong>
+            </p>
+        </tal:block>
+        
+        <tal:block tal:condition="python: pParametrosEntrada" >
+            <tal:block tal:define="pProcessType python: pParametrosEntrada.get( 'process_type', '')" tal:condition="python: pProcessType" >
+                  
+                <tal:block tal:condition="python: pProcessType in [ 'Exportar', 'Copia_Seguridad', 'Exportar_para_gvSIG', ]" >
+                    <metal:block metal:use-macro="here/TRAProgreso_ParametrosEntrada_Export_i18n_view/macros/tProgreso_ParametrosEntrada_Export_i18n" />   
+                </tal:block>
+
+                <tal:block tal:condition="python: pProcessType in [ 'Verificar', 'Inicializar', 'Inventario', 'ReCatalogar', 'Verificar_Permisos', 'ReEstablecer_Permisos', 'Eliminar_Modulo', 'Eliminar_Idioma', 'Importar',]" >
+                    <p>
+                        <font size="3" color="red" >
+                            <strong i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_NoInputParametersForProcess">Process without input parameters.-</strong>
+                        </font>
+						<span tal:content="python: 'pProcessType=%s' % pProcessType" />
+						<br/>
+                    </p>
+                </tal:block>
+				
+                <tal:block tal:condition="python: not( pProcessType in [ 'Verificar', 'Inicializar', 'Inventario', 'ReCatalogar', 'Verificar_Permisos', 'ReEstablecer_Permisos', 'Eliminar_Modulo', 'Eliminar_Idioma', 'Copia_Seguridad', 'Exportar_para_gvSIG', 'Exportar', 'Importar',])" >
+                    <p>
+                        <font size="3" color="red" >
+                            <strong i18n:domain="gvSIGi18n"  i18n:translate="gvSIGi18n_unknownProcessKind_warning_msgid">Process of unknown kind - can not show input parameters.-</strong>
+                        </font>
+						<span tal:content="python: 'pProcessType=%s' % pProcessType" />
+						<br/>
+                    </p>
+                </tal:block>
+            </tal:block>
+        </tal:block>
+        
+    </tal:block>
+</div>
+
+
+
+
+
+
+    
+</body>
+</html>

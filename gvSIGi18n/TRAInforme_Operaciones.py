@@ -2,8 +2,7 @@
 #
 # File: TRAInforme_Operaciones.py
 #
-# Copyright (c) 2008, 2009,2010 by Conselleria de Infraestructuras y Transporte de la
-# Generalidad Valenciana
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -62,13 +61,28 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore       import permissions
 
 
-from TRAElemento_Constants              import *
-
-from TRATraduccion_Operaciones          import cMarcaDeComentarioSinCambios
+from TRAElemento_Constants                 import *
+from TRAElemento_Constants_Activity        import *
+from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Dates           import *
+from TRAElemento_Constants_Encoding        import *
+from TRAElemento_Constants_Import          import *
+from TRAElemento_Constants_Languages       import *
+from TRAElemento_Constants_Logging         import *
+from TRAElemento_Constants_Modules         import *
+from TRAElemento_Constants_Profiling       import *
+from TRAElemento_Constants_Progress        import *
+from TRAElemento_Constants_String          import *
+from TRAElemento_Constants_StringRequests  import *
+from TRAElemento_Constants_Translate       import *
+from TRAElemento_Constants_Translation     import *
+from TRAElemento_Constants_TypeNames       import *
+from TRAElemento_Constants_Views           import *
+from TRAElemento_Constants_Vocabularies    import *
+from TRAUtils                              import *
 
 from TRAElemento_Permission_Definitions import cBoundObject
-from TRAElemento_Permission_Definitions import cUseCase_EllaborateInformeModulesAndLanguages
-from TRAElemento_Permission_Definitions import cUseCase_CreateTRAInforme, cUseCase_CreateAndDeleteTRAInformeInTRAImportacion
+from TRAElemento_Permission_Definitions_UseCaseNames import cUseCase_EllaborateInformeModulesAndLanguages, cUseCase_CreateTRAInforme
 
 
 
@@ -82,7 +96,7 @@ class TRAInforme_Operaciones:
 
 
     security.declarePrivate( 'pAllSubElements_into')    
-    def pAllSubElements_into( self, theCollection, theAdditionalParms=None):
+    def pAllSubElements_into( self, theCollection, theAdditionalParams=None):
         if theCollection == None:
             return self
         theCollection.append( self)
@@ -125,27 +139,27 @@ class TRAInforme_Operaciones:
             if ( not theForceEllaboration) and self.getHaComenzado():
                 return False
             
-            unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-            unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+            unPermissionsCache = fDictOrNew( thePermissionsCache)
+            unRolesCache       = fDictOrNew( theRolesCache)
                
-            unUseCaseQueryResult = theUseCaseQueryResult
             
-            if theCheckPermissions or not unUseCaseQueryResult or not ( unUseCaseQueryResult.get( 'use_case_name', '') in [ cUseCase_EllaborateInformeModulesAndLanguages, cUseCase_CreateTRAInforme, cUseCase_CreateAndDeleteTRAInformeInTRAImportacion, ]):
-                unUseCaseQueryResult = self.fUseCaseAssessment(  
-                    theUseCaseName          = cUseCase_EllaborateInformeModulesAndLanguages,        
-                    theElementsBindings     = { cBoundObject: self,},                                    
-                    theRulesToCollect       = [ 'languages', 'modules',],
-                    theRulesToBypass        = [ 'Modifiable TRACatalogo',],
-                    thePermissionsCache     = unPermissionsCache,                                        
-                    theRolesCache           = unRolesCache,                                              
-                    theParentExecutionRecord= unExecutionRecord,                                          
-                )
-                if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
-                    return False
+            if theCheckPermissions:
+                if ( not theUseCaseQueryResult) or ( not theUseCaseQueryResult.get( 'success', False)) or not ( theUseCaseQueryResult.get( 'use_case_name', '') in [ cUseCase_EllaborateInformeModulesAndLanguages, cUseCase_CreateTRAInforme, ]):
+                    
+                    unUseCaseQueryResult = self.fUseCaseAssessment(  
+                        theUseCaseName          = cUseCase_EllaborateInformeModulesAndLanguages,        
+                        theElementsBindings     = { cBoundObject: self,},                                    
+                        theRulesToCollect       = None,
+                        thePermissionsCache     = unPermissionsCache,                                        
+                        theRolesCache           = unRolesCache,                                              
+                        theParentExecutionRecord= unExecutionRecord,                                          
+                    )
+                    if ( not unUseCaseQueryResult) or not unUseCaseQueryResult.get( 'success', False):
+                        return False
                  
     
             unCatalogo = self.getCatalogo()
-            if not unCatalogo:
+            if unCatalogo == None:
                 self.setInformeExcepcion( "No containing Catalog found - possibly an instance of TRAInforme that has not been properly created")
                 return False
     
@@ -169,7 +183,6 @@ class TRAInforme_Operaciones:
             try:
 
                 unInformeIdiomas = unCatalogo.fElaborarInformeIdiomas( 
-                    theUseCaseQueryResult       =unUseCaseQueryResult,
                     theCheckPermissions         =False, 
                     thePermissionsCache         =unPermissionsCache, 
                     theRolesCache               =unRolesCache, 
@@ -204,7 +217,6 @@ class TRAInforme_Operaciones:
                     
                 
                 unInformeModulos = unCatalogo.fElaborarInformeModulos( 
-                    theUseCaseQueryResult       =unUseCaseQueryResult,
                     theCheckPermissions         =False, 
                     thePermissionsCache         =unPermissionsCache, 
                     theRolesCache               =unRolesCache, 
@@ -255,7 +267,10 @@ class TRAInforme_Operaciones:
                 
                 unInformeExcepcion = 'Exception during fElaborarInforme\n' 
                 unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                try:
+                    unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                except:
+                    None
                 unInformeExcepcion += unaExceptionFormattedTraceback   
                          
                    

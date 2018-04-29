@@ -1,0 +1,133 @@
+<tal:block replace="nothing">
+# File: TRAConfirmarBloquearCatalogo.pt
+#
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+#
+# GNU General Public License (GPL)
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+#
+# Authors: 
+# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana 
+# Model Driven Development sl  Valencia (Spain) www.ModelDD.org 
+# Antonio Carrasco Valero                       carrasco@ModelDD.org
+#
+#
+</tal:block>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+<body>                     
+
+                             
+<metal:main fill-slot="main">
+    <tal:main-macro metal:define-macro="main"
+        tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas." 
+        i18n:domain="gvSIGi18n">
+
+
+           
+
+        <tal:block tal:define="
+            pExecutionRecord python: here.TRAgvSIGi18n_tool.fStartExecution( here, 'template', 'TRAConfirmarBloquearCatalogo.pt', None, True, { 'log_what': 'details', 'log_when': True, });
+            pPermissionsCache python: {};
+            pRolesCache python: {}" >
+            
+            <div metal:use-macro="here/document_actions/macros/document_actions">
+                Document actions (print, sendto etc)
+            </div>
+    
+            <h1 tal:content="object_title" class="documentFirstHeading">
+              Title or id
+            </h1>
+    
+            <div metal:use-macro="here/document_byline/macros/byline">
+              Get the byline - contains details about author and modification date.
+            </div>
+            
+            
+            <tal:block tal:condition="python: not here.TRAgvSIGi18n_tool.fCatalogoAllowWrite( here,)" >
+                <div class="portalMessage" >
+                    <span tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TranslationsCatalogIsLockedAgainstModifications', 'The Translations Catalog Is Locked Against Modifications')" />
+                </div>
+            </tal:block>
+            
+    
+            <metal:block metal:use-macro="here/TRACabeceraEnTabla_i18n_view/macros/tCabeceraEnTabla_i18n" />   
+                
+         
+            <tal:block tal:define="
+                pRefreshPageName   string:;
+                pShowActivityLink  python: True;
+                pShowReportLink    python: True;
+                pShowDetailsLink   python: True;
+                pShowRootLink      python: True;
+                ">
+                <metal:block metal:use-macro="here/TRACatalogo_inner/macros/tTRACatalogoLinksMenu" />
+            </tal:block>
+            
+            
+            
+            <tal:block tal:define="
+                pBloquearUseCaseAssessmentResult python: here.TRAgvSIGi18n_tool.fUseCaseAssessment( 
+                    theContextualElement    = here, 
+                    theUseCaseName          = 'Lock_TRACatalogo', 
+                    theElementsBindings     = { 'object': here,},
+                    theRulesToCollect       = None, 
+                    thePermissionsCache     = pPermissionsCache, 
+                    theRolesCache           = pRolesCache, 
+                    theParentExecutionRecord= pExecutionRecord)" >
+                <tal:block tal:condition="python: pBloquearUseCaseAssessmentResult and pBloquearUseCaseAssessmentResult.get( 'success', False)">  
+                    <a href="#" title="#" 
+                        tal:define="aLinkTitle python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_confirmarBloquearCatalogo_msgid',   'Confirm locking the translations catalog-' )"                                    
+                        tal:attributes="
+                            title aLinkTitle;
+                           href python: '%s/TRABloquearCatalogo_action/?theConfirm=%s' % ( here.TRAgvSIGi18n_tool.fCatalogoAbsoluteURL( here,), here.TRAgvSIGi18n_tool.fMagicMillisecondsNowString( here,))">
+                        <font size="3" color="red">
+                            <strong>
+                                <span tal:content="aLinkTitle" />
+                            </strong>
+                        </font>
+                    </a>
+                </tal:block>
+
+                <tal:block tal:condition="python: not(  pBloquearUseCaseAssessmentResult and pBloquearUseCaseAssessmentResult.get( 'success', False))">    
+                    <br/>
+                    <br/>
+                    <font size="3" color="gray">
+                        <strong>
+                            <tal:block tal:content="python: here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_userCanNotLockCatalogo_msgid',   'You are not allowed to lock the translations catalog.-' )" />
+                        </strong>
+                    </font>
+                </tal:block>
+                <br/>
+                <br/>
+            </tal:block>
+            
+    
+            <tal:block tal:define="dummy python: pExecutionRecord and here.TRAgvSIGi18n_tool.pEndExecution( here, pExecutionRecord)" />
+    
+            <metal:block metal:use-macro="here/TRAFooter_i18n_view/macros/tFooter_i18n" />
+    
+            <tal:block tal:replace="structure python: pExecutionRecord and here.TRARenderExecutionDetails( pExecutionRecord)" />
+
+        </tal:block>
+     </tal:main-macro>
+</metal:main>
+
+</body>
+</html>

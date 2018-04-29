@@ -2,7 +2,7 @@
 #
 # File: TRACatalogo_Informes.py
 #
-# Copyright (c) 2008, 2009,2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -58,12 +58,30 @@ from Products.CMFCore       import permissions
 
 from TRACatalogo_Globales import TRACatalogo_Globales
 
-from TRAElemento_Constants import *
+from TRAElemento_Constants                 import *
+from TRAElemento_Constants_Activity        import *
+from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Dates           import *
+from TRAElemento_Constants_Encoding        import *
+from TRAElemento_Constants_Import          import *
+from TRAElemento_Constants_Languages       import *
+from TRAElemento_Constants_Logging         import *
+from TRAElemento_Constants_Modules         import *
+from TRAElemento_Constants_Profiling       import *
+from TRAElemento_Constants_Progress        import *
+from TRAElemento_Constants_String          import *
+from TRAElemento_Constants_StringRequests  import *
+from TRAElemento_Constants_Translate       import *
+from TRAElemento_Constants_Translation     import *
+from TRAElemento_Constants_TypeNames       import *
+from TRAElemento_Constants_Views           import *
+from TRAElemento_Constants_Vocabularies    import *
+from TRAUtils                              import *
 
 from TRAElemento_Permission_Definitions import cBoundObject
-from TRAElemento_Permission_Definitions import cUseCase_EllaborateInformeLanguages, cUseCase_EllaborateInformeModulesAndLanguages
-from TRAElemento_Permission_Definitions import cUseCase_CreateTRAInforme, cUseCase_CreateAndDeleteTRAInformeInTRAImportacion
-from TRAElemento_Permission_Definitions import cUseCase_EllaborateInformeActividad
+
+from TRAElemento_Permission_Definitions_UseCaseNames import cUseCase_EllaborateInformeLanguages, cUseCase_EllaborateInformeModulesAndLanguages
+from TRAElemento_Permission_Definitions_UseCaseNames import cUseCase_CreateTRAInforme, cUseCase_EllaborateInformeActividad
 
 from Products.Archetypes.public import DisplayList
 
@@ -308,20 +326,20 @@ class TRACatalogo_Informes:
 
     security.declarePublic( 'fInformeTitulosIdiomasConIdiomaReferenciaYModulosPermitidos')
     def fInformeTitulosIdiomasConIdiomaReferenciaYModulosPermitidos( self, 
-        theUseCaseName, 
-        thePermissionsCache=None, 
-        theRolesCache=None, 
+        theUseCaseName          =None, 
+        thePermissionsCache     =None, 
+        theRolesCache           =None, 
         theParentExecutionRecord=None): 
 
         unExecutionRecord = self.fStartExecution( 'method',  'fInformeTitulosIdiomasConIdiomaReferenciaYModulosPermitidos', theParentExecutionRecord, False) 
 
         try:
 
-            unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-            unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+            unPermissionsCache = fDictOrNew( thePermissionsCache)
+            unRolesCache       = fDictOrNew( theRolesCache)
 
             unInforme = self.fInformeTitulosIdiomasYModulosPermitidos(
-                theUseCaseName, 
+                theUseCaseName          =theUseCaseName, 
                 thePermissionsCache     =unPermissionsCache, 
                 theRolesCache           =unRolesCache, 
                 theParentExecutionRecord=unExecutionRecord)
@@ -329,12 +347,14 @@ class TRACatalogo_Informes:
             if not unInforme:
                 return self.fNewVoidInformeTitulosIdiomasYModulosPermitidos()
 
+            unSinIdiomaReferencia = self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_sinIdiomaReferencia', 'No reference language-')
+            
             unosInformesIdiomas = unInforme[ 'idiomas']
             for unInformeIdioma in unosInformesIdiomas:
                 if unInformeIdioma:
                     unCodigoIdioma = unInformeIdioma.get( 'codigoIdiomaEnGvSIG', '')
                     if unCodigoIdioma:
-                        unosCodigosYDisplayNamesReferencia = [ [ '', self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_sinIdiomaReferencia', 'No reference language-'),],]
+                        unosCodigosYDisplayNamesReferencia = [ [ '', unSinIdiomaReferencia,],]
                         for unInformeIdiomaParaReferencia in unosInformesIdiomas:
                             unCodigoIdiomaReferencia = unInformeIdiomaParaReferencia.get( 'codigoIdiomaEnGvSIG', '')
                             if unCodigoIdiomaReferencia and not ( unCodigoIdiomaReferencia == unCodigoIdioma):
@@ -356,10 +376,10 @@ class TRACatalogo_Informes:
 
     security.declarePublic( 'fInformeTitulosIdiomasYModulosPermitidos')
     def fInformeTitulosIdiomasYModulosPermitidos( self, 
-        theUseCaseName, 
-        thePermissionsCache=None, 
-        theRolesCache=None, 
-        theParentExecutionRecord=None): 
+        theUseCaseName           =None, 
+        thePermissionsCache      =None, 
+        theRolesCache            =None, 
+        theParentExecutionRecord =None): 
         """Report the titles of all languages and modules for which the user has permission to involve in exercising theUseCaseName.
 
         Output Values of type string returned in unicode.
@@ -373,8 +393,8 @@ class TRACatalogo_Informes:
             if not theUseCaseName:
                 return unInforme
 
-            unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-            unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+            unPermissionsCache = fDictOrNew( thePermissionsCache)
+            unRolesCache       = fDictOrNew( theRolesCache)
 
 
             # ##############################################################################
@@ -484,7 +504,6 @@ class TRACatalogo_Informes:
 
     security.declareProtected( permissions.View, 'fElaborarInformeIdiomas')
     def fElaborarInformeIdiomas(self, 
-        theUseCaseQueryResult       =None,
         theCheckPermissions         =True, 
         thePermissionsCache         =None, 
         theRolesCache               =None, 
@@ -501,31 +520,30 @@ class TRACatalogo_Informes:
                 unInforme[ 'report_date'] = self.fDateTimeNowString()
 
 
-                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+                unPermissionsCache = fDictOrNew( thePermissionsCache)
+                unRolesCache       = fDictOrNew( theRolesCache)
 
 
-                unUseCaseQueryResult = theUseCaseQueryResult
-                if theCheckPermissions or not unUseCaseQueryResult or not ( unUseCaseQueryResult.get( 'use_case_name', '') in [ cUseCase_EllaborateInformeLanguages, cUseCase_EllaborateInformeModulesAndLanguages, cUseCase_CreateTRAInforme, cUseCase_CreateAndDeleteTRAInformeInTRAImportacion,], ):
+                if theCheckPermissions :
                     unUseCaseQueryResult = self.fUseCaseAssessment(  
                         theUseCaseName                  = cUseCase_EllaborateInformeLanguages, 
                         theElementsBindings             = { cBoundObject: self,}, 
-                        theRulesToCollect               = [ 'languages', ],
+                        theRulesToCollect               = None,
                         thePermissionsCache             = unPermissionsCache, 
                         theRolesCache                   = unRolesCache, 
                         theParentExecutionRecord        = unExecutionRecord,
                     )
-                if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
-                    return unInforme
+                    if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
+                        return unInforme
 
                 unosLanguagesNamesAndFlagsPorCodigo = self.fLanguagesNamesAndFlagsPorCodigo()
 
 
-                unosIdiomasAccesibles = unUseCaseQueryResult.get( 'collected_rule_assessments_by_name', {}).get( 'languages', {}).get( 'accepted_final_objects', [])
+                unosIdiomasAccesibles = self.getCatalogo().fObtenerTodosIdiomas()
                 if not unosIdiomasAccesibles:
                     return unInforme
                 
-                unInforme[ 'modules'] = self.fObtenerTodosNombresModulos()
+                unInforme[ 'modules'] = self.fTodosNombresModulos()
 
                 unosIdiomasAccesiblesParaOrdenar = [ [ unIdioma.getCodigoIdiomaEnGvSIG(), unIdioma,] for unIdioma in unosIdiomasAccesibles]
                 unosIdiomasAccesiblesOrdenados = sorted( unosIdiomasAccesiblesParaOrdenar, lambda unCodigoEIdioma, otroCodigoEIdioma: cmp( unCodigoEIdioma[ 0], otroCodigoEIdioma[ 0]))
@@ -622,6 +640,8 @@ class TRACatalogo_Informes:
 
                 unInforme[ 'report_date'] = self.fDateTimeNowString()   
                 unInforme[ 'success'] = True
+                
+                self.pStatusReportByLanguagesJustGenerated()
                                 
                 return unInforme
 
@@ -631,7 +651,10 @@ class TRACatalogo_Informes:
 
                 unInformeExcepcion = 'Exception during fElaborarInformeIdiomas\n' 
                 unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                try:
+                    unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                except:
+                    None
                 unInformeExcepcion += unaExceptionFormattedTraceback   
 
                 unInforme[ 'success'] = False
@@ -661,7 +684,6 @@ class TRACatalogo_Informes:
 
     security.declarePrivate( 'fElaborarInformeModulos')
     def fElaborarInformeModulos(self, 
-        theUseCaseQueryResult       =None,
         theCheckPermissions         =True, 
         thePermissionsCache         =None, 
         theRolesCache               =None, 
@@ -678,11 +700,10 @@ class TRACatalogo_Informes:
                 unInforme = self.fNewVoidInformeModulos()
                 unInforme[ 'report_date'] = self.fDateTimeNowString()
 
-                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+                unPermissionsCache = fDictOrNew( thePermissionsCache)
+                unRolesCache       = fDictOrNew( theRolesCache)
 
-                unUseCaseQueryResult = theUseCaseQueryResult
-                if theCheckPermissions or not unUseCaseQueryResult or not ( unUseCaseQueryResult.get( 'use_case_name', '') in [ cUseCase_EllaborateInformeModulesAndLanguages, cUseCase_CreateTRAInforme, cUseCase_CreateAndDeleteTRAInformeInTRAImportacion,], ):
+                if theCheckPermissions:
                     unUseCaseQueryResult = self.fUseCaseAssessment(  
                         theUseCaseName          = cUseCase_EllaborateInformeModulesAndLanguages, 
                         theElementsBindings     = { cBoundObject: self,},
@@ -692,13 +713,14 @@ class TRACatalogo_Informes:
                         theParentExecutionRecord= unExecutionRecord
                     ) 
 
-                if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
-                    return unInforme
+                    if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
+                        return unInforme
 
                 
-                unosIdiomasAccesibles = unUseCaseQueryResult.get( 'collected_rule_assessments_by_name', {}).get( 'languages', {}).get( 'accepted_final_objects', [])
-                if not unosIdiomasAccesibles:
-                    return unInforme
+                unosIdiomasAccesibles = self.getCatalogo().fObtenerTodosIdiomas()
+                # ACV 20101013
+                #if not unosIdiomasAccesibles:
+                    #return unInforme
                 
                 unosCatalogosParaIdioma = [ None,] * len( unosIdiomasAccesibles)   
                 for unIndexIdioma in range( len( unosIdiomasAccesibles)):
@@ -707,11 +729,7 @@ class TRACatalogo_Informes:
 
                 
                 
-                unosModulosAccesibles = unUseCaseQueryResult.get( 'collected_rule_assessments_by_name', {}).get( 'modules', {}).get( 'accepted_final_objects', [])
-                # ACV 20100727
-                #if not unosModulosAccesibles:
-                    #return unInforme
-                    
+                unosModulosAccesibles = self.getCatalogo().fObtenerTodosModulos()
                 unosModulosAccesibles.append( cNombreModuloNoEspecificadoSentinel)
 
                 unosLanguagesNamesAndFlagsPorCodigo = self.fLanguagesNamesAndFlagsPorCodigo()
@@ -745,7 +763,7 @@ class TRACatalogo_Informes:
                     unNombreModulo = ''
                     unNombreModuloForSearch = ''
                     if unModulo == cNombreModuloNoEspecificadoSentinel:
-                        unNombreModulo          = self.fTranslateI18N( 'gvSIGi18n', cNombreModuloNoEspecificadoLabel_MsgId, u'Unspecified module-').encode( cEncodingUTF8)
+                        unNombreModulo          = self.fTranslateI18N( 'gvSIGi18n', cNombreModuloNoEspecificadoLabel_MsgId, u'Unspecified module-').encode( cTRAEncodingUTF8)
                         unNombreModuloForSearch = cNombreModuloNoEspecificadoInputValue
                     else:
                         unNombreModulo          = unModulo.Title()
@@ -831,8 +849,10 @@ class TRACatalogo_Informes:
 
 
                 unInforme[ 'report_date'] = self.fDateTimeNowString()   
-
                 unInforme[ 'success'] = True
+                
+                self.pStatusReportByModulesAndLanguagesJustGenerated()
+
                 
                 return unInforme
 
@@ -842,7 +862,10 @@ class TRACatalogo_Informes:
 
                 unInformeExcepcion = 'Exception during fElaborarInformeModulos\n' 
                 unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                try:
+                    unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                except:
+                    None
                 unInformeExcepcion += unaExceptionFormattedTraceback   
 
                 unInforme[ 'success'] = False
@@ -878,7 +901,6 @@ class TRACatalogo_Informes:
 
     security.declareProtected( permissions.View, 'fElaborarInformeActividad')
     def fElaborarInformeActividad(self, 
-        theUseCaseQueryResult       =None,
         theCheckPermissions         =True, 
         thePermissionsCache         =None, 
         theRolesCache               =None, 
@@ -895,12 +917,11 @@ class TRACatalogo_Informes:
                 unInforme[ 'report_date'] = self.fDateTimeNowString()
 
 
-                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+                unPermissionsCache = fDictOrNew( thePermissionsCache)
+                unRolesCache       = fDictOrNew( theRolesCache)
 
 
-                unUseCaseQueryResult = theUseCaseQueryResult
-                if theCheckPermissions or not unUseCaseQueryResult or not ( unUseCaseQueryResult.get( 'use_case_name', '') in [ cUseCase_EllaborateInformeLanguages, cUseCase_EllaborateInformeModulesAndLanguages, cUseCase_CreateTRAInforme, cUseCase_CreateAndDeleteTRAInformeInTRAImportacion,], ):
+                if theCheckPermissions:
                     unUseCaseQueryResult = self.fUseCaseAssessment(  
                         theUseCaseName                  = cUseCase_EllaborateInformeActividad, 
                         theElementsBindings             = { cBoundObject: self,}, 
@@ -909,13 +930,15 @@ class TRACatalogo_Informes:
                         theRolesCache                   = unRolesCache, 
                         theParentExecutionRecord        = unExecutionRecord,
                     )
-                if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
-                    return unInforme
+                    if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
+                        return unInforme
 
+                    
+                    
                 unosLanguagesNamesAndFlagsPorCodigo = self.fLanguagesNamesAndFlagsPorCodigo()
 
 
-                unosIdiomasAccesibles = unUseCaseQueryResult.get( 'collected_rule_assessments_by_name', {}).get( 'languages', {}).get( 'accepted_final_objects', [])
+                unosIdiomasAccesibles = self.getCatalogo().fObtenerTodosIdiomas()
                 if not unosIdiomasAccesibles:
                     return unInforme
 
@@ -952,17 +975,7 @@ class TRACatalogo_Informes:
                 unDateTimeLast30DaysString = self.fDateToStoreString( unDateTimeLast30Days)
                 unDateTimeLast30DaysString = unDateTimeLast30DaysString[:10]
         
-                #cRecentActivity_Date:        None,
-                #cRecentActivity_Language:    None,
-                #cRecentActivity_User:        None,
-                #cRecentActivity_Commented:   None,
-                #cRecentActivity_Action:      None,
-                #cRecentActivity_Symbol:      None,
-                #cRecentActivity_Counter:     None,
-                
-                #cActivityReport_Period_Last7Days,
-                #cActivityReport_Period_Last30Days,
-                #cActivityReport_Period_Before30Days,
+
                
                 unInforme_Totals = unInforme.get( 'totals', None)
                 unosInformesByLanguage = unInforme.get( 'activity_reports_by_language', None)
@@ -1100,6 +1113,8 @@ class TRACatalogo_Informes:
                                     
                 unInforme[ 'report_date'] = self.fDateTimeNowString()   
                 unInforme[ 'success'] = True
+                
+                self.pActivityReportJustGenerated()
                                 
                 return unInforme
 
@@ -1109,7 +1124,10 @@ class TRACatalogo_Informes:
 
                 unInformeExcepcion = 'Exception during fElaborarInformeActividad\n' 
                 unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                try:
+                    unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                except:
+                    None
                 unInformeExcepcion += unaExceptionFormattedTraceback   
 
                 unInforme[ 'success'] = False
@@ -1253,7 +1271,11 @@ class TRACatalogo_Informes:
             """Check if the counter of changes since the last time the status report by languages was generated, is bigger than the maximum configured for the catalog. 
             
             """
-            unNumeroDeCambiosAnularInformeIdiomas = self.getNumeroDeCambiosAnularInformeIdiomas()
+            unaConfiguracion = self.fObtenerConfiguracion( cTRAConfiguracionAspecto_AlmacenPaginas)
+            
+            unNumeroDeCambiosAnularInformeIdiomas = 0
+            if not ( unaConfiguracion == None):
+                unNumeroDeCambiosAnularInformeIdiomas = unaConfiguracion.getNumeroDeCambiosAnularInformeIdiomas()
             if not unNumeroDeCambiosAnularInformeIdiomas:
                 unNumeroDeCambiosAnularInformeIdiomas = 0
                 
@@ -1276,8 +1298,9 @@ class TRACatalogo_Informes:
             """If not already decided to invalidate, and there was any change, Check if enough time has lapsed since the last time the status report by languages was generated. 
             
             """
-            unSegundosMinimosRetencionInformeIdiomas = self.getSegundosMinimosRetencionInformeIdiomas()
-
+            unSegundosMinimosRetencionInformeIdiomas = 0
+            if not ( unaConfiguracion == None):
+                unaConfiguracion.getSegundosMinimosRetencionInformeIdiomas()
             if not unSegundosMinimosRetencionInformeIdiomas:
                 unSegundosMinimosRetencionInformeIdiomas = 0
                 
@@ -1431,7 +1454,11 @@ class TRACatalogo_Informes:
             """Check if the counter of changes since the last time the status report by languages was generated, is bigger than the maximum configured for the catalog. 
             
             """
-            unNumeroDeCambiosAnularInformeModulosEIdiomas = self.getNumeroDeCambiosAnularInformeModulosEIdiomas()
+            unaConfiguracion = self.fObtenerConfiguracion( cTRAConfiguracionAspecto_AlmacenPaginas)
+            
+            unNumeroDeCambiosAnularInformeModulosEIdiomas = 0
+            if not ( unaConfiguracion == None):
+                unNumeroDeCambiosAnularInformeModulosEIdiomas = unaConfiguracion.getNumeroDeCambiosAnularInformeModulosEIdiomas()
             if not unNumeroDeCambiosAnularInformeModulosEIdiomas:
                 unNumeroDeCambiosAnularInformeModulosEIdiomas = 0
 
@@ -1454,7 +1481,9 @@ class TRACatalogo_Informes:
             """If not already decided to invalidate, and there was any change, Check if enough time has lapsed since the last time the status report by languages was generated. 
             
             """
-            unSegundosMinimosRetencionInformeIdiomas = self.getSegundosMinimosRetencionInformeModulosEIdiomas()
+            unSegundosMinimosRetencionInformeIdiomas = 0
+            if not ( unaConfiguracion == None):
+                unSegundosMinimosRetencionInformeIdiomas = unaConfiguracion.getSegundosMinimosRetencionInformeModulosEIdiomas()
             if not unSegundosMinimosRetencionInformeIdiomas:
                 unSegundosMinimosRetencionInformeIdiomas = 0
                 
@@ -1603,7 +1632,11 @@ class TRACatalogo_Informes:
             """Check if the counter of changes since the last time the activity report was generated, is bigger than the maximum configured for the catalog. 
             
             """
-            unNumeroDeActividadesAnularInformeActividad = self.getNumeroDeActividadesAnularInformeActividad()
+            unaConfiguracion = self.fObtenerConfiguracion( cTRAConfiguracionAspecto_AlmacenPaginas)
+            
+            unNumeroDeActividadesAnularInformeActividad = 0
+            if not ( unaConfiguracion == None):
+                unNumeroDeActividadesAnularInformeActividad = unaConfiguracion.fObtenerConfiguracion( cTRAConfiguracionAspecto_AlmacenPaginas).getNumeroDeActividadesAnularInformeActividad()
             if not unNumeroDeActividadesAnularInformeActividad:
                 unNumeroDeActividadesAnularInformeActividad = 0
                 
@@ -1626,8 +1659,9 @@ class TRACatalogo_Informes:
             """If not already decided to invalidate, and there was any change, Check if enough time has lapsed since the last time the status report by languages was generated. 
             
             """
-            unSegundosMinimosRetencionInformeActividad = self.getSegundosMinimosRetencionInformeActividad()
-
+            unSegundosMinimosRetencionInformeActividad = 0           
+            if not ( unaConfiguracion == None):
+                unSegundosMinimosRetencionInformeActividad = unaConfiguracion.getSegundosMinimosRetencionInformeActividad()
             if not unSegundosMinimosRetencionInformeActividad:
                 unSegundosMinimosRetencionInformeActividad = 0
                 

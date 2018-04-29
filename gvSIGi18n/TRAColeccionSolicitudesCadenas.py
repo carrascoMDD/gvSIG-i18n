@@ -138,7 +138,7 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
         'id': 'TRACreateStrings',
         'name': 'Create Strings',
         'permissions': ("Modify portal content",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Create_TRASolicitudCadena')"""
+        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Create_TRASolicitudCadena')"""
        },
 
 
@@ -147,52 +147,16 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
         'id': 'TRACleanupStrings',
         'name': 'Clean-up Strings',
         'permissions': ("Modify portal content",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Cleanup_TRAColeccionSolicitudesCadenas')"""
+        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Cleanup_TRAColeccionSolicitudesCadenas')"""
        },
 
 
-       {'action': "string:${object_url}/MDDCacheStatus/",
+       {'action': "string:${object_url}/TRACrear_SolicitudCadena/?theNewTypeName=TRASolicitudCadena&theAggregationName=solicitudesCadenas",
         'category': "object_buttons",
-        'id': 'mddcachestatus',
-        'name': 'Cache',
+        'id': 'TRACreateSolicitudCadena',
+        'name': 'Create New String Request',
         'permissions': ("View",),
-        'condition': """python:1"""
-       },
-
-
-       {'action': "string:${object_url}/MDDChanges",
-        'category': "object_buttons",
-        'id': 'mddchanges',
-        'name': 'Changes',
-        'permissions': ("View",),
-        'condition': """python:1"""
-       },
-
-
-       {'action': "string:${object_url}/TRAConfigureProfiling_action",
-        'category': "object_buttons",
-        'id': 'TRA_configure_profiling',
-        'name': 'Configure Profiling',
-        'permissions': ("ManagePortal",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Configure_ExecutionProfilingEnablement_TRACatalogo')"""
-       },
-
-
-       {'action': "string:$object_url/content_status_history",
-        'category': "object",
-        'id': 'content_status_history',
-        'name': 'State',
-        'permissions': ("View",),
-        'condition': """python:0"""
-       },
-
-
-       {'action': "string:$object_url/Editar",
-        'category': "object",
-        'id': 'edit',
-        'name': 'Edit',
-        'permissions': ("Modify portal content",),
-        'condition': """python:object.fAllowWrite()"""
+        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable(object, 'Create_TRASolicitudCadena')"""
        },
 
 
@@ -205,12 +169,57 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
        },
 
 
+       {'action': "string:${object_url}/reference_graph",
+        'category': "object",
+        'id': 'references',
+        'name': 'References',
+        'permissions': ("Modify portal content",),
+        'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/Tabular",
+        'category': "object",
+        'id': 'view',
+        'name': 'View',
+        'permissions': ("View",),
+        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'View_any_TRA_element')"""
+       },
+
+
+       {'action': "string:${object_url}/MDDChanges",
+        'category': "object_buttons",
+        'id': 'mddchanges',
+        'name': 'Changes',
+        'permissions': ("View",),
+        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Changes_on_any_TRA_element')"""
+       },
+
+
+       {'action': "string:$object_url/Editar",
+        'category': "object",
+        'id': 'edit',
+        'name': 'Edit',
+        'permissions': ("Modify portal content",),
+        'condition': """python:object.fAllowWrite() and object.TRAgvSIGi18n_tool.fRoleQuery_IsAnyRol( object, [ 'Manager', 'Owner', 'TRACreator', 'TRAManager', 'TRACoordinator',])"""
+       },
+
+
+       {'action': "string:${object_url}/TRAFlushCache_action",
+        'category': "object_buttons",
+        'id': 'tra_flushcache',
+        'name': 'Flush',
+        'permissions': ("View",),
+        'condition': """python:object.TRAgvSIGi18n_tool.fRoleQuery_IsAnyRol( object, [ 'Manager', 'Owner', 'TRACreator', 'TRAManager', 'TRACoordinator',])"""
+       },
+
+
        {'action': "string:${object_url}/TRAInventory_action",
         'category': "object_buttons",
         'id': 'TRA_inventario',
         'name': 'Inventory',
         'permissions': ("View",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Inventory_TRAElemento')"""
+        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Inventory_TRAElemento')"""
        },
 
 
@@ -223,12 +232,39 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
        },
 
 
+       {'action': "string:${object_url}/TRASeguridadUsuarioConectado",
+        'category': "object_buttons",
+        'id': 'TRA_SeguridadUsuarioConectado',
+        'name': 'Permissions',
+        'permissions': ("View",),
+        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Permissions_on_any_TRA_element')"""
+       },
+
+
+       {'action': "string:$object_url/content_status_history",
+        'category': "object",
+        'id': 'content_status_history',
+        'name': 'State',
+        'permissions': ("View",),
+        'condition': """python:0"""
+       },
+
+
        {'action': "string:${object_url}/TRARecatalog_action",
         'category': "object_buttons",
         'id': 'TRA_recatalogar',
         'name': 'ReCatalog',
         'permissions': ("View",),
-        'condition': """python:object.fUseCaseCheckDoable( 'ReCatalog_TRAElemento')"""
+        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'ReCatalog_TRAElemento')"""
+       },
+
+
+       {'action': "string:${object_url}/MDDCacheStatus/",
+        'category': "object_buttons",
+        'id': 'mddcachestatus',
+        'name': 'Cache',
+        'permissions': ("View",),
+        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'CacheStatus_on_any_TRA_element')"""
        },
 
 
@@ -237,34 +273,16 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
         'id': 'TRA_reestablecerpermisos',
         'name': 'Reset Permissions',
         'permissions': ("View",),
-        'condition': """python:object.fUseCaseCheckDoable( 'ResetPermissions_TRAElemento')"""
+        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'ResetPermissions_TRAElemento')"""
        },
 
 
-       {'action': "string:${object_url}/reference_graph",
-        'category': "object",
-        'id': 'references',
-        'name': 'References',
-        'permissions': ("Modify portal content",),
-        'condition': """python:0"""
-       },
-
-
-       {'action': "string:${object_url}/TRASeguridadUsuarioConectado",
+       {'action': "string:${object_url}/TRAVerifyPermissions_action",
         'category': "object_buttons",
-        'id': 'TRA_SeguridadUsuarioConectado',
-        'name': 'Permissions',
+        'id': 'TRA_verificarpermisos',
+        'name': 'Verify Permissions',
         'permissions': ("View",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Permissions_on_any_TRA_element')"""
-       },
-
-
-       {'action': "string:${object_url}/Tabular",
-        'category': "object",
-        'id': 'view',
-        'name': 'View',
-        'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'VerifyPermissions_TRAElemento')"""
        },
 
 
@@ -278,6 +296,20 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
     ##/code-section class-header
 
     # Methods
+
+    security.declarePublic('manage_beforeDelete')
+    def manage_beforeDelete(self,item,container):
+        """
+        """
+        
+        return TRAColeccionArquetipos.manage_beforeDelete( self, item, container)
+
+    security.declarePublic('manage_afterAdd')
+    def manage_afterAdd(self,item,container):
+        """
+        """
+        
+        return TRAColeccionArquetipos.manage_afterAdd( self, item, container)
 
     security.declarePublic('cb_isCopyable')
     def cb_isCopyable(self):
@@ -293,13 +325,6 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
         
         return False
 
-    security.declarePublic('fExtraLinks')
-    def fExtraLinks(self):
-        """
-        """
-        
-        return TRAElemento_Operaciones.fExtraLinks( self)
-
     security.declarePublic('fIsCacheable')
     def fIsCacheable(self):
         """
@@ -307,26 +332,19 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
         
         return True
 
-    security.declarePublic('manage_afterAdd')
-    def manage_afterAdd(self,item,container):
+    security.declarePublic('fExtraLinks')
+    def fExtraLinks(self):
         """
         """
         
-        return TRAColeccionArquetipos.manage_afterAdd( self, item, container)
-
-    security.declarePublic('manage_beforeDelete')
-    def manage_beforeDelete(self,item,container):
-        """
-        """
-        
-        return TRAColeccionArquetipos.manage_beforeDelete( self, item, container)
+        return TRAElemento_Operaciones.fExtraLinks( self)
 
     security.declarePublic('manage_pasteObjects')
     def manage_pasteObjects(self,cb_copy_data,REQUEST):
         """
         """
         
-        return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
+        return self
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

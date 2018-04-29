@@ -2,7 +2,7 @@
 #
 # File: TRACatalogo_Actividad.py
 #
-# Copyright (c) 2008, 2009,2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -47,17 +47,27 @@ from Products.CMFCore               import permissions
 
 from TRACatalogo_Globales import TRACatalogo_Globales
 
-from TRAElemento_Constants import *
+from TRAElemento_Constants                 import *
+from TRAElemento_Constants_Activity        import *
+from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Dates           import *
+from TRAElemento_Constants_Encoding        import *
+from TRAElemento_Constants_Import          import *
+from TRAElemento_Constants_Languages       import *
+from TRAElemento_Constants_Logging         import *
+from TRAElemento_Constants_Modules         import *
+from TRAElemento_Constants_Profiling       import *
+from TRAElemento_Constants_Progress        import *
+from TRAElemento_Constants_String          import *
+from TRAElemento_Constants_StringRequests  import *
+from TRAElemento_Constants_Translate       import *
+from TRAElemento_Constants_Translation     import *
+from TRAElemento_Constants_TypeNames       import *
+from TRAElemento_Constants_Views           import *
+from TRAElemento_Constants_Vocabularies    import *
+from TRAUtils                              import *
 
 
-
-# #################################
-# Development and test configuration
-
-cUseActivitiesExample = False
-
-if cUseActivitiesExample:
-    from TRAActividades_Example import fcActividadesExample
 
 
 
@@ -92,10 +102,7 @@ class TRACatalogo_Actividad:
             # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             self.pAcquireGlobalsLock( )
             # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            
-            if cUseActivitiesExample:
-                unosRecentActivitiesForRoot = fcActividadesExample()
-                return unosRecentActivitiesForRoot
+
             
             if TRACatalogo_Globales.gRecentActivities == None:
                 return None
@@ -129,12 +136,19 @@ class TRACatalogo_Actividad:
 
         if not theTranslationChange:
             return self
-        aTranslationChange = theTranslationChange.copy()
         
+        unMaxRecentActivitiesForRoot = 0
+        
+        unaConfiguracion = self.fObtenerConfiguracion( cTRAConfiguracionAspecto_Varios)
+        if unaConfiguracion:        
+            unMaxRecentActivitiesForRoot = unaConfiguracion.getMaximoNumeroCambiosRecientes()
         
         unPathDelRaiz = self.fPathDelRaiz()
         if not unPathDelRaiz:
             return self
+        
+        aTranslationChange = theTranslationChange.copy()
+        
         aTranslationChange[ 'path_del_raiz'] = unPathDelRaiz
         
         
@@ -163,7 +177,6 @@ class TRACatalogo_Actividad:
                 unosRecentActivitiesForRoot = [ ]
                 TRACatalogo_Globales.gRecentActivities[ unPathDelRaiz] = unosRecentActivitiesForRoot
                 
-            unMaxRecentActivitiesForRoot = self.getMaximoNumeroCambiosRecientes()
             if unMaxRecentActivitiesForRoot:
                 unExcessActivitiesForRoot = len( unosRecentActivitiesForRoot) - unMaxRecentActivitiesForRoot
                 if unExcessActivitiesForRoot > 0:

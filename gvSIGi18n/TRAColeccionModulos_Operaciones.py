@@ -2,8 +2,7 @@
 #
 # File: TRAColeccionModulos_Operaciones.py
 #
-# Copyright (c) 2008, 2009,2010 by Conselleria de Infraestructuras y Transporte de la
-# Generalidad Valenciana
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -62,11 +61,35 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore       import permissions
 
 
+from TRAElemento_Constants                 import *
+from TRAElemento_Constants_Activity        import *
+from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Dates           import *
+from TRAElemento_Constants_Encoding        import *
+from TRAElemento_Constants_Import          import *
+from TRAElemento_Constants_Languages       import *
+from TRAElemento_Constants_Logging         import *
+from TRAElemento_Constants_Modules         import *
+from TRAElemento_Constants_Profiling       import *
+from TRAElemento_Constants_Progress        import *
+from TRAElemento_Constants_String          import *
+from TRAElemento_Constants_StringRequests  import *
+from TRAElemento_Constants_Translate       import *
+from TRAElemento_Constants_Translation     import *
+from TRAElemento_Constants_TypeNames       import *
+from TRAElemento_Constants_Views           import *
+from TRAElemento_Constants_Vocabularies    import *
+from TRAUtils                              import *
 
-from TRAImportarExportar_Constants import *
 
-from TRAElemento_Permission_Definitions import cUseCase_CreateTRAModulo, cUseCase_DeleteTRAModulo
+
+from TRAImportarExportar_Constants                import *
+from TRAImportarExportar_Constants_Encodings      import *
+from TRAImportarExportar_Constants_GNUgettextPO   import *
+from TRAImportarExportar_Constants_JavaProperties import *
+
 from TRAElemento_Permission_Definitions import cBoundObject
+from TRAElemento_Permission_Definitions_UseCaseNames import cUseCase_CreateTRAModulo, cUseCase_DeleteTRAModulo
 
 
 
@@ -80,7 +103,7 @@ class TRAColeccionModulos_Operaciones:
 
 
     security.declarePrivate( 'pAllSubElements_into')    
-    def pAllSubElements_into( self, theCollection, theAdditionalParms=None):
+    def pAllSubElements_into( self, theCollection, theAdditionalParams=None):
         if theCollection == None:
             return self
         theCollection.append( self)
@@ -89,7 +112,7 @@ class TRAColeccionModulos_Operaciones:
         unosElementos = self.fObtenerTodosModulos()
         if unosElementos:
             for unElemento in unosElementos:
-                unElemento.pAllSubElements_into( theCollection,theAdditionalParms=theAdditionalParms)
+                unElemento.pAllSubElements_into( theCollection,theAdditionalParams=theAdditionalParams)
         
         return self
         
@@ -120,7 +143,7 @@ class TRAColeccionModulos_Operaciones:
         """Retrieve all contained elements of type TRAModulo.
         
         """
-        unosElementos = self.objectValues( cNombreTipoTRAModulo) 
+        unosElementos = self.fObjectValues( cNombreTipoTRAModulo) 
         return unosElementos
          
 
@@ -132,7 +155,7 @@ class TRAColeccionModulos_Operaciones:
     
     security.declarePrivate( 'fCrearModulo')    
     def fCrearModulo( self,
-        theTimeProfilingResults =None, # 
+        theTimeProfilingResults =None, 
         theModelDDvlPloneTool_Mutators   =None, 
         theNewTypeName          ='', 
         theNewOneTitle          ='', 
@@ -141,24 +164,29 @@ class TRAColeccionModulos_Operaciones:
         thePermissionsCache     =None,
         theRolesCache           =None,
         theParentExecutionRecord=None):
-        """Create a new instance of TRAModulo through an import process. Ceate an instance of TRAImportacion with a TRAContenidoIntercambio that will create the module when the import is executed.
+        """Create a new instance of TRAModulo, immediately, without import process.
         
         """
     
         unExecutionRecord = self.fStartExecution( 'method',  'fCrearModulo', None, True, { 'log_what': 'details', 'log_when': True, })
 
-        from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import ModelDDvlPloneTool_Mutators,cModificationKind_CreateSubElement, cModificationKind_Create
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import cModificationKind_CreateSubElement, cModificationKind_Create
 
         try:
             unasDescripcionesContenidosCreados = []
             try:
-                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+                unPermissionsCache = fDictOrNew( thePermissionsCache)
+                unRolesCache       = fDictOrNew( theRolesCache)
                 
+                unasRulesToBypass = []
+                if theAdditionalParams:
+                    unasRulesToBypass = theAdditionalParams.get( 'rules_to_bypass', [])
+                    
                 unUseCaseQueryResult = self.fUseCaseAssessment(  
                     theUseCaseName          = cUseCase_CreateTRAModulo, 
                     theElementsBindings     = { cBoundObject: self,}, 
                     theRulesToCollect       = [ 'modules', ], 
+                    theRulesToBypass        = unasRulesToBypass,
                     thePermissionsCache     = unPermissionsCache, 
                     theRolesCache           = unRolesCache, 
                     theParentExecutionRecord= unExecutionRecord,
@@ -172,7 +200,7 @@ class TRAColeccionModulos_Operaciones:
                              
                 
                  
-                aNewNombreModulo       = theAdditionalParams.get( 'theNewModuleName',          '')
+                aNewNombreModulo       = theNewOneTitle
                 if not aNewNombreModulo:
                     anActionReport = { 'effect': 'error', 'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCreating_Modulo_missingParameter_Nombre_warning_msgid', "The Module name is missing. The Module name is required to create a new Module.-"), }
                     return anActionReport  
@@ -182,14 +210,16 @@ class TRAColeccionModulos_Operaciones:
                 if not somePartsNewNombreModulo:
                     anActionReport = { 'effect': 'error', 'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCreating_Modulo_missingParameter_Nombre_warning_msgid', "The Module name is missing. The Module name is required to create a new Module.-"), }
                     return anActionReport  
-                aNewNombreModulo = somePartsNewNombreModulo[0 ]
+                aNewNombreModulo = somePartsNewNombreModulo[ 0]
                 if not aNewNombreModulo:
                     anActionReport = { 'effect': 'error', 'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCreating_Modulo_missingParameter_Nombre_warning_msgid', "The Module name is missing. The Module name is required to create a new Module.-"), }
                     return anActionReport  
 
+                
+                
                 unCatalogo = self.getCatalogo()
                 
-                if not unCatalogo:
+                if unCatalogo == None:
                     anActionReport = { 'effect': 'error', 'failure':  'InternalError: gvSIGi18n_errorCreating_Modulo_Missing_TRACatalogo_error_msgid', }
                     return anActionReport  
                 
@@ -200,90 +230,66 @@ class TRAColeccionModulos_Operaciones:
                     return anActionReport  
 
                 
-                unaColeccionImportaciones = unCatalogo.fObtenerColeccionImportaciones()
-                if not unaColeccionImportaciones:
-                    anActionReport = { 'effect': 'error', 'failure':  'InternalError: gvSIGi18n_errorCreating_Modulo_Missing_TRAColeccionImportaciones_error_msgid', }
+                
+                
+                
+                
+
+                unaIdModulo = unCatalogo.fModuloIdDesdeNombre( aNewNombreModulo)
+                
+                aNewModuloAttrsDict = { 
+                    'title': aNewNombreModulo,
+                }
+                
+                unaIdNuevoModulo = self.invokeFactory( cNombreTipoTRAModulo, unaIdModulo, **aNewModuloAttrsDict)
+                if not unaIdNuevoModulo:
+                    anActionReport = { 'effect': 'error', 'failure': self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCreating_Modulo_InvokeFactoryError_msgid', "Error in module factory in the translations catalog.-"), }
+                    return anActionReport     
+                         
+                unNuevoModulo = self.getElementoPorID( unaIdNuevoModulo)
+                if unNuevoModulo == None:
+                    anActionReport = { 'effect': 'error', 'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCreating_Modulo_CrearModuleError_msgid', "Failure creating module in the translations catalog.-"), }
                     return anActionReport  
                 
-                     
-                unMemberId = self.fGetMemberId()
-                unaFechaYHora = self.fDateTimeNowTextual()
-
-                aPloneUtilsTool = self.getPloneUtilsToolForNormalizeString()  
+                unNuevoModulo.manage_fixupOwnershipAfterAdd()
+              
+                unNuevoModulo.pSetPermissions()
                
-                unTitleImportacion = '%s %s %s %s' % ( self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_crearModulo_Importacion_prefix', "To Create Module"), aNewNombreModulo, unMemberId, unaFechaYHora, )
-                aNewIdImportacion = unTitleImportacion.lower().replace( ' ', '-')
-                if aPloneUtilsTool:
-                    aNewIdImportacion = aPloneUtilsTool.normalizeString( aNewIdImportacion)
- 
-                anAttrsDictImportacion = { 
-                    'title':         unTitleImportacion,
-                    'description':   '',
-                }
+                # ACV 20090914 Simpler security schema: no user groups for languages or modules, shall assign local roles to users directly on the language or module element
+                if not unCatalogo.fSetLocalRolesEnModuloForCatalogUserGroups( unNuevoModulo):
+                    return None
                 
-                unaColeccionImportaciones.pFlushCachedTemplates_All()                            
-
-                unaIdNuevaImportacion = unaColeccionImportaciones.invokeFactory( cNombreTipoTRAImportacion, aNewIdImportacion, **anAttrsDictImportacion)
-                if not unaIdNuevaImportacion:
-                    anActionReport = { 'effect': 'error', 'failure': '%s' %   self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCreating_Modulo_TRAImportacion_NotCreated_msgid', "Error creating module: import not created.-"), }
-                    return anActionReport     
+                unNuevoModulo.setPermiteLeer( True)
+                unNuevoModulo.setPermiteModificar( True)
                                 
                 
                 
+                unosModulos = self.fObtenerTodosModulos()
+                unosNombresModulo = [ unModulo.Title() for unModulo in unosModulos]
+                unNumModulos = len( unosNombresModulo)
+                      
+                unIndexModuloAnterior = -1
+                for unIndexModulo in range( unNumModulos):
+                    unNombreModulo = unosNombresModulo[ unIndexModulo]
+                    if unNombreModulo < aNewNombreModulo:
+                        unIndexModuloAnterior = unIndexModulo    
+                    else:
+                        break
+                    
+                if unIndexModuloAnterior < 0:
+                    self.moveObjectsToTop( [ unaIdNuevoModulo,])
+                else:
+                    if not ( unIndexModuloAnterior == ( unNumModulos - 1)):
+                        if unIndexModuloAnterior < ( unNumModulos - 1):
+                            unDelta = ( unIndexModuloAnterior + 2) - unNumModulos 
+                            self.moveObjectsByDelta( [ unaIdNuevoModulo,], unDelta)
+                    
+                    
+                    
                 
-                
-                unaNuevaImportacion = unaColeccionImportaciones.getElementoPorID( unaIdNuevaImportacion)
-                if not unaNuevaImportacion:
-                    anActionReport = { 'effect': 'error', 'failure': '%s' %  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCreating_Modulo_TRAImportacion_Created_TRAImportacion_NotFound_msgid', "Could not find import just created-."), }
-                    return anActionReport     
-                
-                
-                unaNuevaImportacion.setCodigoIdiomaPorDefecto( '')
-                unaNuevaImportacion.setNombreModuloPorDefecto( aNewNombreModulo)
-                
-
-                
-                unTitleContenidoIntercambio = '%s %s by %s on %s' % ( self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_crearModulo_Importacion_prefix', "To Create Module"), aNewNombreModulo, unMemberId, unaFechaYHora,)
-                aNewIdContenidoIntercambio = unTitleContenidoIntercambio.lower().replace( ' ', '-')
-                if aPloneUtilsTool:
-                    aNewIdContenidoIntercambio = aPloneUtilsTool.normalizeString( aNewIdContenidoIntercambio)
- 
-                
-                
-
-                anAttrsDictContenidoIntercambio = { 
-                    'title':         unTitleContenidoIntercambio,
-                    'description':   '',
-                    'nombreModulo':  aNewNombreModulo,
-                }                
-                
-                unaIdNuevoContenidoIntercambio = unaNuevaImportacion.invokeFactory( cNombreTipoTRAContenidoIntercambio, aNewIdContenidoIntercambio, **anAttrsDictContenidoIntercambio)
-                if not unaIdNuevoContenidoIntercambio:
-                    anActionReport = { 'effect': 'error', 'failure': '%s' %   self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCreating_Modulo_TRAContenidoIntercambio_NotCreated_msgid', "Error creating module: import not created.-"), }
-                    return anActionReport     
-                                
-                
-                unNuevoContenidoIntercambio = unaNuevaImportacion.getElementoPorID( unaIdNuevoContenidoIntercambio)
-                if not unNuevoContenidoIntercambio:
-                    anActionReport = { 'effect': 'error', 'failure': '%s' %  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCreating_Modulo_Created_TRAContenidoIntercambio_NotFound_msgid', "Could not find interchange contents just created-."), }
-                    return anActionReport     
-                
-                unContenidoConModulo = { 
-                    'modules':         [ aNewNombreModulo, ], 
-                }
-                unNuevoContenidoIntercambio.pSetContenido( unContenidoConModulo)
-                
-                
-                
-                
-                
-                
-          
-
-                unTimeProfilingResults = { }
-                unResultadoNuevaImportacion = aModelDDvlPlone_tool.fRetrieveTypeConfig( 
-                    theTimeProfilingResults     =unTimeProfilingResults,
-                    theElement                  =unaNuevaImportacion, 
+                unResultadoNuevoModulo = self.fModelDDvlPloneTool().fRetrieveTypeConfig( 
+                    theTimeProfilingResults     =theTimeProfilingResults,
+                    theElement                  =unNuevoModulo, 
                     theParent                   =None,
                     theParentTraversalName      ='',
                     theTypeConfig               =None, 
@@ -294,70 +300,42 @@ class TRAColeccionModulos_Operaciones:
                     theFeatureFilters           ={ 'attrs': [ 'title',], 'relations': [], 'do_not_recurse_collections': True,}, 
                     theInstanceFilters          =None,
                     theTranslationsCaches       =None,
-                    theCheckedPermissionsCache  =None,
+                    theCheckedPermissionsCache  =thePermissionsCache,
                     theAdditionalParams         =None                
                 )
-                if not unResultadoNuevaImportacion:
+                if not unResultadoNuevoModulo:
                     anActionReport = { 'effect': 'error', 'failure': 'retrieval_failure', }
                     return anActionReport     
- 
-                unModuloCreationReport = { 'effect': 'created', 'new_object_result': unResultadoNuevaImportacion, }
-                        
-            
-                aModelDDvlPloneTool_Mutators = ModelDDvlPloneTool_Mutators()
+                
+                
+                aModelDDvlPloneTool_Mutators = self.fModelDDvlPloneTool().fModelDDvlPloneTool_Mutators( self)
                     
                 aCreateElementReport = aModelDDvlPloneTool_Mutators.fNewVoidCreateElementReport()
-                aCreateElementReport.update( { 'effect': 'created', 'new_object_result': unResultadoNuevaImportacion, })
+                aCreateElementReport.update( { 'effect': 'created', 'new_object_result': unResultadoNuevoModulo, })
                 
                 someFieldReports    = aCreateElementReport[ 'field_reports']
                 aFieldReportsByName = aCreateElementReport[ 'field_reports_by_name']
                 
-                aReportForField = { 'attribute_name': 'id',    'effect': 'changed', 'new_value': unaIdNuevoContenidoIntercambio, 'previous_value': '',}
+                aReportForField = { 'attribute_name': 'id',          'effect': 'changed', 'new_value': unaIdModulo, 'previous_value': '',}
                 someFieldReports.append( aReportForField)            
                 aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
                 
-                aReportForField = { 'attribute_name': 'title', 'effect': 'changed', 'new_value': unTitleContenidoIntercambio,    'previous_value': '',}
+                aReportForField = { 'attribute_name': 'title',       'effect': 'changed', 'new_value': aNewNombreModulo,           'previous_value': '',}
                 someFieldReports.append( aReportForField)            
                 aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
+
+                aModelDDvlPloneTool_Mutators.pSetAudit_Creation( self, cModificationKind_CreateSubElement, aCreateElementReport, theUseCounter=True)       
+                aModelDDvlPloneTool_Mutators.pSetAudit_Creation( unNuevoModulo,       cModificationKind_Create,           aCreateElementReport)       
+                 
                 
-                                   
-                aModelDDvlPloneTool_Mutators.pSetAudit_Creation( unaColeccionImportaciones, cModificationKind_CreateSubElement, aCreateElementReport, theUseCounter=True)       
-                aModelDDvlPloneTool_Mutators.pSetAudit_Creation( unaNuevaImportacion,       cModificationKind_Create,  aCreateElementReport)       
                 
                 
-                aContenidoIntercambioTraversalResult = None
-                for aTraversalResult in unResultadoNuevaImportacion.get( 'traversals', []):
-                    if aTraversalResult.get( 'traversal_name', '') == cNombreTraversal_Importacion_ContenidosIntercambio:
-                        aContenidoIntercambioTraversalResult = aTraversalResult
-                        break
-                if aContenidoIntercambioTraversalResult: 
-                    someContenidoIntercambioResults = aContenidoIntercambioTraversalResult.get( 'elements', [])
-                    
-                    for aContenidoIntercambioResult in someContenidoIntercambioResults:
+                unCatalogo.pFlushCachedTemplates_All()         
+                
+                
+                
+                unModuloCreationReport = { 'effect': 'created', 'new_object_result': unResultadoNuevoModulo, }
                         
-                        unNuevoContenidoIntercambioElement = aContenidoIntercambioResult.get( 'object', None)
-                        if not ( unNuevoContenidoIntercambioElement == None):
-                        
-                            unNuevoContenidoIntercambioElement.pFlushCachedTemplates_All()                            
-                            
-                            aCreateElementReport = aModelDDvlPloneTool_Mutators.fNewVoidCreateElementReport()
-                            aCreateElementReport.update( { 'effect': 'created', 'new_object_result': aContenidoIntercambioResult, })
-                            
-                            someFieldReports    = aCreateElementReport[ 'field_reports']
-                            aFieldReportsByName = aCreateElementReport[ 'field_reports_by_name']
-                            
-                            aReportForField = { 'attribute_name': 'id',     'effect': 'changed', 'new_value': aContenidoIntercambioResult.get( 'id', ''),     'previous_value': '',}
-                            someFieldReports.append( aReportForField)            
-                            aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
-                            
-                            aReportForField = { 'attribute_name': 'title',  'effect': 'changed', 'new_value': aContenidoIntercambioResult.get( 'title', ''),  'previous_value': '',}
-                            someFieldReports.append( aReportForField)            
-                            
-                            aModelDDvlPloneTool_Mutators.pSetAudit_Creation( unaNuevaImportacion,                cModificationKind_CreateSubElement, aCreateElementReport, theUseCounter=True)       
-                            aModelDDvlPloneTool_Mutators.pSetAudit_Creation( unNuevoContenidoIntercambioElement, cModificationKind_Create,           aCreateElementReport)       
-                
-                            
-                unaColeccionImportaciones.pFlushCachedTemplates_All()                            
                             
                 return unModuloCreationReport
                 
@@ -368,7 +346,10 @@ class TRAColeccionModulos_Operaciones:
                 
                 unInformeExcepcion = 'Exception during fCrearModulo\n' 
                 unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                try:
+                    unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                except:
+                    None
                 unInformeExcepcion += unaExceptionFormattedTraceback   
                                          
                 unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
@@ -397,9 +378,9 @@ class TRAColeccionModulos_Operaciones:
 
         
 
-    security.declareProtected( permissions.ManagePortal, 'fRequestNewDeleteModule')
-    def fRequestNewDeleteModule( self, 
-        theAdditionalParms      =None,  
+    security.declareProtected( permissions.ManagePortal, 'fCreateProgressHandlerFor_DeleteModule')
+    def fCreateProgressHandlerFor_DeleteModule( self, 
+        theAdditionalParams      =None,  
         thePermissionsCache     =None, 
         theRolesCache           =None, 
         theParentExecutionRecord=None):
@@ -553,31 +534,60 @@ class TRAColeccionModulos_Operaciones:
         
         
         
-        unExecutionRecord = self.fStartExecution( 'method',  'fRequestNewDeleteModule', theParentExecutionRecord,  True, { 'log_what': 'details', 'log_when': True, }, ) 
+        unExecutionRecord = self.fStartExecution( 'method',  'fCreateProgressHandlerFor_DeleteModule', theParentExecutionRecord,  True, { 'log_what': 'details', 'log_when': True, }, ) 
         
+        aThereWasException = False
+       
         
         try:
             
             
-            unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-            unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
-                
-            aDeleteModuleResult = self.fNewVoidProgressResult()
+            unPermissionsCache = fDictOrNew( thePermissionsCache)
+            unRolesCache       = fDictOrNew( theRolesCache)
             
-            
-            aProgressElement = None
-            aThereWasException = False
-            aProgressHandler = None
-            
+            aResult = self.fNewVoidCreateProgressHandlerResult()
+
             try:
                 
-                aModuleUID = theAdditionalParms.get( 'module_uid', '')
+ 
+    
+                unCatalogoRaiz = self.getCatalogo()           
+                if unCatalogoRaiz == None:
+                    aResult.update( {
+                        'success':     False,
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_error_internal_Missing_RootCatalog', "Internal error: missing root translations catalog-."),
+                    })
+                    return aResult
+                
+                unaColeccionProgresos = unCatalogoRaiz.fObtenerColeccionProgresos()
+                if unaColeccionProgresos == None:
+                    aResult.update( {
+                        'success':     False,
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_error_internal_Missing_progresses_collection', "Internal error: missing progresses collection-."),
+                    })
+                    return aResult
+                    
+                aDeleteModuleResult = self.fNewVoidProgressResult()
+                
+                
+                aProgressElement = None
+                aProgressHandler = None
+                
+                aModuleUID = theAdditionalParams.get( 'module_uid', '')
                 if not aModuleUID:
-                    return None
+                    aResult.update( {
+                        'success':     False,
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_error_Missing_Parameter_ModuleUID', "Required Parameter Missing: Module UID-."),
+                    })
+                    return aResult
                 
                 unModulo = self.fElementoPorUID( aModuleUID)
                 if unModulo == None:
-                    return None
+                    aResult.update( {
+                        'success':     False,
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_error_Parameter_ModuleNoFoundByUID', "Module not found by UID-."),
+                    })
+                    return aResult
                
                 aMetaType = 'UnknownType'
                 try:
@@ -603,7 +613,6 @@ class TRAColeccionModulos_Operaciones:
                 aMemberId = self.fGetMemberId()
                 aDeleteModuleResult[ 'member_id'] = aMemberId
                 
-                unCatalogoRaiz = self.getCatalogo()           
                 aDeleteModuleResult[ 'TRACatalogo_title']      = unCatalogoRaiz.Title()
                 aDeleteModuleResult[ 'TRACatalogo_path' ]      = unCatalogoRaiz.fPathDelRaiz()
                 aDeleteModuleResult[ 'TRACatalogo_UID' ]       = unCatalogoRaiz.UID()
@@ -618,10 +627,11 @@ class TRAColeccionModulos_Operaciones:
                     theParentExecutionRecord= unExecutionRecord
                 )
                 if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
-                    aDeleteModuleResult[ 'success']   =  False
-                    aDeleteModuleResult[ 'condition'] = 'gvSIGi18n_no_permission_ToDeleteModule'
-                    aDeleteModuleResult[ 'date_time_now_string']   = self.fDateTimeNowTextual()
-                    return None
+                    aResult.update( {
+                        'success':     False,
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_no_permission_ToDeleteModule', "You do not have permission to Delete Module-."),
+                    })
+                    return aResult
                 
                  
                 
@@ -633,7 +643,7 @@ class TRAColeccionModulos_Operaciones:
                     'module_UID':              aModuleUID,
                 }
 
-                aProgressHandler, aProgressElement = self.fCreateNewProgressAndHandlerForElement(  
+                aProgressHandlerCreationResult = unaColeccionProgresos.fCreateNewProgressAndHandlerForElement(  
                     theInitialElement       =unModulo, 
                     theProcessType          =cTRAProgress_ProcessType_DeleteModule, 
                     theInputParameters      =someInputParameters,
@@ -647,12 +657,48 @@ class TRAColeccionModulos_Operaciones:
                     thePermissionsCache     =unPermissionsCache, 
                     theRolesCache           =unRolesCache, 
                     theParentExecutionRecord=unExecutionRecord,)
-                if ( not aProgressHandler) or ( aProgressElement == None):
-                    return None
+                if ( not aProgressHandlerCreationResult) or not aProgressHandlerCreationResult.get( 'success', False):
+                    aResult.update( {
+                        'success':    False,
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_error_TRAProgress_not_created_for_TRAImportacion_msgid', "Error creating Progress element for Import element-."),
+                    })
+                    return aResult     
                 
-                aProgressHandler_Key = aProgressHandler.fKey()
                 
-                return aProgressHandler_Key
+                aProgressElement = aProgressHandlerCreationResult.get( 'progress_element', None)
+                if ( aProgressElement == None):
+                    aResult = { 
+                        'success':   False, 
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorProgressElementNotKnownByImportProcessElement', "Progress element is not known by import process element-"),
+                    }
+                    return aResult
+                
+                aProgressHandler = aProgressHandlerCreationResult.get( 'progress_handler', None)
+                if not aProgressHandler:
+                    aResult = { 
+                        'success':   False, 
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorImportProgressHandlerNotFound', "Import Progress Handler has not been found-"),
+                    }
+                    return aResult
+
+                aProgressHandlerKey = aProgressHandlerCreationResult.get( 'progress_handler_key', None)
+                if not aProgressHandlerKey:
+                    aResult = { 
+                        'success':   False, 
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorImport_NoProgressHandlerKey', "Import has no Progress Handler Key-"),
+                    }
+                    return aResult
+
+                
+                aResult.update( {
+                    'success':               True,
+                    'condition':             '',
+                    'progress_element':      aProgressElement,
+                    'progress_handler':      aProgressHandler,
+                    'progress_handler_key':  aProgressHandlerKey,
+                })
+                
+                return aResult
             
             except:
                 unaExceptionInfo = sys.exc_info()
@@ -661,7 +707,7 @@ class TRAColeccionModulos_Operaciones:
                 aThereWasException = True
                 unInformeExcepcion = ''
                 try:
-                    unInformeExcepcion += 'Exception during fRequestNewDeleteModule of element %s %s at %s\n'  % (  self.meta_type(), self.Title(), self.fPhysicalPathString())
+                    unInformeExcepcion += 'Exception during fCreateProgressHandlerFor_DeleteModule of element %s %s at %s\n'  % (  self.meta_type(), self.Title(), self.fPhysicalPathString())
                 except:
                     None
                 try:
@@ -681,6 +727,7 @@ class TRAColeccionModulos_Operaciones:
                 
                 aDeleteModuleResult[ 'success'] = False
                 aDeleteModuleResult[ 'exception_date_time_string'] = self.fDateTimeNowTextual()
+                aDeleteModuleResultDump = ''
                 try:
                     aDeleteModuleResultDump = self.fProgressResult_dump( aDeleteModuleResult)
                 except:
@@ -696,7 +743,11 @@ class TRAColeccionModulos_Operaciones:
                 if cLogExceptions:
                     logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
                 
-                return None
+                aResult = { 
+                    'success':    False, 
+                    'condition':  '%s\n%s' % (   self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Exception_msgid', "Exception.-"), unInformeExcepcion, ),
+                }
+                return aResult
         
         finally:
             unExecutionRecord and unExecutionRecord.pEndExecution()

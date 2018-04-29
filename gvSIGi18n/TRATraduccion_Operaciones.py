@@ -2,7 +2,7 @@
 #
 # File: TRATraduccion_Operationes.py
 #
-# Copyright (c) 2008, 2009,2010 by Conselleria de Infraestructuras y Transporte de la
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la
 # Generalidad Valenciana
 #
 # GNU General Public License (GPL)
@@ -52,19 +52,34 @@ from Products.Archetypes.utils          import getRelURL
 
 
 
-from TRAElemento_Constants         import *
+from TRAElemento_Constants                 import *
+from TRAElemento_Constants_Activity        import *
+from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Dates           import *
+from TRAElemento_Constants_Encoding        import *
+from TRAElemento_Constants_Import          import *
+from TRAElemento_Constants_Languages       import *
+from TRAElemento_Constants_Logging         import *
+from TRAElemento_Constants_Modules         import *
+from TRAElemento_Constants_Profiling       import *
+from TRAElemento_Constants_Progress        import *
+from TRAElemento_Constants_String          import *
+from TRAElemento_Constants_StringRequests  import *
+from TRAElemento_Constants_Translate       import *
+from TRAElemento_Constants_Translation     import *
+from TRAElemento_Constants_TypeNames       import *
+from TRAElemento_Constants_Views           import *
+from TRAElemento_Constants_Vocabularies    import *
+from TRAUtils                              import *
 from TRAImportarExportar_Constants import *
 
-from TRAElemento import TRAElemento
+from TRAArquetipo import TRAArquetipo
 
-from TRAElemento_Permission_Definitions import cUseCase_TRATraduccionStateChange, cStateChangeActionRoles, cBoundObject
-
-
-
+from TRAElemento_Permission_Definitions import cBoundObject
+from TRAElemento_Permission_Definitions_UseCaseNames import cUseCase_TRATraduccionStateChange
 
 
-cMarcaDeFinDeRegistroDeHistoria   = "_*F*I*N*"
-cMarcaDeComentarioSinCambios      = "=="
+
 
 
 
@@ -77,7 +92,7 @@ class TRATraduccion_Operaciones:
     
 
     security.declarePrivate( 'pAllSubElements_into')    
-    def pAllSubElements_into( self, theCollection, theAdditionalParms=None):
+    def pAllSubElements_into( self, theCollection, theAdditionalParams=None):
         if theCollection == None:
             return self
         theCollection.append( self)
@@ -211,7 +226,7 @@ class TRATraduccion_Operaciones:
     security.declarePrivate('fObtenerIdioma')
     def fObtenerIdioma( self, ):   
         unCatalogo = self.getCatalogo()
-        if not unCatalogo:
+        if unCatalogo == None:
             return None
         return unCatalogo.fGetIdiomaPorCodigo( self.getCodigoIdiomaEnGvSIG())
     
@@ -236,119 +251,131 @@ class TRATraduccion_Operaciones:
 
     
     
-# ####################################
-#  Complete initialization after creation
-#
+    # ####################################
+    """Complete initialization after creation
+    
+            
+     let's see the delegation path through multiple inheritance...
+     TRAElemento.manage_afterAdd
+       TRAElemento_Operaciones.pHandle_manage_afterAdd
+           OrderedBaseFolder. --- no method
+               BaseFolder -- no method
+                   BaseFolderMixin.manage_afterAdd  
+                       BaseObject.manage_afterAdd
+                           Referenceable.manage_afterAdd
+                               deals with REFERENCE_CATALOG
+                           self.initializeLayers(item, container)
+                       CatalogMultiplex.manage_afterAdd (has no method)
+                           CMFCatalogAware.manage_afterAdd
+                                self.indexObject()
+                               self.__recurse('manage_afterAdd', item, container)
+                   ExtensibleMetadata --- no called, no method
+                       Persistence.Persistent - just an indicator
+    
+               OrderedContainer - just moves and interfaces
+    
+      So, from TRACadena and TRATRaduccion,
+       that we don't want to get catalogged in the portal catalog      
+       let's try and see if we can delegate directly to BaseObject
+       adding to the catalogs and the permissions being invoked by import process
+    
+      Well, the  TRACadena and TRATRaduccion still appear in the portal_catalog
+         must be some parent being reindexed, and the __recurse( 'manage_afterAdd',
+         adding them to the catalog ? No this can't be 
+    
+      Must be some invocation from the factory code.
+       may be we should just remove from the catalog ...
+       but first we'll try and find where is it being added to the catalog
+    
+      We found the invocation chain:
+       unaIdNuevaCadena = theColeccionCadenas.invokeFactory( cNombreTipoTRACadena, aNewIdWithCounter, **anAttrsDict)
+       Products.CMFCore.TypesTool.constructContent
+       Products.CMFCore.TypeInformation.constructInstance
+       Products.CMFCore.TypeInformation._finishConstruction( ob)
+       that calls ob.reindexObject()
+    
+       The CatalogMultiplex ancestor of TRACadena and TRATraduccion
+       implements reindexObject() with comment:
+        #update indexes of this object in all registered catalogs.
+    
+            #Catalogs are registered per 'meta_type' in archetypes tool.
+    
+            #'idxs' are a list of index names. If this list is given only the given
+            #indexes are refreshed. If a index does not exist in catalog its
+            #silently ignored.
+            
+       The CMFCatalogAware superclass of CatalogMultiplex, also implements reindexObject()
+           but CMFCatalogAware does not delegate on it
         
-# let's see the delegation path through multiple inheritance...
-# TRAElemento.manage_afterAdd
-#   TRAElemento_Operaciones.pHandle_manage_afterAdd
-#       OrderedBaseFolder. --- no method
-#           BaseFolder -- no method
-#               BaseFolderMixin.manage_afterAdd  
-#                   BaseObject.manage_afterAdd
-#                       Referenceable.manage_afterAdd
-#                           deals with REFERENCE_CATALOG
-#                       self.initializeLayers(item, container)
-#                   CatalogMultiplex.manage_afterAdd (has no method)
-#                       CMFCatalogAware.manage_afterAdd
-#                            self.indexObject()
-#                           self.__recurse('manage_afterAdd', item, container)
-#               ExtensibleMetadata --- no called, no method
-#                   Persistence.Persistent - just an indicator
-#
-#           OrderedContainer - just moves and interfaces
-#
-#  So, from TRACadena and TRATRaduccion,
-#   that we don't want to get catalogged in the portal catalog      
-#   let's try and see if we can delegate directly to BaseObject
-#   adding to the catalogs and the permissions being invoked by import process
-#
-#  Well, the  TRACadena and TRATRaduccion still appear in the portal_catalog
-#     must be some parent being reindexed, and the __recurse( 'manage_afterAdd',
-#     adding them to the catalog ? No this can't be 
-#
-#  Must be some invocation from the factory code.
-#   may be we should just remove from the catalog ...
-#   but first we'll try and find where is it being added to the catalog
-#
-#  We found the invocation chain:
-#   unaIdNuevaCadena = theColeccionCadenas.invokeFactory( cNombreTipoTRACadena, aNewIdWithCounter, **anAttrsDict)
-#   Products.CMFCore.TypesTool.constructContent
-#   Products.CMFCore.TypeInformation.constructInstance
-#   Products.CMFCore.TypeInformation._finishConstruction( ob)
-#   that calls ob.reindexObject()
-#
-#   The CatalogMultiplex ancestor of TRACadena and TRATraduccion
-#   implements reindexObject() with comment:
-#    """update indexes of this object in all registered catalogs.
-#
-#        Catalogs are registered per 'meta_type' in archetypes tool.
-#
-#        'idxs' are a list of index names. If this list is given only the given
-#        indexes are refreshed. If a index does not exist in catalog its
-#        silently ignored.
-#        """
-#   The CMFCatalogAware superclass of CatalogMultiplex, also implements reindexObject()
-#       but CMFCatalogAware does not delegate on it
-#    """
-#            Reindex the object in the portal catalog.
-#            If idxs is present, only those indexes are reindexed.
-#            The metadata is always updated.
-#
-#            Also update the modification date of the object,
-#            unless specific indexes were requested.
-#        """    
-#
-#   There are no other (we find no other) significant implementation of reindexObject
-#      in the multiple inheritance of TRACAdena and TRATraduccion
-#      there are other implementors, like PortalFolder not in the inheritance chain, but just saying "pass"
-#
-# So what we can do is to implement reindexObject on the TRACadena and TRATraduccion concrete classes,
-# do not delegate on 
-# delegate on the corresponding _Operations class
-# and there reindex only on the TRACAdena and TRATraduccion specific catalogs
-#
-   
+                #Reindex the object in the portal catalog.
+                #If idxs is present, only those indexes are reindexed.
+                #The metadata is always updated.
+    
+                #Also update the modification date of the object,
+                #unless specific indexes were requested.
+          
+    
+       There are no other (we find no other) significant implementation of reindexObject
+          in the multiple inheritance of TRACAdena and TRATraduccion
+          there are other implementors, like PortalFolder not in the inheritance chain, but just saying "pass"
+    
+     So what we can do is to implement reindexObject on the TRACadena and TRATraduccion concrete classes,
+     do not delegate on 
+     delegate on the corresponding _Operations class
+     and there reindex only on the TRACAdena and TRATraduccion specific catalogs
+    
+    """
+            
+    
+    
+    
+    
+    
+            
     security.declarePrivate('pHandle_reindexObject')
     def pHandle_reindexObject(self, idxs=[]):   
         self.pAddToCatalogs( )
         return self
+    
+    
+    
+    
     
    
  
     security.declarePrivate('pHandle_manage_afterAdd')
     def pHandle_manage_afterAdd(self, theItem, theContainer):   
        
-        # vaya_que_no_debe_pHandle_manage_afterAdd_TRATraduccion()
-        # y debe impedir que se cataloge en el catalog del portal
-        # TRAElemento.manage_afterAdd( self, theItem, theContainer)
+        """vaya_que_no_debe_pHandle_manage_afterAdd_TRATraduccion()
+         y debe impedir que se cataloge en el catalog del portal
+         TRAElemento.manage_afterAdd( self, theItem, theContainer)
 
-        # self.pAddToCatalogs()
+         self.pAddToCatalogs()
         
-        # ACV 20090504 Avoid catalogging the TRATraduccion into the UID catalog,
-        # by not delegating into Referenceable superclass,
-        # BaseObject.manage_afterAdd( self, theItem, theContainer)
+         ACV 20090504 Avoid catalogging the TRATraduccion into the UID catalog,
+         by not delegating into Referenceable superclass,
+         BaseObject.manage_afterAdd( self, theItem, theContainer)
+        
+        """
         
         BaseObject.initializeLayers( self, theItem, theContainer)
 
         return self
     
     
-# #########################################################################
-#   Manage delete
-# ##################    
 
+    
+    
      
         
     security.declarePrivate('pHandle_manage_beforeDelete')
     def pHandle_manage_beforeDelete(self, theItem, theContainer):   
-       
+        
         try:
             unIdioma = self.getIdioma()
             if unIdioma:
                 unCatalogoRaiz = self.getCatalogo()
-                if unCatalogoRaiz:
+                if not( unCatalogoRaiz == None):
                     
                     unCatalogKey = theElement.fCatalogKey()
                     
@@ -366,7 +393,7 @@ class TRATraduccion_Operaciones:
         except:
             None
         
-        TRAElemento.manage_beforeDelete( self, theElement, theContainer)
+        TRAArquetipo.manage_beforeDelete( self, theElement, theContainer)
          
         return self
     
@@ -410,7 +437,7 @@ class TRATraduccion_Operaciones:
             unCatalogoRaiz = None
             if not theCatalogBusquedaTraducciones or not theCatalogFiltroTraducciones or not theCatalogTextoTraducciones:
                 unCatalogoRaiz = self.getCatalogo()
-                if not unCatalogoRaiz:
+                if unCatalogoRaiz == None:
                     return self
                     
             unCatalogKey = self.fCatalogKey()
@@ -469,7 +496,7 @@ class TRATraduccion_Operaciones:
         
         """
         unCatalogo = self.getCatalogo()
-        if not unCatalogo:
+        if unCatalogo == None:
             return None
             
         unCodigoIdiomaEnGvSIG = self.getCodigoIdiomaEnGvSIG()
@@ -558,34 +585,6 @@ class TRATraduccion_Operaciones:
   
     
            
-    # ##########################################
-    """State change action request handlers
-   
-    """
-    # method located in TRAElemento_Operationes
-    #
-    #security.declarePrivate( 'fNewVoidChangeTranslationResult')
-    #def fNewVoidChangeTranslationResult( self,):
-        #aResult = {
-            #'success':                          False,
-            #'exception':                        '',
-            #'status':                           '',
-            #'condition':                         '',
-            #'found':                            False,
-            #'changed':                          False,
-            #'changed_comment':                  False,
-            #'simboloCadena':                    '',
-            #'idCadena':                         '',
-            #'memberid':                         '',
-            #'cadenaTraducida_previousValue':    '',
-            #'cadenaTraducida_newValue':         '',
-            #'estadoTraduccion_previousValue':   '',
-            #'estadoTraduccion_newValue':        '',
-            #'comentario_previousValue':         '',
-            #'comentario_newValue':              '',
-        #}
-        #return aResult
-        
     
  
     security.declarePrivate( 'fStripInnerBlanks')
@@ -684,6 +683,8 @@ class TRATraduccion_Operaciones:
             unUsuarioRevisor            = self.getUsuarioRevisor()  
             unaFechaDefinitivoTextual   = self.getFechaDefinitivoTextual()  
             unUsuarioCoordinador        = self.getUsuarioCoordinador()  
+            unaFechaModificacionTextual = self.getFechaModificacionTextual()  
+            unUsuarioModificador        = self.getUsuarioModificador()  
             
             aResult[ 'estadoTraduccion_previousValue'] = unEstadoTraduccion
             aResult[ 'cadenaTraducida_previousValue']  = unaCadenaTraducida
@@ -708,8 +709,8 @@ class TRATraduccion_Operaciones:
             
             
             
-            unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-            unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+            unPermissionsCache = fDictOrNew( thePermissionsCache)
+            unRolesCache       = fDictOrNew( theRolesCache)
                             
             unUseCaseQueryResult = theUseCaseQueryResult
             if not unUseCaseQueryResult or not ( unUseCaseQueryResult.get( 'use_case_name', '') == cUseCase_TRATraduccionStateChange):
@@ -845,6 +846,13 @@ class TRATraduccion_Operaciones:
                                                             
                     if  unUsuarioCoordinador:
                         self.setUsuarioCoordinador(  None)  
+                        
+                    if  not ( unUsuarioModificador == unMemberId):
+                        self.setUsuarioModificador(  unMemberId)   
+                        
+                    if  not ( unaFechaModificacionTextual == unAhoraStoreString):
+                        self.setFechaModificacionTextual(   unAhoraStoreString)
+                        
                         
                     unContadorCambiosActual = self.getContadorCambios()
                     if not unContadorCambiosActual:
@@ -1058,8 +1066,8 @@ class TRATraduccion_Operaciones:
             unHayCambio = False
             
             
-            unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-            unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+            unPermissionsCache = fDictOrNew( thePermissionsCache)
+            unRolesCache       = fDictOrNew( theRolesCache)
             
                  
             unaCadenaTraducida          = self.getCadenaTraducida()            
@@ -1246,8 +1254,8 @@ class TRATraduccion_Operaciones:
             })
             aResult[ 'found'] = True
             
-            unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-            unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+            unPermissionsCache = fDictOrNew( thePermissionsCache)
+            unRolesCache       = fDictOrNew( theRolesCache)
             
                 
             unaCadenaTraducida          = self.getCadenaTraducida()            
@@ -1260,6 +1268,8 @@ class TRATraduccion_Operaciones:
             unUsuarioRevisor            = self.getUsuarioRevisor()  
             unaFechaDefinitivoTextual   = self.getFechaDefinitivoTextual()  
             unUsuarioCoordinador        = self.getUsuarioCoordinador()  
+            unaFechaModificacionTextual = self.getFechaModificacionTextual()  
+            unUsuarioModificador        = self.getUsuarioModificador()  
             
             aResult[ 'estadoTraduccion_previousValue'] = unEstadoTraduccion
 
@@ -1330,6 +1340,11 @@ class TRATraduccion_Operaciones:
                 if  unUsuarioCoordinador:
                     self.setUsuarioCoordinador(  None)   
                         
+                if  not ( unUsuarioModificador == unMemberId):
+                    self.setUsuarioModificador(  unMemberId)   
+                    
+                if  not ( unaFechaModificacionTextual == unAhoraStoreString):
+                    self.setFechaModificacionTextual(   unAhoraStoreString)
                 
                                         
                 unNuevoComentario = theComentario
@@ -1447,8 +1462,8 @@ class TRATraduccion_Operaciones:
             })
             aResult[ 'found'] = True
             
-            unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-            unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+            unPermissionsCache = fDictOrNew( thePermissionsCache)
+            unRolesCache       = fDictOrNew( theRolesCache)
             
                 
             unaCadenaTraducida          = self.getCadenaTraducida()            
@@ -1461,6 +1476,8 @@ class TRATraduccion_Operaciones:
             unUsuarioRevisor            = self.getUsuarioRevisor()  
             unaFechaDefinitivoTextual   = self.getFechaDefinitivoTextual()  
             unUsuarioCoordinador        = self.getUsuarioCoordinador()  
+            unaFechaModificacionTextual = self.getFechaModificacionTextual()  
+            unUsuarioModificador        = self.getUsuarioModificador()  
             
             aResult[ 'estadoTraduccion_previousValue'] = unEstadoTraduccion
 
@@ -1552,6 +1569,12 @@ class TRATraduccion_Operaciones:
                                                         
                 if  unUsuarioCoordinador:
                     self.setUsuarioCoordinador(  None)   
+                        
+                if  not ( unUsuarioModificador == unMemberId):
+                    self.setUsuarioModificador(  unMemberId)   
+                    
+                if  not ( unaFechaModificacionTextual == unAhoraStoreString):
+                    self.setFechaModificacionTextual(   unAhoraStoreString)
                         
                 
                                         
@@ -1672,8 +1695,8 @@ class TRATraduccion_Operaciones:
             })
             aResult[ 'found'] = True
             
-            unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-            unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+            unPermissionsCache = fDictOrNew( thePermissionsCache)
+            unRolesCache       = fDictOrNew( theRolesCache)
 
             unaCadenaTraducida          = self.getCadenaTraducida()            
             unComentarioTraduccion      = self.getComentario() 
@@ -1685,6 +1708,8 @@ class TRATraduccion_Operaciones:
             unUsuarioRevisor            = self.getUsuarioRevisor()  
             unaFechaDefinitivoTextual   = self.getFechaDefinitivoTextual()  
             unUsuarioCoordinador        = self.getUsuarioCoordinador()  
+            unaFechaModificacionTextual = self.getFechaModificacionTextual()  
+            unUsuarioModificador        = self.getUsuarioModificador()  
             
             aResult[ 'estadoTraduccion_previousValue'] = unEstadoTraduccion
 
@@ -1778,6 +1803,13 @@ class TRATraduccion_Operaciones:
                                                         
                 if  unUsuarioCoordinador:
                     self.setUsuarioCoordinador(  None)   
+                    
+                if  not ( unUsuarioModificador == unMemberId):
+                    self.setUsuarioModificador(  unMemberId)   
+                    
+                if  not ( unaFechaModificacionTextual == unAhoraStoreString):
+                    self.setFechaModificacionTextual(   unAhoraStoreString)
+                    
                                         
                 unNuevoComentario = theComentario
                 if not unNuevoComentario:
@@ -1898,8 +1930,8 @@ class TRATraduccion_Operaciones:
             })
             aResult[ 'found'] = True
             
-            unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-            unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+            unPermissionsCache = fDictOrNew( thePermissionsCache)
+            unRolesCache       = fDictOrNew( theRolesCache)
                  
             unaCadenaTraducida          = self.getCadenaTraducida()            
             unComentarioTraduccion      = self.getComentario() 
@@ -1911,6 +1943,8 @@ class TRATraduccion_Operaciones:
             unUsuarioRevisor            = self.getUsuarioRevisor()  
             unaFechaDefinitivoTextual   = self.getFechaDefinitivoTextual()  
             unUsuarioCoordinador        = self.getUsuarioCoordinador()  
+            unaFechaModificacionTextual = self.getFechaModificacionTextual()  
+            unUsuarioModificador        = self.getUsuarioModificador()  
            
             aResult[ 'estadoTraduccion_previousValue'] = unEstadoTraduccion
 
@@ -1999,7 +2033,13 @@ class TRATraduccion_Operaciones:
                                                         
                 if  unUsuarioCoordinador:
                     self.setUsuarioCoordinador(  None)   
-                                                        
+                                  
+                if  not ( unUsuarioModificador == unMemberId):
+                    self.setUsuarioModificador(  unMemberId)   
+                    
+                if  not ( unaFechaModificacionTextual == unAhoraStoreString):
+                    self.setFechaModificacionTextual(   unAhoraStoreString)
+                    
                 unNuevoComentario = theComentario
                 if not unNuevoComentario:
                     unNuevoComentario = ""            
@@ -2116,8 +2156,8 @@ class TRATraduccion_Operaciones:
             })
             aResult[ 'found'] = True
             
-            unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-            unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+            unPermissionsCache = fDictOrNew( thePermissionsCache)
+            unRolesCache       = fDictOrNew( theRolesCache)
             
                  
             unaCadenaTraducida          = self.getCadenaTraducida()            
@@ -2130,6 +2170,8 @@ class TRATraduccion_Operaciones:
             unUsuarioRevisor            = self.getUsuarioRevisor()  
             unaFechaDefinitivoTextual   = self.getFechaDefinitivoTextual()  
             unUsuarioCoordinador        = self.getUsuarioCoordinador()  
+            unaFechaModificacionTextual = self.getFechaModificacionTextual()  
+            unUsuarioModificador        = self.getUsuarioModificador()  
            
             aResult[ 'estadoTraduccion_previousValue'] = unEstadoTraduccion
 
@@ -2210,6 +2252,15 @@ class TRATraduccion_Operaciones:
                 self.setFechaDefinitivoTextual(   unAhoraStoreString)
                 self.setUsuarioCoordinador(       unMemberId)
 
+                
+                        
+                if  not ( unUsuarioModificador == unMemberId):
+                    self.setUsuarioModificador(  unMemberId)   
+                    
+                if  not ( unaFechaModificacionTextual == unAhoraStoreString):
+                    self.setFechaModificacionTextual(   unAhoraStoreString)
+                        
+                
                 aResult[ 'estadoTraduccion_newValue'] = cEstadoTraduccionDefinitiva
                 
                 unNuevoComentario = theComentario
@@ -2339,8 +2390,8 @@ class TRATraduccion_Operaciones:
             if not theEstadoInicial or not theEstadoFinal:
                 return False
                     
-            unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-            unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+            unPermissionsCache = fDictOrNew( thePermissionsCache)
+            unRolesCache       = fDictOrNew( theRolesCache)
             
             unUseCaseQueryResult = theUseCaseQueryResult
             if not unUseCaseQueryResult or not ( unUseCaseQueryResult.get( 'use_case_name', '') == cUseCase_TRATraduccionStateChange):
@@ -2356,7 +2407,11 @@ class TRATraduccion_Operaciones:
                 return False
     
              
-            unasStateChangeRules = cStateChangeActionRoles.get( theEstadoInicial, None)
+            someStateChangeActionRoles = self.fStateChangeActionRoles()
+            if not someStateChangeActionRoles:
+                return False
+            
+            unasStateChangeRules = someStateChangeActionRoles.get( theEstadoInicial, None)
             if not unasStateChangeRules:
                 return False
             
@@ -2393,8 +2448,8 @@ class TRATraduccion_Operaciones:
         
         try:
                     
-            unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-            unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+            unPermissionsCache = fDictOrNew( thePermissionsCache)
+            unRolesCache       = fDictOrNew( theRolesCache)
             
             unUseCaseQueryResult = theUseCaseQueryResult
             if not unUseCaseQueryResult or not ( unUseCaseQueryResult.get( 'use_case_name', '') == cUseCase_TRATraduccionStateChange):
@@ -2457,8 +2512,8 @@ class TRATraduccion_Operaciones:
         
         try:
             
-            unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-            unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+            unPermissionsCache = fDictOrNew( thePermissionsCache)
+            unRolesCache       = fDictOrNew( theRolesCache)
             
             unChangeStateUseCaseQueryResult = theUseCaseQueryResult
             if not unChangeStateUseCaseQueryResult or not ( unChangeStateUseCaseQueryResult.get( 'use_case_name', '') == cUseCase_TRATraduccionStateChange):
@@ -2515,151 +2570,238 @@ class TRATraduccion_Operaciones:
    
     
     
-    security.declarePrivate( "fEmpaquetarRegistroHistoria")
-    def fEmpaquetarRegistroHistoria( self, 
-        theAccion, 
-        theFechaAccionTextual, 
-        theUsuarioActor, 
-        theEstadoTraduccion, 
-        theFechaTraduccionTextual, 
-        theUsuarioTraductor, 
-        theCadenaTraducida, 
-        theFechaRevisionTextual, 
-        theUsuarioRevisor, 
-        theFechaDefinitivoTextual, 
-        theUsuarioCoordinador, 
-        theComentario):
-        """Pack fields into a translation change history record string.
+    #security.declarePrivate( "fEmpaquetarRegistroHistoria")
+    #def fEmpaquetarRegistroHistoria( self, 
+        #theAccion, 
+        #theFechaAccionTextual, 
+        #theUsuarioActor, 
+        #theEstadoTraduccion, 
+        #theFechaTraduccionTextual, 
+        #theUsuarioTraductor, 
+        #theCadenaTraducida, 
+        #theFechaRevisionTextual, 
+        #theUsuarioRevisor, 
+        #theFechaDefinitivoTextual, 
+        #theUsuarioCoordinador, 
+        #theComentario):
+        #"""Pack fields into a translation change history record string.
         
-        """
+        #"""
        
-        unRegistroHistoria = '\n'.join( [
-            str( theAccion), 
-            str( theFechaAccionTextual), 
-            str( theUsuarioActor), 
-            str( theEstadoTraduccion),
-            ( theFechaTraduccionTextual and str( theFechaTraduccionTextual)) or '', 
-            theUsuarioTraductor or '', 
-            theCadenaTraducida or '', 
-            ( theFechaRevisionTextual and str( theFechaRevisionTextual)) or '', 
-            theUsuarioRevisor or '', 
-            ( theFechaDefinitivoTextual and str( theFechaDefinitivoTextual)) or '', 
-            theUsuarioCoordinador or '', 
-            theComentario  or '',
-        ])
+        #unRegistroHistoria = '\n'.join( [
+            #str( theAccion), 
+            #str( theFechaAccionTextual), 
+            #str( theUsuarioActor), 
+            #str( theEstadoTraduccion),
+            #( theFechaTraduccionTextual and str( theFechaTraduccionTextual)) or '', 
+            #theUsuarioTraductor or '', 
+            #theCadenaTraducida or '', 
+            #( theFechaRevisionTextual and str( theFechaRevisionTextual)) or '', 
+            #theUsuarioRevisor or '', 
+            #( theFechaDefinitivoTextual and str( theFechaDefinitivoTextual)) or '', 
+            #theUsuarioCoordinador or '', 
+            #theComentario  or '',
+        #])
         
-        unRegistroHistoria = "%s\n%s\n" % ( unRegistroHistoria, cMarcaDeFinDeRegistroDeHistoria)
+        #unRegistroHistoria = "%s\n%s\n" % ( unRegistroHistoria, cMarcaDeFinDeRegistroDeHistoria)
         
-        return unRegistroHistoria   
+        #return unRegistroHistoria   
  
  
- 
+    
+
+    
+        
  
     security.declarePrivate( "pRegistrarHistoria")
     def pRegistrarHistoria( self, 
-        theAccion, 
-        theFechaAccionTextual, 
-        theUsuarioActor, 
-        theEstadoTraduccion, 
-        theFechaTraduccionTextual, 
-        theUsuarioTraductor, 
-        theCadenaTraducida, 
-        theFechaRevisionTextual, 
-        theUsuarioRevisor, 
-        theFechaDefinitivoTextual, 
-        theUsuarioCoordinador, 
-        theComentario):
+        theAccion                  =None, 
+        theFechaAccionTextual      =None, 
+        theUsuarioActor            =None, 
+        theEstadoTraduccion        =None, 
+        theFechaTraduccionTextual  =None, 
+        theUsuarioTraductor        =None, 
+        theCadenaTraducida         =None, 
+        theFechaRevisionTextual    =None, 
+        theUsuarioRevisor          =None, 
+        theFechaDefinitivoTextual  =None, 
+        theUsuarioCoordinador      =None, 
+        theComentario              =None):
         """Append a new translation change history record.
         
         """
+
+       
+        unRegistroHistoria = { } # use an empty dict, and populate it minimally, to save storage space self.fNewVoidRegistroHistoria()
         
-        unaHistoriaTraduccion = self.getHistoria()
+        if theAccion:
+            unRegistroHistoria[ cTRAHistory_ActionKind] = theAccion
+            
+        if theFechaAccionTextual:
+            unRegistroHistoria[ cTRAHistory_ActionDate] = theFechaAccionTextual
+            
+        if theUsuarioActor:
+            unRegistroHistoria[ cTRAHistory_User] = theUsuarioActor
+            
+        if theEstadoTraduccion:
+            unRegistroHistoria[ cTRAHistory_Status] = theEstadoTraduccion
+            
+        if theCadenaTraducida:
+            unRegistroHistoria[ cTRAHistory_Translation] = theCadenaTraducida
+            
+        if theFechaTraduccionTextual:
+            unRegistroHistoria[ cTRAHistory_TranslationDate] = theFechaTraduccionTextual
+            
+        if theUsuarioTraductor:
+            unRegistroHistoria[ cTRAHistory_Translator] = theUsuarioTraductor
+            
+        if theFechaRevisionTextual:
+            unRegistroHistoria[ cTRAHistory_RevisionDate] = theFechaRevisionTextual
+            
+        if theUsuarioRevisor:
+            unRegistroHistoria[ cTRAHistory_Reviewer] = theUsuarioRevisor
+            
+        if theFechaDefinitivoTextual:
+            unRegistroHistoria[ cTRAHistory_DefinitiveDate] = theFechaDefinitivoTextual
+            
+        if theUsuarioCoordinador:
+            unRegistroHistoria[ cTRAHistory_Coordinator] = theUsuarioCoordinador
+            
+        if theComentario:
+            unRegistroHistoria[ cTRAHistory_Comment] = theComentario
+            
+            
+        if not unRegistroHistoria:
+            return self
         
-        if not unaHistoriaTraduccion:
-            unaHistoriaTraduccion = ""
         
-        unRegistroHistoriaTraduccion = self.fEmpaquetarRegistroHistoria(  theAccion, theFechaAccionTextual, theUsuarioActor, theEstadoTraduccion, theFechaTraduccionTextual, theUsuarioTraductor, theCadenaTraducida, theFechaRevisionTextual, theUsuarioRevisor, theFechaDefinitivoTextual, theUsuarioCoordinador, theComentario)
+        unaHistoria = self.getRegistrosHistoria()
+        if not unaHistoria:
+            unaHistoria = [ ]
+
+        unaHistoria.append( unRegistroHistoria)
         
-        unaNuevaHistoriaTraduccion = unRegistroHistoriaTraduccion + unaHistoriaTraduccion
         
-        self.setHistoria( unaNuevaHistoriaTraduccion)
+        unaNuevaHistoriaString = self.fStringFromHistoria( unaHistoria)
+        self.setHistoria( unaNuevaHistoriaString)
+        
         return self
     
     
     
     
     
-    
-    
-    
-    security.declarePrivate( 'getRegistrosHistoria')
-    def getRegistrosHistoria( self):
+            
+    security.declarePrivate( 'getRegistrosHistoria')    
+    def getRegistrosHistoria( self, ):
 
-        unosRegistrosHistoria = []
+        unaHistoriaString = self.getHistoria()
+        if not unaHistoriaString:
+            return []
+        
+        unContenido = self.fHistoriaFromString( unaHistoriaString,)
+        return unContenido
+             
+    
+    
 
-        unaHistoriaTraduccion = self.getHistoria()
-        if not unaHistoriaTraduccion:
-            return unosRegistrosHistoria
+                                           
+
+    security.declarePrivate( 'fHistoriaFromString')    
+    def fHistoriaFromString( self, theHistoriaString, ):
         
-        unasLineasHistoria = unaHistoriaTraduccion.splitlines()
-        unNumeroLineas = len( unasLineasHistoria)
-        if unNumeroLineas < 1:
-            return unosRegistrosHistoria
+        if not theHistoriaString:
+            return []
         
-        unContadorLineas = 0
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fEvalString
         
-        unRegistroHistoria = { }
+        aHistoria = fEvalString( theHistoriaString)
         
-        while unContadorLineas < unNumeroLineas:
-            unRegistroHistoria[ 'accion']                 = unasLineasHistoria[ unContadorLineas]
-            unContadorLineas += 1
-            if unContadorLineas < unNumeroLineas:
-                unRegistroHistoria[ 'fechaAccion']        = unasLineasHistoria[ unContadorLineas]
-                unContadorLineas += 1
-            if unContadorLineas < unNumeroLineas:
-                unRegistroHistoria[ 'usuarioActor']       = unasLineasHistoria[ unContadorLineas]
-                unContadorLineas += 1
-            if unContadorLineas < unNumeroLineas:
-                unRegistroHistoria[ 'estadoTraduccion']   = unasLineasHistoria[ unContadorLineas]
-                unContadorLineas += 1
-            if unContadorLineas < unNumeroLineas:
-                unRegistroHistoria[ 'fechaTraduccion']    = unasLineasHistoria[ unContadorLineas]
-                unContadorLineas += 1
-            if unContadorLineas < unNumeroLineas:
-                unRegistroHistoria[ 'usuarioTraductor']   = unasLineasHistoria[ unContadorLineas]
-                unContadorLineas += 1
-            if unContadorLineas < unNumeroLineas:
-                unRegistroHistoria[ 'cadenaTraducida']    = unasLineasHistoria[ unContadorLineas]
-                unContadorLineas += 1
-            if unContadorLineas < unNumeroLineas:
-                unRegistroHistoria[ 'fechaRevision']      = unasLineasHistoria[ unContadorLineas]
-                unContadorLineas += 1
-            if unContadorLineas < unNumeroLineas:
-                unRegistroHistoria[ 'usuarioRevisor']     = unasLineasHistoria[ unContadorLineas]
-                unContadorLineas += 1
-            if unContadorLineas < unNumeroLineas:
-                unRegistroHistoria[ 'fechaDefinitivo']    = unasLineasHistoria[ unContadorLineas]
-                unContadorLineas += 1
-            if unContadorLineas < unNumeroLineas:
-                unRegistroHistoria[ 'usuarioCoordinador'] = unasLineasHistoria[ unContadorLineas]
-                unContadorLineas += 1
+        return aHistoria
+    
+            
+    
+    
+    security.declarePrivate( 'fStringFromHistoria')    
+    def fStringFromHistoria( self, theHistoria):
+
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneToolSupport import fReprAsString        
+        
+        aHistoriaString = fReprAsString( theHistoria)
+        
+        return aHistoriaString
+    
+    
+    
+        
+    #security.declarePrivate( 'getRegistrosHistoria')
+    #def getRegistrosHistoria( self):
+
+        #unosRegistrosHistoria = []
+
+        #unaHistoriaTraduccion = self.getHistoria()
+        #if not unaHistoriaTraduccion:
+            #return unosRegistrosHistoria
+        
+        #unasLineasHistoria = unaHistoriaTraduccion.splitlines()
+        #unNumeroLineas = len( unasLineasHistoria)
+        #if unNumeroLineas < 1:
+            #return unosRegistrosHistoria
+        
+        #unContadorLineas = 0
+        
+        #unRegistroHistoria = { }
+        
+        #while unContadorLineas < unNumeroLineas:
+            #unRegistroHistoria[ 'accion']                 = unasLineasHistoria[ unContadorLineas]
+            #unContadorLineas += 1
+            #if unContadorLineas < unNumeroLineas:
+                #unRegistroHistoria[ 'fechaAccion']        = unasLineasHistoria[ unContadorLineas]
+                #unContadorLineas += 1
+            #if unContadorLineas < unNumeroLineas:
+                #unRegistroHistoria[ 'usuarioActor']       = unasLineasHistoria[ unContadorLineas]
+                #unContadorLineas += 1
+            #if unContadorLineas < unNumeroLineas:
+                #unRegistroHistoria[ 'estadoTraduccion']   = unasLineasHistoria[ unContadorLineas]
+                #unContadorLineas += 1
+            #if unContadorLineas < unNumeroLineas:
+                #unRegistroHistoria[ 'fechaTraduccion']    = unasLineasHistoria[ unContadorLineas]
+                #unContadorLineas += 1
+            #if unContadorLineas < unNumeroLineas:
+                #unRegistroHistoria[ 'usuarioTraductor']   = unasLineasHistoria[ unContadorLineas]
+                #unContadorLineas += 1
+            #if unContadorLineas < unNumeroLineas:
+                #unRegistroHistoria[ 'cadenaTraducida']    = unasLineasHistoria[ unContadorLineas]
+                #unContadorLineas += 1
+            #if unContadorLineas < unNumeroLineas:
+                #unRegistroHistoria[ 'fechaRevision']      = unasLineasHistoria[ unContadorLineas]
+                #unContadorLineas += 1
+            #if unContadorLineas < unNumeroLineas:
+                #unRegistroHistoria[ 'usuarioRevisor']     = unasLineasHistoria[ unContadorLineas]
+                #unContadorLineas += 1
+            #if unContadorLineas < unNumeroLineas:
+                #unRegistroHistoria[ 'fechaDefinitivo']    = unasLineasHistoria[ unContadorLineas]
+                #unContadorLineas += 1
+            #if unContadorLineas < unNumeroLineas:
+                #unRegistroHistoria[ 'usuarioCoordinador'] = unasLineasHistoria[ unContadorLineas]
+                #unContadorLineas += 1
                 
-            unComentario = ""
-            unRegistroHistoria[ 'comentario'] = unComentario
-            while unContadorLineas < unNumeroLineas:
-                unaLinea  = unasLineasHistoria[ unContadorLineas]
-                unContadorLineas += 1
-                if unaLinea == cMarcaDeFinDeRegistroDeHistoria:
-                    if len( unComentario) > 0 and not( ''.join( unComentario.splitlines()).strip() == cMarcaDeComentarioSinCambios):
-                        unRegistroHistoria[ 'comentario'] = unComentario
+            #unComentario = ""
+            #unRegistroHistoria[ 'comentario'] = unComentario
+            #while unContadorLineas < unNumeroLineas:
+                #unaLinea  = unasLineasHistoria[ unContadorLineas]
+                #unContadorLineas += 1
+                #if unaLinea == cMarcaDeFinDeRegistroDeHistoria:
+                    #if len( unComentario) > 0 and not( ''.join( unComentario.splitlines()).strip() == cMarcaDeComentarioSinCambios):
+                        #unRegistroHistoria[ 'comentario'] = unComentario
                         
-                    unosRegistrosHistoria.append( unRegistroHistoria)
-                    unRegistroHistoria = { }
-                    break
-                else:
-                    unComentario = "%s\n%s" % ( unComentario, unaLinea)
+                    #unosRegistrosHistoria.append( unRegistroHistoria)
+                    #unRegistroHistoria = { }
+                    #break
+                #else:
+                    #unComentario = "%s\n%s" % ( unComentario, unaLinea)
                                         
-        return unosRegistrosHistoria
+        #return unosRegistrosHistoria
         
                  
         
@@ -2696,16 +2838,6 @@ class TRATraduccion_Operaciones:
         return self
     
     
-    
-    
-    
-    # ACV 20090322 Unused removed
-    #security.declarePrivate( 'pInitPreviouslyComputedFields')    
-    #def pInitPreviouslyComputedFields( self):
-        #self.setSimbolo(        self.fDeriveSimboloCadena())
-        #self.setEstadoCadena(   self.fDeriveEstadoCadena())
-        #self.setIdCadena(       self.fDeriveIdCadena())
-        
-        #self.reindexObject()
+
        
     

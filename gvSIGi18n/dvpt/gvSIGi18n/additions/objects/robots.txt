@@ -1,7 +1,0 @@
-User-agent: *
-Disallow: /i18ndb/
-Disallow: /i18ngvsigdb/
-Disallow: /i18nplaydb/
-Disallow: /i18nowned1db/
-Disallow: /i18nowned2db/
-Disallow: /i18nowned3db/

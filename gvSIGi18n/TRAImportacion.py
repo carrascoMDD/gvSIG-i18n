@@ -37,13 +37,44 @@ from Products.gvSIGi18n.TRAConRegistroActividad import TRAConRegistroActividad
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
-from TRAElemento_Operaciones import TRAElemento_Operaciones
 from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import ReferenceBrowserWidget
+from TRAElemento_Operaciones import TRAElemento_Operaciones
 
 ##code-section module-header #fill in your manual code here
 ##/code-section module-header
 
 schema = Schema((
+
+    StringField(
+        name='usuarioImportador',
+        widget=StringWidget(
+            label="Usuario Importador",
+            label2="Importer User",
+            description="Usuario que ha realizado la importacion.",
+            description2="User who performed the import operation.",
+            label_msgid='gvSIGi18n_TRAImportacion_attr_usuarioImportador_label',
+            description_msgid='gvSIGi18n_TRAImportacion_attr_usuarioImportador_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        containment="Not Specified",
+        description="Usuario que ha realizado la importacion.",
+        duplicates="0",
+        label2="Importer User",
+        ea_localid="602",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="User who performed the import operation.",
+        ea_guid="{FD6A0BBC-E2F5-4e26-8D9C-EE4A84C26E7E}",
+        read_only="True",
+        scale="0",
+        label="Usuario Importador",
+        length="0",
+        default_method="fGetMemberId_safe",
+        position="23",
+        owner_class_name="TRAImportacion"
+    ),
 
     BooleanField(
         name='debeCrearTraduccionesQueFaltan',
@@ -71,67 +102,7 @@ schema = Schema((
         label="Debe crear Traducciones que falten",
         length="0",
         containment="Not Specified",
-        position="4",
-        owner_class_name="TRAImportacion"
-    ),
-
-    BooleanField(
-        name='crearInformeAntes',
-        widget=BooleanField._properties['widget'](
-            label="Crear Informe de Estado ANTES",
-            label2="Create Status Report BEFORE",
-            description="Cuendo sea verdadero, se creara un informe detallado de estado, antes del proceso de importacion.",
-            description2="When true, a detailed status report shall be created before the import process.",
-            label_msgid='gvSIGi18n_TRAImportacion_attr_crearInformeAntes_label',
-            description_msgid='gvSIGi18n_TRAImportacion_attr_crearInformeAntes_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        description="Cuendo sea verdadero, se creara un informe detallado de estado, antes del proceso de importacion.",
-        duplicates="0",
-        label2="Create Status Report BEFORE",
-        ea_localid="1597",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        description2="When true, a detailed status report shall be created before the import process.",
-        ea_guid="{4DED20F9-F187-48d5-A220-7EA18D0E0C6A}",
-        scale="0",
-        default="False",
-        label="Crear Informe de Estado ANTES",
-        length="0",
-        containment="Not Specified",
         position="2",
-        owner_class_name="TRAImportacion"
-    ),
-
-    BooleanField(
-        name='crearInformeDespues',
-        widget=BooleanField._properties['widget'](
-            label="Crear Informe de Estado DESPUES",
-            label2="Create Status Report AFTER",
-            description="Cuendo sea verdadero, se creara un informe detallado de estado, despues del proceso de importacion.",
-            description2="When true, a detailed status report shall be created after the import process.",
-            label_msgid='gvSIGi18n_TRAImportacion_attr_crearInformeDespues_label',
-            description_msgid='gvSIGi18n_TRAImportacion_attr_crearInformeDespues_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        description="Cuendo sea verdadero, se creara un informe detallado de estado, despues del proceso de importacion.",
-        duplicates="0",
-        label2="Create Status Report AFTER",
-        ea_localid="1598",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        description2="When true, a detailed status report shall be created after the import process.",
-        ea_guid="{E3B22B84-2CB3-46d5-99DF-AD3B00CD02C2}",
-        scale="0",
-        default="False",
-        label="Crear Informe de Estado DESPUES",
-        length="0",
-        containment="Not Specified",
-        position="3",
         owner_class_name="TRAImportacion"
     ),
 
@@ -159,7 +130,7 @@ schema = Schema((
         description2="Product Version imported in this process. When the import executes, this data will be set as the value of the Last Imported Product Version in the translations catalog.",
         containment="Not Specified",
         ea_guid="{4D88E1D8-7FDA-43fd-87C0-BA2A7D756AF3}",
-        position="19",
+        position="24",
         owner_class_name="TRAImportacion",
         label="Version del producto"
     ),
@@ -204,6 +175,7 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRAImportacion_attr_codigoIdiomaPorDefecto_help',
             i18n_domain='gvSIGi18n',
         ),
+        containment="Not Specified",
         description="Codigo del lenguage para importar plantillas de traduccion GNUgettext .POT, o para Java .properties que no tienen el codigo del lenguage como sufijo en el nombre del fichero.",
         duplicates="0",
         label2="Default Language Code",
@@ -215,10 +187,9 @@ schema = Schema((
         description2="Code of the language to import GNU gettext .POT translation templates whose Java .properties import or export files do not contain the language code in the file name as a suffix.",
         ea_guid="{BB3EE64B-208F-4d42-8813-9AC4632A1535}",
         scale="0",
-        default="es",
         label="Codigo de Idioma por defecto",
         length="0",
-        containment="Not Specified",
+        default_method="fInitial_CodigoIdiomaPorDefecto",
         position="1",
         owner_class_name="TRAImportacion"
     ),
@@ -228,14 +199,14 @@ schema = Schema((
         widget=StringWidget(
             label="Nombre de Modulo por defecto",
             label2="Default Module Name",
-            description="Nombre del modulo a utilizar cuando no se puede obtener, bien del nombre del dominio en ficheros GNU gettext .PO, o de la estructura de carpetas si el contenido a importar es una archivo .jar o .zip.",
+            description="Nombre del modulo a utilizar cuando Importar usando nombre de modulo configurado, o no se puede obtener, bien del nombre del dominio en ficheros GNU gettext .PO, o de la estructura de carpetas si el contenido a importar es una archivo .jar o .zip.",
             description2="Name of the Module to use when no module name can be obtained, whether from domain name in the GNUgettext .POfile header, or from the folder structure if the uploaded content is a .jar or .zip archive file.",
             label_msgid='gvSIGi18n_TRAImportacion_attr_nombreModuloPorDefecto_label',
             description_msgid='gvSIGi18n_TRAImportacion_attr_nombreModuloPorDefecto_help',
             i18n_domain='gvSIGi18n',
         ),
         containment="Not Specified",
-        description="Nombre del modulo a utilizar cuando no se puede obtener, bien del nombre del dominio en ficheros GNU gettext .PO, o de la estructura de carpetas si el contenido a importar es una archivo .jar o .zip.",
+        description="Nombre del modulo a utilizar cuando Importar usando nombre de modulo configurado, o no se puede obtener, bien del nombre del dominio en ficheros GNU gettext .PO, o de la estructura de carpetas si el contenido a importar es una archivo .jar o .zip.",
         duplicates="0",
         label2="Default Module Name",
         ea_localid="1476",
@@ -248,9 +219,90 @@ schema = Schema((
         scale="0",
         label="Nombre de Modulo por defecto",
         length="0",
-        default_method="fDefaultNombreModuloFromCatalog",
-        position="17",
+        default_method="fInitial_NombreModuloPorDefecto",
+        position="21",
         owner_class_name="TRAImportacion"
+    ),
+
+    IntegerField(
+        name='numeroMaximoLineasAExplorar',
+        widget=IntegerField._properties['widget'](
+            label="Numero Maximo de Lineas a Explorar",
+            label2="Maximum Number of Lines to Scan",
+            description="Cuando se lea un fichero de intercambio de traducciones, se exploraran hasta este numero maximo de lineas.",
+            description2="When scanning a translations interchange file, the system shall scan up to this maximum number of lines.",
+            label_msgid='gvSIGi18n_TRAImportacion_attr_numeroMaximoLineasAExplorar_label',
+            description_msgid='gvSIGi18n_TRAImportacion_attr_numeroMaximoLineasAExplorar_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        containment="Not Specified",
+        description="Cuando se lea un fichero de intercambio de traducciones, se exploraran hasta este numero maximo de lineas.",
+        duplicates="0",
+        label2="Maximum Number of Lines to Scan",
+        ea_localid="1970",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="When scanning a translations interchange file, the system shall scan up to this maximum number of lines.",
+        ea_guid="{23F5C125-A255-4324-A244-01154A9C24FD}",
+        scale="0",
+        label="Numero Maximo de Lineas a Explorar",
+        length="0",
+        default_method="fInitial_NumeroMaximoLineasAExplorar",
+        position="22",
+        owner_class_name="TRAImportacion"
+    ),
+
+    ComputedField(
+        name='contenidos',
+        widget=ComputedWidget(
+            label="Contenido Intercambio Traducciones",
+            label2="Translations Interchange Contents",
+            description="Contiene cadenas y traducciones contribuidas por un usuario, para su importacion.",
+            description2="Contains strings and translations contributed by a user, and to be imported.",
+            label_msgid='gvSIGi18n_TRAImportacion_contents_contenidos_label',
+            description_msgid='gvSIGi18n_TRAImportacion_contents_contenidos_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        contains_collections=False,
+        label2='Translations Interchange Contents',
+        additional_columns=['excluirDeImportacion', 'ficheroLeido'],
+        label='Contenido Intercambio Traducciones',
+        represents_aggregation=True,
+        description2='Contains strings and translations contributed by a user, and to be imported.',
+        multiValued=1,
+        factory_views={ 'TRAContenidoIntercambio' : 'TRACrear_ContenidoIntercambio',},
+        owner_class_name="TRAImportacion",
+        expression="context.objectValues(['TRAContenidoIntercambio'])",
+        computed_types=['TRAContenidoIntercambio'],
+        non_framework_elements=False,
+        description='Contiene cadenas y traducciones contribuidas por un usuario, para su importacion.'
+    ),
+
+    ComputedField(
+        name='contenidoXML',
+        widget=ComputedWidget(
+            label="Contenido XML",
+            label2="XML Contents",
+            description="Contenido importado de un fichero XML de copia de seguridad de un catalogo de traducciones.",
+            description2="Contents imported from an XML backup file from a translations catalog.",
+            label_msgid='gvSIGi18n_TRAImportacion_contents_contenidoXML_label',
+            description_msgid='gvSIGi18n_TRAImportacion_contents_contenidoXML_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        contains_collections=False,
+        label2='XML Contents',
+        label='Contenido XML',
+        represents_aggregation=True,
+        description2='Contents imported from an XML backup file from a translations catalog.',
+        multiValued=1,
+        owner_class_name="TRAImportacion",
+        multiplicity_higher=1,
+        expression="context.objectValues(['TRAContenidoXML'])",
+        computed_types=['TRAContenidoXML'],
+        non_framework_elements=False,
+        description='Contenido importado de un fichero XML de copia de seguridad de un catalogo de traducciones.'
     ),
 
     StringField(
@@ -279,7 +331,7 @@ schema = Schema((
         label="Identificador del elemento de Control del Progreso",
         length="0",
         containment="Not Specified",
-        position="6",
+        position="4",
         owner_class_name="TRAImportacion"
     ),
 
@@ -312,268 +364,461 @@ schema = Schema((
         length="0",
         multiValued=0,
         containment="Not Specified",
-        position="5",
+        position="3",
         owner_class_name="TRAImportacion",
         expression="context.fDeriveElementoProgreso()",
         computed_types="['TRAProgreso', ]"
     ),
 
-    ComputedField(
-        name='informeEstadoAntes',
-        widget=ComputedField._properties['widget'](
-            label="Informe Antes de la Importacion.",
-            label2="Report Before Import",
-            description="Informe acerca del estado de traducciones, antes de la Importacion.",
-            description2="Report about the translations status, before the export operation.",
-            label_msgid='gvSIGi18n_TRAImportacion_attr_informeEstadoAntes_label',
-            description_msgid='gvSIGi18n_TRAImportacion_attr_informeEstadoAntes_help',
+    BooleanField(
+        name='importarConNombreModuloConfigurado',
+        widget=BooleanField._properties['widget'](
+            label="Importar usando nombre de modulo configurado",
+            label2="Import using configured module name",
+            description="Importar usando el nombre de modulo configurado para la importacion o el contenido de intercambio",
+            description2="Import strings as used in the module with the name configured for the import or the interchange contents.",
+            label_msgid='gvSIGi18n_TRAImportacion_attr_importarConNombreModuloConfigurado_label',
+            description_msgid='gvSIGi18n_TRAImportacion_attr_importarConNombreModuloConfigurado_help',
             i18n_domain='gvSIGi18n',
         ),
-        description="Informe acerca del estado de traducciones, antes de la Importacion.",
+        containment="Not Specified",
+        description="Importar usando el nombre de modulo configurado para la importacion o el contenido de intercambio",
         duplicates="0",
-        label2="Report Before Import",
-        ea_localid="1572",
+        label2="Import using configured module name",
+        ea_localid="1729",
         derived="0",
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        description2="Report about the translations status, before the export operation.",
-        ea_guid="{3DA494F3-CF31-4852-B0B3-3BF62D85A463}",
-        read_only="True",
+        description2="Import strings as used in the module with the name configured for the import or the interchange contents.",
+        ea_guid="{ED12A898-3143-4f5c-A730-EAC6B09BE9D2}",
         scale="0",
-        expression="context.fInformeEstadoAntes()",
-        label="Informe Antes de la Importacion.",
+        label="Importar usando nombre de modulo configurado",
         length="0",
-        containment="Not Specified",
-        position="9",
-        owner_class_name="TRAImportacion",
-        exclude_from_views="[ 'Textual', 'General', ]",
-        computed_types="[ 'TRAInforme',]"
+        default_method="fInitial_ImportarConNombreModuloConfigurado",
+        position="5",
+        owner_class_name="TRAImportacion"
     ),
 
-    ComputedField(
-        name='informeEstadoIdiomasAntes',
-        widget=ComputedField._properties['widget'](
-            label="Informe por Idiomas Antes de la Importacion.",
-            label2="Languages Report Before Import",
-            description="Informe del estado de traduccion por idiomas, antes de la Importacion.",
-            description2="Report or the translation status, summarized by languages, before the export operation.",
-            label_msgid='gvSIGi18n_TRAImportacion_attr_informeEstadoIdiomasAntes_label',
-            description_msgid='gvSIGi18n_TRAImportacion_attr_informeEstadoIdiomasAntes_help',
+    BooleanField(
+        name='importarNombreModuloDesdeDominioONombreFichero',
+        widget=BooleanField._properties['widget'](
+            label="Importar modulo de nombre de fichero o domino PO",
+            label2="Import module from file name or PO Domain",
+            description="Importar nombre de modulo del nombre de fichero o linea de domino del fichero GNU gettext PO",
+            description2="Import module name from the file name or GNU gettext PO header Domain line",
+            label_msgid='gvSIGi18n_TRAImportacion_attr_importarNombreModuloDesdeDominioONombreFichero_label',
+            description_msgid='gvSIGi18n_TRAImportacion_attr_importarNombreModuloDesdeDominioONombreFichero_help',
             i18n_domain='gvSIGi18n',
         ),
-        custom_presentation_view="TRAInformeEstadoIdiomasAntes_CustomView",
-        description="Informe del estado de traduccion por idiomas, antes de la Importacion.",
+        containment="Not Specified",
+        description="Importar nombre de modulo del nombre de fichero o linea de domino del fichero GNU gettext PO",
         duplicates="0",
-        label2="Languages Report Before Import",
-        ea_localid="923",
+        label2="Import module from file name or PO Domain",
+        ea_localid="1728",
         derived="0",
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        description2="Report or the translation status, summarized by languages, before the export operation.",
-        ea_guid="{DC88F36F-DB90-4f49-86CE-4D3A34B90648}",
-        read_only="True",
+        description2="Import module name from the file name or GNU gettext PO header Domain line",
+        ea_guid="{049E7311-DA11-457a-8927-FF10B5F58DA7}",
         scale="0",
-        expression="context.fDeriveInformeEstadoIdiomasAntes()",
-        label="Informe por Idiomas Antes de la Importacion.",
+        label="Importar modulo de nombre de fichero o domino PO",
         length="0",
-        containment="Not Specified",
-        position="11",
-        owner_class_name="TRAImportacion",
-        exclude_from_views="[ 'Textual',    'Tabular', 'General', ]",
-        computed_types="text"
-    ),
-
-    ComputedField(
-        name='informeEstadoModulosAntes',
-        exclude_from_views="[ 'Textual',   'Tabular',  'General', ]",
-        widget=ComputedField._properties['widget'](
-            label="Informe por Modulos e Idiomas Antes de Importar",
-            label2="Modules and Languages Report Before Import",
-            description="Informe del estado de traduccion por modulos y detallado por  idiomas, antes de la exportacion.",
-            description2="Report or the translation status, summarized by modules and detailed by languages, before the import operation.",
-            label_msgid='gvSIGi18n_TRAImportacion_attr_informeEstadoModulosAntes_label',
-            description_msgid='gvSIGi18n_TRAImportacion_attr_informeEstadoModulosAntes_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        description="Informe del estado de traduccion por modulos y detallado por  idiomas, antes de la exportacion.",
-        duplicates="0",
-        label2="Modules and Languages Report Before Import",
-        ea_localid="926",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        description2="Report or the translation status, summarized by modules and detailed by languages, before the import operation.",
-        ea_guid="{9D37A306-2FBC-4270-99CA-483739FE7193}",
-        read_only="True",
-        scale="0",
-        expression="context.fDeriveInformeEstadoModulosAntes()",
-        label="Informe por Modulos e Idiomas Antes de Importar",
-        length="0",
-        containment="Not Specified",
-        position="13",
-        owner_class_name="TRAImportacion",
-        custom_presentation_view="TRAInformeEstadoModulosAntes_CustomView"
-    ),
-
-    ComputedField(
-        name='informeEstadoDespues',
-        widget=ComputedField._properties['widget'](
-            label="Informe Despues de Importar",
-            label2="Report After Import",
-            description="Informe acerca del estado de traducciones, despues de la importacion.",
-            description2="Report about the translations status, after the import operation.",
-            label_msgid='gvSIGi18n_TRAImportacion_attr_informeEstadoDespues_label',
-            description_msgid='gvSIGi18n_TRAImportacion_attr_informeEstadoDespues_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        description="Informe acerca del estado de traducciones, despues de la importacion.",
-        duplicates="0",
-        label2="Report After Import",
-        ea_localid="1571",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        description2="Report about the translations status, after the import operation.",
-        ea_guid="{5BB2A961-9BE2-440c-862E-43D138081361}",
-        read_only="True",
-        scale="0",
-        exclude_from_views="[ 'Textual',   'General', ]",
-        label="Informe Despues de Importar",
-        length="0",
-        containment="Not Specified",
-        position="10",
-        owner_class_name="TRAImportacion",
-        expression="context.fInformeEstadoDespues()",
-        computed_types="[ 'TRAInforme',]"
-    ),
-
-    ComputedField(
-        name='informeEstadoIdiomasDespues',
-        widget=ComputedField._properties['widget'](
-            label="Informe por Idiomas Despues de Importar",
-            label2="Languages Report After Import",
-            description="Informe del estado de traduccion por idiomas, despues de la importacion.",
-            description2="Report or the translation status, summarized by languages, after the import operation.",
-            label_msgid='gvSIGi18n_TRAImportacion_attr_informeEstadoIdiomasDespues_label',
-            description_msgid='gvSIGi18n_TRAImportacion_attr_informeEstadoIdiomasDespues_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        description="Informe del estado de traduccion por idiomas, despues de la importacion.",
-        duplicates="0",
-        label2="Languages Report After Import",
-        ea_localid="940",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        description2="Report or the translation status, summarized by languages, after the import operation.",
-        ea_guid="{78448E9D-6A53-4be6-ABE6-A3A539B2E8BE}",
-        read_only="True",
-        scale="0",
-        exclude_from_views="[ 'Textual',    'Tabular', 'General', ]",
-        label="Informe por Idiomas Despues de Importar",
-        length="0",
-        expression="context.fDeriveInformeEstadoIdiomasDespues()",
-        containment="Not Specified",
-        position="12",
-        owner_class_name="TRAImportacion",
-        custom_presentation_view="TRAInformeEstadoIdiomasDespues_CustomView",
-        computed_types="text"
-    ),
-
-    ComputedField(
-        name='informeEstadoModulosDespues',
-        widget=ComputedField._properties['widget'](
-            label="Informe por Modulos e Idiomas Despues de Importar",
-            label2="Modules and Languages Report After Import",
-            description="Informe del estado de traduccion por modulos y detallado por  idiomas, despues de la importacion.",
-            description2="Report or the translation status, summarized by modules and detailed by languages, after the import operation.",
-            label_msgid='gvSIGi18n_TRAImportacion_attr_informeEstadoModulosDespues_label',
-            description_msgid='gvSIGi18n_TRAImportacion_attr_informeEstadoModulosDespues_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        custom_presentation_view="TRAInformeEstadoModulosDespues_CustomView",
-        description="Informe del estado de traduccion por modulos y detallado por  idiomas, despues de la importacion.",
-        duplicates="0",
-        label2="Modules and Languages Report After Import",
-        ea_localid="943",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        description2="Report or the translation status, summarized by modules and detailed by languages, after the import operation.",
-        ea_guid="{EC4C31D0-740F-4b37-8523-8FF1A679FB85}",
-        read_only="True",
-        scale="0",
-        expression="context.fDeriveInformeEstadoModulosDespues()",
-        label="Informe por Modulos e Idiomas Despues de Importar",
-        length="0",
-        containment="Not Specified",
-        position="14",
-        owner_class_name="TRAImportacion",
-        exclude_from_views="[ 'Textual',   'Tabular',  'General', ]"
-    ),
-
-    TextField(
-        name='informeCambios',
-        widget=TextAreaWidget(
-            label="Informe de Cambios",
-            label2="Changes report",
-            description="Informa de los cambios realizados durante la importacion: idiomas, modulos y cadenas creados, y traducciones cambiadas.",
-            description2="Reports the changes made during the import process: created languages, modules and strings, and changed translations.",
-            label_msgid='gvSIGi18n_TRAImportacion_attr_informeCambios_label',
-            description_msgid='gvSIGi18n_TRAImportacion_attr_informeCambios_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        description="Informa de los cambios realizados durante la importacion: idiomas, modulos y cadenas creados, y traducciones cambiadas.",
-        duplicates="0",
-        label2="Changes report",
-        ea_localid="1601",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        description2="Reports the changes made during the import process: created languages, modules and strings, and changed translations.",
-        ea_guid="{A25B0422-4440-4420-A414-2448CAD303CC}",
-        read_only="True",
-        scale="0",
-        custom_presentation_view="TRAImportacionCambios_CustomView",
-        label="Informe de Cambios",
-        length="0",
-        containment="Not Specified",
+        default_method="fInitial_ImportarNombreModuloDesdeDominioONombreFichero",
         position="7",
-        owner_class_name="TRAImportacion",
-        exclude_from_views="[ 'Tabular','Textual',  'General', ]"
+        owner_class_name="TRAImportacion"
     ),
 
-    ComputedField(
-        name='contenido',
-        widget=ComputedWidget(
-            label="Contenido Intercambio Traducciones",
-            label2="Translations Interchange Contents",
-            description="Contiene cadenas y traducciones contribuidas por un usuario, para su importacion.",
-            description2="Contains strings and translations contributed by a user, and to be imported.",
-            label_msgid='gvSIGi18n_TRAImportacion_contents_contenido_label',
-            description_msgid='gvSIGi18n_TRAImportacion_contents_contenido_help',
+    BooleanField(
+        name='importarNombresModulosDesdeComentarios',
+        widget=BooleanField._properties['widget'](
+            label="Importar nombres de modulos desde comentarios",
+            label2="Import module names from comments",
+            description="Importar los nombres de modulos de cada cadena, desde sus comentarios en el fichero .properties o GNUgettextPO.",
+            description2="Import the names of modules for each string, from its comments in the .properties or GNUgettextPO file.",
+            label_msgid='gvSIGi18n_TRAImportacion_attr_importarNombresModulosDesdeComentarios_label',
+            description_msgid='gvSIGi18n_TRAImportacion_attr_importarNombresModulosDesdeComentarios_help',
             i18n_domain='gvSIGi18n',
         ),
-        contains_collections=False,
-        label2='Translations Interchange Contents',
-        additional_columns=['excluirDeImportacion', 'nombreModulo'],
-        label='Contenido Intercambio Traducciones',
-        represents_aggregation=True,
-        description2='Contains strings and translations contributed by a user, and to be imported.',
-        multiValued=1,
-        factory_views={ 'TRAContenidoIntercambio' : 'TRACrear_ContenidoIntercambio',},
-        owner_class_name="TRAImportacion",
-        expression="context.objectValues(['TRAContenidoIntercambio'])",
-        computed_types=['TRAContenidoIntercambio'],
-        non_framework_elements=False,
-        description='Contiene cadenas y traducciones contribuidas por un usuario, para su importacion.'
+        containment="Not Specified",
+        description="Importar los nombres de modulos de cada cadena, desde sus comentarios en el fichero .properties o GNUgettextPO.",
+        duplicates="0",
+        label2="Import module names from comments",
+        ea_localid="1722",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="Import the names of modules for each string, from its comments in the .properties or GNUgettextPO file.",
+        ea_guid="{EDF8DAA4-E273-410f-9588-1E3834025631}",
+        scale="0",
+        label="Importar nombres de modulos desde comentarios",
+        length="0",
+        default_method="fInitial_ImportarNombresModulosDesdeComentarios",
+        position="8",
+        owner_class_name="TRAImportacion"
+    ),
+
+    BooleanField(
+        name='importarFuentesDesdeComentarios',
+        widget=BooleanField._properties['widget'](
+            label="Importar fuentes desde comentarios",
+            label2="Import sources from comments",
+            description="Importar los nombres de ficheros fuentes que donde aparece cada cadena, desde sus comentarios en el fichero .properties o GNUgettextPO.",
+            description2="Import the names of source files where each string appears, from its comments in the .properties or GNUgettextPO file.",
+            label_msgid='gvSIGi18n_TRAImportacion_attr_importarFuentesDesdeComentarios_label',
+            description_msgid='gvSIGi18n_TRAImportacion_attr_importarFuentesDesdeComentarios_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        containment="Not Specified",
+        description="Importar los nombres de ficheros fuentes que donde aparece cada cadena, desde sus comentarios en el fichero .properties o GNUgettextPO.",
+        duplicates="0",
+        label2="Import sources from comments",
+        ea_localid="1726",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="Import the names of source files where each string appears, from its comments in the .properties or GNUgettextPO file.",
+        ea_guid="{3BD85B55-BAC1-43c4-A99D-F378D69E35AC}",
+        scale="0",
+        label="Importar fuentes desde comentarios",
+        length="0",
+        default_method="fInitial_ImportarFuentesDesdeComentarios",
+        position="6",
+        owner_class_name="TRAImportacion"
+    ),
+
+    BooleanField(
+        name='importarStatusDesdeComentarios',
+        widget=BooleanField._properties['widget'](
+            label="Importar estado de traduciones de comentarios",
+            label2="Import translations status from comments",
+            description="Importar el estado de cada traduccion, desde sus comentarios en el fichero .properties o GNUgettextPO.",
+            description2="Import the status of each translation, from its comments in the .properties or GNUgettextPO file.",
+            label_msgid='gvSIGi18n_TRAImportacion_attr_importarStatusDesdeComentarios_label',
+            description_msgid='gvSIGi18n_TRAImportacion_attr_importarStatusDesdeComentarios_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        containment="Not Specified",
+        description="Importar el estado de cada traduccion, desde sus comentarios en el fichero .properties o GNUgettextPO.",
+        duplicates="0",
+        label2="Import translations status from comments",
+        ea_localid="1727",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="Import the status of each translation, from its comments in the .properties or GNUgettextPO file.",
+        ea_guid="{22FF03B7-44F1-443e-9365-CA7053FB28E0}",
+        scale="0",
+        label="Importar estado de traduciones de comentarios",
+        length="0",
+        default_method="fInitial_ImportarStatusDesdeComentarios",
+        position="9",
+        owner_class_name="TRAImportacion"
+    ),
+
+    BooleanField(
+        name='esRecuperacion',
+        widget=BooleanField._properties['widget'](
+            label="Importar para Recuperar copia de seguridad",
+            label2="Import to Restore Backup",
+            description="El proceso de importación recuperara contenido desde una copia de seguridad de catalogo de traducciones.",
+            description2="The Import process shall restore contents from a backup of a translations catalog.",
+            label_msgid='gvSIGi18n_TRAImportacion_attr_esRecuperacion_label',
+            description_msgid='gvSIGi18n_TRAImportacion_attr_esRecuperacion_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="El proceso de importación recuperara contenido desde una copia de seguridad de catalogo de traducciones.",
+        duplicates="0",
+        label2="Import to Restore Backup",
+        ea_localid="2039",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="The Import process shall restore contents from a backup of a translations catalog.",
+        ea_guid="{18A3AC25-634F-4199-A0ED-B8F4DFA005D5}",
+        read_only="True",
+        scale="0",
+        default="False",
+        label="Importar para Recuperar copia de seguridad",
+        length="0",
+        containment="Not Specified",
+        position="2",
+        owner_class_name="TRAImportacion"
+    ),
+
+    BooleanField(
+        name='importarXMLTRACatalogo',
+        widget=BooleanField._properties['widget'](
+            label="Importar propiedades TRACatalogo desde XML",
+            label2="Import propertiesTRACatalogo in XML",
+            description="Importar propiedades del catalogo raiz de traducciones desde fichero XML.",
+            description2="Import properties of the root translations catalog from an XML file.",
+            label_msgid='gvSIGi18n_TRAImportacion_attr_importarXMLTRACatalogo_label',
+            description_msgid='gvSIGi18n_TRAImportacion_attr_importarXMLTRACatalogo_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        containment="Not Specified",
+        description="Importar propiedades del catalogo raiz de traducciones desde fichero XML.",
+        duplicates="0",
+        label2="Import propertiesTRACatalogo in XML",
+        ea_localid="2030",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="Import properties of the root translations catalog from an XML file.",
+        ea_guid="{DA720A8C-6EB7-416f-839E-20FEBE797A50}",
+        scale="0",
+        label="Importar propiedades TRACatalogo desde XML",
+        length="0",
+        default_method="fInitial_ImportarXMLTRACatalogo",
+        position="10",
+        owner_class_name="TRAImportacion"
+    ),
+
+    BooleanField(
+        name='importarXMLTRAConfiguraciones',
+        widget=BooleanField._properties['widget'](
+            label="Importar las TRAConfiguracion desde XML",
+            label2="Import the TRAConfiguracion from XML",
+            description="Importar las configuraciones desde fichero XML.",
+            description2="Import the configurations from an XML file.",
+            label_msgid='gvSIGi18n_TRAImportacion_attr_importarXMLTRAConfiguraciones_label',
+            description_msgid='gvSIGi18n_TRAImportacion_attr_importarXMLTRAConfiguraciones_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        containment="Not Specified",
+        description="Importar las configuraciones desde fichero XML.",
+        duplicates="0",
+        label2="Import the TRAConfiguracion from XML",
+        ea_localid="2031",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="Import the configurations from an XML file.",
+        ea_guid="{D058E6AE-FD21-48a9-A8FD-F61EF1A2CD58}",
+        scale="0",
+        label="Importar las TRAConfiguracion desde XML",
+        length="0",
+        default_method="fInitial_ImportarXMLTRAConfiguraciones",
+        position="11",
+        owner_class_name="TRAImportacion"
+    ),
+
+    BooleanField(
+        name='importarXMLTRAParametrosControlProgreso',
+        widget=BooleanField._properties['widget'](
+            label="Importar los TRAParametrosControlProgreso desde XML",
+            label2="Import the TRAParametrosControlProgreso from XML",
+            description="Importar los parametros control de progreso de procesos de larga duracion desde fichero XML.",
+            description2="Import the long-lived progress control parameters from an XML file.",
+            label_msgid='gvSIGi18n_TRAImportacion_attr_importarXMLTRAParametrosControlProgreso_label',
+            description_msgid='gvSIGi18n_TRAImportacion_attr_importarXMLTRAParametrosControlProgreso_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        containment="Not Specified",
+        description="Importar los parametros control de progreso de procesos de larga duracion desde fichero XML.",
+        duplicates="0",
+        label2="Import the TRAParametrosControlProgreso from XML",
+        ea_localid="2032",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="Import the long-lived progress control parameters from an XML file.",
+        ea_guid="{59B402BE-4E7E-4cb8-A561-C474C5D03DCA}",
+        scale="0",
+        label="Importar los TRAParametrosControlProgreso desde XML",
+        length="0",
+        default_method="fInitial_ImportarXMLTRAParametrosControl",
+        position="12",
+        owner_class_name="TRAImportacion"
+    ),
+
+    BooleanField(
+        name='importarXMLTRAIdiomas',
+        widget=BooleanField._properties['widget'](
+            label="Importar los TRAIdioma desde XML",
+            label2="Import the TRAIdioma from XML",
+            description="Importar los idiomas, y en su caso nombres de idioma y banderas asociadas, desde fichero XML.",
+            description2="Import the languages, and when applicable the langusage names and flag, from an XML file.",
+            label_msgid='gvSIGi18n_TRAImportacion_attr_importarXMLTRAIdiomas_label',
+            description_msgid='gvSIGi18n_TRAImportacion_attr_importarXMLTRAIdiomas_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        containment="Not Specified",
+        description="Importar los idiomas, y en su caso nombres de idioma y banderas asociadas, desde fichero XML.",
+        duplicates="0",
+        label2="Import the TRAIdioma from XML",
+        ea_localid="2033",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="Import the languages, and when applicable the langusage names and flag, from an XML file.",
+        ea_guid="{7C46DAF1-4617-46cf-8B45-92347B2A12BB}",
+        scale="0",
+        label="Importar los TRAIdioma desde XML",
+        length="0",
+        default_method="fInitial_ImportarXMLTRAIdiomas",
+        position="13",
+        owner_class_name="TRAImportacion"
+    ),
+
+    BooleanField(
+        name='importarXMLTRASolicitudesCadenas',
+        widget=BooleanField._properties['widget'](
+            label="Importar los TRASolicitudCadena desde XML",
+            label2="Import the TRASolicitudCadena from XML",
+            description="Importar las solicitudes de nuevas cadenas desde fichero XML.",
+            description2="Importar the new string requests from an XML file.",
+            label_msgid='gvSIGi18n_TRAImportacion_attr_importarXMLTRASolicitudesCadenas_label',
+            description_msgid='gvSIGi18n_TRAImportacion_attr_importarXMLTRASolicitudesCadenas_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        containment="Not Specified",
+        description="Importar las solicitudes de nuevas cadenas desde fichero XML.",
+        duplicates="0",
+        label2="Import the TRASolicitudCadena from XML",
+        ea_localid="2034",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="Importar the new string requests from an XML file.",
+        ea_guid="{4FB0780C-FC36-4320-843D-191809633C16}",
+        scale="0",
+        label="Importar los TRASolicitudCadena desde XML",
+        length="0",
+        default_method="fInitial_ImportarXMLTRASolicitudesCadenas",
+        position="14",
+        owner_class_name="TRAImportacion"
+    ),
+
+    BooleanField(
+        name='importarXMLTRAModulos',
+        widget=BooleanField._properties['widget'](
+            label="Importar los TRAModulo desde XML",
+            label2="Import the TRAModulo from XML",
+            description="Importar los modulos, desde fichero XML.",
+            description2="Import the modules, from an XML file.",
+            label_msgid='gvSIGi18n_TRAImportacion_attr_importarXMLTRAModulos_label',
+            description_msgid='gvSIGi18n_TRAImportacion_attr_importarXMLTRAModulos_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        containment="Not Specified",
+        description="Importar los modulos, desde fichero XML.",
+        duplicates="0",
+        label2="Import the TRAModulo from XML",
+        ea_localid="2035",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="Import the modules, from an XML file.",
+        ea_guid="{63C40DCD-FA1B-4075-922C-629764A668A2}",
+        scale="0",
+        label="Importar los TRAModulo desde XML",
+        length="0",
+        default_method="fInitial_ImportarXMLTRAModulos",
+        position="15",
+        owner_class_name="TRAImportacion"
+    ),
+
+    BooleanField(
+        name='importarXMLTRAInformes',
+        widget=BooleanField._properties['widget'](
+            label="Importar los TRAInforme desde XML",
+            label2="Import the TRAInforme from XML",
+            description="Importar los informes, desde fichero XML.",
+            description2="Import the reports, from an XML file.",
+            label_msgid='gvSIGi18n_TRAImportacion_attr_importarXMLTRAInformes_label',
+            description_msgid='gvSIGi18n_TRAImportacion_attr_importarXMLTRAInformes_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        containment="Not Specified",
+        description="Importar los informes, desde fichero XML.",
+        duplicates="0",
+        label2="Import the TRAInforme from XML",
+        ea_localid="2036",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="Import the reports, from an XML file.",
+        ea_guid="{063C66F6-134A-49d3-B66E-F9A70431B32F}",
+        scale="0",
+        label="Importar los TRAInforme desde XML",
+        length="0",
+        default_method="fInitial_ImportarXMLTRAInformes",
+        position="16",
+        owner_class_name="TRAImportacion"
+    ),
+
+    BooleanField(
+        name='importarXMLTRAImportaciones',
+        widget=BooleanField._properties['widget'](
+            label="Importar las TRAImportacion desde XML",
+            label2="Import the TRAImportacion from XML",
+            description="Importar las importaciones desde fichero XML.",
+            description2="Import the imports from an XML file.",
+            label_msgid='gvSIGi18n_TRAImportacion_attr_importarXMLTRAImportaciones_label',
+            description_msgid='gvSIGi18n_TRAImportacion_attr_importarXMLTRAImportaciones_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        containment="Not Specified",
+        description="Importar las importaciones desde fichero XML.",
+        duplicates="0",
+        label2="Import the TRAImportacion from XML",
+        ea_localid="2037",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="Import the imports from an XML file.",
+        ea_guid="{B42953FE-4D41-4e77-AAC8-E175140F11AA}",
+        scale="0",
+        label="Importar las TRAImportacion desde XML",
+        length="0",
+        default_method="fInitial_ImportarXMLTRAImportaciones",
+        position="17",
+        owner_class_name="TRAImportacion"
+    ),
+
+    BooleanField(
+        name='importarXMLTRAProgresos',
+        widget=BooleanField._properties['widget'](
+            label="Importar los TRAProgreso desde XML",
+            label2="Import the TRAProgreso from XML",
+            description="Importar los progresos y resultados de procesos de larga duracion desde fichero XML.",
+            description2="Import the progresses and results of long-lived processes from an XML file.",
+            label_msgid='gvSIGi18n_TRAImportacion_attr_importarXMLTRAProgresos_label',
+            description_msgid='gvSIGi18n_TRAImportacion_attr_importarXMLTRAProgresos_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        containment="Not Specified",
+        description="Importar los progresos y resultados de procesos de larga duracion desde fichero XML.",
+        duplicates="0",
+        label2="Import the TRAProgreso from XML",
+        ea_localid="2038",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="Import the progresses and results of long-lived processes from an XML file.",
+        ea_guid="{4AED49F4-A5D0-4381-88D9-DFD6029F0F80}",
+        scale="0",
+        label="Importar los TRAProgreso desde XML",
+        length="0",
+        default_method="fInitial_ImportarXMLTRAProgresos",
+        position="18",
+        owner_class_name="TRAImportacion"
     ),
 
     ComputedField(
@@ -604,125 +849,10 @@ schema = Schema((
         label="Contenidos Importacion",
         length="0",
         containment="Not Specified",
-        position="8",
+        position="20",
         owner_class_name="TRAImportacion",
         exclude_from_views="[ 'Textual', 'Tabular', ]",
         computed_types="text"
-    ),
-
-    ComputedField(
-        name='informesEstado',
-        widget=ComputedWidget(
-            label="Informes Estado Antes y Despues",
-            label2="Status Reports Before and After",
-            description="Informes del Estado del Catalogo, sus Idiomas, Modulos, Cadenas y Traducciones, al comenzar el proceso de importacion, y tras terminar el proceso de importacion.",
-            description2="Catalog Status Reports, its Languages, Modules, Strings and Translations, at the beginning of the import process, and after termination of the process.",
-            label_msgid='gvSIGi18n_TRAImportacion_contents_informesEstado_label',
-            description_msgid='gvSIGi18n_TRAImportacion_contents_informesEstado_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        contains_collections=False,
-        label2='Status Reports Before and After',
-        additional_columns=['haCompletadoConExito'],
-        label='Informes Estado Antes y Despues',
-        represents_aggregation=True,
-        description2='Catalog Status Reports, its Languages, Modules, Strings and Translations, at the beginning of the import process, and after termination of the process.',
-        multiValued=1,
-        owner_class_name="TRAImportacion",
-        expression="context.objectValues(['TRAInforme'])",
-        computed_types=['TRAInforme'],
-        non_framework_elements=False,
-        description='Informes del Estado del Catalogo, sus Idiomas, Modulos, Cadenas y Traducciones, al comenzar el proceso de importacion, y tras terminar el proceso de importacion.'
-    ),
-
-    IntegerField(
-        name='maximoLineasAImportarGNUgettextPO',
-        widget=IntegerField._properties['widget'](
-            label="Max #  lineas .PO",
-            label2="Max #  lines .PO",
-            description="Limita el numero de lineas a importar de ficheros GNU gettext .PO para evitar procesos de importacion demasiado largos, quiza por errores en los archivos de entrada.",
-            description2="Limits the number of lines to import from GNUgettext .PO files, to avoid excessively long import processes, may be because of errors in the input files.",
-            label_msgid='gvSIGi18n_TRAImportacion_attr_maximoLineasAImportarGNUgettextPO_label',
-            description_msgid='gvSIGi18n_TRAImportacion_attr_maximoLineasAImportarGNUgettextPO_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        description="Limita el numero de lineas a importar de ficheros GNU gettext .PO para evitar procesos de importacion demasiado largos, quiza por errores en los archivos de entrada.",
-        duplicates="0",
-        label2="Max #  lines .PO",
-        ea_localid="1477",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        description2="Limits the number of lines to import from GNUgettext .PO files, to avoid excessively long import processes, may be because of errors in the input files.",
-        ea_guid="{5F62F53D-156D-498a-9429-D85333DBB744}",
-        scale="0",
-        default="100000",
-        label="Max #  lineas .PO",
-        length="0",
-        containment="Not Specified",
-        position="15",
-        owner_class_name="TRAImportacion"
-    ),
-
-    IntegerField(
-        name='maximoLineasAImportarJavaProperties',
-        widget=IntegerField._properties['widget'](
-            label="Max #  lineas .properties",
-            label2="Max #  lines .properties",
-            description="Limita el numero de lineas a importar de ficheros Java .properties para evitar procesos de importacion demasiado largos, quiza por errores en los archivos de entrada.",
-            description2="Limits the number of lines to import from Java .properties files, to avoid excessively long import processes, may be because of errors in the input files.",
-            label_msgid='gvSIGi18n_TRAImportacion_attr_maximoLineasAImportarJavaProperties_label',
-            description_msgid='gvSIGi18n_TRAImportacion_attr_maximoLineasAImportarJavaProperties_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        description="Limita el numero de lineas a importar de ficheros Java .properties para evitar procesos de importacion demasiado largos, quiza por errores en los archivos de entrada.",
-        duplicates="0",
-        label2="Max #  lines .properties",
-        ea_localid="1478",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        description2="Limits the number of lines to import from Java .properties files, to avoid excessively long import processes, may be because of errors in the input files.",
-        ea_guid="{D92A23D8-5613-4df9-AA4E-6C7DE001EC26}",
-        scale="0",
-        default="50000",
-        label="Max #  lineas .properties",
-        length="0",
-        containment="Not Specified",
-        position="16",
-        owner_class_name="TRAImportacion"
-    ),
-
-    StringField(
-        name='usuarioImportador',
-        widget=StringWidget(
-            label="Usuario Importador",
-            label2="Importer User",
-            description="Usuario que ha realizado la importacion.",
-            description2="User who performed the import operation.",
-            label_msgid='gvSIGi18n_TRAImportacion_attr_usuarioImportador_label',
-            description_msgid='gvSIGi18n_TRAImportacion_attr_usuarioImportador_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        description="Usuario que ha realizado la importacion.",
-        duplicates="0",
-        label2="Importer User",
-        ea_localid="602",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        description2="User who performed the import operation.",
-        ea_guid="{FD6A0BBC-E2F5-4e26-8D9C-EE4A84C26E7E}",
-        read_only="True",
-        scale="0",
-        label="Usuario Importador",
-        length="0",
-        containment="Not Specified",
-        position="18",
-        owner_class_name="TRAImportacion"
     ),
 
 ),
@@ -767,17 +897,17 @@ class TRAImportacion(OrderedBaseFolder, TRAArquetipo, TRAImportacion_Operaciones
 
 
 
-    allowed_content_types = ['TRAInforme', 'TRAContenidoIntercambio'] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRAImportacion_Operaciones, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', []))
+    allowed_content_types = ['TRAContenidoXML', 'TRAContenidoIntercambio'] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRAImportacion_Operaciones, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', []))
     filter_content_types             = 1
     global_allow                     = 0
     content_icon = 'traimportacion.gif'
     immediate_view                   = 'Tabular'
     default_view                     = 'Tabular'
     suppl_views                      = ['Tabular',]
-    typeDescription                  = "Instancia de Proceso de Importacion, a partir de un fichero de entrada."
+    typeDescription                  = "Conjunto de datos para importar, a partir de uno o mas archivos o ficheros, con contenido para intercambio de traducciones."
     typeDescMsgId                    =  'gvSIGi18n_TRAImportacion_help'
     archetype_name2                  = 'Import process'
-    typeDescription2                 = '''Import process instance, from a given input archive.'''
+    typeDescription2                 = '''Data set to be imported, from one or more archives or files, with translations interchange contents.'''
     archetype_name_msgid             = 'gvSIGi18n_TRAImportacion_label'
     factory_methods                  = { 'TRAContenidoIntercambio' : 'fCrearContenidoIntercambio',}
     factory_enablers                 = { 'TRAContenidoIntercambio' : [ 'fUseCaseCheckDoableFactory', 'Create_TRAContenidoIntercambio',]}
@@ -802,7 +932,16 @@ class TRAImportacion(OrderedBaseFolder, TRAArquetipo, TRAImportacion_Operaciones
         'id': 'edit',
         'name': 'Edit',
         'permissions': ("Modify portal content",),
-        'condition': """python:object.fAllowWrite() and object.fRoleQuery_IsManagerOrCoordinator()"""
+        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Edit_TRAImportacion')"""
+       },
+
+
+       {'action': "string:${object_url}/TRAEstimarImportacion_action",
+        'category': "object_buttons",
+        'id': 'TRAEstimarImportacion_action',
+        'name': 'Estimate Import',
+        'permissions': ("View",),
+        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Estimate_TRAImportacion')"""
        },
 
 
@@ -811,16 +950,7 @@ class TRAImportacion(OrderedBaseFolder, TRAArquetipo, TRAImportacion_Operaciones
         'id': 'TRAImport',
         'name': 'Import',
         'permissions': ("Modify portal content",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Import_TRAImportacion')"""
-       },
-
-
-       {'action': "string:${object_url}/TRAImportacionCambios",
-        'category': "object",
-        'id': 'TRAInformeCambios',
-        'name': 'Changes during Import',
-        'permissions': ("View",),
-        'condition': """python:object.fRoleQuery_IsManagerOrCoordinator()"""
+        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Import_TRAImportacion')"""
        },
 
 
@@ -829,7 +959,7 @@ class TRAImportacion(OrderedBaseFolder, TRAArquetipo, TRAImportacion_Operaciones
         'id': 'TRAReuse',
         'name': 'Reuse',
         'permissions': ("Modify portal content",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Reuse_TRAImportacion')"""
+        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Reuse_TRAImportacion')"""
        },
 
 
@@ -847,7 +977,7 @@ class TRAImportacion(OrderedBaseFolder, TRAArquetipo, TRAImportacion_Operaciones
         'id': 'view',
         'name': 'View',
         'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'View_any_TRA_element')"""
        },
 
 
@@ -856,7 +986,7 @@ class TRAImportacion(OrderedBaseFolder, TRAArquetipo, TRAImportacion_Operaciones
         'id': 'mddcachestatus',
         'name': 'Cache',
         'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'CacheStatus_on_any_TRA_element')"""
        },
 
 
@@ -865,16 +995,7 @@ class TRAImportacion(OrderedBaseFolder, TRAArquetipo, TRAImportacion_Operaciones
         'id': 'mddchanges',
         'name': 'Changes',
         'permissions': ("View",),
-        'condition': """python:1"""
-       },
-
-
-       {'action': "string:${object_url}/TRAConfigureProfiling_action",
-        'category': "object_buttons",
-        'id': 'TRA_configure_profiling',
-        'name': 'Configure Profiling',
-        'permissions': ("ManagePortal",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Configure_ExecutionProfilingEnablement_TRACatalogo')"""
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Changes_on_any_TRA_element')"""
        },
 
 
@@ -884,6 +1005,15 @@ class TRAImportacion(OrderedBaseFolder, TRAArquetipo, TRAImportacion_Operaciones
         'name': 'State',
         'permissions': ("View",),
         'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/TRAFlushCache_action",
+        'category': "object_buttons",
+        'id': 'tra_flushcache',
+        'name': 'FlushCache',
+        'permissions': ("View",),
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fRoleQuery_IsAnyRol( object, [ 'Manager', 'Owner', 'TRACreator', 'TRAManager', 'TRACoordinator',])"""
        },
 
 
@@ -901,7 +1031,7 @@ class TRAImportacion(OrderedBaseFolder, TRAArquetipo, TRAImportacion_Operaciones
         'id': 'TRA_inventario',
         'name': 'Inventory',
         'permissions': ("View",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Inventory_TRAElemento')"""
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Inventory_TRAElemento')"""
        },
 
 
@@ -919,7 +1049,7 @@ class TRAImportacion(OrderedBaseFolder, TRAArquetipo, TRAImportacion_Operaciones
         'id': 'TRA_recatalogar',
         'name': 'ReCatalog',
         'permissions': ("View",),
-        'condition': """python:object.fUseCaseCheckDoable( 'ReCatalog_TRAElemento')"""
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'ReCatalog_TRAElemento')"""
        },
 
 
@@ -928,7 +1058,16 @@ class TRAImportacion(OrderedBaseFolder, TRAArquetipo, TRAImportacion_Operaciones
         'id': 'TRA_reestablecerpermisos',
         'name': 'Reset Permissions',
         'permissions': ("View",),
-        'condition': """python:object.fUseCaseCheckDoable( 'ResetPermissions_TRAElemento')"""
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'ResetPermissions_TRAElemento')"""
+       },
+
+
+       {'action': "string:${object_url}/TRAVerifyPermissions_action",
+        'category': "object_buttons",
+        'id': 'TRA_verificarpermisos',
+        'name': 'Verify Permissions',
+        'permissions': ("View",),
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'VerifyPermissions_TRAElemento')"""
        },
 
 
@@ -946,7 +1085,7 @@ class TRAImportacion(OrderedBaseFolder, TRAArquetipo, TRAImportacion_Operaciones
         'id': 'TRA_SeguridadUsuarioConectado',
         'name': 'Permissions',
         'permissions': ("View",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Permissions_on_any_TRA_element')"""
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Permissions_on_any_TRA_element')"""
        },
 
 
@@ -960,13 +1099,6 @@ class TRAImportacion(OrderedBaseFolder, TRAArquetipo, TRAImportacion_Operaciones
     ##/code-section class-header
 
     # Methods
-
-    security.declarePublic('cb_isCopyable')
-    def cb_isCopyable(self):
-        """
-        """
-        
-        return True
 
     security.declarePublic('displayContentsTab')
     def displayContentsTab(self):
@@ -1008,7 +1140,7 @@ class TRAImportacion(OrderedBaseFolder, TRAArquetipo, TRAImportacion_Operaciones
         """
         """
         
-        return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
+        return self
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

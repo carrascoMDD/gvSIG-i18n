@@ -68,7 +68,7 @@ schema = Schema((
         description2="The original symbol identifying the string to be translated.",
         containment="Not Specified",
         ea_guid="{9601C385-3396-492f-BC82-10FC4DED739A}",
-        position="0",
+        position="15",
         owner_class_name="TRATraduccion",
         label="Simbolo"
     ),
@@ -126,7 +126,7 @@ schema = Schema((
         description2="String translated to the Language.",
         containment="Not Specified",
         ea_guid="{E3340BC4-DCC7-49a3-AB41-C4EB29E64EC1}",
-        position="5",
+        position="0",
         owner_class_name="TRATraduccion",
         label="Traduccion"
     ),
@@ -159,7 +159,7 @@ schema = Schema((
         label="Estado de Traduccion",
         length="0",
         containment="Not Specified",
-        position="3",
+        position="5",
         owner_class_name="TRATraduccion"
     ),
 
@@ -187,7 +187,7 @@ schema = Schema((
         description2="Date when the String was translated to the Language.",
         containment="Not Specified",
         ea_guid="{B62B3CB4-0EAC-4e31-8FA4-E06046DEDB9E}",
-        position="8",
+        position="10",
         owner_class_name="TRATraduccion",
         label="Fecha de Traduccion"
     ),
@@ -216,7 +216,7 @@ schema = Schema((
         description2="User who translated this string into this language.",
         containment="Not Specified",
         ea_guid="{E6E7E23E-C722-4324-A8B1-0DC4DA6B6EB6}",
-        position="10",
+        position="19",
         owner_class_name="TRATraduccion",
         label="Traductor"
     ),
@@ -245,7 +245,7 @@ schema = Schema((
         description2="The date when the String Translation to the Language was reviewed.",
         containment="Not Specified",
         ea_guid="{F3E84661-ADAA-427f-B5CD-729A33244458}",
-        position="11",
+        position="9",
         owner_class_name="TRATraduccion",
         label="Fecha de Revision"
     ),
@@ -274,7 +274,7 @@ schema = Schema((
         description2="User who reviewd the String Translation to the Language.",
         containment="Not Specified",
         ea_guid="{6BFF5745-AFFD-468a-A2DC-6520395136A8}",
-        position="12",
+        position="18",
         owner_class_name="TRATraduccion",
         label="Revisor"
     ),
@@ -303,7 +303,7 @@ schema = Schema((
         length="0",
         containment="Not Specified",
         ea_guid="{140F4C12-633E-499d-BAF7-6AC9AE8791EB}",
-        position="13",
+        position="7",
         owner_class_name="TRATraduccion",
         label="Fecha Definitiva"
     ),
@@ -332,7 +332,7 @@ schema = Schema((
         description2="User with Coordinator capabilities, who made Definitive the string translation into the language.",
         containment="Not Specified",
         ea_guid="{075407C5-F759-47ec-AA8C-FFDB360AF510}",
-        position="15",
+        position="16",
         owner_class_name="TRATraduccion",
         label="Coordinador"
     ),
@@ -361,7 +361,7 @@ schema = Schema((
         description2="The (internal) identifier of the String to translate.",
         containment="Not Specified",
         ea_guid="{0039F177-5DA5-4244-91D1-4C9899F8C166}",
-        position="17",
+        position="12",
         owner_class_name="TRATraduccion",
         label="Id Cadena"
     ),
@@ -394,7 +394,7 @@ schema = Schema((
         label="Estado de la Cadena",
         length="0",
         containment="Not Specified",
-        position="2",
+        position="4",
         owner_class_name="TRATraduccion"
     ),
 
@@ -422,7 +422,7 @@ schema = Schema((
         description2="Names of the Modules using this String.",
         containment="Not Specified",
         ea_guid="{F0B3B52D-CCE4-44df-AA40-8BE97DFA8BE1}",
-        position="4",
+        position="14",
         owner_class_name="TRATraduccion",
         label="Modulos"
     ),
@@ -451,7 +451,7 @@ schema = Schema((
         description2="Comments to this translation.",
         containment="Not Specified",
         ea_guid="{49F28A8C-A23F-4328-AAD5-494C2832C49A}",
-        position="14",
+        position="2",
         owner_class_name="TRATraduccion",
         label="Comentario"
     ),
@@ -480,7 +480,7 @@ schema = Schema((
         description2="Flags used by GNU gettext PO, like fuzzy and indicators that the string is a formatting string in a specific programming language.",
         containment="Not Specified",
         ea_guid="{7836B327-05EE-4df9-8F0C-EF4CBE063312}",
-        position="9",
+        position="13",
         owner_class_name="TRATraduccion",
         label="Indicadores para GNU gettext PO"
     ),
@@ -509,7 +509,7 @@ schema = Schema((
         description2="History of changes to the string's translation into the Language.",
         containment="Not Specified",
         ea_guid="{A6F66985-751D-423f-98CF-635384D8ABD4}",
-        position="16",
+        position="11",
         owner_class_name="TRATraduccion",
         label="Historia"
     ),
@@ -543,7 +543,7 @@ schema = Schema((
         is_change_counter="True",
         exclude_from_traversalconfig="True",
         containment="Not Specified",
-        position="8",
+        position="3",
         owner_class_name="TRATraduccion",
         exclude_from_copyconfig="True"
     ),
@@ -578,6 +578,35 @@ schema = Schema((
     ),
 
     StringField(
+        name='fechaModificacionTextual',
+        widget=StringWidget(
+            label="Fecha de Modificacion",
+            label2="Modification Date",
+            description="La fecha en que la Traduccion al lenguage fue modificada, bien como recien creada, o por traduccion o cambio de estado.",
+            description2="Date when the translation into the Language was modified, as just created, translated or changed status.",
+            label_msgid='gvSIGi18n_TRATraduccion_attr_fechaModificacionTextual_label',
+            description_msgid='gvSIGi18n_TRATraduccion_attr_fechaModificacionTextual_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        scale="0",
+        description="La fecha en que la Traduccion al lenguage fue modificada, bien como recien creada, o por traduccion o cambio de estado.",
+        duplicates="0",
+        label2="Modification Date",
+        ea_localid="1717",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        length="0",
+        description2="Date when the translation into the Language was modified, as just created, translated or changed status.",
+        containment="Not Specified",
+        ea_guid="{5C5E9C0A-BB15-44a9-931A-B63C3EF94C62}",
+        position="8",
+        owner_class_name="TRATraduccion",
+        label="Fecha de Modificacion"
+    ),
+
+    StringField(
         name='usuarioCreador',
         widget=StringWidget(
             label="Creador",
@@ -601,9 +630,38 @@ schema = Schema((
         description2="User who created the translation into the language in Translated or Pending state, during an import or language creation process.",
         containment="Not Specified",
         ea_guid="{E2D4ACFF-A4BB-4dc9-A8B8-149E7033FB14}",
-        position="7",
+        position="17",
         owner_class_name="TRATraduccion",
         label="Creador"
+    ),
+
+    StringField(
+        name='usuarioModificador',
+        widget=StringWidget(
+            label="Modificador",
+            label2="User",
+            description="Usuario que ha modificado la Traduccion al lenguage, bien como recien creada, o por traduccion o cambio de estado.",
+            description2="User that modified the translation into the Language, as just created, translated or changed status.",
+            label_msgid='gvSIGi18n_TRATraduccion_attr_usuarioModificador_label',
+            description_msgid='gvSIGi18n_TRATraduccion_attr_usuarioModificador_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        scale="0",
+        description="Usuario que ha modificado la Traduccion al lenguage, bien como recien creada, o por traduccion o cambio de estado.",
+        duplicates="0",
+        label2="User",
+        ea_localid="1718",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        length="0",
+        description2="User that modified the translation into the Language, as just created, translated or changed status.",
+        containment="Not Specified",
+        ea_guid="{EE30B571-501B-43d5-9A20-E2BA82EF6782}",
+        position="17",
+        owner_class_name="TRATraduccion",
+        label="Modificador"
     ),
 
 ),
@@ -662,6 +720,15 @@ class TRATraduccion(OrderedBaseFolder, TRAArquetipo, TRATraduccion_Operaciones):
     actions =  (
 
 
+       {'action': "string:${object_url}/Tabular",
+        'category': "object",
+        'id': 'view',
+        'name': 'View',
+        'permissions': ("View",),
+        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'View_any_TRA_element')"""
+       },
+
+
        {'action': "string:$object_url/Editar",
         'category': "object",
         'id': 'edit',
@@ -671,21 +738,12 @@ class TRATraduccion(OrderedBaseFolder, TRAArquetipo, TRATraduccion_Operaciones):
        },
 
 
-       {'action': "string:${object_url}/Tabular",
-        'category': "object",
-        'id': 'view',
-        'name': 'View',
-        'permissions': ("View",),
-        'condition': """python:1"""
-       },
-
-
        {'action': "string:${object_url}/MDDCacheStatus/",
         'category': "object_buttons",
         'id': 'mddcachestatus',
         'name': 'Cache',
         'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'CacheStatus_on_any_TRA_element')"""
        },
 
 
@@ -694,16 +752,7 @@ class TRATraduccion(OrderedBaseFolder, TRAArquetipo, TRATraduccion_Operaciones):
         'id': 'mddchanges',
         'name': 'Changes',
         'permissions': ("View",),
-        'condition': """python:1"""
-       },
-
-
-       {'action': "string:${object_url}/TRAConfigureProfiling_action",
-        'category': "object_buttons",
-        'id': 'TRA_configure_profiling',
-        'name': 'Configure Profiling',
-        'permissions': ("ManagePortal",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Configure_ExecutionProfilingEnablement_TRACatalogo')"""
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Changes_on_any_TRA_element')"""
        },
 
 
@@ -713,6 +762,15 @@ class TRATraduccion(OrderedBaseFolder, TRAArquetipo, TRATraduccion_Operaciones):
         'name': 'State',
         'permissions': ("View",),
         'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/TRAFlushCache_action",
+        'category': "object_buttons",
+        'id': 'tra_flushcache',
+        'name': 'FlushCache',
+        'permissions': ("View",),
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fRoleQuery_IsAnyRol( object, [ 'Manager', 'Owner', 'TRACreator', 'TRAManager', 'TRACoordinator',])"""
        },
 
 
@@ -730,7 +788,7 @@ class TRATraduccion(OrderedBaseFolder, TRAArquetipo, TRATraduccion_Operaciones):
         'id': 'TRA_inventario',
         'name': 'Inventory',
         'permissions': ("View",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Inventory_TRAElemento')"""
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Inventory_TRAElemento')"""
        },
 
 
@@ -748,7 +806,7 @@ class TRATraduccion(OrderedBaseFolder, TRAArquetipo, TRATraduccion_Operaciones):
         'id': 'TRA_recatalogar',
         'name': 'ReCatalog',
         'permissions': ("View",),
-        'condition': """python:object.fUseCaseCheckDoable( 'ReCatalog_TRAElemento')"""
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'ReCatalog_TRAElemento')"""
        },
 
 
@@ -757,7 +815,16 @@ class TRATraduccion(OrderedBaseFolder, TRAArquetipo, TRATraduccion_Operaciones):
         'id': 'TRA_reestablecerpermisos',
         'name': 'Reset Permissions',
         'permissions': ("View",),
-        'condition': """python:object.fUseCaseCheckDoable( 'ResetPermissions_TRAElemento')"""
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'ResetPermissions_TRAElemento')"""
+       },
+
+
+       {'action': "string:${object_url}/TRAVerifyPermissions_action",
+        'category': "object_buttons",
+        'id': 'TRA_verificarpermisos',
+        'name': 'Verify Permissions',
+        'permissions': ("View",),
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'VerifyPermissions_TRAElemento')"""
        },
 
 
@@ -775,7 +842,7 @@ class TRATraduccion(OrderedBaseFolder, TRAArquetipo, TRATraduccion_Operaciones):
         'id': 'TRA_SeguridadUsuarioConectado',
         'name': 'Permissions',
         'permissions': ("View",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Permissions_on_any_TRA_element')"""
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Permissions_on_any_TRA_element')"""
        },
 
 
@@ -789,6 +856,27 @@ class TRATraduccion(OrderedBaseFolder, TRAArquetipo, TRATraduccion_Operaciones):
     ##/code-section class-header
 
     # Methods
+
+    security.declarePublic('manage_afterAdd')
+    def manage_afterAdd(self,item,container):
+        """
+        """
+        
+        return TRATraduccion_Operaciones.pHandle_manage_afterAdd( self, item, container)
+
+    security.declarePublic('manage_beforeDelete')
+    def manage_beforeDelete(self,item,container):
+        """
+        """
+        
+        return TRAArquetipo.manage_beforeDelete( self, item, container)
+
+    security.declarePublic('reindexObject')
+    def reindexObject(self,idxs=[]):
+        """
+        """
+        
+        return TRATraduccion_Operaciones.pHandle_reindexObject( self, idxs)
 
     security.declarePublic('cb_isCopyable')
     def cb_isCopyable(self):
@@ -811,33 +899,26 @@ class TRATraduccion(OrderedBaseFolder, TRAArquetipo, TRATraduccion_Operaciones):
         
         return TRAElemento_Operaciones.fExtraLinks( self)
 
-    security.declarePublic('manage_afterAdd')
-    def manage_afterAdd(self,item,container):
+    security.declarePublic('fAllowExport')
+    def fAllowExport(self):
         """
         """
         
-        return TRATraduccion_Operaciones.pHandle_manage_afterAdd( self, item, container)
-
-    security.declarePublic('manage_beforeDelete')
-    def manage_beforeDelete(self,item,container):
-        """
-        """
-        
-        return TRAArquetipo.manage_beforeDelete( self, item, container)
+        return False
 
     security.declarePublic('manage_pasteObjects')
     def manage_pasteObjects(self,cb_copy_data,REQUEST):
         """
         """
         
-        return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
+        return self
 
-    security.declarePublic('reindexObject')
-    def reindexObject(self,idxs=[]):
+    security.declarePublic('fAllowImport')
+    def fAllowImport(self):
         """
         """
         
-        return TRATraduccion_Operaciones.pHandle_reindexObject( self, idxs)
+        return False
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

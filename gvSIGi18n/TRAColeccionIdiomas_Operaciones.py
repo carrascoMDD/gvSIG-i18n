@@ -2,7 +2,7 @@
 #
 # File: TRAColeccionIdiomas_Operaciones.py
 #
-# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -46,14 +46,34 @@ from Products.CMFCore.utils  import getToolByName
 
 
 
-from TRAElemento_Constants import *
+from TRAElemento_Constants                 import *
+from TRAElemento_Constants_Activity        import *
+from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Dates           import *
+from TRAElemento_Constants_Encoding        import *
+from TRAElemento_Constants_Import          import *
+from TRAElemento_Constants_Languages       import *
+from TRAElemento_Constants_Logging         import *
+from TRAElemento_Constants_Modules         import *
+from TRAElemento_Constants_Profiling       import *
+from TRAElemento_Constants_Progress        import *
+from TRAElemento_Constants_String          import *
+from TRAElemento_Constants_StringRequests  import *
+from TRAElemento_Constants_Translate       import *
+from TRAElemento_Constants_Translation     import *
+from TRAElemento_Constants_TypeNames       import *
+from TRAElemento_Constants_Views           import *
+from TRAElemento_Constants_Vocabularies    import *
+from TRAUtils                              import *
 
-from TRAImportarExportar_Constants import *
+from TRAImportarExportar_Constants import cScannedKeys_String_Symbol, cScannedKeys_Translation_Translation, cScannedKeys_String_Translations
 
-from TRAElemento_Permission_Definitions import cUseCase_CreateTRAIdioma, cUseCase_DeleteTRAIdioma
 from TRAElemento_Permission_Definitions import cBoundObject
+from TRAElemento_Permission_Definitions_UseCaseNames import cUseCase_CreateTRAIdioma, cUseCase_DeleteTRAIdioma
 
+from TRACatalogo_Inicializacion_Constants import cTRACatalogsDetailsParaIdioma
 
+from TRAImportarExportar_Constants import cTRAReferenceLanguageCodesForLanguages, cTRADefaultReferenceLanguageCode
 
 ##/code-section module-header
 
@@ -82,7 +102,7 @@ class TRAColeccionIdiomas_Operaciones:
 
 
     security.declarePrivate( 'pAllSubElements_into')    
-    def pAllSubElements_into( self, theCollection, theAdditionalParms=None):
+    def pAllSubElements_into( self, theCollection, theAdditionalParams=None):
         if theCollection == None:
             return self
         theCollection.append( self)
@@ -90,7 +110,7 @@ class TRAColeccionIdiomas_Operaciones:
         unosElementos = self.fObtenerTodosIdiomas()
         if unosElementos:
             for unElemento in unosElementos:
-                unElemento.pAllSubElements_into( theCollection, theAdditionalParms=theAdditionalParms)
+                unElemento.pAllSubElements_into( theCollection, theAdditionalParams=theAdditionalParams)
         
         return self
         
@@ -119,7 +139,7 @@ class TRAColeccionIdiomas_Operaciones:
         """Retrieve all contained elements of type TRAIdioma.
         
         """
-        unosElementos = self.objectValues( cNombreTipoTRAIdioma) 
+        unosElementos = self.fObjectValues( cNombreTipoTRAIdioma) 
         return unosElementos
          
           
@@ -128,75 +148,37 @@ class TRAColeccionIdiomas_Operaciones:
 
     
 
-    security.declarePrivate( 'fUseCaseCheckDoable_CreateTRAIdioma')    
-    def fUseCaseCheckDoable_CreateTRAIdioma( self, theTypeName, thePermissionsCache=None, theRolesCache=None, theParentExecutionRecord=None):   
-
- 
-        unExecutionRecord = self.fStartExecution( 'method',  'fUseCaseCheckDoable_CreateTRAIdioma', theParentExecutionRecord, False) 
-        
-        try:
-            try:
-                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
-                    
-                unUseCaseAssessmentResult = self.fUseCaseAssessment( 
-                    theUseCaseName          = cUseCase_CreateTRAIdioma, 
-                    theElementsBindings     = { cBoundObject : self,},
-                    theRulesToCollect       = None, 
-                    thePermissionsCache     = unPermissionsCache, 
-                    theRolesCache           = unRolesCache, 
-                    theParentExecutionRecord= unExecutionRecord)
-                
-                unResult = unUseCaseAssessmentResult and unUseCaseAssessmentResult.get( 'success', False)
-                return unResult 
+            
     
-            except:
-                unaExceptionInfo = sys.exc_info()
-                unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
-                
-                unInformeExcepcion = 'Exception during fUseCaseCheckDoable_CreateTRAIdioma\n' 
-                unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
-                unInformeExcepcion += unaExceptionFormattedTraceback   
-                         
-                unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
-    
-                if cLogExceptions:
-                    logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
-                
-                return False
-
-        finally:
-            unExecutionRecord and unExecutionRecord.pEndExecution()
-     
-        
-
-    
-    security.declarePrivate( 'fCrearIdioma')    
-    def fCrearIdioma( self,
-        theTimeProfilingResults =None, # 
-        theModelDDvlPloneTool_Mutators   =None, 
-        theNewTypeName          ='', 
-        theNewOneTitle          ='', 
-        theNewOneDescription    ='', 
+    security.declarePrivate( 'fCreateProgressHandlerFor_CreateLanguage')    
+    def fCreateProgressHandlerFor_CreateLanguage( self,
         theAdditionalParams     =None,
         thePermissionsCache     =None,
         theRolesCache           =None,
         theParentExecutionRecord=None):
-        """Create a new instance of TRAIdioma through an import process. Ceate an instance of TRAImportacion with a TRAContenidoIntercambio that will create the language when the import is executed.
+        """Create a new instance of TRAIdioma through an import process. Create an instance of TRAImportacion with a TRAContenidoIntercambio that will create the language when the import is executed.
         
         """
     
-        unExecutionRecord = self.fStartExecution( 'method',  'fCrearIdioma', None, True, { 'log_what': 'details', 'log_when': True, })
+        unExecutionRecord = self.fStartExecution( 'method',  'fCreateProgressHandlerFor_CreateLanguage', None, True, { 'log_what': 'details', 'log_when': True, })
+        
 
-        from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import ModelDDvlPloneTool_Mutators,cModificationKind_CreateSubElement, cModificationKind_Create
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import cModificationKind_CreateSubElement, cModificationKind_Create
 
         try:
-            unasDescripcionesContenidosCreados = []
+            unPermissionsCache = fDictOrNew( thePermissionsCache)
+            unRolesCache       = fDictOrNew( theRolesCache)
+            
+            aResult = self.fNewVoidCreateProgressHandlerResult()
+            
+            
             try:
-                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
                 
+                
+                # ##################################################
+                """Check permissions to execute use case.
+                
+                """
                 unUseCaseQueryResult = self.fUseCaseAssessment(  
                     theUseCaseName          = cUseCase_CreateTRAIdioma, 
                     theElementsBindings     = { cBoundObject: self,}, 
@@ -207,60 +189,250 @@ class TRAColeccionIdiomas_Operaciones:
                 )
               
                 if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
-                    anActionReport = { 'effect': 'error', 'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_no_permission_ToCreateLanguage_msgid', "User does not have permission to create languages (as an import process).-"), }
-                    return anActionReport  
+                    aResult.update( {
+                        'success':     False,
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_no_permission_ToCreateLanguage_msgid', "You do not have permission to Create Language-."),
+                    })
+                    return aResult
                             
-                aModelDDvlPlone_tool = self.fModelDDvlPloneTool()
-                             
                 
                  
+                # ##################################################
+                """Retrieve user request parameters.
+                
+                """
                 aNewCodigoIdiomaEnGvSIG       = theAdditionalParams.get( 'theCodigoIdiomaEnGvSIG',          '')
                 aCodigoInternacionalDeIdioma  = theAdditionalParams.get( 'theCodigoInternacionalDeIdioma',  '')
                 aNewEnglishName               = theAdditionalParams.get( 'theEnglishName',                  '')
                 aNewNombreNativoDeIdioma      = theAdditionalParams.get( 'theNombreNativoDeIdioma',         '')
                 
-                
+                aCopyFromLanguageCode         = theAdditionalParams.get( 'theCopyFromLanguageCode',        '')
+                if aCopyFromLanguageCode and ( aCopyFromLanguageCode == '---'):
+                    aCopyFromLanguageCode = ''
+                aSourceStatesToCopyParam      = theAdditionalParams.get( 'theSourceStatesToCopy',          '')
         
-                if not aNewCodigoIdiomaEnGvSIG:
-                    anActionReport = { 'effect': 'error', 'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCreating_Idioma_missingParameter_CodigoIdiomaEnGvSIG_warning_msgid', "The code in gvSIG for the new language is missing. Can not create a new language without a language code.-"), }
-                    return anActionReport  
 
-                if not aNewEnglishName:
-                    anActionReport = { 'effect': 'error', 'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCreating_Idioma_missingParameter_NewEnglishName_warning_msgid', "The language name expressed in english is missing. Can not create a new language without a language name expressed in english.-"), }
-                    return anActionReport  
+                
                 
 
+                # ##################################################
+                """Retrieve root translations catalog
+                
+                """
                 unCatalogo = self.getCatalogo()
                 
-                if not unCatalogo:
-                    anActionReport = { 'effect': 'error', 'failure':  'InternalError: gvSIGi18n_errorCreating_Idioma_Missing_TRACatalogo_error_msgid', }
-                    return anActionReport  
+                if unCatalogo == None:
+                    aResult.update( {
+                        'success':     False,
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_error_internal_Missing_RootCatalog', "Internal error: missing root translations catalog-."),
+                    })
+                    return aResult
                 
-                
-                unIdiomaPorCodigo = unCatalogo.fGetIdiomaPorCodigo( aNewCodigoIdiomaEnGvSIG)
-                if not ( unIdiomaPorCodigo == None):
-                    anActionReport = { 'effect': 'error', 'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCreating_Idioma_LanguageCodeAlreadyExists_warning_msgid', "A language with same code already exists in the translations catalog.-"), }
-                    return anActionReport  
 
+               
+                
+                
+                
+                # ##################################################
+                """Retrieve collections of TRAImportacion to create a new element into. 
+                
+                """
+                unaColeccionImportaciones = unCatalogo.fObtenerColeccionImportaciones()
+                if ( unaColeccionImportaciones == None):
+                    aResult.update( {
+                        'success':     False,
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_error_internal_Missing_imports_collection', "Internal error: missing imports collection-."),
+                    })
+                    return aResult
+                
+
+                                
+                
+                # ##################################################
+                """Retrieve languages accesible to the user, and  all languages.
+                
+                """
+                
+                unosIdiomasAccesibles = unUseCaseQueryResult.get( 'collected_rule_assessments_by_name', {}).get( 'languages', {}).get( 'accepted_final_objects', [])
+                          
+                todosIdiomas = unCatalogo.fObtenerTodosIdiomas()
+                
+                
+                
+                # ##################################################
+                """Check validity of user request parameters: new language code must be supplied. A language with such code must not already exist.
+                
+                """
+                
+                if not aNewCodigoIdiomaEnGvSIG:
+                    aResult.update( {
+                        'success':    False,
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCreating_Idioma_missingParameter_CodigoIdiomaEnGvSIG_warning_msgid', "The code in gvSIG for the new language is missing. Can not create a new language without a language code.-"),
+                    })
+                    return aResult 
+                
+                
+                
+                unIdiomaPorCodigo = None
+                for unIdioma in todosIdiomas:
+                    if unIdioma.getCodigoIdiomaEnGvSIG() == aNewCodigoIdiomaEnGvSIG:
+                        unIdiomaPorCodigo = unIdioma
+                        break                
+                if not ( unIdiomaPorCodigo == None):
+                    aResult.update( {
+                        'success':     False,
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCreating_Idioma_LanguageCodeAlreadyExists_warning_msgid', "A language with same code already exists in the translations catalog.-"),
+                    })
+                    return aResult
+                                
+                
+                
+                
+                
+                # ##################################################
+                """If requested to copy translations from an existing language.
+                The code of the source language must not be the same as the code for the new language.
+                Consider user request parameters to filter by status the source and target translations.  If no source translations status specified by the user then shall retrieve translations in all non-pending status..
+                
+                """
+                
+                unSourceIdioma         = None
+                unasTraduccionesACopiar = [ ]
+                
+                if aCopyFromLanguageCode:
+                    
+                    if aCopyFromLanguageCode == aNewCodigoIdiomaEnGvSIG:
+                        aResult.update( {
+                            'success':    False,
+                            'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_copyTranslations_action_warning_CanNotCopyTranslationsFromSameLanguage', "You can not copy Translations from the same Language.-"),
+                        })
+                        return aResult  
+
+                
+                    for unIdioma in unosIdiomasAccesibles:
+                        if unIdioma.getCodigoIdiomaEnGvSIG() == aCopyFromLanguageCode:
+                            unSourceIdioma = unIdioma
+                            break
+                    if unSourceIdioma == None:
+                        aResult.update( {
+                            'success':     False,
+                            'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_copyTranslations_action_warning_SelectedSourceLanguageIsNotAvailable', "You can not copy Translations from the selected source Language because it is not available.-"),
+                        })
+                        return aResult
+ 
+                    
+                    
+                
+                    # ##################################################
+                    """Consider user request parameters to filter by status the source and target translations. 
+                    If no conditions requested by the user then shall retrieve translations in all non-pending status.
+                    
+                    """
+                    someSourceStatesToCopy = [ ]
+                    if aSourceStatesToCopyParam:
+                        for unEstado in [ cEstadoTraduccionTraducida, cEstadoTraduccionRevisada, cEstadoTraduccionDefinitiva]:
+                            if unEstado in aSourceStatesToCopyParam:
+                                someSourceStatesToCopy.append( unEstado)
+                                
+                    if not someSourceStatesToCopy:
+                        someSourceStatesToCopy = [ cEstadoTraduccionTraducida, cEstadoTraduccionRevisada, cEstadoTraduccionDefinitiva]
+                
+                                
+                    
+                    
+                    
+                    # ##################################################
+                    """Shall search source translations in the ZCatalog dedicated to the source language.
+                    
+                    """
+                    unCatalogBusquedaTraduccionesInSourceIdioma = unCatalogo.fCatalogBusquedaTraduccionesParaIdioma( unSourceIdioma)
+                    if ( unCatalogBusquedaTraduccionesInSourceIdioma == None):
+                        aResult.update( {
+                            'success':    False,
+                            'condition': '%s %s' % (  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_error_internal_Missing_CatalogBusquedaTraducciones_SourceLanguage', "Missing ZCatalog BusquedaTraducciones SourceLanguage.-") , aCopyFromLanguageCode,),
+                        })
+                        return aResult  
+           
+                                    
+
+                    # ##################################################
+                    """Ignore translations of inactive strings. Filter by status. 
+                    
+                    """
+                    unaBusqueda = {   'getEstadoCadena' :     cEstadoCadenaActiva, }
+                    
+                            
+                    if someSourceStatesToCopy:
+                        unaBusqueda.update( {   'getEstadoTraduccion' :     someSourceStatesToCopy, })
+                            
+                                                   
+
+                    
+                    # ##################################################
+                    """Search and retrieve translations found. 
+                    
+                    """
+                    unosResultadosBusqueda      = unCatalogBusquedaTraduccionesInSourceIdioma.searchResults(**unaBusqueda)
+                    
+                    for unResultadoBusqueda in unosResultadosBusqueda:
+                        
+                        unaTraducccion = unResultadoBusqueda.getObject()
+                        
+                        if unaTraducccion:
+                            
+                            unaCadenaTraducida = unaTraducccion.getCadenaTraducida()
+                            if unaCadenaTraducida:
+                                
+                                unasTraduccionesACopiar.append( unaTraducccion)
+                            
+                                
+                                
+                                
+                                
+                                
+                # ##################################################
+                """Retrieve names for the new language, if it is well known to the system.
+                
+                """
+                
+                aCodigoInternacionalDeIdioma = aNewCodigoIdiomaEnGvSIG
+                unNombreInglesDeIdioma       = aNewCodigoIdiomaEnGvSIG
+                unNombreNativoDeIdioma       = aNewCodigoIdiomaEnGvSIG
+                
                 someNonExistingKnownIdiomasCodesAndNames = unCatalogo.fNonExistingKnownIdiomasCodesAndNames()  
                 for unCodigoIdioma, unNombreInglesDeIdioma, unNombreNativoDeIdioma in someNonExistingKnownIdiomasCodesAndNames:
                     if unCodigoIdioma == aNewCodigoIdiomaEnGvSIG:
                         aCodigoInternacionalDeIdioma    = unCodigoIdioma
                         aNewEnglishName                 = unNombreInglesDeIdioma
-                        aNewNombreNativoDeIdioma    = unNombreNativoDeIdioma
+                        aNewNombreNativoDeIdioma        = unNombreNativoDeIdioma
                         break
                 
-                unaColeccionImportaciones = unCatalogo.fObtenerColeccionImportaciones()
-                if not unaColeccionImportaciones:
-                    anActionReport = { 'effect': 'error', 'failure':  'InternalError: gvSIGi18n_errorCreating_Idioma_Missing_TRAColeccionImportaciones_error_msgid', }
-                    return anActionReport  
+               
+                    
                 
-                     
+                # ##################################################
+                """Flush all cached pages in the translations catalog, such that new user requests to view pages reflect the elements about to be created.
+                
+                """
+                unCatalogo.pFlushCachedTemplates_All()           
+
+                
+                    
+                
+ 
+                
+                # ##################################################
+                """Create a new TRAImportacion element to hold the data for a long-living process. 
+                
+                """
                 unMemberId = self.fGetMemberId()
                 unaFechaYHora = self.fDateTimeNowTextual()
 
                 aPloneUtilsTool = self.getPloneUtilsToolForNormalizeString()  
                
+                
+                
+                
                 unTitleImportacion = '%s %s %s %s %s' % ( self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_crearIdioma_Importacion_prefix', "To Create Language"), aNewCodigoIdiomaEnGvSIG, aNewEnglishName, unMemberId, unaFechaYHora, )
                 aNewIdImportacion = unTitleImportacion.lower().replace( ' ', '-')
                 if aPloneUtilsTool:
@@ -271,31 +443,68 @@ class TRAColeccionIdiomas_Operaciones:
                     'description':   '',
                 }
                 
-                unaColeccionImportaciones.pFlushCachedTemplates_All()                            
-
+                
                 unaIdNuevaImportacion = unaColeccionImportaciones.invokeFactory( cNombreTipoTRAImportacion, aNewIdImportacion, **anAttrsDictImportacion)
                 if not unaIdNuevaImportacion:
-                    anActionReport = { 'effect': 'error', 'failure': '%s' %   self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCreating_Idioma_TRAImportacion_NotCreated_msgid', "Error creating language: import not created.-"), }
-                    return anActionReport     
-                                
-                
-                
+                    aResult.update( {
+                        'success':    False,
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCopyingStrings_TRAImportacion_NotCreated_msgid', "Error creating strings: import not created.-"),
+                    })
+                    return aResult
+
                 
                 
                 unaNuevaImportacion = unaColeccionImportaciones.getElementoPorID( unaIdNuevaImportacion)
                 if not unaNuevaImportacion:
-                    anActionReport = { 'effect': 'error', 'failure': '%s' %  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCreating_Idioma_TRAImportacion_Created_TRAImportacion_NotFound_msgid', "Could not find import just created-."), }
-                    return anActionReport     
+                    aResult.update( {
+                        'success':    False,
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCopyingStrings_TRAImportacion_Created_TRAImportacion_NotFound_msgid', "Could not find import just created-."),
+                    })
+                    return aResult
 
 
                 
-                unaNuevaImportacion.setCodigoIdiomaPorDefecto( aNewCodigoIdiomaEnGvSIG)
-                unaNuevaImportacion.setNombreModuloPorDefecto( '')
                 
                 
+                # ##################################################
+                """Configure the TRAImportacion element just created to perform a copy of translations, but not other changes like module names, sources or status. 
+                
+                """
+                
+                unaConfiguracionImport = self.getCatalogo().fObtenerConfiguracion( cTRAProgress_ProcessType_Import)
+                if not( unaConfiguracionImport == None):
+                    
+                    unosSegundosParaConfirmarImportacion = unaConfiguracionImport.getSegundosParaConfirmarImportacion()                
+                    unaNuevaImportacion.setSegundosParaConfirmarImportacion( unosSegundosParaConfirmarImportacion)
+    
+                    unNumeroMaximoLineasAExplorar = unaConfiguracionImport.getNumeroMaximoLineasAExplorar()                
+                    unaNuevaImportacion.setNumeroMaximoLineasAExplorar( unNumeroMaximoLineasAExplorar)
+                
+                
+                    
 
-        
-                 
+                # ##################################################
+                """Configure the TRAImportacion element just created to perform a creation of the new language. 
+                
+                """
+                
+                unaNuevaImportacion.setNombreModuloPorDefecto(                         '')
+                unaNuevaImportacion.setCodigoIdiomaPorDefecto(                         aNewCodigoIdiomaEnGvSIG)
+                unaNuevaImportacion.setImportarConNombreModuloConfigurado(             False)
+                unaNuevaImportacion.setImportarFuentesDesdeComentarios(                False)
+                unaNuevaImportacion.setImportarNombreModuloDesdeDominioONombreFichero( False)
+                unaNuevaImportacion.setImportarNombresModulosDesdeComentarios(         False)
+                unaNuevaImportacion.setImportarStatusDesdeComentarios(                 False)
+                
+                     
+                
+                
+                
+                
+                # ##################################################
+                """Create TRAContenidoIntercambio element to hold the new language information within the TRAImportacion just created. 
+                
+                """
                 unTitleContenidoIntercambio = '%s %s by %s on %s' % ( self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_crearIdioma_Importacion_prefix', "To Create Language"), aNewCodigoIdiomaEnGvSIG, unMemberId, unaFechaYHora,)
                 aNewIdContenidoIntercambio = unTitleContenidoIntercambio.lower().replace( ' ', '-')
                 if aPloneUtilsTool:
@@ -305,18 +514,47 @@ class TRAColeccionIdiomas_Operaciones:
                     'title':         unTitleContenidoIntercambio,
                     'description':   '',
                 }          
-                                    
+                               
+                
+                
                 unaIdNuevoContenidoIntercambio = unaNuevaImportacion.invokeFactory( cNombreTipoTRAContenidoIntercambio, aNewIdContenidoIntercambio, **anAttrsDictContenidoIntercambio)
                 if not unaIdNuevoContenidoIntercambio:
-                    anActionReport = { 'effect': 'error', 'failure': '%s' %   self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCreating_Idioma_TRAContenidoIntercambio_NotCreated_msgid', "Error creating language: import not created.-"), }
-                    return anActionReport     
+                    aResult.update( {
+                        'success':    False,
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_error_TRAContenidoIntercambio_NotCreated_msgid', "Error: interchange contents not created.-"),
+                    })
+                    return aResult     
                         
                 unNuevoContenidoIntercambio = unaNuevaImportacion.getElementoPorID( unaIdNuevoContenidoIntercambio)
                 if not unNuevoContenidoIntercambio:
-                    anActionReport = { 'effect': 'error', 'failure': '%s' %  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCreating_Idioma_Created_TRAContenidoIntercambio_NotFound_msgid', "Could not find interchange contents just created-."), }
-                    return anActionReport     
+                    aResult.update( {
+                        'success':    False,
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_error_Created_TRAContenidoIntercambio_NotFound_msgid', "Could not find interchange contents just created-."),
+                    })
+                    return aResult     
                 
-                unContenidoConIdioma = { 
+                
+                
+                
+                # ##################################################
+                """Initialize TRAContenidoIntercambio parameters from defaults taken from the container TRAImportacion element.
+                
+                """
+                unNuevoContenidoIntercambio.pInitDefaultAttributesFromImport( unNuevoContenidoIntercambio, unaNuevaImportacion)
+               
+                
+                
+                
+                
+                
+                # ##################################################
+                """Add to the TRAContenidoIntercambio element just created the data about the new language to create. 
+                
+                """
+                
+                aScannedData = self.fNewVoidScannedData()
+                
+                aScannedData.update( {
                     'languages':         [ aNewCodigoIdiomaEnGvSIG, ], 
                     'languages_details': { 
                         aNewCodigoIdiomaEnGvSIG: {
@@ -325,44 +563,123 @@ class TRAColeccionIdiomas_Operaciones:
                             'nombre_nativo_de_idioma':     aNewNombreNativoDeIdioma,
                         },
                     },
-                }
-                unNuevoContenidoIntercambio.pSetContenido( unContenidoConIdioma)
+                })
+ 
+                
+               
                 
                 
                 
+                # ##################################################
+                """If requested to copy to the new language the translations from an existing language, Add to the TRAContenidoIntercambio element just created the data from the retrieved translations to copy. 
                 
-                
-                
-                
-                
-                
-                
-                aCopyFromLanguageCode         = theAdditionalParams.get( 'theCopyFromLanguageCode',         '')
-                if aCopyFromLanguageCode and not ( aCopyFromLanguageCode == '---'):
-                    aCopiarTraduccionesReport = self.fCopiarTraduccionesEnNuevoIdioma( 
-                        theNewLanguageCode          = aNewCodigoIdiomaEnGvSIG,
-                        theCopyFromLanguageCode     = aCopyFromLanguageCode,
-                        theSourceStatesToCopy       = None,
-                        theNuevaImportacion         = unaNuevaImportacion,
-                        theUseCaseQueryResult       = unUseCaseQueryResult,
-                        theParentExecutionRecord    = unExecutionRecord)                
-                
-                    if ( not aCopiarTraduccionesReport) or not ( aCopiarTraduccionesReport.get( 'effect', '') == 'created'):
-                        anActionReport = { 
-                            'effect': 'error', 
-                            'failure': '%s %s' %  ( 
-                                self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCreating_Idioma_Error_Creating_TRAContenidoIntercambio_ToCopyTranslations', "Could not create contents to copy translations-."),
-                                aCopiarTraduccionesReport.get( 'failure', ''),
-                            )
-                        }
-                        return anActionReport     
+                """
+                if aCopyFromLanguageCode:
                     
-                   
-        
+                    someScannedStrings = aScannedData[ 'symbols']
+                                    
+                    for unaTraduccion in unasTraduccionesACopiar:
+                        
+                        unSimboloCadena                     = unaTraduccion.getSimbolo()
+                        unaCadenaTraducida                  = unaTraduccion.getCadenaTraducida()
+                        
+                        if unaCadenaTraducida:
+                            
+                            aScannedString = self.fNewVoidScannedString()
+                            aScannedString[ cScannedKeys_String_Symbol] = unSimboloCadena
+                            someScannedStrings.append( aScannedString)
+                            
+                            aScannedTranslation = self.fNewVoidScannedTranslation()
+                            aScannedTranslation[ cScannedKeys_Translation_Translation] = unaCadenaTraducida                  
+                            aScannedString[ cScannedKeys_String_Translations][ theNewLanguageCode] = aScannedTranslation
+              
+                            
 
-                unTimeProfilingResults = { }
-                unResultadoNuevaImportacion = aModelDDvlPlone_tool.fRetrieveTypeConfig( 
-                    theTimeProfilingResults     =unTimeProfilingResults,
+                            
+                            
+                # ##################################################
+                """Store import data in the translations interchange element. 
+                
+                """
+                            
+                unUploadedContent = self.fNewVoidUploadedContent()
+                unUploadedContent[ 'content_data'] = aScannedData
+                    
+                unNuevoContenidoIntercambio.pSetContenido( unUploadedContent)
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                # ##################################################
+                """Create a TRAProgreso element to control the progress of the long living import process, and save the results. 
+                
+                """
+                   
+                aProgressHandlerCreationResult = unaNuevaImportacion.fCreateProgressHandlerFor_Import( 
+                    theAdditionalParams     ={},
+                    thePermissionsCache     =unPermissionsCache,
+                    theRolesCache           =unRolesCache,
+                    theParentExecutionRecord=unExecutionRecord,
+                )
+                if ( not aProgressHandlerCreationResult) or not aProgressHandlerCreationResult.get( 'success', False):
+                    aResult.update( {
+                        'success':    False,
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_error_TRAProgress_not_created_for_TRAImportacion_msgid', "Error creating Progress element for Import element-."),
+                    })
+                    return aResult     
+                
+                
+                aProgressElement = aProgressHandlerCreationResult.get( 'progress_element', None)
+                if ( aProgressElement == None):
+                    aResult = { 
+                        'success':   False, 
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorProgressElementNotKnownByImportProcessElement', "Progress element is not known by import process element-"),
+                    }
+                    return aResult
+                
+                aProgressHandler = aProgressHandlerCreationResult.get( 'progress_handler', None)
+                if not aProgressHandler:
+                    aResult = { 
+                        'success':   False, 
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorImportProgressHandlerNotFound', "Import Progress Handler has not been found-"),
+                    }
+                    return aResult
+
+                aProgressHandlerKey = aProgressHandlerCreationResult.get( 'progress_handler_key', None)
+                if not aProgressHandlerKey:
+                    aResult = { 
+                        'success':   False, 
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorImport_NoProgressHandlerKey', "Import has no Progress Handler Key-"),
+                    }
+                    return aResult
+
+                
+                aResult.update( {
+                    'success':               True,
+                    'condition':             '',
+                    'progress_element':      aProgressElement,
+                    'progress_handler':      aProgressHandler,
+                    'progress_handler_key':  aProgressHandlerKey,
+                })
+                                
+                
+                # ##################################################
+                """Flush all cached pages in the translations catalog, such that new user requests to view pages reflect the elements about to be created.
+                
+                """
+                unCatalogo.pFlushCachedTemplates_All()           
+                
+
+
+                # ##################################################
+                """Retrieve information about the new TRAImportacion through traversal with the ModelDDvlPlone framework.
+                
+                """
+                unResultadoNuevaImportacion = self.fModelDDvlPloneTool().fRetrieveTypeConfig( 
+                    theTimeProfilingResults     ={ },
                     theElement                  =unaNuevaImportacion, 
                     theParent                   =None,
                     theParentTraversalName      ='',
@@ -371,20 +688,24 @@ class TRAColeccionIdiomas_Operaciones:
                     theViewName                 ='', 
                     theRetrievalExtents         =[ 'traversals', ],
                     theWritePermissions         =None,
-                    theFeatureFilters           ={ 'attrs': [ 'title',], 'relations': [], 'do_not_recurse_collections': True,}, 
+                    theFeatureFilters           ={ 'attrs': [ 'title',], 'aggregations': [ cNombreTraversal_Importacion_ContenidosIntercambio,], 'relations': [], 'do_not_recurse_collections': True,}, 
                     theInstanceFilters          =None,
                     theTranslationsCaches       =None,
                     theCheckedPermissionsCache  =None,
                     theAdditionalParams         =None                
                 )
                 if not unResultadoNuevaImportacion:
-                    anActionReport = { 'effect': 'error', 'failure': 'retrieval_failure', }
-                    return anActionReport     
+                    return aResult     
  
-                unIdiomaCreationReport = { 'effect': 'created', 'new_object_result': unResultadoNuevaImportacion, }
-                        
+                
+                
+                
             
-                aModelDDvlPloneTool_Mutators = ModelDDvlPloneTool_Mutators()
+                # ##################################################
+                """Record changes on the new TRAImportacion and the contained TRAContenidoIntercambio.
+                
+                """
+                aModelDDvlPloneTool_Mutators = self.fModelDDvlPloneTool().fModelDDvlPloneTool_Mutators( self)
                     
                 aCreateElementReport = aModelDDvlPloneTool_Mutators.fNewVoidCreateElementReport()
                 aCreateElementReport.update( { 'effect': 'created', 'new_object_result': unResultadoNuevaImportacion, })
@@ -417,9 +738,7 @@ class TRAColeccionIdiomas_Operaciones:
                         
                         unNuevoContenidoIntercambioElement = aContenidoIntercambioResult.get( 'object', None)
                         if not ( unNuevoContenidoIntercambioElement == None):
-                        
-                            unNuevoContenidoIntercambioElement.pFlushCachedTemplates_All()                            
-                            
+                                                    
                             aCreateElementReport = aModelDDvlPloneTool_Mutators.fNewVoidCreateElementReport()
                             aCreateElementReport.update( { 'effect': 'created', 'new_object_result': aContenidoIntercambioResult, })
                             
@@ -437,19 +756,27 @@ class TRAColeccionIdiomas_Operaciones:
                             aModelDDvlPloneTool_Mutators.pSetAudit_Creation( unNuevoContenidoIntercambioElement, cModificationKind_Create,           aCreateElementReport)       
                 
                             
-                unaColeccionImportaciones.pFlushCachedTemplates_All()                            
-                unaNuevaImportacion.pFlushCachedTemplates_All()                            
                             
-                return unIdiomaCreationReport
+                # ##################################################
+                """Flush all cached pages in the translations catalog, such that new user requests to view pages reflect the elements just created.
+                
+                """
+                unCatalogo.pFlushCachedTemplates_All()           
+                            
+                
+                return aResult
                 
  
             except:
                 unaExceptionInfo = sys.exc_info()
                 unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
                 
-                unInformeExcepcion = 'Exception during fCrearIdioma\n' 
+                unInformeExcepcion = 'Exception during fCreateProgressHandlerFor_CreateLanguage\n' 
                 unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                try:
+                    unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                except:
+                    None
                 unInformeExcepcion += unaExceptionFormattedTraceback   
                                          
                 unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
@@ -457,8 +784,11 @@ class TRAColeccionIdiomas_Operaciones:
                 if cLogExceptions:
                     logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
                 
-                anActionReport = { 'effect': 'error', 'failure': '%s\n%s' % (   self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCreating_Idioma_Exception_msgid', "Exception while creating new Language.-"), unInformeExcepcion, ) }
-                return anActionReport     
+                aResult = { 
+                    'success':    False, 
+                    'condition':  '%s\n%s' % (   self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Exception_msgid', "Exception.-"), unInformeExcepcion, ),
+                }
+                return aResult
               
         finally:
             unExecutionRecord and unExecutionRecord.pEndExecution()
@@ -473,179 +803,206 @@ class TRAColeccionIdiomas_Operaciones:
             
             
             
+            
+            
 
     
 
-    
-    security.declarePrivate( 'fCopiarTraduccionesEnNuevoIdioma')    
-    def fCopiarTraduccionesEnNuevoIdioma( self,
-        theNewLanguageCode          = '',
-        theCopyFromLanguageCode     = '',
-        theSourceStatesToCopy       = [],
-        theNuevaImportacion         = None,
-        theUseCaseQueryResult       = None,
-        theParentExecutionRecord    = None):
-        """Create interchange contents to create into the new language Translations from the Language with the specified code. If Source States is specified, only copy source translations on those states. If Target States is specified.
+                    
+                            
+            
+        
+
+    security.declarePrivate( 'fCrearIdioma')
+    def fCrearIdioma( self, 
+        theUseCaseQueryResult, 
+        theCodigoIdiomaEnGvSIG, 
+        theCodigoInternacionalDeIdioma='', 
+        theTitle='', 
+        theNombreInglesIdioma='', 
+        theNombreNativoIdioma='',
+        thePermissionsCache=None, 
+        theRolesCache=None, 
+        theParentExecutionRecord=None):
+        """TRAIdioma private factory method that does not check security constraints, that must have already been checked by caller.
         
         """
-    
-        unExecutionRecord = self.fStartExecution( 'method',  'fCopiarTraduccionesEnNuevoIdioma', None, True, { 'log_what': 'details', 'log_when': True, }) 
+        unExecutionRecord = self.fStartExecution( 'method',  'fCrearIdioma', theParentExecutionRecord,  True, { 'log_what': 'details', 'log_when': True, }, 'codigo_idioma: %s' % ( theCodigoIdiomaEnGvSIG or 'unknown')) 
+
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import cModificationKind_CreateSubElement, cModificationKind_Create, cModificationKind_ChangeValues
 
         try:
-            unasDescripcionesContenidosCreados = []
-            try:
-                
-                if not theNewLanguageCode:
-                    anActionReport = { 'effect': 'error', 'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_copyTranslations_action_missingParameter_NewLanguageCode', "Parameter Error: Missing parameter: New Language Code to copy Translations into.-"), }
-                    return anActionReport  
-                
-                if ( not theCopyFromLanguageCode) or ( theCopyFromLanguageCode == '---'):
-                    anActionReport = { 'effect': 'error', 'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_copyTranslations_action_missingParameter_CopyFromLanguageCode', "Parameter Error: Missing parameter: source Language Code to copy Translations from.-"), }
-                    return anActionReport  
-                
-                if ( theNuevaImportacion == None):
-                    anActionReport = { 'effect': 'error', 'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_copyTranslations_action_missingParameter_theNuevaImportacion', "Parameter Error: Missing parameter: theNuevaImportacion import to create language and copy translations insto.-"), }
-                    return anActionReport  
-                
-                
-                
-                if theNewLanguageCode == theCopyFromLanguageCode:
-                    anActionReport = { 'effect': 'error', 'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_copyTranslations_action_warning_CanNotCopyTranslationsFromSameLanguage', "You can not copy Translations from the same Language.-"), }
-                    return anActionReport  
-                 
-                if not theUseCaseQueryResult or not theUseCaseQueryResult.get( 'success', False):
-                    anActionReport = { 'effect': 'error', 'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_no_permission_ToCopyTranslations_msgid', "User does not have permission to copy Translations from other language.-"), }
-                    return anActionReport  
-                                
-                unosIdiomasAccesibles = theUseCaseQueryResult.get( 'collected_rule_assessments_by_name', {}).get( 'languages', {}).get( 'accepted_final_objects', [])
-                if not unosIdiomasAccesibles:
-                    anActionReport = { 'effect': 'error', 'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_copyTranslations_action_warning_NoAvailableLanguagesToCopyFrom', "You can not copy Translations, there are no available Languages to copy from.-"), }
-                    return anActionReport  
+        
+            if not theUseCaseQueryResult or not theUseCaseQueryResult.get( 'success', False):
+                return None    
+            
+            if not theCodigoIdiomaEnGvSIG:
+                return None    
+    
+            unPermissionsCache = fDictOrNew( thePermissionsCache)
+            unRolesCache       = fDictOrNew( theRolesCache)
+            
+            unCatalogo = self.getCatalogo()
+            if unCatalogo == None:
+                return None
+            
+            unaIdIdioma         = unCatalogo.fIdiomaIdDesdeCodigo( theCodigoIdiomaEnGvSIG)
+            unIdiomaEncontrado  = unCatalogo.fGetIdiomaPorId( unaIdIdioma)
+    
+            if unIdiomaEncontrado:
+                return unIdiomaEncontrado
                             
-                unSourceIdioma = None
-                for unIdioma in unosIdiomasAccesibles:
-                    if unIdioma.getCodigoIdiomaEnGvSIG() == theCopyFromLanguageCode:
-                        unSourceIdioma = unIdioma
-                        break
-                if not unSourceIdioma:
-                    anActionReport = { 'effect': 'error', 'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_copyTranslations_action_warning_SelectedSourceLanguageIsNotAvailable', "You can not copy Translations from the selected source Language because it is not available.-"), }
-                    return anActionReport  
-                
-                unCatalogo = self.getCatalogo()
-                if not unCatalogo:
-                    anActionReport = { 'effect': 'error', 'failure':  'InternalError: gvSIGi18n_copyTranslations_internalError_Missing_TRACatalogo_error_msgid', }
-                    return anActionReport  
 
-                unCatalogBusquedaTraduccionesInSourceIdioma = unCatalogo.fCatalogBusquedaTraduccionesParaIdioma( unSourceIdioma)
-                if ( unCatalogBusquedaTraduccionesInSourceIdioma == None):
-                    anActionReport = { 'effect': 'error', 'failure':  'InternalError: gvSIGi18n_copyTranslations_internalError_Missing_CatalogBusquedaTraducciones_SourceLanguage', }
-                    return anActionReport  
-               
+            unosCodigosIdioma = [ unIdioma.getCodigoIdiomaEnGvSIG() for unIdioma in self.fObjectValues( cNombreTipoTRAIdioma)]
+            if theCodigoIdiomaEnGvSIG in unosCodigosIdioma:
+                return None
+    
+            unTitle                       = theTitle              
+            unNombreInglesIdioma          = theNombreInglesIdioma 
+            unNombreNativoIdioma          = theNombreNativoIdioma
+            unCodigoInternacionalDeIdioma = theCodigoInternacionalDeIdioma
+            
+            if not unTitle or not unNombreInglesIdioma or not unNombreNativoIdioma:
+                unosIntlLanguagesNamesAndFlagsPorCodigo = unCatalogo.fLanguagesNamesAndFlagsPorCodigo()
                 
-                unaBusqueda = {   'getEstadoCadena' :     cEstadoCadenaActiva, }
+                unosIntlDatosIdioma     = unosIntlLanguagesNamesAndFlagsPorCodigo.get( theCodigoIdiomaEnGvSIG, {})
+                if unosIntlDatosIdioma:
+                    unNombreInglesIdioma    = unosIntlDatosIdioma.get( 'english', '')
+                    unNombreNativoIdioma    = unosIntlDatosIdioma.get( 'native', '')
+            
+    
+            if not unCodigoInternacionalDeIdioma:
+                unCodigoInternacionalDeIdioma = theCodigoIdiomaEnGvSIG
                 
-                someSourceStatesToCopy = [ ]
-                if theSourceStatesToCopy:
-                    for unEstado in [ cEstadoTraduccionTraducida, cEstadoTraduccionRevisada, cEstadoTraduccionDefinitiva]:
-                        if unEstado in theSourceStatesToCopy:
-                            someSourceStatesToCopy.append( unEstado)
+            unNombreInglesIdioma = unNombreInglesIdioma or theCodigoIdiomaEnGvSIG
+            unNombreNativoIdioma = unNombreNativoIdioma or unNombreInglesIdioma
+            unTitle              = unTitle              or unNombreInglesIdioma
+                    
+            unCodigoIdiomaReferencia = cTRAReferenceLanguageCodesForLanguages.get( theCodigoIdiomaEnGvSIG, cTRADefaultReferenceLanguageCode)
+            
+            aNewIdiomaAttrsDict = { 
+                'codigoIdiomaEnGvSIG':          theCodigoIdiomaEnGvSIG,
+                'codigoInternacionalDeIdioma':  theCodigoInternacionalDeIdioma,
+                'codigoIdiomaReferencia':       unCodigoIdiomaReferencia,
+                'title':                        unTitle,
+                'nombreNativoDeIdioma':         unNombreNativoIdioma,
+            }
+            
+            unaIdNuevoIdioma = self.invokeFactory( cNombreTipoTRAIdioma,  unaIdIdioma, **aNewIdiomaAttrsDict)
+            if not unaIdNuevoIdioma:
+                return None
+            unNuevoIdioma = self.getElementoPorID( unaIdNuevoIdioma)
+            if not unNuevoIdioma:
+                return None
+            
+            unNuevoIdioma.manage_fixupOwnershipAfterAdd()
+           
+            unNuevoIdioma.pSetPermissions()
+            
+            
+            
+            unCatalogo.fVerifyOrInitializeCatalogsEIndicesParaIdioma( 
+                theEspecificacionesCatalogs =cTRACatalogsDetailsParaIdioma,
+                theAllowInitialization  = True, 
+                theIdioma               = unNuevoIdioma,  
+                theCheckPermissions     = False, 
+                thePermissionsCache     = unPermissionsCache, 
+                theRolesCache           = unRolesCache, 
+                theParentExecutionRecord= unExecutionRecord
+            )
+           
+    
+            if not unCatalogo.fSetLocalRolesEnIdiomaForCatalogUserGroups( unNuevoIdioma):
+                return None
+            
+            unNuevoIdioma.setPermiteLeer( True)
+            unNuevoIdioma.setPermiteModificar( True)
+            
+            
+            unResultadoNuevoIdioma = self.fModelDDvlPloneTool().fRetrieveTypeConfig( 
+                theTimeProfilingResults     =None,
+                theElement                  =unNuevoIdioma, 
+                theParent                   =None,
+                theParentTraversalName      ='',
+                theTypeConfig               =None, 
+                theAllTypeConfigs           =None, 
+                theViewName                 ='', 
+                theRetrievalExtents         =[ 'traversals', ],
+                theWritePermissions         =None,
+                theFeatureFilters           ={ 'attrs': [ 'title',], 'relations': [], 'do_not_recurse_collections': True,}, 
+                theInstanceFilters          =None,
+                theTranslationsCaches       =None,
+                theCheckedPermissionsCache  =thePermissionsCache,
+                theAdditionalParams         =None                
+            )
+            if unResultadoNuevoIdioma:
+            
+                aModelDDvlPloneTool_Mutators = self.fModelDDvlPloneTool().fModelDDvlPloneTool_Mutators( self)
+                    
+                aCreateElementReport = aModelDDvlPloneTool_Mutators.fNewVoidCreateElementReport()
+                aCreateElementReport.update( { 'effect': 'created', 'new_object_result': unResultadoNuevoIdioma, })
+                
+                someFieldReports    = aCreateElementReport[ 'field_reports']
+                aFieldReportsByName = aCreateElementReport[ 'field_reports_by_name']
+                
+                aReportForField = { 'attribute_name': 'id',          'effect': 'changed', 'new_value': unaIdIdioma, 'previous_value': '',}
+                someFieldReports.append( aReportForField)            
+                aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
+                
+                aReportForField = { 'attribute_name': 'title',       'effect': 'changed', 'new_value': unTitle,           'previous_value': '',}
+                someFieldReports.append( aReportForField)            
+                aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
+                
+                aReportForField = { 'attribute_name': 'codigoIdiomaEnGvSIG', 'effect': 'changed', 'new_value': theCodigoIdiomaEnGvSIG,    'previous_value': '',}
+                someFieldReports.append( aReportForField)            
+                aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
+                                   
+                aReportForField = { 'attribute_name': 'codigoInternacionalDeIdioma', 'effect': 'changed', 'new_value': theCodigoInternacionalDeIdioma,    'previous_value': '',}
+                someFieldReports.append( aReportForField)            
+                aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
+                                   
+                aReportForField = { 'attribute_name': 'nombreNativoDeIdioma', 'effect': 'changed', 'new_value': unNombreNativoIdioma,    'previous_value': '',}
+                someFieldReports.append( aReportForField)            
+                aFieldReportsByName[ aReportForField[ 'attribute_name']] = aReportForField
+                                   
+                aModelDDvlPloneTool_Mutators.pSetAudit_Creation( self,                cModificationKind_CreateSubElement, aCreateElementReport, theUseCounter=True)       
+                aModelDDvlPloneTool_Mutators.pSetAudit_Creation( unNuevoIdioma,       cModificationKind_Create,           aCreateElementReport)       
+             
+                
+                
+            unosCodigosIdioma = [ unIdioma.getCodigoIdiomaEnGvSIG() for unIdioma in self.fObjectValues( cNombreTipoTRAIdioma)]            
+            unNumIdiomas = len( unosCodigosIdioma)
+                  
+            unIndexIdiomaAnterior = -1
+            for unIndexIdioma in range( unNumIdiomas):
+                unCodigoIdioma = unosCodigosIdioma[ unIndexIdioma]
+                if unCodigoIdioma < theCodigoIdiomaEnGvSIG:
+                    unIndexIdiomaAnterior = unIndexIdioma    
                 else:
-                    someSourceStatesToCopy = [ cEstadoTraduccionTraducida, cEstadoTraduccionRevisada, cEstadoTraduccionDefinitiva]
-                    
-                if someSourceStatesToCopy:
-                    unaBusqueda.update( {   'getEstadoTraduccion' :     someSourceStatesToCopy, })
-                    
-                           
-                unosResultadosBusqueda      = unCatalogBusquedaTraduccionesInSourceIdioma.searchResults(**unaBusqueda)
+                    break
                 
-                unasTraduccionesACopiar = [ ]
-                for unResultadoBusqueda in unosResultadosBusqueda:
-                    unaTraducccion = unResultadoBusqueda.getObject()
-                    if unaTraducccion:
-                        unaCadenaTraducida = unaTraducccion.getCadenaTraducida()
-                        if unaCadenaTraducida:
-                            unasTraduccionesACopiar.append( unaTraducccion)
-                        
-                if not unasTraduccionesACopiar:
-                    if theSourceStatesToCopy:
-                        anActionReport = { 'effect': 'warning', 'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_copyTranslations_action_warning_NoTranslationsInSourceLanguageInSpecifiedStates', "There are no Translations in the selected source Language in the specified states.-"), }
-                    else:
-                        anActionReport = { 'effect': 'warning', 'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_copyTranslations_action_warning_NoTranslationsInSourceLanguage', "There are no Translations in the selected source Language.-"), }
-                    return anActionReport  
-
-                        
+            if unIndexIdiomaAnterior < 0:
+                self.moveObjectsToTop( [ unaIdNuevoIdioma,])
+            else:
+                if not ( unIndexIdiomaAnterior == ( unNumIdiomas - 1)):
+                    if unIndexIdiomaAnterior < ( unNumIdiomas - 1):
+                        unDelta = ( unIndexIdiomaAnterior + 2) - unNumIdiomas 
+                        self.moveObjectsByDelta( [ unaIdNuevoIdioma,], unDelta)
+            
                 
-                aModelDDvlPlone_tool = self.fModelDDvlPloneTool()
-                             
-
-                unMemberId    = self.fGetMemberId()
-                unaFechaYHora = self.fDateTimeNowTextual()
-
-                aPloneUtilsTool = self.getPloneUtilsToolForNormalizeString()  
-               
-
-                unTitleContenidoIntercambio = '%s %s->%s ' % ( self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_copyTranslations_Importacion_prefix', "To Copy Translations from Language to Language"), theCopyFromLanguageCode, theNewLanguageCode, )
-                aNewIdContenidoIntercambio = unTitleContenidoIntercambio.lower().replace( ' ', '-')
-                if aPloneUtilsTool:
-                    aNewIdContenidoIntercambio = aPloneUtilsTool.normalizeString( aNewIdContenidoIntercambio)
- 
-                anAttrsDictContenidoIntercambio = { 
-                    'title':         unTitleContenidoIntercambio,
-                    'description':   '',
-                }
-                
-                unaIdNuevoContenidoIntercambio = theNuevaImportacion.invokeFactory( cNombreTipoTRAContenidoIntercambio, aNewIdContenidoIntercambio, **anAttrsDictContenidoIntercambio)
-                if not unaIdNuevoContenidoIntercambio:
-                    anActionReport = { 'effect': 'error', 'failure': '%s' %   self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCreating_Idioma_TRAContenidoIntercambio_NotCreated_msgid', "Error creating language: import not created.-"), }
-                    return anActionReport     
-                                
-                unNuevoContenidoIntercambio = theNuevaImportacion.getElementoPorID( unaIdNuevoContenidoIntercambio)
-                if not unNuevoContenidoIntercambio:
-                    anActionReport = { 'effect': 'error', 'failure': '%s' %  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCreating_Idioma_Created_TRAContenidoIntercambio_NotFound_msgid', "Could not find interchange contents just created-."), }
-                    return anActionReport     
-                
-                
-                someStringsAndTranslations = { }
-                
-                for unaTraduccion in unasTraduccionesACopiar:
-                    unSimboloCadena                     = unaTraduccion.getSimbolo()
-                    unaCadenaTraducida                  = unaTraduccion.getCadenaTraducida()
-                    if unaCadenaTraducida:
-                        unasTraduccionesCadena = { theNewLanguageCode: unaCadenaTraducida,}
-                        someStringsAndTranslations[ unSimboloCadena] = unasTraduccionesCadena
-                                        
-                
-                unContenidoConCadenas = { 'strings_and_translations': someStringsAndTranslations, }
-                unNuevoContenidoIntercambio.pSetContenido( unContenidoConCadenas)
-                
-                unStringsCreationReport = { 'effect': 'created', 'new_object_result': { 'object': unNuevoContenidoIntercambio,}, }
-                        
-                return unStringsCreationReport
-                
- 
-            except:
-                unaExceptionInfo = sys.exc_info()
-                unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
-                
-                unInformeExcepcion = 'Exception during fCopiarTraduccionesEnNuevoIdioma\n' 
-                unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
-                unInformeExcepcion += unaExceptionFormattedTraceback   
-                                         
-                unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
-
-                if cLogExceptions:
-                    logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
-                
-                anActionReport = { 'effect': 'error', 'failure': '%s\n%s' % (   self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCreating_Cadeas_Exception_msgid', "Exception while creating Strings (as import process).-"), unInformeExcepcion, ) }
-                return anActionReport     
-              
+            return unNuevoIdioma
+        
         finally:
             unExecutionRecord and unExecutionRecord.pEndExecution()
             unExecutionRecord and unExecutionRecord.pClearLoggedAll()
-
-                    
-                            
+           
+        
+            
+            
+            
+            
+            
+            
             
             
 
@@ -653,9 +1010,9 @@ class TRAColeccionIdiomas_Operaciones:
 
         
 
-    security.declareProtected( permissions.ManagePortal, 'fRequestNewDeleteLanguage')
-    def fRequestNewDeleteLanguage( self, 
-        theAdditionalParms      =None,  
+    security.declareProtected( permissions.ManagePortal, 'fCreateProgressHandlerFor_DeleteLanguage')
+    def fCreateProgressHandlerFor_DeleteLanguage( self, 
+        theAdditionalParams      =None,  
         thePermissionsCache     =None, 
         theRolesCache           =None, 
         theParentExecutionRecord=None):
@@ -812,31 +1169,57 @@ class TRAColeccionIdiomas_Operaciones:
         
         
         
-        unExecutionRecord = self.fStartExecution( 'method',  'fRequestNewDeleteLanguage', theParentExecutionRecord,  True, { 'log_what': 'details', 'log_when': True, }, ) 
+        unExecutionRecord = self.fStartExecution( 'method',  'fCreateProgressHandlerFor_DeleteLanguage', theParentExecutionRecord,  True, { 'log_what': 'details', 'log_when': True, }, ) 
         
+        aThereWasException = False
         
         try:
             
             
-            unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-            unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
-                
-            aDeleteLanguageResult = self.fNewVoidProgressResult()
-            
-            
-            aProgressElement = None
-            aThereWasException = False
-            aProgressHandler = None
-            
+            unPermissionsCache = fDictOrNew( thePermissionsCache)
+            unRolesCache       = fDictOrNew( theRolesCache)
+              
+            aResult = self.fNewVoidCreateProgressHandlerResult()
+
             try:
                 
-                aLanguageUID = theAdditionalParms.get( 'language_uid', '')
+                unCatalogoRaiz = self.getCatalogo()           
+                if unCatalogoRaiz == None:
+                    aResult.update( {
+                        'success':     False,
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_error_internal_Missing_RootCatalog', "Internal error: missing root translations catalog-."),
+                    })
+                    return aResult
+                
+                unaColeccionProgresos = unCatalogoRaiz.fObtenerColeccionProgresos()
+                if unaColeccionProgresos == None:
+                    aResult.update( {
+                        'success':     False,
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_error_internal_Missing_progresses_collection', "Internal error: missing progresses collection-."),
+                    })
+                    return aResult
+                    
+                aDeleteLanguageResult = self.fNewVoidProgressResult()
+                
+                
+                aProgressElement = None
+                aProgressHandler = None
+                                
+                aLanguageUID = theAdditionalParams.get( 'language_uid', '')
                 if not aLanguageUID:
-                    return None
+                    aResult.update( {
+                        'success':     False,
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_error_Missing_Parameter_LanguageUID', "Required Parameter Missing: Language UID-."),
+                    })
+                    return aResult
                 
                 unIdioma = self.fElementoPorUID( aLanguageUID)
                 if unIdioma == None:
-                    return None
+                    aResult.update( {
+                        'success':     False,
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_error_Parameter_LanguageNoFoundByUID', "Language not found by UID-."),
+                    })
+                    return aResult
                
                 aMetaType = 'UnknownType'
                 try:
@@ -868,6 +1251,10 @@ class TRAColeccionIdiomas_Operaciones:
                 aDeleteLanguageResult[ 'TRACatalogo_UID' ]       = unCatalogoRaiz.UID()
                 
                     
+                # ##################################################
+                """Check permissions to execute use case.
+                
+                """
                 unUseCaseQueryResult = self.fUseCaseAssessment(  
                     theUseCaseName          = cUseCase_DeleteTRAIdioma, 
                     theElementsBindings     = { cBoundObject: unIdioma,},
@@ -877,11 +1264,12 @@ class TRAColeccionIdiomas_Operaciones:
                     theParentExecutionRecord= unExecutionRecord
                 )
                 if not unUseCaseQueryResult or not unUseCaseQueryResult.get( 'success', False):
-                    aDeleteLanguageResult[ 'success']   =  False
-                    aDeleteLanguageResult[ 'condition'] = 'gvSIGi18n_no_permission_ToDeleteLanguage'
-                    aDeleteLanguageResult[ 'date_time_now_string']   = self.fDateTimeNowTextual()
-                    return None
-                
+                    aResult.update( {
+                        'success':     False,
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_no_permission_ToDeleteLanguage', "You do not have permission to Delete Language-."),
+                    })
+                    return aResult
+
                  
                 
                 aLanguagesCollectionUID = self.UID()
@@ -892,7 +1280,7 @@ class TRAColeccionIdiomas_Operaciones:
                     'language_UID':              aLanguageUID,
                 }
 
-                aProgressHandler, aProgressElement = self.fCreateNewProgressAndHandlerForElement(  
+                aProgressHandlerCreationResult = unaColeccionProgresos.fCreateNewProgressAndHandlerForElement(  
                     theInitialElement       =unIdioma, 
                     theProcessType          =cTRAProgress_ProcessType_DeleteLanguage, 
                     theInputParameters      =someInputParameters,
@@ -906,13 +1294,49 @@ class TRAColeccionIdiomas_Operaciones:
                     thePermissionsCache     =unPermissionsCache, 
                     theRolesCache           =unRolesCache, 
                     theParentExecutionRecord=unExecutionRecord,)
-                if ( not aProgressHandler) or ( aProgressElement == None):
-                    return None
+                if ( not aProgressHandlerCreationResult) or not aProgressHandlerCreationResult.get( 'success', False):
+                    aResult.update( {
+                        'success':    False,
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_error_TRAProgress_not_created_for_TRAImportacion_msgid', "Error creating Progress element for Import element-."),
+                    })
+                    return aResult     
                 
-                aProgressHandler_Key = aProgressHandler.fKey()
                 
-                return aProgressHandler_Key
-            
+                aProgressElement = aProgressHandlerCreationResult.get( 'progress_element', None)
+                if ( aProgressElement == None):
+                    aResult = { 
+                        'success':   False, 
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorProgressElementNotKnownByImportProcessElement', "Progress element is not known by import process element-"),
+                    }
+                    return aResult
+                
+                aProgressHandler = aProgressHandlerCreationResult.get( 'progress_handler', None)
+                if not aProgressHandler:
+                    aResult = { 
+                        'success':   False, 
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorImportProgressHandlerNotFound', "Import Progress Handler has not been found-"),
+                    }
+                    return aResult
+
+                aProgressHandlerKey = aProgressHandlerCreationResult.get( 'progress_handler_key', None)
+                if not aProgressHandlerKey:
+                    aResult = { 
+                        'success':   False, 
+                        'condition':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorImport_NoProgressHandlerKey', "Import has no Progress Handler Key-"),
+                    }
+                    return aResult
+
+                
+                aResult.update( {
+                    'success':               True,
+                    'condition':             '',
+                    'progress_element':      aProgressElement,
+                    'progress_handler':      aProgressHandler,
+                    'progress_handler_key':  aProgressHandlerKey,
+                })
+                 
+                return aResult
+             
             except:
                 unaExceptionInfo = sys.exc_info()
                 unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
@@ -920,7 +1344,7 @@ class TRAColeccionIdiomas_Operaciones:
                 aThereWasException = True
                 unInformeExcepcion = ''
                 try:
-                    unInformeExcepcion += 'Exception during fRequestNewDeleteLanguage of element %s %s at %s\n'  % (  self.meta_type(), self.Title(), self.fPhysicalPathString())
+                    unInformeExcepcion += 'Exception during fCreateProgressHandlerFor_DeleteLanguage of element %s %s at %s\n'  % (  self.meta_type(), self.Title(), self.fPhysicalPathString())
                 except:
                     None
                 try:
@@ -940,6 +1364,7 @@ class TRAColeccionIdiomas_Operaciones:
                 
                 aDeleteLanguageResult[ 'success'] = False
                 aDeleteLanguageResult[ 'exception_date_time_string'] = self.fDateTimeNowTextual()
+                aDeleteLanguageResultDump = ''
                 try:
                     aDeleteLanguageResultDump = self.fProgressResult_dump( aDeleteLanguageResult)
                 except:
@@ -955,7 +1380,11 @@ class TRAColeccionIdiomas_Operaciones:
                 if cLogExceptions:
                     logging.getLogger( 'gvSIGi18n').error( unInformeExcepcion)
                 
-                return None
+                aResult = { 
+                    'success':    False, 
+                    'condition':  '%s\n%s' % (   self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Exception_msgid', "Exception.-"), unInformeExcepcion, ),
+                }
+                return aResult
         
         finally:
             unExecutionRecord and unExecutionRecord.pEndExecution()

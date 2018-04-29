@@ -2,7 +2,7 @@
 #
 # File: TRAElemento_UsersAndGroupsUtils.py
 #
-# Copyright (c) 2008, 2009,2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -39,7 +39,25 @@ from AccessControl              import ClassSecurityInfo
 from Products.CMFCore           import permissions
 
 
-from TRAElemento_Constants              import *
+from TRAElemento_Constants                 import *
+from TRAElemento_Constants_Activity        import *
+from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Dates           import *
+from TRAElemento_Constants_Encoding        import *
+from TRAElemento_Constants_Import          import *
+from TRAElemento_Constants_Languages       import *
+from TRAElemento_Constants_Logging         import *
+from TRAElemento_Constants_Modules         import *
+from TRAElemento_Constants_Profiling       import *
+from TRAElemento_Constants_Progress        import *
+from TRAElemento_Constants_String          import *
+from TRAElemento_Constants_StringRequests  import *
+from TRAElemento_Constants_Translate       import *
+from TRAElemento_Constants_Translation     import *
+from TRAElemento_Constants_TypeNames       import *
+from TRAElemento_Constants_Views           import *
+from TRAElemento_Constants_Vocabularies    import *
+from TRAUtils                              import *
 
 
 
@@ -73,13 +91,26 @@ class TRAElemento_UsersAndGroupsUtils:
 
     
 
+    security.declarePublic( 'fGetMemberId_safe')
+    def fGetMemberId_safe(self ):
+        """Retrieve the member identifier of the connected user trapping any exceptions that may occur during the retrieval. 
+        
+        """
+        aMemberId = ''
+        try:
+            aMemberId = self.fGetMemberId()
+        except:
+            None
+        
+        return aMemberId
+    
     
     
 
     
     security.declarePublic( 'fGetMemberId')
     def fGetMemberId(self ):
-        """Connected user member identifier. 
+        """Retrieve the member identifier of the connected user . 
         
         """
     
@@ -93,7 +124,7 @@ class TRAElemento_UsersAndGroupsUtils:
             return ''
         
         if unMember.getUserName() ==  cTRAMemberIdAnonymousUser:
-            unMemberId = unMember.getUserName()
+            unMemberId = cTRAMemberIdAnonymousUser
         else:
             unMemberId = unMember.getMemberId()   
 

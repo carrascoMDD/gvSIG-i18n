@@ -2,7 +2,7 @@
 #
 # File: TRACatalogo_Inicializacion_Constants.py
 #
-# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -39,7 +39,41 @@ from Products.CMFCore.utils         import SimpleRecord
 
 
 
-from TRAElemento_Constants import *
+from Products.PluggableAuthService.permissions import ManageGroups                  as perm_ManageGroups
+from AccessControl.Permissions                 import access_contents_information   as perm_AccessContentsInformation
+from AccessControl.Permissions                 import copy_or_move                  as perm_CopyOrMove
+
+
+from Products.gvSIGi18nTool.TRAgvSIGi18nTool_Constants import cTRAgvSIGi18nToolId
+
+
+from TRAElemento_Constants                 import *
+from TRAElemento_Constants_Activity        import *
+from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Dates           import *
+from TRAElemento_Constants_Encoding        import *
+from TRAElemento_Constants_Import          import *
+from TRAElemento_Constants_Languages       import *
+from TRAElemento_Constants_Logging         import *
+from TRAElemento_Constants_Modules         import *
+from TRAElemento_Constants_Profiling       import *
+from TRAElemento_Constants_Progress        import *
+from TRAElemento_Constants_String          import *
+from TRAElemento_Constants_StringRequests  import *
+from TRAElemento_Constants_Translate       import *
+from TRAElemento_Constants_Translation     import *
+from TRAElemento_Constants_TypeNames       import *
+from TRAElemento_Constants_Views           import *
+from TRAElemento_Constants_Vocabularies    import *
+from TRAUtils                              import *
+
+from TRAImportarExportar_Constants                import *
+from TRAImportarExportar_Constants_Encodings      import *
+from TRAImportarExportar_Constants_GNUgettextPO   import *
+from TRAImportarExportar_Constants_JavaProperties import *
+
+
+from TRAElemento_Permission_Definitions import cPermission_gvSIGi18nAddTRACatalogo
 
 
 from TRARoles       import *
@@ -56,6 +90,16 @@ from TRARoles       import *
 
 
 
+
+# #######################################
+"""Configured default values for Various Configuration 
+
+"""
+cMaximoNumeroCambiosRecientes   = 5000
+cSegundosParaConfirmarAccion    = 120
+
+
+
 cTRAInstallPath_PortalSkinsCustom = [ 'portal_skins', 'custom',]
 
 
@@ -65,8 +109,6 @@ cTRAInstallPath_PortalSkinsCustom = [ 'portal_skins', 'custom',]
 
 """
 cInitializeAllow_CreateExternalMethod       = True
-# ACV 20091004 Moved to TRAElemento_Constants.py as it is used also from TRAElemento_Operaciones.py
-# cInitializeAllow_CreateModelDDvlPloneTool   = True
 cInitializeAllow_CreateCollections          = True
 cInitializeAllow_CreateSingletons           = True
 cInitializeAllow_CreateCatalogs             = True
@@ -79,6 +121,65 @@ cInitializeAllow_CreateSetAcquireRoleAssignments = True
 cInitializeAllow_AddGroupToGroup            = True
 cInitializeAllow_AddSchemaFields            = True
 
+
+
+cTRACatalogoInitialPermissions = {
+    perm_AccessContentsInformation: {
+        'acquire_permissions':    False,
+        'roles':    [ cTRACreator_role,],
+                
+    },
+    permissions.AddPortalContent: {
+        'acquire_permissions':    False,
+        'roles':    [ cTRACreator_role,],
+                
+    },
+    permissions.AddPortalFolders: {
+        'acquire_permissions':    False,
+        'roles':    [ cTRACreator_role,],
+                
+    },
+    permissions.ChangePermissions: {
+        'acquire_permissions':    False,
+        'roles':    [ cTRACreator_role,],
+                
+    },
+    permissions.DeleteObjects: {
+        'acquire_permissions':    False,
+        'roles':    [ cTRACreator_role,],
+                
+    },
+    permissions.ListFolderContents: {
+        'acquire_permissions':    False,
+        'roles':    [ cTRACreator_role,],
+                
+    },
+    perm_ManageGroups: {
+        'acquire_permissions':    False,
+        'roles':    [ cTRACreator_role,],
+                
+    },
+    permissions.ManageProperties: {
+        'acquire_permissions':    False,
+        'roles':    [ cTRACreator_role,],
+                
+    },
+    permissions.ModifyPortalContent: {
+        'acquire_permissions':    False,
+        'roles':    [ cTRACreator_role,],
+                
+    },
+    permissions.View: {
+        'acquire_permissions':    False,
+        'roles':    [ cTRACreator_role,],
+                
+    },
+    cPermission_gvSIGi18nAddTRACatalogo: {
+        'acquire_permissions':    False,
+        'roles':    [ cTRACreator_role,],
+                
+    },
+}
 
 
 
@@ -123,10 +224,119 @@ cTRAEspecificacionesColecciones = [
 
 """
 
+cTRAEspecificacionesEarlySingletons = [ 
+    [ cNombreTipoTRAConfiguracionPermisos,               cTRAConfiguracion_Permisos_Id,               cTRAConfiguracion_Permisos_Title, 
+        {   'aspectoConfiguracion':                                    cTRAConfiguracionAspecto_Permisos,
+            
+            'esAnonymousTRAManager':                                   cTRABooleanNo,
+            'esAnonymousTRACoordinator':                               cTRABooleanNo,
+            'esAnonymousTRADeveloper':                                 cTRABooleanNo,
+            'esAnonymousTRAReviewer':                                  cTRABooleanNo,
+            'esAnonymousTRATranslator':                                cTRABooleanNo,
+            'esAnonymousTRAVisitor':                                   cTRABooleanSi,
+            
+            'esAuthenticatedTRAManager':                               cTRABooleanNo,
+            'esAuthenticatedTRACoordinator':                           cTRABooleanNo,
+            'esAuthenticatedTRADeveloper':                             cTRABooleanNo,
+            'esAuthenticatedTRAReviewer':                              cTRABooleanNo,
+            'esAuthenticatedTRATranslator':                            cTRABooleanNo,
+            'esAuthenticatedTRAVisitor':                               cTRABooleanSi,
+            
+            'esMemberTRAManager':                                      cTRABooleanNo,
+            'esMemberTRACoordinator':                                  cTRABooleanNo,
+            'esMemberTRADeveloper':                                    cTRABooleanNo,
+            'esMemberTRAReviewer':                                     cTRABooleanNo,
+            'esMemberTRATranslator':                                   cTRABooleanNo,
+            'esMemberTRAVisitor':                                      cTRABooleanSi,
+            
+            'esReviewerTRAManager':                                    cTRABooleanNo,
+            'esReviewerTRACoordinator':                                cTRABooleanNo,
+            'esReviewerTRADeveloper':                                  cTRABooleanNo,
+            'esReviewerTRAReviewer':                                   cTRABooleanNo,
+            'esReviewerTRATranslator':                                 cTRABooleanNo,
+            'esReviewerTRAVisitor':                                    cTRABooleanSi,
+            
+            'esOwnerTRAManager':                                       cTRABooleanSi,
+            'esOwnerTRACoordinator':                                   cTRABooleanSi,
+            'esOwnerTRADeveloper':                                     cTRABooleanSi,
+            'esOwnerTRAReviewer':                                      cTRABooleanSi,
+            'esOwnerTRATranslator':                                    cTRABooleanSi,
+            'esOwnerTRAVisitor':                                       cTRABooleanSi,
+            
+            'esManagerTRAManager':                                     cTRABooleanSi,
+            'esManagerTRACoordinator':                                 cTRABooleanSi,
+            'esManagerTRADeveloper':                                   cTRABooleanSi,
+            'esManagerTRAReviewer':                                    cTRABooleanSi,
+            'esManagerTRATranslator':                                  cTRABooleanSi,
+            'esManagerTRAVisitor':                                     cTRABooleanSi,
+        },
+    ],
+]
+
+
+
 
 cTRAEspecificacionesSingletons = [ 
+    
+    [ cNombreTipoTRASimbolosOrdenados,                 cTRASimbolosOrdenados_Id,                  cTRASimbolosOrdenados_Title, 
+        {  
+        },
+    ],
+    
+    
+    [ cNombreTipoTRAParametrosControlProgreso, cTRAParametrosControlProgreso_Verificar_Id,           cTRAParametrosControlProgreso_Verificar_Title, 
+        {   'tipoProceso':                                    cTRAProgress_ProcessType_Verify,
+            'crearInformeAntes':                              False,
+            'crearInformeDespues':                            False,
+            'guardarResultados_habilitado':                   False,
+            'guardarResultados_maximoMilisegundos':           0,
+            'guardarResultados_maximoElementosLeidos':        0,
+            'guardarResultados_maximoElementosModificados':   0,
+            'transacciones_habilitado':                       False,
+            'transacciones_maximoMilisegundos':               0,
+            'transacciones_maximoElementosLeidos':            0,
+            'transacciones_maximoElementosModificados':       0,
+            'registro_habilitado':                            False,
+            'registro_maximoMilisegundos':                    0,
+            'registro_maximoElementosLeidos':                 0,
+            'registro_maximoElementosModificados':            0,
+            'registro_maximoTransacciones':                   0,
+            'cederProcesador_habilitado':                     False,
+            'cederProcesador_maximoMilisegundos':             0,
+            'cederProcesador_maximoElementosLeidos':          0,
+            'cederProcesador_maximoElementosModificados':     0,
+            'cederProcesador_porcentajeTiempoActividad':      100,
+        },
+    ],
+    [ cNombreTipoTRAParametrosControlProgreso, cTRAParametrosControlProgreso_Inicializar_Id,           cTRAParametrosControlProgreso_Inicializar_Title, 
+        {   'tipoProceso':                                    cTRAProgress_ProcessType_Initialize,
+            'crearInformeAntes':                              False,
+            'crearInformeDespues':                            False,
+            'guardarResultados_habilitado':                   False,
+            'guardarResultados_maximoMilisegundos':           0,
+            'guardarResultados_maximoElementosLeidos':        0,
+            'guardarResultados_maximoElementosModificados':   0,
+            'transacciones_habilitado':                       False,
+            'transacciones_maximoMilisegundos':               0,
+            'transacciones_maximoElementosLeidos':            0,
+            'transacciones_maximoElementosModificados':       0,
+            'registro_habilitado':                            False,
+            'registro_maximoMilisegundos':                    0,
+            'registro_maximoElementosLeidos':                 0,
+            'registro_maximoElementosModificados':            0,
+            'registro_maximoTransacciones':                   0,
+            'cederProcesador_habilitado':                     False,
+            'cederProcesador_maximoMilisegundos':             0,
+            'cederProcesador_maximoElementosLeidos':          0,
+            'cederProcesador_maximoElementosModificados':     0,
+            'cederProcesador_porcentajeTiempoActividad':      100,
+        },
+    ],
     [ cNombreTipoTRAParametrosControlProgreso, cTRAParametrosControlProgreso_Inventario_Id,           cTRAParametrosControlProgreso_Inventario_Title, 
-        {   'guardarResultados_habilitado':                   True,
+        {   'tipoProceso':                                    cTRAProgress_ProcessType_Inventory,
+            'crearInformeAntes':                              False,
+            'crearInformeDespues':                            False,
+            'guardarResultados_habilitado':                   True,
             'guardarResultados_maximoMilisegundos':           60000,
             'guardarResultados_maximoElementosLeidos':        5000,
             'guardarResultados_maximoElementosModificados':   0,
@@ -147,7 +357,10 @@ cTRAEspecificacionesSingletons = [
         },
     ],
     [ cNombreTipoTRAParametrosControlProgreso, cTRAParametrosControlProgreso_Recatalogar_Id,          cTRAParametrosControlProgreso_Recatalogar_Title, 
-        {   'guardarResultados_habilitado':                   True,
+        {   'tipoProceso':                                    cTRAProgress_ProcessType_ReCatalog,
+            'crearInformeAntes':                              True,
+            'crearInformeDespues':                            True,
+            'guardarResultados_habilitado':                   True,
             'guardarResultados_maximoMilisegundos':           60000,
             'guardarResultados_maximoElementosLeidos':        5000,
             'guardarResultados_maximoElementosModificados':   5000,
@@ -167,8 +380,35 @@ cTRAEspecificacionesSingletons = [
             'cederProcesador_porcentajeTiempoActividad':      50,
         },
     ],
+    [ cNombreTipoTRAParametrosControlProgreso, cTRAParametrosControlProgreso_VerificarPermisos_Id,           cTRAParametrosControlProgreso_VerificarPermisos_Title, 
+        {   'tipoProceso':                                    cTRAProgress_ProcessType_VerifyPermissions,
+            'crearInformeAntes':                              False,
+            'crearInformeDespues':                            False,
+            'guardarResultados_habilitado':                   True,
+            'guardarResultados_maximoMilisegundos':           60000,
+            'guardarResultados_maximoElementosLeidos':        5000,
+            'guardarResultados_maximoElementosModificados':   0,
+            'transacciones_habilitado':                       True,
+            'transacciones_maximoMilisegundos':               3000,
+            'transacciones_maximoElementosLeidos':            5000,
+            'transacciones_maximoElementosModificados':       0,
+            'registro_habilitado':                            True,
+            'registro_maximoMilisegundos':                    120000,
+            'registro_maximoElementosLeidos':                 10000,
+            'registro_maximoElementosModificados':            0,
+            'registro_maximoTransacciones':                   10,
+            'cederProcesador_habilitado':                     True,
+            'cederProcesador_maximoMilisegundos':             1000,
+            'cederProcesador_maximoElementosLeidos':          1000,
+            'cederProcesador_maximoElementosModificados':     0,
+            'cederProcesador_porcentajeTiempoActividad':      50,
+        },
+    ],
     [ cNombreTipoTRAParametrosControlProgreso, cTRAParametrosControlProgreso_ReestablecerPermisos_Id, cTRAParametrosControlProgreso_ReestablecerPermisos_Title, 
-        {   'guardarResultados_habilitado':                   True,
+        {   'tipoProceso':                                    cTRAProgress_ProcessType_ResetPermissions,
+            'crearInformeAntes':                              True,
+            'crearInformeDespues':                            True,
+            'guardarResultados_habilitado':                   True,
             'guardarResultados_maximoMilisegundos':           60000,
             'guardarResultados_maximoElementosLeidos':        5000,
             'guardarResultados_maximoElementosModificados':   5000,
@@ -189,7 +429,10 @@ cTRAEspecificacionesSingletons = [
         },
     ],
     [ cNombreTipoTRAParametrosControlProgreso, cTRAParametrosControlProgreso_DeleteModule_Id,         cTRAParametrosControlProgreso_DeleteModule_Title, 
-        {   'guardarResultados_habilitado':                   True,
+        {   'tipoProceso':                                    cTRAProgress_ProcessType_DeleteModule,
+            'crearInformeAntes':                              True,
+            'crearInformeDespues':                            True,
+            'guardarResultados_habilitado':                   True,
             'guardarResultados_maximoMilisegundos':           60000,
             'guardarResultados_maximoElementosLeidos':        5000,
             'guardarResultados_maximoElementosModificados':   5000,
@@ -210,7 +453,10 @@ cTRAEspecificacionesSingletons = [
         },
     ],
     [ cNombreTipoTRAParametrosControlProgreso, cTRAParametrosControlProgreso_DeleteLanguage_Id,       cTRAParametrosControlProgreso_DeleteLanguage_Title, 
-        {   'guardarResultados_habilitado':                   True,
+        {   'tipoProceso':                                    cTRAProgress_ProcessType_DeleteLanguage,
+            'crearInformeAntes':                              True,
+            'crearInformeDespues':                            True,
+            'guardarResultados_habilitado':                   True,
             'guardarResultados_maximoMilisegundos':           60000,
             'guardarResultados_maximoElementosLeidos':        5000,
             'guardarResultados_maximoElementosModificados':   5000,
@@ -231,7 +477,10 @@ cTRAEspecificacionesSingletons = [
         },
     ],
     [ cNombreTipoTRAParametrosControlProgreso, cTRAParametrosControlProgreso_Backup_Id,               cTRAParametrosControlProgreso_Backup_Title, 
-        {   'guardarResultados_habilitado':                   True,
+        {   'tipoProceso':                                    cTRAProgress_ProcessType_Backup,
+            'crearInformeAntes':                              False,
+            'crearInformeDespues':                            False,
+            'guardarResultados_habilitado':                   True,
             'guardarResultados_maximoMilisegundos':           60000,
             'guardarResultados_maximoElementosLeidos':        5000,
             'guardarResultados_maximoElementosModificados':   0,
@@ -252,7 +501,10 @@ cTRAEspecificacionesSingletons = [
         },
     ],
     [ cNombreTipoTRAParametrosControlProgreso, cTRAParametrosControlProgreso_ExportGvSIG_Id,          cTRAParametrosControlProgreso_ExportGvSIG_Title, 
-        {   'guardarResultados_habilitado':                   True,
+        {   'tipoProceso':                                    cTRAProgress_ProcessType_ExportGvSIG,
+            'crearInformeAntes':                              False,
+            'crearInformeDespues':                            False,
+            'guardarResultados_habilitado':                   True,
             'guardarResultados_maximoMilisegundos':           60000,
             'guardarResultados_maximoElementosLeidos':        5000,
             'guardarResultados_maximoElementosModificados':   0,
@@ -273,7 +525,10 @@ cTRAEspecificacionesSingletons = [
         },
     ],
     [ cNombreTipoTRAParametrosControlProgreso, cTRAParametrosControlProgreso_Export_Id,               cTRAParametrosControlProgreso_Export_Title, 
-        {   'guardarResultados_habilitado':                   True,
+        {   'tipoProceso':                                    cTRAProgress_ProcessType_Export,
+            'crearInformeAntes':                              False,
+            'crearInformeDespues':                            False,
+            'guardarResultados_habilitado':                   True,
             'guardarResultados_maximoMilisegundos':           60000,
             'guardarResultados_maximoElementosLeidos':        5000,
             'guardarResultados_maximoElementosModificados':   0,
@@ -294,7 +549,10 @@ cTRAEspecificacionesSingletons = [
         },
     ],
     [ cNombreTipoTRAParametrosControlProgreso, cTRAParametrosControlProgreso_Import_Id,               cTRAParametrosControlProgreso_Import_Title, 
-        {   'guardarResultados_habilitado':                   True,
+        {   'tipoProceso':                                    cTRAProgress_ProcessType_Import,
+            'crearInformeAntes':                              True,
+            'crearInformeDespues':                            True,
+            'guardarResultados_habilitado':                   True,
             'guardarResultados_maximoMilisegundos':           60000,
             'guardarResultados_maximoElementosLeidos':        1000,
             'guardarResultados_maximoElementosModificados':   1000,
@@ -314,7 +572,172 @@ cTRAEspecificacionesSingletons = [
             'cederProcesador_porcentajeTiempoActividad':      50,
         },
     ],
+    
+    
+    
+    [ cNombreTipoTRAConfiguracionImportacion, cTRAConfiguracion_Importacion_Id,               cTRAConfiguracion_Importacion_Title, 
+        {   'aspectoConfiguracion':                                     cTRAConfiguracionAspecto_Importacion,
+            'nombreModuloPorDefecto':                                   cTRAModuleName_gvSIG,
+            'codigoIdiomaPorDefecto':                                   cTRALanguageCode_English,
+            'importarConNombreModuloConfiguradoPorDefecto':             True,
+            'importarFuentesDesdeComentariosPorDefecto':                True,
+            'importarNombreModuloDesdeDominioONombreFicheroPorDefecto': True,
+            'importarNombresModulosDesdeComentariosPorDefecto':         True,
+            'importarStatusDesdeComentariosPorDefecto':                 True,
+            'segundosParaConfirmarImportacion':                         300,
+            'numeroMaximoLineasAExplorar':                              100000,
+            'importarXMLTRACatalogoPorDefecto':                         False,
+            'importarXMLTRAConfiguracionesPorDefecto':                  False,
+            'importarXMLTRAParametrosControlProgresoPorDefecto':        False,
+            'importarXMLTRAParametrosControlProgresoPorDefecto':        False,
+            'importarXMLTRAIdiomasPorDefecto':                          False,
+            'importarXMLTRASolicitudesCadenasPorDefecto':               False,
+            'importarXMLTRAModulosPorDefecto':                          False,
+            'importarXMLTRAInformesPorDefecto':                         False,
+            'importarXMLTRAImportacionesPorDefecto':                    False,
+            'importarXMLTRAProgresosPorDefecto':                        False,            
+        },
+    ],
+    [ cNombreTipoTRAConfiguracionImportacion, cTRAConfiguracion_Restore_Id,               cTRAConfiguracion_Restore_Title, 
+        {   'aspectoConfiguracion':                                     cTRAConfiguracionAspecto_Recuperar,
+            'nombreModuloPorDefecto':                                   '',
+            'codigoIdiomaPorDefecto':                                   '',
+            'importarConNombreModuloConfiguradoPorDefecto':             False,
+            'importarFuentesDesdeComentariosPorDefecto':                True,
+            'importarNombreModuloDesdeDominioONombreFicheroPorDefecto': False,
+            'importarNombresModulosDesdeComentariosPorDefecto':         True,
+            'importarStatusDesdeComentariosPorDefecto':                 True,
+            'segundosParaConfirmarImportacion':                         300,
+            'numeroMaximoLineasAExplorar':                              1000000,
+            'importarXMLTRACatalogoPorDefecto':                         True,
+            'importarXMLTRAConfiguracionesPorDefecto':                  True,
+            'importarXMLTRAParametrosControlProgresoPorDefecto':        True,
+            'importarXMLTRAParametrosControlProgresoPorDefecto':        True,
+            'importarXMLTRAIdiomasPorDefecto':                          True,
+            'importarXMLTRASolicitudesCadenasPorDefecto':               True,
+            'importarXMLTRAModulosPorDefecto':                          True,
+            'importarXMLTRAInformesPorDefecto':                         True,
+            'importarXMLTRAImportacionesPorDefecto':                    True,
+            'importarXMLTRAProgresosPorDefecto':                        True,            
+        },
+    ],
+    [ cNombreTipoTRAConfiguracionExportacion, cTRAConfiguracion_Exportacion_Id,               cTRAConfiguracion_Exportacion_Title, 
+        {   'aspectoConfiguracion':                                    cTRAConfiguracionAspecto_Exportacion,
+            'nombreModuloPorDefecto':                                  cTRAModuleName_gvSIG,
+            'codigoIdiomaPorDefecto':                                  cTRALanguageCode_English,
+            'exportarEstadoTraduccionesPorDefecto':                    cTRABooleanSi,
+            'exportarNombreFicheroParaGvSIGPorDefecto':                cTRABooleanSi,
+            'exportarNombresModulosPorDefecto':                        cTRABooleanSi,
+            'exportarFuentesPorDefecto':                               cTRABooleanSi,
+            'formatoExportacionPorDefecto':                            cExportFormatOption_JavaProperties,
+            'incluirLocalesCSVPorDefecto':                             cTRABooleanSi,
+            'incluirManifestPorDefecto':                               cTRABooleanNo,
+            'modoGestionErrorCodificacionExportacionPorDefecto':       cTRAEncodingErrorHandleMode_BackslashReplaceAndContinue,
+            'modulosPorSeparadoPorDefecto':                            cTRABooleanNo,
+            'tipoArchivoExportacionPorDefecto':                        cZipFilePostfix,
+            'exportarTRACatalogoPorDefecto':                           cTRABooleanNo,
+            'exportarTRAConfiguracionesPorDefecto':                    cTRABooleanNo,
+            'exportarTRAParametrosControlProgresoPorDefecto':          cTRABooleanNo,
+            'exportarTRAIdiomasPorDefecto':                            cTRABooleanNo,
+            'exportarTRASolicitudesCadenasPorDefecto':                 cTRABooleanNo,
+            'exportarTRAModulosPorDefecto':                            cTRABooleanNo,
+            'exportarTRAInformesPorDefecto':                           cTRABooleanNo,
+            'exportarTRAImportacionesPorDefecto':                      cTRABooleanNo,
+            'exportarTRAProgresosPorDefecto':                          cTRABooleanNo,
+        },
+    ],
+    [ cNombreTipoTRAConfiguracionExportacion, cTRAConfiguracion_ExportacionParaGvSIG_Id,               cTRAConfiguracion_ExportacionParaGvSIG_Title, 
+        {   'aspectoConfiguracion':                                    cTRAConfiguracionAspecto_ExportarParaGvSIG,
+            'nombreModuloPorDefecto':                                  cTRAModuleName_gvSIG,
+            'codigoIdiomaPorDefecto':                                  cTRALanguageCode_English,
+            'exportarEstadoTraduccionesPorDefecto':                    cTRABooleanSi,
+            'exportarNombreFicheroParaGvSIGPorDefecto':                cTRABooleanSi,
+            'exportarNombresModulosPorDefecto':                        cTRABooleanSi,
+            'exportarFuentesPorDefecto':                               cTRABooleanSi,
+            'formatoExportacionPorDefecto':                            cExportFormatOption_JavaProperties,
+            'incluirLocalesCSVPorDefecto':                             cTRABooleanSi,
+            'incluirManifestPorDefecto':                               cTRABooleanNo,
+            'modoGestionErrorCodificacionExportacionPorDefecto':       cTRAEncodingErrorHandleMode_BackslashReplaceAndContinue,
+            'modulosPorSeparadoPorDefecto':                            cTRABooleanNo,
+            'tipoArchivoExportacionPorDefecto':                        cZipFilePostfix,
+            'exportarTRACatalogoPorDefecto':                           cTRABooleanNo,
+            'exportarTRAConfiguracionesPorDefecto':                    cTRABooleanNo,
+            'exportarTRAParametrosControlProgresoPorDefecto':          cTRABooleanNo,
+            'exportarTRAIdiomasPorDefecto':                            cTRABooleanNo,
+            'exportarTRASolicitudesCadenasPorDefecto':                 cTRABooleanNo,
+            'exportarTRAModulosPorDefecto':                            cTRABooleanNo,
+            'exportarTRAInformesPorDefecto':                           cTRABooleanNo,
+            'exportarTRAImportacionesPorDefecto':                      cTRABooleanNo,
+            'exportarTRAProgresosPorDefecto':                          cTRABooleanNo,
+        },
+    ],
+    [ cNombreTipoTRAConfiguracionExportacion, cTRAConfiguracion_Backup_Id,               cTRAConfiguracion_Backup_Title, 
+        {   'aspectoConfiguracion':                                    cTRAConfiguracionAspecto_Backup,
+            'nombreModuloPorDefecto':                                  cTRAModuleName_gvSIG,
+            'codigoIdiomaPorDefecto':                                  cTRALanguageCode_English,
+            'exportarEstadoTraduccionesPorDefecto':                    cTRABooleanSi,
+            'exportarNombreFicheroParaGvSIGPorDefecto':                cTRABooleanNo,
+            'exportarNombresModulosPorDefecto':                        cTRABooleanSi,
+            'exportarFuentesPorDefecto':                               cTRABooleanSi,
+            'formatoExportacionPorDefecto':                            cExportFormatOption_JavaProperties,
+            'incluirLocalesCSVPorDefecto':                             cTRABooleanSi,
+            'incluirManifestPorDefecto':                               cTRABooleanNo,
+            'modoGestionErrorCodificacionExportacionPorDefecto':       cTRAEncodingErrorHandleMode_BackslashReplaceAndContinue,
+            'modulosPorSeparadoPorDefecto':                            cTRABooleanNo,
+            'tipoArchivoExportacionPorDefecto':                        cZipFilePostfix,
+            'exportarTRACatalogoPorDefecto':                           cTRABooleanSi,
+            'exportarTRAConfiguracionesPorDefecto':                    cTRABooleanSi,
+            'exportarTRAParametrosControlProgresoPorDefecto':          cTRABooleanSi,
+            'exportarTRAIdiomasPorDefecto':                            cTRABooleanSi,
+            'exportarTRASolicitudesCadenasPorDefecto':                 cTRABooleanSi,
+            'exportarTRAModulosPorDefecto':                            cTRABooleanSi,
+            'exportarTRAInformesPorDefecto':                           cTRABooleanSi,
+            'exportarTRAImportacionesPorDefecto':                      cTRABooleanSi,
+            'exportarTRAProgresosPorDefecto':                          cTRABooleanSi,
+        },
+    ],
+    [ cNombreTipoTRAConfiguracionSolicitudesCadenas, cTRAConfiguracion_SolicitudesCadenas_Id,               cTRAConfiguracion_SolicitudesCadenas_Title, 
+        {   'aspectoConfiguracion':                                     cTRAConfiguracionAspecto_SolicitudesCadenas,
+            'codigoIdiomaReferenciaSolicitudesNuevasCadenas':           'es',
+            'codigoIdiomaRequeridoSolicitudesNuevasCadenas':            cTRALanguageCode_English,
+        },
+    ],
+    [ cNombreTipoTRAConfiguracionAlmacenPaginas, cTRAConfiguracion_AlmacenPaginas_Id,               cTRAConfiguracion_AlmacenPaginas_Title, 
+        {   'aspectoConfiguracion':                                    cTRAConfiguracionAspecto_AlmacenPaginas,
+            'numeroDeActividadesAnularInformeActividad':               3,
+            'numeroDeCambiosAnularInformeIdiomas':                     5,
+            'numeroDeCambiosAnularInformeModulosEIdiomas':             20,
+            'segundosMinimosRetencionInformeActividad':                60,
+            'segundosMinimosRetencionInformeIdiomas':                  120,
+            'segundosMinimosRetencionInformeModulosEIdiomas':          300,
+        },
+    ],
+    [ cNombreTipoTRAConfiguracionPaginaTraducciones, cTRAConfiguracion_PaginaTraducciones_Id,               cTRAConfiguracion_PaginaTraducciones_Title, 
+        {   'aspectoConfiguracion':                                    cTRAConfiguracionAspecto_PaginaTraducciones,
+            'maximoRegistrosExplorados':                               cMaximoRegistrosExplorados,
+            'modoInteraccionPorDefecto':                               cInteractionMode_Asynchronous,
+            'traduccionesPorPaginaPorDefecto':                         cDefaultTraduccionesPorPagina,
+        },
+    ],
+    [ cNombreTipoTRAConfiguracionPerfilEjecucion, cTRAConfiguracion_PerfilEjecucion_Id,               cTRAConfiguracion_PerfilEjecucion_Title, 
+        {   'aspectoConfiguracion':                                    cTRAConfiguracionAspecto_PerfilEjecucion,
+            'escrituraEnDiscoDeRegistroDeEjecucionDetalladoHabilitado':False,
+            'escrituraEnDiscoDeRegistroDeEjecucionHabilitado':         False,
+            'perfilDeEjecucionHabilitado':                             False,
+            'presentacionEnPaginasDeRegistroDeEjecucionHabilitado':    False,
+            'presentacionEnPaginasDeTiempoDeEjecucionHabilitado':      False,
+            'registroRaizDeEjecucionAutomaticoHabilitado':             False,
+            'tiemposDeEjecucionHabilitado':                            False,
+        },
+    ],
+    [ cNombreTipoTRAConfiguracionVarios,               cTRAConfiguracion_Varios_Id,                   cTRAConfiguracion_Varios_Title, 
+        {   'aspectoConfiguracion':                                    cTRAConfiguracionAspecto_Varios,
+            'maximoNumeroCambiosRecientes':                            cMaximoNumeroCambiosRecientes,
+            'segundosParaConfirmarAccion':                             cSegundosParaConfirmarAccion,
+        },
+    ],
 ]   
+
 
 
 
@@ -342,7 +765,7 @@ cLanguagesWithSpecialLexiconPipelines = {
     'zh':  [ 'CJKSplitter', ],
     'ja':  [ 'CJKSplitter', ],
     'ko':  [ 'CJKSplitter', ],
-    'en':  [ 'Splitter', 'CaseNormalizer', 'StopWordRemover', ],
+    cTRALanguageCode_English:  [ 'Splitter', 'CaseNormalizer', 'StopWordRemover', ],
 }
 
 
@@ -451,6 +874,8 @@ cIndexesCatalogoFiltroTraducciones  = cIndexesCatalogoBusquedaTraducciones + [
     [ 'getUsuarioRevisor',              'FieldIndex',     ],
     [ 'getFechaDefinitivoTextual',      'FieldIndex',     ],
     [ 'getUsuarioCoordinador',          'FieldIndex',     ],
+    [ 'getFechaModificacionTextual',    'FieldIndex',     ],
+    [ 'getUsuarioModificador',          'FieldIndex',     ],
 ]
 cSchemaFieldsCatalogoFiltroTraducciones  = [ 'Type', 'getCodigoIdiomaEnGvSIG', ] + \
                                          [ aIdxSpec[ 0] for aIdxSpec in cIndexesCatalogoFiltroTraducciones] + \
@@ -502,7 +927,7 @@ cTRACatalogsDetailsParaIdioma = [
 
 
 # #############################################################
-"""External methods to create
+"""gvSIGi18n User Interface application initialization specification
 
 """
 cTRAExtMethod_ChangeAndBrowseTranslations           = "TRAChangeAndBrowseTranslations"
@@ -518,71 +943,95 @@ cTRAExtModule_TRAExport_ctrl                        = "TRAExport_ctrl"
 
 
 
-cTRAExternalMetodDefinitions = [
-    {
-        'ext_method_module':         cTRAExtMethod_ChangeAndBrowseTranslations,
-        'ext_method_function':       cTRAExtMethod_ChangeAndBrowseTranslations,
-        'ext_method_id':             cTRAExtMethod_ChangeAndBrowseTranslations,
-        'ext_method_title':          cTRAExtMethod_ChangeAndBrowseTranslations,
-        'install_path':              cTRAInstallPath_PortalSkinsCustom,
-        'required':                  True,
-        },
-    {
-        'ext_method_module':         cTRAExtMethod_ChangeAndBrowseTranslations,
-        'ext_method_function':       cTRAExtMethod_SizesIdioma,
-        'ext_method_id':             cTRAExtMethod_SizesIdioma,
-        'ext_method_title':          cTRAExtMethod_SizesIdioma,
-        'install_path':              cTRAInstallPath_PortalSkinsCustom,
-        'required':                  True,
-        },
-    {
-        'ext_method_module':         cTRAExtModule_TRARenderSecurity,
-        'ext_method_function':       cTRAExtMethod_RenderPermissionDefinitions,
-        'ext_method_id':             cTRAExtMethod_RenderPermissionDefinitions,
-        'ext_method_title':          cTRAExtMethod_RenderPermissionDefinitions,
-        'install_path':              cTRAInstallPath_PortalSkinsCustom,
-        'required':                  True,
-        },
-    {
-        'ext_method_module':         cTRAExtModule_TRARenderSecurity,
-        'ext_method_function':       cTRAExtMethod_RenderLoggedUsedAndRolesHere,
-        'ext_method_id':             cTRAExtMethod_RenderLoggedUsedAndRolesHere,
-        'ext_method_title':          cTRAExtMethod_RenderLoggedUsedAndRolesHere,
-        'install_path':              cTRAInstallPath_PortalSkinsCustom,
-        'required':                  True,
-        },
-    {
-        'ext_method_module':         cTRAExtModule_TRARenderSecurity,
-        'ext_method_function':       cTRAExtMethod_RenderGroupsRolesHere,
-        'ext_method_id':             cTRAExtMethod_RenderGroupsRolesHere,
-        'ext_method_title':          cTRAExtMethod_RenderGroupsRolesHere,
-        'install_path':              cTRAInstallPath_PortalSkinsCustom,
-        'required':                  True,
-        },
-    {
-        'ext_method_module':         cTRAExtModule_TRARenderProfiling,
-        'ext_method_function':       cTRAExtMethod_RenderExecutionDetails,
-        'ext_method_id':             cTRAExtMethod_RenderExecutionDetails,
-        'ext_method_title':          cTRAExtMethod_RenderExecutionDetails,
-        'install_path':              cTRAInstallPath_PortalSkinsCustom,
-        'required':                  True,
-        },    
-    {
-        'ext_method_module':         cTRAExtModule_TRAExport_ctrl,
-        'ext_method_function':       cTRAExtMethod_ParametersCandidateValues,
-        'ext_method_id':             cTRAExtMethod_ParametersCandidateValues,
-        'ext_method_title':          cTRAExtMethod_ParametersCandidateValues,
-        'install_path':              cTRAInstallPath_PortalSkinsCustom,
-        'required':                  True,
-        },    
-]
 
-
-cTRAInitializationDefinitions_ExternalMethods = {
-    'title':             'application gvSIG-i18n',
-    'external_methods':  cTRAExternalMetodDefinitions,
-    'tool_singletons':   [],
+cTRAUIInitializationDefinitions = {
+    'title':             'application gvSIG-i18n User Interface',
+    'external_methods':  [
+        {
+            'ext_method_module':         cTRAExtMethod_ChangeAndBrowseTranslations,
+            'ext_method_function':       cTRAExtMethod_ChangeAndBrowseTranslations,
+            'ext_method_id':             cTRAExtMethod_ChangeAndBrowseTranslations,
+            'ext_method_title':          cTRAExtMethod_ChangeAndBrowseTranslations,
+            'install_path':              cTRAInstallPath_PortalSkinsCustom,
+            'required':                  True,
+            },
+        {
+            'ext_method_module':         cTRAExtMethod_ChangeAndBrowseTranslations,
+            'ext_method_function':       cTRAExtMethod_SizesIdioma,
+            'ext_method_id':             cTRAExtMethod_SizesIdioma,
+            'ext_method_title':          cTRAExtMethod_SizesIdioma,
+            'install_path':              cTRAInstallPath_PortalSkinsCustom,
+            'required':                  True,
+            },
+        {
+            'ext_method_module':         cTRAExtModule_TRARenderSecurity,
+            'ext_method_function':       cTRAExtMethod_RenderPermissionDefinitions,
+            'ext_method_id':             cTRAExtMethod_RenderPermissionDefinitions,
+            'ext_method_title':          cTRAExtMethod_RenderPermissionDefinitions,
+            'install_path':              cTRAInstallPath_PortalSkinsCustom,
+            'required':                  True,
+            },
+        {
+            'ext_method_module':         cTRAExtModule_TRARenderSecurity,
+            'ext_method_function':       cTRAExtMethod_RenderLoggedUsedAndRolesHere,
+            'ext_method_id':             cTRAExtMethod_RenderLoggedUsedAndRolesHere,
+            'ext_method_title':          cTRAExtMethod_RenderLoggedUsedAndRolesHere,
+            'install_path':              cTRAInstallPath_PortalSkinsCustom,
+            'required':                  True,
+            },
+        {
+            'ext_method_module':         cTRAExtModule_TRARenderSecurity,
+            'ext_method_function':       cTRAExtMethod_RenderGroupsRolesHere,
+            'ext_method_id':             cTRAExtMethod_RenderGroupsRolesHere,
+            'ext_method_title':          cTRAExtMethod_RenderGroupsRolesHere,
+            'install_path':              cTRAInstallPath_PortalSkinsCustom,
+            'required':                  True,
+            },
+        {
+            'ext_method_module':         cTRAExtModule_TRARenderProfiling,
+            'ext_method_function':       cTRAExtMethod_RenderExecutionDetails,
+            'ext_method_id':             cTRAExtMethod_RenderExecutionDetails,
+            'ext_method_title':          cTRAExtMethod_RenderExecutionDetails,
+            'install_path':              cTRAInstallPath_PortalSkinsCustom,
+            'required':                  True,
+            },    
+        {
+            'ext_method_module':         cTRAExtModule_TRAExport_ctrl,
+            'ext_method_function':       cTRAExtMethod_ParametersCandidateValues,
+            'ext_method_id':             cTRAExtMethod_ParametersCandidateValues,
+            'ext_method_title':          cTRAExtMethod_ParametersCandidateValues,
+            'install_path':              cTRAInstallPath_PortalSkinsCustom,
+            'required':                  True,
+            },    
+    ],
+    'tool_singletons':   None,
 }
+
+
+
+
+
+
+
+# #############################################################
+"""gvSIGi18n boundary Tool application initialization specification
+
+"""
+cTRAToolInitializationDefinitions = {
+    'title':             'application gvSIG-i18n Tool',
+    'external_methods':  None,
+    'tool_singletons':   [
+        {
+            'singleton_id': cTRAgvSIGi18nToolId, 
+            'tool_module': 'Products.gvSIGi18nTool.TRAgvSIGi18nTool', 
+            'tool_class':   'TRAgvSIGi18nTool', 
+            'install_path': cTRAInstallPath_PortalSkinsCustom, 
+            'required':     True, 
+        },
+    ],
+}
+
+
 
 
 ##/code-section module-footer

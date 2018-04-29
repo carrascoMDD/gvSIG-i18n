@@ -2,7 +2,7 @@
 #
 # File: TRAColeccionSolicitudesCadenas_Operaciones.py
 #
-# Copyright (c) 2009 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -43,12 +43,30 @@ from Products.CMFCore.utils  import getToolByName
 
 
 
-from TRAElemento_Constants import *
+from TRAElemento_Constants                 import *
+from TRAElemento_Constants_Activity        import *
+from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Dates           import *
+from TRAElemento_Constants_Encoding        import *
+from TRAElemento_Constants_Import          import *
+from TRAElemento_Constants_Languages       import *
+from TRAElemento_Constants_Logging         import *
+from TRAElemento_Constants_Modules         import *
+from TRAElemento_Constants_Profiling       import *
+from TRAElemento_Constants_Progress        import *
+from TRAElemento_Constants_String          import *
+from TRAElemento_Constants_StringRequests  import *
+from TRAElemento_Constants_Translate       import *
+from TRAElemento_Constants_Translation     import *
+from TRAElemento_Constants_TypeNames       import *
+from TRAElemento_Constants_Views           import *
+from TRAElemento_Constants_Vocabularies    import *
+from TRAUtils                              import *
 
-from TRAImportarExportar_Constants import *
+from TRAImportarExportar_Constants import cScannedKeys_String_Symbol, cScannedKeys_String_Modules, cScannedKeys_Translation_Translation, cScannedKeys_String_Translations
 
-from TRAElemento_Permission_Definitions import cUseCase_CreateTRASolicitudCadena, cUseCase_CreateTRACadena, cUseCase_CleanupTRAColeccionSolicitudesCadenas
 from TRAElemento_Permission_Definitions import cBoundObject
+from TRAElemento_Permission_Definitions_UseCaseNames import cUseCase_CreateTRASolicitudCadena, cUseCase_CreateTRACadena, cUseCase_CleanupTRAColeccionSolicitudesCadenas
 
 
 
@@ -62,7 +80,6 @@ from TRAElemento_Permission_Definitions import cBoundObject
 ##code-section after-local-schema #fill in your manual code here
 
 
-cEstadoSolicitudCadena_Pending = 'Pendiente'
 
 ##/code-section after-local-schema
 
@@ -123,7 +140,7 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
         
         
     security.declarePrivate( 'pAllSubElements_into')    
-    def pAllSubElements_into( self, theCollection, theAdditionalParms=None):
+    def pAllSubElements_into( self, theCollection, theAdditionalParams=None):
         if theCollection == None:
             return self
         theCollection.append( self)
@@ -132,7 +149,7 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
         unosElementos = self.fObtenerTodasSolicitudesCadenas()
         if unosElementos:
             for unElemento in unosElementos:
-                unElemento.pAllSubElements_into( theCollection, theAdditionalParms=theAdditionalParms)
+                unElemento.pAllSubElements_into( theCollection, theAdditionalParams=theAdditionalParams)
         
         return self
         
@@ -164,7 +181,7 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
         """Retrieve all contained elements of type TRASolicitudCadena.
         
         """
-        someSolicitudesCadenas = self.objectValues( cNombreTipoTRASolicitudCadena) 
+        someSolicitudesCadenas = self.fObjectValues( cNombreTipoTRASolicitudCadena) 
         return someSolicitudesCadenas
          
       
@@ -183,7 +200,7 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
         
         for unaSolicitudCadena in someSolicitudesCadenas:
             unEstadoSolicitudCadena = unaSolicitudCadena.getEstadoSolicitudCadena() 
-            if ( not unEstadoSolicitudCadena) or ( unEstadoSolicitudCadena == cEstadoSolicitudCadena_Pending):
+            if unEstadoSolicitudCadena == cEstadoSolicitudCadena_Pending:
                 somePendingSolicitudesCadenas.append( unaSolicitudCadena)
                 
         return somePendingSolicitudesCadenas
@@ -203,7 +220,7 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
         
         for unaSolicitudCadena in someSolicitudesCadenas:
             unEstadoSolicitudCadena = unaSolicitudCadena.getEstadoSolicitudCadena() 
-            if ( not unEstadoSolicitudCadena) or ( unEstadoSolicitudCadena == cEstadoSolicitudCadena_Pending):
+            if unEstadoSolicitudCadena == cEstadoSolicitudCadena_Pending:
                 return True
                 
         return False
@@ -223,7 +240,7 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
         
         for unaSolicitudCadena in someSolicitudesCadenas:
             unEstadoSolicitudCadena = unaSolicitudCadena.getEstadoSolicitudCadena() 
-            if unEstadoSolicitudCadena and not ( unEstadoSolicitudCadena == cEstadoSolicitudCadena_Pending):
+            if unEstadoSolicitudCadena == cEstadoSolicitudCadena_Created:
                 return True
                 
         return False
@@ -249,13 +266,13 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
     
         unExecutionRecord = self.fStartExecution( 'method',  'fCrearSolicitudCadena', None, True, { 'log_what': 'details', 'log_when': True, }) 
 
-        from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import ModelDDvlPloneTool_Mutators,cModificationKind_CreateSubElement, cModificationKind_Create
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import cModificationKind_CreateSubElement, cModificationKind_Create
        
         try:
             unasDescripcionesContenidosCreados = []
             try:
-                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+                unPermissionsCache = fDictOrNew( thePermissionsCache)
+                unRolesCache       = fDictOrNew( theRolesCache)
                 
                 unUseCaseQueryResult = self.fUseCaseAssessment(  
                     theUseCaseName          = cUseCase_CreateTRASolicitudCadena, 
@@ -402,7 +419,7 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                         
                 
             
-                aModelDDvlPloneTool_Mutators = ModelDDvlPloneTool_Mutators()
+                aModelDDvlPloneTool_Mutators = self.fModelDDvlPloneTool().fModelDDvlPloneTool_Mutators( self)
                     
                 aCreateElementReport = aModelDDvlPloneTool_Mutators.fNewVoidCreateElementReport()
                 aCreateElementReport.update( { 'effect': 'created', 'new_object_result': unResultadoNuevaSolicitudCadena, })
@@ -459,7 +476,10 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                 
                 unInformeExcepcion = 'Exception during fCrearSolicitudCadena\n' 
                 unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                try:
+                    unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                except:
+                    None
                 unInformeExcepcion += unaExceptionFormattedTraceback   
                                          
                 unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
@@ -500,8 +520,8 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
         try:
              
             try:
-                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+                unPermissionsCache = fDictOrNew( thePermissionsCache)
+                unRolesCache       = fDictOrNew( theRolesCache)
                             
                 aCreateImportReport = self.fCrearCadenas( unPermissionsCache, unRolesCache, unExecutionRecord,)
                 if not aCreateImportReport.get( 'effect', '') == 'created':
@@ -528,34 +548,51 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                     return aResult
                 
                 
-                aProgressHandlerKey = anImportElement.fRequestNewImport( 
-                    theAdditionalParms      =None,  
+                someSolicitudesCadenasUIDsPorSimbolo = aCreateImportReport.get( 'string_creation_request_UIDs_by_string_symbol', {})
+                
+                
+                aProgressHandlerCreationResult = anImportElement.fCreateProgressHandlerFor_Import( 
+                    theAdditionalParams      = { 'theIsToCreateCadenas': True, 'theSolicitudesCadenasUIDsPorSimbolo': someSolicitudesCadenasUIDsPorSimbolo,},  
                     thePermissionsCache     =unPermissionsCache, 
                     theRolesCache           =unRolesCache, 
                     theParentExecutionRecord=unExecutionRecord)
-                if not aProgressHandlerKey:
+                if ( not aProgressHandlerCreationResult) or not aProgressHandlerCreationResult.get( 'success', False):
                     aResult = { 
                         'effect': 'error', 
                         'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorImportProgressHandlerNotCreated', "Import Progress Handler has not been created-"),
                     }
                     return aResult
                 
-                anImportElement.fProcessControl( 
-                    theProcessControlAction     =cTRAProcessControl_Action_Execute,
-                    theProgressHandlerKey       =aProgressHandlerKey, 
-                    theAdditionalParms          =None,
-                    thePermissionsCache         =unPermissionsCache, 
-                    theRolesCache               =unRolesCache, 
-                    theParentExecutionRecord    =unExecutionRecord,
-                )
                 
-                aProgressHandler = anImportElement.fObtenerProgressHandlerByKey( aProgressHandlerKey)
+                
+                aProgressHandler = aProgressHandlerCreationResult.get( 'progress_handler', None)
                 if not aProgressHandler:
                     aResult = { 
                         'effect': 'error', 
                         'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorImportProgressHandlerNotFound', "Import Progress Handler has not been found-"),
                     }
                     return aResult
+
+                
+                aProgressElement = aProgressHandlerCreationResult.get( 'progress_element', None)
+                if ( aProgressElement == None):
+                    aResult = { 
+                        'effect': 'error', 
+                        'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorProgressElementNotKnownByImportProcessElement', "Progress element is not known by import process element-"),
+                    }
+                    return aResult
+                
+                
+                
+                
+                aProgressElement.fProcessControl( 
+                    theProcessControlAction     =cTRAProcessControl_Action_Execute,
+                    theAdditionalParams          =None,
+                    thePermissionsCache         =unPermissionsCache, 
+                    theRolesCache               =unRolesCache, 
+                    theParentExecutionRecord    =unExecutionRecord,
+                )
+                
                     
                 aProgressResult = aProgressHandler.vResult
                 if not aProgressResult:
@@ -587,6 +624,8 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                     }
                     return aResult
                     
+ 
+                
                 
                 aCleanUpStringsReport = self.fLimpiarCadenas( unPermissionsCache, unRolesCache, unExecutionRecord,)
                 # TRADeveloper role can not clean up strings, as we want them to stay in the list for a coordinator to know.
@@ -600,6 +639,7 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                 aResult = { 
                     'effect': 'created',
                     'new_object_result': unNewObjectResult,
+                    'progress_element':  aProgressElement,
                 }
                 
                 return aResult
@@ -610,7 +650,10 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                 
                 unInformeExcepcion = 'Exception during fCrearImportarYLimpiarCadenas\n' 
                 unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                try:
+                    unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                except:
+                    None
                 unInformeExcepcion += unaExceptionFormattedTraceback   
                                          
                 unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
@@ -645,13 +688,13 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
     
         unExecutionRecord = self.fStartExecution( 'method',  'fCrearCadenas', None, False, { 'log_what': 'details', 'log_when': True, }) 
 
-        from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import ModelDDvlPloneTool_Mutators,cModificationKind_CreateSubElement, cModificationKind_Create
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import cModificationKind_CreateSubElement, cModificationKind_Create
 
         try:
             unasDescripcionesContenidosCreados = []
             try:
-                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+                unPermissionsCache = fDictOrNew( thePermissionsCache)
+                unRolesCache       = fDictOrNew( theRolesCache)
                 
                 unUseCaseQueryResult = self.fUseCaseAssessment(  
                     theUseCaseName          = cUseCase_CreateTRACadena, 
@@ -677,7 +720,7 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
  
                 unCatalogo = self.getCatalogo()
                 
-                if not unCatalogo:
+                if unCatalogo == None:
                     anActionReport = { 'effect': 'error', 'failure':  'InternalError: gvSIGi18n_errorCreating_Idioma_Missing_TRACatalogo_error_msgid', }
                     return anActionReport  
                 
@@ -708,29 +751,14 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                     anActionReport = { 'effect': 'error', 'failure':  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_warningCreating_Strings_NoStringRequestsToCreate_msgid', "There are no New String requests to create. No Import process created.-"), }
                     return anActionReport  
                             
-                
-                someSolicitudesCadenasACrearPorModulo = { }
+                                            
+                            
+                someSolicitudesCadenasUIDsPorSimbolo = { }
                 for aSolicitudCadenaACrear in someSolicitudesCadenasACrear:
-                    unosNombresModulos = aSolicitudCadenaACrear.getNombresModulos()
-                    if not unosNombresModulos:
-                        unasSolicitudesCadenaEnModulo = someSolicitudesCadenasACrearPorModulo.get( cNombreModuloNoEspecificadoSentinel, [])
-                        if not unasSolicitudesCadenaEnModulo:
-                            unasSolicitudesCadenaEnModulo = [ ]
-                            someSolicitudesCadenasACrearPorModulo[ cNombreModuloNoEspecificadoSentinel] = unasSolicitudesCadenaEnModulo
-                        unasSolicitudesCadenaEnModulo.append( aSolicitudCadenaACrear)
-                    else:
-                        unaListaNombresModulos = unosNombresModulos.strip().split( cTRAModuleNameSeparator)
-                        if not isinstance( unaListaNombresModulos, list):
-                            unaListaNombresModulos = [ unosNombresModulos, ]
-                        for unNombreModuloSolicitudCadenaACrear in unaListaNombresModulos:
-                            unasSolicitudesCadenaEnModulo = someSolicitudesCadenasACrearPorModulo.get( unNombreModuloSolicitudCadenaACrear, [])
-                            if not unasSolicitudesCadenaEnModulo:
-                                unasSolicitudesCadenaEnModulo = [ ]
-                                someSolicitudesCadenasACrearPorModulo[ unNombreModuloSolicitudCadenaACrear] = unasSolicitudesCadenaEnModulo
-                            unasSolicitudesCadenaEnModulo.append( aSolicitudCadenaACrear)
-                            
-                            
-                        
+                    unSimboloCadena           = aSolicitudCadenaACrear.getSimbolo()
+                    aSolicitudCadenaACrearUID = aSolicitudCadenaACrear.UID()
+                    someSolicitudesCadenasUIDsPorSimbolo[ unSimboloCadena] = aSolicitudCadenaACrearUID
+                    
                             
                 unaColeccionImportaciones = unCatalogo.fObtenerColeccionImportaciones()
                 if not unaColeccionImportaciones:
@@ -768,61 +796,98 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                 
                 unaNuevaImportacion.pFlushCachedTemplates_All()                            
       
-                for unNombreModulo in someSolicitudesCadenasACrearPorModulo.keys():
                     
-                    someSolicitudesCadenasACrearEnModulo = someSolicitudesCadenasACrearPorModulo.get( unNombreModulo, [])
+                        
+                unTitleContenidoIntercambio = '%s' % self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_crearStrings_Importacion_prefix', "To Create Strings")
+                aNewIdContenidoIntercambio = unTitleContenidoIntercambio.lower().replace( ' ', '-')
+                if aPloneUtilsTool:
+                    aNewIdContenidoIntercambio = aPloneUtilsTool.normalizeString( aNewIdContenidoIntercambio)
+ 
+                anAttrsDictContenidoIntercambio = { 
+                    'title':         unTitleContenidoIntercambio,
+                    'description':   '',
+                }
                 
-                    unNombreModuloParaTitulo    = unNombreModulo
-                    unNombreModuloParaContenido = unNombreModulo
-                    
-                    if unNombreModulo == cNombreModuloNoEspecificadoSentinel:
-                        unNombreModuloParaTitulo    =  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_ModuloNoEspecificado_msgid', "not specified")
-                        unNombreModuloParaContenido = ''
-                        
-                    unTitleContenidoIntercambio = '%s %s %s' % ( self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_crearStrings_Importacion_prefix', "To Create Strings"), self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_crearStrings_Importacion_inModulePrefix', "in module"), unNombreModuloParaTitulo)
-                    aNewIdContenidoIntercambio = unTitleContenidoIntercambio.lower().replace( ' ', '-')
-                    if aPloneUtilsTool:
-                        aNewIdContenidoIntercambio = aPloneUtilsTool.normalizeString( aNewIdContenidoIntercambio)
-     
-                    anAttrsDictContenidoIntercambio = { 
-                        'title':         unTitleContenidoIntercambio,
-                        'description':   '',
-                        'nombreModulo':  unNombreModuloParaContenido,
-                    }
-                    
-                    unaIdNuevoContenidoIntercambio = unaNuevaImportacion.invokeFactory( cNombreTipoTRAContenidoIntercambio, aNewIdContenidoIntercambio, **anAttrsDictContenidoIntercambio)
-                    if not unaIdNuevoContenidoIntercambio:
-                        anActionReport = { 'effect': 'error', 'failure': '%s' %   self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCreating_Idioma_TRAContenidoIntercambio_NotCreated_msgid', "Error creating language: import not created.-"), }
-                        return anActionReport     
-                                    
-                    unNuevoContenidoIntercambio = unaNuevaImportacion.getElementoPorID( unaIdNuevoContenidoIntercambio)
-                    if not unNuevoContenidoIntercambio:
-                        anActionReport = { 'effect': 'error', 'failure': '%s' %  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCreating_Idioma_Created_TRAContenidoIntercambio_NotFound_msgid', "Could not find interchange contents just created-."), }
-                        return anActionReport     
-                    
-                    
-                    someStringsAndTranslations = { }
-                    
-                    for unaSolicitudCadena in someSolicitudesCadenasACrearEnModulo:
-                        unSimboloCadena                     = unaSolicitudCadena.getSimbolo()
-                        unCodigoIdiomaPrincipal             = unaSolicitudCadena.getCodigoIdiomaPrincipal()
-                        unaCadenaTraducidaAIdiomaPrincipal  = unaSolicitudCadena.getCadenaTraducidaAIdiomaPrincipal().strip()
-                        unCodigoIdiomaReferencia            = unaSolicitudCadena.getCodigoIdiomaReferencia()
-                        unaCadenaTraducidaAIdiomaReferencia = unaSolicitudCadena.getCadenaTraducidaAIdiomaReferencia().strip()
-                        if unaCadenaTraducidaAIdiomaReferencia:
-                            unaCadenaTraducidaAIdiomaReferencia = unaCadenaTraducidaAIdiomaReferencia.strip()
-                        
-                        unasTraduccionesCadena = { }
-                        someStringsAndTranslations[ unSimboloCadena] = unasTraduccionesCadena
-                        
-                        unasTraduccionesCadena[ unCodigoIdiomaPrincipal] = unaCadenaTraducidaAIdiomaPrincipal 
-                        if unCodigoIdiomaReferencia and unaCadenaTraducidaAIdiomaReferencia:
-                            unasTraduccionesCadena[ unCodigoIdiomaReferencia] = unaCadenaTraducidaAIdiomaReferencia 
-                        
-                    
-                    unContenidoConCadenas = { 'strings_and_translations': someStringsAndTranslations, }
-                    unNuevoContenidoIntercambio.pSetContenido( unContenidoConCadenas)
+                unaIdNuevoContenidoIntercambio = unaNuevaImportacion.invokeFactory( cNombreTipoTRAContenidoIntercambio, aNewIdContenidoIntercambio, **anAttrsDictContenidoIntercambio)
+                if not unaIdNuevoContenidoIntercambio:
+                    anActionReport = { 'effect': 'error', 'failure': '%s' %   self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCreating_Idioma_TRAContenidoIntercambio_NotCreated_msgid', "Error creating language: import not created.-"), }
+                    return anActionReport     
+                                
+                unNuevoContenidoIntercambio = unaNuevaImportacion.getElementoPorID( unaIdNuevoContenidoIntercambio)
+                if not unNuevoContenidoIntercambio:
+                    anActionReport = { 'effect': 'error', 'failure': '%s' %  self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_errorCreating_Idioma_Created_TRAContenidoIntercambio_NotFound_msgid', "Could not find interchange contents just created-."), }
+                    return anActionReport     
                 
+                
+                
+                aScannedData = self.fNewVoidScannedData()
+                
+                someScannedStrings   = aScannedData[ 'symbols']
+                someScannedLanguages = aScannedData[ 'languages']
+                someScannedModules   = aScannedData[ 'modules']
+                                
+                for aSolicitudCadenaACrear in someSolicitudesCadenasACrear:
+                    
+                    unSimboloCadena                     = aSolicitudCadenaACrear.getSimbolo()
+                    unCodigoIdiomaPrincipal             = aSolicitudCadenaACrear.getCodigoIdiomaPrincipal()
+                    unaCadenaTraducidaAIdiomaPrincipal  = aSolicitudCadenaACrear.getCadenaTraducidaAIdiomaPrincipal()
+                    unCodigoIdiomaReferencia            = aSolicitudCadenaACrear.getCodigoIdiomaReferencia()
+                    unaCadenaTraducidaAIdiomaReferencia = aSolicitudCadenaACrear.getCadenaTraducidaAIdiomaReferencia()
+                    unosNombresModulosString            = aSolicitudCadenaACrear.getNombresModulos()
+                    
+                    
+                    unosNombresModulos                  = self.fParseNombresModulosString( unosNombresModulosString)
+                    unosIndexesNombresModulos = [ ]
+                    for unNombreModulo in unosNombresModulos:
+                        
+                        if unNombreModulo in someScannedModules:
+                            unosIndexesNombresModulos.append( someScannedModules.index( unNombreModulo))
+                        
+                        else:
+                            unosIndexesNombresModulos.append( len( someScannedModules))
+                            someScannedModules.append( unNombreModulo)
+                            
+                            
+                    if not ( unCodigoIdiomaPrincipal in someScannedLanguages):
+                        someScannedLanguages.append( unCodigoIdiomaPrincipal)                        
+                    
+                    if not ( unCodigoIdiomaReferencia in someScannedLanguages):
+                        someScannedLanguages.append( unCodigoIdiomaReferencia)
+                    
+                    if unaCadenaTraducidaAIdiomaPrincipal:
+                        unaCadenaTraducidaAIdiomaPrincipal  = unaCadenaTraducidaAIdiomaPrincipal.strip()
+                    
+                    if unaCadenaTraducidaAIdiomaReferencia:
+                        unaCadenaTraducidaAIdiomaReferencia = unaCadenaTraducidaAIdiomaReferencia.strip()
+                    
+                        
+                        
+                        
+                    aScannedString = self.fNewVoidScannedString()
+                    
+                    aScannedString[ cScannedKeys_String_Symbol]  = unSimboloCadena
+                    aScannedString[ cScannedKeys_String_Modules] = unosIndexesNombresModulos
+                    
+                    someScannedStrings.append( aScannedString)
+                              
+                    if unaCadenaTraducidaAIdiomaPrincipal:
+                        aScannedTranslation = self.fNewVoidScannedTranslation()
+                        aScannedTranslation[ cScannedKeys_Translation_Translation] = unaCadenaTraducidaAIdiomaPrincipal                  
+                        aScannedString[ cScannedKeys_String_Translations][ unCodigoIdiomaPrincipal] = aScannedTranslation
+                    
+                    if unaCadenaTraducidaAIdiomaReferencia:
+                        aScannedTranslation = self.fNewVoidScannedTranslation()
+                        aScannedTranslation[ cScannedKeys_Translation_Translation] = unaCadenaTraducidaAIdiomaReferencia                  
+                        aScannedString[ cScannedKeys_String_Translations][ unCodigoIdiomaReferencia] = aScannedTranslation
+                        
+                        
+
+                unUploadedContent = self.fNewVoidUploadedContent()
+                unUploadedContent[ 'content_data'] = aScannedData
+                unNuevoContenidoIntercambio.pSetContenido( unUploadedContent)
+
+                    
+                    
                 unTimeProfilingResults = { }
                 unResultadoNuevaImportacion = aModelDDvlPlone_tool.fRetrieveTypeConfig( 
                     theTimeProfilingResults     =unTimeProfilingResults,
@@ -844,7 +909,9 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                     anActionReport = { 'effect': 'error', 'failure': 'retrieval_failure', }
                     return anActionReport     
  
-                unStringsCreationReport = { 'effect': 'created', 'new_object_result': unResultadoNuevaImportacion, }
+                unStringsCreationReport = { 'effect': 'created', 'new_object_result': unResultadoNuevaImportacion, 
+                    'string_creation_request_UIDs_by_string_symbol': someSolicitudesCadenasUIDsPorSimbolo
+                }
                         
                 
                 
@@ -852,7 +919,7 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                 unaNuevaImportacion.pFlushCachedTemplates_All()                            
                 unNuevoContenidoIntercambio.pFlushCachedTemplates_All()                            
             
-                aModelDDvlPloneTool_Mutators = ModelDDvlPloneTool_Mutators()
+                aModelDDvlPloneTool_Mutators = self.fModelDDvlPloneTool().fModelDDvlPloneTool_Mutators( self)
                     
                 aCreateElementReport = aModelDDvlPloneTool_Mutators.fNewVoidCreateElementReport()
                 aCreateElementReport.update( { 'effect': 'created', 'new_object_result': unResultadoNuevaImportacion, })
@@ -910,7 +977,10 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                 
                 unInformeExcepcion = 'Exception during fCrearCadenas\n' 
                 unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-                unInformeExcepcion += 'exception message %s\n\n' % str( ( hasattr( unaExceptionInfo[1], 'args') and unaExceptionInfo[1].args) or '')
+                try:
+                    unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                except:
+                    None
                 unInformeExcepcion += unaExceptionFormattedTraceback   
                                          
                 unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
@@ -952,8 +1022,8 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
         try:
             unasDescripcionesContenidosCreados = []
             try:
-                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+                unPermissionsCache = fDictOrNew( thePermissionsCache)
+                unRolesCache       = fDictOrNew( theRolesCache)
                 
                 unUseCaseQueryResult = self.fUseCaseAssessment(  
                     theUseCaseName          = cUseCase_CleanupTRAColeccionSolicitudesCadenas, 
@@ -979,7 +1049,7 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
  
                 unCatalogo = self.getCatalogo()
                 
-                if not unCatalogo:
+                if unCatalogo == None:
                     anActionReport = { 'effect': 'error', 'failure':  'InternalError: gvSIGi18n_errorCreating_Idioma_Missing_TRACatalogo_error_msgid', }
                     return anActionReport  
                 
@@ -988,8 +1058,10 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                 
                 for unaSolicitudCadena in someSolicitudesCadenas:
                     unEstadoSolicitudCadena = unaSolicitudCadena.getEstadoSolicitudCadena() 
-                    if unEstadoSolicitudCadena and not ( unEstadoSolicitudCadena == cEstadoSolicitudCadena_Pending):
+                    
+                    if unEstadoSolicitudCadena == cEstadoSolicitudCadena_Created:
                         someSolicitudesCadenasAEliminar.append( unaSolicitudCadena)
+                        
                     else:
                         unSimboloCadena = unaSolicitudCadena.getSimbolo()
                         if not unSimboloCadena:
@@ -1034,7 +1106,10 @@ class TRAColeccionSolicitudesCadenas_Operaciones:
                 
                 unInformeExcepcion = 'Exception during fLimpiarCadenas\n' 
                 unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                try:
+                    unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                except:
+                    None
                 unInformeExcepcion += unaExceptionFormattedTraceback   
                                          
                 unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)

@@ -1,0 +1,319 @@
+# Copyright (c) 2008, 2009,2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+#
+# GNU General Public License (GPL)
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+#
+# Authors: 
+# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana 
+# Model Driven Development sl  Valencia (Spain) www.ModelDD.org 
+# Antonio Carrasco Valero                       carrasco@ModelDD.org
+#
+# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>, 2010.
+msgid ""
+msgstr ""
+"Project-Id-Version: gvSIGi18n\n"
+"Last-Translator: Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>\n"
+"Language-Team: Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: en\n"
+"Language-Name: English\n"
+"Preferred-Encodings: latin1 utf-8\n"
+"Domain: plone\n"
+"X-Is-Fallback-For: en-au en-bz en-ca en-ie en-jm en-nz en-ph en-za en-tt en-gb en-us en-zw\n"
+
+
+
+#. Default: "Build Report"
+#: TRAInforme
+msgid "Build Report"
+msgstr "Build Report"
+
+#. Default: "Verify"
+#: TRACatalogo
+msgid "Verify"
+msgstr "Verify"
+
+#. Default: "Verify (w/o tool)"
+#: TRACatalogo
+msgid "Verify (w/o tool)"
+msgstr "Verify (w/o tool)"
+
+
+
+#. Default: "Initialize"
+#: TRAArquetipo
+msgid "Initialize"
+msgstr "Initialize"
+
+#. Default: "Initialize (w/o tool)"
+#: TRACatalogo
+msgid "Initialize (w/o tool)"
+msgstr "Initialize (w/o tool)"
+
+
+#. Default: "Export"
+#: TRAArquetipo
+msgid "Export"
+msgstr "Export"
+
+#. Default: "Import"
+#: TRAArquetipo
+msgid "Import"
+msgstr "Import"
+
+
+#. Default: "Configure"
+#: TRAArquetipo
+msgid "Configure"
+msgstr "Configure"
+
+
+
+#. Default: "Content"
+#: TRAContenidoIntercambio
+msgid "Content"
+msgstr "Content"
+
+#. Default: "Contents"
+#: TRAImportacion
+msgid "Contents"
+msgstr "Contents"
+
+
+#. Default: "Data"
+#: TRAContenidoIntercambio TRAImportacion
+msgid "Data"
+msgstr "Data"
+
+#. Default: "Progress"
+#: TRAImportacion
+msgid "Progress"
+msgstr "Progress"
+
+#. Default: "Copy Translations"
+#: TRAIdioma
+msgid "Copy Translations"
+msgstr "Copy Translations"
+
+#. Default: "Create Strings"
+#: TRAColeccionSolicitudesCadena
+msgid "Create Strings"
+msgstr "Create Strings"
+
+#. Default: "Create New String Request"
+#: TRACatalogo
+msgid "Create New String Request"
+msgstr "Create New String Request"
+
+
+
+
+
+#. Default: "Clean-up Strings"
+#: TRAColeccionSolicitudesCadena
+msgid "Clean-up Strings"
+msgstr "Clean-up Strings"
+
+#. Default: "Lock Catalog"
+#: TRACatalogo
+msgid "Lock Catalog"
+msgstr "Lock Catalog"
+
+
+#. Default: "Unlock Catalog"
+#: TRACatalogo
+msgid "Unlock Catalog"
+msgstr "Unlock Catalog"
+
+
+#. Default: "Permisos"
+#: TRACatalogo
+msgid "Permissions"
+msgstr "Permissions"
+
+
+#. Default: "Crear Idioma"
+#: TRACatalogo
+msgid "Create Language"
+msgstr "Create Language"
+
+
+#. Default: "Crear Modulo"
+#: TRACatalogo
+msgid "Create Module"
+msgstr "Create Module"
+
+#. Default: "Crear Importacion"
+#: TRACatalogo
+msgid "Create Import"
+msgstr "Create Import"
+
+
+#. Default: "Crear Importacion para Recuperar Copia de Seguridad"
+#: TRACatalogo
+msgid "Create Import to Restore Backup"
+msgstr "Create Import to Restore Backup"
+
+
+
+#. Default: "Crear Informe"
+#: TRACatalogo
+msgid "Create Report"
+msgstr "Create Report"
+
+
+
+#. Default: "Reutilizar"
+#: TRAImportacion
+msgid "Reuse"
+msgstr "Reuse"
+
+
+
+#. Default: "Resumen"
+#: TRAImportacion
+msgid "Summary"
+msgstr "Summary"
+
+
+
+#. Default: "Detalle"
+#: TRAImportacion
+msgid "Details"
+msgstr "Details"
+
+
+#. Default: "Vista avanzada"
+#: TRACatalogo
+msgid "Advanced View"
+msgstr "Advanced View"
+
+
+
+#. Default: "Informe"
+#: TRACatalogo
+msgid "Report"
+msgstr "Report"
+
+
+#. Default: "Exportar para gvSIG"
+#: TRACatalogo
+msgid "Export for gvSIG"
+msgstr "Export for gvSIG"
+
+
+
+#. Default: "Bloquear Idioma"
+#: TRAIdioma
+msgid "Lock Language"
+msgstr "Lock Language"
+
+
+
+#. Default: "Inventario"
+#: TRACatalogo
+msgid "Inventory"
+msgstr "Inventory"
+
+
+#. Default: "ReCatalogar"
+#: TRACatalogo
+msgid "ReCatalog"
+msgstr "ReCatalog"
+
+
+#. Default: "Reestablecer Permisos"
+#: TRACatalogo
+msgid "Reset Permissions"
+msgstr "Reset Permissions"
+
+#. Default: "Verificar Permisos"
+#: TRACatalogo
+msgid "Verify Permissions"
+msgstr "Verify Permissions"
+
+
+
+
+#. Default: "Eliminar Modulo"
+#: TRAModulo
+msgid "Delete Module"
+msgstr "Delete Module"
+
+
+
+#. Default: "Configurar"
+#: TRAProgreso
+msgid "Configure Progress"
+msgstr "Configure"
+
+
+#. Default: "Resultados"
+#: TRAProgreso
+msgid "Progress Results"
+msgstr "Results"
+
+
+#. Default: "Controlar"
+#: TRAProgreso
+msgid "Control Progress"
+msgstr "Control" 
+
+#. Default: "Eliminar Idioma"
+#: TRAIdioma
+msgid "Delete Language"
+msgstr "Delete Language"
+
+
+
+#. Default: "Exportar Copia de Seguridad"
+#: TRABackup_action
+msgid "Export Backup"
+msgstr "Export Backup"
+
+
+#. Default: "Actividad"
+#: TRAIdioma
+msgid "Activity"
+msgstr "Activity"
+
+#. Default: "Estimacion"
+#: TRAImportacion
+msgid "Estimate"
+msgstr "Estimate"
+
+
+#. Default: "Descartar Cache"
+#: TRAArquetipo TRAColeccionArquetipos
+msgid "FlushCache"
+msgstr "Flush Cache"
+
+
+
+#. Default: "Activar Configuracion de Permisos"
+#: TRAConfiguracionPermisos
+msgid "Activate Permissions Configuration"
+msgstr "Activate Permissions Configuration"
+
+#. Default: "Parametros"
+#: TRAProgreso
+msgid "Process Input Parameters"
+msgstr "Parameters"
+

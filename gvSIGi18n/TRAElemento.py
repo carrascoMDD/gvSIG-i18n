@@ -36,7 +36,6 @@ from TRAElemento_Rendering import TRAElemento_Rendering
 from TRAElemento_ResetPermissions import TRAElemento_ResetPermissions
 from TRAElemento_GenericAccessors import TRAElemento_GenericAccessors
 from TRAElemento_ExportConfig import TRAElemento_ExportConfig
-from TRAElemento_Progress import TRAElemento_Progress
 from TRAElemento_Permissions import TRAElemento_Permissions
 from TRAElemento_Encoding import TRAElemento_Encoding
 from TRAElemento_Cache import TRAElemento_Cache
@@ -49,8 +48,10 @@ from TRAElemento_MDDTool import TRAElemento_MDDTool
 from TRAElemento_DatesAndTime import TRAElemento_DatesAndTime
 from TRAElemento_Credits import TRAElemento_Credits
 from TRAElemento_CopyConfig import TRAElemento_CopyConfig
+from TRAElemento_VerifyPermissions import TRAElemento_VerifyPermissions
 from TRAElemento_PloneTools import TRAElemento_PloneTools
 from TRAElemento_Meta import TRAElemento_Meta
+from TRAElemento_HTTP import TRAElemento_HTTP
 from TRAElemento_Inventory import TRAElemento_Inventory
 from TRAElemento_TraversalConfigurations import TRAElemento_TraversalConfigurations
 from TRAElemento_UsersAndGroupsUtils import TRAElemento_UsersAndGroupsUtils
@@ -94,8 +95,8 @@ schema = Schema((
         description2='Conventional Plone elements containing a File of arbitrary contents.',
         multiValued=1,
         owner_class_name="TRAElemento",
-        expression="context.objectValues(['File'])",
-        computed_types=['File'],
+        expression="context.objectValues(['ATFile'])",
+        computed_types=['ATFile'],
         non_framework_elements=False,
         description='Elementos Plone convencionales conteniendo un Fichero de contenido arbitrario.'
     ),
@@ -118,8 +119,8 @@ schema = Schema((
         description2='Elements of the Plone Document type.',
         multiValued=1,
         owner_class_name="TRAElemento",
-        expression="context.objectValues(['Document'])",
-        computed_types=['Document'],
+        expression="context.objectValues(['ATDocument'])",
+        computed_types=['ATDocument'],
         non_framework_elements=False,
         description='Elementos del tipo documento convencional en Plone.'
     ),
@@ -142,8 +143,8 @@ schema = Schema((
         description2='Plone Elements containing a reference to a Web page (URLs like http://www.gvSIG.org)',
         multiValued=1,
         owner_class_name="TRAElemento",
-        expression="context.objectValues(['Link'])",
-        computed_types=['Link'],
+        expression="context.objectValues(['ATLink'])",
+        computed_types=['ATLink'],
         non_framework_elements=False,
         description='Elementos Plone conteniendo una referencia a una pagina Web (URLs como http://www.gvSIG.org)'
     ),
@@ -166,8 +167,8 @@ schema = Schema((
         description2='Conventional Plone elements containing an Image.',
         multiValued=1,
         owner_class_name="TRAElemento",
-        expression="context.objectValues(['Image'])",
-        computed_types=['Image'],
+        expression="context.objectValues(['ATImage'])",
+        computed_types=['ATImage'],
         non_framework_elements=True,
         description='Elementos Plone convencionales conteniendo una Imagen.'
     ),
@@ -190,8 +191,8 @@ schema = Schema((
         description2='Plone Elements containing a news posting.',
         multiValued=1,
         owner_class_name="TRAElemento",
-        expression="context.objectValues(['News_Item'])",
-        computed_types=['News_Item'],
+        expression="context.objectValues(['ATNewsItem'])",
+        computed_types=['ATNewsItem'],
         non_framework_elements=False,
         description='Elementos de Plone conteniendo una Noticia.'
     ),
@@ -236,7 +237,6 @@ TRAElemento_schema = getattr(TRAElemento_MappingConfig, 'schema', Schema(())).co
     getattr(TRAElemento_ResetPermissions, 'schema', Schema(())).copy() + \
     getattr(TRAElemento_GenericAccessors, 'schema', Schema(())).copy() + \
     getattr(TRAElemento_ExportConfig, 'schema', Schema(())).copy() + \
-    getattr(TRAElemento_Progress, 'schema', Schema(())).copy() + \
     getattr(TRAElemento_Permissions, 'schema', Schema(())).copy() + \
     getattr(TRAElemento_Encoding, 'schema', Schema(())).copy() + \
     getattr(TRAElemento_Cache, 'schema', Schema(())).copy() + \
@@ -249,8 +249,10 @@ TRAElemento_schema = getattr(TRAElemento_MappingConfig, 'schema', Schema(())).co
     getattr(TRAElemento_DatesAndTime, 'schema', Schema(())).copy() + \
     getattr(TRAElemento_Credits, 'schema', Schema(())).copy() + \
     getattr(TRAElemento_CopyConfig, 'schema', Schema(())).copy() + \
+    getattr(TRAElemento_VerifyPermissions, 'schema', Schema(())).copy() + \
     getattr(TRAElemento_PloneTools, 'schema', Schema(())).copy() + \
     getattr(TRAElemento_Meta, 'schema', Schema(())).copy() + \
+    getattr(TRAElemento_HTTP, 'schema', Schema(())).copy() + \
     getattr(TRAElemento_Inventory, 'schema', Schema(())).copy() + \
     getattr(TRAElemento_TraversalConfigurations, 'schema', Schema(())).copy() + \
     getattr(TRAElemento_UsersAndGroupsUtils, 'schema', Schema(())).copy() + \
@@ -267,13 +269,13 @@ TRAElemento_schema = getattr(TRAElemento_MappingConfig, 'schema', Schema(())).co
 ##code-section after-schema #fill in your manual code here
 ##/code-section after-schema
 
-class TRAElemento(TRAElemento_MappingConfig, TRAElemento_Rendering, TRAElemento_ResetPermissions, TRAElemento_GenericAccessors, TRAElemento_ExportConfig, TRAElemento_Progress, TRAElemento_Permissions, TRAElemento_Encoding, TRAElemento_Cache, TRAElemento_Profiling, TRAElemento_ContainmentTree, TRAElemento_VoidResults, TRAElemento_Internationalization, TRAElemento_ConversionUtils, TRAElemento_MDDTool, TRAElemento_DatesAndTime, TRAElemento_Credits, TRAElemento_CopyConfig, TRAElemento_PloneTools, TRAElemento_Meta, TRAElemento_Inventory, TRAElemento_TraversalConfigurations, TRAElemento_UsersAndGroupsUtils, TRAElemento_TraversalConfig, TRAElemento_Log, TRAElemento_Operaciones, TRAElemento_FactoryUtils, ATCTMixin, TRAElemento_LanguagesUtils, TRAElemento_PloneHandlers, TRAElemento_Recatalog):
+class TRAElemento(TRAElemento_MappingConfig, TRAElemento_Rendering, TRAElemento_ResetPermissions, TRAElemento_GenericAccessors, TRAElemento_ExportConfig, TRAElemento_Permissions, TRAElemento_Encoding, TRAElemento_Cache, TRAElemento_Profiling, TRAElemento_ContainmentTree, TRAElemento_VoidResults, TRAElemento_Internationalization, TRAElemento_ConversionUtils, TRAElemento_MDDTool, TRAElemento_DatesAndTime, TRAElemento_Credits, TRAElemento_CopyConfig, TRAElemento_VerifyPermissions, TRAElemento_PloneTools, TRAElemento_Meta, TRAElemento_HTTP, TRAElemento_Inventory, TRAElemento_TraversalConfigurations, TRAElemento_UsersAndGroupsUtils, TRAElemento_TraversalConfig, TRAElemento_Log, TRAElemento_Operaciones, TRAElemento_FactoryUtils, ATCTMixin, TRAElemento_LanguagesUtils, TRAElemento_PloneHandlers, TRAElemento_Recatalog):
     """
     """
     security = ClassSecurityInfo()
-    __implements__ = (getattr(TRAElemento_MappingConfig,'__implements__',()),) + (getattr(TRAElemento_Rendering,'__implements__',()),) + (getattr(TRAElemento_ResetPermissions,'__implements__',()),) + (getattr(TRAElemento_GenericAccessors,'__implements__',()),) + (getattr(TRAElemento_ExportConfig,'__implements__',()),) + (getattr(TRAElemento_Progress,'__implements__',()),) + (getattr(TRAElemento_Permissions,'__implements__',()),) + (getattr(TRAElemento_Encoding,'__implements__',()),) + (getattr(TRAElemento_Cache,'__implements__',()),) + (getattr(TRAElemento_Profiling,'__implements__',()),) + (getattr(TRAElemento_ContainmentTree,'__implements__',()),) + (getattr(TRAElemento_VoidResults,'__implements__',()),) + (getattr(TRAElemento_Internationalization,'__implements__',()),) + (getattr(TRAElemento_ConversionUtils,'__implements__',()),) + (getattr(TRAElemento_MDDTool,'__implements__',()),) + (getattr(TRAElemento_DatesAndTime,'__implements__',()),) + (getattr(TRAElemento_Credits,'__implements__',()),) + (getattr(TRAElemento_CopyConfig,'__implements__',()),) + (getattr(TRAElemento_PloneTools,'__implements__',()),) + (getattr(TRAElemento_Meta,'__implements__',()),) + (getattr(TRAElemento_Inventory,'__implements__',()),) + (getattr(TRAElemento_TraversalConfigurations,'__implements__',()),) + (getattr(TRAElemento_UsersAndGroupsUtils,'__implements__',()),) + (getattr(TRAElemento_TraversalConfig,'__implements__',()),) + (getattr(TRAElemento_Log,'__implements__',()),) + (getattr(TRAElemento_Operaciones,'__implements__',()),) + (getattr(TRAElemento_FactoryUtils,'__implements__',()),) + (getattr(ATCTMixin,'__implements__',()),) + (getattr(TRAElemento_LanguagesUtils,'__implements__',()),) + (getattr(TRAElemento_PloneHandlers,'__implements__',()),) + (getattr(TRAElemento_Recatalog,'__implements__',()),)
+    __implements__ = (getattr(TRAElemento_MappingConfig,'__implements__',()),) + (getattr(TRAElemento_Rendering,'__implements__',()),) + (getattr(TRAElemento_ResetPermissions,'__implements__',()),) + (getattr(TRAElemento_GenericAccessors,'__implements__',()),) + (getattr(TRAElemento_ExportConfig,'__implements__',()),) + (getattr(TRAElemento_Permissions,'__implements__',()),) + (getattr(TRAElemento_Encoding,'__implements__',()),) + (getattr(TRAElemento_Cache,'__implements__',()),) + (getattr(TRAElemento_Profiling,'__implements__',()),) + (getattr(TRAElemento_ContainmentTree,'__implements__',()),) + (getattr(TRAElemento_VoidResults,'__implements__',()),) + (getattr(TRAElemento_Internationalization,'__implements__',()),) + (getattr(TRAElemento_ConversionUtils,'__implements__',()),) + (getattr(TRAElemento_MDDTool,'__implements__',()),) + (getattr(TRAElemento_DatesAndTime,'__implements__',()),) + (getattr(TRAElemento_Credits,'__implements__',()),) + (getattr(TRAElemento_CopyConfig,'__implements__',()),) + (getattr(TRAElemento_VerifyPermissions,'__implements__',()),) + (getattr(TRAElemento_PloneTools,'__implements__',()),) + (getattr(TRAElemento_Meta,'__implements__',()),) + (getattr(TRAElemento_HTTP,'__implements__',()),) + (getattr(TRAElemento_Inventory,'__implements__',()),) + (getattr(TRAElemento_TraversalConfigurations,'__implements__',()),) + (getattr(TRAElemento_UsersAndGroupsUtils,'__implements__',()),) + (getattr(TRAElemento_TraversalConfig,'__implements__',()),) + (getattr(TRAElemento_Log,'__implements__',()),) + (getattr(TRAElemento_Operaciones,'__implements__',()),) + (getattr(TRAElemento_FactoryUtils,'__implements__',()),) + (getattr(ATCTMixin,'__implements__',()),) + (getattr(TRAElemento_LanguagesUtils,'__implements__',()),) + (getattr(TRAElemento_PloneHandlers,'__implements__',()),) + (getattr(TRAElemento_Recatalog,'__implements__',()),)
 
-    allowed_content_types = ['Image', 'Document', 'File', 'Link', 'News Item'] + list(getattr(TRAElemento_MappingConfig, 'allowed_content_types', [])) + list(getattr(TRAElemento_Rendering, 'allowed_content_types', [])) + list(getattr(TRAElemento_ResetPermissions, 'allowed_content_types', [])) + list(getattr(TRAElemento_GenericAccessors, 'allowed_content_types', [])) + list(getattr(TRAElemento_ExportConfig, 'allowed_content_types', [])) + list(getattr(TRAElemento_Progress, 'allowed_content_types', [])) + list(getattr(TRAElemento_Permissions, 'allowed_content_types', [])) + list(getattr(TRAElemento_Encoding, 'allowed_content_types', [])) + list(getattr(TRAElemento_Cache, 'allowed_content_types', [])) + list(getattr(TRAElemento_Profiling, 'allowed_content_types', [])) + list(getattr(TRAElemento_ContainmentTree, 'allowed_content_types', [])) + list(getattr(TRAElemento_VoidResults, 'allowed_content_types', [])) + list(getattr(TRAElemento_Internationalization, 'allowed_content_types', [])) + list(getattr(TRAElemento_ConversionUtils, 'allowed_content_types', [])) + list(getattr(TRAElemento_MDDTool, 'allowed_content_types', [])) + list(getattr(TRAElemento_DatesAndTime, 'allowed_content_types', [])) + list(getattr(TRAElemento_Credits, 'allowed_content_types', [])) + list(getattr(TRAElemento_CopyConfig, 'allowed_content_types', [])) + list(getattr(TRAElemento_PloneTools, 'allowed_content_types', [])) + list(getattr(TRAElemento_Meta, 'allowed_content_types', [])) + list(getattr(TRAElemento_Inventory, 'allowed_content_types', [])) + list(getattr(TRAElemento_TraversalConfigurations, 'allowed_content_types', [])) + list(getattr(TRAElemento_UsersAndGroupsUtils, 'allowed_content_types', [])) + list(getattr(TRAElemento_TraversalConfig, 'allowed_content_types', [])) + list(getattr(TRAElemento_Log, 'allowed_content_types', [])) + list(getattr(TRAElemento_Operaciones, 'allowed_content_types', [])) + list(getattr(TRAElemento_FactoryUtils, 'allowed_content_types', [])) + list(getattr(ATCTMixin, 'allowed_content_types', [])) + list(getattr(TRAElemento_LanguagesUtils, 'allowed_content_types', [])) + list(getattr(TRAElemento_PloneHandlers, 'allowed_content_types', [])) + list(getattr(TRAElemento_Recatalog, 'allowed_content_types', []))
+    allowed_content_types = ['Image', 'Document', 'File', 'Link', 'News Item'] + list(getattr(TRAElemento_MappingConfig, 'allowed_content_types', [])) + list(getattr(TRAElemento_Rendering, 'allowed_content_types', [])) + list(getattr(TRAElemento_ResetPermissions, 'allowed_content_types', [])) + list(getattr(TRAElemento_GenericAccessors, 'allowed_content_types', [])) + list(getattr(TRAElemento_ExportConfig, 'allowed_content_types', [])) + list(getattr(TRAElemento_Permissions, 'allowed_content_types', [])) + list(getattr(TRAElemento_Encoding, 'allowed_content_types', [])) + list(getattr(TRAElemento_Cache, 'allowed_content_types', [])) + list(getattr(TRAElemento_Profiling, 'allowed_content_types', [])) + list(getattr(TRAElemento_ContainmentTree, 'allowed_content_types', [])) + list(getattr(TRAElemento_VoidResults, 'allowed_content_types', [])) + list(getattr(TRAElemento_Internationalization, 'allowed_content_types', [])) + list(getattr(TRAElemento_ConversionUtils, 'allowed_content_types', [])) + list(getattr(TRAElemento_MDDTool, 'allowed_content_types', [])) + list(getattr(TRAElemento_DatesAndTime, 'allowed_content_types', [])) + list(getattr(TRAElemento_Credits, 'allowed_content_types', [])) + list(getattr(TRAElemento_CopyConfig, 'allowed_content_types', [])) + list(getattr(TRAElemento_VerifyPermissions, 'allowed_content_types', [])) + list(getattr(TRAElemento_PloneTools, 'allowed_content_types', [])) + list(getattr(TRAElemento_Meta, 'allowed_content_types', [])) + list(getattr(TRAElemento_HTTP, 'allowed_content_types', [])) + list(getattr(TRAElemento_Inventory, 'allowed_content_types', [])) + list(getattr(TRAElemento_TraversalConfigurations, 'allowed_content_types', [])) + list(getattr(TRAElemento_UsersAndGroupsUtils, 'allowed_content_types', [])) + list(getattr(TRAElemento_TraversalConfig, 'allowed_content_types', [])) + list(getattr(TRAElemento_Log, 'allowed_content_types', [])) + list(getattr(TRAElemento_Operaciones, 'allowed_content_types', [])) + list(getattr(TRAElemento_FactoryUtils, 'allowed_content_types', [])) + list(getattr(ATCTMixin, 'allowed_content_types', [])) + list(getattr(TRAElemento_LanguagesUtils, 'allowed_content_types', [])) + list(getattr(TRAElemento_PloneHandlers, 'allowed_content_types', [])) + list(getattr(TRAElemento_Recatalog, 'allowed_content_types', []))
 
     aliases = updateAliases( ATDocument, {'folder_factories':'Tabular','cut':'Tabular','object_cut':'Tabular','delete_confirmation': 'Eliminar','object_rename': 'Editar','content_status_modify':'Tabular','content_status_history':'Tabular','placeful_workflow_configuration': 'Tabular',})
 
@@ -291,24 +293,10 @@ class TRAElemento(TRAElemento_MappingConfig, TRAElemento_Rendering, TRAElemento_
         """
         """
         
-        return getToolByName( self, 'ModelDDvlPlone_tool').fCookedBodyForElement( None, self, stx_level, setlevel, None)
+        return getToolByName( self, 'MDDModelDDvlPlone_tool').fCookedBodyForElement( None, self, stx_level, setlevel, None)
 
     security.declarePublic('fAllowEditId')
     def fAllowEditId(self):
-        """
-        """
-        
-        return False
-
-    security.declarePublic('fAllowExport')
-    def fAllowExport(self):
-        """
-        """
-        
-        return False
-
-    security.declarePublic('fAllowImport')
-    def fAllowImport(self):
         """
         """
         
@@ -328,13 +316,6 @@ class TRAElemento(TRAElemento_MappingConfig, TRAElemento_Rendering, TRAElemento_
         
         return True
 
-    security.declarePublic('fAllowWrite')
-    def fAllowWrite(self):
-        """
-        """
-        
-        return self.fAllowRead() and self.getCatalogo().getPermiteModificar()
-
     security.declarePublic('fIsCacheable')
     def fIsCacheable(self):
         """
@@ -342,12 +323,12 @@ class TRAElemento(TRAElemento_MappingConfig, TRAElemento_Rendering, TRAElemento_
         
         return False
 
-    security.declarePublic('getAddableTypesInMenu')
-    def getAddableTypesInMenu(self,theTypes):
+    security.declarePublic('fAllowWrite')
+    def fAllowWrite(self):
         """
         """
         
-        return []
+        return self.fAllowRead() and self.getCatalogo().getPermiteModificar()
 
     security.declarePublic('getContenedor')
     def getContenedor(self):
@@ -411,6 +392,13 @@ class TRAElemento(TRAElemento_MappingConfig, TRAElemento_Rendering, TRAElemento_
         """
         
         return TRAElemento_PloneHandlers.pHandle_manage_beforeDelete( self, item, container)
+
+    security.declarePublic('getAddableTypesInMenu')
+    def getAddableTypesInMenu(self,theTypes):
+        """
+        """
+        
+        return []
 # end of class TRAElemento
 
 ##code-section module-footer #fill in your manual code here

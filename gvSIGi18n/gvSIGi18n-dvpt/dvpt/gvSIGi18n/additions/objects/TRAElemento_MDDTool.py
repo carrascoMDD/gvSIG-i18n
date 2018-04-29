@@ -2,7 +2,7 @@
 #
 # File: TRAElemento_MDDTool.py
 #
-# Copyright (c) 2008, 2009,2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -53,7 +53,25 @@ from Products.CMFCore.utils     import getToolByName
 
 
 
-from TRAElemento_Constants              import *
+from TRAElemento_Constants                 import *
+from TRAElemento_Constants_Activity        import *
+from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Dates           import *
+from TRAElemento_Constants_Encoding        import *
+from TRAElemento_Constants_Import          import *
+from TRAElemento_Constants_Languages       import *
+from TRAElemento_Constants_Logging         import *
+from TRAElemento_Constants_Modules         import *
+from TRAElemento_Constants_Profiling       import *
+from TRAElemento_Constants_Progress        import *
+from TRAElemento_Constants_String          import *
+from TRAElemento_Constants_StringRequests  import *
+from TRAElemento_Constants_Translate       import *
+from TRAElemento_Constants_Translation     import *
+from TRAElemento_Constants_TypeNames       import *
+from TRAElemento_Constants_Views           import *
+from TRAElemento_Constants_Vocabularies    import *
+from TRAUtils                              import *
 
 
 
@@ -76,32 +94,12 @@ class TRAElemento_MDDTool:
         """Retrieve or create an instance of ModelDDvlPloneTool.
         
         """
-        from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Inicializacion_Constants import cModelDDvlPloneToolId   
-        from Products.ModelDDvlPloneTool.ModelDDvlPloneTool import ModelDDvlPloneTool
+        from Products.ModelDDvlPloneTool.ModelDDvlPloneToolLoadConstants import cModelDDvlPloneToolId   
         
         try:
                 
-            aModelDDvlPloneTool = getToolByName( self, 'ModelDDvlPlone_tool', None)
-            
-            if aModelDDvlPloneTool:
-                return aModelDDvlPloneTool
-            
-            if not ( theAllowCreation and cInitializeAllow_CreateModelDDvlPloneTool):
-                return None
-     
-            unPortalRoot = self.fPortalRoot()
-            if not unPortalRoot:
-                return None
-             
-            unaNuevaTool = ModelDDvlPloneTool( ) 
-            unPortalRoot._setObject( cModelDDvlPloneToolId,  unaNuevaTool)
-            aModelDDvlPloneTool = None
-            
-            aModelDDvlPloneTool = getToolByName( self, 'ModelDDvlPlone_tool', None)
-            if not aModelDDvlPloneTool:
-                return None
-            
-            transaction.commit()
+            aModelDDvlPloneTool = getToolByName( self, cModelDDvlPloneToolId, None)
+ 
                         
             return aModelDDvlPloneTool
         
@@ -109,9 +107,12 @@ class TRAElemento_MDDTool:
             unaExceptionInfo = sys.exc_info()
             unaExceptionFormattedTraceback = ''.join(traceback.format_exception( *unaExceptionInfo))
             
-            unInformeExcepcion = 'Exception during Lazy Initialization operation fModelDDvlPloneTool\n' 
+            unInformeExcepcion = 'Exception during access operation fModelDDvlPloneTool\n' 
             unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-            unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+            try:
+                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+            except:
+                None
             unInformeExcepcion += unaExceptionFormattedTraceback   
                      
      

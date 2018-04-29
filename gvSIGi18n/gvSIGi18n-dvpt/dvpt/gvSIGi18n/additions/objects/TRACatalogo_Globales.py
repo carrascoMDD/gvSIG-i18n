@@ -2,7 +2,7 @@
 #
 # File: TRACatalogo_Globales.py
 #
-# Copyright (c) 2008, 2009,2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -50,7 +50,25 @@ from Products.CMFCore               import permissions
 
 
 
-from TRAElemento_Constants import *
+from TRAElemento_Constants                 import *
+from TRAElemento_Constants_Activity        import *
+from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Dates           import *
+from TRAElemento_Constants_Encoding        import *
+from TRAElemento_Constants_Import          import *
+from TRAElemento_Constants_Languages       import *
+from TRAElemento_Constants_Logging         import *
+from TRAElemento_Constants_Modules         import *
+from TRAElemento_Constants_Profiling       import *
+from TRAElemento_Constants_Progress        import *
+from TRAElemento_Constants_String          import *
+from TRAElemento_Constants_StringRequests  import *
+from TRAElemento_Constants_Translate       import *
+from TRAElemento_Constants_Translation     import *
+from TRAElemento_Constants_TypeNames       import *
+from TRAElemento_Constants_Views           import *
+from TRAElemento_Constants_Vocabularies    import *
+from TRAUtils                              import *
 
 
 
@@ -88,6 +106,18 @@ class TRACatalogo_Globales:
     
     
     
+    # #######################################################
+    """To enforce Exclusive access to globals
+    
+    """
+    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    gTRACatalogoGlobalesMutex = threading.Lock()
+    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ 
+        
+    
     
     # #######################################################
     """Global holding the dictionary of ProgressHandlers for all active long-lived processes, indexed by the progress control handler key (a unique string composed by the translations catalog root path, and  and the id of the progress element).
@@ -118,19 +148,7 @@ class TRACatalogo_Globales:
 
     
     
-    
-    
-    # #######################################################
-    """To enforce Exclusive access to globals
-    
-    """
-    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    gTRACatalogoGlobalesMutex = threading.Lock()
-    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
- 
-    
+
 
 
 
@@ -180,127 +198,8 @@ class TRACatalogo_Globales:
     
     
           
-        
-    
-    # #######################################################
-    # #######################################################
- 
     
     
- 
-
-   
-    
-    
-    security.declareProtected( permissions.ManagePortal, 'pExecutionLogging_Enable')
-    def pExecutionLogging_Enable(self,):
-       
-        TRACatalogo_Globales.gTRAExecutionLoggingEnabled = True
-        return self
-    
-    
-
-    
-    
-    
-    security.declareProtected( permissions.ManagePortal, 'pExecutionLogging_Disable')
-    def pExecutionLogging_Disable(self,):
-       
-        TRACatalogo_Globales.gTRAExecutionLoggingEnabled = False
-        return self
-    
-    
-
-     
-  
-    # #######################################################
-    # #######################################################
- 
-    
-    
-   
-
-   
-    
-    
-    security.declareProtected( permissions.ManagePortal, 'pDetailedExecutionLogging_Enable')
-    def pDetailedExecutionLogging_Enable(self,):
-       
-        TRACatalogo_Globales.gTRADetailedExecutionLoggingEnabled = True
-        return self
-    
-    
-
-    
-    
-    
-    security.declareProtected( permissions.ManagePortal, 'pDetailedExecutionLogging_Disable')
-    def pDetailedExecutionLogging_Disable(self,):
-       
-        TRACatalogo_Globales.gTRADetailedExecutionLoggingEnabled = False
-        return self
-    
-    
-
-         
-
-    
-    
-    
-    
-
-    
-    # #######################################################
-    # #######################################################
- 
-    
-    
-
-   
-    
-    
-    security.declareProtected( permissions.ManagePortal, 'pExecutionProfiling_Enable')
-    def pExecutionProfiling_Enable(self,):
-       
-        TRACatalogo_Globales.gTRAExecutionProfilingEnabled = True
-        return self
-    
-    
-
-    
-    
-    
-    security.declareProtected( permissions.ManagePortal, 'pExecutionProfiling_Disable')
-    def pExecutionProfiling_Disable(self,):
-       
-        TRACatalogo_Globales.gTRAExecutionProfilingEnabled = False
-        return self
-    
-       
-    
-    
-    
-
-
-   
-    
-    
-    security.declareProtected( permissions.ManagePortal, 'pRootProfileExecution_Enable')
-    def pRootProfileExecution_Enable(self,):
-       
-        TRACatalogo_Globales.gTRARootProfileExecutionEnabled = True
-        return self
-    
-    
-
-    
-    
-    
-    security.declareProtected( permissions.ManagePortal, 'pRootProfileExecution_Disable')
-    def pRootProfileExecution_Disable(self,):
-       
-        TRACatalogo_Globales.gTRARootProfileExecutionEnabled = False
-        return self
     
     
     
@@ -333,6 +232,9 @@ class TRACatalogo_Globales:
     
 
 
+    
+    
+    
 
     
     security.declarePrivate( 'pReleaseGlobalsLock')
@@ -354,14 +256,5 @@ class TRACatalogo_Globales:
 
    
 
-    
-    # #######################################################
-    # #######################################################
-    
-    # #######################################################
-    # #######################################################
 
-
-    
-    
                         

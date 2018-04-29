@@ -80,26 +80,25 @@ schema = Schema((
         widget=SelectionWidget(
             label="Estado de la Solicitud de Cadena",
             label2="String Request Status",
-            description="Estado de la Solicitud de Cadena, como Dendiente, Descartada o Creada.",
-            description2="String Request Status as Pending, Discarded, or Created.",
+            description="Estado de la Solicitud de Cadena, como Pendiente, Ignorada, o Creada.",
+            description2="String Request Status as Pending, Ignored, or Created.",
             label_msgid='gvSIGi18n_TRASolicitudCadena_attr_estadoSolicitudCadena_label',
             description_msgid='gvSIGi18n_TRASolicitudCadena_attr_estadoSolicitudCadena_help',
             i18n_domain='gvSIGi18n',
         ),
-        description="Estado de la Solicitud de Cadena, como Dendiente, Descartada o Creada.",
-        vocabulary=['Pendiente','Descartada','Creada',],
+        description="Estado de la Solicitud de Cadena, como Pendiente, Ignorada, o Creada.",
+        vocabulary=['Pendiente','Ignorada','Creada',],
         duplicates="0",
-        vocabulary_msgids=['gvSIGi18n_TRASolicitudCadena_attr_estadoSolicitudCadena_option_Pendiente', 'gvSIGi18n_TRASolicitudCadena_attr_estadoSolicitudCadena_option_Descartada', 'gvSIGi18n_TRASolicitudCadena_attr_estadoSolicitudCadena_option_Creada'],
+        vocabulary_msgids=['gvSIGi18n_TRASolicitudCadena_attr_estadoSolicitudCadena_option_Pendiente', 'gvSIGi18n_TRASolicitudCadena_attr_estadoSolicitudCadena_option_Ignorada', 'gvSIGi18n_TRASolicitudCadena_attr_estadoSolicitudCadena_option_Creada'],
         label2="String Request Status",
         ea_localid="1525",
         derived="0",
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        description2="String Request Status as Pending, Discarded, or Created.",
+        description2="String Request Status as Pending, Ignored, or Created.",
         ea_guid="{F3F7D328-9FB0-4ef3-95A8-1EA079E3DEF8}",
-        vocabulary2=['Pending', 'Discarded', 'Created',],
-        read_only="True",
+        vocabulary2=['Pending','Ignored', 'Created',],
         scale="0",
         default='Pendiente',
         label="Estado de la Solicitud de Cadena",
@@ -445,7 +444,7 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActivida
         'id': 'edit',
         'name': 'Edit',
         'permissions': ("Modify portal content",),
-        'condition': """python:object.fAllowWrite() and object.fRoleQuery_IsCoordinatorOrDeveloper()"""
+        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Edit_TRASolicitudCadena')"""
        },
 
 
@@ -454,7 +453,7 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActivida
         'id': 'view',
         'name': 'View',
         'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'View_any_TRA_element')"""
        },
 
 
@@ -463,7 +462,7 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActivida
         'id': 'mddcachestatus',
         'name': 'Cache',
         'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'CacheStatus_on_any_TRA_element')"""
        },
 
 
@@ -472,16 +471,7 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActivida
         'id': 'mddchanges',
         'name': 'Changes',
         'permissions': ("View",),
-        'condition': """python:1"""
-       },
-
-
-       {'action': "string:${object_url}/TRAConfigureProfiling_action",
-        'category': "object_buttons",
-        'id': 'TRA_configure_profiling',
-        'name': 'Configure Profiling',
-        'permissions': ("ManagePortal",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Configure_ExecutionProfilingEnablement_TRACatalogo')"""
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Changes_on_any_TRA_element')"""
        },
 
 
@@ -491,6 +481,15 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActivida
         'name': 'State',
         'permissions': ("View",),
         'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/TRAFlushCache_action",
+        'category': "object_buttons",
+        'id': 'tra_flushcache',
+        'name': 'FlushCache',
+        'permissions': ("View",),
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fRoleQuery_IsAnyRol( object, [ 'Manager', 'Owner', 'TRACreator', 'TRAManager', 'TRACoordinator',])"""
        },
 
 
@@ -508,7 +507,7 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActivida
         'id': 'TRA_inventario',
         'name': 'Inventory',
         'permissions': ("View",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Inventory_TRAElemento')"""
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Inventory_TRAElemento')"""
        },
 
 
@@ -526,7 +525,7 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActivida
         'id': 'TRA_recatalogar',
         'name': 'ReCatalog',
         'permissions': ("View",),
-        'condition': """python:object.fUseCaseCheckDoable( 'ReCatalog_TRAElemento')"""
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'ReCatalog_TRAElemento')"""
        },
 
 
@@ -535,7 +534,16 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActivida
         'id': 'TRA_reestablecerpermisos',
         'name': 'Reset Permissions',
         'permissions': ("View",),
-        'condition': """python:object.fUseCaseCheckDoable( 'ResetPermissions_TRAElemento')"""
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'ResetPermissions_TRAElemento')"""
+       },
+
+
+       {'action': "string:${object_url}/TRAVerifyPermissions_action",
+        'category': "object_buttons",
+        'id': 'TRA_verificarpermisos',
+        'name': 'Verify Permissions',
+        'permissions': ("View",),
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'VerifyPermissions_TRAElemento')"""
        },
 
 
@@ -553,7 +561,7 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActivida
         'id': 'TRA_SeguridadUsuarioConectado',
         'name': 'Permissions',
         'permissions': ("View",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Permissions_on_any_TRA_element')"""
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Permissions_on_any_TRA_element')"""
        },
 
 
@@ -636,7 +644,7 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActivida
         """
         """
         
-        return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
+        return self
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

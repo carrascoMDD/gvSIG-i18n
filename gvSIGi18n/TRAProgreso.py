@@ -48,7 +48,7 @@ schema = Schema((
     #Inactivo
     StringField(
         name='tipoProceso',
-        widget=SelectionWidget(
+        widget=StringWidget(
             label="Tipo del Proceso",
             label2="Process Type",
             description="""Inactivo
@@ -60,9 +60,7 @@ schema = Schema((
         ),
         description="""Inactivo
         El tipo del proceso del cual este elemento mantiene su progreso.""",
-        vocabulary=['Vacio','Inventario','Re-Catalogar','Re-Establecer Permisos','Eliminar Modulo', 'Eliminar Idioima','Copia Seguridad',],
         duplicates="0",
-        vocabulary_msgids=['gvSIGi18n_TRAProgreso_attr_tipoProceso_option_Vacio', 'gvSIGi18n_TRAProgreso_attr_tipoProceso_option_Inventario', 'gvSIGi18n_TRAProgreso_attr_tipoProceso_option_Re-Catalogar', 'gvSIGi18n_TRAProgreso_attr_tipoProceso_option_Re-Establecer Permisos', 'gvSIGi18n_TRAProgreso_attr_tipoProceso_option_Eliminar Modulo', 'gvSIGi18n_TRAProgreso_attr_tipoProceso_option_Eliminar Idioima', 'gvSIGi18n_TRAProgreso_attr_tipoProceso_option_Copia Seguridad'],
         label2="Process Type",
         ea_localid="1665",
         derived="0",
@@ -71,25 +69,24 @@ schema = Schema((
         styleex="volatile=0;",
         description2="Type of the process whose progress is maintained by this element.",
         ea_guid="{9CD241D5-3AB9-4c21-A108-00E8610D46A5}",
-        vocabulary2=['Empty','Inventory','Re-Catalog','Reset Permissions','Delete Module','Delete Language','Export Backup',],
         read_only="True",
         scale="0",
         label="Tipo del Proceso",
         length="0",
         containment="Not Specified",
-        position="18",
+        position="22",
         owner_class_name="TRAProgreso"
     ),
 
     StringField(
-        name='usuarioInformador',
+        name='usuarioSolicitante',
         widget=StringWidget(
             label="Usuario Solicitante",
             label2="Requesting User",
             description="Usuario que ha solicitado creado el Informe.",
             description2="User who requested the ellaboration of the report.",
-            label_msgid='gvSIGi18n_TRAProgreso_attr_usuarioInformador_label',
-            description_msgid='gvSIGi18n_TRAProgreso_attr_usuarioInformador_help',
+            label_msgid='gvSIGi18n_TRAProgreso_attr_usuarioSolicitante_label',
+            description_msgid='gvSIGi18n_TRAProgreso_attr_usuarioSolicitante_help',
             i18n_domain='gvSIGi18n',
         ),
         description="Usuario que ha solicitado creado el Informe.",
@@ -107,7 +104,7 @@ schema = Schema((
         label="Usuario Solicitante",
         length="0",
         containment="Not Specified",
-        position="19",
+        position="23",
         owner_class_name="TRAProgreso"
     ),
 
@@ -143,7 +140,7 @@ schema = Schema((
         label="Estado del Proceso",
         length="0",
         containment="Not Specified",
-        position="8",
+        position="10",
         owner_class_name="TRAProgreso"
     ),
 
@@ -174,7 +171,7 @@ schema = Schema((
         label="Comenzo a ejecutar",
         length="0",
         containment="Not Specified",
-        position="12",
+        position="14",
         owner_class_name="TRAProgreso"
     ),
 
@@ -205,7 +202,7 @@ schema = Schema((
         label="Exito?",
         length="0",
         containment="Not Specified",
-        position="13",
+        position="15",
         owner_class_name="TRAProgreso"
     ),
 
@@ -235,7 +232,7 @@ schema = Schema((
         label="Fecha y Hora de Comienzo",
         length="0",
         containment="Not Specified",
-        position="9",
+        position="11",
         owner_class_name="TRAProgreso"
     ),
 
@@ -265,7 +262,37 @@ schema = Schema((
         label="Fecha y Hora de Fin",
         length="0",
         containment="Not Specified",
-        position="10",
+        position="12",
+        owner_class_name="TRAProgreso"
+    ),
+
+    StringField(
+        name='direccionServidorEjecutor',
+        widget=StringWidget(
+            label="Direccion del servidor",
+            label2="Server address",
+            description="Direccion del servidor donde se ejecuta y controla el proceso.",
+            description2="Address of the server where the process is executed and controlled.",
+            label_msgid='gvSIGi18n_TRAProgreso_attr_direccionServidorEjecutor_label',
+            description_msgid='gvSIGi18n_TRAProgreso_attr_direccionServidorEjecutor_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Direccion del servidor donde se ejecuta y controla el proceso.",
+        duplicates="0",
+        label2="Server address",
+        ea_localid="1724",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="Address of the server where the process is executed and controlled.",
+        ea_guid="{43742D60-6EAC-41c6-B215-620C07F8A30D}",
+        read_only="True",
+        scale="0",
+        label="Direccion del servidor",
+        length="0",
+        containment="Not Specified",
+        position="7",
         owner_class_name="TRAProgreso"
     ),
 
@@ -295,7 +322,7 @@ schema = Schema((
         label="Tipo del elemento que especifica el Proceso",
         length="0",
         containment="Not Specified",
-        position="11",
+        position="21",
         owner_class_name="TRAProgreso"
     ),
 
@@ -325,7 +352,7 @@ schema = Schema((
         label="Identificador del elemento que especifica el Proceso",
         length="0",
         containment="Not Specified",
-        position="14",
+        position="16",
         owner_class_name="TRAProgreso"
     ),
 
@@ -358,7 +385,7 @@ schema = Schema((
         length="0",
         multiValued=0,
         containment="Not Specified",
-        position="33",
+        position="8",
         owner_class_name="TRAProgreso",
         expression="context.fDeriveElementoEspecificacionProceso()",
         computed_types="['TRAImportacion', ]"
@@ -512,7 +539,7 @@ schema = Schema((
         length="0",
         expression="context.fEstadoControl()",
         containment="Not Specified",
-        position="7",
+        position="9",
         owner_class_name="TRAProgreso",
         custom_presentation_view="TRAProgreso_EstadoControl_CustomView",
         computed_types="object"
@@ -545,7 +572,7 @@ schema = Schema((
         label="Parametros de Entrada",
         length="0",
         containment="Not Specified",
-        position="17",
+        position="20",
         owner_class_name="TRAProgreso",
         exclude_from_views="[ 'Tabular','Textual',  'General', ]"
     ),
@@ -553,8 +580,8 @@ schema = Schema((
     TextField(
         name='parametrosControl',
         widget=TextAreaWidget(
-            label="Parametros de Control",
-            label2="Control Parameters",
+            label="Parametros del Progreso",
+            label2="Progress Parameters",
             description="Almacena los parametros que controlan la gestion del proceso de larga duracion.",
             description2="Stores the parameters controlling the management of the progress of the long-lived process.",
             label_msgid='gvSIGi18n_TRAProgreso_attr_parametrosControl_label',
@@ -563,7 +590,7 @@ schema = Schema((
         ),
         description="Almacena los parametros que controlan la gestion del proceso de larga duracion.",
         duplicates="0",
-        label2="Control Parameters",
+        label2="Progress Parameters",
         ea_localid="1699",
         derived="0",
         precision=0,
@@ -574,10 +601,10 @@ schema = Schema((
         read_only="True",
         scale="0",
         exclude_from_views="['Tabular', 'Textual',  'General', ]",
-        label="Parametros de Control",
+        label="Parametros del Progreso",
         length="0",
         containment="Not Specified",
-        position="16",
+        position="19",
         owner_class_name="TRAProgreso",
         custom_presentation_view="TRAProgreso_ParametrosControl_CustomView"
     ),
@@ -672,8 +699,33 @@ schema = Schema((
         label="Excepcion",
         length="0",
         containment="Not Specified",
-        position="15",
+        position="18",
         owner_class_name="TRAProgreso"
+    ),
+
+    ComputedField(
+        name='informesEstado',
+        widget=ComputedWidget(
+            label="Informes Estado Antes y Despues",
+            label2="Status Reports Before and After",
+            description="Informes del Estado del Catalogo, sus Idiomas, Modulos, Cadenas y Traducciones, al comenzar el proceso de importacion, y tras terminar el proceso de importacion.",
+            description2="Catalog Status Reports, its Languages, Modules, Strings and Translations, at the beginning of the import process, and after termination of the process.",
+            label_msgid='gvSIGi18n_TRAProgreso_contents_informesEstado_label',
+            description_msgid='gvSIGi18n_TRAProgreso_contents_informesEstado_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        contains_collections=False,
+        label2='Status Reports Before and After',
+        additional_columns=['haCompletadoConExito'],
+        label='Informes Estado Antes y Despues',
+        represents_aggregation=True,
+        description2='Catalog Status Reports, its Languages, Modules, Strings and Translations, at the beginning of the import process, and after termination of the process.',
+        multiValued=1,
+        owner_class_name="TRAProgreso",
+        expression="context.objectValues(['TRAInforme'])",
+        computed_types=['TRAInforme'],
+        non_framework_elements=False,
+        description='Informes del Estado del Catalogo, sus Idiomas, Modulos, Cadenas y Traducciones, al comenzar el proceso de importacion, y tras terminar el proceso de importacion.'
     ),
 
     StringField(
@@ -732,8 +784,40 @@ schema = Schema((
         label="Fecha y Hora del ultimo informe de Progreso",
         length="0",
         containment="Not Specified",
-        position="11",
+        position="13",
         owner_class_name="TRAProgreso"
+    ),
+
+    TextField(
+        name='informeCambios',
+        widget=TextAreaWidget(
+            label="Informe de Cambios",
+            label2="Changes report",
+            description="Informa de los cambios realizados durante la importacion: idiomas, modulos y cadenas creados, y traducciones cambiadas.",
+            description2="Reports the changes made during the import process: created languages, modules and strings, and changed translations.",
+            label_msgid='gvSIGi18n_TRAProgreso_attr_informeCambios_label',
+            description_msgid='gvSIGi18n_TRAProgreso_attr_informeCambios_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Informa de los cambios realizados durante la importacion: idiomas, modulos y cadenas creados, y traducciones cambiadas.",
+        duplicates="0",
+        label2="Changes report",
+        ea_localid="1601",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="Reports the changes made during the import process: created languages, modules and strings, and changed translations.",
+        ea_guid="{A25B0422-4440-4420-A414-2448CAD303CC}",
+        read_only="True",
+        scale="0",
+        custom_presentation_view="TRAImportacionCambios_CustomView",
+        label="Informe de Cambios",
+        length="0",
+        containment="Not Specified",
+        position="19",
+        owner_class_name="TRAProgreso",
+        exclude_from_views="[ 'Tabular','Textual',  'General', ]"
     ),
 
 ),
@@ -780,7 +864,7 @@ class TRAProgreso(OrderedBaseFolder, TRAArquetipo, TRAProgreso_Operaciones, TRAC
 
     use_folder_tabs = 0
 
-    allowed_content_types = [] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRAProgreso_Operaciones, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', []))
+    allowed_content_types = ['TRAInforme'] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRAProgreso_Operaciones, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', []))
     filter_content_types             = 1
     global_allow                     = 0
     content_icon = 'traprogreso.gif'
@@ -801,12 +885,21 @@ class TRAProgreso(OrderedBaseFolder, TRAArquetipo, TRAProgreso_Operaciones, TRAC
     actions =  (
 
 
+       {'action': "string:${object_url}/TRAProcessInputParameters",
+        'category': "object",
+        'id': 'TRAProcessInputParameters',
+        'name': 'Process Input Parameters',
+        'permissions': ("View",),
+        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'ViewResults_TRAProgreso')"""
+       },
+
+
        {'action': "string:${object_url}/TRAConfigureProgress_action",
         'category': "object",
         'id': 'TRAConfigureProgress',
         'name': 'Configure Progress',
         'permissions': ("Modify portal content",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Configure_TRAProgreso') and object.fHasProgressHandler()"""
+        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Configure_TRAProgreso') and  not object.fIsOverProgressHandler()"""
        },
 
 
@@ -815,7 +908,16 @@ class TRAProgreso(OrderedBaseFolder, TRAArquetipo, TRAProgreso_Operaciones, TRAC
         'id': 'TRAControlProgress',
         'name': 'Control Progress',
         'permissions': ("Modify portal content",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Control_TRAProgreso') and object.fHasProgressHandler()"""
+        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Control_TRAProgreso') and not object.fIsOverProgressHandler()"""
+       },
+
+
+       {'action': "string:${object_url}/TRAProgressResults",
+        'category': "object",
+        'id': 'TRAProgressResults',
+        'name': 'Progress Results',
+        'permissions': ("View",),
+        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'ViewResults_TRAProgreso')"""
        },
 
 
@@ -824,16 +926,16 @@ class TRAProgreso(OrderedBaseFolder, TRAArquetipo, TRAProgreso_Operaciones, TRAC
         'id': 'edit',
         'name': 'Edit',
         'permissions': ("Modify portal content",),
-        'condition': """python:object.fAllowWrite()"""
+        'condition': """python:0"""
        },
 
 
-       {'action': "string:${object_url}/TRAProgressResults_action",
+       {'action': "string:${object_url}/TRAImportacionCambios",
         'category': "object",
-        'id': 'TRAProgressResults',
-        'name': 'Progress Results',
+        'id': 'TRAInformeCambios',
+        'name': 'Changes during Import',
         'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': """python:0"""
        },
 
 
@@ -842,7 +944,7 @@ class TRAProgreso(OrderedBaseFolder, TRAArquetipo, TRAProgreso_Operaciones, TRAC
         'id': 'view',
         'name': 'View',
         'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': """python:object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'View_any_TRA_element')"""
        },
 
 
@@ -851,7 +953,7 @@ class TRAProgreso(OrderedBaseFolder, TRAArquetipo, TRAProgreso_Operaciones, TRAC
         'id': 'mddcachestatus',
         'name': 'Cache',
         'permissions': ("View",),
-        'condition': """python:1"""
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'CacheStatus_on_any_TRA_element')"""
        },
 
 
@@ -860,16 +962,7 @@ class TRAProgreso(OrderedBaseFolder, TRAArquetipo, TRAProgreso_Operaciones, TRAC
         'id': 'mddchanges',
         'name': 'Changes',
         'permissions': ("View",),
-        'condition': """python:1"""
-       },
-
-
-       {'action': "string:${object_url}/TRAConfigureProfiling_action",
-        'category': "object_buttons",
-        'id': 'TRA_configure_profiling',
-        'name': 'Configure Profiling',
-        'permissions': ("ManagePortal",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Configure_ExecutionProfilingEnablement_TRACatalogo')"""
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Changes_on_any_TRA_element')"""
        },
 
 
@@ -879,6 +972,15 @@ class TRAProgreso(OrderedBaseFolder, TRAArquetipo, TRAProgreso_Operaciones, TRAC
         'name': 'State',
         'permissions': ("View",),
         'condition': """python:0"""
+       },
+
+
+       {'action': "string:${object_url}/TRAFlushCache_action",
+        'category': "object_buttons",
+        'id': 'tra_flushcache',
+        'name': 'FlushCache',
+        'permissions': ("View",),
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fRoleQuery_IsAnyRol( object, [ 'Manager', 'Owner', 'TRACreator', 'TRAManager', 'TRACoordinator',])"""
        },
 
 
@@ -896,7 +998,7 @@ class TRAProgreso(OrderedBaseFolder, TRAArquetipo, TRAProgreso_Operaciones, TRAC
         'id': 'TRA_inventario',
         'name': 'Inventory',
         'permissions': ("View",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Inventory_TRAElemento')"""
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Inventory_TRAElemento')"""
        },
 
 
@@ -914,7 +1016,7 @@ class TRAProgreso(OrderedBaseFolder, TRAArquetipo, TRAProgreso_Operaciones, TRAC
         'id': 'TRA_recatalogar',
         'name': 'ReCatalog',
         'permissions': ("View",),
-        'condition': """python:object.fUseCaseCheckDoable( 'ReCatalog_TRAElemento')"""
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'ReCatalog_TRAElemento')"""
        },
 
 
@@ -923,7 +1025,16 @@ class TRAProgreso(OrderedBaseFolder, TRAArquetipo, TRAProgreso_Operaciones, TRAC
         'id': 'TRA_reestablecerpermisos',
         'name': 'Reset Permissions',
         'permissions': ("View",),
-        'condition': """python:object.fUseCaseCheckDoable( 'ResetPermissions_TRAElemento')"""
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'ResetPermissions_TRAElemento')"""
+       },
+
+
+       {'action': "string:${object_url}/TRAVerifyPermissions_action",
+        'category': "object_buttons",
+        'id': 'TRA_verificarpermisos',
+        'name': 'Verify Permissions',
+        'permissions': ("View",),
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'VerifyPermissions_TRAElemento')"""
        },
 
 
@@ -941,7 +1052,7 @@ class TRAProgreso(OrderedBaseFolder, TRAArquetipo, TRAProgreso_Operaciones, TRAC
         'id': 'TRA_SeguridadUsuarioConectado',
         'name': 'Permissions',
         'permissions': ("View",),
-        'condition': """python:object.fUseCaseCheckDoable( 'Permissions_on_any_TRA_element')"""
+        'condition': """python:object.fHasTRAtool() and object.TRAgvSIGi18n_tool.fUseCaseCheckDoable( object, 'Permissions_on_any_TRA_element')"""
        },
 
 
@@ -1003,7 +1114,7 @@ class TRAProgreso(OrderedBaseFolder, TRAArquetipo, TRAProgreso_Operaciones, TRAC
         """
         """
         
-        return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
+        return self
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

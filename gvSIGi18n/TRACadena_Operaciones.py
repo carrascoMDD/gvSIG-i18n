@@ -2,7 +2,7 @@
 #
 # File: TRACadena_operations.py
 #
-# Copyright (c) 2008, 2009,2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -54,14 +54,33 @@ from Products.CMFCore       import permissions
 from Products.Archetypes.utils import shasattr
 
 
-from TRAElemento_Constants         import *
+from TRAElemento_Constants                 import *
+from TRAElemento_Constants_Activity        import *
+from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Dates           import *
+from TRAElemento_Constants_Encoding        import *
+from TRAElemento_Constants_Import          import *
+from TRAElemento_Constants_Languages       import *
+from TRAElemento_Constants_Logging         import *
+from TRAElemento_Constants_Modules         import *
+from TRAElemento_Constants_Profiling       import *
+from TRAElemento_Constants_Progress        import *
+from TRAElemento_Constants_String          import *
+from TRAElemento_Constants_StringRequests  import *
+from TRAElemento_Constants_Translate       import *
+from TRAElemento_Constants_Translation     import *
+from TRAElemento_Constants_TypeNames       import *
+from TRAElemento_Constants_Views           import *
+from TRAElemento_Constants_Vocabularies    import *
+from TRAUtils                              import *
 
-from TRAElemento_Permission_Definitions import cUseCase_InvalidateStringTranslations, cUseCase_DeactivateTRACadena, cUseCase_ActivateTRACadena
+
+from TRAElemento_Permission_Definitions_UseCaseNames import cUseCase_InvalidateStringTranslations, cUseCase_DeactivateTRACadena, cUseCase_ActivateTRACadena, cUseCase_AddModulesToTRACadena, cUseCase_RemoveModulesFromTRACadena
 from TRAElemento_Permission_Definitions import cBoundObject
 
 
 
-from TRAElemento import TRAElemento
+from TRAArquetipo import TRAArquetipo
 
 cLogWhileImporting = True
 
@@ -78,7 +97,7 @@ class TRACadena_Operaciones:
 
 
     security.declarePrivate( 'pAllSubElements_into')    
-    def pAllSubElements_into( self, theCollection, theAdditionalParms=None):
+    def pAllSubElements_into( self, theCollection, theAdditionalParams=None):
         if theCollection == None:
             return self
         theCollection.append( self)
@@ -87,7 +106,7 @@ class TRACadena_Operaciones:
         unosElementos = self.fObtenerTodasTraducciones()
         if unosElementos:
             for unElemento in unosElementos:
-                unElemento.pAllSubElements_into( theCollection, theAdditionalParms=theAdditionalParms)
+                unElemento.pAllSubElements_into( theCollection, theAdditionalParams=theAdditionalParams)
         
         return self
         
@@ -189,7 +208,7 @@ class TRACadena_Operaciones:
     security.declarePrivate('fObtenerModulos')
     def fObtenerModulos( self, ):   
         unCatalogo = self.getCatalogo()
-        if not unCatalogo:
+        if unCatalogo == None:
             return []
         unosNombresModulos = self.fListaNombresModulos()
         if not unosNombresModulos:
@@ -214,17 +233,14 @@ class TRACadena_Operaciones:
         unosNombresModulosString = self.getNombresModulos()
         if not unosNombresModulosString:
             return []
-        unosNombresModulosString = unosNombresModulosString.strip()
-        unosNombresModulosString = unosNombresModulosString.replace( '\n', cTRAModuleNameSeparator)
-        unosNombresModulosString = unosNombresModulosString.replace( '\r', cTRAModuleNameSeparator)
-        unosNombresModulosString = unosNombresModulosString.strip()
         
-        unosNombresModulos = unosNombresModulosString.split( cTRAModuleNameSeparator)
+        unosNombresModulos = self.fParseNombresModulosString( unosNombresModulosString)
            
         return unosNombresModulos
     
     
-    
+
+     
     
     security.declarePrivate( 'fAppendNombresModulos')    
     def fAppendNombresModulos( self, theNombresModulos):
@@ -278,6 +294,45 @@ class TRACadena_Operaciones:
         
         return True
     
+    
+    
+    
+    security.declarePrivate( 'fSetNombresModulos')    
+    def fSetNombresModulos( self, theNombresModulos, theCanAddModules=False, theCanRemoveModules=False):
+        
+        if not ( theCanAddModules or theCanRemoveModules):
+            return False
+        
+        unosNombresModulosActuales = self.fListaNombresModulos()
+        unSetNombresModulosActuales = set( unosNombresModulosActuales)
+        
+        unSetNombresModulosSolicitados = set( theNombresModulos)
+        
+        unSetNombresModulosAEstablecer = unSetNombresModulosActuales.copy()
+        
+        if theCanAddModules and theCanRemoveModules:
+            unSetNombresModulosAEstablecer = unSetNombresModulosSolicitados
+            
+        elif theCanAddModules:
+            unSetNombresModulosAEstablecer = unSetNombresModulosActuales.union( unSetNombresModulosSolicitados)
+            
+        elif theCanRemoveModules:             
+            for aNombreModulo in unSetNombresModulosActuales:
+                if not ( aNombreModulo in unSetNombresModulosSolicitados):
+                    unSetNombresModulosAEstablecer.remove( aNombreModulo)
+                    
+                    
+        if unSetNombresModulosActuales == unSetNombresModulosAEstablecer:
+            return False
+               
+        unosNombresModulosAEstablecer = sorted( unSetNombresModulosAEstablecer) 
+        
+        unosNuevosNombresModulosString = cTRAModuleNameSeparator.join( unosNombresModulosAEstablecer)
+        self.setNombresModulos( unosNuevosNombresModulosString)       
+        
+        self.pRecatalogCadena()
+        
+        return True
     
         
     
@@ -442,7 +497,7 @@ class TRACadena_Operaciones:
         """
         try:
             unCatalogoRaiz = self.getCatalogo()
-            if unCatalogoRaiz:
+            if not( unCatalogoRaiz == None):
                 
                 unCatalogKey = theElement.fCatalogKey()
                 
@@ -460,7 +515,7 @@ class TRACadena_Operaciones:
         except:
             None
 
-        TRAElemento.manage_beforeDelete( self, theElement, theContainer)
+        TRAArquetipo.manage_beforeDelete( self, theElement, theContainer)
          
         return self
      
@@ -475,7 +530,7 @@ class TRACadena_Operaciones:
         """Acceso a instancias de TRATraduccion de la TRACadena.
         
         """
-        unasTraducciones = self.objectValues( cNombreTipoTRATraduccion) 
+        unasTraducciones = self.fObjectValues( cNombreTipoTRATraduccion) 
         return unasTraducciones
            
     
@@ -644,7 +699,7 @@ class TRACadena_Operaciones:
         unCatalogoRaiz = None
         if not theCatalogBusquedaCadenas or not theCatalogFiltroCadenas or not theCatalogTextoCadenas:
             unCatalogoRaiz = self.getCatalogo()
-            if not unCatalogoRaiz:
+            if unCatalogoRaiz == None:
                 return self
              
         unCatalogKey = self.fCatalogKey()
@@ -1000,8 +1055,9 @@ class TRACadena_Operaciones:
             except KeyError:
                 None
                 
+            aResult = self.fNewVoidChangeTranslationResult()
             for unaTraduccion in unasTraducciones:
-                unResultTraduccion = unaTraduccion.fInvalidar( 
+                aResult = unaTraduccion.fInvalidar( 
                     theComentario, 
                     theAdditionalParams         =someAdditionalParams,
                     theUseCaseQueryResult       =unUseCaseQueryResult,
@@ -1011,13 +1067,95 @@ class TRACadena_Operaciones:
                     theParentExecutionRecord    =unExecutionRecord
                 )
                 
-            return unResultTraduccion
+            return aResult
         
         finally:
             unExecutionRecord and unExecutionRecord.pEndExecution()
          
   
 
+         
+            
+                       
+            
+    security.declarePrivate( 'fCambiarNombresModulos')    
+    def fCambiarNombresModulos( self, 
+        theNombresModulos, 
+        theAdditionalParams      =None,
+        theRegistrarHistoria     =True, 
+        thePermissionsCache      =None, 
+        theRolesCache            =None, 
+        theParentExecutionRecord =None):
+        
+        unExecutionRecord = self.fStartExecution( 'method',  'fInvalidarTraducciones', theParentExecutionRecord, False) 
+        
+        try:
+            
+            aResult = self.fNewVoidChangeTranslationResult()
+
+            aResult.update({
+                'simboloCadena': self.getSimbolo(),
+                'idCadena':      self.getId(),
+                'found': True,
+                'estadoCadena': self.getEstadoCadena(),
+            })
+
+     
+            unUseCaseQueryResult_AddModulesToTRACadena = self.fUseCaseAssessment(  
+                theUseCaseName          = cUseCase_AddModulesToTRACadena,        
+                theElementsBindings     = { cBoundObject: self,},                                    
+                theRulesToCollect       = None,                                                      
+                thePermissionsCache     = thePermissionsCache,                                        
+                theRolesCache           = theRolesCache,                                              
+                theParentExecutionRecord= unExecutionRecord,                                          
+            )      
+            unCanAddModulesToTRACadena = unUseCaseQueryResult_AddModulesToTRACadena and unUseCaseQueryResult_AddModulesToTRACadena.get( 'success', False)
+
+            
+            unUseCaseQueryResult_RemoveModulesFromTRACadena = self.fUseCaseAssessment(  
+                theUseCaseName          = cUseCase_RemoveModulesFromTRACadena,        
+                theElementsBindings     = { cBoundObject: self,},                                    
+                theRulesToCollect       = None,                                                      
+                thePermissionsCache     = thePermissionsCache,                                        
+                theRolesCache           = theRolesCache,                                              
+                theParentExecutionRecord= unExecutionRecord,                                          
+            )      
+            unCanRemoveModulesFromTRACadena = unUseCaseQueryResult_RemoveModulesFromTRACadena and unUseCaseQueryResult_RemoveModulesFromTRACadena.get( 'success', False)
+            
+            if not ( unCanAddModulesToTRACadena or unCanRemoveModulesFromTRACadena):
+                aResult.update({
+                    'status': 'UseCase_assessment_failed: %s %s' % ( cUseCase_AddModulesToTRACadena, cUseCase_RemoveModulesFromTRACadena,),
+                })
+                return aResult
+            
+            
+            unosNombresModulosSolicitados = self.fParseNombresModulosString( theNombresModulos)
+
+            unModulesChanged = self.fSetNombresModulos( unosNombresModulosSolicitados, unCanAddModulesToTRACadena, unCanRemoveModulesFromTRACadena)
+            
+            if unModulesChanged:
+                self.fPropagarCambioNombresModulosATraducciones()
+
+                aCatalogo = self.getCatalogo()
+                if not ( aCatalogo == None):
+                    aCatalogo.pInvalidateSimbolosCadenasOrdenados()
+                    aCatalogo.pFlushCachedTemplates_All()
+                    
+
+            unosNombresModulos = self.getNombresModulos()
+            
+            aResult.update({
+                'success': True,
+                'changed': True,
+                'nombresModulos_newValue': unosNombresModulos,
+            })
+           
+            return aResult
+        
+        finally:
+            unExecutionRecord and unExecutionRecord.pEndExecution()
+         
+              
             
 
 
@@ -1036,10 +1174,9 @@ class TRACadena_Operaciones:
         try:
             
             try:
-                
-                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
-                
+                                
+                unPermissionsCache = fDictOrNew( thePermissionsCache)
+                unRolesCache       = fDictOrNew( theRolesCache)
                 
                 aResult = self.fNewVoidChangeTranslationResult()
             
@@ -1084,7 +1221,7 @@ class TRACadena_Operaciones:
                         aCatalogo.pInvalidateSimbolosCadenasOrdenados()
                         aCatalogo.pFlushCachedTemplates_All()
 
-                    unasTraducciones = self.objectValues( cNombreTipoTRATraduccion)
+                    unasTraducciones = self.fObjectValues( cNombreTipoTRATraduccion)
                     if unasTraducciones:
                         for unaTraduccion in unasTraducciones:
                             unaTraduccion.setEstadoCadena( cEstadoCadenaInactiva)
@@ -1094,7 +1231,7 @@ class TRACadena_Operaciones:
                     from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import ModelDDvlPloneTool_Mutators, cModificationKind_ChangeValues
                                                 
                     
-                    aModelDDvlPloneTool_Mutators = ModelDDvlPloneTool_Mutators()
+                    aModelDDvlPloneTool_Mutators = self.fModelDDvlPloneTool().fModelDDvlPloneTool_Mutators( self)
                    
                     aReport = aModelDDvlPloneTool_Mutators.fNewVoidChangeValuesReport()
                     someFieldReports    = aReport.get( 'field_reports')
@@ -1133,7 +1270,10 @@ class TRACadena_Operaciones:
                 
                 unInformeExcepcion = 'Exception during TRACadena::fDesactivar %s \n'  % '/'.join( self.getPhysicalPath())
                 unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                try:
+                    unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                except:
+                    None
                 unInformeExcepcion += unaExceptionFormattedTraceback   
 
                 unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)
@@ -1168,8 +1308,8 @@ class TRACadena_Operaciones:
             
             try:
                 
-                unPermissionsCache = (( thePermissionsCache == None) and { }) or thePermissionsCache
-                unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
+                unPermissionsCache = fDictOrNew( thePermissionsCache)
+                unRolesCache       = fDictOrNew( theRolesCache)
                 
                 
                 aResult = self.fNewVoidChangeTranslationResult()
@@ -1212,7 +1352,7 @@ class TRACadena_Operaciones:
                         aCatalogo.pInvalidateSimbolosCadenasOrdenados()
                         aCatalogo.pFlushCachedTemplates_All()
 
-                    unasTraducciones = self.objectValues( cNombreTipoTRATraduccion)
+                    unasTraducciones = self.fObjectValues( cNombreTipoTRATraduccion)
                     if unasTraducciones:
                         for unaTraduccion in unasTraducciones:
                             unaTraduccion.setEstadoCadena( cEstadoCadenaActiva)
@@ -1221,7 +1361,7 @@ class TRACadena_Operaciones:
                             
                     from Products.ModelDDvlPloneTool.ModelDDvlPloneTool_Mutators import ModelDDvlPloneTool_Mutators, cModificationKind_ChangeValues
                     
-                    aModelDDvlPloneTool_Mutators = ModelDDvlPloneTool_Mutators()
+                    aModelDDvlPloneTool_Mutators = self.fModelDDvlPloneTool().fModelDDvlPloneTool_Mutators( self)
                    
                     aReport = aModelDDvlPloneTool_Mutators.fNewVoidChangeValuesReport()
                     someFieldReports    = aReport.get( 'field_reports')
@@ -1260,7 +1400,10 @@ class TRACadena_Operaciones:
                 
                 unInformeExcepcion = 'Exception during TRACadena::fActivar %s \n'  % '/'.join( self.getPhysicalPath())
                 unInformeExcepcion += 'exception class %s\n' % unaExceptionInfo[1].__class__.__name__ 
-                unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                try:
+                    unInformeExcepcion += 'exception message %s\n\n' % str( unaExceptionInfo[1].args)
+                except:
+                    None
                 unInformeExcepcion += unaExceptionFormattedTraceback   
 
                 unExecutionRecord and unExecutionRecord.pRecordException( unInformeExcepcion)

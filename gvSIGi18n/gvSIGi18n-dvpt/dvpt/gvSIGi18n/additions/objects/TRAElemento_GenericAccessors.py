@@ -2,7 +2,7 @@
 #
 # File: TRAElemento_GenericAccessors.py
 #
-# Copyright (c) 2008, 2009,2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -46,7 +46,25 @@ from Products.CMFCore.utils     import getToolByName
 
 
 
-from TRAElemento_Constants              import *
+from TRAElemento_Constants                 import *
+from TRAElemento_Constants_Activity        import *
+from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Dates           import *
+from TRAElemento_Constants_Encoding        import *
+from TRAElemento_Constants_Import          import *
+from TRAElemento_Constants_Languages       import *
+from TRAElemento_Constants_Logging         import *
+from TRAElemento_Constants_Modules         import *
+from TRAElemento_Constants_Profiling       import *
+from TRAElemento_Constants_Progress        import *
+from TRAElemento_Constants_String          import *
+from TRAElemento_Constants_StringRequests  import *
+from TRAElemento_Constants_Translate       import *
+from TRAElemento_Constants_Translation     import *
+from TRAElemento_Constants_TypeNames       import *
+from TRAElemento_Constants_Views           import *
+from TRAElemento_Constants_Vocabularies    import *
+from TRAUtils                              import *
  
             
             
@@ -63,7 +81,88 @@ class TRAElemento_GenericAccessors:
     security = ClassSecurityInfo()
 
     
+    
+    security.declarePrivate( 'fNewVoidBasicInfoReport')
+    def fNewVoidBasicInfoReport( self, ):
+        unReport = {
+            'title':                '',
+            'description':          '',
+            'absolute_url':         '',
+            'content_icon':         '',
+            'metatype':             '',
+            'archetype_name':       '',
+            'archetype_name_msgid': '',
+            'typeDescription':      '',
+            'typeDescMsgId':        '',
+            'path':                 '',
+        }
+        return unReport
+    
+    
+    
+    
+    security.declareProtected( permissions.View, 'fBasicInfo')
+    def fBasicInfo( self,):
+        """Retrieve basic information about the element.
+        
+        """
+        
+        unReport = self.fNewVoidBasicInfoReport()
+        
+        try:
+            unReport[ 'title'] = self.Title()
+        except:
+            None
+        
+        try:
+            unReport[ 'description'] = self.Description()
+        except:
+            None
+        
+        try:
+            unReport[ 'absolute_url'] = self.absolute_url()
+        except:
+            None
+            
+        try:
+            unReport[ 'content_icon'] = self.content_icon
+        except:
+            None
+            
+        try:
+            unReport[ 'meta_type'] = self.meta_type
+        except:
+            None
+            
+        try:
+            unReport[ 'archetype_name'] = self.archetype_name
+        except:
+            None
+            
+        try:
+            unReport[ 'archetype_name_msgid'] = self.archetype_name_msgid
+        except:
+            None
+            
+        try:
+            unReport[ 'typeDescription'] = self.typeDescription
+        except:
+            None
+            
+        try:
+            unReport[ 'typeDescMsgId'] = self.typeDescMsgId
+        except:
+            None
 
+        try:
+            unReport[ 'path'] = self.fPhysicalPathString()
+        except:
+            None
+                           
+                        
+        return unReport
+        
+        
     security.declarePublic('getAttributeValueByName')
     def getAttributeValueByName( self, theName):
         """Generic attribute accesor by name.
@@ -190,7 +289,7 @@ class TRAElemento_GenericAccessors:
 
 
     security.declareProtected( permissions.ModifyPortalContent, 'setAttributesValues')
-    def setAttributesValues(self , losNombresYValoresAttributes=""):
+    def setAttributesValues(self , losNombresYValoresAttributes=[]):
         """Generic attribute mutators by name.
         
         """
@@ -239,7 +338,7 @@ class TRAElemento_GenericAccessors:
 
 
     security.declarePublic('getAttributesMetaAndValues')
-    def getAttributesMetaAndValues(self , losNombresAttributes=""):
+    def getAttributesMetaAndValues(self , losNombresAttributes=[]):
         if not losNombresAttributes:
             return []
 

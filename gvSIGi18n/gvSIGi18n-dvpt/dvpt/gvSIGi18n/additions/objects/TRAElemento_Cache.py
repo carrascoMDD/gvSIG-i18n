@@ -2,7 +2,7 @@
 #
 # File: TRAElemento_Cache.py
 #
-# Copyright (c) 2008, 2009,2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -39,7 +39,25 @@ from AccessControl              import ClassSecurityInfo
 from Products.CMFCore           import permissions
 
 
-from TRAElemento_Constants              import *
+from TRAElemento_Constants                 import *
+from TRAElemento_Constants_Activity        import *
+from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Dates           import *
+from TRAElemento_Constants_Encoding        import *
+from TRAElemento_Constants_Import          import *
+from TRAElemento_Constants_Languages       import *
+from TRAElemento_Constants_Logging         import *
+from TRAElemento_Constants_Modules         import *
+from TRAElemento_Constants_Profiling       import *
+from TRAElemento_Constants_Progress        import *
+from TRAElemento_Constants_String          import *
+from TRAElemento_Constants_StringRequests  import *
+from TRAElemento_Constants_Translate       import *
+from TRAElemento_Constants_Translation     import *
+from TRAElemento_Constants_TypeNames       import *
+from TRAElemento_Constants_Views           import *
+from TRAElemento_Constants_Vocabularies    import *
+from TRAUtils                              import *
 
             
             
@@ -57,8 +75,46 @@ class TRAElemento_Cache:
 
     
      
+
+    
+    
+    
+
+    # #############################################################
+    """Configuration methods.
+    
+    """
         
         
+    security.declarePublic( 'fPaginaDefault')    
+    def fPaginaDefault( self):
+        
+        aMetaType = self.meta_type
+        
+        aDefaultPage = cTRADefaultPagesForTypes.get( aMetaType, 'Tabular')
+        return aDefaultPage
+    
+    
+    
+    
+    security.declarePrivate( 'fIsPrivateCacheViewForNonAnonymousUsers')
+    def fIsPrivateCacheViewForQualifiedUsers(self , theTemplateName):
+        """Shall return true when the template name is for a view sensitive to write user permissions ( modify portal content, delete, add folders, ) on rendered objects, in addition to the permissions required by Zope/Plone to deliver data to the requester (view, list folder contents, access content information,).
+        
+        """
+        return  theTemplateName in cTRAPrivateCacheViewsForQualifiedUsers
+        
+    
+    
+    
+    
+    
+
+    # #############################################################
+    """Cache flush methods.
+    
+    """
+    
     security.declarePrivate('pFlushCachedTemplates')
     def pFlushCachedTemplates(self,  theViewsToFlush=[]):
         unModelDDvlPloneTool = self.fModelDDvlPloneTool()
@@ -73,8 +129,11 @@ class TRAElemento_Cache:
     
     
 
-    security.declarePrivate('pFlushCachedTemplates_All')
+    security.declarePublic('pFlushCachedTemplates_All')
     def pFlushCachedTemplates_All(self, theViewsToFlush=[]):
+        """Remove from memory and disk cache all cached templates associated with this element and its contained elements, or optionally only those cached templates specified by name.
+        
+        """
         
         unModelDDvlPloneTool = self.fModelDDvlPloneTool()
         if not unModelDDvlPloneTool:

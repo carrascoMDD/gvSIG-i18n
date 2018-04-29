@@ -1,0 +1,119 @@
+<tal:block replace="nothing">
+# File: TRATraducir_Async.pt
+#
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la
+# Generalidad Valenciana
+#
+# GNU General Public License (GPL)
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+#
+# Authors: 
+# Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana 
+# Model Driven Development sl  Valencia (Spain) www.ModelDD.org 
+# Antonio Carrasco Valero                       carrasco@ModelDD.org
+#
+#
+</tal:block>
+   
+<tal:block tal:define="
+    pExecutionRecord python: here.TRAgvSIGi18n_tool.fStartExecution( here, 'template', 'TRATraducir_Async.pt', None, True, { 'log_what': 'details', 'log_when': True, });
+    pPermissionsCache python: {};
+    pRolesCache python: {}"><tal:block 
+    tal:define="
+        pFormSubmit             python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'form_submit', '');
+        pRequestedChangeKind    python: ( ( pFormSubmit == 'ChangeStringModules') and 'ChangeStringModules') or   ( ( pFormSubmit == 'InvalidarTraduccionesCadena') and 'InvalidarTraduccionesCadena') or  ( ( pFormSubmit == 'Pendiente') and 'ChangeToPending') or ( ( pFormSubmit == 'Traducida') and  'ChangeToTranslated')  or ( ( pFormSubmit == 'Revisada') and 'ChangeToReviewed')  or ( ( pFormSubmit == 'Definitiva') and 'ChangeToLocked') or ( ( pFormSubmit == 'Comment') and 'Comment') or 'TryToTranslate';
+        pServiceResult python: here.TRAgvSIGi18n_tool.fService_ChangeTranslation( 
+            here,
+            {   'sleep_seconds':                '0.0', 
+                'change_counter':               here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theChgCtr',    ''),
+                'requested_change_kind':        pRequestedChangeKind,                
+                'codigo_idioma_a_traducir':     here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theCodigoIdiomaATraducir',    ''),
+                'simbolo_cadena_a_traducir':    here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theSimboloCadenaATraducir',   ''),
+                'cadena_traducida':             here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theCadenaTraducida',          ''),
+                'nombres_modulos_solicitados':  here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theNewModuleNames',           ''),
+            },
+            pPermissionsCache,
+            pRolesCache,
+            pExecutionRecord);
+        unServiceSuccess                python:  ( pServiceResult or {}).get( 'success', False);
+        unChangeResult                  python:  ( pServiceResult or {}).get( 'change_result', {});
+        unChangedSuccess                python:  ( unChangeResult or {}).get( 'success', False);
+        unChangeStatus                  python:  ( unChangeResult or {}).get( 'status', '');
+        unChangeMessage                 python:  ( unChangeStatus and ( unChangeStatus == 'DifferentChangeCounter') and here.TRAgvSIGi18n_tool.fTranslateI18N( here, 'gvSIGi18n', 'gvSIGi18n_TranslationChangedByOtherTransaction', 'Translation Changed by other transaction or user-')) or '';
+        theCodigoIdiomaATraducir        python:  here.TRAgvSIGi18n_tool.fAsUnicode( here, pServiceResult.get( 'codigo_idioma_a_traducir', u''));
+        theSimboloCadenaATraducir       python:  here.TRAgvSIGi18n_tool.fAsUnicode( here, pServiceResult.get( 'simbolo_cadena_a_traducir', u''));
+        theCadenaTraducida_solicitada   python:  here.TRAgvSIGi18n_tool.fAsUnicode( here, pServiceResult.get( 'cadena_traducida_solicitada', u''));
+        theComentario_solicitado        python:  here.TRAgvSIGi18n_tool.fAsUnicode( here, pServiceResult.get( 'comentario_solicitado', u''));
+        unRetrievalResult               python:  ( pServiceResult or {}).get( 'retrieval_result', {});
+        unRetrievalSuccess              python:  ( unRetrievalResult or {}).get( 'success', False);
+        unDatosTraducciones             python:  ( unRetrievalResult or {}).get( 'datosTraducciones', []);
+        unosDatosTraduccion             python:  ( unDatosTraducciones and unDatosTraducciones[ 0]) or {};
+        unaNuevaCadenaTraducida         python:  ( unosDatosTraduccion and unosDatosTraduccion[ 'getCadenaTraducida']) or '';
+        unNuevoEstadoTraduccion         python:  ( unosDatosTraduccion and unosDatosTraduccion[ 'getEstadoTraduccion']) or '';
+        unNuevoUsuarioTraductor         python:  ( unosDatosTraduccion and unosDatosTraduccion[ 'getUsuarioTraductor']) or '';
+        unaNuevaFechaTraduccion         python:  ( unosDatosTraduccion and unosDatosTraduccion[ 'getFechaTraduccionTextual']) or '';
+        unNuevoUsuarioRevisor           python:  ( unosDatosTraduccion and unosDatosTraduccion[ 'getUsuarioRevisor']) or '';
+        unaNuevaFechaRevision           python:  ( unosDatosTraduccion and unosDatosTraduccion[ 'getFechaRevisionTextual']) or '';
+        unNuevoUsuarioCoordinador       python:  ( unosDatosTraduccion and unosDatosTraduccion[ 'getUsuarioCoordinador']) or '';
+        unaNuevaFechaDefinitivo         python:  ( unosDatosTraduccion and unosDatosTraduccion[ 'getFechaDefinitivoTextual']) or '';
+        unosNombresModulos              python:  ( unosDatosTraduccion and unosDatosTraduccion[ 'getNombresModulos']) or '';
+        
+        unChangesCounter                python:  str( ( unosDatosTraduccion and unosDatosTraduccion[ 'getContadorCambios']) or 0);
+        unasAllowedStateTransitions     python:  ( unRetrievalResult or {}).get( 'allowed_state_transitions', {});
+        unosTargetStateChanges          python:  ' '.join( (unasAllowedStateTransitions or {}).get( unNuevoEstadoTraduccion, {}))"
+>
+
+<span id="cid_AsyncResponse_success"                        tal:content="python: (unServiceSuccess and 'true') or 'false'" />
+<span id="cid_AsyncResponse_changed"                        tal:content="python: (unChangedSuccess and 'true') or 'false'" />
+
+<span id="cid_AsyncResponse_form_submit"                    tal:content="pFormSubmit" />
+<span id="cid_AsyncResponse_RequestedChangeKind"            tal:content="pRequestedChangeKind" />
+
+<span id="cid_AsyncResponse_theCadenaTraducida_solicitada"  tal:content="theCadenaTraducida_solicitada" />
+<span id="cid_AsyncResponse_theSimboloCadenaATraducir"      tal:content="theSimboloCadenaATraducir" />
+<span id="cid_AsyncResponse_theComentario_solicitado"       tal:content="unServiceSuccess" />
+
+<span id="cid_AsyncResponse_theCadenaTraducida"             tal:content="unaNuevaCadenaTraducida" />
+<span id="cid_AsyncResponse_theEstadoTraduccion"            tal:content="unNuevoEstadoTraduccion" />
+<span id="cid_AsyncResponse_theTargetStateChanges"          tal:content="unosTargetStateChanges" />
+<span id="cid_AsyncResponse_theChangesCounter"              tal:content="unChangesCounter" />
+<span id="cid_AsyncResponse_theChangeStatus"                tal:content="unChangeStatus" />
+<span id="cid_AsyncResponse_theChangeMessage"               tal:content="unChangeMessage" />
+
+<span id="cid_AsyncResponse_theModuleNames"                 tal:content="unosNombresModulos" />
+
+
+<span id="cid_AsyncResponse_theFechaTraduccion"             tal:content="unaNuevaFechaTraduccion" />
+<span id="cid_AsyncResponse_theUsuarioTraductor"            tal:content="unNuevoUsuarioTraductor" />
+
+<span id="cid_AsyncResponse_theFechaRevision"               tal:content="unaNuevaFechaRevision" />
+<span id="cid_AsyncResponse_theUsuarioRevisor"              tal:content="unNuevoUsuarioRevisor" />
+
+<span id="cid_AsyncResponse_theFechaDefinitivo"             tal:content="unaNuevaFechaDefinitivo" />
+<span id="cid_AsyncResponse_theUsuarioCoordinador"          tal:content="unNuevoUsuarioCoordinador" />
+
+<tal:block tal:define="dummy python: pExecutionRecord and here.TRAgvSIGi18n_tool.pEndExecution( here, pExecutionRecord)" />
+<div  id="cid_AsyncResponse_theExecutionProfileResult"  tal:condition="python: here.TRAgvSIGi18n_tool.fHTTPRequest_get( here, 'theRenderProfileAsync', '')" >
+    <tal:block tal:replace="structure python: pExecutionRecord and here.TRARenderExecutionDetails( pExecutionRecord, theCollapsible=False,)" />
+</div>
+</tal:block>
+</tal:block>
+
+
+    
+           
+ 

@@ -2,7 +2,7 @@
 #
 # File: TRAElemento_ContainmentTree.py
 #
-# Copyright (c) 2008, 2009,2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
+# Copyright (c) 2008, 2009, 2010 by Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana
 #
 # GNU General Public License (GPL)
 #
@@ -48,7 +48,25 @@ from Products.CMFCore.utils     import getToolByName
 
 
 
-from TRAElemento_Constants              import *
+from TRAElemento_Constants                 import *
+from TRAElemento_Constants_Activity        import *
+from TRAElemento_Constants_Configurations  import *
+from TRAElemento_Constants_Dates           import *
+from TRAElemento_Constants_Encoding        import *
+from TRAElemento_Constants_Import          import *
+from TRAElemento_Constants_Languages       import *
+from TRAElemento_Constants_Logging         import *
+from TRAElemento_Constants_Modules         import *
+from TRAElemento_Constants_Profiling       import *
+from TRAElemento_Constants_Progress        import *
+from TRAElemento_Constants_String          import *
+from TRAElemento_Constants_StringRequests  import *
+from TRAElemento_Constants_Translate       import *
+from TRAElemento_Constants_Translation     import *
+from TRAElemento_Constants_TypeNames       import *
+from TRAElemento_Constants_Views           import *
+from TRAElemento_Constants_Vocabularies    import *
+from TRAUtils                              import *
         
 
 
@@ -63,22 +81,29 @@ class TRAElemento_ContainmentTree:
     security = ClassSecurityInfo()
 
     
-      
 
     
-    security.declarePublic( 'fIsCollection')    
-    def fIsCollection( self, theObject):
-        if not theObject:
-            return False
-        return isinstance( theObject, type( [])) or isinstance( theObject, type( (1,2))) or isinstance( theObject, type( set())) 
     
-     
+    security.declarePrivate( 'fObjectValues')    
+    def fObjectValues( self, theTypeNames=None):
+        
+        someObjectValues = []
+        
+        if theTypeNames:
+            someObjectValues = self.objectValues( theTypeNames)
+        else:
+            someObjectValues = self.objectValues( )
+            
+        return someObjectValues
+    
+           
+    
     
     
     security.declarePrivate( 'fAllSubElements')    
-    def fAllSubElements( self, theAdditionalParms=None):
+    def fAllSubElements( self, theAdditionalParams=None):
         someSubElements = [ ]
-        self.pAllSubElements_into( someSubElements, theAdditionalParms=None)
+        self.pAllSubElements_into( someSubElements, theAdditionalParams=None)
         return someSubElements
     
            
@@ -139,18 +164,21 @@ class TRAElemento_ContainmentTree:
         
     
     security.declarePrivate( 'fElementoPorUID')
-    def fElementoPorUID( self, theUID,):
+    def fElementoPorUID( self, theUID, theUIDCatalog=None):
         """Element access by UID.
         
         """
         if not theUID :
             return None
             
-        unPortalCatalog = getToolByName( self, 'uid_catalog')
+        unUIDCatalog = theUIDCatalog
+        if unUIDCatalog == None:
+            unUIDCatalog = self.getUIDCatalogTool()
+            
         unaBusqueda = { 
             'UID' :            theUID, 
         }
-        unosResultadosBusqueda = unPortalCatalog.searchResults( **unaBusqueda)
+        unosResultadosBusqueda = unUIDCatalog.searchResults( **unaBusqueda)
         if len( unosResultadosBusqueda) < 1:
             return None
             
@@ -162,19 +190,48 @@ class TRAElemento_ContainmentTree:
     
     
         
-
     
     
 
     security.declarePublic( 'getElementoPorID')
     def getElementoPorID(self, theID):
-        """Basic accessor for contained element by id.
+        return self.getElementoPorID_scanning( theID)
+    
+    
+    
+
+
+    security.declarePrivate( 'getElementoPorID_byacquisition')
+    def getElementoPorID_byacquisition(self, theID):
+        """Basic accessor for contained element by id, by acquisition.
         
         """
         if not theID:
             return None
 
-        unosExistingElements = self.objectValues()
+        anElement = None
+        try:
+            anElement = aq_get(self, theID,)
+        except AttributeError:
+            None
+            
+        return anElement
+    
+           
+
+    
+    
+    
+    
+    security.declarePrivate( 'getElementoPorID_scanning')
+    def getElementoPorID_scanning(self, theID):
+        """Basic accessor for contained element by id, iterating over all contained elements.
+        
+        """
+        if not theID:
+            return None
+
+        unosExistingElements = self.fObjectValues()
         
         for unElement in unosExistingElements:
             unId = unElement.getId()
@@ -190,14 +247,19 @@ class TRAElemento_ContainmentTree:
 
     security.declarePublic('getRaiz')
     def getRaiz(self):
+        
         if self.getEsRaiz():
-            return self            
+            return self         
+        
         unContenedor =  aq_parent( aq_inner( self))
         
-        if not unContenedor:
-            return None
-        
-        return unContenedor.getRaiz()
+        while not ( unContenedor == None):
+            if unContenedor.getEsRaiz():
+                return unContenedor
+            else:
+                unContenedor =  aq_parent( aq_inner( unContenedor))
+                
+        return self
 
     
     
@@ -383,9 +445,9 @@ class TRAElemento_ContainmentTree:
         
         someElements = None
         if theNombresTipos:
-            someElements = self.objectValues( theNombresTipos)
+            someElements = self.fObjectValues( theNombresTipos)
         else:
-            someElements = self.objectValues( )
+            someElements = self.fObjectValues( )
             
         for anElement in someElements:
             anElement.pAllElementUIDs_fromVisitor_into( theUIDs, theNombresTipos)
