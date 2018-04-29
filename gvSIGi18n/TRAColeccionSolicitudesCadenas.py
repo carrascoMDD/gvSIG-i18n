@@ -32,6 +32,7 @@ __docformat__ = 'plaintext'
 from AccessControl import ClassSecurityInfo
 from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.TRAColeccionArquetipos import TRAColeccionArquetipos
+from Products.gvSIGi18n.TRAColeccionSolicitudesCadenas_Operaciones import TRAColeccionSolicitudesCadenas_Operaciones
 from Products.gvSIGi18n.config import *
 
 ##code-section module-header #fill in your manual code here
@@ -56,6 +57,7 @@ schema = Schema((
         label='Solicitudes de creacion de Cadenas',
         description2='Requests by developers to create new strings.',
         multiValued=1,
+        factory_views={ 'TRASolicitudCadena' : 'TRACrear_SolicitudCadena',},
         owner_class_name="TRAColeccionSolicitudesCadenas",
         expression="context.objectValues(['TRASolicitudCadena'])",
         computed_types=['TRASolicitudCadena'],
@@ -69,25 +71,26 @@ schema = Schema((
 ##code-section after-local-schema #fill in your manual code here
 ##/code-section after-local-schema
 
-TRAColeccionSolicitudesCadenas_schema = BaseBTreeFolderSchema.copy() + \
+TRAColeccionSolicitudesCadenas_schema = OrderedBaseFolderSchema.copy() + \
     getattr(TRAColeccionArquetipos, 'schema', Schema(())).copy() + \
+    getattr(TRAColeccionSolicitudesCadenas_Operaciones, 'schema', Schema(())).copy() + \
     schema.copy()
 
 ##code-section after-schema #fill in your manual code here
 ##/code-section after-schema
 
-class TRAColeccionSolicitudesCadenas(BaseBTreeFolder, TRAColeccionArquetipos):
+class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccionSolicitudesCadenas_Operaciones):
     """
     """
     security = ClassSecurityInfo()
-    __implements__ = (getattr(BaseBTreeFolder,'__implements__',()),) + (getattr(TRAColeccionArquetipos,'__implements__',()),)
+    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAColeccionArquetipos,'__implements__',()),) + (getattr(TRAColeccionSolicitudesCadenas_Operaciones,'__implements__',()),)
 
     # This name appears in the 'add' box
     archetype_name = 'Coleccion de Solicitudes de creacion de Cadenas'
 
     meta_type = 'TRAColeccionSolicitudesCadenas'
     portal_type = 'TRAColeccionSolicitudesCadenas'
-    allowed_content_types = ['TRASolicitudCadena'] + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', []))
+    allowed_content_types = ['TRASolicitudCadena'] + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', [])) + list(getattr(TRAColeccionSolicitudesCadenas_Operaciones, 'allowed_content_types', []))
     filter_content_types = 1
     global_allow = 0
     #content_icon = 'TRAColeccionSolicitudesCadenas.gif'
@@ -99,7 +102,8 @@ class TRAColeccionSolicitudesCadenas(BaseBTreeFolder, TRAColeccionArquetipos):
     archetype_name2 = 'Strings creation request collection'
     typeDescription2 = '''Collection of requests by developers to create new strings.'''
     archetype_name_msgid = 'gvSIGi18n_TRAColeccionSolicitudesCadenas_label'
-    factory_methods = None
+    factory_methods = { 'TRASolicitudCadena' : 'fCrearSolicitudCadena',}
+    factory_enablers = None
     allow_discussion = False
 
 

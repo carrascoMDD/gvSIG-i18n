@@ -1,3 +1,37 @@
+Install instructions:
+------------------------------------
+
+IMPORTANT ! 
+
+Remember to copy the files in the product folder
+gvSIGi18n\manualadditions\AsExternalMethodInSiteRoot
+(including TRAChangeAndBrowseTranslations.py, TRAExport_ctrl.py,
+TRARenderProfiling.py, TRARenderSecurity.py)
+to the Plone instance Extensions folder.
+
+------------------------------------
+
+
+Make available to the Plone instance (by copying or linking)
+the Plone products:
+
+gvSIGi18n
+ModelDDvlPlone
+ModelDDvlPloneTool
+
+Relations (a version patched by MDDsl, i.e.: v 0.6bMDDsl0.1)
+
+Archetypes
+PloneLanguageTool
+
+And optionally, for additional support of Chinese and Japanese:
+make available to the plone instance the products
+
+CJKSplitter
+ZopeChinaPak
+
+
+
 Overview
 
   gvSIGtraducciones allows the collaborative translations

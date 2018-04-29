@@ -75,11 +75,13 @@ class TRAElemento_Meta:
             'TRACadena',
             'TRACatalogo',
             'TRAColeccionCadenas',
+            'TRAColeccionIdiiomas_Operaciones',
             'TRAColeccionIdiomas',
             'TRAColeccionImportaciones',
             'TRAColeccionInformes',
             'TRAColeccionModulos',
             'TRAColeccionSolicitudesCadenas',
+            'TRAColeccionSolicitudesCadenas_Operaciones',
             'TRAContenidoIntercambio',
             'TRAIdioma',
             'TRAImportacion',
@@ -111,6 +113,10 @@ class TRAElemento_Meta:
                 from Products.gvSIGi18n.TRAColeccionCadenas         import TRAColeccionCadenas
                 return TRAColeccionCadenas            
 
+            if theMetaTypeName == 'TRAColeccionIdiiomas_Operaciones':
+                from Products.gvSIGi18n.TRAColeccionIdiiomas_Operaciones         import TRAColeccionIdiiomas_Operaciones
+                return TRAColeccionIdiiomas_Operaciones            
+
             if theMetaTypeName == 'TRAColeccionIdiomas':
                 from Products.gvSIGi18n.TRAColeccionIdiomas         import TRAColeccionIdiomas
                 return TRAColeccionIdiomas            
@@ -130,6 +136,10 @@ class TRAElemento_Meta:
             if theMetaTypeName == 'TRAColeccionSolicitudesCadenas':
                 from Products.gvSIGi18n.TRAColeccionSolicitudesCadenas         import TRAColeccionSolicitudesCadenas
                 return TRAColeccionSolicitudesCadenas            
+
+            if theMetaTypeName == 'TRAColeccionSolicitudesCadenas_Operaciones':
+                from Products.gvSIGi18n.TRAColeccionSolicitudesCadenas_Operaciones         import TRAColeccionSolicitudesCadenas_Operaciones
+                return TRAColeccionSolicitudesCadenas_Operaciones            
 
             if theMetaTypeName == 'TRAContenidoIntercambio':
                 from Products.gvSIGi18n.TRAContenidoIntercambio         import TRAContenidoIntercambio

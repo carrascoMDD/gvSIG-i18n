@@ -177,6 +177,7 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAModulo_Operaciones):
     typeDescription2 = '''One of the Modules in the product to translate.'''
     archetype_name_msgid = 'gvSIGi18n_TRAModulo_label'
     factory_methods = None
+    factory_enablers = None
     allow_discussion = False
 
 

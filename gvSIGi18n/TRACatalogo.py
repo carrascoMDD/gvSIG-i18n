@@ -956,6 +956,7 @@ class TRACatalogo(OrderedBaseFolder, TRACatalogo_Autorizaciones, TRAArquetipo, T
     typeDescription2 = '''Containing a number of languages, strings to translate, and their translations to the the languages.'''
     archetype_name_msgid = 'gvSIGi18n_TRACatalogo_label'
     factory_methods = None
+    factory_enablers = None
     allow_discussion = False
 
 

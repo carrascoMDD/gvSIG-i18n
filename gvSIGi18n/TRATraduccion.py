@@ -642,6 +642,7 @@ class TRATraduccion(OrderedBaseFolder, TRAArquetipo, TRATraduccion_Operaciones):
     typeDescription2 = '''Translation of one of the strings into one of the languages.'''
     archetype_name_msgid = 'gvSIGi18n_TRATraduccion_label'
     factory_methods = None
+    factory_enablers = None
     allow_discussion = False
 
 

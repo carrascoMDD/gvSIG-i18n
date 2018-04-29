@@ -376,6 +376,7 @@ class TRACadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones):
     typeDescription2 = '''One of the original product strings to translate, identified by a the original symbol string.'''
     archetype_name_msgid = 'gvSIGi18n_TRACadena_label'
     factory_methods = None
+    factory_enablers = None
     allow_discussion = 0
 
 

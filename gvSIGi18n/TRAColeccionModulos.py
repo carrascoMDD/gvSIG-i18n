@@ -98,6 +98,7 @@ class TRAColeccionModulos(OrderedBaseFolder, TRAColeccionArquetipos):
     typeDescription2 = '''Collection of Modules in the product to translate.'''
     archetype_name_msgid = 'gvSIGi18n_TRAColeccionModulos_label'
     factory_methods = None
+    factory_enablers = None
     allow_discussion = False
 
 

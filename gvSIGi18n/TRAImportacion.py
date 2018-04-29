@@ -908,6 +908,7 @@ class TRAImportacion(OrderedBaseFolder, TRAArquetipo, TRAImportacion_Operaciones
     typeDescription2 = '''Import process instance, from a given input archive.'''
     archetype_name_msgid = 'gvSIGi18n_TRAImportacion_label'
     factory_methods = { 'TRAContenidoIntercambio' : 'fCrearContenidoIntercambio',}
+    factory_enablers = None
     allow_discussion = False
 
 

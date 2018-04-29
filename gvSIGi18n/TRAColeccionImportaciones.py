@@ -100,6 +100,7 @@ class TRAColeccionImportaciones(OrderedBaseFolder, TRAColeccionArquetipos):
     typeDescription2 = '''Collection of Import processes to save modules,  languages, strings and translations.'''
     archetype_name_msgid = 'gvSIGi18n_TRAColeccionImportaciones_label'
     factory_methods = None
+    factory_enablers = None
     allow_discussion = False
 
 

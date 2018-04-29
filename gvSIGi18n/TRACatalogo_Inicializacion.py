@@ -60,7 +60,6 @@ from Products.CJKSplitter.CJKSplitter import CJKSplitter
 
 from Products.CMFCore               import permissions
 from Products.CMFCore.utils         import getToolByName
-from Products.CMFCore.utils         import SimpleRecord
 
 
 
@@ -953,7 +952,7 @@ class TRACatalogo_Inicializacion:
                                 unaCollection = unaNuevaColeccion
                                 unHayCambio   = True
                     
-                    if unaCollection:
+                    if not ( unaCollection == None):
                         
                         if self.fLazySetAcquireRoleAssignments( 
                             theAllowCreation,
@@ -1007,7 +1006,7 @@ class TRACatalogo_Inicializacion:
         unExecutionRecord = self.fStartExecution( 'method',  'fLazySetAcquireRoleAssignments', theParentExecutionRecord, False, None, 'element: %s' % ( (theElement and '/'.join( theElement.getPhysicalPath())) or '')) 
 
         try:
-            if not theElement:
+            if ( theElement == None):
                 return theReport
             
             aAcquireRoleAssignments       = self.fAcquireRoleAssignmentsElement( theElement)

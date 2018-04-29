@@ -1,5 +1,5 @@
 <tal:block replace="nothing">
-# File: TRACrear_ContenidoIntercambio.pt
+# File: TRACrear_Idioma.pt
 #
 # Copyright (c) 2008, 2009 by Conselleria de Infraestructuras y Transporte de la
 # Generalidad Valenciana
@@ -40,7 +40,7 @@
         tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas." 
         i18n:domain="gvSIGi18n">
         
-        <tal:block tal:define="pExecutionRecord python: here.fStartExecution( 'template', 'TRACrear_ContenidoIntercambio.pt', None, True, { 'log_what': 'details', 'log_when': True, })" >
+        <tal:block tal:define="pExecutionRecord python: here.fStartExecution( 'template', 'TRACrear_Idioma.pt', None, True, { 'log_what': 'details', 'log_when': True, })" >
     
             <div metal:use-macro="here/document_actions/macros/document_actions">
                 Document actions (print, sendto etc)
@@ -59,9 +59,9 @@
             </tal:block>
             
     
-            <metal:block metal:use-macro="here/TRACrear_ContenidoIntercambio_i18n_view/macros/tTRACrear_ContenidoIntercambio_i18n_view" />
+            <metal:block metal:use-macro="here/TRACrear_Idioma_i18n_view/macros/tTRACrear_Idioma_i18n_view" />
     
-            <metal:block metal:use-macro="here/TRAFooter_i18n_view/macros/tFooter_i18n" />
+            <div tal:replace="structure python: here.ModelDDvlPlone_tool.fRenderTemplate( here, '%sFooter_view' )" />
         
         </tal:block>
  

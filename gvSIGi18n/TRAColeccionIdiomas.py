@@ -32,6 +32,7 @@ __docformat__ = 'plaintext'
 from AccessControl import ClassSecurityInfo
 from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.TRAColeccionArquetipos import TRAColeccionArquetipos
+from Products.gvSIGi18n.TRAColeccionIdiiomas_Operaciones import TRAColeccionIdiiomas_Operaciones
 from Products.gvSIGi18n.config import *
 
 ##code-section module-header #fill in your manual code here
@@ -56,6 +57,7 @@ schema = Schema((
         label='Idiomas',
         description2='Languages to translate the strings into.',
         multiValued=1,
+        factory_views={ 'TRAIdioma' : 'TRACrear_Idioma',},
         owner_class_name="TRAColeccionIdiomas",
         expression="context.objectValues(['TRAIdioma'])",
         computed_types=['TRAIdioma'],
@@ -71,23 +73,24 @@ schema = Schema((
 
 TRAColeccionIdiomas_schema = OrderedBaseFolderSchema.copy() + \
     getattr(TRAColeccionArquetipos, 'schema', Schema(())).copy() + \
+    getattr(TRAColeccionIdiiomas_Operaciones, 'schema', Schema(())).copy() + \
     schema.copy()
 
 ##code-section after-schema #fill in your manual code here
 ##/code-section after-schema
 
-class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos):
+class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccionIdiiomas_Operaciones):
     """
     """
     security = ClassSecurityInfo()
-    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAColeccionArquetipos,'__implements__',()),)
+    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAColeccionArquetipos,'__implements__',()),) + (getattr(TRAColeccionIdiiomas_Operaciones,'__implements__',()),)
 
     # This name appears in the 'add' box
     archetype_name = 'Coleccion de Idiomas'
 
     meta_type = 'TRAColeccionIdiomas'
     portal_type = 'TRAColeccionIdiomas'
-    allowed_content_types = ['TRAIdioma'] + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', []))
+    allowed_content_types = ['TRAIdioma'] + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', [])) + list(getattr(TRAColeccionIdiiomas_Operaciones, 'allowed_content_types', []))
     filter_content_types = 1
     global_allow = 0
     #content_icon = 'TRAColeccionIdiomas.gif'
@@ -99,7 +102,8 @@ class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos):
     archetype_name2 = 'Languages collection'
     typeDescription2 = '''Collection of languages to translate the strings into.'''
     archetype_name_msgid = 'gvSIGi18n_TRAColeccionIdiomas_label'
-    factory_methods = None
+    factory_methods = { 'TRAIdioma' : 'fCrearIdioma',}
+    factory_enablers = { 'TRAIdioma' : 'fUseCaseCheckDoable_CreateTRAIdioma',}
     allow_discussion = False
 
 

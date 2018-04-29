@@ -1,5 +1,5 @@
 <tal:block replace="nothing">
-# File: TRACrear_Idioma_i18n_view.pt
+# File: TRACrear_SolicitudCadena_i18n_view.pt
 # Copyright (c) 2008, 2009 by Conselleria de Infraestructuras y Transporte de la
 # Generalidad Valenciana
 #
@@ -31,29 +31,29 @@
 <body>
 
 
-	<div metal:define-macro="tTRACrear_Idioma_i18n_view" >
+	<div metal:define-macro="tTRACrear_SolicitudCadena_i18n_view" >
 	
 	
 		<metal:block metal:use-macro="here/PerformanceAnalysis/macros/tSetupPerformanceAnalysis" />   
 	
 		
 		<tal:block tal:define="
-				pNewTypeName						request/theNewTypeName        | string:;		
-				pAggregationName					request/theAggregationName    | string:;
-				pNewCodigoIdiomaEnGvSIG				request/theNewCodigoIdiomaEnGvSIG           | string:;
-				pNewCodigoInternacionalDeIdioma		request/theNewCodigoInternacionalDeIdioma   | string:;
-				pNewEnglishName						request/theNewEnglishName                   | string:;
-				pNewNombreNativoDeIdioma			request/theNewNombreNativoDeIdioma                    | string:;
-		 global pMostrarFormulario					python: (not pNewCodigoIdiomaEnGvSIG) or (not pNewEnglishName);
-				pTrue								python: True;
-				pFalse								python: False;
-				pPermissionsCache					python: { };
-				pRolesCache							python: { };
-				pParentExecutionRecord				pExecutionRecord | nothing;">
+				pNewTypeName				request/theNewTypeName        | string:;		
+				pAggregationName			request/theAggregationName    | string:;
+				pNewSymbol				    request/form/theNewSymbol			| python: None;
+				pTranslationIntoMainLanguage		request/form/theTranslationIntoMainLanguage			| python: None;
+				pReferenceLanguage					request/form/theReferenceLanguage					| python: None;
+				pTranslationIntoReferenceLanguage	request/form/theTranslationIntoReferenceLanguage	| python: None;
+		 global pMostrarFormulario			python: (not pNewSymbol) or (not pTranslationIntoMainLanguage) or (not pReferenceLanguage) or (not pTranslationIntoReferenceLanguage);
+				pTrue						python: True;
+				pFalse						python: False;
+				pPermissionsCache			python: { };
+				pRolesCache					python: { };
+				pParentExecutionRecord		pExecutionRecord | nothing;">
 				
 			<tal:block tal:define="
 				pUseCaseAssessmentResult python: here.fUseCaseAssessment( 
-					theUseCaseName          = 'Create_TRAIdioma', 
+					theUseCaseName          = 'Create_TRASolicitudCadena', 
 					theElementsBindings     = { 'object': here,},
 					theRulesToCollect       = None, 
 					thePermissionsCache     = pPermissionsCache, 
@@ -67,12 +67,12 @@
 					<h2 > 
 						<a  href="#" tal:attributes="href python: '%s/Tabular' % here.getCatalogo().absolute_url()" class="state-visible" title="">
 							<font color="Red">                    
-								<span  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearIdioma_action_NoPermissionToCreate_ErrorMsg">You do not have permission to create a new Language-</span>
+								<span  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearSolicitudCadena_action_NoPermissionToCreate_ErrorMsg">You do not have permission to create a new String request-</span>
 							</font>
 						</a>                
 					</h2>      
 				</tal:block>				
-
+	
 				
 				<tal:block tal:condition="pPermiteCrear" >	
 				
@@ -80,15 +80,17 @@
 						<tal:block tal:define="
 							pProfilingResults python: (pPerformanceAnalysis or {}).get( 'profiling_results', None);
 							someAdditionalParams python: {
-								'theCodigoIdiomaEnGvSIG'				:pNewCodigoIdiomaEnGvSIG,  
-								'theCodigoInternacionalDeIdioma'        :pNewCodigoInternacionalDeIdioma,  
-								'theNewNombreNativoDeIdioma'			:pNewNombreNativoDeIdioma,  
+								'theNewSymbol'							:pNewSymbol,  
+								'theTranslationIntoMainLanguage'        :pTranslationIntoMainLanguage,  
+								'theReferenceLanguage'					:pReferenceLanguage,  
+								'theTranslationIntoReferenceLanguage'   :pTranslationIntoReferenceLanguage,  
+								
 							}; 
 							unosArgs python: {
 								'theTimeProfilingResults' :pProfilingResults,
 								'theContainerElement'     :here, 
 								'theTypeName'             :pNewTypeName, 
-								'theTitle'                :pNewEnglishName, 
+								'theTitle'                :'A Sustituir', 
 								'theDescription'          :'',
 								'theAdditionalParams'     :someAdditionalParams,
 								'theAllowFactoryMethods'  :True,};   
@@ -128,7 +130,7 @@
 				
 					
 					<tal:block tal:condition="pMostrarFormulario" >
-						<form name="Crear_TRAIdioma" method="post" enctype="multipart/form-data">
+						<form name="Crear_TRASolicitudCadena" method="post" enctype="multipart/form-data">
 											   
 							<input originalvalue="#" name="theNewTypeName" value="#" type="hidden"
 								tal:attributes="originalvalue python: pNewTypeName;value python: pNewTypeName" />
@@ -136,39 +138,44 @@
 							<input originalvalue="#" name="theAggregationName" value="#" type="hidden"
 								tal:attributes="originalvalue python: pAggregationName;value python: pAggregationName" />
 								
-							<h3  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearIdioma_action_page_title">Create New Language-</h3>
+							<h3  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearSolicitudCadena_action_page_title">Create New String Request-</h3>
 							<br/>
-							<p class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearIdioma_action_page_help">Enter the language code and name of the language in english. Optionally enter the international code (if different) and the native language name.-</p>
+							<p class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearSolicitudCadena_action_page_help">Enter the requested String symbol, and its translation to the main and reference languages.-</p>
 							<br/>			    
 		
-							<p><strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAIdioma_attr_codigoIdiomaEnGvSIG_label">Language code in gvSIG-</strong></p>
-							<p  class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAIdioma_attr_codigoIdiomaEnGvSIG_help">Language code in gvSIG, as gvSIG supports some languages for which there is no international code (yet).-</p>
-							<input name="theNewCodigoIdiomaEnGvSIG" id="theNewCodigoIdiomaEnGvSIG" type="text" size="10" maxlength="10" tabindex="1"
-								value="" tal:attributes="value pNewCodigoIdiomaEnGvSIG"/> 					
+							<p><strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearSolicitudCadena_NewRequestedStringSymbol_label">New Requested String Symbol-</strong></p>
+							<p  class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearSolicitudCadena_NewRequestedStringSymbol_help">Symbol for the requested new string. It must be unique and not already existing in the translations catalog, and not recently requested to be added.-</p>
+							<input name="theNewSymbol" id="theNewSymbol" tabindex="1"
+								value="#" tal:attributes="value pNewSymbol" /> 					
 							<br/>			    
 		
-							<p><strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAIdioma_attr_codigoInternacionalDeIdioma_label">International language code-</strong></p>
-							<p  class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAIdioma_attr_codigoInternacionalDeIdioma_help">Standard international language code,according to I18N conventions.-</p>
-							<input name="theCodigoInternacionalDeIdioma" id="theCodigoInternacionalDeIdioma" type="text" size="10" maxlength="10"  tabindex="2" 
-								value="" tal:attributes="value pNewCodigoInternacionalDeIdioma"/> 					
+							<p><strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearSolicitudCadena_MainLanguage_label">Main Language-</strong></p>
+							<p  class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearSolicitudCadena_MainLanguage_help">Enter a translation of the new requested string symbol, into the specified main language.-</p>
+							<input name="theMainLanguage" id="theMainLanguage"  tabindex="2" 
+								value="#" tal:attributes="value pMainLanguage" /> 					
 							<br/>			    
 							
-							<p><strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAIdioma_attr_nombreEnInglesDeIdioma_label">English name-</strong></p>
-							<p  class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAIdioma_attr_nombreEnInglesDeIdioma_help">Nombre del idioma, expresado en idioma ingles.-</p>
-							<input name="theNewEnglishName" id="theNewEnglishName" size="32" maxlength="80" tabindex="3" 
-								value="" tal:attributes="value pNewEnglishName"/> 					
+							<p><strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearSolicitudCadena_TranslationIntoMainLanguage_label">Translation into the Main Language-</strong></p>
+							<input name="theTranslationIntoMainLanguage" id="theTranslationIntoMainLanguage" type="text" size="60" maxlength="200"  tabindex="3"
+								value="#" tal:attributes="value pTranslationIntoMainLanguage" /> 					
 							<br/>			    
 							
-							<p><strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAIdioma_attr_nombreNativoDeIdioma_label">Native language name-</strong></p>
-							<p  class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_TRAIdioma_attr_nombreNativoDeIdioma_help">Language name expressed in the native language-</p>
-							<input name="theNewNombreNativoDeIdioma" id="theNewNombreNativoDeIdioma" size="32" maxlength="80" tabindex="4" 
-								value="" tal:attributes="value pNewNombreNativoDeIdioma"/> 					
+							<p><strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearSolicitudCadena_ReferenceLanguage_label">Reference Language-</strong></p>
+							<p  class="formHelp" i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearSolicitudCadena_ReferenceLanguage_help">Enter a translation of the new requested string symbol, into the specified reference language.-</p>
+							<input name="theReferenceLanguage" id="theReferenceLanguage" tabindex="4"
+								value="#" tal:attributes="value pReferenceLanguage" /> 					
 							<br/>			    
-									
+							
+							<p><strong  i18n:domain="gvSIGi18n" i18n:translate="gvSIGi18n_crearSolicitudCadena_TranslationIntoReferenceLanguage_label">Translation into the Reference Language-</strong></p>
+							<input name="theTranslationIntoReferenceLanguage" id="theTranslationIntoReferenceLanguage" type="text" size="60" maxlength="200"  tabindex="5"
+								value="#" tal:attributes="value pTranslationIntoReferenceLanguage" /> 					
+							<br/>			    
+		
 							<br/>
 							<br/>
 		
-							<input class="context" name="form_submit"  type="submit"  value="Save" tabindex="5" i18n:domain="plone" i18n:attributes="value label_save" />                                                        
+								
+							<input class="context" name="form_submit"  type="submit"  value="Save" tabindex="6" i18n:domain="plone" i18n:attributes="value label_save" />                                                        
 						</form>
 					</tal:block>				
 				</tal:block>

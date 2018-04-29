@@ -520,10 +520,7 @@ class TRACatalogo_Operaciones:
     
     
     
-    
-
-
-        
+         
         
 
     security.declareProtected( permissions.View, 'fTodosIdiomasVocabulary')
@@ -565,6 +562,44 @@ class TRACatalogo_Operaciones:
     
          
        
+    
+    
+    security.declareProtected( permissions.View, 'fKnownIdiomasCodesAndDisplayNames')
+    def fKnownIdiomasCodesAndDisplayNames(self,):
+ 
+        unosCodesAndDisplayNames = []
+        
+        unosLanguagesNamesAndFlagsPorCodigo = self.fLanguagesNamesAndFlagsPorCodigo()
+        unosCodigosIdioma = sorted( unosLanguagesNamesAndFlagsPorCodigo.keys())
+
+        for unCodigoIdioma in unosCodigosIdioma:
+            unosDatosIdioma = unosLanguagesNamesAndFlagsPorCodigo.get( unCodigoIdioma, {})
+            if unosDatosIdioma:
+                unNombreInglesDeIdioma = unosDatosIdioma.get( 'english', '')
+                unNombreNativoDeIdioma = unosDatosIdioma.get( 'native', unNombreInglesDeIdioma)
+                if unNombreInglesDeIdioma:
+                    unosCodesAndDisplayNames.append( [ 
+                        self.fAsUnicode( unCodigoIdioma),
+                        u'[%s] %s (%s)' % ( self.fAsUnicode( unCodigoIdioma),self.fAsUnicode( unNombreInglesDeIdioma), self.fAsUnicode( unNombreNativoDeIdioma), ),
+                    ])
+    
+        return unosCodesAndDisplayNames
+   
+    
+    
+    
+    security.declareProtected( permissions.View, 'fNonExistingKnownIdiomasCodesAndDisplayNames')
+    def fNonExistingKnownIdiomasCodesAndDisplayNames(self,):
+        unosCodesAndDisplayNames =  self.fKnownIdiomasCodesAndDisplayNames()
+        if not unosCodesAndDisplayNames:
+            return unosCodesAndDisplayNames
+        
+        unosIdiomas = self.fObtenerTodosIdiomas()
+        unosCodigosIdioma = [ unIdioma.getcodigoIdiomiaEnGvSIG() for unIdioma in unosIdiomas]
+        
+        unosNonExistingCodesAndDisplayNames = [ [ unCode, unDisplayName] for unCode, unDisplayname in unosCodesAndDisplayNames if not ( unCode in unosCodigosIdioma)]
+        return unosNonExistingCodesAndDisplayNames
+        
     
     
     security.declareProtected( permissions.View, 'fGetIdiomaPorCodigo')

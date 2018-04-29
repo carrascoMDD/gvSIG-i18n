@@ -95,6 +95,7 @@ def initialize(context):
     import TRAColeccionSolicitudesCadenas
     import TRAElemento
     import TRAElemento_Constants
+    import TRAColeccionSolicitudesCadenas_Operaciones
     import TRAElemento_Operaciones
     import TRACatalogo
     import TRAColeccionIdiomas
@@ -112,6 +113,7 @@ def initialize(context):
     import TRACatalogo_Eliminacion
     import TRATraduccion_Operaciones
     import TRAColeccionModulos
+    import TRAColeccionIdiiomas_Operaciones
     import TRATraduccion
     import TRAInforme_Operaciones
     import TRACadena_Operaciones

@@ -102,6 +102,7 @@ class TRAColeccionCadenas(BaseBTreeFolder, TRAColeccionArquetipos):
     typeDescription2 = '''Collection of strings to translate to a number of languages.'''
     archetype_name_msgid = 'gvSIGi18n_TRAColeccionCadenas_label'
     factory_methods = None
+    factory_enablers = None
     allow_discussion = False
 
 

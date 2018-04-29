@@ -509,7 +509,7 @@ class TRAElemento_Permissions:
     def fAcquireRoleAssignmentsElement(self, theElement=None):
 
         unElement = theElement
-        if not fsISS( unElement):
+        if unElement == None:
             unElement = self
 
         unType = unElement.__class__.__name__
@@ -537,7 +537,7 @@ class TRAElemento_Permissions:
     def fIsAcquiringRoleAssignments(self, theElement=None):
             
         unElement = theElement
-        if not fsISS( unElement):
+        if  unElement == None:
             unElement = self
             
         aPloneUtilsTool = self.getPloneUtilsToolForRoleAcquisition()
@@ -551,7 +551,7 @@ class TRAElemento_Permissions:
     def fSetAcquiringRoleAssignments(self, theElement=None, theMustAcquire=True):
             
         unElement = theElement
-        if not fsISS( unElement):
+        if  unElement == None:
             unElement = self
             
         aPloneUtilsTool = self.getPloneUtilsToolForRoleAcquisition()

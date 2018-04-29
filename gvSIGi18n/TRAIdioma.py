@@ -103,18 +103,47 @@ schema = Schema((
     ),
 
     StringField(
+        name='nombreEnInglesDeIdioma',
+        widget=StringWidget(
+            label="Nombre en ingles",
+            label2="English name",
+            description="Nombre del idioma, expresado en idioma ingles.",
+            description2="Language name, expressed in english language.",
+            label_msgid='gvSIGi18n_TRAIdioma_attr_nombreEnInglesDeIdioma_label',
+            description_msgid='gvSIGi18n_TRAIdioma_attr_nombreEnInglesDeIdioma_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        scale="0",
+        description="Nombre del idioma, expresado en idioma ingles.",
+        duplicates="0",
+        label2="English name",
+        ea_localid="1531",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        length="0",
+        description2="Language name, expressed in english language.",
+        containment="Not Specified",
+        ea_guid="{B6FA4A49-ABED-41d7-B35E-4031AD105F59}",
+        position="3",
+        owner_class_name="TRAIdioma",
+        label="Nombre en ingles"
+    ),
+
+    StringField(
         name='nombreNativoDeIdioma',
         widget=StringWidget(
             label="Nombre propio del idioma",
             label2="Native language name",
-            description="Nombre del idioma expresado en el mismo idioma.",
-            description2="Language name express in the same language.",
+            description="Nombre del idioma expresado en su idioma.",
+            description2="Language name expressed in the native language.",
             label_msgid='gvSIGi18n_TRAIdioma_attr_nombreNativoDeIdioma_label',
             description_msgid='gvSIGi18n_TRAIdioma_attr_nombreNativoDeIdioma_help',
             i18n_domain='gvSIGi18n',
         ),
         scale="0",
-        description="Nombre del idioma expresado en el mismo idioma.",
+        description="Nombre del idioma expresado en su idioma.",
         duplicates="0",
         label2="Native language name",
         ea_localid="1163",
@@ -123,7 +152,7 @@ schema = Schema((
         collection="false",
         styleex="volatile=0;",
         length="0",
-        description2="Language name express in the same language.",
+        description2="Language name expressed in the native language.",
         containment="Not Specified",
         ea_guid="{27989BCF-643E-4730-87F2-939F42EA6F38}",
         position="4",
@@ -158,7 +187,7 @@ schema = Schema((
         label="Codigo de Idioma de referencia",
         length="0",
         containment="Not Specified",
-        position="3",
+        position="12",
         owner_class_name="TRAIdioma"
     ),
 
@@ -619,6 +648,7 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones):
     typeDescription2 = '''One of the languages to translate the strings into.'''
     archetype_name_msgid = 'gvSIGi18n_TRAIdioma_label'
     factory_methods = None
+    factory_enablers = None
     allow_discussion = False
 
 

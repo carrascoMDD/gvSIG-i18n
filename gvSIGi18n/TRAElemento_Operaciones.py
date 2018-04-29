@@ -1122,9 +1122,12 @@ class TRAElemento_Operaciones( TRAElemento_Permissions):
         elif self.__class__.__name__ == 'TRATraduccion':
             pass
         
-        elif self.__class__.__name__ in [ 'TRAColeccionCadenas', 'TRAColeccionSolicitudesCadenas', ]:
+        elif self.__class__.__name__ == 'TRAColeccionCadenas':
             BaseBTreeFolder.manage_afterAdd(  self, theItem, theContainer)
         
+        #elif self.__class__.__name__ == 'TRAColeccionSolicitudesCadenas':
+            #BaseBTreeFolder.manage_afterAdd(  self, theItem, theContainer)
+
         else:
             OrderedBaseFolder.manage_afterAdd(  self, theItem, theContainer)
         

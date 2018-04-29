@@ -517,6 +517,7 @@ class TRAInforme(OrderedBaseFolder, TRAArquetipo, TRAInforme_Operaciones):
     typeDescription2 = '''Status at the Report time, of Translations to  Languages.'''
     archetype_name_msgid = 'gvSIGi18n_TRAInforme_label'
     factory_methods = None
+    factory_enablers = None
     allow_discussion = False
 
 

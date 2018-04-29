@@ -70,15 +70,13 @@ from Products.Archetypes.utils import getRelURL
 from Products.ModelDDvlPloneTool.ModelDDvlPloneTool import ModelDDvlPloneTool
 
 
-from TRAElemento_Permissions import cBoundObject
-
-
 
 from TRAElemento_Constants import *
 
 from TRAImportarExportar_Constants import *
 
-from TRAElemento_Permission_Definitions import cUseCase_CreateTRAContenidoIntercambio, cUseCase_ImportTRAImportacion, cUseCase_CreateMissingTRATraduccion
+from TRAElemento_Permission_Definitions import cUseCase_CreateTRAContenidoIntercambio, cUseCase_DeleteTRAContenidoIntercambio
+from TRAElemento_Permission_Definitions import cUseCase_ImportTRAImportacion, cUseCase_CreateMissingTRATraduccion
 from TRAElemento_Permission_Definitions import cBoundObject
 
 
@@ -408,6 +406,8 @@ class TRAImportacion_Operaciones:
                 unosClavesYContenidosParaOrdenar = [ [ '%s|||%s' % ( unUploadedContent.get( 'module', ''), '|'.join( sorted( unUploadedContent.get('languages',[]))), ), unUploadedContent] for unUploadedContent in unosContenidos]
                 unosClavesYContenidosOrdenados = sorted( unosClavesYContenidosParaOrdenar, lambda unC, otroC : cmp( unC[ 0] , otroC[ 0]) )
                 
+                aPloneUtilsTool = self.getPloneUtilsToolForNormalizeString()  
+                
                 for unaClavesYUploadedContent in unosClavesYContenidosOrdenados:  
                     
                     unUploadedContent = unaClavesYUploadedContent[ 1]
@@ -442,7 +442,6 @@ class TRAImportacion_Operaciones:
                         someIds = [ unContInter.getId() for unContInter in someContenidosIntercambio]
                         
    
-                        aPloneUtilsTool = self.getPloneUtilsToolForNormalizeString()  
                         
                                  
                         unTitle = unBaseTitle
@@ -566,9 +565,9 @@ class TRAImportacion_Operaciones:
             unRolesCache       = (( theRolesCache == None) and { }) or theRolesCache
                 
             unUseCaseQueryResult = theUseCaseQueryResult
-            if not theUseCaseQueryResult or not ( theUseCaseQueryResult.get( 'use_case_name', '') == cUseCase_ImportTRAImportacion):
+            if not theUseCaseQueryResult or not ( theUseCaseQueryResult.get( 'use_case_name', '') == cUseCase_DeleteTRAContenidoIntercambio):
                 unUseCaseQueryResult = self.fUseCaseAssessment(  
-                    theUseCaseName          = cUseCase_ImportTRAImportacion,             
+                    theUseCaseName          = cUseCase_DeleteTRAContenidoIntercambio,             
                     theElementsBindings     = { cBoundObject: self,},                    
                     theRulesToCollect       = None,                                      
                     thePermissionsCache     = unPermissionsCache,    

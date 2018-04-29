@@ -435,6 +435,7 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones)
     typeDescription2 = '''A request to create a new string to translate, identified by a string symbol, and optionally with translations into the main and reference language'''
     archetype_name_msgid = 'gvSIGi18n_TRASolicitudCadena_label'
     factory_methods = None
+    factory_enablers = None
     allow_discussion = 0
 
 

@@ -777,6 +777,7 @@ def TRAChangeAndBrowseTranslations(
         if not pBrowseTranslationsUseCaseQueryResult or not pBrowseTranslationsUseCaseQueryResult[ 'success']:
             return pEmptyPageContents( theCatalogo,  mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_AccessFailedAndPromptYouHavePermission_label',   \
                 'Access to the translations catalog failed.\nDo you have permission ?\nIf so, you may want to login first.-' ),
+                '',
                 aTranslationsCache
             )
     
@@ -794,6 +795,7 @@ def TRAChangeAndBrowseTranslations(
         if not unosIdiomasAccesibles:
             return pEmptyPageContents( theCatalogo,  mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_NoAccessibleLanguages_label', \
                 'There are no languages available or accessible.-\nDo you have permission ?\nIf so, you may want to login first.-' ),
+                '',
                 aTranslationsCache
             )
                
@@ -814,6 +816,7 @@ def TRAChangeAndBrowseTranslations(
                     mfTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_LanguageNotAccessible_label', \
                         'You are not allowed to access the selected language.-\nDo you have permission ?\nIf so, you may want to login first.-' ),
                 ),
+                '',
                 aTranslationsCache
             )
         

@@ -326,12 +326,13 @@ class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAContenidoInter
     immediate_view = 'Tabular'
     default_view = 'Tabular'
     suppl_views = ['Tabular',]
-    typeDescription = "Contenido de un intercambio, bien Importacion o Exportacion, de traducciones de cadenas a uno o mas idiomas."
+    typeDescription = "Contenido de un intercambio de Importacion de traducciones de cadenas a uno o mas idiomas."
     typeDescMsgId =  'gvSIGi18n_TRAContenidoIntercambio_help'
     archetype_name2 = 'Interchange Content'
-    typeDescription2 = '''Contents of an Import or Export interchange of string translations to a number od languages'''
+    typeDescription2 = '''Contents of an Import interchange of string translations to a number od languages'''
     archetype_name_msgid = 'gvSIGi18n_TRAContenidoIntercambio_label'
     factory_methods = None
+    factory_enablers = None
     allow_discussion = False
 
 

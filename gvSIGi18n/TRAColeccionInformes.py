@@ -102,6 +102,7 @@ class TRAColeccionInformes(OrderedBaseFolder, TRAColeccionArquetipos):
     typeDescription2 = '''Collection of Status Reports of Translations to  Languages and Modules'''
     archetype_name_msgid = 'gvSIGi18n_TRAColeccionInformes_label'
     factory_methods = None
+    factory_enablers = None
     allow_discussion = False
 
 
