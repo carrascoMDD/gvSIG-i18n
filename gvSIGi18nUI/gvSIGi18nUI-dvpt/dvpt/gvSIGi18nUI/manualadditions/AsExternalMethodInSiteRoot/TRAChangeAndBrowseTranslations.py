@@ -206,6 +206,7 @@ cLanguageSizes = {
     'ks':       { 'display_font_size': 4, 'edit_font_size': 28, 'filter_field_size': 10, 'edit_chars_divider': 4, 'edit_chars_perline': 20, 'edit_line_height': 50, },                            
     'fa':       { 'display_font_size': 3, 'edit_font_size': 20, 'filter_field_size': 30, 'edit_chars_divider': 2, 'edit_chars_perline': 30, 'edit_line_height': 40, },
     'zh':       { 'display_font_size': 4, 'edit_font_size': 28, 'filter_field_size': 10, 'edit_chars_divider': 4, 'edit_chars_perline': 20, 'edit_line_height': 50, },                            
+    'km':       { 'display_font_size': 5, 'edit_font_size': 32, 'filter_field_size': 20, 'edit_chars_divider': 4, 'edit_chars_perline': 20, 'edit_line_height': 40, },                            
 }                          
 
 

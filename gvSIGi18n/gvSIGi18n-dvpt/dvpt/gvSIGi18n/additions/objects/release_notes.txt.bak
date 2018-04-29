@@ -1,12 +1,24 @@
 gvSIG-i18n RELEASE NOTES
 ========================
+version 2.1.8
+
+Extension: Added support for language Cambodian Khmer km to UI application gvSIGi18nUI, to ExtMethod TRASizesIdioma in  TRAChangeAndBrowseTranslations.py, constant values to support special font sizes .
+Known Bug (not fixed yet): Export translations fails because the exported file can not be written to disk, because of permissions of the containing folder.
+
+
+|
+|
+
+------------------------------------------------
+
+
 version 2.1.7
 
 Fixed Bug:   Module C:\dvpt\Plone251\Data\Extensions\TRAChangeAndBrowseTranslations.py, line 935, in TRAChangeAndBrowseTranslations TypeError: _pEmptyPageContents() got multiple values for keyword argument 'unContextualObject'
 Credits:     Set technical coordinator name to J.J. del Cerro. Added the role and name for the Technical Coordinator at project launch to Luis W. Sevilla. 
 Fixed Bug : Wrong Permissions assignment to roles, and Permissions acquisitions from parents, in elements of type TRAImportacion, TRAContenidoIntercambio, and TRASolicitudCadena.
    Because creation of these elements is invoked through ModelDDvlPloneTool machinery, the elements first initialize properly their permissions with gvSIGi18n application specific code while processing the created event, but later the permissions are set as ModelDDvlPloneTool defaults.
-   ModelDDvlPloneTool is Extended with machinery to attempt to delegate in the elements permission initialization if such exist, as identified by the result of invoking method fMethodNameSetPermissions on the element, and only initialize the elements permissions with ModelDDvlPloneTool defaults when the element does not expose permissions initialization method.
+   ModelDDvlPloneTool is Extended with machinery to try and delegate in the elements permission initialization if such exist, as identified by the result of invoking method fMethodNameSetPermissions on the element, and only initialize the elements permissions with ModelDDvlPloneTool defaults when the element does not expose permissions initialization method.
 
 
 

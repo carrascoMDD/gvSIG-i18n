@@ -46,6 +46,12 @@ from TRAElemento_Constants_Languages       import *
 
 
 
+
+
+
+
+
+
 cManifestFolderName         = 'META-INF'
 cManifestFileName           = 'MANIFEST.MF'
 
@@ -87,11 +93,15 @@ cTRAReferenceLanguageCodesForLanguages = {
 """
 cTRAExportedFilesFolderName = 'tra_exports'
 
-cTRAExportedFiles_FolderCreateMode_RootUID   = 077
+cTRAExportedFiles_FolderCreateMode_Store     = 0777
+cTRAExportedFiles_FolderCreateMode_RootUID   = 0777
 cTRAExportedFiles_FileOpenReadMode           = 'rb'
 cTRAExportedFiles_FileOpenReadBuffering      = 0
 cTRAExportedFiles_FileOpenWriteMode          = 'wb'
 cTRAExportedFiles_FileOpenWriteBuffering     = 0
+
+
+
 
 
 cMinWaitBetweenTransactions = 0.1 # seconds

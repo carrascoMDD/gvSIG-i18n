@@ -1,5 +1,18 @@
 gvSIG-i18n RELEASE NOTES
 ========================
+version 2.1.8
+
+Extension: Added support for language Cambodian Khmer km to UI application gvSIGi18nUI, to ExtMethod TRASizesIdioma in  TRAChangeAndBrowseTranslations.py, constant values to support special font sizes .
+
+Known Bug (not fixed yet): Export translations fails because the exported file can not be written to disk, because of permissions of the containing folder.
+
+
+|
+|
+
+------------------------------------------------
+
+
 version 2.1.7
 
 Fixed Bug:   Module C:\dvpt\Plone251\Data\Extensions\TRAChangeAndBrowseTranslations.py, line 935, in TRAChangeAndBrowseTranslations TypeError: _pEmptyPageContents() got multiple values for keyword argument 'unContextualObject'

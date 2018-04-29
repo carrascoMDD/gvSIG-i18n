@@ -1411,7 +1411,7 @@ class TRACatalogo_Exportacion( TRACatalogo_Exportacion_GNUgettextPO, TRACatalogo
             None
         if not aExportedFilesPathExist:
             try:
-                os.makedirs( aExportedFilesPath)
+                os.makedirs( aExportedFilesPath, cTRAExportedFiles_FolderCreateMode_Store)
             except:
                 None
             try:
