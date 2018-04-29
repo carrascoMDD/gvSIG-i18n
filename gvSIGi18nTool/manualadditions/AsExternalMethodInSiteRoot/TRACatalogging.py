@@ -53,6 +53,47 @@ cTRACataloggingAction_UnCatalog = 'UnCatalog'
 cTRACataloggingActions = [ cTRACataloggingAction_DoCatalog, cTRACataloggingAction_UnCatalog,]
 
 
+_cBPDTodosNombresTiposEnPortalCatalog = [
+    "BPDArtefacto",
+    "BPDCaracteristica",
+    "BPDColeccionArtefactos",
+    "BPDColeccionEntradas",
+    "BPDColeccionHerramientas",
+    "BPDColeccionPasos",
+    "BPDColeccionPerfiles",
+    "BPDColeccionPoliticasDeNegocio",
+    "BPDColeccionProcesosDeNegocio",
+    "BPDColeccionReglasDeNegocio",
+    "BPDColeccionSalidas",
+    "BPDColeccionUnidadesOrganizacionales",
+    "BPDDecision",
+    "BPDEntrada",
+    "BPDEnvio",
+    "BPDExitoFinal",
+    "BPDExtensionProceso",
+    "BPDFracasoFinal",
+    "BPDHerramienta",
+    "BPDOrganizacion",
+    "BPDPasoGestorExcepciones",
+    "BPDPasoSimple",
+    "BPDPerfil",
+    "BPDPlazo",
+    "BPDPoliticaDeNegocio",
+    "BPDProcesoDeNegocioSimple",
+    "BPDPuntoExtension",
+    "BPDRecepcion",
+    "BPDReferenciaCualificada",
+    "BPDReglaDeNegocio",
+    "BPDSalida",
+    "BPDSubProceso",
+    "BPDUnidadOrganizacional",
+    "BPDUsoArtefacto",
+    "BPDUsoCaracteristica",
+]
+
+
+
+
 _cTRATodosNombresTiposEnPortalCatalog = [
     "ZCatalog",
     "TRACatalogo",                       
@@ -90,7 +131,11 @@ _cTRATodosNombresTiposEnPortalCatalog = [
 
 
 
-_cTRATodosNombresTiposEnPortalCatalog_ChildrenExcluidos = [
+_cTodosNombresTiposEnPortalCatalog = _cTRATodosNombresTiposEnPortalCatalog+ _cBPDTodosNombresTiposEnPortalCatalog
+
+
+
+_cTodosNombresTiposEnPortalCatalog_ChildrenExcluidos = [
     "TRAColeccionCadenas",               
 ]
 
@@ -183,8 +228,8 @@ def TRACatalogging(
     
     aTypesEnCataloggingReport = _fNewVoidTypesEnCataloggingReport()
     aTypesEnCataloggingReport.update( {
-        'types_in_portal_catalog':  sorted( ( _cTRATodosNombresTiposEnPortalCatalog               and _cTRATodosNombresTiposEnPortalCatalog[:])               or []),
-        'types_in_portal_catalog_children_excluded':    sorted( ( _cTRATodosNombresTiposEnPortalCatalog_ChildrenExcluidos and _cTRATodosNombresTiposEnPortalCatalog_ChildrenExcluidos[:]) or []),
+        'types_in_portal_catalog':  sorted( ( _cTodosNombresTiposEnPortalCatalog               and _cTodosNombresTiposEnPortalCatalog[:])               or []),
+        'types_in_portal_catalog_children_excluded':    sorted( ( _cTodosNombresTiposEnPortalCatalog_ChildrenExcluidos and _cTodosNombresTiposEnPortalCatalog_ChildrenExcluidos[:]) or []),
         'types_not_en_uid_catalog': sorted( ( _cTRATodosNombresTiposNOEnUIDCatalog                and _cTRATodosNombresTiposNOEnUIDCatalog[:])                or []),     
     })
     aCataloggingReport[ 'types_in_portal_catalog_reports'] = aTypesEnCataloggingReport
@@ -372,11 +417,11 @@ def _TRACatalogging_recursive(
     if not aMetaType:
         return None
     
-    if not ( aMetaType in _cTRATodosNombresTiposEnPortalCatalog):
+    if not ( aMetaType in _cTodosNombresTiposEnPortalCatalog):
         return None
     
         
-    if not( aMetaType in _cTRATodosNombresTiposEnPortalCatalog_ChildrenExcluidos):
+    if not( aMetaType in _cTodosNombresTiposEnPortalCatalog_ChildrenExcluidos):
         
         someContentElements = theInitialElement.objectValues()
         if someContentElements:

@@ -922,7 +922,7 @@ def TRAChangeAndBrowseTranslations(
                     aTranslationsCache      =aTranslationsCache,                                                                                                                                     
                 )
             else:
-                return _pEmptyPageContents( theCatalogo,  
+                return _pEmptyPageContents( 
                     unContextualObject      =theCatalogo,                                                                                                                          
                     unHeader                =aTranslationsCache[ 'gvSIGi18n_BrowseTranslationsFailure_Condition_msg'], 
                     unMessage               =mfTranslateI18N( 'gvSIGi18n', pBrowseCondition, pBrowseCondition + '-' ),                                                                                                               

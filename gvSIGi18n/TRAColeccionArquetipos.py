@@ -202,6 +202,13 @@ class TRAColeccionArquetipos(TRAElemento):
 
     # Methods
 
+    security.declarePublic('fMethodNameSetPermissions')
+    def fMethodNameSetPermissions(self):
+        """
+        """
+        
+        return 'pSetPermissions'
+
     security.declarePublic('fAllowExport')
     def fAllowExport(self):
         """

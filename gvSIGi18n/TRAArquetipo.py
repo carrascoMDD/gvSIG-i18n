@@ -184,6 +184,13 @@ class TRAArquetipo(TRAElemento):
 
     # Methods
 
+    security.declarePublic('fMethodNameSetPermissions')
+    def fMethodNameSetPermissions(self):
+        """
+        """
+        
+        return 'pSetPermissions'
+
     security.declarePublic('cb_isCopyable')
     def cb_isCopyable(self):
         """

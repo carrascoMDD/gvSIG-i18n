@@ -1,11 +1,26 @@
 gvSIG-i18n RELEASE NOTES
 ========================
+version 2.1.7
+
+Fixed Bug:   Module C:\dvpt\Plone251\Data\Extensions\TRAChangeAndBrowseTranslations.py, line 935, in TRAChangeAndBrowseTranslations TypeError: _pEmptyPageContents() got multiple values for keyword argument 'unContextualObject'
+Credits:     Set technical coordinator name to J.J. del Cerro. Added the role and name for the Technical Coordinator at project launch to Luis W. Sevilla. 
+Fixed Bug : Wrong Permissions assignment to roles, and Permissions acquisitions from parents, in elements of type TRAImportacion, TRAContenidoIntercambio, and TRASolicitudCadena.
+   Because creation of these elements is invoked through ModelDDvlPloneTool machinery, the elements first initialize properly their permissions with gvSIGi18n application specific code while processing the created event, but later the permissions are set as ModelDDvlPloneTool defaults.
+   ModelDDvlPloneTool is Extended with machinery to attempt to delegate in the elements permission initialization if such exist, as identified by the result of invoking method fMethodNameSetPermissions on the element, and only initialize the elements permissions with ModelDDvlPloneTool defaults when the element does not expose permissions initialization method.
+
+
+
+|
+|
+
+------------------------------------------------
 
 version 2.1.6
 
 Change:    Users with TRAVisitor role are now permitted to execute use cases to ellaborate activity report, status summary by languages, and status report by modules and languages.
 Extension: External method TRAUncatalog and page template TRAUncatalogLauncher now renamed to TRACatalogging and TRACataloggingLauncher, and extended to service both re-catalogging and un-catalogging elements from portal_catalog and uid_catalog.
 Fixed Bug: Added TRAColeccionContribuciones and TRAContribuciones to the list of type names that must acquire role assignements from the container element. Previously, only managers and owners could access elements of these types, because member or anonymous users did not acquire roles, thus had no permissions on these elements.
+
 |
 |
 

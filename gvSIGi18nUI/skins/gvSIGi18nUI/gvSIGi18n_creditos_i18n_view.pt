@@ -280,6 +280,13 @@
                             &ensp;
                             <span class="TRAsytle_Credits_PropertyValue_Highlight_Span" tal:content="pName" />                
                         </p>
+                        <p class="TRAsytle_Credits_PropertyName_Paragraph" tal:define="
+                            pTitle python: pCredits.get( 'gvSIGi18n_credits_SponsorProjectTitle_CoordinadorTecnicoAtProjectLaunch_Title');
+                            pName  python: pCredits.get( 'gvSIGi18n_credits_SponsorProjectTitle_CoordinadorTecnicoAtProjectLaunch_Name')">
+                            <span class="TRAsytle_Credits_PropertyValue_Span" tal:content="pTitle" />                
+                            &ensp;
+                            <span class="TRAsytle_Credits_PropertyValue_Highlight_Span" tal:content="pName" />                
+                        </p>
                         <p class="TRAsytle_Credits_PropertyName_Paragraph">
                             <span class="TRAsytle_Credits_PropertyValue_Description_Span">
                                 <tal:block tal:content="python: pCredits.get( 'gvSIGi18n_credits_SponsorProjectTitle_Description_PropertyValue')" />                
