@@ -136,7 +136,7 @@
             pEncodingErrorHandleModeVocabularyMsgIds    python: pExport_ReviewParameters_Parameters_output.get( 'theEncodingErrorHandleMode_vocabulary_msgids',   []);
             " >
       
-            <form  method="POST" id="cid_TRAExportar_form" action="#" tal:attributes="action python: '%s/TRAExportar' % here.absolute_url()"
+            <form  method="POST" id="cid_TRAExportar_form" action="#" tal:attributes="action python: '%s/TRAExportar/' % here.absolute_url()"
                 tal:define="
                     pCodigosIdioma python: [ unInformeIdioma.get( 'codigoIdiomaEnGvSIG', '') for unInformeIdioma in pInformesIdiomas];
                     pHayCodigosIdiomasInternacionalesDistintosCodigoEnGvSIG python: len( [ unInformeIdioma for unInformeIdioma in  pInformesIdiomas if not ( unInformeIdioma.get( 'codigoIdiomaEnGvSIG', '') == unInformeIdioma.get( 'codigoInternacionalDeIdioma', unInformeIdioma.get( 'codigoIdiomaEnGvSIG', '')))]) > 0;
@@ -555,7 +555,7 @@
         tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_cancelarExportacionYVolverACatalogo_msgid',   'Cancel Export-' )"
         tal:attributes="
             title aLinkTitle;
-            href python: '%s' % here.absolute_url()">
+            href python: '%s/' % here.absolute_url()">
         <font size="3">
               <strong>
                   <span tal:content="aLinkTitle" />
@@ -572,7 +572,7 @@
         tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_valoresPorDefectoExportacion_msgid',   'Default export configuration-' )"
         tal:attributes="
             title aLinkTitle;
-            href python: '%s/TRAExportar' % here.absolute_url()">
+            href python: '%s/TRAExportar/' % here.absolute_url()">
         <font size="3">
               <strong>
                   <span tal:content="aLinkTitle" />

@@ -33,6 +33,7 @@ from AccessControl import ClassSecurityInfo
 from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.TRAElemento_MappingConfig import TRAElemento_MappingConfig
 from Products.gvSIGi18n.TRAElemento_ExportConfig import TRAElemento_ExportConfig
+from TRAElemento_Credits import TRAElemento_Credits
 from Products.gvSIGi18n.TRAElemento_CopyConfig import TRAElemento_CopyConfig
 from TRAElemento_Meta import TRAElemento_Meta
 from TRAElemento_TraversalConfig import TRAElemento_TraversalConfig
@@ -44,8 +45,8 @@ from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
 from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import ReferenceBrowserWidget
-from Products.CMFCore.utils  import getToolByName
 from Acquisition  import aq_inner, aq_parent
+from Products.CMFCore.utils  import getToolByName
 
 ##code-section module-header #fill in your manual code here
 ##/code-section module-header
@@ -209,6 +210,7 @@ schema = Schema((
 
 TRAElemento_schema = getattr(TRAElemento_MappingConfig, 'schema', Schema(())).copy() + \
     getattr(TRAElemento_ExportConfig, 'schema', Schema(())).copy() + \
+    getattr(TRAElemento_Credits, 'schema', Schema(())).copy() + \
     getattr(TRAElemento_CopyConfig, 'schema', Schema(())).copy() + \
     getattr(TRAElemento_Meta, 'schema', Schema(())).copy() + \
     getattr(TRAElemento_TraversalConfig, 'schema', Schema(())).copy() + \
@@ -219,13 +221,13 @@ TRAElemento_schema = getattr(TRAElemento_MappingConfig, 'schema', Schema(())).co
 ##code-section after-schema #fill in your manual code here
 ##/code-section after-schema
 
-class TRAElemento(TRAElemento_MappingConfig, TRAElemento_ExportConfig, TRAElemento_CopyConfig, TRAElemento_Meta, TRAElemento_TraversalConfig, TRAElemento_Operaciones, ATCTMixin):
+class TRAElemento(TRAElemento_MappingConfig, TRAElemento_ExportConfig, TRAElemento_Credits, TRAElemento_CopyConfig, TRAElemento_Meta, TRAElemento_TraversalConfig, TRAElemento_Operaciones, ATCTMixin):
     """
     """
     security = ClassSecurityInfo()
-    __implements__ = (getattr(TRAElemento_MappingConfig,'__implements__',()),) + (getattr(TRAElemento_ExportConfig,'__implements__',()),) + (getattr(TRAElemento_CopyConfig,'__implements__',()),) + (getattr(TRAElemento_Meta,'__implements__',()),) + (getattr(TRAElemento_TraversalConfig,'__implements__',()),) + (getattr(TRAElemento_Operaciones,'__implements__',()),) + (getattr(ATCTMixin,'__implements__',()),)
+    __implements__ = (getattr(TRAElemento_MappingConfig,'__implements__',()),) + (getattr(TRAElemento_ExportConfig,'__implements__',()),) + (getattr(TRAElemento_Credits,'__implements__',()),) + (getattr(TRAElemento_CopyConfig,'__implements__',()),) + (getattr(TRAElemento_Meta,'__implements__',()),) + (getattr(TRAElemento_TraversalConfig,'__implements__',()),) + (getattr(TRAElemento_Operaciones,'__implements__',()),) + (getattr(ATCTMixin,'__implements__',()),)
 
-    allowed_content_types = ['Image', 'Document', 'File', 'Link', 'News Item'] + list(getattr(TRAElemento_MappingConfig, 'allowed_content_types', [])) + list(getattr(TRAElemento_ExportConfig, 'allowed_content_types', [])) + list(getattr(TRAElemento_CopyConfig, 'allowed_content_types', [])) + list(getattr(TRAElemento_Meta, 'allowed_content_types', [])) + list(getattr(TRAElemento_TraversalConfig, 'allowed_content_types', [])) + list(getattr(TRAElemento_Operaciones, 'allowed_content_types', [])) + list(getattr(ATCTMixin, 'allowed_content_types', []))
+    allowed_content_types = ['Image', 'Document', 'File', 'Link', 'News Item'] + list(getattr(TRAElemento_MappingConfig, 'allowed_content_types', [])) + list(getattr(TRAElemento_ExportConfig, 'allowed_content_types', [])) + list(getattr(TRAElemento_Credits, 'allowed_content_types', [])) + list(getattr(TRAElemento_CopyConfig, 'allowed_content_types', [])) + list(getattr(TRAElemento_Meta, 'allowed_content_types', [])) + list(getattr(TRAElemento_TraversalConfig, 'allowed_content_types', [])) + list(getattr(TRAElemento_Operaciones, 'allowed_content_types', [])) + list(getattr(ATCTMixin, 'allowed_content_types', []))
 
     aliases = updateAliases( ATDocument, {'folder_factories':'Tabular','cut':'Tabular','object_cut':'Tabular','delete_confirmation': 'Eliminar','object_rename': 'Editar','content_status_modify':'Tabular','content_status_history':'Tabular','placeful_workflow_configuration': 'Tabular',})
 
@@ -279,6 +281,13 @@ class TRAElemento(TRAElemento_MappingConfig, TRAElemento_ExportConfig, TRAElemen
         """
         
         return True
+
+    security.declarePublic('fIsCacheable')
+    def fIsCacheable(self):
+        """
+        """
+        
+        return False
 
     security.declarePublic('fAllowWrite')
     def fAllowWrite(self):

@@ -38,6 +38,8 @@ import traceback
 
 import logging
 
+from logging import ERROR as cLoggingLevel_ERROR
+
 import transaction
 
 from StringIO                       import StringIO
@@ -76,7 +78,7 @@ from TRAElemento_Permission_Definitions import cTRAUserGroups_Catalogo_Authorize
 
 
 
-
+from TRAArquetipo import TRAArquetipo
 
 
 
@@ -102,7 +104,40 @@ class TRACatalogo_Operaciones:
 
     
 
+  
     
+# ####################################
+#  Destroy before deletion
+#
+        
+    
+    security.declarePrivate('pHandle_manage_beforeDelete')
+    def pHandle_manage_beforeDelete(self, theItem, theContainer):
+        """Disable ZCatalog logging while deleting contents to avoid flooding the log with catalog messages complaining about keys not found. 
+        Note that instances of TRACadena and TRATraduccion are not catalogged in the global ZCatalog, and therefore there are thousands of ZCatalog log entries complaining.
+        This excessive logging slows down the server.
+        
+        """
+        unResult = None
+        unDisableLevelChanged = False
+        try:
+            aLoggerManager = logging.getLogger('Zope.ZCatalog').manager
+            aDisableLevel = aLoggerManager.disable
+            
+            if not ( aDisableLevel == cLoggingLevel_ERROR):
+                if aLoggerManager:
+                    aLoggerManager.disable = cLoggingLevel_ERROR
+                    unDisableLevelChanged = True
+                
+            unResult =  TRAArquetipo.manage_beforeDelete( self, theItem, theContainer)
+
+        finally:
+            if unDisableLevelChanged:
+                if aLoggerManager:
+                    aLoggerManager.disable = aDisableLevel
+
+        return unResult
+        
     
 
     

@@ -37,6 +37,14 @@ __docformat__ = 'plaintext'
 from TRAElemento_Constants import *
 
 
+cMinWaitBetweenTransactions = 0.1 # seconds
+
+cMaxWaitBetweenTransactions = 60.0 # seconds
+
+
+
+
+
 # ##############################################
 # Handling modes for of export encoding errors
 

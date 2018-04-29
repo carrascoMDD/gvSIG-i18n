@@ -37,7 +37,8 @@
                              
 <metal:main fill-slot="main">
     <tal:main-macro metal:define-macro="main"
-        tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas." 
+        tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas.;
+        global pStartTime       pStartTime | python: here.ModelDDvlPlone_tool.fMillisecondsNow()" 
         i18n:domain="gvSIGi18n">
 
         <tal:block tal:define="
@@ -79,7 +80,7 @@
                                 tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_refrescar_action_label',   'Refresh-' )"
                                 tal:attributes="
                                     title aLinkTitle;
-                                    href python: '%s/TRACatalogoInforme' % here.getCatalogo().absolute_url()">
+                                    href python: '%s/TRACatalogoInforme/' % here.getCatalogo().absolute_url()">
                                 <img src="#" alt="#" title="#" 
                                      tal:attributes="src string:${portal_url}/refrescar.gif; alt aLinkTitle; title aLinkTitle" 
                                      id="icon-refrescar" />
@@ -102,7 +103,7 @@
                                     tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_vistaAvanzada_msgid',   'Advanced view-')"
                                     tal:attributes="
                                         title aLinkTitle;
-                                        href python: '%s/Tabular' % here.getCatalogo().absolute_url()">
+                                        href python: '%s/Tabular/' % here.getCatalogo().absolute_url()">
                                     <img src="#" alt="#" title="#" 
                                          tal:attributes="src string:${portal_url}/tabular.gif; alt aLinkTitle; title aLinkTitle" 
                                          id="icon-tabular" />
@@ -117,7 +118,7 @@
                                 tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_ocultarinformedeestado_msgid',   'HideStatus Report-' )"
                                 tal:attributes="
                                     title aLinkTitle;
-                                    href python: '%s/TRACatalogo' % here.getCatalogo().absolute_url()">
+                                    href python: '%s/TRACatalogo/' % here.getCatalogo().absolute_url()">
                                 <img src="#" alt="#" title="#" 
                                      tal:attributes="src string:${portal_url}/trainforme.gif; alt aLinkTitle; title aLinkTitle" 
                                      id="icon-informe" />

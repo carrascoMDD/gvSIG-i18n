@@ -34,7 +34,8 @@
 <body>                     
 <metal:main fill-slot="main">
     <tal:main-macro metal:define-macro="main"
-        tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas." 
+        tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas.
+        global pStartTime       pStartTime | python: here.ModelDDvlPlone_tool.fMillisecondsNow()" 
         i18n:domain="gvSIGi18n">
 
         <tal:block tal:define="
@@ -185,7 +186,7 @@
                                 tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_cancelarExportacionYVolverACatalogo_msgid',   'Cancel Export-' )"
                                 tal:attributes="
                                     title aLinkTitle;
-                                    href python: '%s' % here.absolute_url()">
+                                    href python: '%s/' % here.absolute_url()">
                                 <font size="3">
                                     <strong>
                                         <span tal:content="aLinkTitle" />
@@ -201,7 +202,7 @@
                                 tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_configurarExportacion_msgid',   'Configure Export-' )"
                                 tal:attributes="
                                     title aLinkTitle;
-                                    href python: '%s/TRAExportar%s' % ( here.absolute_url(), pReviewExportRequestParms)">
+                                    href python: '%s/TRAExportar/%s' % ( here.absolute_url(), pReviewExportRequestParms)">
                                 <font size="3">
                                     <strong>
                                         <span tal:content="aLinkTitle" />
@@ -287,7 +288,7 @@
                                          tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_confirmarExportacion_msgid',   'Confirm Export-' )"
                                          tal:attributes="
                                              title aLinkTitle;
-                                             href python: '%s/TRARevisarExportacion%s&theConfirm=%s' % ( here.absolute_url(), pReviewExportRequestParms, here.fMagicMillisecondsNowString())">
+                                             href python: '%s/TRARevisarExportacion/%s&theConfirm=%s' % ( here.absolute_url(), pReviewExportRequestParms, here.fMagicMillisecondsNowString())">
                                          <font color="red" size="3">
                                              <strong>
                                                  <span tal:content="aLinkTitle" />
@@ -318,7 +319,7 @@
                                     
                                     
                                 
-                                    <tal:block tal:define="dummy python: False and request.response.redirect( '%s/TRAExportar' % here.absolute_url())" />
+                                    <tal:block tal:define="dummy python: False and request.response.redirect( '%s/TRAExportar/' % here.absolute_url())" />
                                     
                                     
                                     
@@ -793,7 +794,7 @@
      
             
             <tal:block replace="nothing">
-                <tal:block tal:define="dummy python:request.response.redirect( '%s/Tabular' % here.absolute_url())" />
+                <tal:block tal:define="dummy python:request.response.redirect( '%s/Tabular/' % here.absolute_url())" />
             </tal:block>
         
         </tal:block>

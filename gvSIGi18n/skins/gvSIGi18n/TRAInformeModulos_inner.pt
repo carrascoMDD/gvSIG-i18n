@@ -103,10 +103,10 @@
                         
                         <tal:block tal:repeat="unaCabeceraIdioma pCabecerasIdiomas">
                             <tal:block tal:condition="python: unaCabeceraIdioma[ 'list_contents_permission']">
-                               <tal:block tal:define="global pURLIdiomaOCatalogo python: '%s/TRATraducir?theCodigoIdiomaCursor=%s&theMostrarInforme=on&theMostrarLista=on' % ( here.absolute_url(), unaCabeceraIdioma[ 'codigo_idioma_en_gvsig'], )" />
+                               <tal:block tal:define="global pURLIdiomaOCatalogo python: '%s/TRATraducir/?theCodigoIdiomaCursor=%s&theMostrarInforme=on&theMostrarLista=on' % ( here.absolute_url(), unaCabeceraIdioma[ 'codigo_idioma_en_gvsig'], )" />
                             </tal:block>  
                             <tal:block tal:condition="python: not unaCabeceraIdioma[ 'list_contents_permission']">
-                               <tal:block tal:define="global pURLIdiomaOCatalogo python: '%s/TRACatalogo' % here.absolute_url()" />
+                               <tal:block tal:define="global pURLIdiomaOCatalogo python: '%s/TRACatalogo/' % here.absolute_url()" />
                             </tal:block>  
                             <th class="nosort" align="center" valign="top" >
                                 <a href="#" title="#"  tal:attributes="href python:  pURLIdiomaOCatalogo; title python: unaCabeceraIdioma[ 'nombre_idioma']">
@@ -178,20 +178,20 @@
                         <td align="right" tal:repeat="unIndexIdioma python: range( len( pCabecerasIdiomas))">
                            <tal:block tal:define="unaCabeceraIdioma python: pCabecerasIdiomas[ unIndexIdioma]" >
                                 <tal:block tal:condition="python:  unaCabeceraIdioma[ 'list_contents_permission']">
-                                   <tal:block tal:define="global pURLIdiomaOCatalogo python: '%s/TRATraducir?theCodigoIdiomaCursor=%s&theMostrarInforme=on&theMostrarLista=on' % (  here.absolute_url(), unaCabeceraIdioma[ 'codigo_idioma_en_gvsig'], )" />
+                                   <tal:block tal:define="global pURLIdiomaOCatalogo python: '%s/TRATraducir/?theCodigoIdiomaCursor=%s&theMostrarInforme=on&theMostrarLista=on' % (  here.absolute_url(), unaCabeceraIdioma[ 'codigo_idioma_en_gvsig'], )" />
                                 </tal:block>  
                                 <tal:block tal:condition="python: not unaCabeceraIdioma[ 'list_contents_permission']">
-                                   <tal:block tal:define="global pURLIdiomaOCatalogo python: '%s/TRACatalogo' % here.absolute_url()" />
+                                   <tal:block tal:define="global pURLIdiomaOCatalogo python: '%s/TRACatalogo/' % here.absolute_url()" />
                                 </tal:block>  
                                 <a href="#" title="#"  tal:attributes="href python: pURLIdiomaOCatalogo; title python: unaCabeceraIdioma[ 'codigo_idioma_en_gvsig']"
                                     tal:content="python: unaCabeceraIdioma[ 'numero_cadenas']" />                                
                                 <br/>
                                 <tal:block tal:repeat="unInformeEstado python: unaCabeceraIdioma[ 'totales_estados']">
                                     <tal:block tal:condition="python:  unaCabeceraIdioma[ 'list_contents_permission']">
-                                       <tal:block tal:define="global pURLIdiomaOCatalogo python: '%s/TRATraducir?theCodigoIdiomaCursor=%s&theMostrarInforme=on&theMostrarLista=on&%s=1' % ( here.absolute_url(), unaCabeceraIdioma[ 'codigo_idioma_en_gvsig'],  unInformeEstado[ 'nombre_estado'])" />
+                                       <tal:block tal:define="global pURLIdiomaOCatalogo python: '%s/TRATraducir/?theCodigoIdiomaCursor=%s&theMostrarInforme=on&theMostrarLista=on&%s=1' % ( here.absolute_url(), unaCabeceraIdioma[ 'codigo_idioma_en_gvsig'],  unInformeEstado[ 'nombre_estado'])" />
                                     </tal:block>  
                                     <tal:block tal:condition="python: not unaCabeceraIdioma[ 'list_contents_permission']">
-                                       <tal:block tal:define="global pURLIdiomaOCatalogo python: '%s/TRACatalogo' % here.absolute_url()" />
+                                       <tal:block tal:define="global pURLIdiomaOCatalogo python: '%s/TRACatalogo/' % here.absolute_url()" />
                                     </tal:block>  
                                     <tal:block tal:condition="python: unInformeEstado[ 'cantidad']">                                    
                                         <a href="#" title="#"  tal:attributes="href python: pURLIdiomaOCatalogo; title python: unaCabeceraIdioma[ 'codigo_idioma_en_gvsig']">
@@ -255,20 +255,20 @@
                             <tal:block tal:define="unInformeIdioma python: unosInformesIdiomas[ unIndexIdioma]; 
                                 unaCabeceraIdioma python: pCabecerasIdiomas[ unIndexIdioma]">
                                 <tal:block tal:condition="python:  unaCabeceraIdioma[ 'list_contents_permission']">
-                                   <tal:block tal:define="global pURLIdiomaOCatalogo python: '%s/TRATraducir?theCodigoIdiomaCursor=%s&theMostrarInforme=on&theMostrarLista=on&theSearchNombreModulo=%s' % (  here.absolute_url(), unaCabeceraIdioma[ 'codigo_idioma_en_gvsig'], unInformeModulo[ 'nombre_modulo'])" />
+                                   <tal:block tal:define="global pURLIdiomaOCatalogo python: '%s/TRATraducir/?theCodigoIdiomaCursor=%s&theMostrarInforme=on&theMostrarLista=on&theSearchNombreModulo=%s' % (  here.absolute_url(), unaCabeceraIdioma[ 'codigo_idioma_en_gvsig'], unInformeModulo[ 'nombre_modulo'])" />
                                 </tal:block>  
                                 <tal:block tal:condition="python: not unaCabeceraIdioma[ 'list_contents_permission']">
-                                   <tal:block tal:define="global pURLIdiomaOCatalogo python: '%s/TRACatalogo' % here.absolute_url()" />
+                                   <tal:block tal:define="global pURLIdiomaOCatalogo python: '%s/TRACatalogo/' % here.absolute_url()" />
                                 </tal:block>  
                                 <a href="#" title="#"  tal:attributes="href python: pURLIdiomaOCatalogo; title python: unaCabeceraIdioma[ 'codigo_idioma_en_gvsig']"
                                     tal:content="python: unInformeIdioma[ 'total_traducciones']" />                                
                                 <br/>
                                 <tal:block tal:repeat="unInformeEstado python: unInformeIdioma[ 'informes_estados']">
                                     <tal:block tal:condition="python:  unaCabeceraIdioma[ 'list_contents_permission']">
-                                       <tal:block tal:define="global pURLIdiomaOCatalogo python: '%s/TRATraducir?theCodigoIdiomaCursor=%s&theMostrarInforme=on&theMostrarLista=on&theSearchNombreModulo=%s&%s=1' % (  here.absolute_url(), unaCabeceraIdioma[ 'codigo_idioma_en_gvsig'], unInformeModulo[ 'nombre_modulo'], unInformeEstado[ 'nombre_estado'])" />
+                                       <tal:block tal:define="global pURLIdiomaOCatalogo python: '%s/TRATraducir/?theCodigoIdiomaCursor=%s&theMostrarInforme=on&theMostrarLista=on&theSearchNombreModulo=%s&%s=1' % (  here.absolute_url(), unaCabeceraIdioma[ 'codigo_idioma_en_gvsig'], unInformeModulo[ 'nombre_modulo'], unInformeEstado[ 'nombre_estado'])" />
                                     </tal:block>  
                                     <tal:block tal:condition="python: not unaCabeceraIdioma[ 'list_contents_permission']">
-                                       <tal:block tal:define="global pURLIdiomaOCatalogo python: '%s/TRACatalogo' % here.absolute_url()" />
+                                       <tal:block tal:define="global pURLIdiomaOCatalogo python: '%s/TRACatalogo/' % here.absolute_url()" />
                                     </tal:block>  
                                     <tal:block tal:condition="python: unInformeEstado[ 'cantidad']">                                    
                                         <a href="#" title="#"  tal:attributes="href python: pURLIdiomaOCatalogo; title python: unaCabeceraIdioma[ 'codigo_idioma_en_gvsig']">

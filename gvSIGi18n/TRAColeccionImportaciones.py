@@ -34,6 +34,9 @@ from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.TRAColeccionArquetipos import TRAColeccionArquetipos
 from Products.gvSIGi18n.config import *
 
+# additional imports from tagged value 'import'
+from TRAElemento_Operaciones import TRAElemento_Operaciones
+
 ##code-section module-header #fill in your manual code here
 ##/code-section module-header
 
@@ -52,7 +55,7 @@ schema = Schema((
         ),
         contains_collections=False,
         label2='Import processes',
-        additional_columns=['comenzarAlFinalizarAnterior', 'debeCrearTraduccionesQueFaltan', 'estadoProceso', 'haComenzado', 'haCompletadoConExito', 'fechaFinProceso', 'versionDelProducto', 'buildDelProducto'],
+        additional_columns=['estadoProceso', 'haComenzado', 'haCompletadoConExito'],
         label='Importaciones',
         represents_aggregation=True,
         description2='Import operations to load modules, languages,  strings and translations.',
@@ -105,19 +108,20 @@ class TRAColeccionImportaciones(OrderedBaseFolder, TRAColeccionArquetipos):
 
 
     allowed_content_types = ['TRAImportacion'] + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', []))
-    filter_content_types = 1
-    global_allow = 0
+    filter_content_types             = 1
+    global_allow                     = 0
     #content_icon = 'TRAColeccionImportaciones.gif'
-    immediate_view = 'Tabular'
-    default_view = 'Tabular'
-    suppl_views = ['Tabular',]
-    typeDescription = "Coleccion de procesos de Importacion para grabar modulos, idiomas, cadenas y traducciones."
-    typeDescMsgId =  'gvSIGi18n_TRAColeccionImportaciones_help'
-    archetype_name2 = 'Import processes collection'
-    typeDescription2 = '''Collection of Import processes to save modules,  languages, strings and translations.'''
-    archetype_name_msgid = 'gvSIGi18n_TRAColeccionImportaciones_label'
-    factory_methods = None
-    factory_enablers = { 'TRAImportacion' : [ 'fUseCaseCheckDoableFactory', 'Create_TRAImportacion',],}
+    immediate_view                   = 'Tabular'
+    default_view                     = 'Tabular'
+    suppl_views                      = ['Tabular',]
+    typeDescription                  = "Coleccion de procesos de Importacion para grabar modulos, idiomas, cadenas y traducciones."
+    typeDescMsgId                    =  'gvSIGi18n_TRAColeccionImportaciones_help'
+    archetype_name2                  = 'Import processes collection'
+    typeDescription2                 = '''Collection of Import processes to save modules,  languages, strings and translations.'''
+    archetype_name_msgid             = 'gvSIGi18n_TRAColeccionImportaciones_label'
+    factory_methods                  = None
+    factory_enablers                 = { 'TRAImportacion' : [ 'fUseCaseCheckDoableFactory', 'Create_TRAImportacion',],}
+    propagate_delete_impact_to       = None
     allow_discussion = False
 
 
@@ -239,6 +243,13 @@ class TRAColeccionImportaciones(OrderedBaseFolder, TRAColeccionArquetipos):
         """
         
         return False
+
+    security.declarePublic('fExtraLinks')
+    def fExtraLinks(self):
+        """
+        """
+        
+        return TRAElemento_Operaciones.fExtraLinks( self)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

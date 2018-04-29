@@ -131,7 +131,7 @@
                                     pNativeName     python: here.fAsUnicode( unInformeIdioma[ 'nombre_nativo_idioma']);
                                     pFlag           python: unInformeIdioma [ 'flag'];
                                     pSizesIdioma        python: here.TRASizesIdioma( pCode);
-                                    pURLIdiomaOCatalogo python: '%s/TRATraducir?theCodigoIdiomaCursor=%s&theMostrarInforme=on&theMostrarLista=on' % ( here.absolute_url(), unInformeIdioma[ 'codigo_idioma_en_gvsig'], );
+                                    pURLIdiomaOCatalogo python: '%s/TRATraducir/?theCodigoIdiomaCursor=%s&theMostrarInforme=on&theMostrarLista=on' % ( here.absolute_url(), unInformeIdioma[ 'codigo_idioma_en_gvsig'], );
                                     pURLIdiomaOCatalogo python: pURLIdiomaOCatalogo + ((( 'es' in pCodigosIdiomas) and '&theIdiomasReferencia=es')or '' );
                                     pURLIdiomaOCatalogo python: pURLIdiomaOCatalogo + ((( 'en' in pCodigosIdiomas) and '&theIdiomasReferencia=en')or '' );
                                     " >
@@ -179,7 +179,7 @@
         
                                     <tal:block tal:repeat="unInformeEstado python: unInformeIdioma[ 'informes_estados']">
                                         <tal:block tal:define="
-                                            pURLIdiomaEstadoOCatalogo python: '%s/TRATraducir?theCodigoIdiomaCursor=%s&theMostrarInforme=on&theMostrarLista=on&theEstadosAIncluir=%s' % ( here.absolute_url(), unInformeIdioma[ 'codigo_idioma_en_gvsig'], unInformeEstado[ 'nombre_estado']);
+                                            pURLIdiomaEstadoOCatalogo python: '%s/TRATraducir/?theCodigoIdiomaCursor=%s&theMostrarInforme=on&theMostrarLista=on&theEstadosAIncluir=%s' % ( here.absolute_url(), unInformeIdioma[ 'codigo_idioma_en_gvsig'], unInformeEstado[ 'nombre_estado']);
                                             pURLIdiomaEstadoOCatalogo python: pURLIdiomaEstadoOCatalogo + ((( 'es' in pCodigosIdiomas) and '&theIdiomasReferencia=es')or '' );
                                             pURLIdiomaEstadoOCatalogo python: pURLIdiomaEstadoOCatalogo + ((( 'en' in pCodigosIdiomas) and '&theIdiomasReferencia=en')or '' );                                            
                                             " >

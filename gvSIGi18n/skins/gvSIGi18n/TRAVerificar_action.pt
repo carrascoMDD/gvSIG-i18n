@@ -37,7 +37,8 @@
                              
 <metal:main fill-slot="main">
     <tal:main-macro metal:define-macro="main"
-        tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas." 
+        tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas.
+        global pStartTime       pStartTime | python: here.ModelDDvlPlone_tool.fMillisecondsNow()" 
         i18n:domain="gvSIGi18n">
 
         <tal:block tal:define="
@@ -88,7 +89,7 @@
                                     tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_vistaAvanzada_msgid',   'Advanced view-')"
                                     tal:attributes="
                                         title aLinkTitle;
-                                        href python: '%s/Tabular' % here.getCatalogo().absolute_url()">
+                                        href python: '%s/Tabular/' % here.getCatalogo().absolute_url()">
                                     <span tal:content="aLinkTitle" />
                                 </a>
                             </strong>
@@ -100,7 +101,7 @@
                                 tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_volveracatalogo_msgid',   'Back to catalog-' )"
                                 tal:attributes="
                                     title aLinkTitle;
-                                    href python: '%s/TRACatalogo' % here.absolute_url()">
+                                    href python: '%s/TRACatalogo/' % here.absolute_url()">
                                 <span tal:content="aLinkTitle" />
                             </a>
                         </strong>
@@ -111,7 +112,7 @@
                                 tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_mostrarinformedeestado_msgid',   'Show Status Report-' )"                                    
                                 tal:attributes="
                                     title aLinkTitle;
-                                    href python: '%s/TRACatalogoInforme' % here.getCatalogo().absolute_url()">
+                                    href python: '%s/TRACatalogoInforme/' % here.getCatalogo().absolute_url()">
                                 <span tal:content="aLinkTitle" />
                             </a>
                         </strong>
@@ -136,7 +137,7 @@
                         tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_inicializar_msgid',   'Initialize catalog-' )"                                    
                         tal:attributes="
                             title aLinkTitle;
-                            href python: '%s/TRAConfirmarInicializacion' % here.getCatalogo().absolute_url()">
+                            href python: '%s/TRAConfirmarInicializacion/' % here.getCatalogo().absolute_url()">
                         <font size="2" color="red">
                             <strong>
                                 <span tal:content="aLinkTitle" />

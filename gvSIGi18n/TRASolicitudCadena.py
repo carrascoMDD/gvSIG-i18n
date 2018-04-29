@@ -37,6 +37,7 @@ from TRACadena_Operaciones import TRACadena_Operaciones
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
+from TRAElemento_Operaciones import TRAElemento_Operaciones
 from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import ReferenceBrowserWidget
 
 ##code-section module-header #fill in your manual code here
@@ -416,19 +417,20 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActivida
 
 
     allowed_content_types = [] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', [])) + list(getattr(TRACadena_Operaciones, 'allowed_content_types', []))
-    filter_content_types = 1
-    global_allow = 0
+    filter_content_types             = 1
+    global_allow                     = 0
     content_icon = 'trasolicitudcadena.gif'
-    immediate_view = 'Tabular'
-    default_view = 'Tabular'
-    suppl_views = ['Tabular',]
-    typeDescription = "Una solicitud para crear una nueva cadena del producto a traducir, identificada por su simbolo, y opcionalmente con traducciones al idioma principal e idioma de referencia."
-    typeDescMsgId =  'gvSIGi18n_TRASolicitudCadena_help'
-    archetype_name2 = 'String creation request'
-    typeDescription2 = '''A request to create a new string to translate, identified by a string symbol, and optionally with translations into the main and reference language'''
-    archetype_name_msgid = 'gvSIGi18n_TRASolicitudCadena_label'
-    factory_methods = None
-    factory_enablers = None
+    immediate_view                   = 'Tabular'
+    default_view                     = 'Tabular'
+    suppl_views                      = ['Tabular',]
+    typeDescription                  = "Una solicitud para crear una nueva cadena del producto a traducir, identificada por su simbolo, y opcionalmente con traducciones al idioma principal e idioma de referencia."
+    typeDescMsgId                    =  'gvSIGi18n_TRASolicitudCadena_help'
+    archetype_name2                  = 'String creation request'
+    typeDescription2                 = '''A request to create a new string to translate, identified by a string symbol, and optionally with translations into the main and reference language'''
+    archetype_name_msgid             = 'gvSIGi18n_TRASolicitudCadena_label'
+    factory_methods                  = None
+    factory_enablers                 = None
+    propagate_delete_impact_to       = None
     allow_discussion = 0
 
 
@@ -550,6 +552,13 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActivida
         """
         
         return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
+
+    security.declarePublic('fExtraLinks')
+    def fExtraLinks(self):
+        """
+        """
+        
+        return TRAElemento_Operaciones.fExtraLinks( self)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

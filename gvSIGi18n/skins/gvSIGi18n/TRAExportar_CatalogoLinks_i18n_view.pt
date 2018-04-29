@@ -56,7 +56,7 @@
                     void python: pUseCaseAssessmentResultsCache.update({ 'View_any_TRA_element':  pUseCaseAssessmentResult,})" 
                     tal:condition="python: pUseCaseAssessmentResult and pUseCaseAssessmentResult.get( 'success', False)">
                     <strong>
-                       <a href="#" title="Tabular"  tal:attributes="href python: '%s/Tabular' % here.absolute_url()">
+                       <a href="#" title="Tabular"  tal:attributes="href python: '%s/Tabular/' % here.absolute_url()">
                            <span tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_vistaAvanzada_msgid',   'Advanced view-' )" />
                        </a>
                    </strong>
@@ -64,7 +64,7 @@
             </td>
             <td align="right" valign="baseline">                    
                 <strong>
-                    <a href="#" title="Mostrar Informe"  tal:attributes="href python: '%s/TRACatalogoInforme' % here.absolute_url()">
+                    <a href="#" title="Mostrar Informe"  tal:attributes="href python: '%s/TRACatalogoInforme/' % here.absolute_url()">
                         <span tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_mostrarinformedeestado_msgid',   'Show Status Report-' )" />
                     </a>
                 </strong>

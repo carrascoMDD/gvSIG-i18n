@@ -37,7 +37,8 @@
                              
 <metal:main fill-slot="main">
     <tal:main-macro metal:define-macro="main"
-        tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas." 
+        tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas.;
+        global pStartTime       pStartTime | python: here.ModelDDvlPlone_tool.fMillisecondsNow()" 
         i18n:domain="gvSIGi18n">
 
         <tal:block tal:define="pExecutionRecord python: here.fStartExecution( 'template', 'TRACatalogo.pt', None, True, { 'log_what': 'details', 'log_when': True, })" >
@@ -119,7 +120,7 @@
                                            tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_refrescar_action_label',   'Refresh-' )"
                                            tal:attributes="
                                                title aLinkTitle;
-                                               href python: '%s/TRACatalogo' % here.getCatalogo().absolute_url()">
+                                               href python: '%s/TRACatalogo/' % here.getCatalogo().absolute_url()">
                                            <img src="#" alt="#" title="#" 
                                                 tal:attributes="src string:${portal_url}/refrescar.gif; alt aLinkTitle; title aLinkTitle" 
                                                 id="icon-refrescar" />
@@ -144,7 +145,7 @@
                                                     tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_vistaAvanzada_msgid',   'Advanced view-')"
                                                     tal:attributes="
                                                         title aLinkTitle;
-                                                        href python: '%s/Tabular' % here.getCatalogo().absolute_url()">
+                                                        href python: '%s/Tabular/' % here.getCatalogo().absolute_url()">
                                                     <img src="#" alt="#" title="#" 
                                                          tal:attributes="src string:${portal_url}/tabular.gif; alt aLinkTitle; title aLinkTitle" 
                                                          id="icon-tabular" />
@@ -160,7 +161,7 @@
                                             tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_mostrarinformedeestado_msgid',   'Show Status Report-' )"                                    
                                             tal:attributes="
                                                 title aLinkTitle;
-                                                href python: '%s/TRACatalogoInforme' % here.getCatalogo().absolute_url()">
+                                                href python: '%s/TRACatalogoInforme/' % here.getCatalogo().absolute_url()">
                                             <img src="#" alt="#" title="#" 
                                                  tal:attributes="src string:${portal_url}/trainforme.gif; alt aLinkTitle; title aLinkTitle" 
                                                  id="icon-informe" />
@@ -215,7 +216,7 @@
                                         pName               python: unInformeIdioma.get( 'nombreIdioma', pCode);
                                         pNativeName         python: unInformeIdioma.get( 'nombreNativoDeIdioma', pName);
                                         pFlag               python: unInformeIdioma.get( 'flag', 'tra_flag-ninguna.gif');
-                                        pHref               python: here.fAsUnicode( '%s/TRATraducir?theCodigoIdiomaCursor=%s&theMostrarInforme=on&theMostrarLista=on' % ( here.absolute_url(), pCode,));
+                                        pHref               python: here.fAsUnicode( '%s/TRATraducir/?theCodigoIdiomaCursor=%s&theMostrarInforme=on&theMostrarLista=on' % ( here.getCatalogo().absolute_url(), pCode,));
                                         pHref               python: pHref + ((( 'es' in pCodigosIdiomas) and '&theIdiomasReferencia=es')or '' );
                                         pHref               python: pHref + ((( 'en' in pCodigosIdiomas) and '&theIdiomasReferencia=en')or '' );                                            
                                         pTitle              python: here.fAsUnicode( '%s %s %s %s' % ( pCode, pIntlCode, pName, pNativeName,));
@@ -261,7 +262,7 @@
                                     </td>
                                     <td tal:condition="pDisplayCountryFlags" align="center" valign="baseline" >                                        
                                         <a href="#" title="#"  tal:attributes="href pHref; title pTitle" >
-                                            <img width="14" height="11" alt="" tal:attributes=" src python: '%s/%s' % ( here.absolute_url(), pFlag); title pTitle; alt pTitle"/>
+                                            <img width="14" height="11" alt="" tal:attributes=" src python: '%s/%s' % ( here.portal_url(), pFlag); title pTitle; alt pTitle"/>
                                         </a>
                                     </td>
                                 </tr>

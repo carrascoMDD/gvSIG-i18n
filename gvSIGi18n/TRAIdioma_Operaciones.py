@@ -59,6 +59,9 @@ from TRAImportarExportar_Constants  import cEncodingSeparatorSentinelName
 from TRAElemento_Permission_Definitions import cUseCase_Copy_Translations
 from TRAElemento_Permission_Definitions import cBoundObject
 
+from TRAElemento_Operaciones  import TRAElemento_Operaciones
+
+
 
 ##/code-section module-header
 
@@ -89,7 +92,35 @@ class TRAIdioma_Operaciones:
     
 
                    
-
+    
+    security.declarePublic( 'fExtraLinks')    
+    def fExtraLinks( self):
+        
+        unosExtraLinks = TRAElemento_Operaciones.fExtraLinks( self)
+        if not unosExtraLinks:
+            unosExtraLinks = [ ]
+        
+        unaURL = self.getCatalogo().absolute_url()
+        if not unaURL:
+            return unosExtraLinks
+        
+        unCodigoIdiomaEnGvSIG = self.getCodigoIdiomaEnGvSIG()
+        if not unCodigoIdiomaEnGvSIG:
+            return unosExtraLinks
+        
+        unExtraLink = self.fNewVoidExtraLink()
+        unExtraLink.update( {
+            'label'   : self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Translate', 'Translate',),
+            'href'    : '%s/TRATraducir/?theCodigoIdiomaCursor=%s&theMostrarInforme=on&theMostrarLista=on&theIdiomasReferencia=es&theIdiomasReferencia=en ' % ( unaURL, unCodigoIdiomaEnGvSIG,),
+            'icon'    : 'tratraduccion.gif',
+            'domain'  : 'gvSIGi18n',
+            'msgid'   : 'gvSIGi18n_GoTo_Root',
+        })
+        unosExtraLinks.append( unExtraLink)
+                            
+        return unosExtraLinks
+     
+    
 
         
         

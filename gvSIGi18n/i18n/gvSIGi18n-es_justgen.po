@@ -2,8 +2,6 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gvSIGi18n\n"
-"POT-Creation-Date: Tue Oct 27 03:29:17 2009\n"
-"PO-Revision-Date: Tue Oct 27 03:29:17 2009\n"
 "Last-Translator: Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>\n"
 "Language-Team: Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>\n"
 "MIME-Version: 1.0\n"
@@ -1051,6 +1049,16 @@ msgstr "Formas plurales"
 msgid "gvSIGi18n_TRAIdioma_attr_formasPlurales_help"
 msgstr "Dato que aparece en los ficheros de exportacion de tipo GNUgettext PO. Usualmente toma el valor=nplurals=1; plural=0"
 
+#. Default: "Icono de la Bandera"
+#: TRAIdioma iconoBanderaIdioma
+msgid "gvSIGi18n_TRAIdioma_attr_iconoBanderaIdioma_label"
+msgstr "Icono de la Bandera"
+
+#. Default: "Nombre del archivo grafico (usualmente .gif o .png) instalado en Plone, a utilizar como bandera para el idioma. Ha de ser de dimensiones iguales o menores a 16x16 pixels, preferentemente con fondo transparente."
+#: TRAIdioma iconoBanderaIdioma
+msgid "gvSIGi18n_TRAIdioma_attr_iconoBanderaIdioma_help"
+msgstr "Nombre del archivo grafico (usualmente .gif o .png) instalado en Plone, a utilizar como bandera para el idioma. Ha de ser de dimensiones iguales o menores a 16x16 pixels, preferentemente con fondo transparente."
+
 #. Default: "Juego de caracteres para exportacion como Java Properties"
 #: TRAIdioma juegoDeCaracteresParaJavaProperties
 msgid "gvSIGi18n_TRAIdioma_attr_juegoDeCaracteresParaJavaProperties_label"
@@ -1126,10 +1134,10 @@ msgstr "Instancia de Proceso de Importacion, a partir de un fichero de entrada."
 msgid "gvSIGi18n_TRAImportacion_attr_buildDelProducto_label"
 msgstr "Identificador del Build"
 
-#. Default: "Identificador del Build del Producto que se importa en este proceso."
+#. Default: "Identificador del Build del Producto que se importa en este proceso. Cuando se ejecute la importacion, este dato se establecera como el valor del Identificador del Ultimo Build Importado, en el catalogo de traducciones."
 #: TRAImportacion buildDelProducto
 msgid "gvSIGi18n_TRAImportacion_attr_buildDelProducto_help"
-msgstr "Identificador del Build del Producto que se importa en este proceso."
+msgstr "Identificador del Build del Producto que se importa en este proceso. Cuando se ejecute la importacion, este dato se establecera como el valor del Identificador del Ultimo Build Importado, en el catalogo de traducciones."
 
 #. Default: "Codigo de Idioma por defecto"
 #: TRAImportacion codigoIdiomaPorDefecto
@@ -1160,6 +1168,16 @@ msgstr "Debe crear Traducciones que falten"
 #: TRAImportacion debeCrearTraduccionesQueFaltan
 msgid "gvSIGi18n_TRAImportacion_attr_debeCrearTraduccionesQueFaltan_help"
 msgstr "Crear las Traducciones que faltan para las cadenas e idiomas existentes, quiza por interrupcion indeseada de procesos de importacion anteriores."
+
+#. Default: "Segundos de Espera entre Transacciones"
+#: TRAImportacion esperaEntreTransaccionesEnSegundos
+msgid "gvSIGi18n_TRAImportacion_attr_esperaEntreTransaccionesEnSegundos_label"
+msgstr "Segundos de Espera entre Transacciones"
+
+#. Default: "Con decimales. Intervalo de espera al final de una transaccion, antes de comenzar la siguiente. Util con valores bajos ( <100) del Intervalo de Refresco en Numero de Escrituras, para dejar libre capacidad de procesamiento para otros procesos o usuarios."
+#: TRAImportacion esperaEntreTransaccionesEnSegundos
+msgid "gvSIGi18n_TRAImportacion_attr_esperaEntreTransaccionesEnSegundos_help"
+msgstr "Con decimales. Intervalo de espera al final de una transaccion, antes de comenzar la siguiente. Util con valores bajos ( <100) del Intervalo de Refresco en Numero de Escrituras, para dejar libre capacidad de procesamiento para otros procesos o usuarios."
 
 #. Default: "Estado del Proceso"
 #: TRAImportacion estadoProceso
@@ -1346,10 +1364,10 @@ msgstr "Intervalo de tiempo en minutos tras las que se requiere que se actualize
 msgid "gvSIGi18n_TRAImportacion_attr_intervaloRefrescoEnNumeroEscrituras_label"
 msgstr "Intervalo de Refresco en Numero de Escrituras"
 
-#. Default: "Numero de escrituras de cadenas o traducciones tras las que se requiere que se actualize el estado e informe de progreso."
+#. Default: "Numero de escrituras de cadenas o traducciones tras las que se requiere que se actualize el estado e informe de progreso. Use valores bajos ( <100) y la Espera entre Transacciones no nula, para dejar procesador a otros procesos o usuarios."
 #: TRAImportacion intervaloRefrescoEnNumeroEscrituras
 msgid "gvSIGi18n_TRAImportacion_attr_intervaloRefrescoEnNumeroEscrituras_help"
-msgstr "Numero de escrituras de cadenas o traducciones tras las que se requiere que se actualize el estado e informe de progreso."
+msgstr "Numero de escrituras de cadenas o traducciones tras las que se requiere que se actualize el estado e informe de progreso. Use valores bajos ( <100) y la Espera entre Transacciones no nula, para dejar procesador a otros procesos o usuarios."
 
 #. Default: "Max #  lineas .PO"
 #: TRAImportacion maximoLineasAImportarGNUgettextPO
@@ -1381,6 +1399,16 @@ msgstr "Nombre de Modulo por defecto"
 msgid "gvSIGi18n_TRAImportacion_attr_nombreModuloPorDefecto_help"
 msgstr "Nombre del modulo a utilizar cuando no se puede obtener, bien del nombre del dominio en ficheros GNU gettext .PO, o de la estructura de carpetas si el contenido a importar es una archivo .jar o .zip."
 
+#. Default: "Numero de Refrescos por Escritura en Log"
+#: TRAImportacion numeroDeRefrescosPorEscrituraEnLog
+msgid "gvSIGi18n_TRAImportacion_attr_numeroDeRefrescosPorEscrituraEnLog_label"
+msgstr "Numero de Refrescos por Escritura en Log"
+
+#. Default: "Para evitar escribir demasiado frecuentemente en el registro de actividad, cuando se usan valores bajos del Intervalo de Refresco en Numero de Escrituras, este valor puede configurarse a valores altos (>10, < 100)."
+#: TRAImportacion numeroDeRefrescosPorEscrituraEnLog
+msgid "gvSIGi18n_TRAImportacion_attr_numeroDeRefrescosPorEscrituraEnLog_help"
+msgstr "Para evitar escribir demasiado frecuentemente en el registro de actividad, cuando se usan valores bajos del Intervalo de Refresco en Numero de Escrituras, este valor puede configurarse a valores altos (>10, < 100)."
+
 #. Default: "Usuario Importador"
 #: TRAImportacion usuarioImportador
 msgid "gvSIGi18n_TRAImportacion_attr_usuarioImportador_label"
@@ -1396,10 +1424,10 @@ msgstr "Usuario que ha realizado la importacion."
 msgid "gvSIGi18n_TRAImportacion_attr_versionDelProducto_label"
 msgstr "Version del producto"
 
-#. Default: "Version del Producto que se importa en este proceso."
+#. Default: "Version del Producto que se importa en este proceso. Cuando se ejecute la importacion, este dato se establecera como el valor de la Ultima Version importada del producto, en el catalogo de traducciones."
 #: TRAImportacion versionDelProducto
 msgid "gvSIGi18n_TRAImportacion_attr_versionDelProducto_help"
-msgstr "Version del Producto que se importa en este proceso."
+msgstr "Version del Producto que se importa en este proceso. Cuando se ejecute la importacion, este dato se establecera como el valor de la Ultima Version importada del producto, en el catalogo de traducciones."
 
 #. Default: "Contenido Intercambio Traducciones"
 #: TRAImportacion contenido

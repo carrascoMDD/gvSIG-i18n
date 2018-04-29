@@ -1106,7 +1106,11 @@ class TRAElemento_Permissions:
         if not unMember:
             return ''
         
-        unMemberId = unMember.getMemberId()           
+        if unMember.getUserName() == 'Anonymous User':
+            unMemberId = unMember.getUserName()
+        else:
+            unMemberId = unMember.getMemberId()   
+            
         return unMemberId
         
     

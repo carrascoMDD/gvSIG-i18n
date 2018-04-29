@@ -34,6 +34,9 @@ from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.TRAColeccionArquetipos import TRAColeccionArquetipos
 from Products.gvSIGi18n.config import *
 
+# additional imports from tagged value 'import'
+from TRAElemento_Operaciones import TRAElemento_Operaciones
+
 ##code-section module-header #fill in your manual code here
 ##/code-section module-header
 
@@ -52,7 +55,7 @@ schema = Schema((
         ),
         contains_collections=False,
         label2='Reports',
-        additional_columns=['esAutoActualizable', 'estadoProceso', 'fechaFinProceso', 'haCompletadoConExito'],
+        additional_columns=['esAutoActualizable', 'haCompletadoConExito'],
         label='Informes',
         represents_aggregation=True,
         description2='Status Reports of Translations to  Languages and Modules',
@@ -107,19 +110,20 @@ class TRAColeccionInformes(OrderedBaseFolder, TRAColeccionArquetipos):
     use_folder_tabs = 0
 
     allowed_content_types = ['TRAInforme'] + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', []))
-    filter_content_types = 1
-    global_allow = 0
+    filter_content_types             = 1
+    global_allow                     = 0
     #content_icon = 'TRAColeccionInformes.gif'
-    immediate_view = 'Tabular'
-    default_view = 'Tabular'
-    suppl_views = ['Tabular',]
-    typeDescription = "Coleccion de informes del Estado de Traducciones a Idiomas y Modulos"
-    typeDescMsgId =  'gvSIGi18n_TRAColeccionInformes_help'
-    archetype_name2 = 'Status Reports Collection'
-    typeDescription2 = '''Collection of Status Reports of Translations to  Languages and Modules'''
-    archetype_name_msgid = 'gvSIGi18n_TRAColeccionInformes_label'
-    factory_methods = None
-    factory_enablers = { 'TRAInforme' : [ 'fUseCaseCheckDoableFactory', 'Generate_TRAInforme_by_Modules_and_Languages',]}
+    immediate_view                   = 'Tabular'
+    default_view                     = 'Tabular'
+    suppl_views                      = ['Tabular',]
+    typeDescription                  = "Coleccion de informes del Estado de Traducciones a Idiomas y Modulos"
+    typeDescMsgId                    =  'gvSIGi18n_TRAColeccionInformes_help'
+    archetype_name2                  = 'Status Reports Collection'
+    typeDescription2                 = '''Collection of Status Reports of Translations to  Languages and Modules'''
+    archetype_name_msgid             = 'gvSIGi18n_TRAColeccionInformes_label'
+    factory_methods                  = None
+    factory_enablers                 = { 'TRAInforme' : [ 'fUseCaseCheckDoableFactory', 'Generate_TRAInforme_by_Modules_and_Languages',]}
+    propagate_delete_impact_to       = None
     allow_discussion = False
 
 
@@ -241,6 +245,13 @@ class TRAColeccionInformes(OrderedBaseFolder, TRAColeccionArquetipos):
         """
         
         return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
+
+    security.declarePublic('fExtraLinks')
+    def fExtraLinks(self):
+        """
+        """
+        
+        return TRAElemento_Operaciones.fExtraLinks( self)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

@@ -43,6 +43,7 @@ from Products.ATContentTypes.content.base import updateAliases
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
+from TRAElemento_Operaciones import TRAElemento_Operaciones
 from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import ReferenceBrowserWidget
 
 ##code-section module-header #fill in your manual code here
@@ -135,7 +136,7 @@ schema = Schema((
         description2="Code of the language whose Java .properties import or export files do not contain the language code in the file name as a suffix.",
         ea_guid="{84BF218C-5DDA-47cd-A2A3-4B5322591B7E}",
         scale="0",
-        default="es",
+        default="en",
         label="Codigo de Idioma por defecto",
         length="0",
         containment="Not Specified",
@@ -225,7 +226,7 @@ schema = Schema((
         description2="When exporting a separate file for each module, it is the name to use in a GNUgettext .PO file name, or for the folder containing a Java .properties file.",
         ea_guid="{C8C5CA58-25BD-4974-8A9F-881BE3A1CAD4}",
         scale="0",
-        default="base",
+        default="gvSIG",
         label="Nombre de Modulo por defecto",
         length="0",
         containment="Not Specified",
@@ -255,7 +256,7 @@ schema = Schema((
         description2="Iinformation that appears in the exported files of GNUgettext PO format, when exporting separately in its own file strings that do not pertain to any module,  to indicate the application or module to which the translations apply.",
         ea_guid="{F9D57218-C3F9-4a24-804F-1CBB941BE9EA}",
         scale="0",
-        default="plone",
+        default="gvSIG18n",
         label="Dominio para cadenas sin modulo",
         length="0",
         containment="Not Specified",
@@ -345,7 +346,7 @@ schema = Schema((
         description2="Time in seconds for the User to confirm launching the Import process. If the User does not confirm in this period of time, and he wishes to perform the import, the user shall request Import again.",
         ea_guid="{76EBC4E2-29D0-454a-81D5-6CFB778DA50E}",
         scale="0",
-        default="120",
+        default="300",
         label="Tiempo en segundos para confirmar Importacion",
         length="0",
         containment="Not Specified",
@@ -510,7 +511,7 @@ schema = Schema((
         ea_guid="{93F813BD-34E0-4e2e-956F-EDF70D324A35}",
         vocabulary2=['.jar','.zip',],
         scale="0",
-        default=".jar",
+        default=".zip",
         label="Tipo de archivo descargable por defecto",
         length="0",
         containment="Not Specified",
@@ -943,7 +944,7 @@ schema = Schema((
         allowed_types=['TRAImportacion'],
         read_only="True",
         scale="0",
-        additional_columns=['versionDelProducto', 'buildDelProducto', 'estadoProceso', 'haCompletadoConExito', 'fechaFinProceso'],
+        additional_columns=['estadoProceso', 'haCompletadoConExito'],
         label="Ultima importacion",
         length="0",
         multiValued=0,
@@ -964,7 +965,7 @@ schema = Schema((
             i18n_domain='gvSIGi18n',
         ),
         description="Ultimo Informe de Estado elaborado en el catalogo.",
-        relationship="UltimoInforme",
+        relationship="BPDUltimoInforme",
         duplicates="0",
         label2="Last Status Report",
         ea_localid="815",
@@ -977,7 +978,7 @@ schema = Schema((
         allowed_types=['TRAInforme'],
         read_only="True",
         scale="0",
-        additional_columns=['esAutoActualizable', 'estadoProceso', 'fechaFinProceso', 'haCompletadoConExito'],
+        additional_columns=['esAutoActualizable', 'haCompletadoConExito'],
         label="Ultimo Informe de Estado",
         length="0",
         multiValued=0,
@@ -1033,19 +1034,20 @@ class TRACatalogo(OrderedBaseFolder, TRAArquetipo, TRACatalogo_Inicializacion, T
 
 
     allowed_content_types = ['TRAColeccionInformes', 'TRAColeccionCadenas', 'TRAColeccionImportaciones', 'TRAColeccionSolicitudesCadenas', 'TRAColeccionIdiomas', 'TRAColeccionModulos'] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Inicializacion, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Informes, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Operaciones, 'allowed_content_types', [])) + list(getattr(TRACatalogo_CursorTraducciones, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Exportacion, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', []))
-    filter_content_types = 1
-    global_allow = 1
+    filter_content_types             = 1
+    global_allow                     = 1
     content_icon = 'tracatalogo.gif'
-    immediate_view = 'TRACatalogo'
-    default_view = 'TRACatalogo'
-    suppl_views = ['TRACatalogo',]
-    typeDescription = "Contiene los Idiomas, Cadenas y Traducciones de las cadenas a multiples idiomas."
-    typeDescMsgId =  'gvSIGi18n_TRACatalogo_help'
-    archetype_name2 = 'Translations Catalog'
-    typeDescription2 = '''Containing a number of languages, strings to translate, and their translations to the the languages.'''
-    archetype_name_msgid = 'gvSIGi18n_TRACatalogo_label'
-    factory_methods = None
-    factory_enablers = None
+    immediate_view                   = 'TRACatalogo'
+    default_view                     = 'TRACatalogo'
+    suppl_views                      = ['TRACatalogo',]
+    typeDescription                  = "Contiene los Idiomas, Cadenas y Traducciones de las cadenas a multiples idiomas."
+    typeDescMsgId                    =  'gvSIGi18n_TRACatalogo_help'
+    archetype_name2                  = 'Translations Catalog'
+    typeDescription2                 = '''Containing a number of languages, strings to translate, and their translations to the the languages.'''
+    archetype_name_msgid             = 'gvSIGi18n_TRACatalogo_label'
+    factory_methods                  = None
+    factory_enablers                 = None
+    propagate_delete_impact_to       = None
     allow_discussion = False
 
 
@@ -1058,6 +1060,15 @@ class TRACatalogo(OrderedBaseFolder, TRAArquetipo, TRACatalogo_Inicializacion, T
         'name': 'Lock Catalog',
         'permissions': ("Modify portal content",),
         'condition': """python:object.fUseCaseCheckDoable( 'Lock_TRACatalogo')"""
+       },
+
+
+       {'action': "string:${object_url}/idiomas/TRACrear_Idioma",
+        'category': "object_buttons",
+        'id': 'CreateLanguage',
+        'name': 'Create Language',
+        'permissions': ("Modify portal content",),
+        'condition': """python:object.fObtenerColeccionIdiomas() and object.fObtenerColeccionIdiomas().fUseCaseCheckDoable( 'Create_TRAIdioma')"""
        },
 
 
@@ -1209,12 +1220,19 @@ class TRACatalogo(OrderedBaseFolder, TRAArquetipo, TRACatalogo_Inicializacion, T
         
         return TRACatalogo_Operaciones.pHandle_manage_afterAdd( self, item, container)
 
+    security.declarePublic('fExtraLinks')
+    def fExtraLinks(self):
+        """
+        """
+        
+        return TRAElemento_Operaciones.fExtraLinks( self)
+
     security.declarePublic('manage_beforeDelete')
     def manage_beforeDelete(self,item,container):
         """
         """
         
-        return TRAArquetipo.manage_beforeDelete( self, item, container)
+        return TRACatalogo_Operaciones.pHandle_manage_beforeDelete( self, item, container)
 
     security.declarePublic('manage_pasteObjects')
     def manage_pasteObjects(self,cb_copy_data,REQUEST):

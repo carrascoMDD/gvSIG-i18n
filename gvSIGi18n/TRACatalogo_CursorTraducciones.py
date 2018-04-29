@@ -1381,9 +1381,13 @@ class TRACatalogo_CursorTraducciones:
                 unosDatosARetornar             = unosDatosTraducciones[0:1]                
 
                 theReport[ 'datosTraducciones'] = unosDatosARetornar
+                theReport[ 'total_translations'] = 1
+                theReport[ 'from_translation_index'] = 1
+                theReport[ 'to_translation_index'] = 1
                 theReport[ 'success'] = True
                 
                 if theElaborarInforme:
+                    
                     unosDatosTraduccion = unosDatosARetornar[ 0]
                     unEstadoTraduccion  = unosDatosTraduccion[ 'getEstadoTraduccion']
                     theReport[ 'informeEstadosTodasCadenas'][ 'Total'][ 1] = 1
@@ -3073,7 +3077,7 @@ class TRACatalogo_CursorTraducciones:
                 else:
                     unosNombresModulosAFiltrar = unosNombresModulos
                     
-                unosSimbolosModulo = self.fListaSimbolosCadenasOrdenadosEnVariosModulos( unosNombresModulosAFiltrar, False, unExecutionRecord)
+                unosSimbolosModulo = self.fListaSimbolosCadenasOrdenadosEnVariosModulos( unosNombresModulosAFiltrar, unIndexModuloNoEspecificado >= 0, unExecutionRecord)
                 if not unosSimbolosModulo:
                     return unCriterioBusquedaNingunResultado
                 

@@ -32,30 +32,60 @@
 <body>;  
                                 
 
-
     <div metal:define-macro="tSetupPerformanceAnalysis" >
-        <tal:block tal:define="
-            global pPerformanceAnalysis python: { 'retrieval_times': True, 'processing_times': True,  'profiling_results': None, };
-            global pStartTime python: here.fMillisecondsNow()" />                           
+        <tal:block tal:define="global pPerformanceAnalysis python: { 'retrieval_times': True, 'processing_times': True,  'profiling_results': None, };
+            global pStartTime pStartTime | python: here.ModelDDvlPlone_tool.fMillisecondsNow()" />                           
     </div>
-    
+    <div metal:define-macro="NO_tSetupPerformanceAnalysis" >
+        <tal:block tal:define="global pPerformanceAnalysis python: { 'retrieval_times': False, 'processing_times': False,  'profiling_results': None, };
+            global pStartTime pStartTime | python: here.ModelDDvlPlone_tool.fMillisecondsNow()" />                           
+    </div>
+    <div metal:define-macro="SI_tSetupPerformanceAnalysis" >
+        <tal:block tal:define="global pPerformanceAnalysis python: { 'retrieval_times': True, 'processing_times': True,  'profiling_results': None, };
+            global pStartTime pStartTime | python: here.ModelDDvlPlone_tool.fMillisecondsNow()" />                           
+    </div>
+ 
+
     
     <div metal:define-macro="tRenderRetrievalTime_HTML" >
-        <p tal:condition="python: pPerformanceAnalysis and ( pPerformanceAnalysis.get( 'retrieval_times', False) == True)"
+        <p tal:define="pPerformanceAnalysis pPerformanceAnalysis | python:{};
+                pRetrievalEndTime   pRetrievalEndTime|  python: 0;
+                pRetrievalStartTime pRetrievalStartTime| pRetrievalEndTime;"
+            tal:condition="python: pPerformanceAnalysis and ( pPerformanceAnalysis.get( 'retrieval_times', False) == True)"
             class="formHelp" tal:content="python: 'Retrieve %s milliseconds' % str( int( pRetrievalEndTime - pRetrievalStartTime))" />   
     </div>
             
-    
+<div metal:define-macro="tRenderRetrievalTime_REST" >
+<tal:block
+    tal:define="pPerformanceAnalysis pPerformanceAnalysis | python:{};
+    pRetrievalEndTime   pRetrievalEndTime|  python: 0;
+    pRetrievalStartTime pRetrievalStartTime| pRetrievalEndTime;"
+    tal:condition="python: pPerformanceAnalysis and ( pPerformanceAnalysis.get( 'retrieval_times', False) == True)"
+    tal:replace="structure python: '.. epigraph::\n   Retrieval milliseconds %s\n\n' % str( int( pRetrievalEndTime - pRetrievalStartTime))" />
+</div>
+        
     
     <div metal:define-macro="tRenderProcessingTime_HTML" >
-        <p tal:condition="python: pPerformanceAnalysis and ( pPerformanceAnalysis.get( 'processing_times', False) == True)"
-            class="formHelp" tal:define="global pEndTime python: here.fMillisecondsNow()" 
+        <p tal:define="pPerformanceAnalysis pPerformanceAnalysis | python:{};
+                 global pEndTime python: here.ModelDDvlPlone_tool.fMillisecondsNow();
+                 global pStartTime pStartTime | pEndTime" 
+            tal:condition="python: pPerformanceAnalysis and ( pPerformanceAnalysis.get( 'processing_times', False) == True)"
+            class="formHelp" 
             tal:content="python: 'Process %s milliseconds' % str( int( pEndTime - pStartTime))" />
     </div>
+
+<div metal:define-macro="tRenderProcessingTime_REST" >
+<p  tal:define="pPerformanceAnalysis pPerformanceAnalysis | python:{};
+                global pEndTime python: here.ModelDDvlPlone_tool.fMillisecondsNow();
+                global pStartTime pStartTime | pEndTime"      
+    tal:condition="python: pPerformanceAnalysis and ( pPerformanceAnalysis.get( 'processing_times', False) == True)"
+    tal:replace="structure python: '.. epigraph::\n   Processing milliseconds %s\n\n' % str( int( pEndTime - pStartTime))" />
+</div>
 
     
     <div metal:define-macro="tRenderProfilingResults_HTML" >
         <tal:block 
+            tal:define="pPerformanceAnalysis pPerformanceAnalysis | python:{}"
             tal:condition="python: pPerformanceAnalysis and not ( pPerformanceAnalysis.get( 'profiling_results', None) == None)"
             tal:replace="structure python: here.ModelDDvlPlone_tool.fPrettyPrintProfilingResultHTML( pPerformanceAnalysis[ 'profiling_results'][ 'root'] )" />
     </div>    

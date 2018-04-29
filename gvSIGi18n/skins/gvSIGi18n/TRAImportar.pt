@@ -37,7 +37,8 @@
                              
 <metal:main fill-slot="main">
     <tal:main-macro metal:define-macro="main"
-        tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas." 
+        tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas.
+        global pStartTime       pStartTime | python: here.ModelDDvlPlone_tool.fMillisecondsNow()" 
         i18n:domain="gvSIGi18n">
 
         <tal:block tal:define="
@@ -71,7 +72,7 @@
                                 tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_noPuedeImportarYVolverATabular_msgid',   'You can not import translations contents. Please navigate back to import tabular view.-' )"
                                 tal:attributes="
                                     title aLinkTitle;
-                                    href python: '%s/Tabular' % here.absolute_url()">
+                                    href python: '%s/Tabular/' % here.absolute_url()">
                                 <span tal:content="aLinkTitle" />
                             </a>
                         </strong>
@@ -86,7 +87,7 @@
                         tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_cancelarImportacionYVolverATabular_msgid',   'Cancel Import-' )"
                         tal:attributes="
                             title aLinkTitle;
-                            href python: '%s/Tabular' % here.absolute_url()">
+                            href python: '%s/Tabular/' % here.absolute_url()">
                         <font size="3">
                             <strong>
                             <span tal:content="aLinkTitle" />
@@ -103,7 +104,7 @@
                        tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_confirmarImportacion_msgid',   'Confirm import of translations contents-' )"                                    
                        tal:attributes="
                            title aLinkTitle;
-                           href python: '%s/TRAImportar_action?theConfirm=%s' % ( here.absolute_url(), here.fMagicMillisecondsNowString())">
+                           href python: '%s/TRAImportar_action/?theConfirm=%s' % ( here.absolute_url(), here.fMagicMillisecondsNowString())">
                         <font size="3" color="red">
                             <strong>
                                 <span tal:content="aLinkTitle" />
@@ -130,7 +131,7 @@
                         tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_observarProgresoProcesoImportacion_msgid',   'Observe import progress-' )"                                    
                         tal:attributes="
                             title aLinkTitle;
-                            href python: '%s/TRAInformeProgreso_action' % here.absolute_url()">
+                            href python: '%s/TRAInformeProgreso_action/' % here.absolute_url()">
                         <font size="2" color="black">
                             <strong tal:content="aLinkTitle" />
                         </font>
@@ -164,7 +165,7 @@
                                 tal:define="aLinkTitle python: '%s' % here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_vista_detalles_label',   'View Details-')"
                                 tal:attributes="
                                     title aLinkTitle;
-                                    href python: '%s/TRAInformeTodosContenidosIntercambio_action' % here.absolute_url()">
+                                    href python: '%s/TRAInformeTodosContenidosIntercambio_action/' % here.absolute_url()">
                                 <span tal:content="aLinkTitle" />
                             </a>
                         </font>

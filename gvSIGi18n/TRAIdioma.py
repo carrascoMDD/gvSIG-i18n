@@ -225,6 +225,35 @@ schema = Schema((
     ),
 
     StringField(
+        name='iconoBanderaIdioma',
+        widget=StringWidget(
+            label="Icono de la Bandera",
+            label2="Flag Icon",
+            description="Nombre del archivo grafico (usualmente .gif o .png) instalado en Plone, a utilizar como bandera para el idioma. Ha de ser de dimensiones iguales o menores a 16x16 pixels, preferentemente con fondo transparente.",
+            description2="Name of the graphic file (usually .gif or .png) installed in Plone, to use as the flag for the language. Must have dimensions equal or smaller than 16 x 16 pixels, prefereably with transparent background.",
+            label_msgid='gvSIGi18n_TRAIdioma_attr_iconoBanderaIdioma_label',
+            description_msgid='gvSIGi18n_TRAIdioma_attr_iconoBanderaIdioma_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        scale="0",
+        description="Nombre del archivo grafico (usualmente .gif o .png) instalado en Plone, a utilizar como bandera para el idioma. Ha de ser de dimensiones iguales o menores a 16x16 pixels, preferentemente con fondo transparente.",
+        duplicates="0",
+        label2="Flag Icon",
+        ea_localid="1581",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        length="0",
+        description2="Name of the graphic file (usually .gif or .png) installed in Plone, to use as the flag for the language. Must have dimensions equal or smaller than 16 x 16 pixels, prefereably with transparent background.",
+        containment="Not Specified",
+        ea_guid="{288C7CCE-8ECB-48bb-89F3-C7A64259AFEB}",
+        position="2",
+        owner_class_name="TRAIdioma",
+        label="Icono de la Bandera"
+    ),
+
+    StringField(
         name='codigoIdiomaReferencia',
         widget=SelectionWidget(
             label="Codigo de Idioma de referencia",
@@ -571,19 +600,20 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRe
 
 
     allowed_content_types = [] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRAIdioma_Operaciones, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', []))
-    filter_content_types = 1
-    global_allow = 0
+    filter_content_types             = 1
+    global_allow                     = 0
     content_icon = 'traidioma.gif'
-    immediate_view = 'Tabular'
-    default_view = 'Tabular'
-    suppl_views = ['Tabular',]
-    typeDescription = "Uno de los Idiomas a los que se han de traducir las cadenas."
-    typeDescMsgId =  'gvSIGi18n_TRAIdioma_help'
-    archetype_name2 = 'Language'
-    typeDescription2 = '''One of the languages to translate the strings into.'''
-    archetype_name_msgid = 'gvSIGi18n_TRAIdioma_label'
-    factory_methods = None
-    factory_enablers = None
+    immediate_view                   = 'Tabular'
+    default_view                     = 'Tabular'
+    suppl_views                      = ['Tabular',]
+    typeDescription                  = "Uno de los Idiomas a los que se han de traducir las cadenas."
+    typeDescMsgId                    =  'gvSIGi18n_TRAIdioma_help'
+    archetype_name2                  = 'Language'
+    typeDescription2                 = '''One of the languages to translate the strings into.'''
+    archetype_name_msgid             = 'gvSIGi18n_TRAIdioma_label'
+    factory_methods                  = None
+    factory_enablers                 = None
+    propagate_delete_impact_to       = None
     allow_discussion = False
 
 
@@ -728,6 +758,13 @@ class TRAIdioma(OrderedBaseFolder, TRAArquetipo, TRAIdioma_Operaciones, TRAConRe
         """
         
         return False
+
+    security.declarePublic('fExtraLinks')
+    def fExtraLinks(self):
+        """
+        """
+        
+        return TRAIdioma_Operaciones.fExtraLinks( self)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:
