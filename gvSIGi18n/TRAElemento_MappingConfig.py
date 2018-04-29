@@ -36,7 +36,7 @@ __docformat__ = 'plaintext'
 
 from AccessControl                  import ClassSecurityInfo
 from Products.Archetypes.atapi import *
-from Products.ModelDDploneMOF.config import *
+from Products.gvSIGi18n.config import *
 
 
 
