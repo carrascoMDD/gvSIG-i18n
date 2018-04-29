@@ -88,6 +88,8 @@ class TRAColeccionModulos(OrderedBaseFolder, TRAColeccionArquetipos):
     portal_type = 'TRAColeccionModulos'
 
 
+    # Change Audit fields
+
     creation_date_field = 'fechaCreacion'
     creation_user_field = 'usuarioCreador'
     modification_date_field = 'fechaModificacion'
@@ -97,6 +99,9 @@ class TRAColeccionModulos(OrderedBaseFolder, TRAColeccionArquetipos):
     is_inactive_field = 'estaInactivo'
     change_counter_field = 'contadorCambios'
     change_log_field = 'registroDeCambios'
+
+
+
     allowed_content_types = ['TRAModulo'] + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', []))
     filter_content_types = 1
     global_allow = 0

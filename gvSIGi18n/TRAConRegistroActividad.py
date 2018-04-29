@@ -356,6 +356,8 @@ class TRAConRegistroActividad:
 
 
 
+    # Change Audit fields
+
     creation_date_field = 'fechaCreacion'
     creation_user_field = 'usuarioCreador'
     modification_date_field = 'fechaModificacion'
@@ -365,6 +367,9 @@ class TRAConRegistroActividad:
     is_inactive_field = 'estaInactivo'
     change_counter_field = 'contadorCambios'
     change_log_field = 'registroDeCambios'
+
+
+
     allowed_content_types = []
     _at_rename_after_creation = True
 

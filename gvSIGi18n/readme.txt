@@ -27,6 +27,25 @@ REQUIRED INSTALLATION STEP (manual)
 
 
 
+REQUIRED CONFIGURATION STEP (manual)
+
+  You must grant the permission "gvSIGi18n: Add TRACatalogo",
+  in the container(s) where catalogs shall be crated,
+  to at least one role held by the user(s) 
+  that shall be able to create translation catalog.
+  
+  Note that not even users with role Manager (not even global managers),
+  have this permission granted by default.
+  
+  A Manager (or user with permissions to set permissions),
+  shall assign this permission,
+  for example to the Manager Role, 
+  for example in the root of the Plone Site, or a Plone Folder of choice.
+  
+
+
+
+
 
 KNOWN ISSUES:
 
@@ -93,17 +112,20 @@ PREREQUISITE PRODUCTS
   
   - PloneLanguageTool
 
-  And optionally, for support of searches of translations into Chinese or Japanese,
+   
+  Installation will fail if these products are not 
+  correctly deployed and available in the Plone instance.
+  
+  
+  
+  Optionally, for better support of searches of translations into Chinese or Japanese,
   make available to the plone instance the products
 
   - CJKSplitter
   
   - ZopeChinaPak
 
-   
-  Installation will fail if these products are not 
-  correctly deployed and available in the Plone instance.
-  
+
   The installer will automatically install the prerequisite
   products, if correctly deployed and available in the Plone instance.
      

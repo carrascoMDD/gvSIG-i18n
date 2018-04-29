@@ -27,6 +27,65 @@
 # Antonio Carrasco Valero                       carrasco@ModelDD.org
 #
 </tal:block>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+<body>                     
+
+                             
+    <metal:main fill-slot="main">
+    <tal:main-macro metal:define-macro="main"
+        tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas." 
+        i18n:domain="gvSIGi18n">
+        
+        <tal:block tal:define="pExecutionRecord python: here.fStartExecution( 'template', 'TRACrear_Idioma.pt', None, True, { 'log_what': 'details', 'log_when': True, })" >
+    
+            <div metal:use-macro="here/document_actions/macros/document_actions">
+                Document actions (print, sendto etc)
+            </div>
+    
+            <h1 tal:content="object_title" class="documentFirstHeading">
+              Title or id
+            </h1>
+    
+            <div metal:use-macro="here/document_byline/macros/byline">
+              Get the byline - contains details about author and modification date.
+            </div>
+            
+            <tal:block tal:define="pPermiteAbandonarCrear python: True; pPermiteEditar python: False; pPermiteEliminar python: False; pShowOrHideTrees python: False">
+                <metal:block metal:use-macro="here/TRACabeceraEnTabla_i18n_view/macros/tCabeceraEnTabla_i18n" />   
+            </tal:block>
+            
+    
+			<tal:block tal:define="pCrearResult python:here.fCrearCadenas()" >
+				<tal:block tal:condition="python: pCrearResult and ( pCrearResult[ 'effect'] == 'created')" >
+					<tal:block tal:define="
+						dummy python:request.response.redirect( '%s/Editar' % pCrearResult[ 'new_object_result'][ 'url']);" />
+				</tal:block>
+				<tal:block tal:condition="python: not ( pCrearResult) or not ( pCrearResult[ 'effect'] == 'created')" >
+					<h4>
+						<font color="Red">
+							<span i18n:domain="ModelDDvlPlone"  i18n:translate="ModelDDvlPlone_nosehacreadoelemento_info_msgid" >ModelDDvlPlone_nosehacreadoelemento_info_msgid</span>
+						</font>
+					</h4>
+					<p>
+						<font color="Red">
+							<span tal:content="python: pCrearResult.get( 'failure', '')"/>
+						</font>
+					</p>
+					<br/>
+				</tal:block>
+			</tal:block>
+							
+            <div tal:replace="structure python: here.ModelDDvlPlone_tool.fRenderTemplate( here, '%sFooter_view' )" />
+        
+        </tal:block>
+ 
+    </tal:main-macro>
+</metal:main>
+
+</body>
+</html>
 
 
-    <tal:block tal:define="pInformeCreacionImportacion python:here.fCrearCadenas()" />

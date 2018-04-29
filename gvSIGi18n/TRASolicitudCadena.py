@@ -401,6 +401,8 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActivida
     portal_type = 'TRASolicitudCadena'
 
 
+    # Change Audit fields
+
     creation_date_field = 'fechaCreacion'
     creation_user_field = 'usuarioCreador'
     modification_date_field = 'fechaModificacion'
@@ -410,6 +412,9 @@ class TRASolicitudCadena(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActivida
     is_inactive_field = 'estaInactivo'
     change_counter_field = 'contadorCambios'
     change_log_field = 'registroDeCambios'
+
+
+
     allowed_content_types = [] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', [])) + list(getattr(TRACadena_Operaciones, 'allowed_content_types', []))
     filter_content_types = 1
     global_allow = 0

@@ -1018,6 +1018,8 @@ class TRACatalogo(OrderedBaseFolder, TRAArquetipo, TRACatalogo_Inicializacion, T
     portal_type = 'TRACatalogo'
 
 
+    # Change Audit fields
+
     creation_date_field = 'fechaCreacion'
     creation_user_field = 'usuarioCreador'
     modification_date_field = 'fechaModificacion'
@@ -1027,6 +1029,9 @@ class TRACatalogo(OrderedBaseFolder, TRAArquetipo, TRACatalogo_Inicializacion, T
     is_inactive_field = 'estaInactivo'
     change_counter_field = 'contadorCambios'
     change_log_field = 'registroDeCambios'
+
+
+
     allowed_content_types = ['TRAColeccionInformes', 'TRAColeccionCadenas', 'TRAColeccionImportaciones', 'TRAColeccionSolicitudesCadenas', 'TRAColeccionIdiomas', 'TRAColeccionModulos'] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Inicializacion, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Informes, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Operaciones, 'allowed_content_types', [])) + list(getattr(TRACatalogo_CursorTraducciones, 'allowed_content_types', [])) + list(getattr(TRACatalogo_Exportacion, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', []))
     filter_content_types = 1
     global_allow = 1
@@ -1181,7 +1186,7 @@ class TRACatalogo(OrderedBaseFolder, TRAArquetipo, TRACatalogo_Inicializacion, T
         """
         """
         
-        return False
+        return ( 'portal_factory' in self.getPhysicalPath()) or self.getPhysicalPath()[-1:][0].startswith( 'tracatalogo.')
 
     security.declarePublic('displayContentsTab')
     def displayContentsTab(self):

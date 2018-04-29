@@ -107,18 +107,6 @@ cLogInformeLazyCrear     = True
 
 
 
-cLazyCreateExternalMethod       = True
-cLazyCreateModelDDvlPloneTool   = True
-cLazyCreateCollections          = True
-cLazyCreateCatalogs             = True
-cLazyCreateIndexes              = True
-cLazyCreateLexicons             = True    
-cLazyCreateSchemaFields         = True
-cLazyCreateUserGroups           = True
-cLazyCreateSetLocalRoles        = True
-cLazyCreateSetAcquireRoleAssignments = True
-cLazyAddGroupToGroup            = True
-
 
 
 

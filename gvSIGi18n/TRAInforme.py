@@ -474,6 +474,8 @@ class TRAInforme(OrderedBaseFolder, TRAArquetipo, TRAInforme_Operaciones, TRACon
     portal_type = 'TRAInforme'
 
 
+    # Change Audit fields
+
     creation_date_field = 'fechaCreacion'
     creation_user_field = 'usuarioCreador'
     modification_date_field = 'fechaModificacion'
@@ -483,6 +485,9 @@ class TRAInforme(OrderedBaseFolder, TRAArquetipo, TRAInforme_Operaciones, TRACon
     is_inactive_field = 'estaInactivo'
     change_counter_field = 'contadorCambios'
     change_log_field = 'registroDeCambios'
+
+
+
     use_folder_tabs = 0
 
     allowed_content_types = [] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRAInforme_Operaciones, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', []))

@@ -55,15 +55,21 @@ from TRARoles       import *
 
 
 
-cLazyCreateExternalMethod  = True
-cLazyCreateModelDDvlPloneTool  = True
-cLazyCreateCollections  = True
-cLazyCreateCollections  = True
-cLazyCreateCatalogs     = True
-cLazyCreateIndexes      = True
-cLazyCreateLexicons     = True    
-cLazyAddSchemaFields    = True
 
+
+cLazyCreateExternalMethod       = True
+# ACV 20091004 Moved to TRAElemento_Constants.py as it is used also from TRAElemento_Operaciones.py
+# cLazyCreateModelDDvlPloneTool   = True
+cLazyCreateCollections          = True
+cLazyCreateCatalogs             = True
+cLazyCreateIndexes              = True
+cLazyCreateLexicons             = True    
+cLazyCreateSchemaFields         = True
+cLazyCreateUserGroups           = True
+cLazyCreateSetLocalRoles        = True
+cLazyCreateSetAcquireRoleAssignments = True
+cLazyAddGroupToGroup            = True
+cLazyAddSchemaFields    = True
 
 
 

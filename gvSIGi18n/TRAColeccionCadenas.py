@@ -90,6 +90,8 @@ class TRAColeccionCadenas(BaseBTreeFolder, TRAColeccionArquetipos):
     portal_type = 'TRAColeccionCadenas'
 
 
+    # Change Audit fields
+
     creation_date_field = 'fechaCreacion'
     creation_user_field = 'usuarioCreador'
     modification_date_field = 'fechaModificacion'
@@ -99,6 +101,9 @@ class TRAColeccionCadenas(BaseBTreeFolder, TRAColeccionArquetipos):
     is_inactive_field = 'estaInactivo'
     change_counter_field = 'contadorCambios'
     change_log_field = 'registroDeCambios'
+
+
+
     use_folder_tabs = 0
 
     allowed_content_types = ['TRACadena'] + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', []))

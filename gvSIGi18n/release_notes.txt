@@ -1,6 +1,166 @@
-gvSIG-i18n RELEASE NOTES
+﻿gvSIG-i18n RELEASE NOTES
 ========================
 
+
+|
+|
+
+
+
+version 1.2.0.9
+---------------
+
+|
+|
+
+
+**RESOLVED**
+
+
+BUG UI Textual view should work  or not be available in root TRACatalog element (now raises an exception)
+
+Does not redirect to created import when Creating strings in  UC21 Use Case Add String to be translated
+
+Error creating import contents exchange element
+
+Error creating root translations catalog instance
+
+Error in TRAElemento_MappingConfig.py trying to import a class from other project: ModelDDploneMOF
+
+Error Table titles one more column than body when element not changeable
+
+Error when attempting to cut and the catalog is locked agains modifications
+
+gvSIG crashes loading after importing Unicode Escaped chars &lt; 256 without leading zeroes when EXPO01 Export with unicode escape also for chars between 127 and 255
+
+
+|
+|
+
+**KNOWN BUGS**
+
+Error in template when manually creating an status report
+
+Error Table titles one more column than body when element not changeable
+ 
+Error when rendering the page informing that the Export has been performed
+
+IBWR01 Opera: Translations Screen error in columns layout because lack of support for HTML rowspan
+
+IMPO 08 Does not initialize or present Status Reports before and after import
+
+IMPO Copy Language : Estimate correctly the number of expected write operations
+
+IMPO Create missing Translations : Report the number of created translations
+
+Reflective method invocation should not retrieve the callable method with []
+
+UITR Translations page::Reference Language Selector::Names of languages not wekk known to Plone are not shown
+
+
+|
+|
+
+
+**POSTPONED**
+
+TEST02 Stress Test application
+
+TEST01 Test complete application
+
+DOCU03 Edit and publish gvSIG-i18n administration documentation
+
+DOCU01 Edit and publish gvSIG-i18n user documentation
+
+COMU02 Edit and publish pages gvSIG-i18n product to communities
+
+DOCU02 Edit and publish gvSIG-i18n install documentation
+
+ADMI07 Add Action to Rebuild Plone catalogs
+
+EXPO02 Export translations with archive name ...
+
+EXPO03 Detect if translations into a language have changed lately
+
+UC15-2 Use Case Extension Change Translation detecting multiuser
+
+ADMI01 Upon translations catalog deletion  delete...
+
+ADMI02 Uninstall gvSIG-i18n Plone Product
+
+Reflective method invocation should not retrieve the callable method with []
+
+UC 22x01 Add Aynchronous interaction mode to Use Case &quot;Invalidate String translations to all languages&quot;
+
+IMPL 01v2 If External methods nto found  invoke methods in modules
+
+SUC 28 Use Case De-Activate and Activate a String
+
+ADMI 10 Use Case to view actual threads running import processes  and kill the import processes
+
+Error in template when manually creating an status report
+
+IMPO 08 Does not initialize or present Status Reports before and after import
+
+SUC 31 Block and Unblock changes to a specific module
+
+Error when attempting to cut and the catalog is locked agains modifications
+
+IDIO02 Show flags including the ones not pre-defined in Plone
+
+TEST03 Test complete application
+
+TEST04 Stress Test application
+
+UITR07 Add to translations screen a note for color shading
+
+UITR08 Send pending changes to server
+
+UITR10v2 Batch status changes
+
+UITR14 Remove go-to-translation action when clicking ...
+
+IMPO 06 Present duration estimations in the Import Progress report
+
+SUC 30 Block and Unblock access to a specific language
+
+SUC 32zextension01 Store in a python class as code the Credits to Display about the application sponsor  developer  copyright holder and author
+
+SUC33x1 Match acute variations with plain ascii vowel leters when Filter translations into a language by words in the translation
+
+USEX 03 Add to catalog and translations pages a legend with the roles held by the user at the catalog and selected language
+
+SUC 32zextension02 Serve in some cacheable form (script  css  image)  the Credits to Display about the application sponsor  developer  copyright holder and author
+
+USEX 04 Add to Advanced View pages (Tabular view) a link to the TRACatalogo view on the root
+
+USEX 02 Add to Advanced View a link to return to the default catalog view
+
+UI 01 Avoid Delete of some types of elements
+
+EXPO04 Export translations in XLIFF format
+
+IMPO04 Import translations in XLIFF format
+
+TEST05 Test complete application
+
+TEST06 Stress Test application
+
+EXPO05 Export Translation Memories in TMX format
+
+FEAT01 Use Cases in support of Translation Memories
+
+IMPO05 Import Translation Memories in TMX format
+
+TEST07 Test complete application
+
+TEST08 Stress Test application
+
+
+|
+|
+
+------------------------------
 
 |
 |
@@ -16,10 +176,11 @@ version 1.2.0.8
 
 **RESOLVED**
 
-|
-|
+
 
 ADMI 11 Present the security assessment on the connected user: permissions  roles  use cases
+
+Bug fix for error in TRAElemento_MappingConfig.py (undesired attempt to import a class from other project: ModelDDploneMOF).
 
 Fails to verify catalog when user has no write access  or the catalog is locked
 

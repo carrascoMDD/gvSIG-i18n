@@ -34,6 +34,10 @@ __docformat__ = 'plaintext'
 
 
 
+
+cLazyCreateModelDDvlPloneTool   = True
+
+
 # #######################################
 # Interaction modes
 #

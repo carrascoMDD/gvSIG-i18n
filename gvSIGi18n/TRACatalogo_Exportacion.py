@@ -1395,9 +1395,11 @@ class TRACatalogo_Exportacion:
                 unStringEscaped += chr( unCharOrdinal)
             else:
                 unCharEscaped = '\\u'
-                if unCharOrdinal < 256:
-                    unCharEscaped += '%02x' % unCharOrdinal
-                elif unCharOrdinal < (256 * 256):
+                # ACV 20091004 Unicode escape at least 4 digits, not just two
+                #if unCharOrdinal < 256:
+                    #unCharEscaped += '%02x' % unCharOrdinal
+                #elif unCharOrdinal < (256 * 256):
+                if unCharOrdinal < (256 * 256):
                     unCharEscaped += '%04x' % unCharOrdinal
                 elif unCharOrdinal < (256 * 256 * 256):
                     unCharEscaped += '%06x' % unCharOrdinal

@@ -35,6 +35,8 @@ __docformat__ = 'plaintext'
 
 import cgi
 
+import sys
+import traceback
 
 import logging
 
@@ -49,6 +51,10 @@ from StringIO                   import StringIO
 from AccessControl              import ClassSecurityInfo
 from Acquisition                import aq_inner, aq_parent
 
+
+from OFS.CopySupport            import CopyContainer
+
+
 from Products.Archetypes.utils  import shasattr
 
 from Products.CMFCore           import permissions
@@ -60,6 +66,8 @@ from Products.Archetypes.atapi  import OrderedBaseFolder, BaseBTreeFolder
 
 from Products.PloneLanguageTool import availablelanguages as PloneLanguageToolAvailableLanguages
 
+
+from Products.ModelDDvlPloneTool.ModelDDvlPloneTool import cModelDDvlPloneToolName, ModelDDvlPloneTool
 
 
 
@@ -2858,7 +2866,7 @@ class TRAElemento_Operaciones( TRAElemento_Permissions):
                 #None  
             
             
-            aModelDDvlPlone_tool = getToolByName( self, 'ModelDDvlPlone_tool', None)
+            aModelDDvlPloneTool = getToolByName( self, 'ModelDDvlPlone_tool', None)
             
             if aModelDDvlPloneTool:
                 return aModelDDvlPloneTool
@@ -2879,7 +2887,7 @@ class TRAElemento_Operaciones( TRAElemento_Permissions):
             #except:
                 #None  
                 
-            aModelDDvlPlone_tool = getToolByName( self, 'ModelDDvlPlone_tool', None)
+            aModelDDvlPloneTool = getToolByName( self, 'ModelDDvlPlone_tool', None)
             if not aModelDDvlPloneTool:
                 return None
                         

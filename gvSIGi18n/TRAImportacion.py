@@ -965,6 +965,8 @@ class TRAImportacion(OrderedBaseFolder, TRAArquetipo, TRAImportacion_Operaciones
     portal_type = 'TRAImportacion'
 
 
+    # Change Audit fields
+
     creation_date_field = 'fechaCreacion'
     creation_user_field = 'usuarioCreador'
     modification_date_field = 'fechaModificacion'
@@ -974,6 +976,9 @@ class TRAImportacion(OrderedBaseFolder, TRAArquetipo, TRAImportacion_Operaciones
     is_inactive_field = 'estaInactivo'
     change_counter_field = 'contadorCambios'
     change_log_field = 'registroDeCambios'
+
+
+
     allowed_content_types = ['TRAInforme', 'TRAContenidoIntercambio'] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRAImportacion_Operaciones, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', []))
     filter_content_types = 1
     global_allow = 0
