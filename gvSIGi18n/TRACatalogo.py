@@ -75,7 +75,7 @@ schema = Schema((
         label="Producto",
         length="0",
         containment="Not Specified",
-        position="13",
+        position="15",
         owner_class_name="TRACatalogo"
     ),
 
@@ -110,6 +110,66 @@ schema = Schema((
     ),
 
     StringField(
+        name='codigoIdiomaRequeridoSolicitudesNuevasCadenas',
+        widget=StringWidget(
+            label="Codigo de Idioma para Solicitudes de Nuevas Cadenas",
+            label2="Language Code  for new String Requests",
+            description="Codigo del lenguage en el que se requiere una traduccion cuando se solicitan nuevas cadenas.",
+            description2="Code of the language for which a translation is requiered when requesting creation of new strings.",
+            label_msgid='gvSIGi18n_TRACatalogo_attr_codigoIdiomaRequeridoSolicitudesNuevasCadenas_label',
+            description_msgid='gvSIGi18n_TRACatalogo_attr_codigoIdiomaRequeridoSolicitudesNuevasCadenas_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Codigo del lenguage en el que se requiere una traduccion cuando se solicitan nuevas cadenas.",
+        duplicates="0",
+        label2="Language Code  for new String Requests",
+        ea_localid="1532",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="Code of the language for which a translation is requiered when requesting creation of new strings.",
+        ea_guid="{02CB334C-305D-4804-B97A-43CDEC5F1405}",
+        scale="0",
+        default="en",
+        label="Codigo de Idioma para Solicitudes de Nuevas Cadenas",
+        length="0",
+        containment="Not Specified",
+        position="6",
+        owner_class_name="TRACatalogo"
+    ),
+
+    StringField(
+        name='codigoIdiomaReferenciaSolicitudesNuevasCadenas',
+        widget=StringWidget(
+            label="Codigo de Idioma de Referencia  para Solicitudes de Nuevas Cadenas",
+            label2="Reference Language Code for new String Requests",
+            description="Codigo del lenguage para el que el desarrollador puede proporcionar una traduccion de referencia, cuando se solicitan nuevas cadenas.",
+            description2="Code of the language for which the developer may provide a reference  translation when requesting creation of new strings.",
+            label_msgid='gvSIGi18n_TRACatalogo_attr_codigoIdiomaReferenciaSolicitudesNuevasCadenas_label',
+            description_msgid='gvSIGi18n_TRACatalogo_attr_codigoIdiomaReferenciaSolicitudesNuevasCadenas_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Codigo del lenguage para el que el desarrollador puede proporcionar una traduccion de referencia, cuando se solicitan nuevas cadenas.",
+        duplicates="0",
+        label2="Reference Language Code for new String Requests",
+        ea_localid="1533",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="Code of the language for which the developer may provide a reference  translation when requesting creation of new strings.",
+        ea_guid="{0418F0A6-AA65-426b-A999-1ED5326C7BBD}",
+        scale="0",
+        default="es",
+        label="Codigo de Idioma de Referencia  para Solicitudes de Nuevas Cadenas",
+        length="0",
+        containment="Not Specified",
+        position="7",
+        owner_class_name="TRACatalogo"
+    ),
+
+    StringField(
         name='nombreModuloPorDefecto',
         widget=StringWidget(
             label="Nombre de Modulo por defecto",
@@ -135,7 +195,7 @@ schema = Schema((
         label="Nombre de Modulo por defecto",
         length="0",
         containment="Not Specified",
-        position="12",
+        position="14",
         owner_class_name="TRACatalogo"
     ),
 
@@ -165,7 +225,7 @@ schema = Schema((
         label="Dominio para cadenas sin modulo",
         length="0",
         containment="Not Specified",
-        position="14",
+        position="16",
         owner_class_name="TRACatalogo"
     ),
 
@@ -229,39 +289,6 @@ schema = Schema((
         owner_class_name="TRACatalogo"
     ),
 
-    StringField(
-        name='modoInteraccionPorDefecto',
-        widget=SelectionWidget(
-            label="Modo de Interaccion con el Servidor por defecto",
-            label2="Default Server Interaction mode",
-            description="Cuando sea Asincrono el navegador de internet enviara los cambios al servidor sin refrescar toda la pagina, permitiendo continuar el trabajo en la pagina actual. Cuando Sincrono, enviara cambios al servidor cargando una pagina completamente nueva.",
-            description2="When Asynchronous the internet browser will send changes to server without refreshing the whole page, allowing continuation of work in the current page. When Synchronous the internet browser will send changes to server by loading a completely new page.",
-            label_msgid='gvSIGi18n_TRACatalogo_attr_modoInteraccionPorDefecto_label',
-            description_msgid='gvSIGi18n_TRACatalogo_attr_modoInteraccionPorDefecto_help',
-            i18n_domain='gvSIGi18n',
-        ),
-        description="Cuando sea Asincrono el navegador de internet enviara los cambios al servidor sin refrescar toda la pagina, permitiendo continuar el trabajo en la pagina actual. Cuando Sincrono, enviara cambios al servidor cargando una pagina completamente nueva.",
-        vocabulary=['Asincrono','Sincrono',],
-        duplicates="0",
-        vocabulary_msgids=['gvSIGi18n_TRACatalogo_attr_modoInteraccionPorDefecto_option_Asincrono', 'gvSIGi18n_TRACatalogo_attr_modoInteraccionPorDefecto_option_Sincrono'],
-        label2="Default Server Interaction mode",
-        ea_localid="1474",
-        derived="0",
-        precision=0,
-        collection="false",
-        styleex="volatile=0;",
-        description2="When Asynchronous the internet browser will send changes to server without refreshing the whole page, allowing continuation of work in the current page. When Synchronous the internet browser will send changes to server by loading a completely new page.",
-        ea_guid="{91F167D6-FD4A-4bc6-B459-84FB38E33705}",
-        vocabulary2=['Asynchronous','Syncronous',],
-        scale="0",
-        default="Asincrono",
-        label="Modo de Interaccion con el Servidor por defecto",
-        length="0",
-        containment="Not Specified",
-        position="4",
-        owner_class_name="TRACatalogo"
-    ),
-
     IntegerField(
         name='segundosParaConfirmarImportacion',
         widget=IntegerField._properties['widget'](
@@ -321,7 +348,7 @@ schema = Schema((
         label="Formato de exportacion por defecto",
         length="0",
         containment="Not Specified",
-        position="6",
+        position="8",
         owner_class_name="TRACatalogo"
     ),
 
@@ -354,7 +381,7 @@ schema = Schema((
         label="Incluir fichero locales.csv",
         length="0",
         containment="Not Specified",
-        position="9",
+        position="11",
         owner_class_name="TRACatalogo"
     ),
 
@@ -387,7 +414,7 @@ schema = Schema((
         label="Incluir fichero MANIFEST.MF",
         length="0",
         containment="Not Specified",
-        position="10",
+        position="12",
         owner_class_name="TRACatalogo"
     ),
 
@@ -420,7 +447,7 @@ schema = Schema((
         label="Exportar modulos por separado",
         length="0",
         containment="Not Specified",
-        position="11",
+        position="13",
         owner_class_name="TRACatalogo"
     ),
 
@@ -453,7 +480,7 @@ schema = Schema((
         label="Tipo de archivo descargable por defecto",
         length="0",
         containment="Not Specified",
-        position="8",
+        position="10",
         owner_class_name="TRACatalogo"
     ),
 
@@ -486,7 +513,7 @@ schema = Schema((
         label="Modo de gestion de errores de codificacion",
         length="0",
         containment="Not Specified",
-        position="7",
+        position="9",
         owner_class_name="TRACatalogo"
     ),
 
@@ -515,7 +542,7 @@ schema = Schema((
         label="Ultima Version importada del producto",
         length="0",
         containment="Not Specified",
-        position="15",
+        position="17",
         owner_class_name="TRACatalogo",
         expression="context.fDeriveUltimaVersionImportada()",
         computed_types="string"
@@ -546,7 +573,7 @@ schema = Schema((
         label="Identificador del Ultimo Build Importado",
         length="0",
         containment="Not Specified",
-        position="16",
+        position="18",
         owner_class_name="TRACatalogo",
         expression="context.fDeriveUltimoBuildImportado()",
         computed_types="string"
@@ -577,7 +604,7 @@ schema = Schema((
         label="Fecha de Ultima Importacion",
         length="0",
         containment="Not Specified",
-        position="17",
+        position="19",
         owner_class_name="TRACatalogo",
         expression="context.fDeriveFechaUltimaImportacion()",
         computed_types="DateTime"
@@ -608,7 +635,7 @@ schema = Schema((
         label="Fecha del Ultimo Informe de Estado",
         length="0",
         containment="Not Specified",
-        position="18",
+        position="20",
         owner_class_name="TRACatalogo",
         expression="context.fDeriveFechaUltimoInforme()",
         computed_types="DateTime"
@@ -752,6 +779,39 @@ schema = Schema((
         represents_aggregation=True
     ),
 
+    StringField(
+        name='modoInteraccionPorDefecto',
+        widget=SelectionWidget(
+            label="Modo de Interaccion con el Servidor por defecto",
+            label2="Default Server Interaction mode",
+            description="Cuando sea Asincrono el navegador de internet enviara los cambios al servidor sin refrescar toda la pagina, permitiendo continuar el trabajo en la pagina actual. Cuando Sincrono, enviara cambios al servidor cargando una pagina completamente nueva.",
+            description2="When Asynchronous the internet browser will send changes to server without refreshing the whole page, allowing continuation of work in the current page. When Synchronous the internet browser will send changes to server by loading a completely new page.",
+            label_msgid='gvSIGi18n_TRACatalogo_attr_modoInteraccionPorDefecto_label',
+            description_msgid='gvSIGi18n_TRACatalogo_attr_modoInteraccionPorDefecto_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Cuando sea Asincrono el navegador de internet enviara los cambios al servidor sin refrescar toda la pagina, permitiendo continuar el trabajo en la pagina actual. Cuando Sincrono, enviara cambios al servidor cargando una pagina completamente nueva.",
+        vocabulary=['Asincrono','Sincrono',],
+        duplicates="0",
+        vocabulary_msgids=['gvSIGi18n_TRACatalogo_attr_modoInteraccionPorDefecto_option_Asincrono', 'gvSIGi18n_TRACatalogo_attr_modoInteraccionPorDefecto_option_Sincrono'],
+        label2="Default Server Interaction mode",
+        ea_localid="1474",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="When Asynchronous the internet browser will send changes to server without refreshing the whole page, allowing continuation of work in the current page. When Synchronous the internet browser will send changes to server by loading a completely new page.",
+        ea_guid="{91F167D6-FD4A-4bc6-B459-84FB38E33705}",
+        vocabulary2=['Asynchronous','Syncronous',],
+        scale="0",
+        default="Asincrono",
+        label="Modo de Interaccion con el Servidor por defecto",
+        length="0",
+        containment="Not Specified",
+        position="4",
+        owner_class_name="TRACatalogo"
+    ),
+
     TextField(
         name='modulosYSimbolosCadenasOrdenados',
         widget=TextAreaWidget(
@@ -778,7 +838,7 @@ schema = Schema((
         length="0",
         exclude_from_traversalconfig="True",
         containment="Not Specified",
-        position="21",
+        position="23",
         owner_class_name="TRACatalogo"
     ),
 
@@ -840,7 +900,7 @@ schema = Schema((
         length="0",
         exclude_from_traversalconfig="True",
         containment="Not Specified",
-        position="19",
+        position="21",
         owner_class_name="TRACatalogo"
     ),
 
@@ -874,7 +934,7 @@ schema = Schema((
         length="0",
         multiValued=0,
         containment="Not Specified",
-        position="22",
+        position="24",
         owner_class_name="TRACatalogo"
     ),
 
@@ -908,7 +968,7 @@ schema = Schema((
         length="0",
         multiValued=0,
         containment="Not Specified",
-        position="20",
+        position="22",
         owner_class_name="TRACatalogo"
     ),
 

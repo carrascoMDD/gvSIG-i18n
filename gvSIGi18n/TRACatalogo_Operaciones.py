@@ -563,12 +563,52 @@ class TRACatalogo_Operaciones:
     
          
        
-    
-    
-    security.declareProtected( permissions.View, 'fKnownIdiomasCodesAndDisplayNames')
-    def fKnownIdiomasCodesAndDisplayNames(self,):
+    security.declareProtected( permissions.View, 'fKnownIdiomaCodeAndNames')
+    def fKnownIdiomaCodeAndNames(self, theCodigoIdioma):
+        
+        if not theCodigoIdioma:
+            return []
+         
+        unosLanguagesNamesAndFlagsPorCodigo = self.fLanguagesNamesAndFlagsPorCodigo()
+        unosNamesAndFlagForLanguage = unosLanguagesNamesAndFlagsPorCodigo.get( theCodigoIdioma, None)
+        if not unosNamesAndFlagForLanguage:
+            return []
+         
  
-        unosCodesAndDisplayNames = []
+        unNombreInglesDeIdioma = unosNamesAndFlagForLanguage.get( 'english', theCodigoIdioma)
+        unNombreNativoDeIdioma = unosNamesAndFlagForLanguage.get( 'native', unNombreInglesDeIdioma)
+        if not unNombreInglesDeIdioma:
+            return []
+        
+        unCodeAndNames = [ 
+            self.fAsUnicode( theCodigoIdioma),
+            self.fAsUnicode( unNombreInglesDeIdioma), 
+            self.fAsUnicode( unNombreNativoDeIdioma),
+        ]
+    
+        return unCodeAndNames
+   
+     
+  
+    security.declareProtected( permissions.View, 'fKnownIdiomaCodeAndDisplayName')
+    def fKnownIdiomaCodeAndDisplayName(self, theCodigoIdioma):
+ 
+        unCodeAndNames = self.fKnownIdiomaCodeAndNames( theCodigoIdioma)
+        if not unCodeAndNames:
+            return []
+        
+        unCodeAndDisplayName =  [ 
+            self.fAsUnicode( theCodigoIdioma),
+            u'[%s] %s (%s)' % ( self.fAsUnicode( unCodeAndNames[ 0]),self.fAsUnicode( unCodeAndNames[ 1]), self.fAsUnicode( unCodeAndNames[ 2]), ),
+        ]
+    
+        return unCodeAndDisplayName
+  
+    
+    security.declareProtected( permissions.View, 'fKnownIdiomasCodesAndNames')
+    def fKnownIdiomasCodesAndNames(self,):
+ 
+        unosCodesAndNames = []
         
         unosLanguagesNamesAndFlagsPorCodigo = self.fLanguagesNamesAndFlagsPorCodigo()
         unosCodigosIdioma = sorted( unosLanguagesNamesAndFlagsPorCodigo.keys())
@@ -576,32 +616,74 @@ class TRACatalogo_Operaciones:
         for unCodigoIdioma in unosCodigosIdioma:
             unosDatosIdioma = unosLanguagesNamesAndFlagsPorCodigo.get( unCodigoIdioma, {})
             if unosDatosIdioma:
-                unNombreInglesDeIdioma = unosDatosIdioma.get( 'english', '')
+                unNombreInglesDeIdioma = unosDatosIdioma.get( 'english', unCodigoIdioma)
                 unNombreNativoDeIdioma = unosDatosIdioma.get( 'native', unNombreInglesDeIdioma)
                 if unNombreInglesDeIdioma:
-                    unosCodesAndDisplayNames.append( [ 
+                    unosCodesAndNames.append( [ 
                         self.fAsUnicode( unCodigoIdioma),
-                        u'[%s] %s (%s)' % ( self.fAsUnicode( unCodigoIdioma),self.fAsUnicode( unNombreInglesDeIdioma), self.fAsUnicode( unNombreNativoDeIdioma), ),
+                        self.fAsUnicode( unNombreInglesDeIdioma), 
+                        self.fAsUnicode( unNombreNativoDeIdioma),
                     ])
+    
+        return unosCodesAndNames
+   
+    
+    
+    security.declareProtected( permissions.View, 'fKnownIdiomasCodesAndDisplayNames')
+    def fKnownIdiomasCodesAndDisplayNames(self,):
+ 
+        unosCodesAndNames = self.fKnownIdiomasCodesAndNames()
+        
+        unosCodesAndDisplayNames = []
+        
+        for unCodigoIdioma, unNombreInglesDeIdioma, unNombreNativoDeIdioma in unosCodesAndNames:
+            if unCodigoIdioma and unNombreInglesDeIdioma:
+                unosCodesAndDisplayNames.append( [ 
+                    self.fAsUnicode( unCodigoIdioma),
+                    u'[%s] %s (%s)' % ( self.fAsUnicode( unCodigoIdioma),self.fAsUnicode( unNombreInglesDeIdioma), self.fAsUnicode( unNombreNativoDeIdioma), ),
+                ])
     
         return unosCodesAndDisplayNames
    
     
     
+        
+    
+    security.declareProtected( permissions.View, 'fNonExistingKnownIdiomasCodesAndNames')
+    def fNonExistingKnownIdiomasCodesAndNames(self,):
+        
+        unosCodesAndNames = self.fKnownIdiomasCodesAndNames()
+
+        if not unosCodesAndNames:
+            return []
+        
+        unosIdiomas = self.fObtenerTodosIdiomas()
+        unosCodigosIdioma = [ unIdioma.getCodigoIdiomaEnGvSIG() for unIdioma in unosIdiomas]
+        
+        unosNonExistingCodesAndNames = [ [ unCodigoIdioma, unNombreInglesDeIdioma, unNombreNativoDeIdioma] for unCodigoIdioma, unNombreInglesDeIdioma, unNombreNativoDeIdioma in unosCodesAndNames if not ( unCodigoIdioma in unosCodigosIdioma)]
+        unosSortedNonExistingCodesAndNames = sorted ( unosNonExistingCodesAndNames, lambda unCeDN, otroCeDN: cmp( unCeDN[ 0], otroCeDN[ 0]))
+        return unosSortedNonExistingCodesAndNames
+        
+    
+          
+      
     
     security.declareProtected( permissions.View, 'fNonExistingKnownIdiomasCodesAndDisplayNames')
     def fNonExistingKnownIdiomasCodesAndDisplayNames(self,):
-        unosCodesAndDisplayNames =  self.fKnownIdiomasCodesAndDisplayNames()
-        if not unosCodesAndDisplayNames:
-            return unosCodesAndDisplayNames
+ 
+        unosCodesAndNames = self.fNonExistingKnownIdiomasCodesAndNames()
         
-        unosIdiomas = self.fObtenerTodosIdiomas()
-        unosCodigosIdioma = [ unIdioma.getcodigoIdiomiaEnGvSIG() for unIdioma in unosIdiomas]
+        unosCodesAndDisplayNames = []
         
-        unosNonExistingCodesAndDisplayNames = [ [ unCode, unDisplayName] for unCode, unDisplayname in unosCodesAndDisplayNames if not ( unCode in unosCodigosIdioma)]
-        return unosNonExistingCodesAndDisplayNames
-        
+        for unCodigoIdioma, unNombreInglesDeIdioma, unNombreNativoDeIdioma in unosCodesAndNames:
+            if unCodigoIdioma and unNombreInglesDeIdioma:
+                unosCodesAndDisplayNames.append( [ 
+                    self.fAsUnicode( unCodigoIdioma),
+                    u'[%s] %s (%s)' % ( self.fAsUnicode( unCodigoIdioma),self.fAsUnicode( unNombreInglesDeIdioma), self.fAsUnicode( unNombreNativoDeIdioma), ),
+                ])
     
+        return unosCodesAndDisplayNames
+     
     
     security.declareProtected( permissions.View, 'fGetIdiomaPorCodigo')
     def fGetIdiomaPorCodigo( self, theCodigoIdioma, thePloneUtilsTool=None):
@@ -1074,74 +1156,6 @@ class TRACatalogo_Operaciones:
     
     
     
-    
-    # ################################################################
-    """Public Factories exposed to the user interface.
-    
-    """
-
-    
-    security.declareProtected( permissions.AddPortalContent, 'fCrearIdiomaDesdeUI')
-    def fCrearIdiomaDesdeUI( self, theCodigoIdiomaEnGvSIG, theCodigoInternacionalDeIdioma, theTitle, theNombreInglesIdioma, theNombreNativoIdioma, theParentExecutionRecord=None):
-     
-        #unExecutionRecord = self.fStartExecution( 'method',  'fCrearIdiomaDesdeUI', theParentExecutionRecord, False) 
-        
-        #try:
-            #unIdiomaExistente = self.fGetIdiomaPorCodigo( theCodigoIdiomaEnGvSIG)
-            #if unIdiomaExistente:
-                #return [ theCodigoIdiomaEnGvSIG, 'exists',]
-            
-            #unResultadoCrearIdiomaYTraducciones = self.fCrearIdiomaYTraducciones( theCodigoIdiomaEnGvSIG, theCodigoInternacionalDeIdioma, theTitle, theNombreInglesIdioma, theNombreNativoIdioma, aTimeProfilingResults)
-            #if unResultadoCrearIdiomaYTraducciones and unResultadoCrearIdiomaYTraducciones[ 0]:
-                #transaction.commit()
-                #return [ theCodigoIdiomaEnGvSIG, 'created',]
-        
-            #return [ '', 'creation_failed',]
-
-        #finally:
-            #unExecutionRecord and unExecutionRecord.pEndExecution()  
-        return None
-     
-    
-    
-    
-    
-    
-            
-            
-            
-            
-            
-            
-            
-            
-    
-    # ################################################################
-    """Private composite Factories
-    
-    """
-    
-    
-    security.declarePrivate( 'fCrearIdiomaYTraducciones')
-    def fCrearIdiomaYTraducciones( self, theCodigoIdiomaEnGvSIG, theCodigoInternacionalDeIdioma='', theTitle='', theNombreInglesIdioma='', theNombreNativoIdioma='', theParentExecutionRecord=None):
-
-        #unExecutionRecord = self.fStartExecution( 'method',  'fCrearIdiomaYTraducciones', theParentExecutionRecord, False) 
-        
-        #try:
-         
-            #unNuevoIdioma = self.fCrearIdioma( theCodigoIdiomaEnGvSIG, theCodigoInternacionalDeIdioma, theTitle, theNombreInglesIdioma, theNombreNativoIdioma)
-            #if unNuevoIdioma:
-                #unResultadoCrearTraducciones = self.fCrearTraduccionesQueFaltanIdioma()
-                #return[ theCodigoIdiomaEnGvSIG, unResultadoCrearTraducciones]
-            
-            #return [ None, None]
-    
-        #finally:
-            #unExecutionRecord and unExecutionRecord.pEndExecution()  
-        return None
-         
-    
-     
 
     
 

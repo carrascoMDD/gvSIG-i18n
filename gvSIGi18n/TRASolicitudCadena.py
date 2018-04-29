@@ -54,7 +54,6 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRASolicitudCadena_attr_simbolo_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="El simbolo que identifica la Cadena que se solicita crear.",
         duplicates="0",
         label2="Symbol",
@@ -63,13 +62,15 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="The symbol identifying the string requested to be created,",
-        containment="Not Specified",
         ea_guid="{C13920DA-0B81-4b5e-82F9-B5202CB599CE}",
+        read_only=True,
+        scale="0",
+        label="Simbolo",
+        length="0",
+        containment="Not Specified",
         position="0",
-        owner_class_name="TRASolicitudCadena",
-        label="Simbolo"
+        owner_class_name="TRASolicitudCadena"
     ),
 
     StringField(
@@ -96,6 +97,7 @@ schema = Schema((
         description2="String Request Status as Pending, Discarded, or Created.",
         ea_guid="{F3F7D328-9FB0-4ef3-95A8-1EA079E3DEF8}",
         vocabulary2=['Pending', 'Discarded', 'Created',],
+        read_only=True,
         scale="0",
         default='Pendiente',
         label="Estado de la Solicitud de Cadena",
@@ -116,7 +118,6 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRASolicitudCadena_attr_fechaCreacionTextual_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="Representacion textual de la fecha en que se creo la cadena a traducir.",
         duplicates="0",
         label2="Creation Date as text",
@@ -125,13 +126,15 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="Textual representation of the date when the String was first created.",
-        containment="Not Specified",
         ea_guid="{4F88BD50-4984-4d81-A80B-2FA459EFAE9D}",
+        read_only=True,
+        scale="0",
+        label="Fecha de Creacion como texto",
+        length="0",
+        containment="Not Specified",
         position="3",
-        owner_class_name="TRASolicitudCadena",
-        label="Fecha de Creacion como texto"
+        owner_class_name="TRASolicitudCadena"
     ),
 
     StringField(
@@ -145,7 +148,6 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRASolicitudCadena_attr_usuarioCreador_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="Usuario que creo o importo la cadena a traducir.",
         duplicates="0",
         label2="Creator user",
@@ -154,13 +156,15 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="User who created or imported the string to be translated.",
-        containment="Not Specified",
         ea_guid="{CB2AC430-C5CC-4bf0-B6B7-4C11B9D9EC95}",
+        read_only=True,
+        scale="0",
+        label="Usuario Creador",
+        length="0",
+        containment="Not Specified",
         position="4",
-        owner_class_name="TRASolicitudCadena",
-        label="Usuario Creador"
+        owner_class_name="TRASolicitudCadena"
     ),
 
     StringField(
@@ -174,7 +178,6 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRASolicitudCadena_attr_fechaCancelacionTextual_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="La fecha en que la cadena fue cancelada, de forma que no vuelva a ser considerada para su traduccion.",
         duplicates="0",
         label2="Cancelation Date",
@@ -183,13 +186,15 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="The date when the String was cancelled, such that the string won't be considered again for translation.",
-        containment="Not Specified",
         ea_guid="{EA940557-4C2D-4e06-ACF4-AB6E2113B24F}",
+        read_only=True,
+        scale="0",
+        label="Fecha de Cancelacion",
+        length="0",
+        containment="Not Specified",
         position="5",
-        owner_class_name="TRASolicitudCadena",
-        label="Fecha de Cancelacion"
+        owner_class_name="TRASolicitudCadena"
     ),
 
     StringField(
@@ -207,7 +212,7 @@ schema = Schema((
         description="Nombres de los Modulos en los que se usa esta cadena.",
         duplicates="0",
         label2="Modules",
-        ea_localid="1519",
+        ea_localid="1534",
         derived="0",
         precision=0,
         collection="false",
@@ -215,8 +220,8 @@ schema = Schema((
         length="0",
         description2="Names of the Modules using this String.",
         containment="Not Specified",
-        ea_guid="{DFD0DBFA-CCA5-45db-8E87-DCF27224F871}",
-        position="6",
+        ea_guid="{E9755386-21D5-472e-960E-C6D8A6BC1887}",
+        position="7",
         owner_class_name="TRASolicitudCadena",
         label="Modulos"
     ),
@@ -245,7 +250,7 @@ schema = Schema((
         description2="References to source code where the string is used.",
         containment="Not Specified",
         ea_guid="{63018342-F0CE-44a1-9EDC-734730A9FC5E}",
-        position="7",
+        position="6",
         owner_class_name="TRASolicitudCadena",
         label="Referencias a fuentes"
     ),
@@ -261,7 +266,6 @@ schema = Schema((
             description_msgid='gvSIGi18n_TRASolicitudCadena_attr_codigoIdiomaPrincipal_help',
             i18n_domain='gvSIGi18n',
         ),
-        scale="0",
         description="Codigo de Idioma Principal para el que el desarrollador proporciona una traducción.",
         duplicates="0",
         label2="Main Language code",
@@ -270,18 +274,20 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        length="0",
         description2="Main Language code for which the developer supplies a translation.",
-        containment="Not Specified",
         ea_guid="{E14EFE05-76A1-4432-9B81-B98CB8DE66DE}",
-        position="8",
-        owner_class_name="TRASolicitudCadena",
-        label="Codigo de Idioma Principal"
+        read_only=True,
+        scale="0",
+        label="Codigo de Idioma Principal",
+        length="0",
+        containment="Not Specified",
+        position="7",
+        owner_class_name="TRASolicitudCadena"
     ),
 
-    StringField(
+    TextField(
         name='cadenaTraducidaAIdiomaPrincipal',
-        widget=StringWidget(
+        widget=TextAreaWidget(
             label="Traduccion al Idioma Principal",
             label2="Translation into the main language",
             description="Cadena traducida al Idioma principal, suministrada por el desarrollador.",
@@ -303,7 +309,7 @@ schema = Schema((
         description2="String translated to the main Language, supplied by the developer.",
         containment="Not Specified",
         ea_guid="{5D47B672-17A5-46c0-8C08-F72075FB49E4}",
-        position="9",
+        position="8",
         owner_class_name="TRASolicitudCadena",
         label="Traduccion al Idioma Principal"
     ),
@@ -332,14 +338,14 @@ schema = Schema((
         description2="Reference Language code for which the developer supplies a translation.",
         containment="Not Specified",
         ea_guid="{D20AAA93-7307-43f5-A043-24EA875BF767}",
-        position="10",
+        position="9",
         owner_class_name="TRASolicitudCadena",
         label="Codigo de Idioma de referencia"
     ),
 
-    StringField(
+    TextField(
         name='cadenaTraducidaAIdiomaReferencia',
-        widget=StringWidget(
+        widget=TextAreaWidget(
             label="Traduccion al idioma de referencia",
             label2="Translation into the reference language",
             description="Cadena traducida al Idioma de referencia, suministrada por el desarrollador.",
@@ -361,7 +367,7 @@ schema = Schema((
         description2="String translated to the reference Language, supplied by the developer.",
         containment="Not Specified",
         ea_guid="{ED296F39-B610-4e7b-AE4D-FE9C68BD947F}",
-        position="11",
+        position="10",
         owner_class_name="TRASolicitudCadena",
         label="Traduccion al idioma de referencia"
     ),

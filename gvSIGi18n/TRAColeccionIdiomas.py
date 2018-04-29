@@ -32,7 +32,7 @@ __docformat__ = 'plaintext'
 from AccessControl import ClassSecurityInfo
 from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.TRAColeccionArquetipos import TRAColeccionArquetipos
-from Products.gvSIGi18n.TRAColeccionIdiiomas_Operaciones import TRAColeccionIdiiomas_Operaciones
+from Products.gvSIGi18n.TRAColeccionIdiomas_Operaciones import TRAColeccionIdiomas_Operaciones
 from Products.gvSIGi18n.config import *
 
 ##code-section module-header #fill in your manual code here
@@ -73,24 +73,24 @@ schema = Schema((
 
 TRAColeccionIdiomas_schema = OrderedBaseFolderSchema.copy() + \
     getattr(TRAColeccionArquetipos, 'schema', Schema(())).copy() + \
-    getattr(TRAColeccionIdiiomas_Operaciones, 'schema', Schema(())).copy() + \
+    getattr(TRAColeccionIdiomas_Operaciones, 'schema', Schema(())).copy() + \
     schema.copy()
 
 ##code-section after-schema #fill in your manual code here
 ##/code-section after-schema
 
-class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccionIdiiomas_Operaciones):
+class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccionIdiomas_Operaciones):
     """
     """
     security = ClassSecurityInfo()
-    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAColeccionArquetipos,'__implements__',()),) + (getattr(TRAColeccionIdiiomas_Operaciones,'__implements__',()),)
+    __implements__ = (getattr(OrderedBaseFolder,'__implements__',()),) + (getattr(TRAColeccionArquetipos,'__implements__',()),) + (getattr(TRAColeccionIdiomas_Operaciones,'__implements__',()),)
 
     # This name appears in the 'add' box
     archetype_name = 'Coleccion de Idiomas'
 
     meta_type = 'TRAColeccionIdiomas'
     portal_type = 'TRAColeccionIdiomas'
-    allowed_content_types = ['TRAIdioma'] + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', [])) + list(getattr(TRAColeccionIdiiomas_Operaciones, 'allowed_content_types', []))
+    allowed_content_types = ['TRAIdioma'] + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', [])) + list(getattr(TRAColeccionIdiomas_Operaciones, 'allowed_content_types', []))
     filter_content_types = 1
     global_allow = 0
     #content_icon = 'TRAColeccionIdiomas.gif'

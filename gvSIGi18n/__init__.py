@@ -113,7 +113,7 @@ def initialize(context):
     import TRACatalogo_Eliminacion
     import TRATraduccion_Operaciones
     import TRAColeccionModulos
-    import TRAColeccionIdiiomas_Operaciones
+    import TRAColeccionIdiomas_Operaciones
     import TRATraduccion
     import TRAInforme_Operaciones
     import TRACadena_Operaciones

@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gvSIGi18n\n"
-"POT-Creation-Date: Fri Jul 31 20:10:13 2009\n"
-"PO-Revision-Date: Fri Jul 31 20:10:13 2009\n"
+"POT-Creation-Date: Fri Aug 14 04:08:55 2009\n"
+"PO-Revision-Date: Fri Aug 14 04:08:55 2009\n"
 "Last-Translator: Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>\n"
 "Language-Team: Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>\n"
 "MIME-Version: 1.0\n"
@@ -175,6 +175,26 @@ msgstr "Codigo de Idioma por defecto"
 #: TRACatalogo codigoIdiomaPorDefecto
 msgid "gvSIGi18n_TRACatalogo_attr_codigoIdiomaPorDefecto_help"
 msgstr "Codigo del lenguage para el que los ficheros de importacion o exportacion Java .properties no incorporan el codigo del lenguage como sufijo en el nombre del fichero."
+
+#. Default: "Codigo de Idioma de Referencia  para Solicitudes de Nuevas Cadenas"
+#: TRACatalogo codigoIdiomaReferenciaSolicitudesNuevasCadenas
+msgid "gvSIGi18n_TRACatalogo_attr_codigoIdiomaReferenciaSolicitudesNuevasCadenas_label"
+msgstr "Codigo de Idioma de Referencia  para Solicitudes de Nuevas Cadenas"
+
+#. Default: "Codigo del lenguage para el que el desarrollador puede proporcionar una traduccion de referencia, cuando se solicitan nuevas cadenas."
+#: TRACatalogo codigoIdiomaReferenciaSolicitudesNuevasCadenas
+msgid "gvSIGi18n_TRACatalogo_attr_codigoIdiomaReferenciaSolicitudesNuevasCadenas_help"
+msgstr "Codigo del lenguage para el que el desarrollador puede proporcionar una traduccion de referencia, cuando se solicitan nuevas cadenas."
+
+#. Default: "Codigo de Idioma para Solicitudes de Nuevas Cadenas"
+#: TRACatalogo codigoIdiomaRequeridoSolicitudesNuevasCadenas
+msgid "gvSIGi18n_TRACatalogo_attr_codigoIdiomaRequeridoSolicitudesNuevasCadenas_label"
+msgstr "Codigo de Idioma para Solicitudes de Nuevas Cadenas"
+
+#. Default: "Codigo del lenguage en el que se requiere una traduccion cuando se solicitan nuevas cadenas."
+#: TRACatalogo codigoIdiomaRequeridoSolicitudesNuevasCadenas
+msgid "gvSIGi18n_TRACatalogo_attr_codigoIdiomaRequeridoSolicitudesNuevasCadenas_help"
+msgstr "Codigo del lenguage en el que se requiere una traduccion cuando se solicitan nuevas cadenas."
 
 #. Default: "Dominio para cadenas sin modulo"
 #: TRACatalogo dominioPorDefecto
@@ -656,16 +676,6 @@ msgstr "Cadenas a traducir"
 msgid "gvSIGi18n_TRAColeccionCadenas_contents_cadenas_help"
 msgstr "Cadenas para ser traducidas a los varios idiomas."
 
-#. Default: "TRAColeccionIdiiomas_Operaciones"
-#: TRAColeccionIdiiomas_Operaciones
-msgid "gvSIGi18n_TRAColeccionIdiiomas_Operaciones_label"
-msgstr "TRAColeccionIdiiomas_Operaciones"
-
-#. Default: "TRAColeccionIdiiomas_Operaciones"
-#: TRAColeccionIdiiomas_Operaciones
-msgid "gvSIGi18n_TRAColeccionIdiiomas_Operaciones_help"
-msgstr "TRAColeccionIdiiomas_Operaciones"
-
 #. Default: "Coleccion de Idiomas"
 #: TRAColeccionIdiomas
 msgid "gvSIGi18n_TRAColeccionIdiomas_label"
@@ -685,6 +695,16 @@ msgstr "Idiomas"
 #: TRAColeccionIdiomas idiomas
 msgid "gvSIGi18n_TRAColeccionIdiomas_contents_idiomas_help"
 msgstr "Idiomas a los que se desea traducir las cadena."
+
+#. Default: "TRAColeccionIdiomas_Operaciones"
+#: TRAColeccionIdiomas_Operaciones
+msgid "gvSIGi18n_TRAColeccionIdiomas_Operaciones_label"
+msgstr "TRAColeccionIdiomas_Operaciones"
+
+#. Default: "TRAColeccionIdiomas_Operaciones"
+#: TRAColeccionIdiomas_Operaciones
+msgid "gvSIGi18n_TRAColeccionIdiomas_Operaciones_help"
+msgstr "TRAColeccionIdiomas_Operaciones"
 
 #. Default: "Coleccion de Importaciones"
 #: TRAColeccionImportaciones

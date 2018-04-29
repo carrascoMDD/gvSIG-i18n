@@ -116,7 +116,7 @@ def install(self, reinstall=False):
         "TRAImportacion",
         "TRAIdioma",
         "TRAColeccionModulos",
-        "TRAColeccionIdiiomas_Operaciones",
+        "TRAColeccionIdiomas_Operaciones",
         "TRATraduccion",
         "TRASolicitudCadena",
         ] + factory_tool.getFactoryTypes().keys()

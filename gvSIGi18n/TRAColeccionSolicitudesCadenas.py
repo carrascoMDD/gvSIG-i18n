@@ -173,6 +173,24 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
        },
 
 
+       {'action': "string:${object_url}/TRACrearCadenas_action",
+        'category': "object",
+        'id': 'CreateStrings',
+        'name': 'Create Strings',
+        'permissions': ("Modify portal content",),
+        'condition': 'python:object.fRoleQuery_IsManagerOrCoordinator()'
+       },
+
+
+       {'action': "string:${object_url}/TRALimpiarCadenas_action",
+        'category': "object",
+        'id': 'CleanupStrings',
+        'name': 'Clean-up Strings',
+        'permissions': ("Modify portal content",),
+        'condition': 'python:object.fRoleQuery_IsManagerOrCoordinator()'
+       },
+
+
     )
 
     _at_rename_after_creation = True

@@ -492,8 +492,7 @@
                                             <tal:block tal:define="
                                                 unValorYEtiquetaReferencia     python: pIdiomasReferenciaVocabulary[ unIdiomaReferenciaIndex];
                                                 pCodeReferencia                python: unValorYEtiquetaReferencia[ 0];
-                                                pTitleReferencia               python: unValorYEtiquetaReferencia[ 1];
-                                                pSizesIdiomaReferencia         python: here.TRASizesIdioma( pCodeReferencia)" >                                                            
+                                                pTitleReferencia               python: unValorYEtiquetaReferencia[ 1]" >                                                            
                                                 <option tal:condition="python: pCodeReferencia == pCodigoIdiomaReferencia" 
                                                     id="#" selected="selected" value="#"
                                                     tal:content="pTitleReferencia"
