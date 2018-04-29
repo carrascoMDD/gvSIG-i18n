@@ -32,6 +32,9 @@ from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.TRAColeccionArquetipos import TRAColeccionArquetipos
 from Products.gvSIGi18n.config import *
 
+# additional imports from tagged value 'import'
+from TRAElemento_Operaciones import TRAElemento_Operaciones
+
 ##code-section module-header #fill in your manual code here
 ##/code-section module-header
 
@@ -50,7 +53,6 @@ schema = Schema((
         ),
         contains_collections=False,
         label2='Modules',
-        additional_columns=['esModuloPrincipal'],
         label='Modulos',
         represents_aggregation=True,
         description2='Modules in the Product to translate.',
@@ -103,19 +105,20 @@ class TRAColeccionModulos(OrderedBaseFolder, TRAColeccionArquetipos):
 
 
     allowed_content_types = ['TRAModulo'] + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', []))
-    filter_content_types = 1
-    global_allow = 0
+    filter_content_types             = 1
+    global_allow                     = 0
     #content_icon = 'TRAColeccionModulos.gif'
-    immediate_view = 'Tabular'
-    default_view = 'Tabular'
-    suppl_views = ['Tabular',]
-    typeDescription = "Colecicon de Modulos en el producto a traducir."
-    typeDescMsgId =  'gvSIGi18n_TRAColeccionModulos_help'
-    archetype_name2 = 'Modules collection'
-    typeDescription2 = '''Collection of Modules in the product to translate.'''
-    archetype_name_msgid = 'gvSIGi18n_TRAColeccionModulos_label'
-    factory_methods = None
-    factory_enablers = None
+    immediate_view                   = 'Tabular'
+    default_view                     = 'Tabular'
+    suppl_views                      = ['Tabular',]
+    typeDescription                  = "Colecicon de Modulos en el producto a traducir."
+    typeDescMsgId                    =  'gvSIGi18n_TRAColeccionModulos_help'
+    archetype_name2                  = 'Modules collection'
+    typeDescription2                 = '''Collection of Modules in the product to translate.'''
+    archetype_name_msgid             = 'gvSIGi18n_TRAColeccionModulos_label'
+    factory_methods                  = None
+    factory_enablers                 = None
+    propagate_delete_impact_to       = None
     allow_discussion = False
 
 
@@ -237,6 +240,13 @@ class TRAColeccionModulos(OrderedBaseFolder, TRAColeccionArquetipos):
         """
         
         return False
+
+    security.declarePublic('fExtraLinks')
+    def fExtraLinks(self):
+        """
+        """
+        
+        return TRAElemento_Operaciones.fExtraLinks( self)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

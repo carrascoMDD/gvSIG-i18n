@@ -34,6 +34,9 @@ from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.TRAColeccionArquetipos import TRAColeccionArquetipos
 from Products.gvSIGi18n.config import *
 
+# additional imports from tagged value 'import'
+from TRAElemento_Operaciones import TRAElemento_Operaciones
+
 ##code-section module-header #fill in your manual code here
 ##/code-section module-header
 
@@ -107,19 +110,20 @@ class TRAColeccionCadenas(BaseBTreeFolder, TRAColeccionArquetipos):
     use_folder_tabs = 0
 
     allowed_content_types = ['TRACadena'] + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', []))
-    filter_content_types = 1
-    global_allow = 0
+    filter_content_types             = 1
+    global_allow                     = 0
     #content_icon = 'TRAColeccionCadenas.gif'
-    immediate_view = 'Tabular'
-    default_view = 'Tabular'
-    suppl_views = ['Tabular',]
-    typeDescription = "Coleccion de cadenas a traducir a los varios idiomas."
-    typeDescMsgId =  'gvSIGi18n_TRAColeccionCadenas_help'
-    archetype_name2 = 'Strings collection'
-    typeDescription2 = '''Collection of strings to translate to a number of languages.'''
-    archetype_name_msgid = 'gvSIGi18n_TRAColeccionCadenas_label'
-    factory_methods = None
-    factory_enablers = None
+    immediate_view                   = 'Tabular'
+    default_view                     = 'Tabular'
+    suppl_views                      = ['Tabular',]
+    typeDescription                  = "Coleccion de cadenas a traducir a los varios idiomas."
+    typeDescMsgId                    =  'gvSIGi18n_TRAColeccionCadenas_help'
+    archetype_name2                  = 'Strings collection'
+    typeDescription2                 = '''Collection of strings to translate to a number of languages.'''
+    archetype_name_msgid             = 'gvSIGi18n_TRAColeccionCadenas_label'
+    factory_methods                  = None
+    factory_enablers                 = None
+    propagate_delete_impact_to       = None
     allow_discussion = False
 
 
@@ -241,6 +245,13 @@ class TRAColeccionCadenas(BaseBTreeFolder, TRAColeccionArquetipos):
         """
         
         return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
+
+    security.declarePublic('fExtraLinks')
+    def fExtraLinks(self):
+        """
+        """
+        
+        return TRAElemento_Operaciones.fExtraLinks( self)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

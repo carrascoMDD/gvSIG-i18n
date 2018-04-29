@@ -30,4 +30,4 @@
 
 
     <tal:block tal:define="pInformeLimpiarCadenas python:here.fLimpiarCadenas();
-                           dummy python:request.response.redirect( '%s/Tabular' % here.absolute_url())" />
+                           dummy python:request.response.redirect( '%s/Tabular/' % here.absolute_url())" />

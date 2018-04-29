@@ -37,6 +37,7 @@ from TRAContenidoIntercambio_Operaciones import TRAContenidoIntercambio_Operacio
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
+from TRAElemento_Operaciones import TRAElemento_Operaciones
 from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import ReferenceBrowserWidget
 
 ##code-section module-header #fill in your manual code here
@@ -306,19 +307,20 @@ class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAConRegistroAct
     use_folder_tabs = 0
 
     allowed_content_types = [] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', [])) + list(getattr(TRAContenidoIntercambio_Operaciones, 'allowed_content_types', []))
-    filter_content_types = 1
-    global_allow = 0
+    filter_content_types             = 1
+    global_allow                     = 0
     content_icon = 'tracontenidointercambio.gif'
-    immediate_view = 'Tabular'
-    default_view = 'Tabular'
-    suppl_views = ['Tabular',]
-    typeDescription = "Contenido de un intercambio de Importacion de traducciones de cadenas a uno o mas idiomas."
-    typeDescMsgId =  'gvSIGi18n_TRAContenidoIntercambio_help'
-    archetype_name2 = 'Interchange Content'
-    typeDescription2 = '''Contents of an Import interchange of string translations to a number od languages'''
-    archetype_name_msgid = 'gvSIGi18n_TRAContenidoIntercambio_label'
-    factory_methods = None
-    factory_enablers = None
+    immediate_view                   = 'Tabular'
+    default_view                     = 'Tabular'
+    suppl_views                      = ['Tabular',]
+    typeDescription                  = "Contenido de un intercambio de Importacion de traducciones de cadenas a uno o mas idiomas."
+    typeDescMsgId                    =  'gvSIGi18n_TRAContenidoIntercambio_help'
+    archetype_name2                  = 'Interchange Content'
+    typeDescription2                 = '''Contents of an Import interchange of string translations to a number od languages'''
+    archetype_name_msgid             = 'gvSIGi18n_TRAContenidoIntercambio_label'
+    factory_methods                  = None
+    factory_enablers                 = None
+    propagate_delete_impact_to       = None
     allow_discussion = False
 
 
@@ -449,6 +451,13 @@ class TRAContenidoIntercambio(OrderedBaseFolder, TRAArquetipo, TRAConRegistroAct
         """
         
         return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
+
+    security.declarePublic('fExtraLinks')
+    def fExtraLinks(self):
+        """
+        """
+        
+        return TRAElemento_Operaciones.fExtraLinks( self)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

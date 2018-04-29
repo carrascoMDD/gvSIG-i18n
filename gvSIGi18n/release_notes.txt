@@ -6,8 +6,33 @@
 |
 
 
+**As by v200911211405**
+
+|
+|
+
+
+
+
 Summary of use cases implemented after delivery of version 1.0.0.2 (build200907281654)
 ======================================================================================
+
+- The import process can now be configured to execute
+  yielding processor resources at a certain frequency,
+  to reduce its impact on system performance,
+  avoiding adverse effects on other users experience of the site.
+  
+- Added Links to navigate from advanced views, 
+  to the root catalog page, 
+  or the corresponding translation page.
+
+
+|
+|
+
+
+**Use Cases already reported as implemented after delivery of version 1.0 (build200907160507**
+
 
 - Recipe to create and mount separate file storages for translation catalogs,
   to reduce the performance impact on other Plone content,
@@ -68,14 +93,179 @@ Summary of use cases implemented after delivery of version 1.0.0.2 (build2009072
 - Textual view now works, even on catalogs with languages in non latin characters.
   (previously, it used to crash).
   
+|
+|
+
+------------------------------
+
+|
+|
+
+
+version 1.2.0.11
+----------------
+
+|
+|
+
+
+**RESOLVED**
+
+ADMI01 Upon translations catalog deletion delete user groups.
+
+BUG UITR In Translations Page  after Search by Exact Id  found  displays the countrs as 0 of 0 elements  shall display 1 of 1
+
+SUC10x1 Wait a configured amount of time between Import Transactions
+
+SUC10x2 Configure how often to write to the log at the end of transactions
+
+SUC45x1 When Deleting a Translations Catalog  Avoid writting log entries from the ZCatalog complaining about not found keys
+
+USEX 02 Add to Advanced View a link to return to the default catalog view
+
+|
+|
+
+**KNOWN BUGS**
+
+Changes GNU gettext .PO imported Domain names into lower case when SUC10 Import
+
+IBWR01 Opera: Translations Screen error in columns layout because lack of support for HTML &quot;rowspan&quot;
+
+Error in template when manually creating an status report
+
+UITR Translations page::Reference Language Selector::Names of languages not wekk known to Plone are not shown
+
+BUG: Translations page: If the only filter criteria is the Not Specified Module, the Summary erroneusly displays figures as for all the translations
+
+With Workaround: When creating a language not well known to Plone, the title and english name of the language are not recorded
+
+|
+|
+
+
+**POSTPONED**
+
+*For v1.2.0.12*
+
+Changes GNU gettext .PO imported Domain names into lower case when SUC10 Import
+
+Design  Implement and Test Change Request with code UITR08 and same title. Follow the relation to Tracker items to read about the change request.
+
+Design  Implement and Test Change Request with code UITR11 and same title. Follow the relation to Tracker items to read about the change request.
+
+SUC33x2 Browse translations filtering by Fragments of Symbols separated by hypens  or under-scores
+
+|
+|
+
+
+*For v1.3*
+
+COMU02 Edit and publish pages gvSIG-i18n product to communities
+
+DOCU01 Edit and publish gvSIG-i18n user documentation
+
+DOCU02 Edit and publish gvSIG-i18n install documentation
+
+DOCU03 Edit and publish gvSIG-i18n administration documentation
+
+DOCU04 Edit and publish gvSIG-i18n testing documentation and supporting artefacts
+
+
 
 
 |
-|  
+|
+
+
+*Until further scheduling*
+
+ADMI 10 Use Case to view actual threads running import processes  and kill the import processes
+
+ADMI02 Uninstall gvSIG-i18n Plone Product
+
+ADMI07 Add Action to Rebuild Plone catalogs
+
+BUG: Translations page: If the only filter criteria is the Not Specified Module  the Summary erroneusly displays figures as for all the translations
+
+Error in template when manually creating an status report
+
+EXPO02 Export translations with archive name ...
+
+EXPO04 Export translations in XLIFF format
+
+EXPO05 Export Translation Memories in TMX format
+
+EXPO06 Export archive in GZIP format (.gz  .tgz)
+
+EXPO07 Export encoding: Default to unicode_escape when format is .properties
+
+FEAT01 Use Cases in support of Translation Memories
+
+IBWR01 Opera: Translations Screen error in columns layout because lack of support for HTML &quot;rowspan&quot;
+
+IDIO02 Show flags including the ones not pre-defined in Plone
+
+IMPL 01v2 If External methods nto found  invoke methods in modules
+
+IMPO 06 Present duration estimations in the Import Progress report
+
+IMPO 08 Does not initialize or present Status Reports before and after import
+
+IMPO Copy Language : Estimate correctly the number of expected write operations
+
+IMPO Create missing Translations : Report the number of created translations
+
+IMPO04 Import translations in XLIFF format
+
+IMPO05 Import Translation Memories in TMX format
+
+Reflective method invocation should not retrieve the callable method with []
+
+SUC 28 Use Case De-Activate and Activate a String
+
+SUC 30 Block and Unblock access to a specific language
+
+SUC 31 Block and Unblock changes to a specific module
+
+SUC33x1 Match acute variations with plain ascii vowel leters when Filter translations into a language by words in the translation
+
+SUC46 Populate  users group in a translations catalog with users in other user groups in Zope/Pone  upon Manager demand
+
+SUC47 Obtain translations ready to install in the gvSIG-desktop extension  very easily for unexperienced users
+
+TEST07 Test complete application
+
+TEST08 Stress Test application
+
+UC 22x01 Add Aynchronous interaction mode to Use Case &quot;Invalidate String translations to all languages&quot;
+
+UC28 Create Language Copying Strings from existing Language  extends UC23 Create Language
+
+UITR Translations page::Reference Language Selector::Names of languages not wekk known to Plone are not shown
+
+UITR07 Add to translations screen a note for color shading
+
+UITR10v2 Batch status changes
+
+UITR14 Remove go-to-translation action when clicking ...
+
+UITR18 Optionally Display the Sources of a String in the Translations page
+
+With Workaround: When creating a language not well known to Plone  the title and english name of the language are not recorded
+
+|
+|
+
+------------------------------
+
+|
+|
 
 
 version 1.2.0.10
----------------
+----------------
 
 |
 |

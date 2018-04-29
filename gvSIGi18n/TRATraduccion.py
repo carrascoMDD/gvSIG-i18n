@@ -37,6 +37,7 @@ from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
 from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import ReferenceBrowserWidget
+from TRAElemento_Operaciones import TRAElemento_Operaciones
 
 ##code-section module-header #fill in your manual code here
 ##/code-section module-header
@@ -599,19 +600,20 @@ class TRATraduccion(OrderedBaseFolder, TRAArquetipo, TRATraduccion_Operaciones):
     use_folder_tabs = 0
 
     allowed_content_types = [] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRATraduccion_Operaciones, 'allowed_content_types', []))
-    filter_content_types = 1
-    global_allow = 0
+    filter_content_types             = 1
+    global_allow                     = 0
     content_icon = 'tratraduccion.gif'
-    immediate_view = 'Tabular'
-    default_view = 'Tabular'
-    suppl_views = ['Tabular',]
-    typeDescription = "Traduccion de una de las Cadenas a uno de los Idiomas."
-    typeDescMsgId =  'gvSIGi18n_TRATraduccion_help'
-    archetype_name2 = 'Translation'
-    typeDescription2 = '''Translation of one of the strings into one of the languages.'''
-    archetype_name_msgid = 'gvSIGi18n_TRATraduccion_label'
-    factory_methods = None
-    factory_enablers = None
+    immediate_view                   = 'Tabular'
+    default_view                     = 'Tabular'
+    suppl_views                      = ['Tabular',]
+    typeDescription                  = "Traduccion de una de las Cadenas a uno de los Idiomas."
+    typeDescMsgId                    =  'gvSIGi18n_TRATraduccion_help'
+    archetype_name2                  = 'Translation'
+    typeDescription2                 = '''Translation of one of the strings into one of the languages.'''
+    archetype_name_msgid             = 'gvSIGi18n_TRATraduccion_label'
+    factory_methods                  = None
+    factory_enablers                 = None
+    propagate_delete_impact_to       = None
     allow_discussion = False
 
 
@@ -733,6 +735,13 @@ class TRATraduccion(OrderedBaseFolder, TRAArquetipo, TRATraduccion_Operaciones):
         """
         
         return False
+
+    security.declarePublic('fExtraLinks')
+    def fExtraLinks(self):
+        """
+        """
+        
+        return TRAModulo_Operaciones.fExtraLinks( self)
 
     security.declarePublic('manage_pasteObjects')
     def manage_pasteObjects(self,cb_copy_data,REQUEST):

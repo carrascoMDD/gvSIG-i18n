@@ -36,7 +36,8 @@
                              
 <metal:main fill-slot="main">
     <tal:main-macro metal:define-macro="main"
-        tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas." 
+        tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas.
+        global pStartTime       pStartTime | python: here.ModelDDvlPlone_tool.fMillisecondsNow()" 
         i18n:domain="gvSIGi18n">
 
         <tal:block tal:define="
@@ -79,7 +80,7 @@
         
         
 <tal:block replace="nothing">
-        <tal:block tal:define="dummy python:request.response.redirect( '%s/Tabular' % here.absolute_url())" />
+        <tal:block tal:define="dummy python:request.response.redirect( '%s/Tabular/' % here.absolute_url())" />
 </tal:block>
         
         

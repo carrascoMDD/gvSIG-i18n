@@ -43,6 +43,10 @@ from Products.CMFCore       import permissions
 
 from TRAElemento_Constants         import *
 
+from TRAElemento_Operaciones  import TRAElemento_Operaciones
+
+
+
 ##/code-section after-local-schema
 
 
@@ -62,7 +66,37 @@ class TRAModulo_Operaciones:
     
 
     
+
+                   
     
+    security.declarePublic( 'fExtraLinks')    
+    def fExtraLinks( self):
+        
+        unosExtraLinks = TRAElemento_Operaciones.fExtraLinks( self)
+        if not unosExtraLinks:
+            unosExtraLinks = [ ]
+        
+        unaURL = self.getCatalogo().absolute_url()
+        if not unaURL:
+            return unosExtraLinks
+        
+        unTitle = self.Title()
+        if not unTitle:
+            return unosExtraLinks
+        
+        unExtraLink = self.fNewVoidExtraLink()
+        unExtraLink.update( {
+            'label'   : self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_Translate', 'Translate',),
+            'href'    : '%s/TRATraducir/?theCodigoIdiomaCursor=es&theSearchNombresModulos=%s&theMostrarInforme=on&theMostrarLista=on&theIdiomasReferencia=en ' % ( unaURL, unTitle,),
+            'icon'    : 'tratraduccion.gif',
+            'domain'  : 'gvSIGi18n',
+            'msgid'   : 'gvSIGi18n_GoTo_Root',
+        })
+        unosExtraLinks.append( unExtraLink)
+                            
+        return unosExtraLinks
+     
+        
     
     
     

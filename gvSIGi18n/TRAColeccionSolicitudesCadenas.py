@@ -35,6 +35,9 @@ from Products.gvSIGi18n.TRAColeccionArquetipos import TRAColeccionArquetipos
 from TRAColeccionSolicitudesCadenas_Operaciones import TRAColeccionSolicitudesCadenas_Operaciones
 from Products.gvSIGi18n.config import *
 
+# additional imports from tagged value 'import'
+from TRAElemento_Operaciones import TRAElemento_Operaciones
+
 ##code-section module-header #fill in your manual code here
 ##/code-section module-header
 
@@ -53,7 +56,7 @@ schema = Schema((
         ),
         contains_collections=False,
         label2='String creation Requests',
-        additional_columns=['simbolo', 'estadoSolicitudCadena', 'codigoIdiomaPrincipal', 'cadenaTraducidaAIdiomaPrincipal', 'codigoIdiomaReferencia', 'cadenaTraducidaAIdiomaReferencia'],
+        additional_columns=['simbolo', 'estadoSolicitudCadena'],
         label='Solicitudes de creacion de Cadenas',
         represents_aggregation=True,
         description2='Requests by developers to create new strings.',
@@ -108,19 +111,20 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
 
 
     allowed_content_types = ['TRASolicitudCadena'] + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', [])) + list(getattr(TRAColeccionSolicitudesCadenas_Operaciones, 'allowed_content_types', []))
-    filter_content_types = 1
-    global_allow = 0
+    filter_content_types             = 1
+    global_allow                     = 0
     #content_icon = 'TRAColeccionSolicitudesCadenas.gif'
-    immediate_view = 'Tabular'
-    default_view = 'Tabular'
-    suppl_views = ['Tabular',]
-    typeDescription = "Coleccion de solicitudes realizadas por los desarrolladores, para crear nuevas cadenas."
-    typeDescMsgId =  'gvSIGi18n_TRAColeccionSolicitudesCadenas_help'
-    archetype_name2 = 'Strings creation request collection'
-    typeDescription2 = '''Collection of requests by developers to create new strings.'''
-    archetype_name_msgid = 'gvSIGi18n_TRAColeccionSolicitudesCadenas_label'
-    factory_methods = { 'TRASolicitudCadena' : 'fCrearSolicitudCadena',}
-    factory_enablers = { 'TRASolicitudCadena' : [ 'fUseCaseCheckDoableFactory', 'Create_TRASolicitudCadena',]}
+    immediate_view                   = 'Tabular'
+    default_view                     = 'Tabular'
+    suppl_views                      = ['Tabular',]
+    typeDescription                  = "Coleccion de solicitudes realizadas por los desarrolladores, para crear nuevas cadenas."
+    typeDescMsgId                    =  'gvSIGi18n_TRAColeccionSolicitudesCadenas_help'
+    archetype_name2                  = 'Strings creation request collection'
+    typeDescription2                 = '''Collection of requests by developers to create new strings.'''
+    archetype_name_msgid             = 'gvSIGi18n_TRAColeccionSolicitudesCadenas_label'
+    factory_methods                  = { 'TRASolicitudCadena' : 'fCrearSolicitudCadena',}
+    factory_enablers                 = { 'TRASolicitudCadena' : [ 'fUseCaseCheckDoableFactory', 'Create_TRASolicitudCadena',]}
+    propagate_delete_impact_to       = None
     allow_discussion = False
 
 
@@ -253,6 +257,13 @@ class TRAColeccionSolicitudesCadenas(OrderedBaseFolder, TRAColeccionArquetipos, 
         """
         
         return False
+
+    security.declarePublic('fExtraLinks')
+    def fExtraLinks(self):
+        """
+        """
+        
+        return TRAElemento_Operaciones.fExtraLinks( self)
 
     security.declarePublic('manage_pasteObjects')
     def manage_pasteObjects(self,cb_copy_data,REQUEST):

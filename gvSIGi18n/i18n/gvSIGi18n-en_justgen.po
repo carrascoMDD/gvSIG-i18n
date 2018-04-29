@@ -2,8 +2,6 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gvSIGi18n\n"
-"POT-Creation-Date: Tue Oct 27 03:29:17 2009\n"
-"PO-Revision-Date: Tue Oct 27 03:29:17 2009\n"
 "Last-Translator: Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>\n"
 "Language-Team: Conselleria de Infraestructuras y Transporte de la Generalidad Valenciana, Model Driven Development sl, Antonio Carrasco Valero <gvSIGi18n@gvSIG.org, gvSIGi18n@ModelDD.org, carrasco@ModelDD.org>\n"
 "MIME-Version: 1.0\n"
@@ -1051,6 +1049,16 @@ msgstr "Plural forms"
 msgid "gvSIGi18n_TRAIdioma_attr_formasPlurales_help"
 msgstr "Information to be included in the files exported with GNU gettext PO format."
 
+#. Default: "Icono de la Bandera"
+#: TRAIdioma iconoBanderaIdioma
+msgid "gvSIGi18n_TRAIdioma_attr_iconoBanderaIdioma_label"
+msgstr "Flag Icon"
+
+#. Default: "Nombre del archivo grafico (usualmente .gif o .png) instalado en Plone, a utilizar como bandera para el idioma. Ha de ser de dimensiones iguales o menores a 16x16 pixels, preferentemente con fondo transparente."
+#: TRAIdioma iconoBanderaIdioma
+msgid "gvSIGi18n_TRAIdioma_attr_iconoBanderaIdioma_help"
+msgstr "Name of the graphic file (usually .gif or .png) installed in Plone, to use as the flag for the language. Must have dimensions equal or smaller than 16 x 16 pixels, prefereably with transparent background."
+
 #. Default: "Juego de caracteres para exportacion como Java Properties"
 #: TRAIdioma juegoDeCaracteresParaJavaProperties
 msgid "gvSIGi18n_TRAIdioma_attr_juegoDeCaracteresParaJavaProperties_label"
@@ -1126,10 +1134,10 @@ msgstr "Import process instance, from a given input archive."
 msgid "gvSIGi18n_TRAImportacion_attr_buildDelProducto_label"
 msgstr "Product Build identifier"
 
-#. Default: "Identificador del Build del Producto que se importa en este proceso."
+#. Default: "Identificador del Build del Producto que se importa en este proceso. Cuando se ejecute la importacion, este dato se establecera como el valor del Identificador del Ultimo Build Importado, en el catalogo de traducciones."
 #: TRAImportacion buildDelProducto
 msgid "gvSIGi18n_TRAImportacion_attr_buildDelProducto_help"
-msgstr "Product Build identifier imported in this process."
+msgstr "Product Build identifier imported in this process. When the import executes, this data will be set as the value of the Last Imported Product Build identifier  in the translations catalog."
 
 #. Default: "Codigo de Idioma por defecto"
 #: TRAImportacion codigoIdiomaPorDefecto
@@ -1160,6 +1168,16 @@ msgstr "Must create missing Translations"
 #: TRAImportacion debeCrearTraduccionesQueFaltan
 msgid "gvSIGi18n_TRAImportacion_attr_debeCrearTraduccionesQueFaltan_help"
 msgstr "Create missing Translations in the existing strings and languages, may be because of unintended interruption of past import processes."
+
+#. Default: "Segundos de Espera entre Transacciones"
+#: TRAImportacion esperaEntreTransaccionesEnSegundos
+msgid "gvSIGi18n_TRAImportacion_attr_esperaEntreTransaccionesEnSegundos_label"
+msgstr "Delay Seconds between Transactions"
+
+#. Default: "Con decimales. Intervalo de espera al final de una transaccion, antes de comenzar la siguiente. Util con valores bajos ( <100) del Intervalo de Refresco en Numero de Escrituras, para dejar libre capacidad de procesamiento para otros procesos o usuarios."
+#: TRAImportacion esperaEntreTransaccionesEnSegundos
+msgid "gvSIGi18n_TRAImportacion_attr_esperaEntreTransaccionesEnSegundos_help"
+msgstr "With float values. Time to wait at the end of a transaction, before starting the next one. Usefule with low values of Refresh Interval in number of Writes (<100), to free processing power for other processes or users."
 
 #. Default: "Estado del Proceso"
 #: TRAImportacion estadoProceso
@@ -1346,10 +1364,10 @@ msgstr "Time interval in minutes after which it is required to update the progre
 msgid "gvSIGi18n_TRAImportacion_attr_intervaloRefrescoEnNumeroEscrituras_label"
 msgstr "Refresh Interval in number of Writes"
 
-#. Default: "Numero de escrituras de cadenas o traducciones tras las que se requiere que se actualize el estado e informe de progreso."
+#. Default: "Numero de escrituras de cadenas o traducciones tras las que se requiere que se actualize el estado e informe de progreso. Use valores bajos ( <100) y la Espera entre Transacciones no nula, para dejar procesador a otros procesos o usuarios."
 #: TRAImportacion intervaloRefrescoEnNumeroEscrituras
 msgid "gvSIGi18n_TRAImportacion_attr_intervaloRefrescoEnNumeroEscrituras_help"
-msgstr "Number of string or translation writes after which it is required to update the progress state and report."
+msgstr "Number of string or translation writes after which it is required to update the progress state and report. Use low values (<100) and a not null Delay between Transactions, to yield processing power to other processes and users."
 
 #. Default: "Max #  lineas .PO"
 #: TRAImportacion maximoLineasAImportarGNUgettextPO
@@ -1381,6 +1399,16 @@ msgstr "Default Module Name"
 msgid "gvSIGi18n_TRAImportacion_attr_nombreModuloPorDefecto_help"
 msgstr "Name of the Module to use when no module name can be obtained, whether from domain name in the GNUgettext .POfile header, or from the folder structure if the uploaded content is a .jar or .zip archive file."
 
+#. Default: "Numero de Refrescos por Escritura en Log"
+#: TRAImportacion numeroDeRefrescosPorEscrituraEnLog
+msgid "gvSIGi18n_TRAImportacion_attr_numeroDeRefrescosPorEscrituraEnLog_label"
+msgstr "Number of Refreshes in each Write to the Log"
+
+#. Default: "Para evitar escribir demasiado frecuentemente en el registro de actividad, cuando se usan valores bajos del Intervalo de Refresco en Numero de Escrituras, este valor puede configurarse a valores altos (>10, < 100)."
+#: TRAImportacion numeroDeRefrescosPorEscrituraEnLog
+msgid "gvSIGi18n_TRAImportacion_attr_numeroDeRefrescosPorEscrituraEnLog_help"
+msgstr "To avoid writting too often to the log, when using low values for Refresh Interval in number of Writes, this value can be configured to high values (>10, <100)."
+
 #. Default: "Usuario Importador"
 #: TRAImportacion usuarioImportador
 msgid "gvSIGi18n_TRAImportacion_attr_usuarioImportador_label"
@@ -1396,10 +1424,10 @@ msgstr "User who performed the import operation."
 msgid "gvSIGi18n_TRAImportacion_attr_versionDelProducto_label"
 msgstr "Product Version"
 
-#. Default: "Version del Producto que se importa en este proceso."
+#. Default: "Version del Producto que se importa en este proceso. Cuando se ejecute la importacion, este dato se establecera como el valor de la Ultima Version importada del producto, en el catalogo de traducciones."
 #: TRAImportacion versionDelProducto
 msgid "gvSIGi18n_TRAImportacion_attr_versionDelProducto_help"
-msgstr "Product Version imported in this process."
+msgstr "Product Version imported in this process. When the import executes, this data will be set as the value of the Last Imported Product Version in the translations catalog."
 
 #. Default: "Contenido Intercambio Traducciones"
 #: TRAImportacion contenido

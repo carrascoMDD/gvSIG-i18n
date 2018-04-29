@@ -1,5 +1,5 @@
 <tal:block replace="nothing">
-# File: TRAConfirmarDesbloquearCatalogo.pt
+# File: TRAReutilizarImportacion_action.pt
 #
 # Copyright (c) 2008, 2009 by Conselleria de Infraestructuras y Transporte de la
 # Generalidad Valenciana
@@ -42,7 +42,7 @@
         i18n:domain="gvSIGi18n">
 
         <tal:block tal:define="
-            pExecutionRecord python: here.fStartExecution( 'template', 'TRAConfirmarDesbloquearCatalogo.pt', None, True, { 'log_what': 'details', 'log_when': True, });
+            pExecutionRecord python: here.fStartExecution( 'template', 'TRAReutilizarImportacion_action.pt', None, True, { 'log_what': 'details', 'log_when': True, });
             pPermissionsCache python: {};
             pRolesCache python: {}" >
             
@@ -66,7 +66,7 @@
                 
             <table width="100%%" cellspacing="0" cellpadding="0" frame="void" >
                 <tr>
-                    <td width="25%"  align="left" valign="baseline" >
+                    <td width="50%"  align="left" valign="baseline" >
                         <font size="2">
                             <em><span tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_TRACatalogo_attr_nombreProducto_label',   'Product Name-' )" /></em>
                          </font>        
@@ -74,7 +74,7 @@
                             <strong><span tal:content="python: here.fAsUnicode( here.getNombreProducto())" /></strong>
                          </font>
                     </td>         
-                    <td  width="25%" align="center" valign="baseline">
+                    <td  width="50%" align="right" valign="baseline">
                         <tal:block tal:define="
                             pUseCaseAssessmentResult python: here.fUseCaseAssessment( 
                                 theUseCaseName          = 'Advanced_View_on_any_TRA_element', 
@@ -95,28 +95,6 @@
                             </strong>
                         </tal:block>
                     </td>
-                    <td width="25%"  align="right" valign="baseline">                    
-                        <strong>
-                            <a href="#" title="#"  
-                                tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_volveracatalogo_msgid',   'Back to catalog-' )"
-                                tal:attributes="
-                                    title aLinkTitle;
-                                    href python: '%s/TRACatalogo/' % here.absolute_url()">
-                                <span tal:content="aLinkTitle" />
-                            </a>
-                        </strong>
-                    </td>                
-                    <td  width="25%" align="right" valign="baseline">                    
-                        <strong>
-                            <a href="#" title="#" 
-                                tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_mostrarinformedeestado_msgid',   'Show Status Report-' )"                                    
-                                tal:attributes="
-                                    title aLinkTitle;
-                                    href python: '%s/TRACatalogoInforme/' % here.getCatalogo().absolute_url()">
-                                <span tal:content="aLinkTitle" />
-                            </a>
-                        </strong>
-                    </td>
                 </tr>
             </table>
                         
@@ -125,39 +103,58 @@
 
             
             <tal:block tal:define="
-                pDesbloquearUseCaseAssessmentResult python: here.fUseCaseAssessment( 
-                    theUseCaseName          = 'Unlock_TRACatalogo', 
+                pReutilizarUseCaseAssessmentResult python: here.fUseCaseAssessment( 
+                    theUseCaseName          = 'Reuse_TRAImport', 
                     theElementsBindings     = { 'object': here,},
                     theRulesToCollect       = None, 
                     thePermissionsCache     = pPermissionsCache, 
                     theRolesCache           = pRolesCache, 
                     theParentExecutionRecord= pExecutionRecord)" >
-                <tal:block tal:condition="python: pDesbloquearUseCaseAssessmentResult and pDesbloquearUseCaseAssessmentResult.get( 'success', False)">  
-                    <a href="#" title="#" 
-                        tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_confirmarDesbloquearCatalogo_msgid',   'Confirm unlocking the translations catalog-' )"                                    
-                        tal:attributes="
-                            title aLinkTitle;
-                           href python: '%s/TRADesbloquearCatalogo_action/?theConfirm=%s' % ( here.getCatalogo().absolute_url(), here.fMagicMillisecondsNowString())">
-                        <font size="3" color="red">
-                            <strong>
-                                <span tal:content="aLinkTitle" />
-                            </strong>
-                        </font>
-                    </a>
+                <tal:block tal:condition="python: pReutilizarUseCaseAssessmentResult and pReutilizarUseCaseAssessmentResult.get( 'success', False)">  
+                    
+                    <tal:block tal:define="
+                        pConfirmMagicMilliseconds python: request.get( 'theConfirm', '');
+                        pIsAcceptableMagicMilliseconds python: here.fIsAcceptableMagicMilliseconds ( pConfirmMagicMilliseconds, here.getSegundosParaConfirmarImportacion() or 120)" >
+                        <tal:block tal:condition="not: pIsAcceptableMagicMilliseconds">
+                            <p><font size="3" color="red"><strong tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_demasiadaEsperaVuelvaASolicitarDesbloqueo_help', 'You have waited too long to confirm the lock catalog  operation. Please, request the operation again if you wish to do so.-')" /></font>                 
+                            <br/>
+                            <p>
+                                <font size="3">
+                                    <strong>
+                                        <a href="#" title="#"  
+                                            tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_cancelarReutilizarYVolverATabular_msgid',   'Cancel reuse import-' )"
+                                            tal:attributes="
+                                                title aLinkTitle;
+                                                href python: '%s/Tabular/' % here.absolute_url()">
+                                            <span tal:content="aLinkTitle" />
+                                        </a>
+                                    </strong>
+                                </font>
+                            </p>
+                            <br/>
+                        </tal:block>
+                        <tal:block tal:condition="pIsAcceptableMagicMilliseconds">
+                            <tal:block tal:define="
+                                pPermissionsCache python: {}; 
+                                pRolesCache python: {};
+                                dummy  python:here.fReutilizarImportacion( pPermissionsCache, pRolesCache, pExecutionRecord)" />
+                            <tal:block tal:define="dummy python:request.response.redirect( '%s/Tabular/' % here.getCatalogo().absolute_url())" />
+                        </tal:block>
+                    </tal:block>
                 </tal:block>
-
-                <tal:block tal:condition="python: not(  pDesbloquearUseCaseAssessmentResult and pDesbloquearUseCaseAssessmentResult.get( 'success', False))">    
+                <tal:block tal:condition="python: not( pReutilizarUseCaseAssessmentResult and pReutilizarUseCaseAssessmentResult.get( 'success', False))">    
                     <br/>
                     <br/>
-                    <font size="3" color="gray">
+                    <font size="1" color="gray">
                         <strong>
-                            <tal:block tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_userCanNotUnlockCatalogo_msgid',   'You are not allowed to lock the translations catalog.-' )" />
+                            <tal:block tal:content="python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_userCanNotReuseImport_msgid',   'You are not allowed to reuse the import.-' )" />
                         </strong>
                     </font>
+                    <br/>
+                    <br/>
                 </tal:block>
-                <br/>
-                <br/>
             </tal:block>
+            
             
     
             <tal:block tal:define="dummy python: pExecutionRecord and here.pEndExecution( pExecutionRecord)" />

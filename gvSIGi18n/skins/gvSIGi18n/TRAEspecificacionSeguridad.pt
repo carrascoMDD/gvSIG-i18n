@@ -37,7 +37,8 @@
                              
 <metal:main fill-slot="main">
     <tal:main-macro metal:define-macro="main"
-        tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas." 
+        tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas.
+        global pStartTime       pStartTime | python: here.ModelDDvlPlone_tool.fMillisecondsNow()" 
         i18n:domain="gvSIGi18n">
 
         <tal:block tal:define="pExecutionRecord python: here.fStartExecution( 'template', 'TRAEspecificacionSeguridad.pt', None, True, { 'log_what': 'details', 'log_when': True, })" >
@@ -114,7 +115,7 @@
                                             tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_volveracatalogo_msgid',   'Back to catalog-' )"
                                             tal:attributes="
                                                 title aLinkTitle;
-                                                href python: '%s/TRACatalogo' % here.absolute_url()">
+                                                href python: '%s/TRACatalogo/' % here.absolute_url()">
                                             <span tal:content="aLinkTitle" />
                                         </a>
                                     </strong>
@@ -125,7 +126,7 @@
                                             tal:define="aLinkTitle python: here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_mostrarinformedeestado_msgid',   'Show Status Report-' )"                                    
                                             tal:attributes="
                                                 title aLinkTitle;
-                                                href python: '%s/TRACatalogoInforme' % here.getCatalogo().absolute_url()">
+                                                href python: '%s/TRACatalogoInforme/' % here.getCatalogo().absolute_url()">
                                             <span tal:content="aLinkTitle" />
                                         </a>
                                     </strong>

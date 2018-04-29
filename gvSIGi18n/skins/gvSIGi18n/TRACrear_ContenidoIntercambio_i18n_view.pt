@@ -201,6 +201,7 @@
 											'theTimeProfilingResults' :pProfilingResults,
 											'theContainerElement'     :here, 
 											'theTypeName'             :pNewTypeName, 
+											'theId'                   :None,
 											'theTitle'                :'A Sustituir', 
 											'theDescription'          :'',
 											'theAdditionalParams'     :someAdditionalParams,
@@ -208,7 +209,7 @@
 										pCrearResult python: here.ModelDDvlPlone_tool.fCrearElementoDeTipo( **unosArgs)" >
 										<tal:block tal:condition="python: pCrearResult and ( pCrearResult[ 'effect'] == 'created')" >
 											<tal:block tal:define="
-												dummy python:request.response.redirect( '%s/Editar' % pCrearResult[ 'new_object_result'][ 'url']);" />
+												dummy python:request.response.redirect( '%sEditar/' % pCrearResult[ 'new_object_result'][ 'url']);" />
 										</tal:block>
 										<tal:block tal:condition="python: not ( pCrearResult) or not ( pCrearResult[ 'effect'] == 'created')" >
 											<h4>
@@ -242,7 +243,7 @@
 					<tal:block tal:condition="not: pPermiteCrear" >
 						<br>
 						<h2 > 
-							<a  href="#" tal:attributes="href python: '%s/Tabular' % SRES[ 'url']" class="state-visible" title="">
+							<a  href="#" tal:attributes="href python: '%sTabular/' % SRES[ 'url']" class="state-visible" title="">
 								<font color="Red">                    
 									<span  i18n:domain="ModelDDvlPlone" i18n:translate="ModelDDvlPlone_sinpermisoparacrear_error_message"/>
 									&nbsp;

@@ -37,6 +37,7 @@ from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
 from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import ReferenceBrowserWidget
+from TRAElemento_Operaciones import TRAElemento_Operaciones
 
 ##code-section module-header #fill in your manual code here
 ##/code-section module-header
@@ -334,19 +335,20 @@ class TRACadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones):
     use_folder_tabs = 0
 
     allowed_content_types = ['TRATraduccion'] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRACadena_Operaciones, 'allowed_content_types', []))
-    filter_content_types = 1
-    global_allow = 0
+    filter_content_types             = 1
+    global_allow                     = 0
     content_icon = 'tracadena.gif'
-    immediate_view = 'Tabular'
-    default_view = 'Tabular'
-    suppl_views = ['Tabular',]
-    typeDescription = "Una de las cadenas originales del producto a traducir, identificada por el simbolo original."
-    typeDescMsgId =  'gvSIGi18n_TRACadena_help'
-    archetype_name2 = 'String to translate'
-    typeDescription2 = '''One of the original product strings to translate, identified by a the original symbol string.'''
-    archetype_name_msgid = 'gvSIGi18n_TRACadena_label'
-    factory_methods = None
-    factory_enablers = None
+    immediate_view                   = 'Tabular'
+    default_view                     = 'Tabular'
+    suppl_views                      = ['Tabular',]
+    typeDescription                  = "Una de las cadenas originales del producto a traducir, identificada por el simbolo original."
+    typeDescMsgId                    =  'gvSIGi18n_TRACadena_help'
+    archetype_name2                  = 'String to translate'
+    typeDescription2                 = '''One of the original product strings to translate, identified by a the original symbol string.'''
+    archetype_name_msgid             = 'gvSIGi18n_TRACadena_label'
+    factory_methods                  = None
+    factory_enablers                 = None
+    propagate_delete_impact_to       = None
     allow_discussion = 0
 
 
@@ -482,6 +484,13 @@ class TRACadena(OrderedBaseFolder, TRAArquetipo, TRACadena_Operaciones):
         """
         
         return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
+
+    security.declarePublic('fExtraLinks')
+    def fExtraLinks(self):
+        """
+        """
+        
+        return TRAModulo_Operaciones.fExtraLinks( self)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

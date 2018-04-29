@@ -35,7 +35,8 @@
 
 <metal:main fill-slot="main">
     <tal:main-macro metal:define-macro="main"
-        tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas." >
+        tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas.
+        global pStartTime       pStartTime | python: here.ModelDDvlPlone_tool.fMillisecondsNow()" >
 
         <tal:block tal:define="pExecutionRecord python: here.fStartExecution( 'template', 'TRAExportar_Revisar', None, True, { 'log_what': 'details',});
             pPermissionsCache python: {};

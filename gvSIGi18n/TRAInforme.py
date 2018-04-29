@@ -37,6 +37,7 @@ from Products.gvSIGi18n.TRAConRegistroActividad import TRAConRegistroActividad
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
+from TRAElemento_Operaciones import TRAElemento_Operaciones
 from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import ReferenceBrowserWidget
 
 ##code-section module-header #fill in your manual code here
@@ -491,19 +492,20 @@ class TRAInforme(OrderedBaseFolder, TRAArquetipo, TRAInforme_Operaciones, TRACon
     use_folder_tabs = 0
 
     allowed_content_types = [] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRAInforme_Operaciones, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', []))
-    filter_content_types = 1
-    global_allow = 0
+    filter_content_types             = 1
+    global_allow                     = 0
     content_icon = 'trainforme.gif'
-    immediate_view = 'Tabular'
-    default_view = 'Tabular'
-    suppl_views = ['Tabular',]
-    typeDescription = "Informe del estado en un momento determinado de Traducciones a Idiomas."
-    typeDescMsgId =  'gvSIGi18n_TRAInforme_help'
-    archetype_name2 = 'Status Report'
-    typeDescription2 = '''Status at the Report time, of Translations to  Languages.'''
-    archetype_name_msgid = 'gvSIGi18n_TRAInforme_label'
-    factory_methods = None
-    factory_enablers = None
+    immediate_view                   = 'Tabular'
+    default_view                     = 'Tabular'
+    suppl_views                      = ['Tabular',]
+    typeDescription                  = "Informe del estado en un momento determinado de Traducciones a Idiomas."
+    typeDescMsgId                    =  'gvSIGi18n_TRAInforme_help'
+    archetype_name2                  = 'Status Report'
+    typeDescription2                 = '''Status at the Report time, of Translations to  Languages.'''
+    archetype_name_msgid             = 'gvSIGi18n_TRAInforme_label'
+    factory_methods                  = None
+    factory_enablers                 = None
+    propagate_delete_impact_to       = None
     allow_discussion = False
 
 
@@ -634,6 +636,13 @@ class TRAInforme(OrderedBaseFolder, TRAArquetipo, TRAInforme_Operaciones, TRACon
         """
         
         return False
+
+    security.declarePublic('fExtraLinks')
+    def fExtraLinks(self):
+        """
+        """
+        
+        return TRAElemento_Operaciones.fExtraLinks( self)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

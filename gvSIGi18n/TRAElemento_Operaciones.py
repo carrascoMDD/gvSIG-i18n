@@ -40,6 +40,9 @@ import traceback
 
 import logging
 
+from logging import ERROR as cLoggingLevel_ERROR
+
+
 from codecs                     import lookup   as CODECS_Lookup
 
 from time                       import time, localtime
@@ -654,6 +657,45 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
     gUseCaseSpecificationsByName = { }
     
     
+    
+    security.declarePublic( 'fNewVoidExtraLink')    
+    def fNewVoidExtraLink( self):
+        unExtraLink = {
+            'label'   : '',
+            'href'    : '',
+            'icon'    : '',
+            'domain'  : '',
+            'msgid'   : '',
+        }
+        return unExtraLink
+        
+
+    
+    security.declarePublic( 'fExtraLinks')    
+    def fExtraLinks( self):
+        
+        unosExtraLinks = [ ]
+        
+        unaURL = self.getCatalogo().absolute_url()
+        if not unaURL:
+            return unosExtraLinks
+        
+        unExtraLink = self.fNewVoidExtraLink()
+        unExtraLink.update( {
+            'label'   : self.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_GoTo_Root', 'Go Root',),
+            'href'    : '%s/TRACatalogo/' % unaURL,
+            'icon'    : 'tra_root.gif',
+            'domain'  : 'gvSIGi18n',
+            'msgid'   : 'gvSIGi18n_GoTo_Root',
+        })
+        unosExtraLinks.append( unExtraLink)
+                            
+        return unosExtraLinks
+    
+    
+    
+    
+    
     # ACV 20090926 This method is provided by its definition in the model in the TRAElemento class, and code-generated: removed 
     #security.declarePublic( 'getAddableTypesInMenu')    
     #def getAddableTypesInMenu( self, theTypes):
@@ -1167,15 +1209,34 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
     
     security.declarePrivate('pHandle_manage_beforeDelete')
     def pHandle_manage_beforeDelete(self, theItem, theContainer):   
+        """Disable ZCatalog logging while deleting contents to avoid flooding the log with catalog messages complaining about keys not found. 
+        Note that instances of TRACadena and TRATraduccion are not catalogged in the global ZCatalog, and therefore there are thousands of ZCatalog log entries complaining.
+        This excessive logging slows down the server.
         
-        if isinstance( self, OrderedBaseFolder):
-            OrderedBaseFolder.manage_beforeDelete(  self, theItem, theContainer)
-        elif isinstance( self, BaseBTreeFolder):
-            BaseBTreeFolder.manage_beforeDelete(  self, theItem, theContainer)
-                        
+        """
+        unResult = None
+        unDisableLevelChanged = False
+        try:
+            aLoggerManager = logging.getLogger('Zope.ZCatalog').manager
+            aDisableLevel = aLoggerManager.disable
+            
+            if not ( aDisableLevel == cLoggingLevel_ERROR):
+                if aLoggerManager:
+                    aLoggerManager.disable = cLoggingLevel_ERROR
+                    unDisableLevelChanged = True
+                
+            if isinstance( self, OrderedBaseFolder):
+                OrderedBaseFolder.manage_beforeDelete(  self, theItem, theContainer)
+            elif isinstance( self, BaseBTreeFolder):
+                BaseBTreeFolder.manage_beforeDelete(  self, theItem, theContainer)
+                            
+        finally:
+            if unDisableLevelChanged:
+                if aLoggerManager:
+                    aLoggerManager.disable = aDisableLevel
+
         return self
-    
-     
+        
     
     
     
@@ -1273,7 +1334,11 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
         if not unMember:
             return ''
         
-        unMemberId = unMember.getMemberId()           
+        if unMember.getUserName() == 'Anonymous User':
+            unMemberId = unMember.getUserName()
+        else:
+            unMemberId = unMember.getMemberId()   
+
         return unMemberId
         
 
@@ -2190,14 +2255,15 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
         """
         
         unResultDict = theResultDict
-        
+        if ( unResultDict == None):
+            unResultDict = { }
+                
         if not theI18NDomainsStringsAndDefaults:
             return unResultDict
         
-        if ( unResultDict == None):
-            unResultDict = { }
-        
         aTranslationService = getToolByName( self, 'translation_service', None)
+        if not aTranslationService:
+            return unResultDict
         
         for aDomainStringsAndDefaults in theI18NDomainsStringsAndDefaults:
             aI18NDomain             = aDomainStringsAndDefaults[ 0] or cI18NDomainDefault
@@ -2415,6 +2481,31 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
         return unResultString
             
 
+ 
+#   fTFLVsUnless stands for function for multiple  Translated Field Label and Value
+#   will be used in the context of expressions of computed archetype schema fields
+#   the short name is to use less space
+#   in the tagged value edition fields
+#   of case tools            
+    security.declarePrivate('fTFLVs')
+    def fTFLVsUnless(self, theFieldNamesAndExcludeValues):
+        if not theFieldNames:
+            return ''
+        
+        someFieldLabelsAndValues = []
+        for unFieldName, unExcludeValue in theFieldNamesAndExcludeValues:
+            unFieldLabelAndValue = self.fTFLVUnless( unFieldName, unExcludeValue)
+            if unFieldLabelAndValue:
+                someFieldLabelsAndValues.append( unFieldLabelAndValue)
+
+        if not someFieldLabelsAndValues:
+            return ''
+            
+        unResultString = '; '.join( someFieldLabelsAndValues)
+
+        return unResultString
+            
+
     
     
 #   fTFLV stands for function for Translated Field Label and Value
@@ -2439,6 +2530,31 @@ class TRAElemento_Operaciones( TRAElemento_Permissions, TRAElemento_Credits):
              
 
     
+
+    
+#   fTFLVUnless stands for function for Translated Field Label and Value
+#   will be used in the context of expressions of computed archetype schema fields
+#   the short name is to use less space
+#   in the tagged value edition fields
+#   of case tools            
+    security.declarePrivate('fTFLV')
+    def fTFLVUnless(self, theFieldName, theExcludeValueString):
+        if not theFieldName:
+            return ''
+
+        unValueString = self.fFV( theFieldName)
+        if not unValueString:
+            return ''
+        
+        if unValueString == theExcludeValueString:
+            return ''
+            
+        aTranslatedLabel = self.fTFL( theFieldName)
+        if not aTranslatedLabel:
+            aTranslatedLabel = ''         
+    
+        return aTranslatedLabel + ' ' + unValueString
+             
     
     
 #   fFV stands for function for  Field Value

@@ -36,6 +36,19 @@ from Products.Archetypes.atapi import *
 from Products.gvSIGi18n.config import *
 
 
+# Classes added here during runtime will be acceptable roots,
+# after invocation of the fParentArchetypeClassNames_ResetCache method
+#
+gAdditionalParentArchetypeClassNames = [ ]
+
+
+
+# Private Cache of class names
+# 
+gParentArchetypeClassNamesCache      = [ ]
+
+
+
 
 class TRAElemento_Meta:            
 
@@ -43,6 +56,48 @@ class TRAElemento_Meta:
     """
     security = ClassSecurityInfo()
 
+
+    
+
+
+
+  
+  
+  
+    security.declarePrivate('fParentArchetypeClassNames')
+    def fParentArchetypeClassNames( self):
+    
+        if gParentArchetypeClassNamesCache:
+            return gParentArchetypeClassNamesCache
+        
+        return self.fParentArchetypeClassNames_ResetCache()
+        
+        
+        
+        
+        
+        
+        
+    security.declarePrivate('fParentArchetypeClassNames_ResetCache')
+    def fParentArchetypeClassNames_ResetCache( self):
+    
+        aWorkingCopy = self.fArchetypeClassNames()[:]
+        
+        # Thread safety to be assured here for cases when simultaneusly:
+        #
+        # Others may be adding to the gAdditionalParentArchetypeClassNames
+        # Others may also invoke this method
+        #
+        if gAdditionalParentArchetypeClassNames:
+            aWorkingCopy += gAdditionalParentArchetypeClassNames
+        
+        gParentArchetypeClassNamesCache = aWorkingCopy
+        
+        return gParentArchetypeClassNamesCache
+        
+            
+    
+    
     
     security.declarePrivate('fArchetypeSchemaByName')
     def fArchetypeSchemaByName( self, theMetaTypeName):

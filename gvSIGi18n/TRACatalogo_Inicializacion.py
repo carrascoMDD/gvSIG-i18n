@@ -1418,6 +1418,10 @@ class TRACatalogo_Inicializacion:
                                                 'success':                              False,
                                             }) 
                                         else:    
+                                            # ACV 20091105 Found in ZopeChinaPak::utils::modifyCatalogTextIndexToSupportChinese
+                                            # a call to method that may be better to add the lexicon to the catalog
+                                            #   ZCTextIndex.manage_addLexicon(catalog, 'CJKLexicon', 'Default Lexicon', elem)
+
                                             unLexicon = PLexicon( unNombreLexicon, unNombreLexicon, *unosPipelineElements)    
                                             unCatalog._setObject( unNombreLexicon, unLexicon)    
                                                                             

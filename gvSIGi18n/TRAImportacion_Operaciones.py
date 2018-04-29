@@ -46,6 +46,8 @@ import traceback
 import os
 import logging
 
+import time
+
 import transaction
 
 from math import floor
@@ -2581,11 +2583,18 @@ class TRAImportacion_Operaciones:
             unSubExecutionRecord = self.fStartExecution( 'block',  'pImportarContenidosIntercambio-SubExecution to determine elements to create (languages, modules, strings) and count the number of translations to process.', unExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }) 
             try:
             
-                unCurrentChangesHolder = [ 0,]
+                unCurrentChangesHolder = [ 0, 0, 0, ] # Changes since last commit, changes since last log, 
+                unaEsperaEntreTransaccionesEnSegundos = self.getEsperaEntreTransaccionesEnSegundos()
                 unIntervaloRefrescoEnMinutos          = self.getIntervaloRefrescoEnMinutos()
                 unIntervaloRefrescoEnNumeroEscrituras = self.getIntervaloRefrescoEnNumeroEscrituras()
+                unaEsperaEntreTransaccionesEnSegundos = self.getEsperaEntreTransaccionesEnSegundos()
+                unCurrentCommitsHolder = [ 0,]
+                unNumeroDeRefrescosPorEscrituraEnLog  = self.getNumeroDeRefrescosPorEscrituraEnLog()
+                
+                
                 unaFechaUltimoInformeProgresoHolder   = [ self.getFechaUltimoInformeProgreso(), ]
-        
+    
+
                 # ######################################################
                 """Determine Modules to Create.
                 
@@ -2601,12 +2610,12 @@ class TRAImportacion_Operaciones:
                 unosNombresModulos = theContenido[ 'modules']
               
                 for unNombreModulo in unosNombresModulos:
-                    
-                    if unNombreModulo in todosNombresModulos:
-                        if not ( unNombreModulo in unosNombresModulosAccesibles):
-                            unosNombresModulosAIgnorar.append( unNombreModulo)   
-                    else:
-                        unosNombresModulosACrear.append( unNombreModulo)
+                    if unNombreModulo:
+                        if unNombreModulo in todosNombresModulos:
+                            if not ( unNombreModulo in unosNombresModulosAccesibles):
+                                unosNombresModulosAIgnorar.append( unNombreModulo)   
+                        else:
+                            unosNombresModulosACrear.append( unNombreModulo)
                         
                 theInformeImportarContenidos[ 'modules_to_create'] = len( unosNombresModulosACrear)
                 theInformeImportarContenidos[ 'expected_operations'] += len( unosNombresModulosACrear)
@@ -2720,14 +2729,17 @@ class TRAImportacion_Operaciones:
                                 theInformeImportarContenidos, 
                                 unIntervaloRefrescoEnNumeroEscrituras, 
                                 unIntervaloRefrescoEnMinutos, 
-                                unCurrentChangesHolder, 
+                                unaEsperaEntreTransaccionesEnSegundos,
+                                unNumeroDeRefrescosPorEscrituraEnLog,
+                                unCurrentChangesHolder, unCurrentCommitsHolder, 
                                 unaFechaUltimoInformeProgresoHolder, 
                                 True,
                                 thePermissionsCache         =unPermissionsCache, 
                                 theRolesCache               =unRolesCache, 
                                 theParentExecutionRecord    =unSubSubExecutionRecord,
                             )
-                            
+
+
                         if not unNuevoModulo:
                             unAhora = self.fDateTimeNow()
                             theInformeImportarContenidos[ 'fecha_informe'] = self.fDateToStoreString( unAhora)
@@ -2794,7 +2806,9 @@ class TRAImportacion_Operaciones:
                                 theInformeImportarContenidos, 
                                 unIntervaloRefrescoEnNumeroEscrituras, 
                                 unIntervaloRefrescoEnMinutos, 
-                                unCurrentChangesHolder, 
+                                unaEsperaEntreTransaccionesEnSegundos,
+                                unNumeroDeRefrescosPorEscrituraEnLog,
+                                unCurrentChangesHolder, unCurrentCommitsHolder, 
                                 unaFechaUltimoInformeProgresoHolder, 
                                 True,
                                 thePermissionsCache         =unPermissionsCache, 
@@ -2926,7 +2940,9 @@ class TRAImportacion_Operaciones:
                             theInformeImportarContenidos, 
                             unIntervaloRefrescoEnNumeroEscrituras, 
                             unIntervaloRefrescoEnMinutos, 
-                            unCurrentChangesHolder, 
+                            unaEsperaEntreTransaccionesEnSegundos,
+                            unNumeroDeRefrescosPorEscrituraEnLog,
+                            unCurrentChangesHolder, unCurrentCommitsHolder, 
                             unaFechaUltimoInformeProgresoHolder, 
                             True,
                             thePermissionsCache         =unPermissionsCache, 
@@ -2954,7 +2970,9 @@ class TRAImportacion_Operaciones:
                         theInformeImportarContenidos, 
                         unIntervaloRefrescoEnNumeroEscrituras, 
                         unIntervaloRefrescoEnMinutos, 
-                        unCurrentChangesHolder, 
+                        unaEsperaEntreTransaccionesEnSegundos,
+                        unNumeroDeRefrescosPorEscrituraEnLog,
+                        unCurrentChangesHolder, unCurrentCommitsHolder, 
                         unaFechaUltimoInformeProgresoHolder, 
                         False,
                         thePermissionsCache         =unPermissionsCache, 
@@ -2967,7 +2985,9 @@ class TRAImportacion_Operaciones:
                     theInformeImportarContenidos, 
                     unIntervaloRefrescoEnNumeroEscrituras, 
                     unIntervaloRefrescoEnMinutos, 
-                    unCurrentChangesHolder, 
+                    unaEsperaEntreTransaccionesEnSegundos,
+                    unNumeroDeRefrescosPorEscrituraEnLog,
+                    unCurrentChangesHolder, unCurrentCommitsHolder,
                     unaFechaUltimoInformeProgresoHolder, 
                     True,
                     thePermissionsCache         =unPermissionsCache, 
@@ -3035,7 +3055,9 @@ class TRAImportacion_Operaciones:
                                     theInformeImportarContenidos, 
                                     unIntervaloRefrescoEnNumeroEscrituras, 
                                     unIntervaloRefrescoEnMinutos, 
-                                    unCurrentChangesHolder, 
+                                    unCurrentChangesHolder, unCurrentCommitsHolder, 
+                                    unaEsperaEntreTransaccionesEnSegundos,
+                                    unNumeroDeRefrescosPorEscrituraEnLog,
                                     unaFechaUltimoInformeProgresoHolder, 
                                     True,
                                     thePermissionsCache         =unPermissionsCache, 
@@ -3124,7 +3146,9 @@ class TRAImportacion_Operaciones:
                                                 theInformeImportarContenidos, 
                                                 unIntervaloRefrescoEnNumeroEscrituras, 
                                                 unIntervaloRefrescoEnMinutos, 
-                                                unCurrentChangesHolder, 
+                                                unaEsperaEntreTransaccionesEnSegundos,
+                                                unNumeroDeRefrescosPorEscrituraEnLog,
+                                                unCurrentChangesHolder, unCurrentCommitsHolder,
                                                 unaFechaUltimoInformeProgresoHolder, 
                                                 True,
                                                 thePermissionsCache         =unPermissionsCache, 
@@ -3323,7 +3347,9 @@ class TRAImportacion_Operaciones:
                                     theInformeImportarContenidos, 
                                     unIntervaloRefrescoEnNumeroEscrituras, 
                                     unIntervaloRefrescoEnMinutos, 
-                                    unCurrentChangesHolder, 
+                                    unCurrentChangesHolder, unCurrentCommitsHolder, 
+                                    unaEsperaEntreTransaccionesEnSegundos,
+                                    unNumeroDeRefrescosPorEscrituraEnLog,
                                     unaFechaUltimoInformeProgresoHolder, 
                                     True,
                                     thePermissionsCache         =unPermissionsCache, 
@@ -3342,7 +3368,9 @@ class TRAImportacion_Operaciones:
                         theInformeImportarContenidos, 
                         unIntervaloRefrescoEnNumeroEscrituras, 
                         unIntervaloRefrescoEnMinutos, 
-                        unCurrentChangesHolder, 
+                        unaEsperaEntreTransaccionesEnSegundos,
+                        unNumeroDeRefrescosPorEscrituraEnLog,
+                        unCurrentChangesHolder, unCurrentCommitsHolder, 
                         unaFechaUltimoInformeProgresoHolder, 
                         False,
                         thePermissionsCache         =unPermissionsCache, 
@@ -3355,7 +3383,9 @@ class TRAImportacion_Operaciones:
                     theInformeImportarContenidos, 
                     unIntervaloRefrescoEnNumeroEscrituras, 
                     unIntervaloRefrescoEnMinutos, 
-                    unCurrentChangesHolder, 
+                    unaEsperaEntreTransaccionesEnSegundos,
+                    unNumeroDeRefrescosPorEscrituraEnLog,
+                    unCurrentChangesHolder, unCurrentCommitsHolder,
                     unaFechaUltimoInformeProgresoHolder, 
                     True,
                     thePermissionsCache         =unPermissionsCache, 
@@ -3392,7 +3422,9 @@ class TRAImportacion_Operaciones:
                                 theInformeImportarContenidos, 
                                 unIntervaloRefrescoEnNumeroEscrituras, 
                                 unIntervaloRefrescoEnMinutos, 
-                                unCurrentChangesHolder, 
+                                unaEsperaEntreTransaccionesEnSegundos,
+                                unNumeroDeRefrescosPorEscrituraEnLog,
+                                unCurrentChangesHolder, unCurrentCommitsHolder, 
                                 unaFechaUltimoInformeProgresoHolder, 
                                 True,
                                 thePermissionsCache         =unPermissionsCache, 
@@ -3440,7 +3472,9 @@ class TRAImportacion_Operaciones:
                                     theInformeImportarContenidos, 
                                     unIntervaloRefrescoEnNumeroEscrituras, 
                                     unIntervaloRefrescoEnMinutos, 
-                                    unCurrentChangesHolder, 
+                                    unaEsperaEntreTransaccionesEnSegundos,
+                                    unNumeroDeRefrescosPorEscrituraEnLog,
+                                    unCurrentChangesHolder, unCurrentCommitsHolder, 
                                     unaFechaUltimoInformeProgresoHolder, 
                                     True,
                                     thePermissionsCache         =unPermissionsCache, 
@@ -3456,7 +3490,9 @@ class TRAImportacion_Operaciones:
                             theInformeImportarContenidos, 
                             unIntervaloRefrescoEnNumeroEscrituras, 
                             unIntervaloRefrescoEnMinutos, 
-                            unCurrentChangesHolder, 
+                            unaEsperaEntreTransaccionesEnSegundos,
+                            unNumeroDeRefrescosPorEscrituraEnLog,
+                            unCurrentChangesHolder, unCurrentCommitsHolder, 
                             unaFechaUltimoInformeProgresoHolder, 
                             False,
                             thePermissionsCache         =unPermissionsCache, 
@@ -3469,7 +3505,9 @@ class TRAImportacion_Operaciones:
                         theInformeImportarContenidos, 
                         unIntervaloRefrescoEnNumeroEscrituras, 
                         unIntervaloRefrescoEnMinutos, 
-                        unCurrentChangesHolder, 
+                        unaEsperaEntreTransaccionesEnSegundos,
+                        unNumeroDeRefrescosPorEscrituraEnLog,
+                        unCurrentChangesHolder, unCurrentCommitsHolder, 
                         unaFechaUltimoInformeProgresoHolder, 
                         True,
                         thePermissionsCache         =unPermissionsCache, 
@@ -3528,7 +3566,9 @@ class TRAImportacion_Operaciones:
                                 theInformeImportarContenidos, 
                                 unIntervaloRefrescoEnNumeroEscrituras, 
                                 unIntervaloRefrescoEnMinutos, 
-                                unCurrentChangesHolder, 
+                                unaEsperaEntreTransaccionesEnSegundos,
+                                unNumeroDeRefrescosPorEscrituraEnLog,
+                                unCurrentChangesHolder, unCurrentCommitsHolder, 
                                 unaFechaUltimoInformeProgresoHolder, 
                                 True,
                                 thePermissionsCache         =unPermissionsCache, 
@@ -3590,7 +3630,9 @@ class TRAImportacion_Operaciones:
                                         theInformeImportarContenidos, 
                                         unIntervaloRefrescoEnNumeroEscrituras, 
                                         unIntervaloRefrescoEnMinutos, 
-                                        unCurrentChangesHolder, 
+                                        unaEsperaEntreTransaccionesEnSegundos,
+                                        unNumeroDeRefrescosPorEscrituraEnLog,
+                                        unCurrentChangesHolder, unCurrentCommitsHolder, 
                                         unaFechaUltimoInformeProgresoHolder, 
                                         True,
                                         thePermissionsCache         =unPermissionsCache, 
@@ -3606,7 +3648,9 @@ class TRAImportacion_Operaciones:
                             theInformeImportarContenidos, 
                             unIntervaloRefrescoEnNumeroEscrituras, 
                             unIntervaloRefrescoEnMinutos, 
-                            unCurrentChangesHolder, 
+                            unaEsperaEntreTransaccionesEnSegundos,
+                            unNumeroDeRefrescosPorEscrituraEnLog,
+                            unCurrentChangesHolder, unCurrentCommitsHolder, 
                             unaFechaUltimoInformeProgresoHolder, 
                             False,
                             thePermissionsCache         =unPermissionsCache, 
@@ -3619,7 +3663,9 @@ class TRAImportacion_Operaciones:
                         theInformeImportarContenidos, 
                         unIntervaloRefrescoEnNumeroEscrituras, 
                         unIntervaloRefrescoEnMinutos, 
-                        unCurrentChangesHolder, 
+                        unaEsperaEntreTransaccionesEnSegundos,
+                        unNumeroDeRefrescosPorEscrituraEnLog,
+                        unCurrentChangesHolder, unCurrentCommitsHolder, 
                         unaFechaUltimoInformeProgresoHolder, 
                         True,
                         thePermissionsCache         =unPermissionsCache, 
@@ -3659,7 +3705,10 @@ class TRAImportacion_Operaciones:
         theInformeImportarContenidos, 
         theIntervaloRefrescoEnNumeroEscrituras, 
         theIntervaloRefrescoEnMinutos, 
+        theEsperaEntreTransaccionesEnSegundos,
+        theNumeroDeRefrescosPorEscrituraEnLog,
         theCurrentChangesHolder, 
+        theCurrentCommitsHolder,
         theFechaUltimoInformeProgresoHolder, 
         theForceCommit,
         thePermissionsCache         =None, 
@@ -3672,26 +3721,72 @@ class TRAImportacion_Operaciones:
         
         unExecutionRecord = self.fStartExecution( 'block',  'pPeriodicCommit', theParentExecutionRecord, True, { 'log_what': 'details', 'log_when': True, }, '%d changes (total %d)' % (theCurrentChangesHolder[ 0], theCurrentChangesHolder[ 0]+theInformeImportarContenidos[ 'total_changes'], )) 
         try:
-            unAhora = self.fDateTimeNow()
-            aNumLastChanges = theCurrentChangesHolder[ 0]
+            
+            aNumLastChanges   = theCurrentChangesHolder[ 0]
+            theCurrentChangesHolder[ 0] = 0
             
             theInformeImportarContenidos[ 'total_changes'] += aNumLastChanges
-            theCurrentChangesHolder[ 0] = 0
-            theFechaUltimoInformeProgresoHolder[ 0] = unAhora
             
-            theInformeImportarContenidos[ 'fecha_informe'] = self.fDateToStoreString( unAhora)
-            self.setInformeProgreso( str( theInformeImportarContenidos))
-            self.setFechaUltimoInformeProgreso( unAhora)
+            theCurrentChangesHolder[ 1] += aNumLastChanges
+            theCurrentCommitsHolder[ 0] += 1
+            
+            
+                
+            # ################################################################
+            """If so configured, shall Go to sleep to give a change to execute to other processes and user requests. 
+            
+            """
+            unaEsperaEntreTransaccionesEnSegundos = 0
+            if theEsperaEntreTransaccionesEnSegundos:
+                unaEsperaEntreTransaccionesEnSegundos = min( theEsperaEntreTransaccionesEnSegundos, cMaxWaitBetweenTransactions)
+                if not ( unaEsperaEntreTransaccionesEnSegundos > cMinWaitBetweenTransactions):
+                    unaEsperaEntreTransaccionesEnSegundos = 0
     
-            # ACV REMOVED 200903120100 
-            # We don't want to invite to transaction collisions by writing where others will lazy initialize
-            # We don't need to have available for visualization and translation
-            # the strings imported in a process still active
-            # theCatalogo.pInvalidateSimbolosCadenasOrdenados()        
-                        
+            # ################################################################
+            """If so configured,write to the log every certain number of commits, not at every commit.
+            
+            """
+            if theForceCommit or ( theNumeroDeRefrescosPorEscrituraEnLog <= 1) or ( theCurrentCommitsHolder[ 0] >= theNumeroDeRefrescosPorEscrituraEnLog):
+
+                
+                unAhora = self.fDateTimeNow()
+                theFechaUltimoInformeProgresoHolder[ 0] = unAhora
+                
+                theInformeImportarContenidos[ 'fecha_informe'] = self.fDateToStoreString( unAhora)
+                self.setInformeProgreso( str( theInformeImportarContenidos))
+                self.setFechaUltimoInformeProgreso( unAhora)
+    
+                unSleepSentence = ''
+                if unaEsperaEntreTransaccionesEnSegundos > cMinWaitBetweenTransactions:
+                    unSleepSentence = 'Going to sleep %.1f' % unaEsperaEntreTransaccionesEnSegundos
+                
+                logging.getLogger( 'gvSIGi18n::Importar').info("%d COMMITS after %d changes (total changes %d)   %s" % ( theCurrentCommitsHolder[ 0], theCurrentChangesHolder[ 1], theInformeImportarContenidos[ 'total_changes'], unSleepSentence) )        
+
+                theCurrentChangesHolder[ 1] = 0
+                theCurrentCommitsHolder[ 0] = 0
+                
+                
+                
+                
+            # ################################################################
+            """COMMIT NOW
+            
+            """
             transaction.commit( )
-    
-            logging.getLogger( 'gvSIGi18n::Importar').info("COMMIT after %d changes (total changes %d)" % ( aNumLastChanges, theInformeImportarContenidos[ 'total_changes']) )        
+                
+                
+            
+            
+            # ################################################################
+            """If so configured, Go to sleep NOW. Abort on wake-up to refresh the view on the object network.
+            
+            """
+            if unaEsperaEntreTransaccionesEnSegundos > cMinWaitBetweenTransactions:
+                
+                time.sleep( unaEsperaEntreTransaccionesEnSegundos * 1.0)
+                
+                transaction.abort( )
+                
                 
             return self
         

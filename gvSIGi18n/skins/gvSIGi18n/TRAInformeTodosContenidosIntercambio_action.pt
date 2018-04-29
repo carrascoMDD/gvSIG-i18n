@@ -34,7 +34,8 @@
 <body>                     
 <metal:main fill-slot="main">
     <tal:main-macro metal:define-macro="main"
-        tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas." 
+        tal:define="text string:Catalogo de cadenas y sus traduciones a varios idiomas.
+        global pStartTime       pStartTime | python: here.ModelDDvlPlone_tool.fMillisecondsNow()" 
         i18n:domain="gvSIGi18n">
 
         <tal:block tal:define="pExecutionRecord python: here.fStartExecution( 'template', 'TRAInformeContenidosImportacion_action.pt', None, True, { 'log_what': 'details', 'log_when': True, })">
@@ -69,7 +70,7 @@
                         tal:define="aLinkTitle python: '%s' %  here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_vista_sumario_label',   'Summary view-')"
                         tal:attributes="
                             title aLinkTitle;
-                            href python: '%s/TRAInformeContenidosImportacion_action' % here.absolute_url()">
+                            href python: '%s/TRAInformeContenidosImportacion_action/' % here.absolute_url()">
                         <span tal:content="aLinkTitle" />
                     </a>
                 </font>
@@ -82,7 +83,7 @@
                         tal:define="aLinkTitle python: '%s' % here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_vista_tabular_label',   'Tabular view-')"
                         tal:attributes="
                             title aLinkTitle;
-                            href python: '%s/Tabular' % here.absolute_url()">
+                            href python: '%s/Tabular/' % here.absolute_url()">
                         <span tal:content="aLinkTitle" />
                     </a>
                 </font>
@@ -109,7 +110,7 @@
                             tal:define="aLinkTitle python: '%s %s' % ( here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_volver_action_label',   'Back to-'), here.fTranslateI18N( 'gvSIGi18n', 'gvSIGi18n_vista_tabular_label',   'Tabular view-'))"
                             tal:attributes="
                                 title aLinkTitle;
-                                href python: '%s/TRAInformeContenidoIntercambio_action' % pContenidoIntercambio.absolute_url()">
+                                href python: '%s/TRAInformeContenidoIntercambio_action/' % pContenidoIntercambio.absolute_url()">
                             <span tal:content="python: here.fAsUnicode( pContenidoIntercambio.Title())" />
                         </a>
                     </font>

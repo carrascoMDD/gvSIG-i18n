@@ -35,6 +35,9 @@ from Products.gvSIGi18n.TRAColeccionArquetipos import TRAColeccionArquetipos
 from TRAColeccionIdiomas_Operaciones import TRAColeccionIdiomas_Operaciones
 from Products.gvSIGi18n.config import *
 
+# additional imports from tagged value 'import'
+from TRAElemento_Operaciones import TRAElemento_Operaciones
+
 ##code-section module-header #fill in your manual code here
 ##/code-section module-header
 
@@ -53,12 +56,11 @@ schema = Schema((
         ),
         contains_collections=False,
         label2='Languages',
-        additional_columns=['codigoIdiomaEnGvSIG', 'codigoInternacionalDeIdioma', 'nombreNativoDeIdioma', 'codigoIdiomaReferencia', 'ambitoDelIdioma', 'juegoDeCaracteresParaJavaProperties', 'juegoDeCaracteresParaPO', 'fallbackDeIdiomas'],
+        additional_columns=['codigoIdiomaEnGvSIG', 'codigoInternacionalDeIdioma', 'nombreNativoDeIdioma'],
         label='Idiomas',
         represents_aggregation=True,
         description2='Languages to translate the strings into.',
         multiValued=1,
-        factory_views={ 'TRAIdioma' : 'TRACrear_Idioma',},
         owner_class_name="TRAColeccionIdiomas",
         expression="context.objectValues(['TRAIdioma'])",
         computed_types=['TRAIdioma'],
@@ -108,19 +110,20 @@ class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccio
 
 
     allowed_content_types = ['TRAIdioma'] + list(getattr(TRAColeccionArquetipos, 'allowed_content_types', [])) + list(getattr(TRAColeccionIdiomas_Operaciones, 'allowed_content_types', []))
-    filter_content_types = 1
-    global_allow = 0
+    filter_content_types             = 1
+    global_allow                     = 0
     #content_icon = 'TRAColeccionIdiomas.gif'
-    immediate_view = 'Tabular'
-    default_view = 'Tabular'
-    suppl_views = ['Tabular',]
-    typeDescription = "Coleccion de idiomas a los que se desea traducir las cadenas."
-    typeDescMsgId =  'gvSIGi18n_TRAColeccionIdiomas_help'
-    archetype_name2 = 'Languages collection'
-    typeDescription2 = '''Collection of languages to translate the strings into.'''
-    archetype_name_msgid = 'gvSIGi18n_TRAColeccionIdiomas_label'
-    factory_methods = { 'TRAIdioma' : 'fCrearIdioma',}
-    factory_enablers = { 'TRAIdioma' : [ 'fUseCaseCheckDoableFactory', 'Create_TRAIdioma',]}
+    immediate_view                   = 'Tabular'
+    default_view                     = 'Tabular'
+    suppl_views                      = ['Tabular',]
+    typeDescription                  = "Coleccion de idiomas a los que se desea traducir las cadenas."
+    typeDescMsgId                    =  'gvSIGi18n_TRAColeccionIdiomas_help'
+    archetype_name2                  = 'Languages collection'
+    typeDescription2                 = '''Collection of languages to translate the strings into.'''
+    archetype_name_msgid             = 'gvSIGi18n_TRAColeccionIdiomas_label'
+    factory_methods                  = { 'TRAIdioma' : 'fCrearIdioma',}
+    factory_enablers                 = { 'TRAIdioma' : [ 'fUseCaseCheckDoableFactory', 'Create_TRAIdioma',]}
+    propagate_delete_impact_to       = None
     allow_discussion = False
 
 
@@ -133,6 +136,15 @@ class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccio
         'name': 'Sharing',
         'permissions': ("Manage properties",),
         'condition': """python:object.fAllowWrite() and object.fRoleQuery_IsManagerOrCoordinator()"""
+       },
+
+
+       {'action': "string:${object_url}/TRACrear_Idioma",
+        'category': "object_buttons",
+        'id': 'CreateLanguage',
+        'name': 'Create Language',
+        'permissions': ("Modify portal content",),
+        'condition': """python:object.fUseCaseCheckDoable( 'Create_TRAIdioma')"""
        },
 
 
@@ -242,6 +254,13 @@ class TRAColeccionIdiomas(OrderedBaseFolder, TRAColeccionArquetipos, TRAColeccio
         """
         
         return False
+
+    security.declarePublic('fExtraLinks')
+    def fExtraLinks(self):
+        """
+        """
+        
+        return TRAElemento_Operaciones.fExtraLinks( self)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

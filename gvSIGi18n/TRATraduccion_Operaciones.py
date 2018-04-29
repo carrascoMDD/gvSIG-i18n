@@ -708,7 +708,10 @@ class TRATraduccion_Operaciones:
                     'status': 'authenticated_member_not_found',
                 })
                 return aResult                
-            unMemberId = unMember.getMemberId()     
+            if unMember.getUserName() == 'Anonymous User':
+                unMemberId = unMember.getUserName()
+            else:
+                unMemberId = unMember.getMemberId()   
             if not unMemberId:
                 aResult.update({
                     'status': 'authenticated_member_id_missing',
@@ -927,7 +930,10 @@ class TRATraduccion_Operaciones:
                     'status': 'authenticated_member_not_found',
                 })
                 return aResult                
-            unMemberId = unMember.getMemberId()     
+            if unMember.getUserName() == 'Anonymous User':
+                unMemberId = unMember.getUserName()
+            else:
+                unMemberId = unMember.getMemberId()   
             if not unMemberId:
                 aResult.update({
                     'status': 'authenticated_member_id_missing',
@@ -1045,7 +1051,10 @@ class TRATraduccion_Operaciones:
                     'status': 'authenticated_member_not_found',
                 })
                 return aResult                
-            unMemberId = unMember.getMemberId()     
+            if unMember.getUserName() == 'Anonymous User':
+                unMemberId = unMember.getUserName()
+            else:
+                unMemberId = unMember.getMemberId()   
             if not unMemberId:
                 aResult.update({
                     'status': 'authenticated_member_id_missing',
@@ -1215,7 +1224,10 @@ class TRATraduccion_Operaciones:
                     'status': 'authenticated_member_not_found',
                 })
                 return aResult                
-            unMemberId = unMember.getMemberId()     
+            if unMember.getUserName() == 'Anonymous User':
+                unMemberId = unMember.getUserName()
+            else:
+                unMemberId = unMember.getMemberId()   
             if not unMemberId:
                 aResult.update({
                     'status': 'authenticated_member_id_missing',
@@ -1393,7 +1405,10 @@ class TRATraduccion_Operaciones:
                     'status': 'authenticated_member_not_found',
                 })
                 return aResult                
-            unMemberId = unMember.getMemberId()     
+            if unMember.getUserName() == 'Anonymous User':
+                unMemberId = unMember.getUserName()
+            else:
+                unMemberId = unMember.getMemberId()   
             if not unMemberId:
                 aResult.update({
                     'status': 'authenticated_member_id_missing',
@@ -1561,7 +1576,10 @@ class TRATraduccion_Operaciones:
                     'status': 'authenticated_member_not_found',
                 })
                 return aResult                
-            unMemberId = unMember.getMemberId()     
+            if unMember.getUserName() == 'Anonymous User':
+                unMemberId = unMember.getUserName()
+            else:
+                unMemberId = unMember.getMemberId()   
             if not unMemberId:
                 aResult.update({
                     'status': 'authenticated_member_id_missing',
@@ -1725,7 +1743,10 @@ class TRATraduccion_Operaciones:
                     'status': 'authenticated_member_not_found',
                 })
                 return aResult                
-            unMemberId = unMember.getMemberId()     
+            if unMember.getUserName() == 'Anonymous User':
+                unMemberId = unMember.getUserName()
+            else:
+                    unMemberId = unMember.getMemberId()   
             if not unMemberId:
                 aResult.update({
                     'status': 'authenticated_member_id_missing',

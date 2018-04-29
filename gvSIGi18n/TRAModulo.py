@@ -215,19 +215,20 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRAMod
     use_folder_tabs = 0
 
     allowed_content_types = [] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', [])) + list(getattr(TRAModulo_Operaciones, 'allowed_content_types', []))
-    filter_content_types = 1
-    global_allow = 0
+    filter_content_types             = 1
+    global_allow                     = 0
     content_icon = 'tramodulo.gif'
-    immediate_view = 'Tabular'
-    default_view = 'Tabular'
-    suppl_views = ['Tabular',]
-    typeDescription = "Uno de los Modulos del producto a traducir."
-    typeDescMsgId =  'gvSIGi18n_TRAModulo_help'
-    archetype_name2 = 'Module'
-    typeDescription2 = '''One of the Modules in the product to translate.'''
-    archetype_name_msgid = 'gvSIGi18n_TRAModulo_label'
-    factory_methods = None
-    factory_enablers = None
+    immediate_view                   = 'Tabular'
+    default_view                     = 'Tabular'
+    suppl_views                      = ['Tabular',]
+    typeDescription                  = "Uno de los Modulos del producto a traducir."
+    typeDescMsgId                    =  'gvSIGi18n_TRAModulo_help'
+    archetype_name2                  = 'Module'
+    typeDescription2                 = '''One of the Modules in the product to translate.'''
+    archetype_name_msgid             = 'gvSIGi18n_TRAModulo_label'
+    factory_methods                  = None
+    factory_enablers                 = None
+    propagate_delete_impact_to       = None
     allow_discussion = False
 
 
@@ -363,6 +364,13 @@ class TRAModulo(OrderedBaseFolder, TRAArquetipo, TRAConRegistroActividad, TRAMod
         """
         
         return False
+
+    security.declarePublic('fExtraLinks')
+    def fExtraLinks(self):
+        """
+        """
+        
+        return TRAModulo_Operaciones.fExtraLinks( self)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

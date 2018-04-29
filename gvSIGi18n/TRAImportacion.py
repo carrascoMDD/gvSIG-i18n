@@ -37,6 +37,7 @@ from Products.gvSIGi18n.TRAConRegistroActividad import TRAConRegistroActividad
 from Products.gvSIGi18n.config import *
 
 # additional imports from tagged value 'import'
+from TRAElemento_Operaciones import TRAElemento_Operaciones
 from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import ReferenceBrowserWidget
 
 ##code-section module-header #fill in your manual code here
@@ -109,14 +110,14 @@ schema = Schema((
         widget=StringWidget(
             label="Version del producto",
             label2="Product Version",
-            description="Version del Producto que se importa en este proceso.",
-            description2="Product Version imported in this process.",
+            description="Version del Producto que se importa en este proceso. Cuando se ejecute la importacion, este dato se establecera como el valor de la Ultima Version importada del producto, en el catalogo de traducciones.",
+            description2="Product Version imported in this process. When the import executes, this data will be set as the value of the Last Imported Product Version in the translations catalog.",
             label_msgid='gvSIGi18n_TRAImportacion_attr_versionDelProducto_label',
             description_msgid='gvSIGi18n_TRAImportacion_attr_versionDelProducto_help',
             i18n_domain='gvSIGi18n',
         ),
         scale="0",
-        description="Version del Producto que se importa en este proceso.",
+        description="Version del Producto que se importa en este proceso. Cuando se ejecute la importacion, este dato se establecera como el valor de la Ultima Version importada del producto, en el catalogo de traducciones.",
         duplicates="0",
         label2="Product Version",
         ea_localid="419",
@@ -125,7 +126,7 @@ schema = Schema((
         collection="false",
         styleex="volatile=0;",
         length="0",
-        description2="Product Version imported in this process.",
+        description2="Product Version imported in this process. When the import executes, this data will be set as the value of the Last Imported Product Version in the translations catalog.",
         containment="Not Specified",
         ea_guid="{4D88E1D8-7FDA-43fd-87C0-BA2A7D756AF3}",
         position="2",
@@ -138,14 +139,14 @@ schema = Schema((
         widget=StringWidget(
             label="Identificador del Build",
             label2="Product Build identifier",
-            description="Identificador del Build del Producto que se importa en este proceso.",
-            description2="Product Build identifier imported in this process.",
+            description="Identificador del Build del Producto que se importa en este proceso. Cuando se ejecute la importacion, este dato se establecera como el valor del Identificador del Ultimo Build Importado, en el catalogo de traducciones.",
+            description2="Product Build identifier imported in this process. When the import executes, this data will be set as the value of the Last Imported Product Build identifier  in the translations catalog.",
             label_msgid='gvSIGi18n_TRAImportacion_attr_buildDelProducto_label',
             description_msgid='gvSIGi18n_TRAImportacion_attr_buildDelProducto_help',
             i18n_domain='gvSIGi18n',
         ),
         scale="0",
-        description="Identificador del Build del Producto que se importa en este proceso.",
+        description="Identificador del Build del Producto que se importa en este proceso. Cuando se ejecute la importacion, este dato se establecera como el valor del Identificador del Ultimo Build Importado, en el catalogo de traducciones.",
         duplicates="0",
         label2="Product Build identifier",
         ea_localid="432",
@@ -154,7 +155,7 @@ schema = Schema((
         collection="false",
         styleex="volatile=0;",
         length="0",
-        description2="Product Build identifier imported in this process.",
+        description2="Product Build identifier imported in this process. When the import executes, this data will be set as the value of the Last Imported Product Build identifier  in the translations catalog.",
         containment="Not Specified",
         ea_guid="{4A1EF8CC-9271-41a5-A444-5F92D60663CA}",
         position="3",
@@ -308,7 +309,7 @@ schema = Schema((
         label="Intervalo de Refresco en Minutos",
         length="0",
         containment="Not Specified",
-        position="9",
+        position="10",
         owner_class_name="TRAImportacion"
     ),
 
@@ -317,13 +318,13 @@ schema = Schema((
         widget=IntegerField._properties['widget'](
             label="Intervalo de Refresco en Numero de Escrituras",
             label2="Refresh Interval in number of Writes",
-            description="Numero de escrituras de cadenas o traducciones tras las que se requiere que se actualize el estado e informe de progreso.",
-            description2="Number of string or translation writes after which it is required to update the progress state and report.",
+            description="Numero de escrituras de cadenas o traducciones tras las que se requiere que se actualize el estado e informe de progreso. Use valores bajos ( <100) y la Espera entre Transacciones no nula, para dejar procesador a otros procesos o usuarios.",
+            description2="Number of string or translation writes after which it is required to update the progress state and report. Use low values (<100) and a not null Delay between Transactions, to yield processing power to other processes and users.",
             label_msgid='gvSIGi18n_TRAImportacion_attr_intervaloRefrescoEnNumeroEscrituras_label',
             description_msgid='gvSIGi18n_TRAImportacion_attr_intervaloRefrescoEnNumeroEscrituras_help',
             i18n_domain='gvSIGi18n',
         ),
-        description="Numero de escrituras de cadenas o traducciones tras las que se requiere que se actualize el estado e informe de progreso.",
+        description="Numero de escrituras de cadenas o traducciones tras las que se requiere que se actualize el estado e informe de progreso. Use valores bajos ( <100) y la Espera entre Transacciones no nula, para dejar procesador a otros procesos o usuarios.",
         duplicates="0",
         label2="Refresh Interval in number of Writes",
         ea_localid="531",
@@ -331,14 +332,74 @@ schema = Schema((
         precision=0,
         collection="false",
         styleex="volatile=0;",
-        description2="Number of string or translation writes after which it is required to update the progress state and report.",
+        description2="Number of string or translation writes after which it is required to update the progress state and report. Use low values (<100) and a not null Delay between Transactions, to yield processing power to other processes and users.",
         ea_guid="{9FD839DA-B533-416e-BD80-8133BD448A13}",
         scale="0",
         default="500",
         label="Intervalo de Refresco en Numero de Escrituras",
         length="0",
         containment="Not Specified",
-        position="10",
+        position="11",
+        owner_class_name="TRAImportacion"
+    ),
+
+    FloatField(
+        name='esperaEntreTransaccionesEnSegundos',
+        widget=DecimalWidget(
+            label="Segundos de Espera entre Transacciones",
+            label2="Delay Seconds between Transactions",
+            description="Con decimales. Intervalo de espera al final de una transaccion, antes de comenzar la siguiente. Util con valores bajos ( <100) del Intervalo de Refresco en Numero de Escrituras, para dejar libre capacidad de procesamiento para otros procesos o usuarios.",
+            description2="With float values. Time to wait at the end of a transaction, before starting the next one. Usefule with low values of Refresh Interval in number of Writes (<100), to free processing power for other processes or users.",
+            label_msgid='gvSIGi18n_TRAImportacion_attr_esperaEntreTransaccionesEnSegundos_label',
+            description_msgid='gvSIGi18n_TRAImportacion_attr_esperaEntreTransaccionesEnSegundos_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Con decimales. Intervalo de espera al final de una transaccion, antes de comenzar la siguiente. Util con valores bajos ( <100) del Intervalo de Refresco en Numero de Escrituras, para dejar libre capacidad de procesamiento para otros procesos o usuarios.",
+        duplicates="0",
+        label2="Delay Seconds between Transactions",
+        ea_localid="1579",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="With float values. Time to wait at the end of a transaction, before starting the next one. Usefule with low values of Refresh Interval in number of Writes (<100), to free processing power for other processes or users.",
+        ea_guid="{70CD4589-53E9-432e-921B-7ECC742676A5}",
+        scale="0",
+        default="0.0",
+        label="Segundos de Espera entre Transacciones",
+        length="0",
+        containment="Not Specified",
+        position="9",
+        owner_class_name="TRAImportacion"
+    ),
+
+    IntegerField(
+        name='numeroDeRefrescosPorEscrituraEnLog',
+        widget=IntegerField._properties['widget'](
+            label="Numero de Refrescos por Escritura en Log",
+            label2="Number of Refreshes in each Write to the Log",
+            description="Para evitar escribir demasiado frecuentemente en el registro de actividad, cuando se usan valores bajos del Intervalo de Refresco en Numero de Escrituras, este valor puede configurarse a valores altos (>10, < 100).",
+            description2="To avoid writting too often to the log, when using low values for Refresh Interval in number of Writes, this value can be configured to high values (>10, <100).",
+            label_msgid='gvSIGi18n_TRAImportacion_attr_numeroDeRefrescosPorEscrituraEnLog_label',
+            description_msgid='gvSIGi18n_TRAImportacion_attr_numeroDeRefrescosPorEscrituraEnLog_help',
+            i18n_domain='gvSIGi18n',
+        ),
+        description="Para evitar escribir demasiado frecuentemente en el registro de actividad, cuando se usan valores bajos del Intervalo de Refresco en Numero de Escrituras, este valor puede configurarse a valores altos (>10, < 100).",
+        duplicates="0",
+        label2="Number of Refreshes in each Write to the Log",
+        ea_localid="1580",
+        derived="0",
+        precision=0,
+        collection="false",
+        styleex="volatile=0;",
+        description2="To avoid writting too often to the log, when using low values for Refresh Interval in number of Writes, this value can be configured to high values (>10, <100).",
+        ea_guid="{B48C7682-B5EC-4d06-88DD-786F91C60C11}",
+        scale="0",
+        default="1",
+        label="Numero de Refrescos por Escritura en Log",
+        length="0",
+        containment="Not Specified",
+        position="12",
         owner_class_name="TRAImportacion"
     ),
 
@@ -369,7 +430,7 @@ schema = Schema((
         label="Comenzo a ejecutar",
         length="0",
         containment="Not Specified",
-        position="12",
+        position="14",
         owner_class_name="TRAImportacion"
     ),
 
@@ -399,7 +460,7 @@ schema = Schema((
         label="Usuario Importador",
         length="0",
         containment="Not Specified",
-        position="15",
+        position="17",
         owner_class_name="TRAImportacion"
     ),
 
@@ -433,7 +494,7 @@ schema = Schema((
         label="Estado del Proceso",
         length="0",
         containment="Not Specified",
-        position="11",
+        position="13",
         owner_class_name="TRAImportacion"
     ),
 
@@ -464,7 +525,7 @@ schema = Schema((
         label="Informe de Progreso",
         length="0",
         containment="Not Specified",
-        position="13",
+        position="15",
         owner_class_name="TRAImportacion",
         custom_presentation_view="TRAInformeProgreso_i18n_view"
     ),
@@ -496,7 +557,7 @@ schema = Schema((
         label="Exito?",
         length="0",
         containment="Not Specified",
-        position="14",
+        position="16",
         owner_class_name="TRAImportacion"
     ),
 
@@ -526,7 +587,7 @@ schema = Schema((
         label="Fecha y Hora de Comienzo",
         length="0",
         containment="Not Specified",
-        position="16",
+        position="18",
         owner_class_name="TRAImportacion"
     ),
 
@@ -556,7 +617,7 @@ schema = Schema((
         label="Fecha y Hora de Fin",
         length="0",
         containment="Not Specified",
-        position="18",
+        position="20",
         owner_class_name="TRAImportacion"
     ),
 
@@ -587,7 +648,7 @@ schema = Schema((
         label="Informe de Final",
         length="0",
         containment="Not Specified",
-        position="19",
+        position="21",
         owner_class_name="TRAImportacion",
         exclude_from_views="[ 'Textual',   'General', ]"
     ),
@@ -618,7 +679,7 @@ schema = Schema((
         label="Informe de Excepcion",
         length="0",
         containment="Not Specified",
-        position="20",
+        position="22",
         owner_class_name="TRAImportacion"
     ),
 
@@ -635,7 +696,7 @@ schema = Schema((
         ),
         contains_collections=False,
         label2='Translations Interchange Contents',
-        additional_columns=['excluirDeImportacion', 'nombreModulo', 'usuarioContribuidor', 'fechaContenido'],
+        additional_columns=['excluirDeImportacion', 'nombreModulo'],
         label='Contenido Intercambio Traducciones',
         represents_aggregation=True,
         description2='Contains strings and translations contributed by a user, and to be imported.',
@@ -674,7 +735,7 @@ schema = Schema((
         label="Fecha y Hora del ultimo informe de Progreso",
         length="0",
         containment="Not Specified",
-        position="17",
+        position="19",
         owner_class_name="TRAImportacion"
     ),
 
@@ -739,7 +800,7 @@ schema = Schema((
         label="Informe Antes de la Importacion.",
         length="0",
         containment="Not Specified",
-        position="21",
+        position="23",
         owner_class_name="TRAImportacion",
         exclude_from_views="[ 'Textual',   'General', ]",
         computed_types="[ 'TRAInforme',]"
@@ -772,7 +833,7 @@ schema = Schema((
         label="Informe Despues de Importar",
         length="0",
         containment="Not Specified",
-        position="24",
+        position="26",
         owner_class_name="TRAImportacion",
         expression="context.fInformeEstadoDespues()",
         computed_types="[ 'TRAInforme',]"
@@ -806,7 +867,7 @@ schema = Schema((
         label="Informe por Idiomas Antes de la Importacion.",
         length="0",
         containment="Not Specified",
-        position="22",
+        position="24",
         owner_class_name="TRAImportacion",
         exclude_from_views="[ 'Textual',   'General', ]",
         computed_types="text"
@@ -840,7 +901,7 @@ schema = Schema((
         length="0",
         expression="context.fDeriveInformeEstadoIdiomasDespues()",
         containment="Not Specified",
-        position="25",
+        position="27",
         owner_class_name="TRAImportacion",
         custom_presentation_view="TRAInformeEstadoIdiomasDespues_i18n_view",
         computed_types="text"
@@ -874,7 +935,7 @@ schema = Schema((
         label="Informe por Modulos e Idiomas Antes de Importar",
         length="0",
         containment="Not Specified",
-        position="23",
+        position="25",
         owner_class_name="TRAImportacion",
         custom_presentation_view="TRAInformeEstadoModulosAntes_i18n_view"
     ),
@@ -907,7 +968,7 @@ schema = Schema((
         label="Informe por Modulos e Idiomas Despues de Importar",
         length="0",
         containment="Not Specified",
-        position="26",
+        position="28",
         owner_class_name="TRAImportacion",
         exclude_from_views="[ 'Textual',   'General', ]"
     ),
@@ -925,7 +986,7 @@ schema = Schema((
         ),
         contains_collections=False,
         label2='Status Reports Before and After',
-        additional_columns=['esAutoActualizable', 'estadoProceso', 'fechaFinProceso', 'haCompletadoConExito'],
+        additional_columns=['esAutoActualizable', 'haCompletadoConExito'],
         label='Informes Estado Antes y Despues',
         represents_aggregation=True,
         description2='Catalog Status Reports, its Languages, Modules, Strings and Translations, at the beginning of the import process, and after termination of the process.',
@@ -980,19 +1041,20 @@ class TRAImportacion(OrderedBaseFolder, TRAArquetipo, TRAImportacion_Operaciones
 
 
     allowed_content_types = ['TRAInforme', 'TRAContenidoIntercambio'] + list(getattr(TRAArquetipo, 'allowed_content_types', [])) + list(getattr(TRAImportacion_Operaciones, 'allowed_content_types', [])) + list(getattr(TRAConRegistroActividad, 'allowed_content_types', []))
-    filter_content_types = 1
-    global_allow = 0
+    filter_content_types             = 1
+    global_allow                     = 0
     content_icon = 'traimportacion.gif'
-    immediate_view = 'Tabular'
-    default_view = 'Tabular'
-    suppl_views = ['Tabular',]
-    typeDescription = "Instancia de Proceso de Importacion, a partir de un fichero de entrada."
-    typeDescMsgId =  'gvSIGi18n_TRAImportacion_help'
-    archetype_name2 = 'Import process'
-    typeDescription2 = '''Import process instance, from a given input archive.'''
-    archetype_name_msgid = 'gvSIGi18n_TRAImportacion_label'
-    factory_methods = { 'TRAContenidoIntercambio' : 'fCrearContenidoIntercambio',}
-    factory_enablers = { 'TRAContenidoIntercambio' : [ 'fUseCaseCheckDoableFactory', 'Create_TRAContenidoIntercambio',]}
+    immediate_view                   = 'Tabular'
+    default_view                     = 'Tabular'
+    suppl_views                      = ['Tabular',]
+    typeDescription                  = "Instancia de Proceso de Importacion, a partir de un fichero de entrada."
+    typeDescMsgId                    =  'gvSIGi18n_TRAImportacion_help'
+    archetype_name2                  = 'Import process'
+    typeDescription2                 = '''Import process instance, from a given input archive.'''
+    archetype_name_msgid             = 'gvSIGi18n_TRAImportacion_label'
+    factory_methods                  = { 'TRAContenidoIntercambio' : 'fCrearContenidoIntercambio',}
+    factory_enablers                 = { 'TRAContenidoIntercambio' : [ 'fUseCaseCheckDoableFactory', 'Create_TRAContenidoIntercambio',]}
+    propagate_delete_impact_to       = None
     allow_discussion = False
 
 
@@ -1128,6 +1190,13 @@ class TRAImportacion(OrderedBaseFolder, TRAArquetipo, TRAImportacion_Operaciones
         
         return False
 
+    security.declarePublic('manage_pasteObjects')
+    def manage_pasteObjects(self,cb_copy_data,REQUEST):
+        """
+        """
+        
+        return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
+
     security.declarePublic('manage_afterAdd')
     def manage_afterAdd(self,item,container):
         """
@@ -1135,12 +1204,12 @@ class TRAImportacion(OrderedBaseFolder, TRAArquetipo, TRAImportacion_Operaciones
         
         return TRAArquetipo.manage_afterAdd( self, item, container)
 
-    security.declarePublic('manage_pasteObjects')
-    def manage_pasteObjects(self,cb_copy_data,REQUEST):
+    security.declarePublic('fExtraLinks')
+    def fExtraLinks(self):
         """
         """
         
-        return self.pHandle_manage_pasteObjects( cb_copy_data, REQUEST)
+        return TRAElemento_Operaciones.fExtraLinks( self)
 def modify_fti(fti):
     # Hide unnecessary tabs (usability enhancement)
     for a in fti['actions']:

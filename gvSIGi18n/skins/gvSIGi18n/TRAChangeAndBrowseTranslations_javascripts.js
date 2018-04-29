@@ -143,8 +143,16 @@ function fTRABaseRequestURL() {
     var unPath      = unaWindowLocation.pathname
 
     var unosPathElements = unPath.split( '/')
-    var unosPathElementsWithoutPate = unosPathElements.slice( 0, unosPathElements.length - 1)    
-    var unPathWithoutPage =  unosPathElementsWithoutPate.join( '/')
+    var unosPathElementsWithoutPage = ""
+    
+    if ( unosPathElements[ unosPathElements.length -1].length < 1) {
+        unosPathElementsWithoutPage = unosPathElements.slice( 0, unosPathElements.length - 2)
+    }
+    else {
+        unosPathElementsWithoutPage = unosPathElements.slice( 0, unosPathElements.length - 1)    
+    }
+    
+    var unPathWithoutPage =  unosPathElementsWithoutPage.join( '/')
 
     var unaURL = unProtocol + '//' + unHost +  unPathWithoutPage 
 
@@ -154,14 +162,37 @@ function fTRABaseRequestURL() {
 
 
 function fTRAAsyncRequestURL() {
+    var unAsyncRequest = fTRA_GetConstantValue( 'cTRAId_AsynchRequestURL');
+    if ( unAsyncRequest.length) {
+        return unAsyncRequest
+    }
+
     var unaBaseURL = fTRABaseRequestURL()
     if ( !unaBaseURL) {
         return ''
     }
 
-    var unaURL = unaBaseURL + '/' + cAsyncRequestPage
+    var unaURL = unaBaseURL + '//////' + cAsyncRequestPage
 
     return unaURL
+}
+
+
+
+function fTRAPortalURL() {
+    var unPortalURL = fTRA_GetConstantValue( 'cTRAId_PortalURL');
+    return unPortalURL;
+}
+
+
+function fTRAIconsBaseURL() {
+    var unIconsBaseURL = fTRAPortalURL( );
+    if ( unIconsBaseURL.length) {
+        return unIconsBaseURL
+    }
+
+    var unaBaseURL = fTRABaseRequestURL() + '////'
+    return unaBaseURL
 }
 
 
@@ -675,7 +706,7 @@ function pTRAAsyncRequest_Response_Display( theResponseText) {
     var unElementoEstadoIcon= document.getElementById( 'cid_ColumnaCadenasTraducidas_' + unIndexTraduccion + '_estado_icon');        
     if ( unElementoEstadoIcon) {
         var unIcon = fEstado_icon( unEstadoTraduccion);
-        unElementoEstadoIcon.setAttribute( 'src' , fTRABaseRequestURL() + '/' + unIcon);
+        unElementoEstadoIcon.setAttribute( 'src' , fTRAIconsBaseURL() + '/' + unIcon);
     }
 
     pTRAShowOrHideColumnStateTransitionButtonsEnFilaNumero( unIndexTraduccion);
